@@ -1,0 +1,106 @@
+name: Check the Principia character reductions on Linux
+
+on:
+  push:
+    branches:
+      - checks/principia-character-counts-76ffabc6
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conductor-one:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      LEAN_ABORT_ON_PANIC: "1"
+      LEAN_NUM_THREADS: "2"
+      MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4
+    steps:
+      - name: Check out the reviewed source
+        uses: actions/checkout@v4
+        with:
+          ref: 76ffabc62ab67b126afc128013ab6efa6f7d2a7c
+          persist-credentials: false
+      - name: Install the pinned toolchain and Mathlib
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o "$RUNNER_TEMP/elan-init.sh"
+          sh "$RUNNER_TEMP/elan-init.sh" -y --default-toolchain none
+          export PATH="$HOME/.elan/bin:$PATH"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          lake --version
+          lake exe mathlib/cache get
+      - name: Restore the verified import closure of the reviewed Lean file
+        shell: python
+        run: |
+          from pathlib import Path
+          import concurrent.futures
+          import importlib.util
+          import json
+          import re
+          import subprocess
+
+          root=Path.cwd()
+          cache=root/".lake/cache"
+          dest=cache/"artifacts"
+          dest.mkdir(parents=True,exist_ok=True)
+          spec=importlib.util.spec_from_file_location("restore",root/"scripts/restore-cache.py")
+          restore=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(restore)
+          restore.check_project(root)
+          def imports(path):
+              return re.findall(r"(?m)^\s*(?:public\s+)?import\s+([^\s]+)",path.read_text(encoding="utf-8"))
+          reached=set()
+          own=['OrdinaryRH', 'ConductorOneCases', 'PrincipalHeightCounts', 'ExceptionalCharacterHeight', 'RegularCharacterHeight', 'TwoCharacterCounts', 'LogCubeRH']
+          queue=[dep for n in own for dep in imports(root/('verification/'+n+'.lean')) if dep not in own]
+          while queue:
+              name=queue.pop()
+              if name in reached or name.split(".")[0] in {"Mathlib","Std","Lean","Init","Lake"}: continue
+              src=root/"src"/(name.replace(".","/")+".lean")
+              if not src.is_file():
+                  raise RuntimeError(f"Missing upstream module {name}")
+              reached.add(name)
+              queue.extend(imports(src))
+          assert len(reached)==3979,len(reached)
+          manifest=subprocess.check_output(["curl","-fsSL","--retry","3",restore.URL])
+          rows=[row for row in restore.manifest_rows(manifest) if row[0] in reached]
+          assert len(rows)==len(reached),(len(rows),len(reached))
+          def fetch(row):
+              name,_,artifact,digest=row
+              file=dest/artifact
+              if not file.exists():
+                  url="https://rh-cache.taucetiproject.org/artifacts/leanprover-community/riemann-hypothesis/"+artifact[:-5]+".art"
+                  subprocess.run(["curl","-fsSL","--retry","3","-o",str(file),url],check=True)
+              assert restore.sha256(file)==digest,name
+          with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
+              for _ in pool.map(fetch,rows): pass
+          jobs=restore.restore_jobs(root,cache,rows)
+          for job in jobs:
+              for base in job["base"]: Path(base).mkdir(parents=True,exist_ok=True)
+          leantar=Path(subprocess.check_output(["elan","which","lean"],text=True).strip()).with_name("leantar")
+          subprocess.run([str(leantar),"--jobs","4","-f","-x","-j","-"],input=json.dumps(jobs),text=True,check=True)
+          print(f"Restored and SHA-256 checked {len(rows)} archive modules")
+      - name: Compile the research files and audit every endpoint
+        shell: python
+        run: |
+          from pathlib import Path
+          import hashlib,re,subprocess
+          checks={'OrdinaryRH': ['e2bab4de455929689f2977514ae8a84b8004fbbbb19619cf7b6866d77c93d33e', 5], 'ConductorOneCases': ['098881f61b371179e5c4427873a7c1818d631d30d354479755ccafa37486344d', 7], 'PrincipalHeightCounts': ['a3e22e684b33c373a1046b02231c1ed4f7341b2c65a7062a9aea0ee8646ce84c', 3], 'ExceptionalCharacterHeight': ['a28ed6619eac5de2bcb500633b027b388c8fb0e6c1f094120b3e6c35a4a5749e', 4], 'RegularCharacterHeight': ['8a4c16bf2f56827ea5b1cd1693704d5e847d70f785bf62b685ca921c6be6ed96', 3], 'TwoCharacterCounts': ['be6ccce3ae6696230518adc7bc509542c6eb5c47c644c35996234854f067de2a', 3], 'LogCubeRH': ['d183191cac31584b7fa051847a87fbce3dac7ec4a44a9f5701fe4ad2f9904321', 10]}
+          allowed={"propext","Classical.choice","Quot.sound"}
+          for name,(digest,count) in checks.items():
+              file=Path("verification")/(name+".lean")
+              assert hashlib.sha256(file.read_bytes()).hexdigest()==digest
+              decls=re.findall(r"(?m)^#print axioms (\S+)",file.read_text())
+              assert len(decls)==count>0
+              out=Path(".lake/build/lib/lean")/(name+".olean")
+              p=subprocess.run(["lake","env","lean","-j1","--root=verification","-o",str(out),str(file)],
+                               stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+              print(p.stdout,flush=True)
+              assert p.returncode==0 and "sorryAx" not in p.stdout and "error:" not in p.stdout,name
+              for n in decls:
+                  m=re.search("'"+re.escape(n)+r"' (?:depends on axioms: \[([^\]]*)\]|does not depend on any axioms)",p.stdout)
+                  assert m,n
+                  axioms={s.strip() for s in (m.group(1) or "").split(",") if s.strip()}
+                  assert axioms <= allowed,(n,axioms)
+              print(f"{name}: verified {count} axiom reports; SHA-256 {digest}",flush=True)
