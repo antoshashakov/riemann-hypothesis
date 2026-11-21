@@ -692,52 +692,61 @@ lemma psi_le_three {y : ℝ} (hy : 0 ≤ y) : Chebyshev.psi y ≤ 3 * y := by
 lemma sum_vM_le {Y : ℝ} (hY : 0 ≤ Y) : ∑ n ∈ Icc 1 ⌊Y⌋₊, Λ n ≤ 3 * Y := by
   rw [Formalism.LogFactorialMertensBounds.Icc_one_eq_Ioc]; exact psi_le_three hY
 
+private lemma trunc_smul {E : Type*} [AddCommMonoid E] [Module ℝ E]
+    (c : ℕ → E) (y : ℝ) (M : ℕ) (hM : ⌊y⌋₊ ≤ M) :
+    ∑ n ∈ Icc 1 ⌊y⌋₊, (y / n - 1) • c n = ∑ n ∈ Icc 1 M, max (y / n - 1) 0 • c n := by
+  calc
+    _ = ∑ n ∈ Icc 1 ⌊y⌋₊, max (y / n - 1) 0 • c n := by
+      refine Finset.sum_congr rfl fun n hn => ?_
+      obtain ⟨hn, hny⟩ := Finset.mem_Icc.mp hn
+      have hn₀ : (0 : ℝ) < n := by exact_mod_cast hn
+      have hy : (n : ℝ) ≤ y := (Nat.le_floor_iff' (by omega)).mp hny
+      rw [max_eq_left (sub_nonneg.mpr ((one_le_div hn₀).mpr hy))]
+    _ = _ := by
+      apply Finset.sum_subset (Finset.Icc_subset_Icc_right hM)
+      intro n hn hnot
+      have hn₁ := (Finset.mem_Icc.mp hn).1
+      have hny : ⌊y⌋₊ < n := lt_of_not_ge fun h => hnot (Finset.mem_Icc.mpr ⟨hn₁, h⟩)
+      have hn₀ : (0 : ℝ) < n := by exact_mod_cast hn₁
+      have hy : y < n := (Nat.floor_lt' (by omega)).mp hny
+      rw [max_eq_right (sub_nonpos.mpr ((div_le_one hn₀).mpr hy.le)), zero_smul]
+
 lemma truncC (c : ℕ → ℂ) (y : ℝ) (M : ℕ) (hM : ⌊y⌋₊ ≤ M) :
     ∑ n ∈ Icc 1 ⌊y⌋₊, c n * ((y / n - 1 : ℝ) : ℂ) = ∑ n ∈ Icc 1 M, c n * ((max (y / n - 1) 0 : ℝ) : ℂ) := by
-  have h1 : ∑ n ∈ Icc 1 ⌊y⌋₊, c n * ((max (y / n - 1) 0 : ℝ) : ℂ)
-      = ∑ n ∈ Icc 1 M, c n * ((max (y / n - 1) 0 : ℝ) : ℂ) := by
-    apply Finset.sum_subset (Finset.Icc_subset_Icc_right hM)
-    intro n hn hn'
-    rw [Finset.mem_Icc] at hn hn'
-    have hlt : ⌊y⌋₊ < n := by
-      by_contra h; exact hn' ⟨hn.1, not_lt.1 h⟩
-    have hy : y < n := (Nat.floor_lt' (by omega)).1 hlt
-    have hn0 : (0 : ℝ) < n := by exact_mod_cast hn.1
-    have : y / n - 1 ≤ 0 := by
-      have := (div_lt_one hn0).2 hy; linarith
-    rw [max_eq_right this]; simp
-  rw [← h1]
-  apply Finset.sum_congr rfl
-  intro n hn
-  rw [Finset.mem_Icc] at hn
-  have hn0 : (0 : ℝ) < n := by exact_mod_cast hn.1
-  have hy : (n : ℝ) ≤ y := (Nat.le_floor_iff' (by omega)).1 hn.2
-  have : 0 ≤ y / n - 1 := by
-    have := (one_le_div hn0).2 hy; linarith
-  rw [max_eq_left this]
+  simpa only [Complex.real_smul, mul_comm] using trunc_smul c y M hM
 
 lemma truncR (c : ℕ → ℝ) (y : ℝ) (M : ℕ) (hM : ⌊y⌋₊ ≤ M) :
     ∑ n ∈ Icc 1 ⌊y⌋₊, c n * (y / n - 1) = ∑ n ∈ Icc 1 M, c n * (max (y / n - 1) 0) := by
-  have h1 : ∑ n ∈ Icc 1 ⌊y⌋₊, c n * (max (y / n - 1) 0) = ∑ n ∈ Icc 1 M, c n * (max (y / n - 1) 0) := by
-    apply Finset.sum_subset (Finset.Icc_subset_Icc_right hM)
-    intro n hn hn'
-    rw [Finset.mem_Icc] at hn hn'
-    have hlt : ⌊y⌋₊ < n := by
-      by_contra h; exact hn' ⟨hn.1, not_lt.1 h⟩
-    have hy : y < n := (Nat.floor_lt' (by omega)).1 hlt
-    have hn0 : (0 : ℝ) < n := by exact_mod_cast hn.1
-    have : y / n - 1 ≤ 0 := by
-      have := (div_lt_one hn0).2 hy; linarith
-    rw [max_eq_right this]; simp
-  rw [← h1]
-  apply Finset.sum_congr rfl
-  intro n hn
-  rw [Finset.mem_Icc] at hn
-  have hn0 : (0 : ℝ) < n := by exact_mod_cast hn.1
-  have hy : (n : ℝ) ≤ y := (Nat.le_floor_iff' (by omega)).1 hn.2
-  have : 0 ≤ y / n - 1 := by
-    have := (one_le_div hn0).2 hy; linarith
-  rw [max_eq_left this]
+  simpa only [smul_eq_mul, mul_comm] using trunc_smul c y M hM
+
+private lemma weighted_trunc {E : Type*} [AddCommMonoid E] [Module ℝ E]
+    (c : ℕ → E) (A w : ℝ) (hw : 0 < w) (M : ℕ) (hM : ⌊A / w⌋₊ ≤ M) :
+    w • (∑ n ∈ Icc 1 ⌊A / w⌋₊, (A / w / n - 1) • c n) =
+      ∑ n ∈ Icc 1 M, max (A / n - w) 0 • c n := by
+  rw [trunc_smul c _ M hM, Finset.smul_sum]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [smul_smul, mul_max_of_nonneg _ _ hw.le, mul_zero, mul_sub, mul_one,
+    ← mul_div_assoc, mul_div_cancel₀ _ hw.ne']
+
+private lemma norm_cutoff_sum_sub_le {E : Type*} [SeminormedAddCommGroup E] [NormedSpace ℝ E]
+    (c : ℕ → E) (hc : ∀ n, ‖c n‖ ≤ Λ n) (A w w' : ℝ) (hA : 0 ≤ A) (hw : 0 < w) (hw' : 0 < w') :
+    let s := Icc 1 ⌊A / min w w'⌋₊
+    ‖(∑ n ∈ s, max (A / n - w) 0 • c n) - ∑ n ∈ s, max (A / n - w') 0 • c n‖ ≤
+      3 * A / min w w' * |w - w'| := by
+  dsimp only
+  rw [← Finset.sum_sub_distrib]
+  refine (norm_sum_le _ _).trans ?_
+  calc
+    _ ≤ ∑ n ∈ Icc 1 ⌊A / min w w'⌋₊, Λ n * |w - w'| := by
+      refine Finset.sum_le_sum fun n _ => ?_
+      rw [← sub_smul, norm_smul, Real.norm_eq_abs, mul_comm]
+      apply mul_le_mul (hc n) _ (abs_nonneg _) ArithmeticFunction.vonMangoldt_nonneg
+      simpa only [sub_sub_sub_cancel_left, abs_sub_comm w' w] using
+        abs_max_sub_max_le_abs (A / n - w) (A / n - w') 0
+    _ = (∑ n ∈ Icc 1 ⌊A / min w w'⌋₊, Λ n) * |w - w'| := (Finset.sum_mul ..).symm
+    _ ≤ 3 * (A / min w w') * |w - w'| :=
+      mul_le_mul_of_nonneg_right (sum_vM_le (div_nonneg hA (le_min hw.le hw'.le))) (abs_nonneg _)
+    _ = _ := by rw [mul_div_assoc]
 
 section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
@@ -829,22 +838,11 @@ lemma wG_char (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddC
     (A w : ℝ) (hw : 0 < w) (M : ℕ) (hM : ⌊A / w⌋₊ ≤ M) :
     (w : ℂ) * GPsi D ell ψ (A / w)
       = ∑ n ∈ Icc 1 M, (Λ n : ℂ) * primVal D ψ n * ((max (A / n - w) 0 : ℝ) : ℂ) + (A : ℂ) * ell ψ := by
-  have t := truncC (fun n => (Λ n : ℂ) * primVal D ψ n) (A / w) M hM
-  unfold GPsi
-  rw [if_neg hψ, t, mul_add, Finset.mul_sum]
+  simp only [GPsi, if_neg hψ, mul_add, ← mul_assoc (w : ℂ) ((A / w : ℝ) : ℂ),
+    ← Complex.ofReal_mul, mul_div_cancel₀ _ hw.ne']
   congr 1
-  · apply Finset.sum_congr rfl
-    intro n hn
-    rw [Finset.mem_Icc] at hn
-    have hn0 : (n : ℝ) ≠ 0 := by
-      have : (0 : ℝ) < n := by exact_mod_cast hn.1
-      exact this.ne'
-    have : max (A / n - w) 0 = w * max (A / w / n - 1) 0 := by
-      rw [mul_max_of_nonneg _ _ hw.le, mul_zero]
-      congr 1
-      field_simp
-    rw [this]; push_cast; ring
-  · rw [← mul_assoc, ← Complex.ofReal_mul, mul_div_cancel₀ _ hw.ne']
+  simpa only [Complex.real_smul, mul_comm] using
+    weighted_trunc (fun n => (Λ n : ℂ) * primVal D ψ n) A w hw M hM
 
 lemma floor_div_le {A w μ : ℝ} (hA : 0 ≤ A) (hμ : 0 < μ) (h : μ ≤ w) : ⌊A / w⌋₊ ≤ ⌊A / μ⌋₊ :=
   Nat.floor_le_floor (div_le_div_of_nonneg_left hA hμ h)
@@ -854,93 +852,44 @@ lemma lip_char (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : Add
     ‖(w : ℂ) * GPsi D ell ψ (A / w) - (w' : ℂ) * GPsi D ell ψ (A / w')‖ ≤ 3 * A / min w w' * |w - w'| := by
   have hμ : 0 < min w w' := lt_min hw hw'
   rw [wG_char D ell ψ hψ A w hw _ (floor_div_le hA.le hμ (min_le_left _ _)),
-    wG_char D ell ψ hψ A w' hw' _ (floor_div_le hA.le hμ (min_le_right _ _)), add_sub_add_right_eq_sub,
-    ← Finset.sum_sub_distrib]
-  refine le_trans (norm_sum_le _ _) ?_
-  have hterm : ∀ n ∈ Icc 1 ⌊A / min w w'⌋₊,
-      ‖(Λ n : ℂ) * primVal D ψ n * ((max (A / n - w) 0 : ℝ) : ℂ)
-        - (Λ n : ℂ) * primVal D ψ n * ((max (A / n - w') 0 : ℝ) : ℂ)‖ ≤ Λ n * |w - w'| := by
-    intro n _
-    rw [← mul_sub, ← Complex.ofReal_sub, norm_mul, Complex.norm_real, Real.norm_eq_abs]
-    have ha : |max (A / n - w) 0 - max (A / n - w') 0| ≤ |w - w'| := by
-      refine le_trans (abs_max_sub_max_le_abs _ _ _) ?_
-      have : A / n - w - (A / n - w') = -(w - w') := by ring
-      rw [this, abs_neg]
-    exact mul_le_mul (norm_coef_le D ψ n) ha (abs_nonneg _) ArithmeticFunction.vonMangoldt_nonneg
-  refine le_trans (Finset.sum_le_sum hterm) ?_
-  rw [← Finset.sum_mul]
-  have := sum_vM_le (Y := A / min w w') (by positivity)
-  calc (∑ n ∈ Icc 1 ⌊A / min w w'⌋₊, Λ n) * |w - w'| ≤ (3 * (A / min w w')) * |w - w'| :=
-        mul_le_mul_of_nonneg_right this (abs_nonneg _)
-    _ = 3 * A / min w w' * |w - w'| := by ring
+    wG_char D ell ψ hψ A w' hw' _ (floor_div_le hA.le hμ (min_le_right _ _)), add_sub_add_right_eq_sub]
+  simpa only [Complex.real_smul, mul_comm] using
+    norm_cutoff_sum_sub_le _ (norm_coef_le D ψ) A w w' hA.le hw hw'
 
 end
 
 lemma wGz (A w : ℝ) (hw : 0 < w) (M : ℕ) (hM : ⌊A / w⌋₊ ≤ M) :
     w * Gz (A / w) = ∑ n ∈ Icc 1 M, Λ n * max (A / n - w) 0 - A * Real.log (A / w)
       + (1 + Real.eulerMascheroniConstant) * A := by
-  have t := truncR (fun n => Λ n) (A / w) M hM
+  have hs : w * (∑ n ∈ Icc 1 ⌊A / w⌋₊, Λ n * (A / w / n - 1)) =
+      ∑ n ∈ Icc 1 M, Λ n * max (A / n - w) 0 := by
+    simpa only [smul_eq_mul, mul_comm] using weighted_trunc (fun n => Λ n) A w hw M hM
   unfold Gz Sz
-  rw [t]
-  have hs : w * ∑ n ∈ Icc 1 M, Λ n * max (A / w / n - 1) 0 = ∑ n ∈ Icc 1 M, Λ n * max (A / n - w) 0 := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro n hn
-    rw [Finset.mem_Icc] at hn
-    have hn0 : (n : ℝ) ≠ 0 := by
-      have : (0 : ℝ) < n := by exact_mod_cast hn.1
-      exact this.ne'
-    have : max (A / n - w) 0 = w * max (A / w / n - 1) 0 := by
-      rw [mul_max_of_nonneg _ _ hw.le, mul_zero]
-      congr 1
-      field_simp
-    rw [this]; ring
   rw [← hs]
   field_simp
 
 lemma lip_triv_le (A w w' : ℝ) (hA : 0 < A) (hw : 0 < w) (hww : w ≤ w') :
     |w * Gz (A / w) - w' * Gz (A / w')| ≤ 3 * A / w * (w' - w) := by
-  have hw' : 0 < w' := lt_of_lt_of_le hw hww
-  rw [wGz A w hw ⌊A / w⌋₊ le_rfl, wGz A w' hw' ⌊A / w⌋₊ (floor_div_le hA.le hw hww)]
-  have hS0 : 0 ≤ ∑ n ∈ Icc 1 ⌊A / w⌋₊, Λ n * max (A / n - w) 0 - ∑ n ∈ Icc 1 ⌊A / w⌋₊, Λ n * max (A / n - w') 0 := by
-    rw [← Finset.sum_sub_distrib]
-    apply Finset.sum_nonneg
-    intro n _
-    rw [← mul_sub]
-    apply mul_nonneg ArithmeticFunction.vonMangoldt_nonneg
-    have : max (A / n - w') 0 ≤ max (A / n - w) 0 := max_le_max (by linarith) le_rfl
-    linarith
-  have hS1 : ∑ n ∈ Icc 1 ⌊A / w⌋₊, Λ n * max (A / n - w) 0 - ∑ n ∈ Icc 1 ⌊A / w⌋₊, Λ n * max (A / n - w') 0
-      ≤ 3 * A / w * (w' - w) := by
-    rw [← Finset.sum_sub_distrib]
-    have hterm : ∀ n ∈ Icc 1 ⌊A / w⌋₊, Λ n * max (A / n - w) 0 - Λ n * max (A / n - w') 0 ≤ Λ n * (w' - w) := by
-      intro n _
-      rw [← mul_sub]
-      apply mul_le_mul_of_nonneg_left _ ArithmeticFunction.vonMangoldt_nonneg
-      have h := abs_max_sub_max_le_abs (A / n - w) (A / n - w') 0
-      have e : A / n - w - (A / n - w') = w' - w := by ring
-      rw [e, abs_of_nonneg (by linarith : (0 : ℝ) ≤ w' - w)] at h
-      exact le_trans (le_abs_self _) h
-    refine le_trans (Finset.sum_le_sum hterm) ?_
-    rw [← Finset.sum_mul]
-    have := sum_vM_le (Y := A / w) (by positivity)
-    calc (∑ n ∈ Icc 1 ⌊A / w⌋₊, Λ n) * (w' - w) ≤ (3 * (A / w)) * (w' - w) :=
-          mul_le_mul_of_nonneg_right this (by linarith)
-      _ = 3 * A / w * (w' - w) := by ring
+  have hw' : 0 < w' := hw.trans_le hww
+  let S (v : ℝ) := ∑ n ∈ Icc 1 ⌊A / w⌋₊, Λ n * max (A / n - v) 0
+  have hmono : S w' ≤ S w := Finset.sum_le_sum fun n _ =>
+    mul_le_mul_of_nonneg_left (max_le_max (sub_le_sub_left hww _) le_rfl) ArithmeticFunction.vonMangoldt_nonneg
+  have hS : S w - S w' ≤ 3 * A / w * (w' - w) := by
+    have h := norm_cutoff_sum_sub_le (fun n => Λ n)
+      (fun n => by rw [Real.norm_eq_abs, abs_of_nonneg ArithmeticFunction.vonMangoldt_nonneg])
+      A w w' hA.le hw hw'
+    rw [min_eq_left hww, abs_sub_comm w w', abs_of_nonneg (sub_nonneg.mpr hww)] at h
+    exact (le_abs_self _).trans (by simpa only [S, Real.norm_eq_abs, smul_eq_mul, mul_comm] using h)
   have hL : A * Real.log (A / w) - A * Real.log (A / w') = A * Real.log (w' / w) := by
-    rw [Real.log_div hA.ne' hw.ne', Real.log_div hA.ne' hw'.ne', Real.log_div hw'.ne' hw.ne']; ring
-  have hL0 : 0 ≤ A * Real.log (w' / w) :=
-    mul_nonneg hA.le (Real.log_nonneg ((one_le_div hw).2 hww))
-  have hL1 : A * Real.log (w' / w) ≤ 3 * A / w * (w' - w) := by
-    have h1 := Real.log_le_sub_one_of_pos (div_pos hw' hw)
-    have h2 : A * Real.log (w' / w) ≤ A * (w' / w - 1) := mul_le_mul_of_nonneg_left h1 hA.le
-    have h3 : A * (w' / w - 1) = A / w * (w' - w) := by field_simp
-    have h4 : A / w * (w' - w) ≤ 3 * A / w * (w' - w) := by
-      apply mul_le_mul_of_nonneg_right _ (by linarith)
-      rw [mul_div_assoc]
-      have : 0 ≤ A / w := by positivity
-      linarith
-    linarith
+    rw [Real.log_div hA.ne' hw.ne', Real.log_div hA.ne' hw'.ne', Real.log_div hw'.ne' hw.ne']
+    ring
+  have hL₀ := mul_nonneg hA.le (Real.log_nonneg ((one_le_div hw).mpr hww))
+  have hL₁ : A * Real.log (w' / w) ≤ 3 * A / w * (w' - w) := calc
+    _ ≤ A * (w' / w - 1) := mul_le_mul_of_nonneg_left (Real.log_le_sub_one_of_pos (div_pos hw' hw)) hA.le
+    _ = A / w * (w' - w) := by field_simp
+    _ ≤ _ := by gcongr <;> linarith
+  rw [wGz A w hw _ le_rfl, wGz A w' hw' _ (floor_div_le hA.le hw hww)]
+  change |(S w - _ + _) - (S w' - _ + _)| ≤ _
   rw [abs_le]
   constructor <;> linarith
 

@@ -1,0 +1,109 @@
+name: Check Principia's weighted cutoff proof
+on:
+  push:
+    branches: [checks/principia-weighted-cutoff]
+permissions:
+  contents: read
+jobs:
+  cutoff:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      LEAN_ABORT_ON_PANIC: "1"
+      MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /lakefile.toml
+            /lake-manifest.json
+            /lean-toolchain
+            /src/Development/AutomorphicArithmetic/DedekindLFunctions/CharFamily.lean
+            /src/Development/AutomorphicArithmetic/DedekindLFunctions/LandauTheorems/ChBalance.lean
+            /src/Development/AutomorphicArithmetic/DedekindLFunctions/LandauTheorems/ChCore.lean
+            /src/Development/AutomorphicArithmetic/DedekindLFunctions/LandauZeroFreeCriterion.lean
+            /src/Development/AutomorphicArithmetic/DedekindLFunctions/RunBaseDimensionLeRankAddGenusTerm.lean
+            /src/Development/AutomorphicArithmetic/DedekindLFunctions/SplitInertia.lean
+            /src/Formalism/CorankShare/StatementFR.lean
+            /src/Formalism/DefsOC.lean
+            /src/Formalism/HalfLinks/Statement.lean
+            /src/Formalism/JacobiWeightFamilies/Statement.lean
+            /src/Formalism/ProductFormula/StatementOCCM.lean
+            /src/Formalism/RankGapBounds/MeanBoundSecondForm.lean
+            /src/Formalism/RankGapBounds/RankGapProofs/UniformMeanTopLine.lean
+            /src/Formalism/RankGapBounds/RankGapProofs/WeightedMeanData.lean
+            /src/Formalism/RankGapBounds/UniformMeanBound.lean
+            /src/Formalism/SizeWindowBrackets/ChainSlopeWindows/LevelOfCongruence.lean
+            /src/Formalism/SizeWindowBrackets/ChainSlopeWindows/LipschitzWeightAndMinimum.lean
+            /src/Formalism/SizeWindowBrackets/ChainSlopeWindows/PChain.lean
+            /src/Formalism/SizeWindowBrackets/ChainSlopeWindows/RiemannHypothesisOfPowerBound.lean
+            /src/Formalism/SizeWindowBrackets/ChainSlopeWindows/StronglyIrreducible.lean
+            /src/Formalism/SizeWindowBrackets/ChainSlopeWindows/SubThreeMulLogTwoLe.lean
+            /src/Formalism/SizeWindowBrackets/ErrorFormsWeakWindowsFalse.lean
+            /src/Formalism/SizeWindowBrackets/FirstPrimeNeSecondPrime.lean
+            /src/Formalism/SizeWindowBrackets/GrowthBoundGivesRiemannHypothesis.lean
+            /src/Formalism/SizeWindowBrackets/PowerBoundGivesRiemannHypothesis.lean
+            /src/Formalism/SizeWindowBrackets/QuotientSlopeBoundsWith.lean
+            /src/Formalism/SizeWindowBrackets/SChain.lean
+            /src/Formalism/Statement.lean
+            /src/Formalism/StatementCM.lean
+            /src/Formalism/StatementOC.lean
+            /src/Formalism/StatementU.lean
+            /src/Formalism/ThickAverageLoss/ParametersAveragedDifferenceBound.lean
+            /src/Formalism/ThickAverageLoss/PartnersToFactorsAt.lean
+            /src/Formalism/ThickAverageLoss/Statement.lean
+            /src/Formalism/ThickAverageLoss/ThickAverageProofs/Balance.lean
+            /src/Formalism/ThickAverageLoss/ThickAverageProofs/ThickAverage.lean
+            /src/Formalism/WideWeightTheorem/Statement.lean
+            /src/Formalism/ZetaNonvanishing/Assembly.lean
+            /src/Formalism/ZetaNonvanishing/GzLipschitz.lean
+            /src/Formalism/ZetaNonvanishing/LandauEq.lean
+            /src/Formalism/ZetaNonvanishing/LandauLemma.lean
+            /src/Formalism/ZetaNonvanishing/LogDerivZeroFree.lean
+            /src/Formalism/ZetaNonvanishing/MeasurableGchi.lean
+            /src/Formalism/ZetaNonvanishing/MellinDeriv.lean
+            /src/Formalism/ZetaNonvanishing/MellinElem.lean
+            /src/Formalism/ZetaNonvanishing/MellinSAux.lean
+            /src/Formalism/ZetaNonvanishing/MellinSgen.lean
+            /src/Formalism/ZetaNonvanishing/OfRealNeOfRealOfLt.lean
+            /src/Formalism/ZetaNonvanishing/RHofHalfPlane.lean
+            /src/Formalism/ZetaNonvanishing/RiemannZetaOneNeZeroOfRealMemIoo.lean
+            /src/Formalism/ZetaNonvanishing/ZetaLandau.lean
+            /src/Formalism/ZetaNonvanishing/ZetaRealNonvanish.lean
+            /src/Formalism/ZetaNonvanishingChebyshevWeights.lean
+            /src/Formalism/ZetaNonvanishingGeneralWeights.lean
+            /src/Formalism/ZetaRealNonvanish.lean
+      - name: Install the repository's pinned Lean
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o "$RUNNER_TEMP/elan-init.sh"
+          sh "$RUNNER_TEMP/elan-init.sh" -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Fetch the official Mathlib cache
+        run: |
+          lake --version
+          lake exe mathlib/cache get
+      - name: Build all 55 project modules from source through the character-balance caller
+        run: lake build +Development.AutomorphicArithmetic.DedekindLFunctions.LandauTheorems.ChCore
+      - name: Inspect six edited lemmas, both analytic estimates and their two downstream callers
+        run: |
+          cat > "$RUNNER_TEMP/Review.lean" <<'LEAN'
+          import Development.AutomorphicArithmetic.DedekindLFunctions.LandauTheorems.ChCore
+          
+          open Formalism.LFunctionChainParameters.ThickSetMeanBounds
+          
+          #print axioms AN.truncC
+          #print axioms AN.truncR
+          #print axioms AN.wG_char
+          #print axioms AN.wGz
+          #print axioms AN.lip_char
+          #print axioms AN.lip_triv_le
+          #print axioms lipschitz_weight_all
+          #print axioms derivative_integral_all
+          #print axioms Deduction.CharacterBalanceMoves.core
+          #print axioms Deduction.ch_core
+          LEAN
+          set -o pipefail
+          lake env lean "$RUNNER_TEMP/Review.lean" | tee "$RUNNER_TEMP/axioms.log"
+          test "$(grep -Fc 'depends on axioms: [propext, Classical.choice, Quot.sound]' "$RUNNER_TEMP/axioms.log")" = 10
