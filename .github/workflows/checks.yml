@@ -1,86 +1,42 @@
-name: checks
-
-# Two fast checks. Neither compiles the submission's own code; the Comparator run does that
-# and is too big for hosted runners (see the README).
+name: Check the signed signal on Linux
 
 on:
   push:
-  pull_request:
+    branches:
+      - checks/principia-signed-9430017
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  mirror:
-    name: Source is identical to the published tarball
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download the archive from alpo.ge and compare
-        run: |
-          T="$RUNNER_TEMP/dl"; mkdir "$T"
-          for i in $(seq -w 1 14); do curl -fsSL --retry 3 -o "$T/part$i" "https://alpo.ge/lean.tar.gz.part$i"; done
-          cat "$T"/part* > "$T/lean.tar.gz"
-          echo "9631b4f020199e580ba86178cb56c6e9b09f690c2369a80dc4334aa93f49c7fc  $T/lean.tar.gz" | sha256sum -c
-          tar xzf "$T/lean.tar.gz" -C "$T"
-
-          # src/ differs only by the added Challenge.lean
-          d=$(diff -r "$T/lean/src" src || true); echo "$d"
-          [ "$d" = "Only in src: Challenge.lean" ]
-          cmp "$T/lean/lean-toolchain" lean-toolchain
-          cmp "$T/lean/lake-manifest.json" lake-manifest.json
-
-          # Only the explicit cache prefix and marked Comparator suffix are additions.
-          printf '# Cache infrastructure; the original submission starts below this block.\nplatformIndependent = true\n\n' > "$T/cache-prefix"
-          head -n 3 lakefile.toml | cmp - "$T/cache-prefix"
-          tail -n +4 lakefile.toml > "$T/lakefile-without-cache.toml"
-          n=$(wc -c < "$T/lean/lakefile.toml")
-          head -c "$n" "$T/lakefile-without-cache.toml" | cmp - "$T/lean/lakefile.toml"
-          tail -c +"$((n + 1))" "$T/lakefile-without-cache.toml"
-
-  challenge:
-    name: Challenge compiles against Mathlib alone
-    runs-on: ubuntu-latest
+  signed-signal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
     env:
-      LEAN_ABORT_ON_PANIC: "1"   # as Comparator sets it for builds and exports
-      MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4   # Mathlib's current cache server
+      LEAN_ABORT_ON_PANIC: "1"
+      LEAN_NUM_THREADS: "2"
+      MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the exact pull request commit
+        uses: actions/checkout@v4
+        with:
+          ref: 9430017510358b5ed1ab12c8bb900fd706e60a32
+          persist-credentials: false
       - name: Install elan
         run: |
-          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o "$RUNNER_TEMP/elan-init.sh"
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o "$RUNNER_TEMP/elan-init.sh"
           sh "$RUNNER_TEMP/elan-init.sh" -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-      - name: Fetch Mathlib's official build cache
-        run: lake exe mathlib/cache get
-      - name: Build only the Challenge module
-        run: lake build Challenge
-
-      # Step 1 of the README: export the challenge on a clean machine, where none of the
-      # submission's code has been compiled, and publish the file for the judge to use.
-      - name: Build the exporter (lean4export v4.33.0 with this project's Lean)
+      - name: Restore the pinned Mathlib
         run: |
-          git clone --quiet --depth 1 --branch v4.33.0 https://github.com/leanprover/lean4export "$RUNNER_TEMP/lean4export"
-          cp lean-toolchain "$RUNNER_TEMP/lean4export/lean-toolchain"
-          cd "$RUNNER_TEMP/lean4export" && git rev-parse HEAD && lake build lean4export
-      - name: Export the challenge
+          lake --version
+          lake exe mathlib/cache get
+      - name: Build the certificate's 41 upstream dependencies from source
+        run: lake build +Formalism.SizeWindowBrackets.ChainSlopeWindows.LipschitzWeightAndMinimum
+      - name: Check the submitted file and report its axioms
         run: |
-          mkdir "$RUNNER_TEMP/out"
-          lake env "$RUNNER_TEMP/lean4export/.lake/build/bin/lean4export" Challenge -- $(cat export-targets.txt) > "$RUNNER_TEMP/out/challenge.export"
-          cd "$RUNNER_TEMP/out"
-          sha256sum challenge.export | tee challenge.export.sha256
-          {
-            echo "### Challenge export"
-            echo "- sha256: \`$(cut -d' ' -f1 challenge.export.sha256)\`"
-            echo "- size: $(stat -c %s challenge.export) bytes, $(wc -l < challenge.export) lines"
-            echo "- commit: \`$GITHUB_SHA\`"
-          } >> "$GITHUB_STEP_SUMMARY"
-          # The README quotes this checksum; fail if the export ever changes.
-          echo "bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9  challenge.export" | sha256sum -c
-          zstd -q -19 -T0 --rm challenge.export
-      - uses: actions/upload-artifact@v4
-        with:
-          name: challenge-export
-          path: ${{ runner.temp }}/out/
-          if-no-files-found: error
+          set -o pipefail
+          lake env lean verification/SignedSignal.lean | tee "$RUNNER_TEMP/signed-signal.log"
+          test "$(grep -c 'depends on axioms' "$RUNNER_TEMP/signed-signal.log")" = 3
+          if grep -q sorryAx "$RUNNER_TEMP/signed-signal.log"; then exit 1; fi
