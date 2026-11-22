@@ -1,0 +1,36 @@
+name: Verify shortened RH and Dirichlet GRH
+on:
+  push:
+    branches: [checks/principia-gl-full]
+permissions:
+  contents: read
+jobs:
+  endpoints:
+    if: github.repository == 'antoshashakov/riemann-hypothesis'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    env:
+      BASE: f1f6d65420dbbf36d6cfdac1af8d79511a855a5b
+      CANDIDATE: 37e3cd06d3bc65c74b9496adfea9f9827e727fbf
+      MATHLIB_CACHE_GET_URL: https://cache.mathlib.org/mathlib4
+      LEAN_NUM_THREADS: '1'
+      LEAN_ABORT_ON_PANIC: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /verification/principia-fork/**
+      - name: Prepare compressed proof storage on this disposable runner
+        run: bash verification/principia-fork/check.sh storage
+      - name: Restore the official base build for the exact source and toolchain
+        run: bash verification/principia-fork/check.sh seed
+      - name: Compile the replacement and link the five headline theorems
+        id: link
+        continue-on-error: true
+        run: bash verification/principia-fork/check.sh link
+      - name: Rebuild Main with stock Lake at the exact pull request commit
+        run: bash verification/principia-fork/check.sh build
+      - name: Check the axioms of the five rebuilt headline theorems
+        run: bash verification/principia-fork/check.sh audit
