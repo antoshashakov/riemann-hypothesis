@@ -46,9 +46,7 @@ if [[ $task == seed ]]; then
   done
   source scripts/cache-env.sh
   export LAKE_CACHE_DIR="$project/.lake/cache"
-  mkdir "$RUNNER_TEMP/rh-curl"
-  printf 'parallel-max = 160\n' > "$RUNNER_TEMP/rh-curl/.curlrc"
-  CURL_HOME="$RUNNER_TEMP/rh-curl" python3 scripts/ci-cache-get.py --jobs 4
+  python3 "$GITHUB_WORKSPACE/verification/principia-fork/restore.py"
   test -s .lake/build/lib/lean/Main.olean
   git -c advice.detachedHead=false checkout -q --detach "$CANDIDATE"
   test "$(git rev-parse HEAD)" = "$CANDIDATE"
@@ -69,7 +67,7 @@ PY
   # Cap the new swap file so the build keeps at least 10 GiB of physical disk.
   avail=$(df -BG --output=avail "$RUNNER_TEMP" | tail -1 | tr -d ' G')
   extra=$((avail - 10))
-  if (( extra > 24 )); then extra=24; fi
+  if (( extra > 44 )); then extra=44; fi
   if (( extra >= 2 )); then
     sw=$(mktemp "$RUNNER_TEMP/rh-swap.XXXXXX")
     chmod 600 "$sw"
