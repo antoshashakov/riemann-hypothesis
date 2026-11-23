@@ -70,8 +70,7 @@ theorem prod_fin_eq {N k t : ℕ} (w : HeightOneSpectrum (𝓞 K)) (z : ℕ → 
   rw [seg, Multiset.map_map, ← Finset.prod_eq_multiset_prod]
   rfl
 
-theorem re_exp (t l : ℕ) : (((t : ℂ) - 1) / 2 - l).re = ((t : ℝ) - 1) / 2 - l := by
-  simp
+theorem re_exp (t l : ℕ) : (((t : ℂ) - 1) / 2 - l).re = ((t : ℝ) - 1) / 2 - l := by simp
 
 theorem npow_neg_nat (w : HeightOneSpectrum (𝓞 K)) (m : ℕ) :
     npow w (-(m : ℂ)) = (((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ m)⁻¹ := by
