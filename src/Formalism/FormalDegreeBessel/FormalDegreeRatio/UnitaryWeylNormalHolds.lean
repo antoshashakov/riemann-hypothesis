@@ -2,6 +2,7 @@ module
 
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LocalWeightCharts.MulVecApplyOfRow
 public import Formalism.FormalDegreeBessel.StatementG
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -167,13 +168,7 @@ theorem sgn_mul_self (i : Fin (2 * r + k + 1)) : sgn k r i * sgn k r i = 1 := by
   unfold sgn
   split_ifs <;> norm_num
 
-theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [hpk_mul_apply, hpk_row, tau_tau, sgn_tau, Matrix.one_apply]
-  by_cases h : i = j
-  · subst h
-    rw [if_pos rfl, if_pos rfl, sgn_mul_self]
-  · rw [if_neg (Ne.symm h), if_neg h, mul_zero]
+theorem hpk_sq : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem isUnit_of_uh {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by

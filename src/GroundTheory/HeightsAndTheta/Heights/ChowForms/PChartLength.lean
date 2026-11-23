@@ -92,10 +92,30 @@ theorem finsum_maximalSpectrum_ord_eq_sum {O B ι : Type*} [CommRing O] [CommRin
         simp only [ψ, dif_pos hmax]
         exact hm i hi hmax.isPrime
 
-theorem ChartLength.proof (h₁ : IncIdealBelow.Statement) (h₂ : SpecFirstMemIncIdeal.Statement)
-    (h₃ : ChartFinite.Statement) (h₄ : LengthFiniteAlgebra.Statement) (h₅ : ChartMaxIdeals.Statement)
-    (h₆ : ChartLocalOrder.Statement) (h₇ : ChartResidueDegree.Statement) : ChartLength.Statement := by
-  intro F _ _ n e I f t u q p _ hI hf hu hq hp hqt
+open Classical in
+/-- The chart length formula over a fixed field, given residue degree one over that field. -/
+theorem ChartLength.proofForField (F : Type) [Field F]
+    (h₂ : SpecFirstMemIncIdeal.Statement) (h₃ : ChartFinite.Statement)
+    (h₄ : LengthFiniteAlgebra.Statement) (h₅ : ChartMaxIdeals.Statement)
+    (h₆ : ChartLocalOrder.Statement)
+    (h₇ : ∀ (n e : ℕ) (I W : Ideal (MvPolynomial (Fin n) F))
+        (f : MvPolynomial (Fin (e + 1) × Fin n) F) (t u : Fin n → F)
+        (q : MvPolynomial (Fin e × Fin n) F) (p : Ideal (MvPolynomial (Fin e × Fin n) F)) [p.IsPrime],
+        IsProjPrime I → IsChowForm I (e + 1) f → linForm u ∉ I → Prime q → p = Ideal.span {q} →
+          ¬ q ∣ specFirst f t → W ∈ relComps (I ⊔ Ideal.span {linForm u}) → q ∈ incIdeal W e →
+            linForm t ∉ W →
+              Module.length (Localization.AtPrime p) (ChartLoc I t e p ⧸ chartIdeal I t e p W) = 1) :
+    ∀ (n e : ℕ) (I : Ideal (MvPolynomial (Fin n) F))
+      (f : MvPolynomial (Fin (e + 1) × Fin n) F) (t u : Fin n → F)
+      (q : MvPolynomial (Fin e × Fin n) F) (p : Ideal (MvPolynomial (Fin e × Fin n) F)) [p.IsPrime],
+      IsProjPrime I → IsChowForm I (e + 1) f → linForm u ∉ I → Prime q → p = Ideal.span {q} →
+        ¬ q ∣ specFirst f t →
+          Module.length (Localization.AtPrime p) (ChartLoc I t e p ⧸ LinearMap.range
+              (LinearMap.mulLeft (Localization.AtPrime p)
+                (algebraMap (ChartInc I t e) (ChartLoc I t e p) (chartLin I t e u)))) =
+            ∑ W ∈ (divCycle I u).support with Ideal.span {q} = incIdeal W e,
+              ((divCycle I u W : ℕ) : ℕ∞) := by
+  intro n e I f t u q p _ hI hf hu hq hp hqt
   classical
 
   have hpt : specFirst f t ∉ p := by
@@ -122,11 +142,17 @@ theorem ChartLength.proof (h₁ : IncIdealBelow.Statement) (h₂ : SpecFirstMemI
       rw [← hWq, Ideal.mem_span_singleton] at this
       exact hqt this
     obtain ⟨_, hord⟩ := h₆ F n e I W f t u q p hI hf hu hq hp hqt hrel hqW htW
-    have hlen := h₇ F n e I W f t u q p hI hf hu hq hp hqt hrel hqW htW
+    have hlen := h₇ n e I W f t u q p hI hf hu hq hp hqt hrel hqW htW
     have hdiv : divCycle I u W = localMult (I ⊔ Ideal.span {linForm u}) W := by
       simp [divCycle, fundCycle, Finsupp.onFinset_apply, hrel]
     rw [hlen, mul_one, hdiv]
     exact hord
+
+theorem ChartLength.proof (h₁ : IncIdealBelow.Statement) (h₂ : SpecFirstMemIncIdeal.Statement)
+    (h₃ : ChartFinite.Statement) (h₄ : LengthFiniteAlgebra.Statement) (h₅ : ChartMaxIdeals.Statement)
+    (h₆ : ChartLocalOrder.Statement) (h₇ : ChartResidueDegree.Statement) : ChartLength.Statement :=
+  let _ := h₁  -- Retained in the public signature.
+  fun F _ _ => ChartLength.proofForField F h₂ h₃ h₄ h₅ h₆ (h₇ F)
 
 end
 

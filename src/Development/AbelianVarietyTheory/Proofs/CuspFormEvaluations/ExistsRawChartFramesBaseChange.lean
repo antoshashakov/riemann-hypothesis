@@ -97,10 +97,7 @@ theorem exists_reindexed_pull {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K 
   unfold pullU res
   exact pull2_lemma_9 a g r b hab _ _ _ _ _ _ _ _ _ _ _ _ (c.s j)
 
-theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  rw [spMap, spMap, ← Spec.map_comp]
-  rfl
+alias spMap_comp_eq := spMap.comp_hom
 
 section
 

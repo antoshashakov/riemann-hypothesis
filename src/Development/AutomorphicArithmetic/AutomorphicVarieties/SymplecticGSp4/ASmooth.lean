@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.LinearFormDegree.InvFun
 
 @[expose] public section
 
@@ -657,27 +658,13 @@ private theorem restrict {E τ' : Type} [CommRing E] [Algebra O E] (φ : A →�
     rfl
 
 private theorem exists_eq_single_one_of_degree_eq_one {κ : Type} {v : κ →₀ ℕ} (hv : v.degree = 1) : ∃ t, v = Finsupp.single t 1 := by
-  classical
-  have hv0 : v ≠ 0 := by
-    rintro rfl
-    simp at hv
-  obtain ⟨t, ht⟩ := Finsupp.ne_iff.mp hv0
-  have hle : Finsupp.single t 1 ≤ v := by
-    intro s
-    by_cases hs : s = t
-    · subst hs
-      rw [Finsupp.single_eq_same]
-      simp only [Finsupp.coe_zero, Pi.zero_apply] at ht
-      omega
-    · rw [Finsupp.single_eq_of_ne hs]
-      exact Nat.zero_le _
-  have hsum : v = Finsupp.single t 1 + (v - Finsupp.single t 1) := (add_tsub_cancel_of_le hle).symm
-  have hdeg : (v - Finsupp.single t 1).degree = 0 := by
-    have e := congrArg Finsupp.degree hsum
-    rw [map_add (f := _), Finsupp.degree_single, hv] at e
-    omega
-  refine ⟨t, ?_⟩
-  rw [hsum, (Finsupp.degree_eq_zero_iff _).mp hdeg, add_zero]
+  first
+  | exact @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | (apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> first | assumption | infer_instance)
+  | (intros; exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one ..)
 
 private theorem coeff_two {E : Type} [CommRing E] [IsDomain E] [DecidableEq τ] (p q : MvPowerSeries τ E) (k b j : τ)
     (hp0 : coeff 0 p = 0) (hq0 : coeff 0 q = 0) (hp : ∀ i, i ≠ k → coeff (Finsupp.single i 1) p = 0)

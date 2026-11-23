@@ -1,5 +1,7 @@
 module
 
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmDataIsCMExtAndGramIsHermND
+
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FromColsMulVecEqZero
 import Mathlib.Algebra.Order.Floor.Extended
@@ -66,19 +68,7 @@ theorem hT_coord (V : HSp D) (x y : V.V) :
   rw [RingHom.id_apply, starRingEnd_apply, mul_comm]
 
 theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
-  intro h
-  obtain ⟨v, hv, h0⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h
-  apply hv
-  have : V.frame.equivFun.symm v = 0 := by
-    apply V.nondeg.2
-    intro x
-    rw [hT_coord]
-    refine Finset.sum_eq_zero fun i _ => ?_
-    have h1 : ∑ j, V.gram i j * v j = 0 := congr_fun h0 i
-    have h2 : ∀ j, V.frame.repr (V.frame.equivFun.symm v) j = v j := fun j =>
-      congr_fun (V.frame.equivFun.apply_symm_apply v) j
-    simp only [h2, mul_assoc, ← Finset.mul_sum, h1, mul_zero]
-  exact V.frame.equivFun.symm.map_eq_zero_iff.1 this
+  exact _root_.GlobalTheory.Mem.Vol.hspace_gram_det_ne_zero V
 
 theorem gram_ct (V : HSp D) : V.gramᴴ = V.gram := by
   funext i j

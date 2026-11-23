@@ -1,5 +1,7 @@
 module
 
+import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.ExistsNil
+
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.LitAut
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Distinct
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqOfHasValueAtInfinite
@@ -323,122 +325,6 @@ end Num
 end UpperTheory.V.Hi.OrdB
 open GlobalTheory.PRep in
 theorem UpperTheory.V.Hi.exists_principal_series_of_distinct_inv_ne_bot :
-    _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), GlobalTheory.PRep.IsSmooth π → π.IsIrreducible → ∀ (c : ℕ) (φ : (glIwa k n).T →* ℂˣ), (∀ i (y : Uo k), (y : kˣ) ∈ Uc k (c + 1) → φ (eT k n i y) = 1) → Distinct φ → invPart π c φ ≠ ⊥ → ∃ ω : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) ∧ IsInvOn φ ω ∧ Nonempty (π.Equiv (PS ω)) ∧ Module.finrank ℂ (invPart π c φ) = 1 ∧ ∀ v ∈ invPart π c φ, ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v := by
-  intro H k _ _ _ _ n V _ _ π hπ hirr c φ hφ0 hD hne
-  obtain ⟨hker, hsm, hI, -, -, -, -, hidx, -, hT⟩ := glBridge k n V π
-  have hφ : ∀ t : (glIwa k n).T, (t : GL (Fin n) k) ∈ (glIwa k n).Tc c → φ t = 1 := fun t ht => by
-    obtain ⟨y, hy, hy'⟩ := hT t
-    have e : (t : GL (Fin n) k) ∈ φ.ker.map (glIwa k n).T.subtype := by
-      rw [hy]
-      refine list_prod_mem fun x hx => ?_
-      obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hx
-      exact ⟨eT k n i (y i), hφ0 i _ (hy' c ht i), rfl⟩
-    obtain ⟨s, hs, e⟩ := e
-    exact (Subtype.ext e : s = t) ▸ hs
-  haveI : FiniteDimensional ℂ (fixd π ((glIwa k n).I1 c)) := by
-    have hfix : fixd π ((glIwa k n).I1 c) = fixed π ((glIwa k n).I1 c) := by
-      ext v
-      exact ⟨fun h u => by simpa using h u u.2, fun h u hu => by simpa using h ⟨u, hu⟩⟩
-    rw [hfix]
-    exact ((H.loc.bz k).1 _ V π hπ hirr).2 _ (hI c).1 (hI c).2
-  let p : V →ₗ[ℂ] Jacquet π (unipB k (Fin n)) := Submodule.mkQ _
-  have hinj : ∀ v ∈ invPart π c φ, p v = 0 → v = 0 := fun v hv h =>
-    OrdB.inv_inj _ π c φ hφ (hsm hπ) hv (hker ▸ (Submodule.Quotient.mk_eq_zero _).1 h)
-  have heig : invPart π c φ ≤ (glIwa k n).eig π c φ := fun v hv => by simpa using (Submodule.mem_iInf _).1 hv 0
-  have hp : ∀ t v, jacB π t (p v) =
-      (((deltaHalf k (fun _ : Fin n => Unit) (leviTorus k (Fin n) t))⁻¹ : ℂˣ) : ℂ) • p (π (diagT k (Fin n) t) v) :=
-    fun t v => UnramFixed.jacB_apply π t _
-  let E : Submodule ℂ (Jacquet π (unipB k (Fin n))) :=
-    ⨅ (i : Fin n) (u : Uo k), Module.End.eigenspace (jacB π (Pi.mulSingle i (u : kˣ))) (((φ (eT k n i u))⁻¹ : ℂˣ) : ℂ)
-  have hE : ∀ y, y ∈ E ↔ ∀ (i : Fin n) (u : Uo k),
-      jacB π (Pi.mulSingle i (u : kˣ)) y = (((φ (eT k n i u))⁻¹ : ℂˣ) : ℂ) • y := fun y => by
-    simp only [E, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]
-  have hEs : ∀ t, ∀ y ∈ E, jacB π t y ∈ E := fun t y hy => (hE _).2 fun i u => by
-    rw [← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply, (hE _).1 hy, map_smul]
-  have hpE : ∀ v ∈ invPart π c φ, p v ∈ E := fun v hv => (hE _).2 fun i u => by
-    have hO : (Pi.mulSingle i (u : kˣ) : Fin n → kˣ) ∈ torusO k (Fin n) := fun j => by
-      by_cases h : j = i
-      · subst h
-        rw [Pi.mulSingle_eq_same]; exact u.2
-      · simp [Pi.mulSingle_eq_of_ne h]
-    rw [hp, UnramFixed.deltaHalf_torusO k hO, inv_one, Units.val_one, one_smul, ← map_smul]
-    exact congrArg p ((heig hv).2.2 (eT k n i u))
-  obtain ⟨x, hx, hx0⟩ := (Submodule.ne_bot_iff _).1 hne
-  have hl : HasFiniteLength (jacB π) :=
-    (hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).surjective).2
-      ((H.loc.bz k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))
-  haveI := GlobalTheory.TorusEigenform.secondCountableTopology_units k
-  obtain ⟨μ, hμs, hμ, l, hl0, hle⟩ := OrdB.exists_form (isSmooth_jacB hπ) hl fun h => hx0 (hinj x hx h)
-  obtain ⟨ψ, hψ, rfl⟩ : ∃ ψ : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ψ i)) ∧ torusChar ψ = μ := by
-    refine ⟨fun i => μ.comp (MonoidHom.mulSingle (fun _ => kˣ) i),
-      fun i => hμs.comp _ (continuous_mulSingle (A := fun _ => kˣ) i), MonoidHom.ext fun t => ?_⟩
-    rw [torusChar_apply]
-    conv_rhs => rw [← Finset.univ_prod_mulSingle t, map_prod]
-    rfl
-  have hsq : IsSubquotient π (prinSeries ψ) := GlobalTheory.SatakeExists.isSubquotient_of_eigenform hπ hirr _ l hl0 hle
-  have hψφ : ∀ i (u : Uo k), ψ i u = (φ (eT k n i u))⁻¹ := fun i u => by
-    rw [← OrdB.tc_single]
-    exact Units.ext (hμ _ _ ((hE _).1 (hpE x hx) i u))
-  obtain ⟨hfd, -, hmult⟩ := UpperTheory.V.AlgebraTools.jqMult H.loc.geo H.loc.bz k n V π ψ hπ hψ hsq
-  have hw : ∀ w : Equiv.Perm (Fin n), (∀ i (u : Uo k), ψ (w i) u = ψ i u) → w = 1 := fun w h => by
-    refine Equiv.ext fun i => by_contra fun hi => ?_
-    obtain ⟨u, hu⟩ := hD _ _ hi
-    exact hu (inv_injective ((hψφ _ u).symm.trans ((h i u).trans (hψφ i u))))
-  have hgen : E ≤ ⨅ t, Module.End.maxGenEigenspace (jacB π t) (torusChar ψ t : ℂ) := by
-    refine le_iInf (OrdB.le_gen _ E hEs _ fun χ y hy hy0 hχ => ?_)
-    have h1 : (⨅ t, Module.End.maxGenEigenspace (jacB π t) (χ t : ℂ) : Submodule ℂ _) ≠ ⊥ :=
-      (Submodule.ne_bot_iff _).2 ⟨y, (Submodule.mem_iInf _).2 fun t =>
-        (Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, by rw [OrdB.pow_eig (hχ t)]; simp⟩, hy0⟩
-    have h2 := (Nat.pos_of_ne_zero fun h => h1 (Submodule.finrank_eq_zero.1 h)).trans_le (hmult χ)
-    obtain ⟨⟨w, rfl⟩⟩ := (Nat.card_pos_iff.1 h2).1
-    rw [hw w fun i u => ?_]
-    · rfl
-    have h3 := (hχ _).symm.trans ((hE _).1 hy i u)
-    rw [OrdB.tc_single, ← hψφ] at h3
-    exact Units.ext (smul_left_injective ℂ hy0 h3)
-  have hE1 : Module.finrank ℂ E ≤ 1 := by
-    refine (Submodule.finrank_mono hgen).trans ((hmult _).trans ?_)
-    have key : ∀ a : {w : Equiv.Perm (Fin n) // torusChar ψ = torusChar (ψ ∘ w)}, a.1 = 1 := fun a =>
-      hw _ fun i u => by
-        have := DFunLike.congr_fun a.2 (Pi.mulSingle i (u : kˣ))
-        rw [OrdB.tc_single, OrdB.tc_single] at this
-        exact this.symm
-    exact Finite.card_le_one_iff_subsingleton.2 ⟨fun a b => Subtype.ext ((key a).trans (key b).symm)⟩
-  have hact : ∀ t, ∀ y ∈ E, jacB π t y = (torusChar ψ t : ℂ) • y := fun t y hy => by
-    by_cases hy0 : y = 0
-    · simp [hy0]
-    have hy1 : (⟨y, hy⟩ : E) ≠ 0 := fun h => hy0 (congrArg Subtype.val h)
-    have : Nontrivial E := nontrivial_of_ne _ _ hy1
-    obtain ⟨a, ha⟩ := (finrank_eq_one_iff_of_nonzero' _ hy1).1 (le_antisymm hE1 Module.finrank_pos) ⟨_, hEs t y hy⟩
-    have ha' : jacB π t y = a • y := (congrArg Subtype.val ha).symm
-    rw [ha', OrdB.eq_of_gen ha' hy0 ((Submodule.mem_iInf _).1 (hgen hy) t)]
-  obtain ⟨ω, rfl⟩ : ∃ ω : Fin n → kˣ →* ℂˣ, (fun i => ω i * absPow k (((n : ℂ) - 1) / 2)) = ψ :=
-    ⟨fun i => ψ i * (absPow k (((n : ℂ) - 1) / 2))⁻¹, funext fun i => inv_mul_cancel_right _ _⟩
-  have hω : ∀ i, IsSmoothChar (ω i) := fun i => by
-    have := (hψ i).mul (isSmoothChar_of_isUnram (isUnram_absPow k (-(((n : ℂ) - 1) / 2))))
-    rwa [absPow_neg, mul_inv_cancel_right] at this
-  have hinv : IsInvOn φ ω := fun i u => by
-    have := hψφ i u
-    rw [MonoidHom.mul_apply, isUnram_absPow k _ _ u.2, mul_one] at this
-    rw [this, inv_inv]
-  refine ⟨ω, hω, hinv, (_root_.UpperTheory.V.Hi.prin_series_irreducible_and_unique_subquotient H k n ω hω fun i j hij => ?_).2 V π hirr hsq, le_antisymm ?_ ?_, fun v hv j hj => ?_⟩
-  · obtain ⟨u, hu⟩ := hD i j hij
-    rw [hinv, hinv] at hu
-    refine ⟨fun h => hu (by rw [h]), fun h => hu ?_⟩
-    rw [h, MonoidHom.mul_apply, isUnram_absPow k _ _ u.2, mul_one]
-  · refine le_trans (LinearMap.finrank_le_finrank_of_injective (f := p.restrict hpE) ?_) hE1
-    exact (injective_iff_map_eq_zero _).2 fun v h => Subtype.ext (hinj v v.2 (congrArg Subtype.val h))
-  · haveI : FiniteDimensional ℂ (invPart π c φ) :=
-      Submodule.finiteDimensional_of_le (heig.trans (OrdB.eig_le _ π c φ hφ))
-    exact Nat.pos_of_ne_zero fun h => hne (Submodule.finrank_eq_zero.1 h)
-  · rw [← sub_eq_zero]
-    refine hinj _ (sub_mem (OrdB.inv_stab _ π c φ hφ (al_mem k n j) hv) (Submodule.smul_mem _ _ hv)) ?_
-    have h1 := propCp _ (glIwa k n) ℂ V π _ (al_mem k n j) v (heig hv).1
-    rw [hker, hidx j hj] at h1
-    have h2 : p _ = 0 := (Submodule.Quotient.mk_eq_zero _).2 h1
-    have h3 := (hp (fun i => unif k ^ (if (i : ℕ) < j then 1 else 0 : ℤ)) v).symm.trans (hact _ _ (hpE v hv))
-    rw [← Units.smul_def, inv_smul_eq_iff, Units.smul_def, smul_smul] at h3
-    rw [map_sub, map_smul, sub_eq_zero] at h2 ⊢
-    rw [h2, ← OrdB.num ω hj, mul_smul, ← h3]
-    rfl
+    _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), GlobalTheory.PRep.IsSmooth π → π.IsIrreducible → ∀ (c : ℕ) (φ : (glIwa k n).T →* ℂˣ), (∀ i (y : Uo k), (y : kˣ) ∈ Uc k (c + 1) → φ (eT k n i y) = 1) → Distinct φ → invPart π c φ ≠ ⊥ → ∃ ω : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) ∧ IsInvOn φ ω ∧ Nonempty (π.Equiv (PS ω)) ∧ Module.finrank ℂ (invPart π c φ) = 1 ∧ ∀ v ∈ invPart π c φ, ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v :=
+  fun H => UpperTheory.V.Hi.principalSeries_of_finiteness_geometricLemma H.loc.bz H.loc.geo H.loc.disj
 end

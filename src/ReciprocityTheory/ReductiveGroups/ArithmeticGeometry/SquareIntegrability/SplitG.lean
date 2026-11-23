@@ -53,6 +53,7 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegra
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.SplitR
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.SplitU
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.SplitV
+public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsShortIntegersSpan
 
 @[expose] public section
 
@@ -160,7 +161,7 @@ theorem sq_le_pow_four_div_sq {d N la u : ℝ} (hd : 2 ≤ d) (hN : N ≤ d) (hl
   nlinarith [mul_le_mul h2 h2 h3 (by positivity : (0:ℝ) ≤ d ^ 2)]
 
 theorem split_pos (X : PT E) {DF : ℕ} (P : Par X DF) (h : X.la1 < P.th) : ∃ I, IsSplit P I := by
-  obtain ⟨n, ω, hω, hsp⟩ := omega_exists' (E := E)
+  obtain ⟨n, ω, hω, hsp⟩ := _root_.GlobalTheory.exists_short_integers_span E
   have hf1n : 1 ≤ PT.f E := le_trans (Nat.one_le_pow _ _ P.hm1) P.hmf
   have hf1 : (1 : ℝ) ≤ PT.f E := by exact_mod_cast hf1n
   have hrd := P.hrd

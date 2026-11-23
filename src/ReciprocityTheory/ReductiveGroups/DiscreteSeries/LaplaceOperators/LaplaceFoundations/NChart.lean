@@ -2,6 +2,7 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.OneParameterSubgroups.ExpChart
 public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -103,15 +104,7 @@ theorem mul_Hpk_apply (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
     ⟨fun h => by rw [h, flipB_flipB], fun h => by rw [h, flipB_flipB]⟩
   simp [Matrix.mul_apply, Hpk_apply, h, mul_ite, sgnB_flip]
 
-theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Hpk_mul_apply, Hpk_apply, flipB_flipB, sgnB_flip, Matrix.one_apply]
-  by_cases h : i = j
-  · subst h
-    rw [if_pos rfl, if_pos rfl]
-    unfold sgnB
-    split_ifs <;> norm_num
-  · rw [if_neg (Ne.symm h), if_neg h, mul_zero]
+theorem Hpk_sq : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem Hpk_herm : (Hpk k r)ᴴ = Hpk k r := by
   ext i j

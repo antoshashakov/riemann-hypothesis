@@ -2,7 +2,6 @@ module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.SplitStab
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.IsLatRepL
-public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.CardDet
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.ContinuousOfWE
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.EtaProdK
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.IdxHalf
@@ -62,5 +61,5 @@ theorem UpperTheory.TP.W.datumK_k : ∀ (F E : Type) [Field F] [NumberField F] [
         (Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)), _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om →
       ∀ η : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF η → ResEtaF η 1 → HasExp B.emb η (fun _ => 1) → UnramInert σ η →
         ∃ ω, IsWeilDatumOF σ JS JT (fun w : InfinitePlace F => (B.emb w).1) ξ₀ B.ψ (η ^ nS) (η ^ nT) ω :=
-  _root_.UpperTheory.TP.W.datumK_of_k UpperTheory.TP.W.kapEx UpperTheory.TP.W.etaProdK (UpperTheory.TP.W.idxSign UpperTheory.TP.W.cardDet UpperTheory.TP.W.idxHalf)
+  _root_.UpperTheory.TP.W.datumK_of_k UpperTheory.TP.W.kapEx UpperTheory.TP.W.etaProdK (UpperTheory.TP.W.idxSign UpperTheory.TP.W.idxHalf)
 end

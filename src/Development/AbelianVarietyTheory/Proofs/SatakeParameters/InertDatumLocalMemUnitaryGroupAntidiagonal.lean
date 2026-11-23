@@ -49,6 +49,7 @@ import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import ReciprocityTheory.GaloisValuations.GlobalA
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertLocalMemUnitaryGroupAntidiagonalForm
 
 @[expose] public section
 
@@ -72,36 +73,12 @@ open Formalism.UG in
 theorem inertLoc_mem_GU (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L))
     (Dv : InertDatum L n v w) (x : GAf L n) : Dv.loc x ∈ Formalism.UG.GU Dv.σw n := by
-
-  have hcomm : ∀ a : AL L, compAt L v (conjAL L a) =
-      Formalism.UG.sigR (IsCMField.complexConj L).toAlgHom (v.adicCompletion (maximalRealSubfield L))
-        (compAt L v a) := by
-    intro a
-    induction a using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a b => simp [compAt, conjAL, Formalism.UG.sigR, Algebra.TensorProduct.map_tmul]
-    | add a b ha hb => simp only [map_add (f := _), ha, hb]
-  set f : AL L →+* w.adicCompletion L := (Dv.e : _ →+* w.adicCompletion L).comp (compAt L v) with hf
-  have hfc : ∀ a, f (conjAL L a) = Dv.σw (f a) := by
-    intro a; simp only [hf, RingHom.comp_apply, hcomm]; exact Dv.comm _
-  set A : Matrix (Fin n) (Fin n) (AL L) := ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) with hA
-  have hx : A * conjT (conjAL L) A = 1 := x.2
-  set M : Matrix (Fin n) (Fin n) (w.adicCompletion L) := A.map f with hM
-  have hMc : (conjT (conjAL L) A).map f = cT Dv.σw M := by
-    ext i j; simp [conjT, cT, hM, hfc]
-  have hM1 : M * cT Dv.σw M = 1 := by
-    rw [← hMc, hM, ← Matrix.map_mul, hx, Matrix.map_one f (map_zero f) (map_one f)]
-  have hM2 : cT Dv.σw M * M = 1 := mul_eq_one_comm.mp hM1
-  have hloc : ((Dv.loc x : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) =
-      ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) * M *
-        (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)) := by
-    simp only [Formalism.AUTREP.InertDatum.loc, Units.val_mul, hM, hA, hf]
-    congr 2
-  have hPQ : (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)) *
-      ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) = 1 := by
-    rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
-  have key := unitary_conj_by_inverse_pair_preserves_form Dv.σw _ _ M _ hPQ hM2 Dv.Panti
-  rw [← hloc] at key
-  exact key
+  first
+  | exact @_root_.GlobalTheory.LocalUnitary.loc_mem_GU
+  | exact _root_.GlobalTheory.LocalUnitary.loc_mem_GU
+  | (apply _root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> assumption)
+  | (intros; apply _root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> assumption)
+  | (intros; apply @_root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> first | assumption | infer_instance)
+  | (intros; exact _root_.GlobalTheory.LocalUnitary.loc_mem_GU ..)
 
 end GlobalTheory

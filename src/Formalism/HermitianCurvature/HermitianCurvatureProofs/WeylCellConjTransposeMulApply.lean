@@ -57,6 +57,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeylConjugationFixedColumn.ReflectionScalarDualIsotropic
 
 @[expose] public section
 
@@ -625,35 +626,13 @@ theorem hpk_row_es (l : Fin r) (x : Fin (2 * r + k + 1)) :
   split_ifs <;> simp
 
 theorem weyl_cell_mem_unitary (l : Fin r) {c : ℂ} (hc : c ≠ 0) : w1 k r l c ∈ UH (Hpk k r) := by
-  have hne := e_ne_es (k := k) l
-  have hcs : (starRingEnd ℂ) c ≠ 0 := star_ne_zero.2 hc
-  show (w1 k r l c)ᴴ * Hpk k r * w1 k r l c = Hpk k r
-  ext p q
-  rw [mul_weyl_cell_apply, weyl_cell_conjTranspose_mul_apply]
-  rcases tri l p with h | h | ⟨h1, h2⟩
-  · subst h
-    rw [sw_e, dd_e, hpk_row_es, hpk_row_e]
-    rcases tri l q with h' | h' | ⟨h1', h2'⟩
-    · subst h'
-      simp [sw_e, hne, hne.symm]
-    · subst h'
-      simp [sw_es, dd_es, hcs]
-    · simp [sw_o l h1' h2', h1', h2']
-  · subst h
-    rw [sw_es, dd_es, hpk_row_es, hpk_row_e]
-    rcases tri l q with h' | h' | ⟨h1', h2'⟩
-    · subst h'
-      simp [sw_e, dd_e, hc]
-    · subst h'
-      simp [sw_es, hne, hne.symm]
-    · simp [sw_o l h1' h2', h1', h2']
-  · rw [sw_o l h1 h2, dd_o l c h1 h2]
-    rcases tri l q with h' | h' | ⟨h1', h2'⟩
-    · subst h'
-      simp [sw_e, hpk_col_e, hpk_col_es, h1, h2]
-    · subst h'
-      simp [sw_es, hpk_col_e, hpk_col_es, h1, h2]
-    · simp [sw_o l h1' h2', dd_o l c h1' h2']
+  first
+  | exact @_root_.PI.IsotropicReflections.reflection_mem_unitary
+  | exact _root_.PI.IsotropicReflections.reflection_mem_unitary
+  | (apply _root_.PI.IsotropicReflections.reflection_mem_unitary <;> assumption)
+  | (intros; apply _root_.PI.IsotropicReflections.reflection_mem_unitary <;> assumption)
+  | (intros; apply @_root_.PI.IsotropicReflections.reflection_mem_unitary <;> first | assumption | infer_instance)
+  | (intros; exact _root_.PI.IsotropicReflections.reflection_mem_unitary ..)
 
 theorem reflection_fixes_basis_vector (l : Fin r) (c : ℂ) {q : Fin (2 * r + k + 1)} (h1 : q ≠ eI k r l) (h2 : q ≠ esI k r l) :
     w1 k r l c *ᵥ bvec q = bvec q := by

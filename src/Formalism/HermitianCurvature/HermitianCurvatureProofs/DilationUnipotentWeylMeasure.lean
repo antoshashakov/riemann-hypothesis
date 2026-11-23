@@ -5,6 +5,7 @@ public import Formalism.HermitianCurvature.StatementB
 public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 public import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -179,27 +180,7 @@ lemma inLie_sub {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) : inLie k 
   rw [sub_eq_add_neg]
   exact inLie_add hX (inLie_neg hY)
 
-private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  have key : ∀ l : Fin (2 * r + k + 1),
-      l.val ≠ (if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val) →
-      Hpk k r i l = 0 := by
-    intro l hl
-    have hl' := l.isLt
-    unfold Hpk
-    simp only [Fin.ext_iff]
-    split_ifs at hl ⊢ <;> first | rfl | (exfalso; omega)
-  rw [Finset.sum_eq_single_of_mem
-    ⟨(if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val), by split_ifs <;> omega⟩
-    (Finset.mem_univ _)]
-  · unfold Hpk
-    simp only [Fin.ext_iff, Fin.val_mk]
-    split_ifs <;> first | (exfalso; omega) | norm_num
-  · intro l _ hl
-    rw [key l (fun h => hl (Fin.ext h)), MulZeroClass.zero_mul]
+private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 lemma hpk_inv : (Hpk k r)⁻¹ = Hpk k r := by
   exact Matrix.inv_eq_left_inv hpk_sq_lemma

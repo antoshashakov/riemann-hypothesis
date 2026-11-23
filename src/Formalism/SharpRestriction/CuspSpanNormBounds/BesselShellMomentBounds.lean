@@ -5,6 +5,7 @@ public import Formalism.FlagUnipotentLattices.UnipotentStabiliserCharacterisatio
 public import Formalism.FlagUnipotentLattices.AlgebraicIdentityHigherDegree
 public import Formalism.FormalDegreeBessel.FinalG
 public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -989,8 +990,7 @@ section Geometry
 
 variable {k r : ℕ}
 
-theorem Hpk_sq' (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  exact (hpkFacts k r).2.1
+theorem Hpk_sq' (k r : ℕ) : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 end Geometry
 

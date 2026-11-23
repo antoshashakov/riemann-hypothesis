@@ -3,6 +3,7 @@ module
 public import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 public import Formalism.HermitianCurvature.StatementQ
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TorusConjugationRule.WColOther
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -95,14 +96,7 @@ private lemma hpk_eq_lemma (i j : Fin (2 * r + k + 1)) :
   simp only [Fin.ext_iff, tau_val_lemma]
   split_ifs <;> first | rfl | omega | norm_num
 
-private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  simp only [hpk_eq_lemma, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, tau_tau_lemma, sgn_tau_lemma]
-  by_cases h : i = j
-  · subst h
-    simp [sgn_sq_lemma]
-  · simp [h, Ne.symm h]
+private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 lemma hpk_inv : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv hpk_sq_lemma
 

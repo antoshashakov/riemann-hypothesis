@@ -1,6 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -113,12 +114,7 @@ lemma Hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i) :
     (Hpk k r *ᵥ v) i = sgnIx k r i * v (dualIx k r i) := by
   simp [Matrix.mulVec, dotProduct, Hpk_apply]
 
-lemma Hpk_mul_self : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Hpk_mul_apply, Hpk_apply, dualIx_dualIx, sgnIx_dualIx, Matrix.one_apply]
-  by_cases h : i = j
-  · subst h; simp [sgnIx_sq]
-  · simp [h, Ne.symm h]
+lemma Hpk_mul_self : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 lemma herm_single (v : Fin (2 * r + k + 1) → ℂ) (j) :
     herm (Hpk k r) v (Pi.single j 1) = sgnIx k r j * v (dualIx k r j) := by

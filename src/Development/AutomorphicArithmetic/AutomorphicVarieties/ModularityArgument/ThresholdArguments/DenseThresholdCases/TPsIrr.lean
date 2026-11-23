@@ -1,5 +1,7 @@
 module
 
+import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.EqOfTwist
+
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.LitAut
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Distinct
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalSeriesSatakeParameters
@@ -119,13 +121,6 @@ private theorem irr_prin (H : GlobalTheory.Published.TotallyDisjointProductIrred
     exact GlobalTheory.Parabolic.isIrreducible_of_equiv (E1.trans E2) hirr
 end UpperTheory.V.Hi.PsIrr
 theorem UpperTheory.V.Hi.prin_series_irreducible_and_unique_subquotient :
-    _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ω : Fin n → kˣ →* ℂˣ), (∀ i, IsSmoothChar (ω i)) → (∀ i j, i ≠ j → ω i ≠ ω j ∧ ω i ≠ ω j * absPow k 1) → (PS ω).IsIrreducible ∧ ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), π.IsIrreducible → IsSubquotient π (PS ω) → Nonempty (π.Equiv (PS ω)) := by
-  intro H k _ _ _ _ n ω hω hne
-  have hi : (PS ω).IsIrreducible := by
-    refine PsIrr.irr_prin H.loc.disj n _
-      (fun i => (hω i).mul (isSmoothChar_of_isUnram (isUnram_absPow k _))) fun i j hij => ⟨fun h => ?_, fun h => ?_⟩
-    · exact (hne i j hij).1 (mul_right_cancel h)
-    · rw [mul_right_comm] at h
-      exact (hne i j hij).2 (mul_right_cancel h)
-  exact ⟨hi, fun V _ _ π hπ hs => (hs.nonempty_equiv hπ hi).map fun e => e.symm⟩
+    _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ω : Fin n → kˣ →* ℂˣ), (∀ i, IsSmoothChar (ω i)) → (∀ i j, i ≠ j → ω i ≠ ω j ∧ ω i ≠ ω j * absPow k 1) → (PS ω).IsIrreducible ∧ ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), π.IsIrreducible → IsSubquotient π (PS ω) → Nonempty (π.Equiv (PS ω)) :=
+  fun H => UpperTheory.V.Hi.psIrr_of_totallyDisjoint H.loc.disj
 end

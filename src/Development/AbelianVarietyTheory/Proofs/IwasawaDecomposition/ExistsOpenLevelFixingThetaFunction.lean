@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsQuadOfPlane
+import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.EqOneOfPowNear
 
 @[expose] public section
 
@@ -55,26 +56,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.ThetaLevel
 
-theorem eq_one_of_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
-  have h1 : ∀ N : ℕ, (N : ℝ) / 2 ≤ ‖∑ i ∈ Finset.range N, z ^ i‖ := by
-    intro N
-    refine le_trans ?_ (Complex.re_le_norm _)
-    rw [Complex.re_sum]
-    have : ∀ i ∈ Finset.range N, (1 / 2 : ℝ) ≤ (z ^ i).re := by
-      intro i _
-      have h2 := (Complex.abs_re_le_norm (z ^ i - 1)).trans_lt (h i)
-      rw [Complex.sub_re, Complex.one_re, abs_lt] at h2
-      linarith [h2.1]
-    have h3 := Finset.sum_le_sum this
-    simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul] at h3
-    linarith
-  by_contra hz
-  have hpos : 0 < ‖z - 1‖ := norm_pos_iff.2 (sub_ne_zero.2 hz)
-  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ‖z - 1‖)
-  have h4 := h N
-  rw [← geom_sum_mul, norm_mul] at h4
-  rw [div_lt_iff₀ hpos] at hN
-  nlinarith [h1 N]
+theorem eq_one_of_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 :=
+  UpperTheory.Reformulated.B.EqOneOfPowNear.eq_one_of_pow_near z h
 
 theorem eventually_smul (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (hw : GlobalTheory.Ker.IsWeak ψ S T om)

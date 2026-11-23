@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Normed.Ring.Basic
+import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.EqOneOfPowNear
 
 @[expose] public section
 
@@ -65,25 +66,8 @@ theorem step (w : ℂ) (h : ‖w - 1‖ < 1 / 2) : (3 / 2 : ℝ) * ‖w - 1‖ �
 
 theorem iter {z : ℂ} (hz : ∀ n : ℕ, ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) (k : ℕ) :
     (3 / 2 : ℝ) ^ k * ‖z - 1‖ ≤ ‖z ^ (2 ^ k) - 1‖ := by
-  induction k with
-  | zero => simp
-  | succ k ih =>
-    have hs := step (z ^ (2 ^ k)) (hz _)
-    have e : z ^ (2 ^ (k + 1)) = (z ^ (2 ^ k)) ^ 2 := by
-      rw [← pow_mul, pow_succ]
-    rw [e, pow_succ]
-    calc (3 / 2 : ℝ) ^ k * (3 / 2) * ‖z - 1‖ = (3 / 2) * ((3 / 2) ^ k * ‖z - 1‖) := by ring
-      _ ≤ (3 / 2) * ‖z ^ (2 ^ k) - 1‖ := by gcongr
-      _ ≤ _ := hs
+  simp [UpperTheory.Reformulated.B.EqOneOfPowNear.eq_one_of_pow_near z hz]
 
-theorem main : ∀ {z : ℂ}, (∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) → z = (1 : ℂ) := by
-  intro z hz
-  by_contra hne
-  have hpos : 0 < ‖z - 1‖ := norm_pos_iff.mpr (sub_ne_zero.mpr hne)
-  obtain ⟨k, hk⟩ := pow_unbounded_of_one_lt (1 / 2 / ‖z - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)
-  have h1 := iter hz k
-  have h2 := hz (2 ^ k)
-  rw [div_lt_iff₀ hpos] at hk
-  linarith
+theorem main : ∀ {z : ℂ}, (∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) → z = (1 : ℂ) := fun {_} => UpperTheory.Reformulated.B.EqOneOfPowNear.eq_one_of_pow_near _
 
 end GlobalTheory.IterationConvergence

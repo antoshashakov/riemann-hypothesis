@@ -73,12 +73,8 @@ section HtComm
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
-private theorem htc_norm_le_one_of_isIntegral (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
-    ‖x‖ ≤ 1 :=
-  _root_.GlobalTheory.IntegralAlgebraMapNormBound.main x hx
-
 theorem htc_norm_le_one (c : Coef l) (x : Qbar l) (hx : x ∈ c.O) : ‖x‖ ≤ 1 :=
-  htc_norm_le_one_of_isIntegral x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
+  _root_.GlobalTheory.IntegralAlgebraMapNormBound.main x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
 
 theorem htc_continuous_cycBar : Continuous (cycBar ℚ Ω l) :=
   (Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom

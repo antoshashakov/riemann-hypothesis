@@ -105,8 +105,8 @@ theorem UpperTheory.One.Join.cm_abelian_inputs_from_literature (O : _root_.Upper
     dri := (_root_.UpperTheory.LiteratureTheorems.siegel_klingen_deligne_ribet_of_open O)
     pz := (_root_.UpperTheory.LiteratureTheorems.partial_zeta_functional_equation_of_open O)
     fe := (_root_.UpperTheory.LiteratureTheorems.hecke_tate_functional_equation_of_open O) }
-theorem UpperTheory.One.Join.automorphic_window_of_inputs (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition)
+theorem UpperTheory.One.Join.automorphic_window_of_inputs
  (bc : _root_.PositivityTheory.Rg.BcN.BaseChangeIsobaricN) (gal : _root_.UpperTheory.V.Z.Win.RowT) :
     UpperTheory.Top.VWin :=
-  _root_.UpperTheory.One.Join.v_window_of_depth_zero_residual_bc_cm O bc gal (_root_.UpperTheory.One.Join.cm_abelian_inputs_from_literature O)
+  _root_.UpperTheory.One.Join.v_window_of_depth_zero_residual_bc_cm ⟨gal⟩ bc gal (_root_.UpperTheory.One.Join.cm_abelian_inputs_from_literature ⟨gal⟩)
 end

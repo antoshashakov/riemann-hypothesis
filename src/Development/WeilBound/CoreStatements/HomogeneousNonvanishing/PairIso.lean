@@ -239,7 +239,7 @@ theorem pull_both {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
       ∀ r (e₀ : Ω) (L : HermLine J) (L' : HermLine J'), Fl.IsHodgeLine r e₀ L → IsPullHerm κ v L L' →
         Fl'.IsHodgeLine r (i e₀) L' := by
   obtain ⟨A', e, j, m, h1, h2, h3, h4, h5, h6, h7, -, h9⟩ :=
-    PositivityTheory.UnitarySelfGeneration.hodge_compact_pullback E H D l Xo c O β Y S Ω Ω' i K K' J J' y y' A x Z ξ' h hx hdisc hvb hall htie hnorm hd
+    _root_.GlobalTheory.CompanionTheory.Ar.HcptPullK.hodgeCpt_pull E H D l Xo c O β Y S Ω Ω' i K K' J J' y y' A x Z ξ' h hx hdisc hvb hall htie hnorm hd
   have hdom : GlobalTheory.CompanionTheory.Ar.Dominates A'.ξ A.ξ (e.hom ≫ h) i := by
     show A'.ξ ≫ e.hom ≫ h = _
     rw [← Category.assoc, h1]

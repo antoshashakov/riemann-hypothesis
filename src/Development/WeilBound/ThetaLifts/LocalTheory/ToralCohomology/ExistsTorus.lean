@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.ExistsAdelePiInf
 
 @[expose] public section
 
@@ -71,17 +72,7 @@ theorem exists_re (hF : IsTotallyReal F) (s : InfinitePlace F → ℝ) : ∃ a :
 
 theorem exists_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (c : InfinitePlace F → ℂ) :
     ∃ a : AE F E, At (evI F) a ∧ ∀ w, piInf (τ w) a = c w := by
-  obtain ⟨β, hβ⟩ := exists_moved h
-  obtain ⟨t, ht, ht'⟩ := exists_re h.1 fun w => (c w).im / ((τ w).1 β).im
-  obtain ⟨s, hs, hs'⟩ := exists_re h.1 fun w => (c w).re - (c w).im / ((τ w).1 β).im * ((τ w).1 β).re
-  refine ⟨s ⊗ₜ[F] 1 + t ⊗ₜ[F] β, fun u hu => ?_, fun w => ?_⟩
-  · rw [smul_add, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, hs u hu, ht u hu,
-      TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]
-  · have := im_ne_zero h hβ (τ w).1
-    rw [map_add (f := _), piInf_tmul, piInf_tmul, hs', ht', map_one, mul_one]
-    apply Complex.ext
-    · simp only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]; ring
-    · simp only [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]; field_simp; ring
+  exact GlobalTheory.CompanionTheory.RealPlaceAdele.exists_adele_piInf σ h τ c
 
 theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
     piInf τ (cA σ z) = star (piInf τ z) := by

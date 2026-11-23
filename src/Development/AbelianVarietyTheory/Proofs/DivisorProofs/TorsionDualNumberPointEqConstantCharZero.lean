@@ -64,9 +64,7 @@ noncomputable section
 
 namespace GlobalTheory.TorsConst
 
-theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) :=
-  (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
+alias sp_comp := spMap.comp_hom
 
 theorem ext_of_two {B C : Type} [CommRing B] [CommRing C] [IsLocalRing B] [IsLocalRing C]
     (d e : B →+* C) [IsLocalHom d] [IsLocalHom e] (hde : ∀ x y, d x = d y → e x = e y → x = y)

@@ -16,7 +16,6 @@ public import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.OrbitAdm
 public import Formalism.SharpRestriction.GrowthBounds.AdmissibleIntegers
 public import Formalism.SharpRestriction.GrowthBounds.JointsTw
 public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PrvAndKernelCommutationUpToUnitsOfRests
-public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.StmtNumFEx
 public import Formalism.SharpRestriction.GrowthBounds.PlaneCountTheoremWithConstants
 import Formalism.SharpRestriction.GrowthBounds.TopChoiceBounds
 import Mathlib.Algebra.Order.Floor.Extended
@@ -229,7 +228,7 @@ theorem sum_over_primes_service (𝒞 : FamClass) (hD : Closed 𝒞 fun Fm _ => 
   have hpdv := h.pdv
   have h01 : OrbitPlaces.OrbitLetterBoundsAll 11 1 := DIV.Bridge.DworkPowerSeriesWeights.split_bound_eleven_one
   refine closed_large_pos ⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩
-    (hD.and (h.twU.and (hpdv.and (G.num_closed 𝒞 FormalGroupSystem.Pf.stmtNumE))))
+    (hD.and (h.twU.and (hpdv.and (G.num_closed 𝒞))))
     fun {eps} Fm CH hpos hL ⟨hDg, ⟨xb, hb⟩, ⟨xc, hc⟩, ⟨xn, hnum⟩⟩ => ?_
   have hpr1 : 1 ≤ Fm.GK.Pr1 := le_of_eq Fm.fixed.1.symm
   have hCL : OrbitPlaces.CLarge 11 1 Fm.GK Fm.cX.err :=

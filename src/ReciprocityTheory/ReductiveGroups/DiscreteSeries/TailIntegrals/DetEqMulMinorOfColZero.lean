@@ -1,6 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.GoodRowsProjectorApplyEqSum
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -233,28 +234,7 @@ end lev
 section dl
 variable (k r : ℕ)
 
-private lemma Hpk_mul_Hpk_eq_one : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  by_cases hc : i.val < r ∨ r + k < i.val
-  · rw [Finset.sum_eq_single (⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1))]
-    · simp only [Hpk, Fin.val_mk, Fin.ext_iff, and_true, true_and]
-      (try split_ifs) <;> (first | omega | norm_num)
-    · intro m _ hm
-      have hm' : m.val ≠ 2 * r + k - i.val := fun h => hm (Fin.ext h)
-      simp only [Hpk, Fin.ext_iff, and_true, true_and]
-      (try split_ifs) <;> (first | omega | norm_num)
-    · intro h
-      exact absurd (Finset.mem_univ _) h
-  · rw [Finset.sum_eq_single i]
-    · simp only [Hpk, Fin.ext_iff, and_true, true_and]
-      (try split_ifs) <;> (first | omega | norm_num)
-    · intro m _ hm
-      have hm' : m.val ≠ i.val := fun h => hm (Fin.ext h)
-      simp only [Hpk, Fin.ext_iff, and_true, true_and]
-      (try split_ifs) <;> (first | omega | norm_num)
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+private lemma Hpk_mul_Hpk_eq_one : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 private lemma herm_sub_smul_left' {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (v w u : Fin m → ℂ) (c : ℂ) :
     herm H (v - c • w) u = herm H v u - c * herm H w u := by

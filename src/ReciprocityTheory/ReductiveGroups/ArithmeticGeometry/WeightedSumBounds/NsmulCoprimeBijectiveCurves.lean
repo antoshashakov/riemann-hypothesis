@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.LinearFormDegree.InvFun
 
 @[expose] public section
 
@@ -154,27 +155,13 @@ private theorem valuation_natCast_eq_zero_of_not_dvd {p : ℕ} (hp : p.Prime) (h
 
 private theorem exists_eq_single_of_degree_eq_one {σ : Type} (α : σ →₀ ℕ) (h : α.degree = 1) :
     ∃ s, α = Finsupp.single s 1 := by
-  have hne : α ≠ 0 := by
-    rintro rfl
-    simp at h
-  obtain ⟨s, hs⟩ := Finsupp.support_nonempty_iff.mpr hne
-  refine ⟨s, ?_⟩
-  have hsum : ∑ i ∈ α.support, α i = 1 := by rw [← h]; rfl
-  have hle : α s ≤ 1 := hsum ▸ Finset.single_le_sum (fun i _ => Nat.zero_le (α i)) hs
-  have hs1 : α s = 1 := le_antisymm hle (Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hs))
-  have hrest : ∑ i ∈ α.support.erase s, α i = 0 := by
-    rw [← Finset.add_sum_erase _ _ hs, hs1] at hsum
-    omega
-  ext i
-  by_cases hi : i = s
-  · subst hi
-    simp [hs1]
-  · rw [Finsupp.single_apply, if_neg (Ne.symm hi)]
-    by_contra hne'
-    have hmem : i ∈ α.support.erase s :=
-      Finset.mem_erase.mpr ⟨hi, Finsupp.mem_support_iff.mpr hne'⟩
-    have := Finset.single_le_sum (fun j _ => Nat.zero_le (α j)) hmem
-    omega
+  first
+  | exact @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | (apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> first | assumption | infer_instance)
+  | (intros; exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one ..)
 
 theorem nsmul_coprime_bijective_curves [CharZero C] (G : LogFGL v d) {p : ℕ} (hp : p.Prime) (hvp : v (p : C) = 1)
     (n : ℕ) (hn : ¬ p ∣ n) (gb : Fin d → PowerSeries C) (hgb : IsCurve v gb) :

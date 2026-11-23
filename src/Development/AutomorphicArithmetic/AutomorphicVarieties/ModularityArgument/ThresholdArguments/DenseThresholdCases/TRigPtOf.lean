@@ -17,6 +17,7 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityA
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.FiniteEmb
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LaCyc
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LaHecke
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,13 +63,6 @@ section
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr
   UpperTheory.V.Th
-private theorem ap_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
-  have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
-  have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
-  rw [h0, spectralValue_le_one_iff (minpoly.monic hi)]
-  intro n
-  rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]
-  exact PadicInt.norm_le_one _
 private theorem ap_field {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [Algebra ℤ_[l] R] [Module.Finite ℤ_[l] R]
     (φ : R →ₐ[ℤ_[l]] PadicAlgCl l) :
     ∃ E : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] E ∧ ∀ x, φ x ∈ E ∧ ‖φ x‖ ≤ 1 := by
@@ -76,7 +70,7 @@ private theorem ap_field {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [Algeb
   haveI := (s.finite_toSet.image φ).to_subtype
   refine ⟨IntermediateField.adjoin ℚ_[l] (φ '' (s : Set R)),
     IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x, fun x =>
-    ⟨?_, ap_norm _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map φ)⟩⟩
+    ⟨?_, _root_.GlobalTheory.IntegralAlgebraMapNormBound.main _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map φ)⟩⟩
   have hx : x ∈ Submodule.span ℤ_[l] (s : Set R) := hs ▸ Submodule.mem_top
   induction hx using Submodule.span_induction with
   | mem y hy => exact IntermediateField.subset_adjoin _ _ ⟨y, hy, rfl⟩

@@ -50,6 +50,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.LinearFormDegree.InvFun
 
 @[expose] public section
 
@@ -175,26 +176,13 @@ private theorem cs_coeff_ne {T : Type} {τ : T → Type} [∀ v, Finite (τ v)] 
 
 private theorem exists_single_of_degree_eq_one {σ : Type} (d : σ →₀ ℕ) (hd : Finsupp.degree d = 1) :
     ∃ t, d = Finsupp.single t 1 := by
-  classical
-  have hne : d ≠ 0 := by
-    rintro rfl
-    simp at hd
-  obtain ⟨t, ht⟩ := Finsupp.support_nonempty_iff.mpr hne
-  refine ⟨t, ?_⟩
-  have hsum : d t + ∑ i ∈ d.support.erase t, d i = 1 := by
-    rw [Finset.add_sum_erase _ _ ht, ← hd]
-    rfl
-  have hpos : 0 < d t := Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp ht)
-  have hrest : ∑ i ∈ d.support.erase t, d i = 0 := by omega
-  have ht1 : d t = 1 := by omega
-  ext i
-  by_cases hi : i = t
-  · subst hi
-    simp [ht1]
-  · have hdi : d i = 0 := by
-      by_contra hc
-      exact hc (Finset.sum_eq_zero_iff.mp hrest i (Finset.mem_erase.mpr ⟨hi, Finsupp.mem_support_iff.mpr hc⟩))
-    simp [Finsupp.single_apply, Ne.symm hi, hdi]
+  first
+  | exact @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | (apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> first | assumption | infer_instance)
+  | (intros; exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one ..)
 
 private theorem cs_lin [Fintype σ] (g : MvPowerSeries σ O) (h0 : constantCoeff g = 0) :
     ((2 : ℕ) : ℕ∞) ≤ (g - ∑ s, coeff (Finsupp.single s 1) g • X s).order := by

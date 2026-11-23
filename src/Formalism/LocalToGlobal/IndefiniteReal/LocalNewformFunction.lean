@@ -1,5 +1,7 @@
 module
 
+import Mathlib.Tactic.Ring
+public import Mathlib.Algebra.Module.Lattice.Full
 public import Formalism.LocalToGlobal.BesselHermitianTheta.TiedWeil
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -322,6 +324,25 @@ end Ext
 def IsSelfDualC (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) : Prop :=
   Submodule.IsLattice D.host.E Λ ∧ ∀ y : Fin S.rank → D.host.E, y ∈ Λ ↔
     ∀ x ∈ Λ, ∃ b : 𝓞 D.host.E, (b : D.host.E) = ∑ i, ∑ j, star (x i) * S.gram i j * y j
+
+/-- A self-dual integral lattice spans its ambient Hermitian space. -/
+theorem IsSelfDualC.isFullLattice {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
+    (hΛ : IsSelfDualC V Λ) : Submodule.IsFullLattice D.host.E Λ := by
+  refine { toIsLattice := hΛ.1, span_eq_top := ?_ }
+  apply Formalism.BasicNotions.span_eq_top_of_integral_pairing Λ hΛ.1.fg (fun x y => ∑ i, ∑ j, star (x i) * V.gram i j * y j)
+  · intro x z y
+    simp [add_mul, Finset.sum_add_distrib]
+  · intro a x y
+    simp only [Pi.smul_apply, Algebra.smul_def, star_mul, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+    intro j _
+    change _ = star ((algebraMap (𝓞 D.host.E) D.host.E) a) * _
+    ring
+  · intro c x y
+    simp [Finset.mul_sum, mul_left_comm, mul_comm, mul_assoc]
+  · exact fun y hy => (hΛ.2 y).2 fun x hx => Submodule.mem_one.mp (hy x hx)
 
 section Props
 

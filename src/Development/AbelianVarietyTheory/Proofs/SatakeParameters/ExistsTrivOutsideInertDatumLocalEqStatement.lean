@@ -50,6 +50,7 @@ import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import ReciprocityTheory.GaloisValuations.GlobalA
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsTrivOutsideInertLocalEq
 
 @[expose] public section
 
@@ -57,4 +58,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 theorem _root_.GlobalTheory.T.exists_trivOutside_inertDatum_local_eq : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (k : GL (Fin n) (w.adicCompletion L)), k ∈ Formalism.UG.GU Dv.σw n → ∃ x : GAf L n, TrivOutside {v} x ∧ Dv.loc x = k := by
-  first | exact @GlobalTheory.InertLift.exists_trivOutside_loc_eq | exact GlobalTheory.InertLift.exists_trivOutside_loc_eq | (intros; apply GlobalTheory.InertLift.exists_trivOutside_loc_eq <;> assumption)
+  first | exact @_root_.GlobalTheory.InertLocSurj.exists_trivOutside_loc_eq | exact _root_.GlobalTheory.InertLocSurj.exists_trivOutside_loc_eq | (intros; apply _root_.GlobalTheory.InertLocSurj.exists_trivOutside_loc_eq <;> assumption)

@@ -1,6 +1,7 @@
 module
 
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdjointInverseTranslate.HkConjTranspose
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -109,15 +110,7 @@ theorem lf_inUH_mul {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : inUH H 
   calc bᴴ * aᴴ * H * (a * b) = bᴴ * (aᴴ * H * a) * b := by simp only [Matrix.mul_assoc]
     _ = H := by rw [ha', hb']
 
-private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext t p
-  rw [lf_Hmul, hk_apply, hk_sig_sig, hk_eps_sig, Matrix.one_apply]
-  by_cases htp : p = t
-  · subst htp
-    rw [if_pos rfl, if_pos rfl]
-    unfold hkEps
-    split_ifs <;> norm_num
-  · rw [if_neg htp, if_neg (Ne.symm htp), mul_zero]
+private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem lf_det_ne_zero (k r : ℕ) {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : inUH (Hpk k r) g) : g.det ≠ 0 := by

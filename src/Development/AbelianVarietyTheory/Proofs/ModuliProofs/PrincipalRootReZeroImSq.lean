@@ -104,17 +104,12 @@ theorem principal_root_re_zero_im_sq (H : Host E) : H.rt0.re = 0 ∧ H.rt0.im �
     nlinarith [mul_self_nonneg H.rt0.re]
   exact ⟨mul_right_cancel₀ him (by linarith), him⟩
 
-theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
-  have h : H.rt = 2 * H.w0 - 1 := by rw [H.two_weight_eq_one_add_root]; ring
-  rw [h, map_sub, map_mul, map_one, HostModel.cmHost_bar_halfIntegerGenerator, map_ofNat]
-  ring
-
 theorem orth_of_pure (hP : IsPeriod D ty Pe) {x y : D.La} (hx : x ∈ PureType.lat hP H.rt0)
     (hy : y ∈ PureType.lat hP (-H.rt0)) : D.EF x y = 0 := by
   obtain ⟨Hm, -, -, hE⟩ := hP.2.2.2.2
   have hd : (0 : ℝ) < H.d := Nat.cast_pos.2 H.d_prime.pos
   have h₁ := hE (H.rt • x) (H.rt • y)
-  rw [D.adj, smul_smul, bar_rt, neg_mul, ← sq, H.rt_sq, neg_neg, Nat.cast_smul_eq_nsmul, map_nsmul,
+  rw [D.adj, smul_smul, _root_.GlobalTheory.HostModel.bar_rt, neg_mul, ← sq, H.rt_sq, neg_neg, Nat.cast_smul_eq_nsmul, map_nsmul,
     PureType.period_rt_smul hP hx, PureType.period_rt_smul hP hy] at h₁
   have h₂ : hermForm Hm (H.rt0 • Pe x) (-H.rt0 • Pe y) = (-(H.d : ℝ) : ℝ) * hermForm Hm (Pe x) (Pe y) := by
     have e : star (-H.rt0) = H.rt0 := Complex.ext (by simp [(principal_root_re_zero_im_sq H).1]) (by simp)
@@ -303,7 +298,7 @@ theorem exists_period (D : Datum H) (N₁ N₂ : Submodule (𝓞 E) D.La) (hs : 
           TensorProduct.tmul_smul])
     (baseChange_skew _ _ _ fun x y => by
       show D.EF (H.rt • x) y = -D.EF x (H.rt • y)
-      rw [D.adj, bar_rt, neg_smul, map_neg])
+      rw [D.adj, _root_.GlobalTheory.HostModel.bar_rt, neg_smul, map_neg])
     htop
     (fun x hx y hy => by
       refine Submodule.span_induction₂ (p := fun x y _ _ => D.EF.baseChange ℝ x y = 0) ?_ (by simp) (by simp)

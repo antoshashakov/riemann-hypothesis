@@ -57,9 +57,10 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z UpperTheory.V.Z.Ord
 
-theorem UpperTheory.V.Z.Ord.ordJac :
-    GlobalTheory.Mem.LiteralAutomorphy.LitN → OrdJac := by
-  intro H k _ _ _ _ n V _ _ π hπ hirr c φ _ v hv hv0 a ha
+theorem UpperTheory.V.Z.Ord.ordJac_of_bernsteinZelevinskyFiniteness
+    (hbz : GlobalTheory.Published.BernsteinZelevinskyFiniteness) :
+    OrdJac := by
+  intro k _ _ _ _ n V _ _ π hπ hirr c φ _ v hv hv0 a ha
   obtain ⟨hker, hsm, -, -, -, -, -, hidx, hz, -⟩ := glBridge k n V π
   let p : V →ₗ[ℂ] Jacquet π (unipB k (Fin n)) := Submodule.mkQ _
   have hp : ∀ t w, jacB π t (p w) =
@@ -102,7 +103,7 @@ theorem UpperTheory.V.Z.Ord.ordJac :
     exact hv0 ((smul_eq_zero.1 hj).resolve_left (pow_ne_zero j hb))
   have hl : HasFiniteLength (jacB π) :=
     (hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).surjective).2
-      ((H.loc.bz k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))
+      ((hbz k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))
   have := GlobalTheory.TorusEigenform.secondCountableTopology_units k
   have existsForm : ∀ {G W : Type} [CommGroup G] [TopologicalSpace G]
         [IsTopologicalGroup G] [TopologicalSpace.SeparableSpace G] [AddCommGroup W] [Module ℂ W]
@@ -384,3 +385,7 @@ theorem UpperTheory.V.Z.Ord.ordJac :
     field_simp
   rw [← hnum ω hm, h3]
   exact key _ _ _ hQ
+
+theorem UpperTheory.V.Z.Ord.ordJac :
+    GlobalTheory.Mem.LiteralAutomorphy.LitN → OrdJac :=
+  fun H => UpperTheory.V.Z.Ord.ordJac_of_bernsteinZelevinskyFiniteness H.loc.bz

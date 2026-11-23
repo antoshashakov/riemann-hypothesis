@@ -1,5 +1,7 @@
 module
 
+import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.OrdA
+
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.LitAut
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Distinct
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeterminantInducedIsAdmissible
@@ -205,92 +207,6 @@ private theorem ordA_val (ω : Fin n → kˣ →* ℂˣ) (j : ℕ) (hj : j ≤ n
   field_simp
 end SlopeTestRemainingChoices
 theorem UpperTheory.V.Hi.exists_ne_zero_mem_eig_uOp_eq_psEig_smul_of_equiv_ps :
-    _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (ω : Fin n → kˣ →* ℂˣ), Nonempty (π.Equiv (PS ω)) → ∀ c : ℕ, (∀ i, ∀ y ∈ Uc k (c + 1), ω i y = 1) → ∀ φ : (glIwa k n).T →* ℂˣ, IsInvOn φ ω → ∃ v ∈ (glIwa k n).eig π c φ, v ≠ 0 ∧ ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v := by
-  intro _ k _ _ _ _ n V _ _ π ω ⟨e⟩ c hω φ hφ
-  classical
-  obtain ⟨-, -, hI, -, -, -, -, hidx, -⟩ := glBridge k n V π
-  let μ : Fin n → kˣ →* ℂˣ := fun i => ω i * absPow k (((n : ℂ) - 1) / 2)
-  let Ψ : Levi k (fun _ : Fin n => Unit) →* ℂˣ :=
-    deltaHalf k _ * (torusChar μ).comp (leviTorus k (Fin n)).symm.toMonoidHom
-  let χ : GL (Fin n) k → ℂ := fun g => if h : g ∈ parab k (points (Fin n)) then Ψ (leviProj k _ ⟨g, h⟩) else 0
-  have he : ∀ g v, e.toLinearEquiv (π g v) = PS ω g (e.toLinearEquiv v) := fun g v => e.toIntertwiningMap.isIntertwining _ _ g v
-  let l : V →ₗ[ℂ] ℂ :=
-    { toFun := fun v => (e.toLinearEquiv v).1.1 1
-      map_add' := fun a b => by rw [map_add (f := _)]; rfl
-      map_smul' := fun a b => by rw [map_smul]; rfl }
-  let σ := (twist ((ofChar (torusChar μ)).comp (leviTorus k (Fin n)).symm.toMonoidHom) (deltaHalf k _)).comp
-    (leviProj k (points (Fin n)))
-  have hσ : ∀ p x, σ p x = χ p * x := fun p x => by
-    simp only [χ, dif_pos p.2]
-    show (deltaHalf k _ _ : ℂ) • ofChar _ _ x = _
-    rw [ofChar_apply]
-    simp [Ψ, mul_assoc]
-  have hl : ∀ g ∈ parab k (points (Fin n)), ∀ v, l (π g v) = χ g * l v := by
-    intro g hg v
-    refine Eq.trans ?_ (hσ ⟨g, hg⟩ _)
-    refine Eq.trans ?_ ((e.toLinearEquiv v).1.2 ⟨g, hg⟩ 1)
-    show (e.toLinearEquiv (π g v)).1.1 1 = _
-    rw [he, mul_one]
-    exact congrArg _ (one_mul g)
-  have hN : ∀ x ∈ unipB k (Fin n), χ x = 1 := by
-    intro x hx
-    have h := unipRad_le_parab k _ hx
-    simp only [χ, dif_pos h]
-    rw [(coe_mem_unipRad k ⟨x, h⟩).1 hx, map_one, Units.val_one]
-  have hD : ∀ t, diagT k (Fin n) t ∈ parab k (points (Fin n)) := fun t => leviEmb_mem_parab k _ _
-  have hT : ∀ t, χ (diagT k (Fin n) t) =
-      ∏ i, ((absPow k ((modExp (fun _ : Fin n => Unit) i : ℂ) / 2) * μ i) (t i) : ℂ) := by
-    intro t
-    have hd : ∀ i, Matrix.GeneralLinearGroup.det (leviTorus k (Fin n) t i) = t i :=
-      congrFun ((leviTorus k (Fin n)).left_inv t)
-    simp only [χ, dif_pos (hD t)]
-    rw [show leviProj k _ ⟨_, hD t⟩ = leviTorus k (Fin n) t from leviProj_leviEmb k _ _]
-    simp [Ψ, deltaHalf_apply, hd, Finset.prod_mul_distrib]
-  have hφ' : ∀ t : (glIwa k n).T, χ t = ((φ t)⁻¹ : ℂˣ) ∧ ((t : GL (Fin n) k) ∈ (glIwa k n).Tc c → χ t = 1) := by
-    intro t
-    obtain ⟨y, h1, h2, h3⟩ := exists_torus_eq_diagT_eq_prod_eT_and_mem_Uc_of_mem_Tc t
-    have h4 : χ t = ∏ i, (ω i (y i) : ℂ) := by
-      rw [h1, hT]
-      refine Finset.prod_congr rfl fun i _ => ?_
-      simp only [μ, MonoidHom.mul_apply, isUnram_absPow k _ _ (y i).2, one_mul, mul_one]
-    refine ⟨?_, fun h => by rw [h4]; exact Finset.prod_eq_one fun i _ => by rw [hω i _ (h3 c h i), Units.val_one]⟩
-    have h5 : φ t = ∏ i, (ω i (y i))⁻¹ := by
-      refine (congrArg φ h2).trans ((map_list_prod φ _).trans ?_)
-      refine (congrArg List.prod (List.map_ofFn ..)).trans (List.prod_ofFn.trans ?_)
-      exact Finset.prod_congr rfl fun i _ => hφ i (y i)
-    rw [h4, h5]
-    simp
-  have hmul : ∀ a ∈ parab k (points (Fin n)), ∀ b ∈ parab k (points (Fin n)), χ (a * b) = χ a * χ b := by
-    intro a ha b hb
-    simp only [χ, dif_pos ha, dif_pos hb, dif_pos (mul_mem ha hb)]
-    rw [← Units.val_mul, ← map_mul, ← map_mul]
-    rfl
-  obtain ⟨f, hf1, hf⟩ := UpperTheory.V.Hi.indVec _ ((glIwa k n).I1 c) σ (hI c).1 1 (by
-    rintro ⟨p, hp⟩ h
-    obtain ⟨x, hx, t, ht, y, hy, rfl⟩ := (iwMem _ _ c p).2.1.1 h
-    have hx' := unipRad_le_parab k _ hx.1
-    have ht' : t ∈ parab k (points (Fin n)) := by obtain ⟨⟨s, -, rfl⟩, -⟩ := ht; exact hD s
-    have hy' : y ∈ parab k (points (Fin n)) := (Subgroup.mul_mem_cancel_left _ (mul_mem hx' ht')).1 hp
-    rw [hσ, mul_one]
-    show χ (x * t * y) = 1
-    rw [hmul _ (mul_mem hx' ht') _ hy', hmul _ hx' _ ht', hN x hx.1, (hφ' ⟨t, ht.1⟩).2 ht,
-      hN y ((mem_unipB k).2 ⟨(mem_borel k).1 hy', (GlAx.mem_low.1 hy.1).2⟩), one_mul, one_mul])
-  haveI : FiniteDimensional ℂ (GlobalTheory.PRep.fixed (PS ω) ((glIwa k n).I1 c)) :=
-    (GlobalTheory.SmGL.ParIndAdm.isAdmissible_parInd _ _).2 _ (hI c).1 (hI c).2
-  haveI : FiniteDimensional ℂ (fixd π ((glIwa k n).I1 c)) :=
-    Module.Finite.of_injective (e.toLinearEquiv.toLinearMap.restrict (p := fixd π ((glIwa k n).I1 c))
-      (q := GlobalTheory.PRep.fixed (PS ω) ((glIwa k n).I1 c)) fun v hv u => by
-        show PS ω u (e.toLinearEquiv v) = _
-        rw [← he, hv u u.2]; exact (one_smul ℂ _).symm) fun a b h => Subtype.ext (e.toLinearEquiv.injective (congrArg Subtype.val h))
-  obtain ⟨v, hv, hv0, h1, h2⟩ := ordA_abs (glIwa k n) π c l χ
-    (fun x hx v => by rw [hl x (unipRad_le_parab k _ hx), hN x hx, one_mul])
-    (by rintro _ ⟨t, rfl⟩; exact hl _ (hD t)) (w := e.toLinearEquiv.symm f)
-    (fun u hu => e.toLinearEquiv.injective (by rw [he, LinearEquiv.apply_symm_apply]; exact hf u hu))
-    (by
-      show (e.toLinearEquiv (e.toLinearEquiv.symm f)).1.1 1 ≠ 0
-      rw [LinearEquiv.apply_symm_apply]
-      exact hf1.trans_ne one_ne_zero)
-  refine ⟨v, ⟨fun x hx => hv x (Subgroup.mem_sup_left (Subgroup.mem_sup_left hx)),
-    fun x hx => hv x (Subgroup.mem_sup_right hx), fun t => by rw [h1 t t.2, (hφ' t).1]⟩, hv0, fun j hj => ?_⟩
-  rw [h2 _ (al_mem k n j), hidx j hj, ← ordA_val ω j hj, al, upow, hT]
+    _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (ω : Fin n → kˣ →* ℂˣ), Nonempty (π.Equiv (PS ω)) → ∀ c : ℕ, (∀ i, ∀ y ∈ Uc k (c + 1), ω i y = 1) → ∀ φ : (glIwa k n).T →* ℂˣ, IsInvOn φ ω → ∃ v ∈ (glIwa k n).eig π c φ, v ≠ 0 ∧ ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v :=
+  fun _ => UpperTheory.V.Hi.exists_eigenvector_of_equiv_principalSeries
 end

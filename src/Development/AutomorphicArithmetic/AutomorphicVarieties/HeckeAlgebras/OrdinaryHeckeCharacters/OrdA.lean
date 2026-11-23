@@ -206,9 +206,9 @@ private theorem ordA_val (ω : Fin n → kˣ →* ℂˣ) (j : ℕ) (hj : j ≤ n
 
 end SlopeTestRemainingChoices
 
-theorem UpperTheory.V.Hi.ordA :
-    GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (ω : Fin n → kˣ →* ℂˣ), Nonempty (π.Equiv (PS ω)) → ∀ c : ℕ, (∀ i, ∀ y ∈ Uc k (c + 1), ω i y = 1) → ∀ φ : (glIwa k n).T →* ℂˣ, IsInvOn φ ω → ∃ v ∈ (glIwa k n).eig π c φ, v ≠ 0 ∧ ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v := by
-  intro _ k _ _ _ _ n V _ _ π ω ⟨e⟩ c hω φ hφ
+theorem UpperTheory.V.Hi.exists_eigenvector_of_equiv_principalSeries :
+    ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (ω : Fin n → kˣ →* ℂˣ), Nonempty (π.Equiv (PS ω)) → ∀ c : ℕ, (∀ i, ∀ y ∈ Uc k (c + 1), ω i y = 1) → ∀ φ : (glIwa k n).T →* ℂˣ, IsInvOn φ ω → ∃ v ∈ (glIwa k n).eig π c φ, v ≠ 0 ∧ ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v := by
+  intro k _ _ _ _ n V _ _ π ω ⟨e⟩ c hω φ hφ
   classical
   obtain ⟨-, -, hI, -, -, -, -, hidx, -⟩ := glBridge k n V π
   let μ : Fin n → kˣ →* ℂˣ := fun i => ω i * absPow k (((n : ℂ) - 1) / 2)
@@ -295,3 +295,7 @@ theorem UpperTheory.V.Hi.ordA :
   refine ⟨v, ⟨fun x hx => hv x (Subgroup.mem_sup_left (Subgroup.mem_sup_left hx)),
     fun x hx => hv x (Subgroup.mem_sup_right hx), fun t => by rw [h1 t t.2, (hφ' t).1]⟩, hv0, fun j hj => ?_⟩
   rw [h2 _ (al_mem k n j), hidx j hj, ← ordA_val ω j hj, al, upow, hT]
+
+theorem UpperTheory.V.Hi.ordA :
+    GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (ω : Fin n → kˣ →* ℂˣ), Nonempty (π.Equiv (PS ω)) → ∀ c : ℕ, (∀ i, ∀ y ∈ Uc k (c + 1), ω i y = 1) → ∀ φ : (glIwa k n).T →* ℂˣ, IsInvOn φ ω → ∃ v ∈ (glIwa k n).eig π c φ, v ≠ 0 ∧ ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v :=
+  fun _ => UpperTheory.V.Hi.exists_eigenvector_of_equiv_principalSeries

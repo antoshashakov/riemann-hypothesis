@@ -4,6 +4,7 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.CdChart
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.CdFrame
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBIdAd
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FrameBiextDictionarySecondPartialLaw
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,7 +57,7 @@ theorem germ_affine : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   intro E _ _ _ H _ hs X0 t hp z
   obtain ⟨S, _, x0, d, G, A, tg, x, c, hj, hz, hc, ht, hb, hU⟩ := chart_affine E H X0 t z
   obtain ⟨e, ph1, ph2, sy, ad, hfr, htr, hfa, had⟩ := frame_affine E H X0 t S x0 d G A tg _ x c hc hU
-  obtain ⟨hax, hr⟩ := FBIdAd.fbId E H X0 t hp hs S x0 _ G A _ tg _ x e ph1 ph2 sy ad hc hfr hfa had
+  obtain ⟨hax, hr⟩ := _root_.GlobalTheory.FrameBiextId.fbId E H X0 t hp hs S x0 _ G A _ tg _ x e ph1 ph2 sy ad hc hfr hfa had
   exact ⟨S, _, x0, d, hj, hz, ⟨⟨mkFB G A ph1 ph2 sy ad hax hr, x, e, tg, hc, ht, hb, hfr, htr, hfa⟩⟩⟩
 
 end PositivityTheory.HtPt.Cd

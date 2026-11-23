@@ -59,6 +59,10 @@ abbrev Sp (R : Type) [CommRing R] : Scheme.{0} := Spec (CommRingCat.of R)
 abbrev spMap {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') : Sp R' ⟶ Sp R :=
   Spec.map (CommRingCat.ofHom f)
 
+theorem spMap.comp_hom {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
+    (f : A →+* B) (g : B →+* C) : spMap g ≫ spMap f = spMap (g.comp f) :=
+  (Spec.map_comp _ _).symm
+
 abbrev PSpace (R : Type) [CommRing R] (N : ℕ) : Scheme.{0} :=
   Proj (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R)
 

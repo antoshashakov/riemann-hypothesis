@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.EqZeroOfPiInf
 
 @[expose] public section
 
@@ -91,74 +92,8 @@ theorem exists_moved {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : I
     (InfinitePlace.isReal_mk_iff.2 hr)
 
 theorem eq_zero_of_piInf {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (d : AE F E)
-    (hd : At (evI F) d) (h0 : ∀ w, piInf (τ w) d = 0) : d = 0 := by
-  obtain ⟨e, he⟩ := exists_moved hCM τ
-  have hli : LinearIndependent F ![(1 : E), e] := by
-    rw [LinearIndependent.pair_iff]
-    intro s t hst
-    by_cases ht : t = 0
-    · subst ht
-      simp at hst
-      exact ⟨hst, rfl⟩
-    · exfalso
-      apply he
-      have : e = algebraMap F E (-s / t) := by
-        rw [Algebra.smul_def, Algebra.smul_def, mul_one] at hst
-        have ht' : algebraMap F E t ≠ 0 := by simpa using ht
-        rw [map_div₀, map_neg, eq_div_iff ht']
-        linear_combination hst
-      rw [this, AlgHom.commutes]
-  have hcard : Fintype.card (Fin 2) = Module.finrank F E := by rw [Fintype.card_fin, hCM.2.2.1]
-  let b := basisOfLinearIndependentOfCardEqFinrank hli hcard
-  have hb0 : b 0 = 1 := by simp [b]
-  have hb1 : b 1 = e := by simp [b]
-  let B := Algebra.TensorProduct.basis (AF F) b
-  set c := B.repr d with hc_def
-  have hd_eq : d = c 0 ⊗ₜ[F] (1 : E) + c 1 ⊗ₜ[F] e := by
-    conv_lhs => rw [← B.sum_repr d]
-    simp [Fin.sum_univ_two, B, Algebra.TensorProduct.basis_apply, hb0, hb1, TensorProduct.smul_tmul', c]
-  have hfin : ∀ i, (c i).2 = 0 := by
-    intro i
-    let u : AF F := ((0 : InfiniteAdeleRing F), (1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F))
-    have hu : evI F u = 0 := by
-      show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0
-      exact map_zero _
-    have h1 := congrArg (fun z => B.repr z i) (hd u hu)
-    simp only [map_smul, map_zero, Finsupp.smul_apply, Finsupp.coe_zero, Pi.zero_apply, smul_eq_mul] at h1
-    have h2 := congrArg Prod.snd h1
-    have h3 : (u * c i).2 = (c i).2 := by
-      show (1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) * (c i).2 = (c i).2
-      exact one_mul _
-    exact h3.symm.trans h2
-  have hinf : ∀ w, evInf F w (c 0) = 0 ∧ evInf F w (c 1) = 0 := by
-    intro w
-    have hw := h0 w
-    rw [hd_eq, map_add (f := _), piInf_tmul, piInf_tmul, map_one, mul_one] at hw
-    set r0 := InfinitePlace.Completion.extensionEmbedding w (evInf F w (c 0)) with hr0_def
-    set r1 := InfinitePlace.Completion.extensionEmbedding w (evInf F w (c 1)) with hr1_def
-    have hr0 : star r0 = r0 := ext_star (hCM.1.isReal w) _
-    have hr1 : star r1 = r1 := ext_star (hCM.1.isReal w) _
-    have hw' := congrArg star hw
-    rw [star_add, star_mul', hr0, hr1, ← hCM.2.2.2, star_zero] at hw'
-    have hsub : r1 * ((τ w).1 e - (τ w).1 (σ e)) = 0 := by linear_combination hw - hw'
-    have hne : (τ w).1 e - (τ w).1 (σ e) ≠ 0 := sub_ne_zero.2 (fun h => he ((τ w).1.injective h).symm)
-    have h1 : r1 = 0 := (mul_eq_zero.1 hsub).resolve_right hne
-    have h0' : r0 = 0 := by rw [h1, zero_mul, add_zero] at hw; exact hw
-    exact ⟨(InfinitePlace.Completion.extensionEmbedding w).injective (h0'.trans (map_zero _).symm),
-      (InfinitePlace.Completion.extensionEmbedding w).injective (h1.trans (map_zero _).symm)⟩
-  have hc : ∀ i, c i = 0 := by
-    intro i
-    have hi : ∀ w, evInf F w (c i) = 0 := by
-      intro w
-      fin_cases i
-      · exact (hinf w).1
-      · exact (hinf w).2
-    apply Prod.ext
-    · funext w
-      exact hi w
-    · exact hfin i
-  rw [hd_eq, hc 0, hc 1]
-  simp
+    (hd : At (evI F) d) (h0 : ∀ w, piInf (τ w) d = 0) : d = 0 :=
+  GlobalTheory.CompanionTheory.CMAdele.eq_zero_of_piInf σ hCM τ d hd h0
 
 theorem Jm_mul_Jm (R S : ℕ) : Jm R S * Jm R S = 1 := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]

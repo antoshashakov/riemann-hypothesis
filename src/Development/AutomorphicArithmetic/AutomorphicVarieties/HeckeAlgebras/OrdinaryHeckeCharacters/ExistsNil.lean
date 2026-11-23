@@ -440,9 +440,10 @@ end Num
 end UpperTheory.V.Hi.OrdB
 
 open GlobalTheory.PRep in
-theorem UpperTheory.V.Hi.ordB :
-    GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), GlobalTheory.PRep.IsSmooth π → π.IsIrreducible → ∀ (c : ℕ) (φ : (glIwa k n).T →* ℂˣ), (∀ i (y : Uo k), (y : kˣ) ∈ Uc k (c + 1) → φ (eT k n i y) = 1) → Distinct φ → invPart π c φ ≠ ⊥ → ∃ ω : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) ∧ IsInvOn φ ω ∧ Nonempty (π.Equiv (PS ω)) ∧ Module.finrank ℂ (invPart π c φ) = 1 ∧ ∀ v ∈ invPart π c φ, ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v := by
-  intro H k _ _ _ _ n V _ _ π hπ hirr c φ hφ0 hD hne
+theorem UpperTheory.V.Hi.principalSeries_of_finiteness_geometricLemma
+    (hbz : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (hgeo : GlobalTheory.Published.GeometricLemma) (hdisj : GlobalTheory.Published.TotallyDisjointProductIrreducible) :
+    ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), GlobalTheory.PRep.IsSmooth π → π.IsIrreducible → ∀ (c : ℕ) (φ : (glIwa k n).T →* ℂˣ), (∀ i (y : Uo k), (y : kˣ) ∈ Uc k (c + 1) → φ (eT k n i y) = 1) → Distinct φ → invPart π c φ ≠ ⊥ → ∃ ω : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) ∧ IsInvOn φ ω ∧ Nonempty (π.Equiv (PS ω)) ∧ Module.finrank ℂ (invPart π c φ) = 1 ∧ ∀ v ∈ invPart π c φ, ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v := by
+  intro k _ _ _ _ n V _ _ π hπ hirr c φ hφ0 hD hne
   obtain ⟨hker, hsm, hI, -, -, -, -, hidx, -, hT⟩ := glBridge k n V π
   have hφ : ∀ t : (glIwa k n).T, (t : GL (Fin n) k) ∈ (glIwa k n).Tc c → φ t = 1 := fun t ht => by
     obtain ⟨y, hy, hy'⟩ := hT t
@@ -458,7 +459,7 @@ theorem UpperTheory.V.Hi.ordB :
       ext v
       exact ⟨fun h u => by simpa using h u u.2, fun h u hu => by simpa using h ⟨u, hu⟩⟩
     rw [hfix]
-    exact ((H.loc.bz k).1 _ V π hπ hirr).2 _ (hI c).1 (hI c).2
+    exact ((hbz k).1 _ V π hπ hirr).2 _ (hI c).1 (hI c).2
   let p : V →ₗ[ℂ] Jacquet π (unipB k (Fin n)) := Submodule.mkQ _
   have hinj : ∀ v ∈ invPart π c φ, p v = 0 → v = 0 := fun v hv h =>
     OrdB.inv_inj _ π c φ hφ (hsm hπ) hv (hker ▸ (Submodule.Quotient.mk_eq_zero _).1 h)
@@ -484,7 +485,7 @@ theorem UpperTheory.V.Hi.ordB :
   obtain ⟨x, hx, hx0⟩ := (Submodule.ne_bot_iff _).1 hne
   have hl : HasFiniteLength (jacB π) :=
     (hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).surjective).2
-      ((H.loc.bz k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))
+      ((hbz k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))
   haveI := GlobalTheory.TorusEigenform.secondCountableTopology_units k
   obtain ⟨μ, hμs, hμ, l, hl0, hle⟩ := OrdB.exists_form (isSmooth_jacB hπ) hl fun h => hx0 (hinj x hx h)
   obtain ⟨ψ, hψ, rfl⟩ : ∃ ψ : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ψ i)) ∧ torusChar ψ = μ := by
@@ -497,7 +498,7 @@ theorem UpperTheory.V.Hi.ordB :
   have hψφ : ∀ i (u : Uo k), ψ i u = (φ (eT k n i u))⁻¹ := fun i u => by
     rw [← OrdB.tc_single]
     exact Units.ext (hμ _ _ ((hE _).1 (hpE x hx) i u))
-  obtain ⟨hfd, -, hmult⟩ := UpperTheory.V.AlgebraTools.jqMult H.loc.geo H.loc.bz k n V π ψ hπ hψ hsq
+  obtain ⟨hfd, -, hmult⟩ := UpperTheory.V.AlgebraTools.jqMult hgeo hbz k n V π ψ hπ hψ hsq
   have hw : ∀ w : Equiv.Perm (Fin n), (∀ i (u : Uo k), ψ (w i) u = ψ i u) → w = 1 := fun w h => by
     refine Equiv.ext fun i => by_contra fun hi => ?_
     obtain ⟨u, hu⟩ := hD _ _ hi
@@ -539,7 +540,7 @@ theorem UpperTheory.V.Hi.ordB :
     have := hψφ i u
     rw [MonoidHom.mul_apply, isUnram_absPow k _ _ u.2, mul_one] at this
     rw [this, inv_inv]
-  refine ⟨ω, hω, hinv, (psIrr H k n ω hω fun i j hij => ?_).2 V π hirr hsq, le_antisymm ?_ ?_, fun v hv j hj => ?_⟩
+  refine ⟨ω, hω, hinv, (UpperTheory.V.Hi.psIrr_of_totallyDisjoint hdisj k n ω hω fun i j hij => ?_).2 V π hirr hsq, le_antisymm ?_ ?_, fun v hv j hj => ?_⟩
   · obtain ⟨u, hu⟩ := hD i j hij
     rw [hinv, hinv] at hu
     refine ⟨fun h => hu (by rw [h]), fun h => hu ?_⟩
@@ -559,3 +560,7 @@ theorem UpperTheory.V.Hi.ordB :
     rw [map_sub, map_smul, sub_eq_zero] at h2 ⊢
     rw [h2, ← OrdB.num ω hj, mul_smul, ← h3]
     rfl
+
+theorem UpperTheory.V.Hi.ordB :
+    GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), GlobalTheory.PRep.IsSmooth π → π.IsIrreducible → ∀ (c : ℕ) (φ : (glIwa k n).T →* ℂˣ), (∀ i (y : Uo k), (y : kˣ) ∈ Uc k (c + 1) → φ (eT k n i y) = 1) → Distinct φ → invPart π c φ ≠ ⊥ → ∃ ω : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) ∧ IsInvOn φ ω ∧ Nonempty (π.Equiv (PS ω)) ∧ Module.finrank ℂ (invPart π c φ) = 1 ∧ ∀ v ∈ invPart π c φ, ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v :=
+  fun H => UpperTheory.V.Hi.principalSeries_of_finiteness_geometricLemma H.loc.bz H.loc.geo H.loc.disj

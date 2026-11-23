@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Rt0ConjNegNeZero
 
 @[expose] public section
 
@@ -71,16 +72,13 @@ theorem rt0_ne_zero (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : 
   exact H.d_prime.ne_zero (by exact_mod_cast h2)
 
 theorem rt0_conj_neg_ne_zero (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
-  have h1 : (starRingEnd ℂ H.rt0) ^ 2 = H.rt0 ^ 2 := by
-    rw [← map_pow, H.sqrt_neg_disc_sq]; simp
-  rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h
-  · exfalso
-    have him : H.rt0.im = 0 := Complex.conj_eq_iff_im.1 h
-    have h2 := congrArg Complex.re H.sqrt_neg_disc_sq
-    have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-    simp [pow_two, him] at h2
-    nlinarith [mul_self_nonneg H.rt0.re]
-  · exact h
+  first
+  | exact @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | (apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> first | assumption | infer_instance)
+  | (intros; exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero ..)
 
 theorem emb_rt_eq_or (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (τ : E →+* ℂ) :
     τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0 := by

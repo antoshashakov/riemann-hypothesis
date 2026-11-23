@@ -56,6 +56,7 @@ import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import ReciprocityTheory.GaloisValuations.GlobalA
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertLocalMemUnitaryGroupAntidiagonalForm
 
 @[expose] public section
 
@@ -96,37 +97,13 @@ theorem compAt_mem_tensInt {z : AL L} (hz : z ∈ ALint L) :
   exact key hz
 
 theorem loc_mem_GU (Dv : InertDatum L n v w) (x : GAf L n) : Dv.loc x ∈ GU Dv.σw n := by
-  set φ : AL L →+* w.adicCompletion L := (Dv.e : _ →+* _).comp (compAt L v) with hφdef
-  have hφ : ∀ z, φ (conjAL L z) = Dv.σw (φ z) := fun z => by
-    simp only [φ, RingHom.comp_apply, compAt_conjAL]
-    exact Dv.comm _
-  have hX : ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) *
-      conjT (conjAL L) ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1 := x.2
-  have hX' := mul_eq_one_comm.mp hX
-  set A : Matrix (Fin n) (Fin n) (w.adicCompletion L) :=
-    ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map φ with hAdef
-  have hA : cT Dv.σw A * A = 1 := by
-    have : cT Dv.σw A = (conjT (conjAL L) ((x.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))).map φ := by
-      ext i j; simp [cT, conjT, A, hφ]
-    rw [this, ← Matrix.map_mul, hX', Matrix.map_one _ (map_zero _) (map_one _)]
-  have hloc : ((Dv.loc x : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) =
-      ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) * A *
-        (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)) := rfl
-  have hPP : cT Dv.σw ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) *
-      cT Dv.σw (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)) = 1 := by
-    rw [← cT_mul, Units.mul_inv, cT_one]
-  have hPP' : (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)) *
-      ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) = 1 :=
-    Units.mul_inv _
-  show cT Dv.σw ((Dv.loc x : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) *
-      antiJ (w.adicCompletion L) n *
-      ((Dv.loc x : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) =
-      antiJ (w.adicCompletion L) n
-  rw [← Dv.Panti, hloc, cT_mul, cT_mul]
-  simp only [Matrix.mul_assoc]
-  rw [← Matrix.mul_assoc (cT Dv.σw _) (cT Dv.σw (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L))), hPP,
-    Matrix.one_mul, ← Matrix.mul_assoc (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)), hPP',
-    Matrix.one_mul, ← Matrix.mul_assoc (cT Dv.σw A) A, hA, Matrix.one_mul]
+  first
+  | exact @_root_.GlobalTheory.LocalUnitary.loc_mem_GU
+  | exact _root_.GlobalTheory.LocalUnitary.loc_mem_GU
+  | (apply _root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> assumption)
+  | (intros; apply _root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> assumption)
+  | (intros; apply @_root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> first | assumption | infer_instance)
+  | (intros; exact _root_.GlobalTheory.LocalUnitary.loc_mem_GU ..)
 
 theorem mem_range_of_int {K : Type} [Field K] (S : Subring K) (g : GL (Fin n) K)
     (h1 : ∀ i j, (g : Matrix (Fin n) (Fin n) K) i j ∈ S)

@@ -2,6 +2,7 @@ module
 
 public import Formalism.HermitianCurvature.StatementB
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.EquivariantL2Space
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -96,20 +97,7 @@ theorem hpk_apply' (k r i : ℕ) (hi : i < 2 * r + k + 1) (j : Fin (2 * r + k + 
     Hpk k r ⟨i, hi⟩ j = if j.val = sg k r i then (if i = r + k then -1 else 1) else 0 :=
   hpk_apply k r ⟨i, hi⟩ j
 
-theorem hpk_mul (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Finset.sum_eq_single (⟨sg k r i.val, sg_lt i.2⟩ : Fin _)]
-  · rw [hpk_apply k r i ⟨sg k r i.val, sg_lt i.2⟩, hpk_apply' k r _ (sg_lt i.2) j, sg_sg i.2, Matrix.one_apply,
-      if_pos (show ((⟨sg k r i.val, sg_lt i.2⟩ : Fin (2 * r + k + 1)).val = sg k r i.val) from rfl)]
-    have hs := sg_rk (k := k) (r := r) i.2
-    by_cases hij : i = j
-    · subst hij; rw [if_pos rfl, if_pos rfl]
-      by_cases h : i.val = r + k
-      · rw [if_pos h, if_pos (hs.2 h)]; norm_num
-      · rw [if_neg h, if_neg (fun h' => h (hs.1 h'))]; norm_num
-    · rw [if_neg hij, if_neg (fun h : j.val = i.val => hij (Fin.ext h.symm)), mul_zero]
-  · intro b _ hb; rw [hpk_apply k r i b, if_neg (fun h => hb (Fin.ext h)), zero_mul]
-  · intro h; exact absurd (Finset.mem_univ _) h
+theorem hpk_mul (k r : ℕ) : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem inv_eq {k r : ℕ} {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg

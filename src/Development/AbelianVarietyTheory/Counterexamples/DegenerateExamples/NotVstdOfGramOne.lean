@@ -69,38 +69,7 @@ theorem hLat_one (V : HSp D) : Bridge.hLat V 1 = latC V := by
   have hfg : (latC V).FG := Submodule.FG.map _ V.standardTuple_isLattice.fg
   have hsp : Submodule.span D.host.E (latC V : Set (Fin V.rank → D.host.E)) = ⊤ := by
     have h : Submodule.span D.host.E (V.L0 : Set V.V) = ⊤ := by
-      let W := Submodule.span D.host.E (V.L0 : Set V.V)
-      change W = ⊤
-      by_contra hn
-      let e : V.V ≃ₗ⋆[D.host.E] V.V :=
-        V.frame.equivFun.trans ((starLinearEquiv D.host.E).trans V.frame.equivFun.symm)
-      let g : V.V →ₗ[D.host.E] Module.Dual D.host.E W :=
-        (LinearMap.domRestrict' W).comp (V.hT.comp e.toLinearMap)
-      have hdim : Module.finrank D.host.E (Module.Dual D.host.E W) < Module.finrank D.host.E V.V := by
-        rw [Subspace.dual_finrank_eq]
-        exact Submodule.finrank_lt hn
-      obtain ⟨x, hx, hx₀⟩ :=
-        Submodule.exists_mem_ne_zero_of_ne_bot (LinearMap.ker_ne_bot_of_finrank_lt (f := g) hdim)
-      have hsmul (a : D.host.E) : a • e x ∈ V.L0 := by
-        rw [← V.baseLattice_isUnimodular]
-        change a • e x ∈ Formalism.E.hdual V.hT V.L0
-        simp only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
-          LinearMap.restrictScalars_apply, Submodule.mem_one]
-        intro y hy
-        have hxy : V.hT (e x) y = 0 :=
-          congrArg (fun f : Module.Dual D.host.E W => f ⟨y, Submodule.subset_span hy⟩)
-            (LinearMap.mem_ker.mp hx)
-        have hyx : V.hT y (e x) = 0 := by
-          have hh := V.herm.eq (e x) y
-          simpa [hxy] using hh.symm
-        simp [map_smul, hyx]
-      let i : D.host.E →ₗ[𝓞 D.host.E] V.L0 :=
-        ((LinearMap.toSpanSingleton D.host.E _ (e x)).restrictScalars (𝓞 D.host.E)).codRestrict V.L0 hsmul
-      let : Module.Finite (𝓞 D.host.E) V.L0 := Module.Finite.iff_fg.mpr V.standardTuple_isLattice.fg
-      let : Module.Finite (𝓞 D.host.E) D.host.E := Module.Finite.of_injective i fun a b hab =>
-        smul_left_injective D.host.E (fun hzero => hx₀ (e.map_eq_zero_iff.mp hzero)) (congrArg Subtype.val hab)
-      exact RingOfIntegers.not_isField D.host.E
-        (isField_of_isIntegral_of_isField (IsFractionRing.injective (𝓞 D.host.E) D.host.E) (Field.toIsField D.host.E))
+      exact V.span_baseLattice_eq_top
     have : (latC V : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V) := rfl
     rw [this, ← Submodule.map_span, h, Submodule.map_top]
     exact LinearMap.range_eq_top.2 V.frame.equivFun.surjective

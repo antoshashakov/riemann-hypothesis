@@ -7,6 +7,7 @@ public import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHo
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.IntegralZeroFrequencyInvariant
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ComplexifiedDerivativeCommutator
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -491,41 +492,7 @@ private theorem hpk_apply_of_not_mid_index {k r : ℕ} (i b : Fin (2 * r + k + 1
     have e2 : ¬ (b.val < r ∧ i.val + b.val = 2 * r + k) := by omega
     simp only [Hpk, if_neg e1, if_neg e2, if_neg e3]
 
-private theorem hpk_mul_self' {k r : ℕ} : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  have hi1 := i.isLt
-  by_cases hi : r ≤ i.val ∧ i.val ≤ r + k
-  · rw [Finset.sum_eq_single i]
-    · rw [hpk_apply_of_mid_index i i hi, hpk_apply_of_mid_index i j hi, if_pos rfl]
-      by_cases hij : i = j
-      · subst hij
-        rw [if_pos rfl, if_pos rfl]
-        split_ifs <;> norm_num
-      · rw [if_neg (Ne.symm hij), if_neg hij, mul_zero]
-    · intro b _ hb
-      rw [hpk_apply_of_mid_index i b hi, if_neg hb, zero_mul]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
-  · have hn : 2 * r + k - i.val < 2 * r + k + 1 := by omega
-    have hσ : ¬(r ≤ (⟨2 * r + k - i.val, hn⟩ : Fin (2 * r + k + 1)).val ∧
-        (⟨2 * r + k - i.val, hn⟩ : Fin (2 * r + k + 1)).val ≤ r + k) := by
-      show ¬(r ≤ 2 * r + k - i.val ∧ 2 * r + k - i.val ≤ r + k)
-      omega
-    have hσσ : 2 * r + k - (⟨2 * r + k - i.val, hn⟩ : Fin (2 * r + k + 1)).val = i.val := by
-      show 2 * r + k - (2 * r + k - i.val) = i.val
-      omega
-    rw [Finset.sum_eq_single ⟨2 * r + k - i.val, hn⟩]
-    · rw [hpk_apply_of_not_mid_index i _ hi, hpk_apply_of_not_mid_index _ j hσ, if_pos rfl, one_mul, hσσ]
-      by_cases hij : i = j
-      · subst hij
-        simp
-      · rw [if_neg hij, if_neg (fun h => hij (Fin.ext h.symm))]
-    · intro b _ hb
-      have hb' : ¬ b.val = 2 * r + k - i.val := fun h => hb (Fin.ext h)
-      rw [hpk_apply_of_not_mid_index i b hi, if_neg hb', zero_mul]
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+private theorem hpk_mul_self' {k r : ℕ} : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem exp_mem {X : Mat k r} (hX : inLie k r X) (t : ℝ) : NormedSpace.exp ((t : ℂ) • X) ∈ GV k r := by
   apply PI.ComplexConjugateDerivative.exp_mem_GV <;> assumption

@@ -3,6 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsFundOne
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairCommonUnipotentStabiliserSummary
 public import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -337,12 +338,7 @@ theorem inN_of_nset (h : IsReal H k r σ Φ) (ht : ∀ a, t a ≠ 0)
 
 end Flag
 
-theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [WeylGroupFacts.hpk_mul_apply, WeylGroupFacts.hpk_row, WeylGroupFacts.tau_tau, Matrix.one_apply]
-  unfold WeylGroupFacts.sgn WeylGroupFacts.tau
-  simp only [Fin.ext_iff]
-  split_ifs <;> first | (exfalso; omega) | simp
+theorem hpk_sq : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem isUnit_det {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
   have : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by

@@ -49,6 +49,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.HermitianFormBaseVectorRight
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.UHMulInv
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 
 @[expose] public section
 
@@ -92,21 +93,7 @@ private lemma conjTranspose_Hpk_eq_Hpk (k r' : ℕ) : (Hpk k r')ᴴ = Hpk k r' :
   simp only [Matrix.conjTranspose_apply, Hpk, Matrix.of_apply, Fin.ext_iff]
   split_ifs <;> first | (exfalso; omega) | rfl | norm_num
 
-private lemma Hpk_sq_eq_one (k r' : ℕ) : Hpk k r' * Hpk k r' = 1 := by
-  ext i j
-  rw [Matrix.mul_apply]
-  have hσ : (if (i : ℕ) < r' ∨ r' + k < (i : ℕ) then 2 * r' + k - i else (i : ℕ)) < 2 * r' + k + 1 := by
-    split_ifs <;> omega
-  rw [Finset.sum_eq_single ⟨_, hσ⟩]
-  · simp only [Hpk, Matrix.of_apply, Matrix.one_apply, Fin.ext_iff]
-    split_ifs <;> first | (exfalso; omega) | rfl | norm_num
-  · intro l _ hl
-    have h0 : Hpk k r' i l = 0 := by
-      simp only [Hpk, Matrix.of_apply, ne_eq, Fin.ext_iff] at hl ⊢
-      split_ifs at hl ⊢ <;> first | (exfalso; omega) | rfl
-    rw [h0, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+private lemma Hpk_sq_eq_one (k r' : ℕ) : Hpk k r' * Hpk k r' = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem hpk_mem (k r' : ℕ) : Hpk k r' ∈ GV k r' := by
   simp only [GV, UH, Set.mem_setOf_eq]

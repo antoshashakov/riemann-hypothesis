@@ -42,6 +42,8 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
+public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Rt0ConjNegNeZero
 
 @[expose] public section
 
@@ -59,20 +61,13 @@ section Host
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E)
 
 theorem imaginary_root_conj : conj H.rt0 = -H.rt0 := by
-  rcases H with ⟨d, -, hp, -, -, -, -, -, -, -, r, hr⟩
-  show conj r = -r
-  have hdpos : (0:ℝ) < d := by exact_mod_cast hp.pos
-  have h1 := congrArg Complex.re hr
-  have h2 := congrArg Complex.im hr
-  simp only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
-    Complex.natCast_re, Complex.natCast_im, neg_zero] at h1 h2
-  have hre : r.re = 0 := by
-    rcases mul_eq_zero.mp (show r.re * r.im = 0 by linarith) with h | h
-    · exact h
-    · exfalso
-      rw [h] at h1
-      nlinarith [sq_nonneg r.re]
-  apply Complex.ext <;> simp [hre]
+  first
+  | exact @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | (apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> first | assumption | infer_instance)
+  | (intros; exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero ..)
 
 theorem imaginary_root_ne_zero : H.rt0 ≠ 0 := by
   intro h
@@ -112,14 +107,13 @@ theorem not_inPsi_both (τ : E →+* ℂ) : ¬ (InPsi H τ ∧ InPsi H (ComplexE
   · exact imaginary_root_ne_zero H h4
 
 theorem bar_rt : H.bar H.rt = -H.rt := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply RingOfIntegers.ext
-  have key : τ ((H.bar H.rt : 𝓞 E) : E) = τ (-((H.rt : 𝓞 E) : E)) := by
-    rw [H.bar_eq, IsCMField.complexEmbedding_complexConj, map_neg]
-    rcases emb_rt H τ with h | h <;> rw [h] <;> simp [imaginary_root_conj]
-  have := τ.injective key
-  rw [this]
-  simp
+  first
+  | exact @_root_.GlobalTheory.HostModel.bar_rt
+  | exact _root_.GlobalTheory.HostModel.bar_rt
+  | (apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply @_root_.GlobalTheory.HostModel.bar_rt <;> first | assumption | infer_instance)
+  | (intros; exact _root_.GlobalTheory.HostModel.bar_rt ..)
 
 theorem cmHostUnit_add_conj_eq_one : H.w0 + H.bar H.w0 = 1 := by
   have hb := congrArg H.bar H.two_weight_eq_one_add_root

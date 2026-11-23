@@ -4,6 +4,7 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVa
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.UniversalOrdinaryDeterminantRing
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRepDefinedOverFiniteExtension
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoCoefOf
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,38 +70,6 @@ private theorem cf_small {l : ℕ} [hl : Fact l.Prime] (C : ℝ) : ∃ N : ℕ, 
           mul_le_mul_of_nonneg_right hN.le hC.le
       _ = 1 := inv_mul_cancel₀ hC.ne'
 
-private theorem padicAlgCl_norm_le_one_of_isIntegral {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
-    ‖x‖ ≤ 1 := by
-  obtain ⟨p, hpm, hp⟩ := hx
-  by_contra h
-  push_neg at h
-  rw [← Polynomial.aeval_def, Polynomial.aeval_eq_sum_range, Finset.sum_range_succ,
-    hpm.coeff_natDegree, one_smul] at hp
-  have hn0 : p.natDegree ≠ 0 := by
-    intro h0
-    rw [h0] at hp
-    simp at hp
-  have hxn : x ^ p.natDegree = -∑ i ∈ Finset.range p.natDegree, p.coeff i • x ^ i := by
-    linear_combination hp
-  have h1 : 1 ≤ ‖x‖ := h.le
-  have hb : ‖∑ i ∈ Finset.range p.natDegree, p.coeff i • x ^ i‖ ≤ ‖x‖ ^ (p.natDegree - 1) := by
-    apply IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)
-    intro i hi
-    rw [Finset.mem_range] at hi
-    rw [Algebra.smul_def, norm_mul, norm_pow]
-    have ha : ‖algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i)‖ ≤ 1 := by
-      rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']
-      simpa using PadicInt.norm_le_one (p.coeff i)
-    calc ‖algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i)‖ * ‖x‖ ^ i
-        ≤ 1 * ‖x‖ ^ (p.natDegree - 1) :=
-          mul_le_mul ha (pow_le_pow_right₀ h1 (by omega)) (by positivity) zero_le_one
-      _ = ‖x‖ ^ (p.natDegree - 1) := one_mul _
-  have h2 : ‖x‖ ^ p.natDegree ≤ ‖x‖ ^ (p.natDegree - 1) := by
-    rw [← norm_pow, hxn, norm_neg]
-    exact hb
-  have h3 : ‖x‖ ^ (p.natDegree - 1) < ‖x‖ ^ p.natDegree := pow_lt_pow_right₀ h (by omega)
-  linarith
-
 private theorem cf_field {l : ℕ} [Fact l.Prime] (c : Coef l) :
     ∃ E : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] E ∧ ∀ x ∈ c.O, x ∈ E ∧ ‖x‖ ≤ 1 := by
   haveI := c.fin
@@ -121,7 +90,7 @@ private theorem cf_field {l : ℕ} [Fact l.Prime] (c : Coef l) :
           IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]
         exact mul_mem (IntermediateField.algebraMap_mem _ _) hy
   intro x hx
-  refine ⟨key ⟨x, hx⟩ (hS ▸ Submodule.mem_top), padicAlgCl_norm_le_one_of_isIntegral x ?_⟩
+  refine ⟨key ⟨x, hx⟩ (hS ▸ Submodule.mem_top), _root_.GlobalTheory.IntegralAlgebraMapNormBound.main x ?_⟩
   have hi := IsIntegral.of_finite ℤ_[l] (⟨x, hx⟩ : c.O)
   simpa using hi.map c.O.val
 

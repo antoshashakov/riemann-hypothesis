@@ -207,10 +207,7 @@ theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b 
 theorem smT_post (a : S) (v : overAt x0 (DualNumber S) ⟶ G) (φ : G ⟶ G) :
     smT x0 a (v ≫ φ) = smT x0 a v ≫ φ := (Category.assoc _ _ _).symm
 
-theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  simp only [spMap, ← Spec.map_comp]
-  rfl
+alias spMap_comp' := spMap.comp_hom
 
 theorem smT_zero_of (W : overAt x0 (DualNumber S) ⟶ G)
     (hv : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ W.left = (1 : Over.mk x0 ⟶ G).left) :

@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Formalism.LocalToGlobal.ProjectiveLattices.AlgebraMapCAt
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 
 @[expose] public section
 
@@ -80,15 +81,13 @@ theorem conj_of_sq {ρ : ℂ} (hρ : ρ ^ 2 = -(H.d : ℂ)) : starRingEnd ℂ ρ
   · exact h
 
 theorem bar_rt : H.bar H.rt = -H.rt := by
-  obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have h4 : (φ (H.rt : E)) ^ 2 = -(H.d : ℂ) := by
-    have := congrArg (fun a : 𝓞 E => φ (a : E)) H.rt_sq
-    simpa using this
-  apply Subtype.ext
-  show ((H.bar H.rt : 𝓞 E) : E) = ((-H.rt : 𝓞 E) : E)
-  apply φ.injective
-  rw [H.bar_eq, IsCMField.complexEmbedding_complexConj, conj_of_sq h4]
-  simp
+  first
+  | exact @_root_.GlobalTheory.HostModel.bar_rt
+  | exact _root_.GlobalTheory.HostModel.bar_rt
+  | (apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply @_root_.GlobalTheory.HostModel.bar_rt <;> first | assumption | infer_instance)
+  | (intros; exact _root_.GlobalTheory.HostModel.bar_rt ..)
 
 theorem cmHost_bar_halfIntegerGenerator : H.bar H.w0 = 1 - H.w0 := by
   have h := congrArg H.bar H.two_weight_eq_one_add_root

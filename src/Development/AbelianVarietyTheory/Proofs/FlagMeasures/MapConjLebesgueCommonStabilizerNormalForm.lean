@@ -6,6 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStab
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousUpperOff
 public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GNonneg
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.ShearMeasurability
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -647,16 +648,7 @@ theorem mulVec_bvec (g : Mat k r) (x i : Fin (2 * r + k + 1)) : (g *ᵥ bvec x) 
   show (g *ᵥ Pi.single x 1) i = g i x
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
-theorem H_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  have h1 : (Hpk k r * Hpk k r) i j = (Hpk k r *ᵥ (Hpk k r *ᵥ Pi.single j 1)) i := by
-    rw [Matrix.mulVec_mulVec]
-    simp [Matrix.mulVec, dotProduct, Pi.single_apply]
-  rw [h1]
-  simp only [Formalism.QuantumDeterminants.gn_Hpk_mulVec, Pi.single_apply, Matrix.one_apply, Fin.ext_iff, Fin.val_mk]
-  have hi := i.isLt
-  have hj := j.isLt
-  split_ifs <;> first | rfl | (exfalso; omega) | norm_num
+theorem H_sq : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem isUnit_det_of_mem {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg

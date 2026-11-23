@@ -49,6 +49,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeylConjugationFixedColumn.ReflectionScalarDualIsotropic
 
 @[expose] public section
 
@@ -164,44 +165,6 @@ lemma reflection_mul_star (l : Fin r) (c : ℂ) (hc : c ≠ 0) : w1 k r l c * w1
 lemma weyl_cell_inv (l : Fin r) (c : ℂ) (hc : c ≠ 0) : (w1 k r l c)⁻¹ = w1 k r l (star c) :=
   Matrix.inv_eq_right_inv (reflection_mul_star l c hc)
 
-lemma weyl_cell_mem_unitary (l : Fin r) (c : ℂ) (hc : c ≠ 0) : w1 k r l c ∈ UH (Hpk k r) := by
-  have hsc : star c ≠ 0 := star_ne_zero.2 hc
-  show (w1 k r l c)ᴴ * Hpk k r * w1 k r l c = Hpk k r
-  ext p q
-  rw [Matrix.mul_assoc, Matrix.mul_apply]
-  simp only [conjTranspose_apply, hpk_mul_apply]
-  rw [hpk_row]
-  by_cases hp1 : p = eI k r l
-  · subst hp1
-    rw [Finset.sum_eq_single (esI k r l)]
-    · rw [reflection_column_isotropic, if_pos rfl, tau_es, sgn_es, weyl_cell_apply_basis, tau_e, sgn_e]
-      by_cases hq : q = esI k r l
-      · rw [if_pos hq, if_pos hq, one_mul, ← star_inv₀, ← star_mul, inv_mul_cancel₀ hc, star_one]
-      · rw [if_neg hq, if_neg hq, mul_zero, mul_zero]
-    · intro t _ ht; rw [reflection_column_isotropic, if_neg ht, star_zero, zero_mul]
-    · simp
-  · by_cases hp2 : p = esI k r l
-    · subst hp2
-      rw [Finset.sum_eq_single (eI k r l)]
-      · rw [reflection_column_dual_isotropic, if_pos rfl, tau_e, sgn_e, weyl_cell_apply_dual_basis, tau_es, sgn_es]
-        by_cases hq : q = eI k r l
-        · rw [if_pos hq, if_pos hq, one_mul, star_inv₀, star_star, inv_mul_cancel₀ hc]
-        · rw [if_neg hq, if_neg hq, mul_zero, mul_zero]
-      · intro t _ ht; rw [reflection_column_dual_isotropic, if_neg ht, star_zero, zero_mul]
-      · simp
-    · have ht1 : tau k r p ≠ eI k r l := by
-        intro h; apply hp2; rw [← tau_tau p, h, tau_e]
-      have ht2 : tau k r p ≠ esI k r l := by
-        intro h; apply hp1; rw [← tau_tau p, h, tau_es]
-      rw [Finset.sum_eq_single p]
-      · rw [reflection_off_support _ _ p p hp1 hp2, if_pos rfl, star_one, one_mul,
-          reflection_off_support_row _ _ (tau k r p) q ht1 ht2]
-        by_cases hq : q = tau k r p
-        · rw [if_pos hq, if_pos hq.symm, mul_one]
-        · rw [if_neg hq, if_neg (Ne.symm hq), mul_zero]
-      · intro t _ ht; rw [reflection_off_support _ _ t p hp1 hp2, if_neg ht, star_zero, zero_mul]
-      · simp
-
 lemma glev_inv {i : Fin (r + 1)} {g : Mx k r} (hg : g ∈ Glev k r i) : g⁻¹ ∈ Glev k r i := by
   have hu := isUnit_of_uh hg.1
   have key : ∀ b : Fin (2 * r + k + 1) → ℂ, g *ᵥ b = b → g⁻¹ *ᵥ b = b := by
@@ -242,7 +205,7 @@ lemma reflection_fixes_basis_vector (l : Fin r) (c : ℂ) (q : Fin (2 * r + k + 
 
 lemma wg_glev (l : Fin r) (c : ℂ) (hc : c ≠ 0) {g₁ : Mx k r} (hg : g₁ ∈ Glev k r l.succ) :
     w1 k r l c * g₁ ∈ Glev k r l.castSucc := by
-  refine ⟨uh_mul (weyl_cell_mem_unitary l c hc) hg.1, fun a ha => ?_⟩
+  refine ⟨uh_mul (_root_.PI.IsotropicReflections.reflection_mem_unitary l c hc) hg.1, fun a ha => ?_⟩
   have hal : a.val < l.val := by simpa using ha
   have ha' : a.val < l.succ.val := by simp; omega
   have hl := l.isLt

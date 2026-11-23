@@ -142,59 +142,13 @@ private theorem isDom_OmP_levTower_base {E : Type} [Field E] [NumberField E] [Is
 
 private theorem w1_mem_UH_Hpk_of_ne_zero {k r : ℕ} (l : Fin r) (x : ℂ) (hx : x ≠ 0) :
     Q.w1 k r l x ∈ Formalism.QuantumDeterminants.UH (Hpk k r) := by
-  have hl := l.isLt
-  have hes : eI k r l ≠ esI k r l := by
-    simp only [eI, esI, ne_eq, Fin.ext_iff]
-    omega
-  have hcol : ∀ j q, Q.w1 k r l x j q =
-      if j = (if q = eI k r l then esI k r l else if q = esI k r l then eI k r l else q) then
-        (if q = eI k r l then x else if q = esI k r l then (star x)⁻¹ else 1) else 0 := by
-    intro j q
-    simp only [Q.w1]
-    by_cases hq1 : q = eI k r l <;> by_cases hq2 : q = esI k r l <;>
-      by_cases hj1 : j = eI k r l <;> by_cases hj2 : j = esI k r l <;> simp_all <;>
-      (intro h; first | exact absurd h.symm hq1 | exact absurd h.symm hq2)
-  have hHe : ∀ p, p ≠ esI k r l → Hpk k r p (eI k r l) = 0 := by
-    intro p hp
-    rw [Ne, Fin.ext_iff] at hp
-    simp only [esI] at hp
-    simp only [Hpk, eI, Fin.ext_iff]
-    split_ifs <;> first | rfl | (exfalso; omega)
-  have hHs : ∀ p, p ≠ eI k r l → Hpk k r p (esI k r l) = 0 := by
-    intro p hp
-    rw [Ne, Fin.ext_iff] at hp
-    simp only [eI] at hp
-    simp only [Hpk, esI, Fin.ext_iff]
-    split_ifs <;> first | rfl | (exfalso; omega)
-  have hHe' : ∀ q, q ≠ esI k r l → Hpk k r (eI k r l) q = 0 := by
-    intro q hq
-    rw [Ne, Fin.ext_iff] at hq
-    simp only [esI] at hq
-    simp only [Hpk, eI, Fin.ext_iff]
-    split_ifs <;> first | rfl | (exfalso; omega)
-  have hHs' : ∀ q, q ≠ eI k r l → Hpk k r (esI k r l) q = 0 := by
-    intro q hq
-    rw [Ne, Fin.ext_iff] at hq
-    simp only [eI] at hq
-    simp only [Hpk, esI, Fin.ext_iff]
-    split_ifs <;> first | rfl | (exfalso; omega)
-  have hHes : Hpk k r (eI k r l) (esI k r l) = 1 := by
-    have h1 : (l : ℕ) + (2 * r + k - l) = 2 * r + k := by omega
-    simp [Hpk, eI, esI, hl, h1]
-  have hHse : Hpk k r (esI k r l) (eI k r l) = 1 := by
-    have h2 : ¬ (2 * r + k - (l : ℕ) < r) := by omega
-    have h3 : 2 * r + k - (l : ℕ) + l = 2 * r + k := by omega
-    simp [Hpk, eI, esI, hl, h2, h3]
-  show (Q.w1 k r l x)ᴴ * Hpk k r * Q.w1 k r l x = Hpk k r
-  ext p q
-  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, hcol, apply_ite star, star_zero, ite_mul, mul_ite,
-    zero_mul, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
-  by_cases hp1 : p = eI k r l <;> by_cases hp2 : p = esI k r l <;>
-    by_cases hq1 : q = eI k r l <;> by_cases hq2 : q = esI k r l <;>
-    first
-    | exact absurd (hp1.symm.trans hp2) hes
-    | exact absurd (hq1.symm.trans hq2) hes
-    | simp [hp1, hp2, hq1, hq2, hes, hes.symm, hHe, hHs, hHe', hHs', hHes, hHse, hx]
+  first
+  | exact @_root_.PI.IsotropicReflections.reflection_mem_unitary
+  | exact _root_.PI.IsotropicReflections.reflection_mem_unitary
+  | (apply _root_.PI.IsotropicReflections.reflection_mem_unitary <;> assumption)
+  | (intros; apply _root_.PI.IsotropicReflections.reflection_mem_unitary <;> assumption)
+  | (intros; apply @_root_.PI.IsotropicReflections.reflection_mem_unitary <;> first | assumption | infer_instance)
+  | (intros; exact _root_.PI.IsotropicReflections.reflection_mem_unitary ..)
 
 private theorem mul_mem_UH_of_mem_of_mem {n : ℕ} {H g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH H)
     (hh : h ∈ Formalism.QuantumDeterminants.UH H) : g * h ∈ Formalism.QuantumDeterminants.UH H := by

@@ -262,7 +262,8 @@ theorem away_range {S : Type} [CommRing S] (r : S) (p : PrimeSpectrum S) :
   Set.ext_iff.1 (PrimeSpectrum.localization_away_comap_range (Localization.Away r) r) p
 
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ : R →+* S) (ψ : S →+* T) :
-    spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := (Spec.map_comp _ _).symm
+    spMap ψ ≫ spMap φ = spMap (ψ.comp φ) :=
+  spMap.comp_hom φ ψ
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l}

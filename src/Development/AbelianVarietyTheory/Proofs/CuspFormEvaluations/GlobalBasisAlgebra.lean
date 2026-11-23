@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsTangentModuleUniversalGroup
 
 @[expose] public section
 
@@ -212,63 +213,7 @@ theorem global_basis_algebra {E : Type} [Field E] [NumberField E] {K S M : Type}
 
 end Alg
 
-theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  exact (Spec.map_comp _ _).symm
-
-theorem spec_ext_two {R A : Type} [CommRing R] [CommRing A] (p1 p2 : R →+* A)
-    (hs : Function.Surjective p1) (hn : ∀ x, p1 x = 0 → x * x = 0)
-    (hk : ∀ x, p1 x = 0 → p2 x = 0 → x = 0) {X : Scheme.{0}} (f g : Sp R ⟶ X)
-    (h1 : spMap p1 ≫ f = spMap p1 ≫ g) (h2 : spMap p2 ≫ f = spMap p2 ≫ g) : f = g := by
-  classical
-  have hinj : Function.Injective (p1.prod p2) := by
-    intro a b hab
-    have e1 : p1 a = p1 b := congrArg Prod.fst hab
-    have e2 : p2 a = p2 b := congrArg Prod.snd hab
-    exact sub_eq_zero.mp (hk (a - b) (by rw [map_sub, e1, sub_self]) (by rw [map_sub, e2, sub_self]))
-  have : IsSchemeTheoreticallyDominant (spMap (p1.prod p2)) := by
-    refine ⟨le_bot_iff.mp (Scheme.IdealSheafData.le_of_isAffine ?_)⟩
-    refine ((spMap (p1.prod p2)).ideal_ker_le _).trans fun z hz => ?_
-    have hz' : (Spec.map (CommRingCat.ofHom (p1.prod p2))).appTop.hom z = 0 := RingHom.mem_ker.mp hz
-    have e := congrArg (fun h => h.hom z) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (p1.prod p2)))
-    simp only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, hz', map_zero] at e
-    have h0 : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom z = 0 :=
-      hinj (e.symm.trans (map_zero (p1.prod p2)).symm)
-    have hz0 : z = 0 := by
-      have := congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom h0
-      simpa using this
-    rw [hz0]
-    exact zero_mem _
-  have hπ : spMap (p1.prod p2) ≫ f = spMap (p1.prod p2) ≫ g := by
-    have e1 : Spec.map (CommRingCat.ofHom (RingHom.fst A A)) ≫ spMap (p1.prod p2) = spMap p1 :=
-      (spMap_comp' (p1.prod p2) (RingHom.fst A A)).trans (congrArg spMap (RingHom.ext fun _ => rfl))
-    have e2 : Spec.map (CommRingCat.ofHom (RingHom.snd A A)) ≫ spMap (p1.prod p2) = spMap p2 :=
-      (spMap_comp' (p1.prod p2) (RingHom.snd A A)).trans (congrArg spMap (RingHom.ext fun _ => rfl))
-    rw [← cancel_epi (coprodSpec A A)]
-    apply coprod.hom_ext
-    · rw [coprodSpec_inl_assoc, coprodSpec_inl_assoc, reassoc_of% e1, reassoc_of% e1, h1]
-    · rw [coprodSpec_inr_assoc, coprodSpec_inr_assoc, reassoc_of% e2, reassoc_of% e2, h2]
-  have hsurj : ∀ x : PrimeSpectrum R, ∃ y : PrimeSpectrum A, PrimeSpectrum.comap p1 y = x := by
-    intro x
-    have hker : RingHom.ker p1 ≤ x.asIdeal := fun m hm =>
-      x.isPrime.mem_of_pow_mem 2 (by rw [pow_two, hn m (RingHom.mem_ker.mp hm)]; exact zero_mem _)
-    have := x.isPrime
-    refine ⟨⟨Ideal.map p1 x.asIdeal, Ideal.map_isPrime_of_surjective hs hker⟩, PrimeSpectrum.ext ?_⟩
-    change Ideal.comap p1 (Ideal.map p1 x.asIdeal) = x.asIdeal
-    rw [Ideal.comap_map_of_surjective p1 hs, ← RingHom.ker_eq_comap_bot, sup_eq_left.mpr hker]
-  have hbase : f.base = g.base := by
-    ext x
-    obtain ⟨y, rfl⟩ := hsurj x
-    exact congrArg (fun h : Sp A ⟶ X => h.base y) h1
-  refine Scheme.Hom.ext hbase fun U => ?_
-  have : Mono ((spMap (p1.prod p2)).app (g ⁻¹ᵁ U)) :=
-    ConcreteCategory.mono_of_injective _ ((spMap (p1.prod p2)).app_injective _)
-  rw [← cancel_mono ((spMap (p1.prod p2)).app (g ⁻¹ᵁ U)), Category.assoc, Scheme.Hom.naturality,
-    ← Category.assoc, ← Scheme.Hom.comp_app, ← Scheme.Hom.comp_app, Scheme.Hom.congr_app hπ U]
-  have hid : ∀ {V : (TopologicalSpace.Opens ↥(Sp (A × A)))ᵒᵖ} (k : V ⟶ V), (Sp (A × A)).presheaf.map k = 𝟙 _ :=
-    fun k => by rw [show k = 𝟙 _ from Quiver.Hom.unop_inj (Subsingleton.elim _ _), CategoryTheory.Functor.map_id]
-  simp [← Functor.map_comp]
-  erw [hid, Category.comp_id]
+alias spMap_comp' := spMap.comp_hom
 
 section Scal
 
@@ -345,7 +290,7 @@ theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b 
       simp only [MonObj.comp_mul, ← Category.assoc, homAt_comp, c1, c2, c3, homAt_id, Category.id_comp, h0',
         _root_.one_mul]
     apply Over.OverMorphism.ext
-    refine spec_ext_two (q1 : TrivSqZeroExt S (S × S) →+* DualNumber S) (q2 : TrivSqZeroExt S (S × S) →+* DualNumber S)
+    refine _root_.GlobalTheory.TanMod.spec_ext_two (q1 : TrivSqZeroExt S (S × S) →+* DualNumber S) (q2 : TrivSqZeroExt S (S × S) →+* DualNumber S)
       ?_ ?_ ?_ _ _ (congrArg Over.Hom.left e1) (congrArg Over.Hom.left e2)
     · intro z
       exact ⟨TrivSqZeroExt.inl z.fst + TrivSqZeroExt.inr (z.snd, 0),

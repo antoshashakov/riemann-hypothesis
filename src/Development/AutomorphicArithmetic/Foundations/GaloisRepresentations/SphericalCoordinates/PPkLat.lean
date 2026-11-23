@@ -74,7 +74,7 @@ private theorem norm_p_lt {p : ℕ} [hp : Fact p.Prime] : ‖(p : PadicAlgCl p)�
 
 private theorem norm_int_emb {p : ℕ} [Fact p.Prime] {F : Type} [Field F] (τ : F →+* PadicAlgCl p) {y : F} (h : IsIntegral ℤ y) : ‖τ y‖ ≤ 1 := by
   have h1 : IsIntegral ℤ (τ y) := h.map τ.toIntAlgHom
-  exact GlobalTheory.CoefCoord.norm_le_one_of_isIntegral _ (h1.tower_top)
+  exact _root_.GlobalTheory.IntegralAlgebraMapNormBound.main _ (h1.tower_top)
 
 private theorem pow_bd {p : ℕ} [Fact p.Prime] {ι' : Type} [Fintype ι'] (f : ι' → PadicAlgCl p) :
     ∃ j : ℕ, ∀ i, ‖(p : PadicAlgCl p) ^ j * f i‖ ≤ 1 := by

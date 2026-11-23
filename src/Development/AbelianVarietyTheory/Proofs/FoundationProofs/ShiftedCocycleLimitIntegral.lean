@@ -11,6 +11,7 @@ public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FgInertia
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertiaCocycleEqZeroOfVanishWildTameGeneratorStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertiaTorsionQuotientConjInvariantDecomposition
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormCompatibleSystemFrobeniusEqZeroStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,31 +62,8 @@ namespace GlobalTheory.InertCoh
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
-theorem norm_le_one_of_isIntegral (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
-  have hc : ∀ c : ℤ_[l], ‖algebraMap ℤ_[l] (PadicAlgCl l) c‖ ≤ 1 := by
-    intro c
-    rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']
-    exact c.2
-  by_contra h
-  push_neg at h
-  obtain ⟨p, hm, hp⟩ := hx
-  rw [Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hm.coeff_natDegree, map_one, one_mul] at hp
-  have h1 : x ^ p.natDegree = - ∑ i ∈ Finset.range p.natDegree, algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i) * x ^ i :=
-    eq_neg_of_add_eq_zero_right hp
-  rcases Nat.eq_zero_or_pos p.natDegree with hz | hz
-  · rw [hz] at h1; simp at h1
-  have h2 : ‖∑ i ∈ Finset.range p.natDegree, algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i) * x ^ i‖ ≤
-      ‖x‖ ^ (p.natDegree - 1) := by
-    refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_
-    rw [norm_mul, norm_pow]
-    have hi' := Finset.mem_range.1 hi
-    calc _ ≤ 1 * ‖x‖ ^ i := mul_le_mul_of_nonneg_right (hc _) (by positivity)
-      _ ≤ _ := by rw [one_mul]; exact pow_le_pow_right₀ h.le (by omega)
-  rw [← norm_neg, ← h1, norm_pow] at h2
-  exact absurd h2 (not_le.2 (pow_lt_pow_right₀ h (by omega)))
-
 theorem norm_le_one_of_mem_O (c : Coef l) {x : Qbar l} (hx : x ∈ c.O) : ‖x‖ ≤ 1 :=
-  norm_le_one_of_isIntegral x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
+  _root_.GlobalTheory.IntegralAlgebraMapNormBound.main x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
 
 theorem mat_mul (W : R2 Ω l) (s t : G ℚ Ω) : mat W (s * t) = mat W s * mat W t := by
   simp [mat, map_mul, Units.val_mul]

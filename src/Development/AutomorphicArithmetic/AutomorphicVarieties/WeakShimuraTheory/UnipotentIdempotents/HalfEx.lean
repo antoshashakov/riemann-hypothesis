@@ -2,6 +2,7 @@ module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.TCont
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.FrobeniusDensity.RootChar
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,47 +51,11 @@ private theorem norm_algebraMap_padicInt_padicAlgCl {l : ℕ} [Fact l.Prime] (a 
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]
   rfl
 
-private theorem norm_le_one_of_isIntegral_padicInt' {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
-    ‖x‖ ≤ 1 := by
-  obtain ⟨p, hm, hp⟩ := hx
-  by_contra h
-  push_neg at h
-  have hd0 : p.natDegree ≠ 0 := by
-    intro h0
-    have h1 := Polynomial.eq_one_of_monic_natDegree_zero hm h0
-    subst h1
-    simp at hp
-  obtain ⟨m, hmdeg⟩ : ∃ m, p.natDegree = m + 1 := ⟨p.natDegree - 1, by omega⟩
-  have hc : p.coeff (m + 1) = 1 := by
-    rw [← hmdeg]
-    exact Polynomial.Monic.coeff_natDegree hm
-  rw [Polynomial.eval₂_eq_sum_range, hmdeg, Finset.sum_range_succ, hc, map_one, one_mul] at hp
-  have hsum : ‖∑ i ∈ Finset.range (m + 1), (algebraMap ℤ_[l] (PadicAlgCl l)) (p.coeff i) * x ^ i‖
-      ≤ ‖x‖ ^ m := by
-    apply IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)
-    intro i hi
-    rw [norm_mul, norm_pow]
-    have h1 : ‖(algebraMap ℤ_[l] (PadicAlgCl l)) (p.coeff i)‖ ≤ 1 := by
-      rw [norm_algebraMap_padicInt_padicAlgCl]
-      exact PadicInt.norm_le_one _
-    have h2 : ‖x‖ ^ i ≤ ‖x‖ ^ m :=
-      pow_le_pow_right₀ h.le (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))
-    calc _ ≤ 1 * ‖x‖ ^ m := mul_le_mul h1 h2 (by positivity) zero_le_one
-      _ = _ := one_mul _
-  have heq : x ^ (m + 1) =
-      -∑ i ∈ Finset.range (m + 1), (algebraMap ℤ_[l] (PadicAlgCl l)) (p.coeff i) * x ^ i := by
-    linear_combination hp
-  have hn := congrArg norm heq
-  rw [norm_neg, norm_pow] at hn
-  have h3 : ‖x‖ ^ (m + 1) ≤ ‖x‖ ^ m := hn ▸ hsum
-  have h4 : ‖x‖ ^ m < ‖x‖ ^ (m + 1) := pow_lt_pow_right₀ h (Nat.lt_succ_self m)
-  linarith
-
 private theorem norm_coe_padicAlgCl_coefO_le_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) :
     ‖(x : PadicAlgCl l)‖ ≤ 1 := by
   haveI := c.fin
   haveI : Algebra.IsIntegral ℤ_[l] c.O := Algebra.IsIntegral.of_finite ℤ_[l] c.O
-  exact norm_le_one_of_isIntegral_padicInt' _ ((Algebra.IsIntegral.isIntegral x).map c.O.val)
+  exact _root_.GlobalTheory.IntegralAlgebraMapNormBound.main _ ((Algebra.IsIntegral.isIntegral x).map c.O.val)
 
 private theorem norm_natCast_prime_padicAlgCl_eq_inv {l : ℕ} [Fact l.Prime] : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℤ_[l] (PadicAlgCl l)) l, norm_algebraMap_padicInt_padicAlgCl, PadicInt.norm_p]

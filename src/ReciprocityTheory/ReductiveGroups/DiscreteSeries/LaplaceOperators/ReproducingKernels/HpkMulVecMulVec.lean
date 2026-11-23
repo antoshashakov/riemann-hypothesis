@@ -2,6 +2,7 @@ module
 
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.HpkMulVecMulVec
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.EquivariantL2Space
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -91,10 +92,7 @@ theorem hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk 
   · rw [hpk_mulVec, if_neg h, hpk_mulVec, if_neg h]
     split_ifs <;> simp
 
-theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
-  apply Matrix.ext_of_mulVec_single
-  intro i
-  rw [← Matrix.mulVec_mulVec, hpk_mulVec_mulVec, Matrix.one_mulVec]
+theorem hpk_sq : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 end hpk
 

@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.ExistsSchroedingerEigenvectorCompactCocycle
 
 @[expose] public section
 
@@ -63,4 +64,4 @@ theorem _root_.GlobalTheory.T.exists_schroedinger_eigenvector_compact_cocycle : 
           (∑ m, (b m : Fv F v) • u m).1 ⬝ᵥ (∑ m, (a m : Fv F v) • u m).2)))) →
       ∃ φ ∈ GlobalTheory.WeilM.SB (κ → Fv F v), φ ≠ 0 ∧
         ∀ a : M → v.adicCompletionIntegers F, GlobalTheory.WeilM.schr ψ (∑ m, (a m : Fv F v) • u m) φ = χ a • φ := by
-  first | exact @GlobalTheory.VacLoc.exists_schr_eigen | exact GlobalTheory.VacLoc.exists_schr_eigen | (intros; apply GlobalTheory.VacLoc.exists_schr_eigen <;> assumption)
+  first | exact @_root_.Tw.VacLoc.exists_schr_eigen | exact _root_.Tw.VacLoc.exists_schr_eigen | (intros; apply _root_.Tw.VacLoc.exists_schr_eigen <;> assumption)

@@ -53,10 +53,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
-    spMap b ≫ spMap a = spMap (b.comp a) := by
-  simp only [spMap]
-  rw [← Spec.map_comp]
-  rfl
+    spMap b ≫ spMap a = spMap (b.comp a) :=
+  spMap.comp_hom a b
 
 section Pt
 

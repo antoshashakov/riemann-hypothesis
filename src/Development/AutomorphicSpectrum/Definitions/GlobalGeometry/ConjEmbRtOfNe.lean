@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Rt0ConjNegNeZero
 
 @[expose] public section
 
@@ -64,20 +65,13 @@ def labelC : CMType H ⊕ CMType H → (E →+* ℂ)
   | .inr τ => conjEmb τ.1
 
 theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
-  have h := H.sqrt_neg_disc_sq
-  have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-  have hre := congrArg Complex.re h
-  have him := congrArg Complex.im h
-  simp only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re,
-    Complex.natCast_im, neg_zero] at hre him
-  have h0 : H.rt0.re = 0 := by
-    by_contra hne
-    have : H.rt0.im = 0 := by
-      have : H.rt0.re * H.rt0.im = 0 := by linarith
-      exact (mul_eq_zero.1 this).resolve_left hne
-    rw [this] at hre
-    nlinarith [mul_self_nonneg H.rt0.re]
-  apply Complex.ext <;> simp [h0]
+  first
+  | exact @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | (apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> first | assumption | infer_instance)
+  | (intros; exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero ..)
 
 theorem rt0_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   intro h

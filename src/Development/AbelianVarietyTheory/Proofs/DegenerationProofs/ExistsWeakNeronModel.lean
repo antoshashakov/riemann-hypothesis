@@ -64,8 +64,7 @@ noncomputable section
 namespace GlobalTheory.SS.WeakNeronEx
 open GlobalTheory.AbLaw ReciprocityTheory.ChartRestriction.G.Out
 
-theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
+alias sp_comp := spMap.comp_hom
 
 theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (e : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective e)

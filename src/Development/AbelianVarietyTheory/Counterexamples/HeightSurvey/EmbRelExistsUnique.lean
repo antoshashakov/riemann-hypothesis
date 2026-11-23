@@ -1,5 +1,7 @@
 module
 
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmDataIsCMExtAndGramIsHermND
+
 public import Formalism.LocalToGlobal.BesselHermitianTheta.IsAutFunDef
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -90,19 +92,7 @@ theorem gram_pull (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) (hι : HSpace.Is
   rfl
 
 theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
-  intro h
-  obtain ⟨v, hv, h0⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h
-  apply hv
-  have : V.frame.equivFun.symm v = 0 := by
-    apply V.nondeg.2
-    intro x
-    rw [hT_coord]
-    refine Finset.sum_eq_zero fun i _ => ?_
-    have h1 : ∑ j, V.gram i j * v j = 0 := congr_fun h0 i
-    have h2 : ∀ j, V.frame.repr (V.frame.equivFun.symm v) j = v j := fun j =>
-      congr_fun (V.frame.equivFun.apply_symm_apply v) j
-    simp only [h2, mul_assoc, ← Finset.mul_sum, h1, mul_zero]
-  exact V.frame.equivFun.symm.map_eq_zero_iff.1 this
+  exact _root_.GlobalTheory.Mem.Vol.hspace_gram_det_ne_zero V
 
 theorem split_gen {E R : Type} [CommRing E] [CommRing R] (φ : E →+* R) {n r : ℕ}
     (P : Matrix (Fin n) (Fin r) E) (Q : Matrix (Fin r) (Fin n) E) (g₁ g₂ : Matrix (Fin n) (Fin n) R)

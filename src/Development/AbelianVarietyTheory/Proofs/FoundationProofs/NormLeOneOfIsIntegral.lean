@@ -2,6 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotomicBlockCocyclesLeSha
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -50,16 +51,8 @@ namespace GlobalTheory.CoefCoord
 
 variable {l : ℕ} [Fact l.Prime]
 
-theorem norm_le_one_of_isIntegral (x : PadicAlgCl l) (h : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
-  have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
-  change spectralValue (minpoly ℚ_[l] x) ≤ 1
-  rw [spectralValue_le_one_iff (minpoly.monic hi)]
-  intro n
-  rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]
-  exact PadicInt.norm_le_one _
-
 theorem norm_le_one (c : Coef l) (x : c.O) : ‖(x : PadicAlgCl l)‖ ≤ 1 :=
-  norm_le_one_of_isIntegral _
+  _root_.GlobalTheory.IntegralAlgebraMapNormBound.main _
     ((isIntegral_algHom_iff c.O.val Subtype.val_injective).2 (Algebra.IsIntegral.isIntegral x))
 
 theorem norm_unit (c : Coef l) (u : c.Oˣ) : ‖((u : c.O) : PadicAlgCl l)‖ = 1 := by

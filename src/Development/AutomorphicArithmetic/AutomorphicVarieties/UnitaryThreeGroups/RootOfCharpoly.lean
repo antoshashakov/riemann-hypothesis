@@ -6,7 +6,7 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThre
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.PowEqOneOfUnr
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.PtIneL
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.PtInertiaAway
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLeOneOfIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -150,14 +150,10 @@ private theorem exists_diag {Γ R : Type} [Group Γ] [CommRing R] (η : Γ →* 
         rw [e, hd g, Matrix.diagonal_mul, Matrix.diagonal_apply_eq] }
   exact ⟨fun i => (b i).toHomUnits, hd⟩
 
-private theorem norm_le_one_int (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
-    ‖x‖ ≤ 1 :=
-  _root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx
-
 private theorem norm_unit {l : ℕ} [Fact l.Prime] (c : Coef l) {x : c.O} (hx : IsUnit x) :
     ‖algebraMap c.O (PadicAlgCl l) x‖ = 1 := by
   have hle : ∀ y : c.O, ‖(y : PadicAlgCl l)‖ ≤ 1 := fun y =>
-    norm_le_one_int l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c.O.val)
+    _root_.GlobalTheory.IntegralAlgebraMapNormBound.main (l := l) _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c.O.val)
   obtain ⟨u, rfl⟩ := hx
   show ‖((u : c.O) : PadicAlgCl l)‖ = 1
   have h1 : ‖((u : c.O) : PadicAlgCl l)‖ * ‖((u⁻¹ : c.Oˣ) : c.O).1‖ = 1 := by

@@ -1,6 +1,7 @@
 module
 
 public import Formalism.FormalDegreeBessel.StatementG
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,17 +65,7 @@ lemma gram_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   unfold Hpk partner
   split_ifs <;> simp only [Fin.ext_iff] at * <;> first | rfl | omega
 
-lemma gram_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  rw [Matrix.mul_apply, Finset.sum_eq_single (partner k r i)]
-  · rw [gram_apply, gram_apply, Matrix.one_apply, if_pos rfl]
-    unfold partner
-    split_ifs <;> simp only [Fin.ext_iff] at * <;> first | omega | (simp; done) | (split_ifs <;> first | omega | simp)
-  · intro b _ hb
-    rw [gram_apply k r i b, if_neg hb, zero_mul]
-  · simp
+lemma gram_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 end GlobalTheory.BesselUnitary
 

@@ -1,6 +1,7 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LocalWeightCharts.WavePacketL1L2
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -87,14 +88,7 @@ lemma Hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   simp only [e1, e2]
   split_ifs at * <;> first | rfl | (exfalso; omega)
 
-lemma Hpk_sq (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply]
-  simp only [Hpk_eq k r i, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
-  rw [Hpk_eq, sig_sig, sgn_sig, Matrix.one_apply]
-  by_cases h : j = i
-  · rw [if_pos h, if_pos h.symm]; unfold sgn; split_ifs <;> norm_num
-  · rw [if_neg h, if_neg (Ne.symm h), mul_zero]
+lemma Hpk_sq (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 variable {k r : ℕ}
 

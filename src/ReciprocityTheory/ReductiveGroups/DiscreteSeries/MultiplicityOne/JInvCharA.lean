@@ -1,6 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.StDefs
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -122,8 +123,7 @@ theorem mat_eq_of_mulVec' {A B : Mat k r} (h : ∀ v, A *ᵥ v = B *ᵥ v) : A =
     Finset.mem_univ, ↓reduceIte] at e
   exact e
 
-theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
-  exact mat_eq_of_mulVec' k r (fun v => by rw [← mulVec_mulVec, Hpk_mulVec_mulVec, one_mulVec])
+theorem Hpk_sq : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 end hpk
 

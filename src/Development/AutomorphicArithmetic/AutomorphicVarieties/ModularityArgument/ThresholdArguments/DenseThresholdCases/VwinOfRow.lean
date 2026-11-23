@@ -40,5 +40,4 @@ import Mathlib.Tactic.NormNum.RealSqrt
 @[expose] public section
 
 theorem UpperTheory.One.vwin_of_row (h : UpperTheory.V.Z.Win.RowT) : UpperTheory.Top.VWin :=
-  UpperTheory.One.Join.automorphic_window_of_inputs
-    ⟨h⟩ UpperTheory.BaseChangeIdentities.baseChangeN h
+  UpperTheory.One.Join.automorphic_window_of_inputs UpperTheory.BaseChangeIdentities.baseChangeN h

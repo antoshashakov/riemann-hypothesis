@@ -124,33 +124,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [inst 
 
 theorem standardLattice_span_eq_top (W : HSpace E) :
   Submodule.span E (W.L0 : Set W.V) = ⊤ := by
-  let U := Submodule.span E (W.L0 : Set W.V)
-  change U = ⊤
-  by_contra h
-  let e : W.V ≃ₗ⋆[E] W.V :=
-    (W.frame.equivFun.trans (starLinearEquiv E)).trans W.frame.equivFun.symm
-  let g : W.V →ₗ[E] Module.Dual E U :=
-    (LinearMap.domRestrict' U).comp (W.hT.comp e.toLinearMap)
-  have hdim : Module.finrank E (Module.Dual E U) < Module.finrank E W.V := by
-    rw [Subspace.dual_finrank_eq]
-    exact Submodule.finrank_lt h
-  obtain ⟨x, hx, hx₀⟩ :=
-    Submodule.exists_mem_ne_zero_of_ne_bot (LinearMap.ker_ne_bot_of_finrank_lt (f := g) hdim)
-  have hsmul (a : E) : a • e x ∈ W.L0 := by
-    rw [← W.baseLattice_isUnimodular, Formalism.HermitianLatticesTheory.dualBasic_mem_dual]
-    intro y hy
-    have hxy : W.hT (e x) y = 0 :=
-      congrArg (fun f : Module.Dual E U => f ⟨y, Submodule.subset_span hy⟩) (LinearMap.mem_ker.mp hx)
-    have hyx : W.hT y (e x) = 0 := by
-      rw [← W.herm.eq, hxy, map_zero]
-    simp [hyx]
-  let i : E →ₗ[𝓞 E] W.L0 :=
-    ((LinearMap.toSpanSingleton E _ (e x)).restrictScalars (𝓞 E)).codRestrict W.L0 hsmul
-  let : Module.Finite (𝓞 E) W.L0 := Module.Finite.iff_fg.mpr W.standardTuple_isLattice.fg
-  let : Module.Finite (𝓞 E) E := Module.Finite.of_injective i fun a b hab =>
-    smul_left_injective E (fun hzero => hx₀ (e.map_eq_zero_iff.mp hzero)) (congrArg Subtype.val hab)
-  exact RingOfIntegers.not_isField E
-    (isField_of_isIntegral_of_isField (IsFractionRing.injective (𝓞 E) E) (Field.toIsField E))
+  exact W.span_baseLattice_eq_top
 
 theorem mass_coord (hc : CMData F E) (W : HSpace E) (hW : W.SigOK) (hs : ∀ τ, W.sig τ = (W.rank, 0))
     (hσ : ∀ e, (hc.sig : E →+* E) ((hc.sig : E →+* E) e) = e) :

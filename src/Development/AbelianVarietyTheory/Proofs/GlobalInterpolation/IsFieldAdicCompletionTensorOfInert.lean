@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IntegralApproximation
 
 @[expose] public section
 
@@ -88,68 +89,13 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Polynomial 
 private lemma exists_integer_valuation_sub_lt_one {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (s : F) (hs : v.valuation F s ≤ 1) :
     ∃ r : 𝓞 F, v.valuation F (s - algebraMap (𝓞 F) F r) < 1 := by
-  classical
-  obtain ⟨n, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 F) s
-  have hd0 : d ≠ 0 := nonZeroDivisors.ne_zero hd
-  have hdF : algebraMap (𝓞 F) F d ≠ 0 :=
-    (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mpr hd0
-  have hne := v.intValuation_ne_zero _ hd0
-  have hex : ∃ m : ℕ, ¬ v.intValuation d ≤ WithZero.exp (-((m : ℕ) : ℤ)) := by
-    refine ⟨(-(v.intValuation d).log).toNat + 1, fun h => ?_⟩
-    nth_rewrite 1 [← WithZero.exp_log hne] at h
-    rw [WithZero.exp_le_exp] at h
-    omega
-  have hm0 : Nat.find hex ≠ 0 := by
-    intro h0
-    have := Nat.find_spec hex
-    rw [h0] at this
-    exact this (by simpa using v.intValuation_le_one d)
-  obtain ⟨c, hc⟩ : ∃ c, Nat.find hex = c + 1 := Nat.exists_eq_succ_of_ne_zero hm0
-  have hdc : v.intValuation d ≤ WithZero.exp (-((c : ℕ) : ℤ)) := by
-    have := Nat.find_min hex (show c < Nat.find hex by omega)
-    simpa using this
-  have hdc1 : ¬ v.intValuation d ≤ WithZero.exp (-((c + 1 : ℕ) : ℤ)) := by
-    rw [← hc]; exact Nat.find_spec hex
-  have hmemc : d ∈ v.asIdeal ^ c := by
-    rw [← Ideal.dvd_span_singleton, ← intValuation_le_pow_iff_dvd]; exact hdc
-  have hnmem : d ∉ v.asIdeal ^ (c + 1) := by
-    rw [← Ideal.dvd_span_singleton, ← intValuation_le_pow_iff_dvd]; exact hdc1
-  have hsup : Ideal.span {d} ⊔ v.asIdeal ^ (c + 1) = v.asIdeal ^ c := by
-    have hle : Ideal.span {d} ⊔ v.asIdeal ^ (c + 1) ≤ v.asIdeal ^ c :=
-      sup_le ((Ideal.span_singleton_le_iff_mem _).mpr hmemc) (Ideal.pow_le_pow_right (by omega))
-    obtain ⟨L, hL⟩ := Ideal.dvd_iff_le.mpr hle
-    have hdvd : v.asIdeal ^ c * L ∣ v.asIdeal ^ c * v.asIdeal := by
-      rw [← hL, ← pow_succ]; exact Ideal.dvd_iff_le.mpr le_sup_right
-    have hLv : L ∣ v.asIdeal := (mul_dvd_mul_iff_left (pow_ne_zero _ v.ne_bot)).mp hdvd
-    have hvL : v.asIdeal ≤ L := Ideal.le_of_dvd hLv
-    by_cases htop : L = ⊤
-    · rw [hL, htop, Ideal.mul_top]
-    · have hEq : v.asIdeal = L := v.isMaximal.eq_of_le htop hvL
-      exfalso
-      apply hnmem
-      have hdL : d ∈ v.asIdeal ^ c * L := by
-        rw [← hL]; exact Ideal.mem_sup_left (Ideal.mem_span_singleton_self d)
-      rwa [← hEq, ← pow_succ] at hdL
-  have hnval : v.intValuation n ≤ v.intValuation d := by
-    rw [map_div₀, valuation_of_algebraMap, valuation_of_algebraMap] at hs
-    have hpos : 0 < v.intValuation d := zero_lt_iff.mpr hne
-    rwa [div_le_one₀ hpos] at hs
-  have hn : n ∈ Ideal.span {d} ⊔ v.asIdeal ^ (c + 1) := by
-    rw [hsup, ← Ideal.dvd_span_singleton, ← intValuation_le_pow_iff_dvd]
-    exact hnval.trans hdc
-  obtain ⟨y, hy, z, hz, hyz⟩ := Submodule.mem_sup.mp hn
-  obtain ⟨e, rfl⟩ := Ideal.mem_span_singleton'.mp hy
-  refine ⟨e, ?_⟩
-  have heq : algebraMap (𝓞 F) F n / algebraMap (𝓞 F) F d - algebraMap (𝓞 F) F e
-      = algebraMap (𝓞 F) F z / algebraMap (𝓞 F) F d := by
-    rw [← hyz, map_add (f := _), map_mul]
-    field_simp
-    ring
-  rw [heq, map_div₀, valuation_of_algebraMap, valuation_of_algebraMap,
-    div_lt_one₀ (zero_lt_iff.mpr hne)]
-  have hz' : v.intValuation z ≤ WithZero.exp (-((c + 1 : ℕ) : ℤ)) := by
-    rw [intValuation_le_pow_iff_dvd, Ideal.dvd_span_singleton]; exact hz
-  exact lt_of_le_of_lt hz' (not_le.mp hdc1)
+  first
+  | exact @_root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx
+  | exact _root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx
+  | (apply _root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx <;> assumption)
+  | (intros; apply _root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx <;> assumption)
+  | (intros; apply @_root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx <;> first | assumption | infer_instance)
+  | (intros; exact _root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx ..)
 
 open scoped TensorProduct in
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Polynomial in

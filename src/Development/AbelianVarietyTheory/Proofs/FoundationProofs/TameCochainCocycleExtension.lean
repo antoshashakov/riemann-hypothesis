@@ -4,8 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheo
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 public import Mathlib.RingTheory.AdicCompletion.Noetherian
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CyclotomicCharCongruentOneOnDecompositionGroupStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ImportsAlt
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertiaTorsionQuotientConjInvariantDecompositionStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,17 +67,8 @@ theorem mul_mem_ballSub {r : ℝ} {hr : 0 ≤ r} {k x : PadicAlgCl l} (hk : ‖k
   rw [mem_ballSub, norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) hk).trans hx
 
-theorem norm_le_one_of_int (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
-  first
-  | exact @_root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral
-  | exact _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral
-  | (apply _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral ..)
-
 theorem norm_le_one_of_mem (c : Coef l) {x : Qbar l} (hx : x ∈ c.O) : ‖x‖ ≤ 1 :=
-  norm_le_one_of_int x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
+  _root_.GlobalTheory.IntegralAlgebraMapNormBound.main x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
 
 end GlobalTheory.BrTame
 

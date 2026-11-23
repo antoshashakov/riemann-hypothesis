@@ -3,6 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStabilizerRadicalStructure
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicLeviEmbeddingHomomorphismProperties
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -95,13 +96,7 @@ theorem herm_e (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   rw [← H_e v a]
   simp [bvec, dotProduct, Pi.single_apply, apply_ite]
 
-theorem HH : Hpk k r * Hpk k r = 1 := by
-  ext x y
-  rw [Matrix.mul_apply, sum3]
-  induction x using cases3 <;> induction y using cases3 <;>
-    simp [H_ee, H_ew, H_es, H_we, H_ww, H_ws, H_se, H_sw, H_ss, Matrix.one_apply,
-      eI_inj, wI_inj, esI_inj, eI_ne_wI, eI_ne_esI, wI_ne_esI, wI_ne_eI, esI_ne_eI, esI_ne_wI]
-  unfold sg; split_ifs <;> simp_all
+theorem HH : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem HbHb : Hb k * Hb k = 1 := by
   unfold Hb; rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]

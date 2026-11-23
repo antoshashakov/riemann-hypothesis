@@ -12,6 +12,7 @@ public import Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahle
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTrA
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBIdJet
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBMapPf
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FrameBiextDictionarySecondPartialLaw
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -296,7 +297,7 @@ theorem germ_aff (hs : ∀ a : 𝓞 E, star a = H.bar a) (hp : PowFns t) (z : X0
       Nonempty (GermAt t j d) := by
   obtain ⟨S, _, x0, d, G, A, tg, x, c, hj, hz, hc, ht, hb, hU⟩ := chart_affine E H X0 t z
   obtain ⟨e, ph1, ph2, sy, ad, hfr, htr, hfa, had⟩ := frame_affine E H X0 t S x0 d G A tg _ x c hc hU
-  obtain ⟨hax, hr⟩ := FBIdAd.fbId E H X0 t hp hs S x0 _ G A _ tg _ x e ph1 ph2 sy ad hc hfr hfa had
+  obtain ⟨hax, hr⟩ := _root_.GlobalTheory.FrameBiextId.fbId E H X0 t hp hs S x0 _ G A _ tg _ x e ph1 ph2 sy ad hc hfr hfa had
   exact ⟨S, _, x0, d, hj, hz, ⟨⟨mkFB G A ph1 ph2 sy ad hax hr, x, e, tg, hc, ht, hb, hfr, htr, hfa⟩⟩⟩
 
 theorem exists_factor {R A : Type} [CommRing R] [IsLocalRing R] [CommRing A] {X : Scheme.{0}} (x : Sp R ⟶ X)

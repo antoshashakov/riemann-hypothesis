@@ -53,7 +53,7 @@ namespace GlobalTheory.Mem.R3.LedSize
 
 
 
-theorem evG_exists_sizeRows : EvG fun K => ∀ X : Stages, K.Over X.B.toPre → X.V.div.etaF = 6 * K.s.x ^ (-K.C.P.CF) → (∀ w j, X.toD7.what₂.Aj j w = 0) → ∃ L : SizeData₂ X.toD7, L.sc = K.s ∧ GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L := by
+theorem evG_exists_sizeRows_dlog : EvG fun K => ∀ X : Stages, K.Over X.B.toPre → X.V.div.etaF = 6 * K.s.x ^ (-K.C.P.CF) → (∀ w j, X.toD7.what₂.Aj j w = 0) → ∃ L : SizeData₂ X.toD7, L.sc = K.s ∧ GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L ∧ |L.logDerivativeAtOne| ≤ L.sc.x ^ L.sc.eps := by
   refine ⟨1, one_pos, fun eps C8 C5 c6 Cb h0 _ h1 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hC _ _ => ?_⟩⟩
   obtain ⟨c1, hN⟩ := GlobalTheory.EX.szRow_numAt eps h0 h1 C hC
   refine ⟨max c1 0, fun cD hcD => ?_⟩
@@ -94,7 +94,9 @@ theorem evG_exists_sizeRows : EvG fun K => ∀ X : Stages, K.Over X.B.toPre → 
     (fun t => hP.win t.1 t.2) (fun τ t h ht => hP.top K.P.u₀ τ t h ht) (fun w _ j _ _ => hA w j)
   obtain ⟨⟨M⟩, -, -⟩ := hN D L (by rw [e1]; exact hs) (by rw [e1]; exact (le_max_right _ _).trans hx') e4
     ⟨hP.arith.1, hP.arith.2.1, hP.arith.2.2.1, hlev⟩
-  refine ⟨L, e1, ?_⟩
+  refine ⟨L, e1, ?_, ?_⟩
+  swap
+  · simpa only [L.logDerivative_at_one_eq] using e4.dlog
   have hq : ((GlobalTheory.ChiGrid.q0 D : ℕ) : ℝ) < L.sc.X' := by
     have hmem := hOk.small.1
     rcases hOk.lev _ hmem with ⟨i, hi⟩ | hlt
@@ -109,6 +111,11 @@ theorem evG_exists_sizeRows : EvG fun K => ∀ X : Stages, K.Over X.B.toPre → 
     rw [← Real.rpow_mul (by norm_num), show 4 / eps * (eps / 4) = 1 by field_simp, Real.rpow_one]
   rw [e2]
   exact Real.rpow_le_rpow (by positivity) (le_of_max_le_right hxL) (by positivity)
+
+theorem evG_exists_sizeRows : EvG fun K => ∀ X : Stages, K.Over X.B.toPre → X.V.div.etaF = 6 * K.s.x ^ (-K.C.P.CF) → (∀ w j, X.toD7.what₂.Aj j w = 0) → ∃ L : SizeData₂ X.toD7, L.sc = K.s ∧ GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L := by
+  refine evG_exists_sizeRows_dlog.imp fun K _ _ _ _ h X ho hη hA => ?_
+  obtain ⟨L, hs, hr, _⟩ := h X ho hη hA
+  exact ⟨L, hs, hr⟩
 
 end GlobalTheory.Mem.R3.LedSize
 

@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Std.Tactic.BVDecide.Normalize.Prop
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.LinearFormDegree.InvFun
 
 @[expose] public section
 
@@ -53,19 +54,13 @@ namespace GlobalTheory.Katz.LowLaw
 
 theorem eq_single_of_degree_eq_one {σ : Type} {e : σ →₀ ℕ} (h : e.degree = 1) :
     ∃ j, e = Finsupp.single j 1 := by
-  classical
-  have hne : e ≠ 0 := by rintro rfl; simp at h
-  obtain ⟨j, hj⟩ := Finsupp.support_nonempty_iff.mpr hne
-  have hle : Finsupp.single j 1 ≤ e := by
-    rw [Finsupp.single_le_iff]; exact Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hj)
-  refine ⟨j, ?_⟩
-  have hsum : e = (e - Finsupp.single j 1) + Finsupp.single j 1 := (tsub_add_cancel_of_le hle).symm
-  have hd : (e - Finsupp.single j 1).degree = 0 := by
-    have h2 := congrArg Finsupp.degree hsum
-    rw [map_add (f := _), Finsupp.degree_single, h] at h2
-    omega
-  rw [Finsupp.degree_eq_zero_iff] at hd
-  rw [hsum, hd, zero_add]
+  first
+  | exact @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | (apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> first | assumption | infer_instance)
+  | (intros; exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one ..)
 
 theorem coeff_addLaw (R : Type) [CommRing R] (d : ℕ) (i : Fin d) (α : Fin d ⊕ Fin d →₀ ℕ) :
     coeff α (addLaw R d i) =

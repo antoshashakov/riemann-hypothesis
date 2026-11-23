@@ -143,43 +143,7 @@ theorem exists_frame : ∀ {D : D7} (e : AE D) (v : HeightOneSpectrum (𝓞 D.ho
   have hsp : Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤ := by
     classical
     have hs : Submodule.span D.host.E (V.L0 : Set V.V) = ⊤ := by
-      obtain ⟨s, hs⟩ := V.standardTuple_isLattice.fg
-      apply eq_top_iff.mpr
-      intro y _
-      obtain ⟨a, ha⟩ := IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 D.host.E)) s (fun x => V.hT x y)
-      have ha0 : (algebraMap (𝓞 D.host.E) D.host.E a) ≠ 0 :=
-        (FaithfulSMul.algebraMap_injective _ _).ne (mem_nonZeroDivisors_iff_ne_zero.mp a.2)
-      let P : Submodule (𝓞 D.host.E) V.V := {
-        carrier := {x | ∃ b : 𝓞 D.host.E, (b : D.host.E) = (algebraMap (𝓞 D.host.E) D.host.E a) * V.hT x y}
-        zero_mem' := by refine ⟨0, ?_⟩; simp
-        add_mem' := by
-          rintro x z ⟨b, hb⟩ ⟨c, hc⟩
-          refine ⟨b + c, ?_⟩
-          change (b : D.host.E) + c = _
-          rw [hb, hc, map_add, LinearMap.add_apply, mul_add]
-        smul_mem' := by
-          rintro c x ⟨b, hb⟩
-          refine ⟨RingOfIntegers.mapRingHom (starRingEnd D.host.E) c * b, ?_⟩
-          simp only [map_mul, RingOfIntegers.mapRingHom_apply, hb]
-          rw [show c • x = (c : D.host.E) • x from (IsScalarTower.algebraMap_smul D.host.E c x).symm, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]
-          change star (c : D.host.E) * ((algebraMap (𝓞 D.host.E) D.host.E a) * V.hT x y) = _
-          simp only [starRingEnd_apply]
-          ring }
-      have hsP : (s : Set V.V) ⊆ P := by
-        intro x hx
-        obtain ⟨b, hb⟩ := ha x hx
-        exact ⟨b, by simpa [Algebra.smul_def] using hb⟩
-      have hy : (algebraMap (𝓞 D.host.E) D.host.E a) • y ∈ V.L0 := by
-        rw [← V.baseLattice_isUnimodular]
-        change (algebraMap (𝓞 D.host.E) D.host.E a) • y ∈ Formalism.E.hdual V.hT V.L0
-        simp only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]
-        intro x hx
-        obtain ⟨b, hb⟩ := (hs ▸ Submodule.span_le.mpr hsP) hx
-        change V.hT x ((algebraMap (𝓞 D.host.E) D.host.E a) • y) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)
-        rw [map_smul, smul_eq_mul, ← hb]
-        exact Submodule.algebraMap_mem _
-      have hy' := (Submodule.span D.host.E (V.L0 : Set V.V)).smul_mem (algebraMap (𝓞 D.host.E) D.host.E a)⁻¹ (Submodule.subset_span hy)
-      rwa [← smul_assoc, smul_eq_mul, inv_mul_cancel₀ ha0, one_smul] at hy'
+      exact V.span_baseLattice_eq_top
     change Submodule.span _ (V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)) = ⊤
     rw [← Submodule.map_span, hs, Submodule.map_top, LinearEquiv.range]
   obtain ⟨Λ, hfg, hΛ, hmem⟩ := exists_local_lattice (F := D.host.F) L (V.standardTuple_isLattice.fg.map _) hsp v φ

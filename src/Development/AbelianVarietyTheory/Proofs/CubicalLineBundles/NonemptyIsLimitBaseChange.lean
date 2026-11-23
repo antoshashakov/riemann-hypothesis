@@ -379,8 +379,8 @@ theorem FGAbove.exists_ringHom (h : R₀.FG) {S : Type} [CommRing S] (φ : ∀ R
     rfl
 
 theorem spMap_comp_ring {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A''] (f : A →+* A')
-    (g : A' →+* A'') : spMap g ≫ spMap f = spMap (g.comp f) := by
-  rw [← Spec.map_comp]; rfl
+    (g : A' →+* A'') : spMap g ≫ spMap f = spMap (g.comp f) :=
+  spMap.comp_hom f g
 
 variable {B : Scheme.{0}} (pB : B ⟶ Sp k)
 

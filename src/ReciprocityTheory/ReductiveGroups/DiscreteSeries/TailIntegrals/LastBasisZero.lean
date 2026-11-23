@@ -2,6 +2,7 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.Phi2
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.GoodRowsProjectorApplyEqSum
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -460,32 +461,7 @@ theorem ea_sum_ind {n : ℕ} (j : ℕ) (hj : j < n) : ∑ i : Fin n, (if i.val =
     exact hb (Fin.ext h)
   · intro h; exact absurd (Finset.mem_univ _) h
 
-private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  have hi := i.isLt
-  have hj := j.isLt
-  by_cases hm : r ≤ i.val ∧ i.val ≤ r + k
-  · rw [Finset.sum_eq_single i]
-    · simp only [and_true, true_and, Hpk, Fin.ext_iff]
-      split_ifs <;> first | (exfalso; omega) | (simp; done) | norm_num
-    · intro l _ hl
-      have hl' : l.val ≠ i.val := fun h => hl (Fin.ext h)
-      have : Hpk k r i l = 0 := by
-        simp only [and_true, true_and, Hpk, Fin.ext_iff]
-        split_ifs <;> first | rfl | (exfalso; omega)
-      rw [this, zero_mul]
-    · intro h; exact absurd (Finset.mem_univ _) h
-  · rw [Finset.sum_eq_single (⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1))]
-    · simp only [and_true, true_and, Hpk, Fin.ext_iff]
-      split_ifs <;> first | (exfalso; omega) | (simp; done) | norm_num
-    · intro l _ hl
-      have hl' : l.val ≠ 2 * r + k - i.val := fun h => hl (Fin.ext h)
-      have : Hpk k r i l = 0 := by
-        simp only [and_true, true_and, Hpk, Fin.ext_iff]
-        split_ifs <;> first | rfl | (exfalso; omega)
-      rw [this, zero_mul]
-    · intro h; exact absurd (Finset.mem_univ _) h
+private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 private theorem star_inv_sqrt_two_mul_sum_ite_eq_sub (k r : ℕ) (hk : 1 ≤ k) (i : Fin (2 * r + k + 1)) :
     star (((Real.sqrt 2)⁻¹ : ℂ) * ((if i.val = r then 1 else 0) - (if i.val = r + k then 1 else 0))) *

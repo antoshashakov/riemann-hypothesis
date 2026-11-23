@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 
 @[expose] public section
 
@@ -48,24 +49,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.QuadTrace
 
 theorem bar_rt {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : H.bar H.rt = -H.rt := by
-  have hd : 0 < H.d := H.d_prime.pos
-  have h1 : H.bar H.rt ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
-  rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h
-  · exfalso
-    obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-    have e := H.bar_eq H.rt
-    rw [h] at e
-    have e2 : starRingEnd ℂ (φ (H.rt : E)) = φ (H.rt : E) := by
-      rw [← IsCMField.complexEmbedding_complexConj, ← e]
-    have e3 : φ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
-      have := congrArg (fun z : 𝓞 E => φ (z : E)) H.rt_sq
-      simpa using this
-    obtain ⟨r, hr⟩ := Complex.conj_eq_iff_real.1 e2
-    rw [hr] at e3
-    have e4 : r ^ 2 = -(H.d : ℝ) := by exact_mod_cast e3
-    have : (0 : ℝ) < H.d := by exact_mod_cast hd
-    nlinarith [sq_nonneg r]
-  · exact h
+  first
+  | exact @_root_.GlobalTheory.HostModel.bar_rt
+  | exact _root_.GlobalTheory.HostModel.bar_rt
+  | (apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply @_root_.GlobalTheory.HostModel.bar_rt <;> first | assumption | infer_instance)
+  | (intros; exact _root_.GlobalTheory.HostModel.bar_rt ..)
 
 theorem cmHost_idempotent_trace_eq_one :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], Formalism.L2.FormalSeriesBounds.HostTraceIdentity H := by

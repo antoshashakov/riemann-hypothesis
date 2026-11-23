@@ -4,6 +4,7 @@ public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries
 public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DerivedActionDiscreteSeriesProperties
 public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FrechetContinuousContinuousOnOrbitHasDerivAtStatement
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExpMemUnipotentAndHasDerivAtCharacterStatement
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -86,34 +87,7 @@ theorem H_herm : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Formalism.QuantumD
   simp only [Fin.ext_iff]
   split_ifs <;> first | omega | simp
 
-theorem H_sq : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  rw [Matrix.mul_apply]
-  by_cases hm : r ≤ i.val ∧ i.val ≤ r + k
-  · rw [Finset.sum_eq_single i]
-    · simp only [Formalism.QuantumDeterminants.Hpk, Matrix.one_apply, Fin.ext_iff, and_true]
-      split_ifs <;> first | omega | simp
-    · intro b _ hb
-      have : Formalism.QuantumDeterminants.Hpk k r i b = 0 := by
-        by_contra hne
-        have h1 := H_ne hne
-        have : b.val ≠ i.val := fun e => hb (Fin.ext e)
-        omega
-      rw [this, zero_mul]
-    · intro h; exact absurd (Finset.mem_univ _) h
-  · rw [Finset.sum_eq_single (⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1))]
-    · simp only [Formalism.QuantumDeterminants.Hpk, Matrix.one_apply, Fin.ext_iff]
-      split_ifs <;> first | omega | simp
-    · intro b _ hb
-      have : Formalism.QuantumDeterminants.Hpk k r i b = 0 := by
-        by_contra hne
-        have h1 := H_ne hne
-        have : b.val ≠ 2 * r + k - i.val := fun e => hb (Fin.ext e)
-        omega
-      rw [this, zero_mul]
-    · intro h; exact absurd (Finset.mem_univ _) h
+theorem H_sq : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 def Pat (Y : Mx k r) : Prop :=
   ∀ i j : Fin (2 * r + k + 1), ¬ (i < j ∧ ¬ (r ≤ i.val ∧ j.val ≤ r + k)) → Y i j = 0

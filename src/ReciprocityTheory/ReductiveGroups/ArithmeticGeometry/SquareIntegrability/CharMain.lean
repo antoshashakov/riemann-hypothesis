@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.InvBuild
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.SplitO
+public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsShortIntegersSpan
 public import Mathlib.Algebra.Order.Chebyshev
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.ExistsShortRealSpan
 
@@ -62,7 +63,7 @@ namespace ChA
 lemma omega_fin {E : Type} [Field E] [NumberField E] [IsCMField E] :
     ∃ ω : Fin (Module.finrank ℚ E) → 𝓞 E, LinearIndependent ℚ (fun j => (ω j : E)) ∧
       ∀ j (τ : E →+* ℂ), ‖τ (ω j : E)‖ ≤ omStar (E := E) := by
-  obtain ⟨n, ω, hωB, hspan⟩ := omega_exists' (E := E)
+  obtain ⟨n, ω, hωB, hspan⟩ := _root_.GlobalTheory.exists_short_integers_span E
   obtain ⟨κ, a, ha, hsp, hli⟩ := exists_linearIndependent' (K := ℚ) (fun j => (ω j : E))
   have htop : Submodule.span ℚ (Set.range ((fun j => (ω j : E)) ∘ a)) = ⊤ := by
     rw [hsp, eq_top_iff, ← (NumberField.integralBasis E).span_eq, Submodule.span_le]

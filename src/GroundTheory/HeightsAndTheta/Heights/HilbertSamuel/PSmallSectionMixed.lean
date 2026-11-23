@@ -10,6 +10,7 @@ public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PKodairaSection
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefOnGenericOfSemipos
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPerturbSemipos
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PShiftNefBig
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLocalRep
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ZcombIsConjInvariantH
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.NotIsHorizontalOfDimOne
 public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PConeTrdeg
@@ -173,42 +174,8 @@ theorem coord_ne_zero {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {p : Σ k
 
 theorem exists_form_of_mem_chartRingZ {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {x : Ω} (hx : x ∈ chartRingZ y c) :
-    ∃ (δ : K → ℕ) (e : MRing ι), IsMultiHomog e δ ∧ aeval y e = x * ∏ k, y ⟨k, c k⟩ ^ δ k := by
-  classical
-  have hpow : ∀ δ₁ δ₂ : K → ℕ, ∏ k, y ⟨k, c k⟩ ^ (δ₁ + δ₂) k =
-      (∏ k, y ⟨k, c k⟩ ^ δ₁ k) * ∏ k, y ⟨k, c k⟩ ^ δ₂ k := fun δ₁ δ₂ => by
-    rw [← Finset.prod_mul_distrib]
-    exact Finset.prod_congr rfl fun k _ => by rw [Pi.add_apply, pow_add]
-  rw [chartRingZ] at hx
-  induction hx using Algebra.adjoin_induction with
-  | mem x hx =>
-    obtain ⟨p, rfl⟩ := hx
-    refine ⟨Pi.single p.1 1, X p, isMultiHomog_X p, ?_⟩
-    have h1 : ∏ k, y ⟨k, c k⟩ ^ (Pi.single p.1 1 : K → ℕ) k = y ⟨p.1, c p.1⟩ := by
-      rw [Finset.prod_eq_single p.1 (fun k _ hk => by simp [hk])
-        (fun h => absurd (Finset.mem_univ _) h)]
-      simp
-    rw [aeval_X, h1, div_mul_cancel₀ _ (hc p.1)]
-  | algebraMap r =>
-    exact ⟨0, C r, isMultiHomog_C r, by simp⟩
-  | add x z _ _ hx hz =>
-    obtain ⟨δ₁, e₁, h₁, v₁⟩ := hx
-    obtain ⟨δ₂, e₂, h₂, v₂⟩ := hz
-    have hA : IsMultiHomog (e₁ * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ δ₂ k) (δ₁ + δ₂) :=
-      isMultiHomog_mul h₁ (isMultiHomog_coordProd c δ₂)
-    have hB' : IsMultiHomog (e₂ * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ δ₁ k) (δ₂ + δ₁) :=
-      isMultiHomog_mul h₂ (isMultiHomog_coordProd c δ₁)
-    rw [add_comm δ₂ δ₁] at hB'
-    refine ⟨δ₁ + δ₂, e₁ * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ δ₂ k + e₂ * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ δ₁ k,
-      isMultiHomog_add hA hB', ?_⟩
-    · rw [map_add (f := _), map_mul, map_mul, v₁, v₂, aeval_coordProd, aeval_coordProd, hpow]
-      ring
-  | mul x z _ _ hx hz =>
-    obtain ⟨δ₁, e₁, h₁, v₁⟩ := hx
-    obtain ⟨δ₂, e₂, h₂, v₂⟩ := hz
-    refine ⟨δ₁ + δ₂, e₁ * e₂, isMultiHomog_mul h₁ h₂, ?_⟩
-    rw [map_mul, v₁, v₂, hpow]
-    ring
+    ∃ (δ : K → ℕ) (e : MRing ι), IsMultiHomog e δ ∧ aeval y e = x * ∏ k, y ⟨k, c k⟩ ^ δ k :=
+  GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.exists_form_of_mem_chartRingZ y c hc hx
 
 theorem exists_chartForm {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) {s : Ω}
     (hs : s ∈ chartLat y a τ) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :

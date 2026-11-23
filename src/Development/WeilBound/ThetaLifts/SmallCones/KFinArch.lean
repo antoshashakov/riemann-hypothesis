@@ -49,6 +49,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Divisors.MatchingOfParts
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.ExistsAdelePiInf
 
 @[expose] public section
 
@@ -65,20 +66,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 theorem exists_at_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (z : InfinitePlace F → ℂ) :
     ∃ a : AE F E, At (evI F) a ∧ ∀ w, piInf (τ w) a = z w := by
-  choose b hb using fun w => (infEmb_bijective h (τ w)).2 (z w)
-  refine ⟨∑ w, TensorProduct.map (sgI w) LinearMap.id (b w), fun s hs => ?_, fun w => ?_⟩
-  · have h1 : s.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hs
-    rw [Finset.smul_sum]
-    refine Finset.sum_eq_zero fun w _ => ?_
-    induction b w using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a x =>
-      have : s * sgI w a = 0 := Prod.ext (show s.1 * _ = 0 by rw [h1, zero_mul]) (show s.2 * 0 = 0 from mul_zero _)
-      rw [TensorProduct.map_tmul, TensorProduct.smul_tmul', smul_eq_mul, this, TensorProduct.zero_tmul]
-    | add x y hx hy => rw [map_add (f := _), smul_add, hx, hy, add_zero]
-
-  · rw [piInf, RingHom.comp_apply, map_sum, Finset.sum_eq_single w (fun u _ hu => compInf_sgI_ne hu.symm _)
-    (fun h => absurd (Finset.mem_univ w) h), compInf_sgI_self, hb]
+  exact GlobalTheory.CompanionTheory.RealPlaceAdele.exists_adele_piInf σ h τ z
 
 theorem exists_mat_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (z : InfinitePlace F → Matrix (Fin n) (Fin d) ℂ) :
     ∃ u : Matrix (Fin n) (Fin d) (AE F E), At (evI F) u ∧ ∀ w, u.map (piInf (τ w)) = z w := by

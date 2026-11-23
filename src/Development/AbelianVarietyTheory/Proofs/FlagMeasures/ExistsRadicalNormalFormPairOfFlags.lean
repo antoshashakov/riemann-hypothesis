@@ -3,6 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
 public import Formalism.SharpRestriction.CuspSpanNormBounds.RootMeasBig
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStabilizerRadicalStructure
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -193,16 +194,7 @@ theorem herm_isom {g : Mat k r} (hg : g ∈ GG k r) (v w : Fin (2 * r + k + 1) �
   unfold herm
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']
 
-theorem H_mul_H : Hpk k r * Hpk k r = 1 := by
-  ext x y
-  rw [Matrix.mul_apply, sum3]
-  induction x using cases3 <;> induction y using cases3 <;>
-    simp [H_ee, H_ew, H_es, H_we, H_ww, H_ws, H_se, H_sw, H_ss, Matrix.one_apply,
-      eI_inj, wI_inj, esI_inj, eI_ne_wI, eI_ne_esI, wI_ne_esI, wI_ne_eI, esI_ne_eI, esI_ne_wI]
-  rename_i i j
-  by_cases h : i = j
-  · subst h; simp only [if_true, sg]; split_ifs <;> simp
-  · simp [h]
+theorem H_mul_H : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem isUnit_det {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg

@@ -2,6 +2,7 @@ module
 
 public import Formalism.PeriodIntegrals.StabBig
 public import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -120,17 +121,7 @@ private theorem Hpk_apply_eq_ite_tau (p m : Fin (2 * r + k + 1)) :
   · have h2 : ¬ p = tau k r m := fun h' => h (by rw [h', tau_tau_lemma])
     rw [if_neg h2, if_neg h]
 
-private theorem Hpk_mul_self' : Hpk k r * Hpk k r = 1 := by
-  ext p q
-  have e1 : ∀ m, Hpk k r m q = if m = tau k r q then sgn k r q else 0 := fun m => hpk_col m q
-  rw [Matrix.mul_apply]
-  simp only [e1, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
-  rw [hpk_col, tau_tau_lemma, Matrix.one_apply]
-  split_ifs with h
-  · rw [sgn_tau']
-    unfold sgn
-    split_ifs <;> norm_num
-  · simp
+private theorem Hpk_mul_self' : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem adj_apply (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (p q : Fin (2 * r + k + 1)) :

@@ -56,6 +56,7 @@ import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import ReciprocityTheory.GaloisValuations.GlobalA
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertLocalMemUnitaryGroupAntidiagonalForm
 
 @[expose] public section
 
@@ -118,45 +119,13 @@ theorem compAt_conjAL (x : AL L) :
   | add a b ha hb => simp only [map_add (f := _), ha, hb]
 
 theorem loc_mem_GU (Dv : InertDatum L n v w) (z : GAf L n) : Dv.loc z ∈ Formalism.UG.GU Dv.σw n := by
-  set φ : AL L →+* w.adicCompletion L :=
-    (Dv.e : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L).comp
-      (compAt L v) with hφ
-  set Y : Matrix (Fin n) (Fin n) (w.adicCompletion L) :=
-    ((z.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map φ with hY
-  have hφc : ∀ x, φ (conjAL L x) = Dv.σw (φ x) := by
-    intro x
-    simp only [hφ, RingHom.comp_apply, compAt_conjAL]
-    exact Dv.comm _
-  have hz : ((z.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) *
-      conjT (conjAL L) ((z.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1 := z.2
-  have hYY : Y * Formalism.UG.cT Dv.σw Y = 1 := by
-    have := congrArg (fun M => M.map φ) hz
-    simp only [Matrix.map_mul, Matrix.map_one _ (map_zero φ) (map_one φ)] at this
-    rw [← this]
-    congr 1
-    ext i j
-    simp [Formalism.UG.cT, conjT, hY, hφc]
-  have hYY' : Formalism.UG.cT Dv.σw Y * Y = 1 := mul_eq_one_comm.1 hYY
-  set P : Matrix (Fin n) (Fin n) (w.adicCompletion L) := (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L))
-  set Pi : Matrix (Fin n) (Fin n) (w.adicCompletion L) :=
-    ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L))
-  have hPPi : P * Pi = 1 := by simp [P, Pi]
-  have hPi : Formalism.UG.cT Dv.σw Pi * Formalism.UG.cT Dv.σw P = 1 := by
-    rw [← Formalism.UG.cT_mul, hPPi, Formalism.UG.cT_one]
-  have hloc : ((Dv.loc z : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) =
-      Pi * Y * P := rfl
-  show Formalism.UG.cT Dv.σw ((Dv.loc z : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) _) *
-      Formalism.UG.antiJ (w.adicCompletion L) n * ((Dv.loc z : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) _) =
-    Formalism.UG.antiJ (w.adicCompletion L) n
-  rw [hloc, ← Dv.Panti, Formalism.UG.cT_mul, Formalism.UG.cT_mul]
-  change Formalism.UG.cT Dv.σw P * (Formalism.UG.cT Dv.σw Y * Formalism.UG.cT Dv.σw Pi) * (Formalism.UG.cT Dv.σw P * P) * (Pi * Y * P) =
-    Formalism.UG.cT Dv.σw P * P
-  calc Formalism.UG.cT Dv.σw P * (Formalism.UG.cT Dv.σw Y * Formalism.UG.cT Dv.σw Pi) * (Formalism.UG.cT Dv.σw P * P) * (Pi * Y * P)
-      = Formalism.UG.cT Dv.σw P * Formalism.UG.cT Dv.σw Y * (Formalism.UG.cT Dv.σw Pi * Formalism.UG.cT Dv.σw P) * (P * Pi) * Y * P := by
-        simp only [Matrix.mul_assoc]
-    _ = Formalism.UG.cT Dv.σw P * (Formalism.UG.cT Dv.σw Y * Y) * P := by
-        rw [hPi, hPPi]; simp only [Matrix.mul_one, Matrix.mul_assoc]
-    _ = Formalism.UG.cT Dv.σw P * P := by rw [hYY', Matrix.mul_one]
+  first
+  | exact @_root_.GlobalTheory.LocalUnitary.loc_mem_GU
+  | exact _root_.GlobalTheory.LocalUnitary.loc_mem_GU
+  | (apply _root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> assumption)
+  | (intros; apply _root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> assumption)
+  | (intros; apply @_root_.GlobalTheory.LocalUnitary.loc_mem_GU <;> first | assumption | infer_instance)
+  | (intros; exact _root_.GlobalTheory.LocalUnitary.loc_mem_GU ..)
 
 theorem loc_mem_KU (Dv : InertDatum L n v w) (z : GAf L n) (hz : z ∈ Umax L n) :
     (⟨Dv.loc z, loc_mem_GU Dv z⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n := by

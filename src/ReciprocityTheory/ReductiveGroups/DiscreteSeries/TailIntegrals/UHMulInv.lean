@@ -1,6 +1,7 @@
 module
 
 public import Formalism.HermitianCurvature.StatementB
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -137,8 +138,7 @@ theorem Hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk 
   · rw [if_neg h1, Hpk_mulVec, if_neg h1]
     split_ifs <;> simp
 
-theorem Hpk_sq : Hpk k r * Hpk k r = 1 :=
-  mat_eq_of_mulVec fun v => by rw [← Matrix.mulVec_mulVec, Hpk_mulVec_mulVec, Matrix.one_mulVec]
+theorem Hpk_sq : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem Hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
   ext i j

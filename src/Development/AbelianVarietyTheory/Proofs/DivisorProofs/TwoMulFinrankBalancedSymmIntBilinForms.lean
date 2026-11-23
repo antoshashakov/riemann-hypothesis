@@ -55,24 +55,6 @@ theorem host_bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   rw [H.bar_eq, H.bar_eq]
   exact IsCMField.complexConj_apply_apply E _
 
-theorem host_bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
-  have h1 : (H.bar H.rt) ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
-  rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h
-  · exfalso
-    obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-    have h2 : IsCMField.complexConj E (H.rt : E) = (H.rt : E) := by rw [← H.bar_eq, h]
-    have h3 := IsCMField.complexEmbedding_complexConj E φ (H.rt : E)
-    rw [h2] at h3
-    have h4 : (φ (H.rt : E)) ^ 2 = -(H.d : ℂ) := by
-      have := congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq
-      simpa using this
-    have h5 : (φ (H.rt : E)).im = 0 := Complex.conj_eq_iff_im.1 h3.symm
-    have h6 := congrArg Complex.re h4
-    simp [sq, h5] at h6
-    have h7 : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-    nlinarith [mul_self_nonneg (φ (H.rt : E)).re]
-  · exact h
-
 variable (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
 
 def rtMul : X →ₗ[ℤ] X := (DistribSMul.toAddMonoidHom X H.rt).toIntLinearMap
@@ -98,11 +80,11 @@ theorem comp_rt_mem_balBil {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ Global
 
 theorem comp_rt_antisymm {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ GlobalTheory.BalRank.balBil H.bar X)
     (hs : ∀ y z, β y z = β z y) (y z : X) : β (H.rt • y) z = -β (H.rt • z) y := by
-  rw [hβ, host_bar_rt, neg_smul, map_neg, hs]
+  rw [hβ, _root_.GlobalTheory.HostModel.bar_rt, neg_smul, map_neg, hs]
 
 theorem comp_rt_symm {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ GlobalTheory.BalRank.balBil H.bar X)
     (hs : ∀ y z, β y z = -β z y) (y z : X) : β (H.rt • y) z = β (H.rt • z) y := by
-  rw [hβ, host_bar_rt, neg_smul, map_neg, hs, neg_neg]
+  rw [hβ, _root_.GlobalTheory.HostModel.bar_rt, neg_smul, map_neg, hs, neg_neg]
 
 end GlobalTheory.BalRankSym
 

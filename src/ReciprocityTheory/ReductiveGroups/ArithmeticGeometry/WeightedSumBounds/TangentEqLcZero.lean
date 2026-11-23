@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.LinearFormDegree.InvFun
 
 @[expose] public section
 
@@ -259,30 +260,13 @@ theorem lgCurve_rescale (G : LogFGL v d) (x : C) {ga : Fin d → PowerSeries C}
 
 theorem degree_eq_one {σ : Type} {e : σ →₀ ℕ} (he : e.degree = 1) :
     ∃ b, e = Finsupp.single b 1 := by
-  classical
-  have hd : ∑ i ∈ e.support, e i = 1 := by
-    first
-    | exact he
-    | simpa [Finsupp.degree] using he
-  have hne : e.support.Nonempty := by
-    rw [Finset.nonempty_iff_ne_empty]
-    intro h
-    rw [h, Finset.sum_empty] at hd
-    exact zero_ne_one hd
-  obtain ⟨b, hb⟩ := hne
-  refine ⟨b, ?_⟩
-  rw [← Finset.add_sum_erase _ _ hb] at hd
-  have hb1 : 1 ≤ e b := Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hb)
-  have hrest : ∑ i ∈ e.support.erase b, e i = 0 := by omega
-  have heb : e b = 1 := by omega
-  ext i
-  by_cases hi : i = b
-  · rw [hi, heb, Finsupp.single_eq_same]
-  · rw [Finsupp.single_apply, if_neg (Ne.symm hi)]
-    by_cases his : i ∈ e.support
-    · exact (Finset.sum_eq_zero_iff.mp hrest) i (Finset.mem_erase.mpr ⟨hi, his⟩)
-    · by_contra hc
-      exact his (Finsupp.mem_support_iff.mpr hc)
+  first
+  | exact @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one
+  | (apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> assumption)
+  | (intros; apply @_root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one <;> first | assumption | infer_instance)
+  | (intros; exact _root_.ReciprocityTheory.ChartRestriction.G.LF.InvFun.eq_single_of_degree_eq_one ..)
 
 theorem order_lg_sub_X (G : LogFGL v d) (a : Fin d) : ((2 : ℕ) : ℕ∞) ≤ (G.lg a - X a).order := by
   classical

@@ -1,5 +1,7 @@
 module
 
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmDataIsCMExtAndGramIsHermND
+
 public import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 public import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.UnitaryVolumePairs
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsIdeleNotMulNormStatement
@@ -281,17 +283,7 @@ theorem exists_finite_part {D : D7} (V : HSp D) (h : GA D V) : ∃ k ∈ GfC V, 
     exact map_cut_zero (finPart D) hf _ i j
 
 theorem gram_det_ne_zero {D : D7} (V : HSp D) : V.gram.det ≠ 0 := by
-  intro h0
-  obtain ⟨v, hv, e⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h0
-  apply hv
-  have h1 : V.frame.equivFun.symm v = 0 := V.nondeg.2 _ fun x => by
-    apply hT_swap
-    have e2 : V.hT (V.frame.equivFun.symm v) = 0 := V.frame.ext fun c => by
-      apply hT_swap
-      have h2 := congrFun e c
-      simpa [Matrix.mulVec, dotProduct, HSpace.gram, Module.Basis.equivFun_symm_apply, mul_comm] using h2
-    rw [e2]; rfl
-  exact V.frame.equivFun.symm.map_eq_zero_iff.1 h1
+  exact _root_.GlobalTheory.Mem.Vol.hspace_gram_det_ne_zero V
 
 end GlobalTheory.VolHeckeCompare
 

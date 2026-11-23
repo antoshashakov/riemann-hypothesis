@@ -1,6 +1,7 @@
 module
 
 public import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.MultOne
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -81,19 +82,7 @@ private theorem hpk_apply_lemma (k r : ℕ) (i l : Fin (2 * r + k + 1)) :
   simp only [Formalism.QuantumDeterminants.Hpk]
   split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | rfl | omega | norm_num
 
-private theorem hpk_mul_self_lemma_2 (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
-  ext i j
-  have hi := i.2
-  have hj := j.2
-  rw [Matrix.mul_apply]
-  simp only [hpk_apply_lemma]
-  rw [Finset.sum_eq_single ⟨if (i : ℕ) < r ∨ r + k < i then 2 * r + k - i else i, by split_ifs <;> omega⟩]
-  · simp only [Matrix.one_apply, Fin.ext_iff]
-    split_ifs <;> first | rfl | omega | norm_num
-  · intro l _ hl
-    rw [if_neg (fun h => hl (Fin.ext h)), zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+private theorem hpk_mul_self_lemma_2 (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 private theorem isUnit_det_lemma_3 {k r : ℕ} {g : Formalism.FourierDecayAlt.ThreeDimData.Mx k r} (hg : g ∈ BranchingSupport.GG k r) : IsUnit g.det := by
   have hH : (Formalism.QuantumDeterminants.Hpk k r).det ≠ 0 := by

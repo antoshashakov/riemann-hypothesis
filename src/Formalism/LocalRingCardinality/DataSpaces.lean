@@ -3,6 +3,9 @@ module
 public import Formalism.LocalRingCardinality.Params
 public import Formalism.HermitianLattices.StatementMass
 public import Formalism.SatakeDualWeyl.Statement
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.Algebra.Star.Basic
+public import Mathlib.Algebra.Algebra.Operations
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,6 +54,42 @@ namespace Formalism.BasicNotions
 open NumberField IsDedekindDomain
 open scoped TensorProduct
 
+/-- Clearing the pairings of finitely many generators clears the whole lattice. -/
+theorem span_eq_top_of_integral_pairing
+    {E M : Type*} [Field E] [NumberField E] [StarRing E] [AddCommGroup M]
+    [Module E M] [Module (𝓞 E) M] [IsScalarTower (𝓞 E) E M]
+    (L : Submodule (𝓞 E) M) (hL : L.FG) (B : M → M → E)
+    (hadd : ∀ x z y, B (x + z) y = B x y + B z y)
+    (hleft : ∀ (a : 𝓞 E) x y, B (a • x) y = star (a : E) * B x y)
+    (hright : ∀ (c : E) x y, B x (c • y) = c * B x y)
+    (hmem : ∀ y, (∀ x ∈ L, B x y ∈ (1 : Submodule (𝓞 E) E)) → y ∈ L) :
+    Submodule.span E (L : Set M) = ⊤ := by
+  obtain ⟨s, hs⟩ := hL
+  apply top_le_iff.mp
+  intro y _
+  obtain ⟨a, ha⟩ := IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 E)) s (fun x => B x y)
+  let c : E := algebraMap (𝓞 E) E a
+  have hc : c ≠ 0 := (FaithfulSMul.algebraMap_injective _ _).ne (mem_nonZeroDivisors_iff_ne_zero.mp a.2)
+  have hcy : c • y ∈ L := hmem _ fun x hx => by
+    rw [← hs] at hx
+    induction hx using Submodule.span_induction with
+    | mem x hx =>
+      obtain ⟨r, hr⟩ := ha x hx
+      refine Submodule.mem_one.mpr ⟨r, ?_⟩
+      rw [hright]
+      simpa only [c, Algebra.smul_def] using hr
+    | zero =>
+      have hzero : B 0 (c • y) = 0 := by simpa using hleft (0 : 𝓞 E) (0 : M) (c • y)
+      rw [hzero]
+      exact zero_mem _
+    | add x z _ _ hx hz => exact hadd x z _ ▸ (Submodule.add_mem _ hx hz)
+    | smul r x _ hx =>
+      obtain ⟨b, hb⟩ := Submodule.mem_one.mp hx
+      apply Submodule.mem_one.mpr
+      exact ⟨RingOfIntegers.mapRingHom (starRingEnd E) r * b, by simp [hleft, hb, starRingEnd_apply]⟩
+  have h := (Submodule.span E (L : Set M)).smul_mem c⁻¹ (Submodule.subset_span hcy)
+  simpa only [smul_smul, inv_mul_cancel₀ hc, one_smul] using h
+
 structure CMData (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] : Prop where
   cmUnram : Formalism.HermitianLatticesTheory.IsCMUnram E
@@ -90,6 +129,28 @@ attribute [instance] HSpace.acg HSpace.modE HSpace.modO HSpace.tower HSpace.fd
 namespace HSpace
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
+
+/-- Over a number field, a finitely generated unimodular lattice spans the ambient space. -/
+theorem span_eq_top_of_unimodular {M : Type*} [AddCommGroup M] [Module E M] [Module (𝓞 E) M]
+    [IsScalarTower (𝓞 E) E M] {B : M →ₗ⋆[E] M →ₗ[E] E} {L : Submodule (𝓞 E) M}
+    (hL : L.FG) (hu : Formalism.HermitianLatticesTheory.IsUnimodular B L) :
+    Submodule.span E (L : Set M) = ⊤ := by
+  apply span_eq_top_of_integral_pairing L hL (fun x y => B x y)
+  · intro x z y
+    simp
+  · intro a x y
+    rw [← IsScalarTower.algebraMap_smul E a x, LinearMap.map_smulₛₗ, LinearMap.smul_apply]
+    rfl
+  · intro c x y
+    simp
+  · intro y hy
+    rw [← hu]
+    simpa only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf,
+      Submodule.mem_comap, LinearMap.restrictScalars_apply] using hy
+
+/-- The unimodular base lattice spans its Hermitian space. -/
+theorem span_baseLattice_eq_top (W : HSpace E) : Submodule.span E (W.L0 : Set W.V) = ⊤ :=
+  span_eq_top_of_unimodular W.standardTuple_isLattice.fg W.baseLattice_isUnimodular
 
 def gram (S : HSpace E) : Matrix (Fin S.rank) (Fin S.rank) E :=
   fun i j => S.hT (S.frame i) (S.frame j)

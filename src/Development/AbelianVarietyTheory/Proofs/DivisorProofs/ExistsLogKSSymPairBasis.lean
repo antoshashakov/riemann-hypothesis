@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
+public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Rt0ConjNegNeZero
 
 @[expose] public section
 
@@ -72,19 +73,13 @@ theorem cmHostImaginaryRootValue_ne_zero (H : ReciprocityTheory.ChartRestriction
   exact H.d_prime.ne_zero (by exact_mod_cast hd)
 
 theorem cmHostImaginaryRootValue_conj_eq_neg (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
-  have h := H.sqrt_neg_disc_sq
-  have hre := congrArg Complex.re h
-  have him := congrArg Complex.im h
-  simp [pow_two] at hre him
-  have hd : (0:ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-  have hx : H.rt0.re = 0 := by
-    by_contra hx
-    have hy : H.rt0.im = 0 := by
-      have h3 : (2 * H.rt0.re) * H.rt0.im = 0 := by linarith
-      exact (mul_eq_zero.1 h3).resolve_left (mul_ne_zero two_ne_zero hx)
-    rw [hy] at hre
-    nlinarith [sq_nonneg H.rt0.re]
-  apply Complex.ext <;> simp [hx]
+  first
+  | exact @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | (apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> first | assumption | infer_instance)
+  | (intros; exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero ..)
 
 theorem ksb_emb_rt (τ : E →+* ℂ) : τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0 := by
   have h1 : ((H.rt : E)) ^ 2 = -(H.d : E) := by

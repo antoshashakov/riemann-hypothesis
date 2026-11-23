@@ -2,6 +2,7 @@ module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoCoefOf
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.DecompSigmaOrd
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -54,14 +55,6 @@ namespace UpperTheory.V.J
 
 open UpperTheory.V.Pr
 
-private theorem oe_norm {l : ℕ} [Fact l.Prime] {x : PadicAlgCl l} (h : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
-  have hq : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
-  change spectralValue (minpoly ℚ_[l] x) ≤ 1
-  rw [spectralValue_le_one_iff (minpoly.monic hq)]
-  intro n
-  rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]
-  exact PadicInt.norm_le_one _
-
 private theorem oe_field {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [Algebra ℤ_[l] R] [Module.Finite ℤ_[l] R]
     (φ : R →ₐ[ℤ_[l]] PadicAlgCl l) :
     ∃ E : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] E ∧ ∀ x, φ x ∈ E ∧ ‖φ x‖ ≤ 1 := by
@@ -69,7 +62,7 @@ private theorem oe_field {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [Algeb
   haveI := (t.finite_toSet.image φ).to_subtype
   refine ⟨IntermediateField.adjoin ℚ_[l] (φ '' (t : Set R)),
     IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x, fun x => ⟨?_,
-      oe_norm ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map φ)⟩⟩
+      _root_.GlobalTheory.IntegralAlgebraMapNormBound.main _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map φ)⟩⟩
   have hx : x ∈ Submodule.span ℤ_[l] (t : Set R) := ht ▸ Submodule.mem_top
   induction hx using Submodule.span_induction with
   | mem y hy => exact IntermediateField.subset_adjoin _ _ ⟨y, hy, rfl⟩

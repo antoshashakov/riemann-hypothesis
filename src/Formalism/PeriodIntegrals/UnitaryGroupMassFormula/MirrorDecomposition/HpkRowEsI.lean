@@ -1,6 +1,7 @@
 module
 
 public import Formalism.HermitianCurvature.StatementB
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,20 +63,7 @@ section Grp
 
 variable {k r : ℕ}
 
-theorem hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  let t : Fin (2 * r + k + 1) :=
-    ⟨if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val, by split_ifs <;> omega⟩
-  rw [Finset.sum_eq_single t]
-  · simp only [Hpk, t, Fin.ext_iff]
-    split_ifs <;> first | omega | norm_num
-  · intro l _ hl
-    have hl' : l.val ≠ t.val := fun h => hl (Fin.ext h)
-    simp only [t] at hl'
-    simp only [Hpk, Fin.ext_iff]
-    split_ifs at hl' ⊢ <;> first | omega | norm_num
-  · simp
+theorem hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem uh_inv {a : B.Mat k r} (ha : a ∈ UH (Hpk k r)) :
     a * a⁻¹ = 1 ∧ a⁻¹ * a = 1 ∧ a⁻¹ ∈ UH (Hpk k r) := by

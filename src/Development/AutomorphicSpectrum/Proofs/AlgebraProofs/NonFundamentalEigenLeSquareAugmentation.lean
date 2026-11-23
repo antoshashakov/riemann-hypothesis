@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Development.WeilBound.CoreStatements.HodgeTatePoints.RbFund
 
 @[expose] public section
 
@@ -130,7 +131,7 @@ end GlobalTheory.CompanionTheory.Ar.GR.NonFund
 open GlobalTheory.CompanionTheory.Ar.GR.NonFund in
 theorem _root_.GlobalTheory.CompanionTheory.Relay.non_fundamental_eigen_le_square_augmentation : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (AA : HopfOrder (C := C) R F), FStable F AA.carrier → ∀ χ : MulChar F R, ¬ IsFund p χ → eig AA.carrier χ ≤ sqIdeal (augIdeal AA.carrier) := by
   intro p hpp C _ _ _ v R _ _ hv hp F _ _ _ _ f hc AA hA χ hχ g hg
-  obtain ⟨σ, hσ⟩ := fund_ex_relay p C v R hv hp F f hc
+  obtain ⟨σ, hσ⟩ := _root_.PositivityTheory.HtPt.Rb.fund_ex p C v R hv hp F f hc
   obtain ⟨-, hgen, hfund, -, -⟩ := FundGen.main p C v R hv hp F f hc σ hσ
   obtain ⟨m, hm1, hm2, rfl⟩ := hgen χ
   have hr := eig_rank_one p C v R hv hp F f hc AA hA

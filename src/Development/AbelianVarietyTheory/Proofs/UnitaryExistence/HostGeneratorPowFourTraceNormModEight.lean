@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DualRestrictSurjectiveOfIsTorsionFreeQuotient
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 
 @[expose] public section
 
@@ -164,27 +165,13 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 private lemma host_bar_rt_eq_neg (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : H.bar H.rt = -H.rt := by
-  obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have hsq : (φ (H.rt : E)) ^ 2 = -(H.d : ℂ) := by
-    simpa using congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq
-  have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-  have hconj : (starRingEnd ℂ) (φ (H.rt : E)) = -φ (H.rt : E) := by
-    set z := φ (H.rt : E) with hz
-    have hre := congrArg Complex.re hsq
-    have him := congrArg Complex.im hsq
-    simp only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
-      Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him
-    have hre0 : z.re = 0 := by
-      rcases mul_eq_zero.mp (show z.re * z.im * 2 = 0 by linarith) with h | h
-      · rcases mul_eq_zero.mp h with h | h
-        · exact h
-        · rw [h] at hre; nlinarith [sq_nonneg z.re]
-      · norm_num at h
-    apply Complex.ext <;> simp [hre0]
-  apply RingOfIntegers.ext
-  apply φ.injective
-  rw [H.bar_eq, NumberField.IsCMField.complexEmbedding_complexConj, hconj]
-  simp
+  first
+  | exact @_root_.GlobalTheory.HostModel.bar_rt
+  | exact _root_.GlobalTheory.HostModel.bar_rt
+  | (apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply @_root_.GlobalTheory.HostModel.bar_rt <;> first | assumption | infer_instance)
+  | (intros; exact _root_.GlobalTheory.HostModel.bar_rt ..)
 
 open NumberField Matrix in
 open scoped nonZeroDivisors in

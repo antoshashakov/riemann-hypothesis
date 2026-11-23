@@ -2,6 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.HTLawAt
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormLeOneOfIsIntegralBis
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -48,18 +49,9 @@ namespace GlobalTheory.KZ.CoefVal
 
 variable {l : ℕ} [Fact l.Prime]
 
-private theorem norm_le_one_of_int' (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
-  first
-  | exact @_root_.GlobalTheory.IntegralNormAlgebraMap.norm_le_one_of_isIntegral
-  | exact _root_.GlobalTheory.IntegralNormAlgebraMap.norm_le_one_of_isIntegral
-  | (apply _root_.GlobalTheory.IntegralNormAlgebraMap.norm_le_one_of_isIntegral <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IntegralNormAlgebraMap.norm_le_one_of_isIntegral <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IntegralNormAlgebraMap.norm_le_one_of_isIntegral <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IntegralNormAlgebraMap.norm_le_one_of_isIntegral ..)
-
 theorem norm_le_one_of_mem (c : Coef l) {x : PadicAlgCl l} (hx : x ∈ c.O) : ‖x‖ ≤ 1 := by
   haveI := c.fin
-  exact norm_le_one_of_int' x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
+  exact _root_.GlobalTheory.IntegralAlgebraMapNormBound.main x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
 
 theorem norm_unit (c : Coef l) (u : c.Oˣ) : ‖((u : c.O) : PadicAlgCl l)‖ = 1 := by
   have h1 : ‖((u : c.O) : PadicAlgCl l)‖ * ‖(((u⁻¹ : c.Oˣ) : c.O) : PadicAlgCl l)‖ = 1 := by

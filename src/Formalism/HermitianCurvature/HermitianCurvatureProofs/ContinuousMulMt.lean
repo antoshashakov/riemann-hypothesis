@@ -2,6 +2,7 @@ module
 
 public import Formalism.HermitianCurvature.BesselNonvanishingReduction
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HighestWeightUniqueness.FrameInvMulVecNegativeVector
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -162,20 +163,7 @@ theorem uwset_eq (z : Fin (2 * r + k + 1) → ℂ) : Formalism.QuantumDeterminan
 
 theorem uh_eq : Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) = PI.UpqRep.UH (PI.UpqRep.Hpk k r) := rfl
 
-private theorem hpk_sq_lemma (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply]
-  obtain ⟨s, hs⟩ : ∃ s : Fin (2 * r + k + 1),
-      s.val = (if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val) :=
-    ⟨⟨if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val, by split_ifs <;> omega⟩, rfl⟩
-  rw [Finset.sum_eq_single s]
-  · simp only [Formalism.QuantumDeterminants.Hpk, Matrix.one_apply, Fin.ext_iff]
-    split_ifs at hs ⊢ <;> first | omega | norm_num
-  · intro l _ hl
-    simp only [Formalism.QuantumDeterminants.Hpk, Fin.ext_iff] at hl ⊢
-    split_ifs at hs ⊢ <;> first | omega | simp
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+private theorem hpk_sq_lemma (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 private theorem inv_mem_UH_Hpk_and_mul_inv_of_mem {k r : ℕ} {g : Formalism.FourierDecayAlt.ThreeDimData.Mx k r} (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
     g⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) ∧ g * g⁻¹ = 1 ∧ g⁻¹ * g = 1 := by

@@ -1,6 +1,7 @@
 module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.DirichletPrimeToLPartMulLPowerPart
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,21 +51,6 @@ namespace GlobalTheory.PadicNormCastBounds
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
-theorem norm_le_one_of_isIntegral {x : PadicAlgCl l} (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
-  have hz : ∀ a : ℤ_[l], ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ ≤ 1 := by
-    intro a
-    rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']
-    exact a.2
-  let v := NormedField.valuation (K := PadicAlgCl l)
-  let φ : ℤ_[l] →+* v.integer :=
-    (algebraMap ℤ_[l] (PadicAlgCl l)).codRestrict v.integer fun a => by
-      rw [Valuation.mem_integer_iff]
-      exact_mod_cast hz a
-  have h1 : IsIntegral v.integer x := hx.map_of_comp_eq φ (RingHom.id _) (by ext a; rfl)
-  have h2 := (Valuation.integer.integers v).mem_of_integral h1
-  rw [Valuation.mem_integer_iff] at h2
-  exact_mod_cast h2
-
 theorem norm_natCast_of_coprime {a : ℕ} (ha : a.Coprime l) : ‖(a : PadicAlgCl l)‖ = 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap', Padic.norm_natCast_eq_one_iff]
   exact ha.symm
@@ -112,7 +98,7 @@ theorem twist_compat (l : ℕ) [inst : Fact (Nat.Prime l)] (c : UpperTheory.V.HV
   generalize hy : Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r)) :
     ZMod (l ^ Nat.succ r) →* ZMod (l ^ r)) x = y at h1 ⊢
   have hint : ‖χ r y‖ ≤ 1 :=
-    norm_le_one_of_isIntegral
+    _root_.GlobalTheory.IntegralAlgebraMapNormBound.main _
       ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨χ r y, hO r y⟩ : c.O)).map c.O.val)
   have hA := norm_inv_pow_val_le (r + 1) e x
   have hB := norm_inv_pow_val_le r e y

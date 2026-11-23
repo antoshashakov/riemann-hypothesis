@@ -2,6 +2,7 @@ module
 
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed
 public import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -100,12 +101,7 @@ theorem sgn_mul_self (i : Fin (2 * r + k + 1)) : sgn k r i * sgn k r i = 1 := by
   unfold sgn
   split_ifs <;> norm_num
 
-theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [hpk_mul_apply, hpk_row, tau_tau, sgn_tau, Matrix.one_apply]
-  by_cases h : j = i
-  · rw [if_pos h, if_pos h.symm, sgn_mul_self]
-  · rw [if_neg h, if_neg (Ne.symm h), mul_zero]
+theorem hpk_sq : Hpk k r * Hpk k r = 1 := _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq _ _
 
 theorem isUnit_of_uh {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by

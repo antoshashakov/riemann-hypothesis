@@ -117,8 +117,8 @@ private theorem idx_split {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   rwa [← this]
 
 theorem UpperTheory.TP.W.idxSign :
-    CardDet → IdxHalf → IdxSign := by
-  intro _ hIH F E _ _ _ _ _ σ hcm nS nT JS JT hS hT ξ₀ hξ ψ hc w hw Λ hΛ hsd hfin lam hlam κ hκ e he g h hg hh x y hx hy
+    IdxHalf → IdxSign := by
+  intro hIH F E _ _ _ _ _ σ hcm nS nT JS JT hS hT ξ₀ hξ ψ hc w hw Λ hΛ hsd hfin lam hlam κ hκ e he g h hg hh x y hx hy
   obtain ⟨P, hPF, h1, h0⟩ := UpperTheory.exists_place_of_splitIdempotent_cmExt σ hcm e he
   have hinj := UpperTheory.eq_zero_of_splitIdempotent_eval_place_eq_zero σ hcm e he P h0
   obtain ⟨L, hfg, hsp, hL⟩ := UpperTheory.exists_local_lattice_of_global_lattice (F := F) P Λ hΛ

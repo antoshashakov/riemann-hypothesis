@@ -1,5 +1,7 @@
 module
 
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmDataIsCMExtAndGramIsHermND
+
 public import Formalism.LocalToGlobal.BesselHermitianTheta.IsAutFunDef
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FundamentalEquivalence.AdBridge
 public import Formalism.LocalToGlobal.UnitaryNorms.RealPl
@@ -87,26 +89,7 @@ theorem J_herm : Formalism.UG.IsHerm (starRingEnd D.host.E) V.gram := by
   exact V.herm.eq _ _
 
 theorem J_det : V.gram.det ≠ 0 := by
-  intro h
-  obtain ⟨y, hy0, hy⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr h
-  apply hy0
-  have hrow : ∀ i, V.hT (V.frame i) (∑ j, y j • V.frame j) = 0 := by
-    intro i
-    have hi := congrFun hy i
-    simp only [Matrix.mulVec, dotProduct, Formalism.BasicNotions.HSpace.gram, Pi.zero_apply] at hi
-
-    simp only [map_sum, map_smul, smul_eq_mul]
-    rw [← hi]
-    exact Finset.sum_congr rfl fun j _ => mul_comm _ _
-  have hw : (∑ j, y j • V.frame j) = 0 := by
-    refine V.nondeg.2 _ fun v => ?_
-    generalize (∑ j, y j • V.frame j) = w at hrow ⊢
-
-    rw [← V.frame.sum_repr v, map_sum, LinearMap.sum_apply]
-    refine Finset.sum_eq_zero fun i _ => ?_
-    rw [map_smulₛₗ, LinearMap.smul_apply, hrow, smul_zero]
-  funext i
-  exact Fintype.linearIndependent_iff.mp V.frame.linearIndependent y hw i
+  exact _root_.GlobalTheory.Mem.Vol.hspace_gram_det_ne_zero V
 
 theorem Lv_eq_map : Lv D V = V.L0.map ((crd D V).symm.toLinearMap.restrictScalars (𝓞 D.host.E)) := by
   ext x

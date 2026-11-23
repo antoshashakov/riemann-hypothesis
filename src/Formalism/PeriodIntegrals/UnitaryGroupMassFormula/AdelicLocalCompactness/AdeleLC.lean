@@ -49,6 +49,7 @@ public import Mathlib.Topology.Algebra.Valued.LocallyCompact
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IntegralApproximation
 
 @[expose] public section
 
@@ -69,89 +70,13 @@ theorem algebraMap_mem_integer (r : 𝓞 F) :
 
 private theorem exists_ringOfIntegers_valuation_sub_lt_one_of_le (k : F) (hk : v.valuation F k ≤ 1) :
     ∃ r : 𝓞 F, v.valuation F (k - algebraMap (𝓞 F) F r) < 1 := by
-  classical
-  obtain ⟨⟨a, b⟩, hab⟩ := IsLocalization.mk'_surjective (nonZeroDivisors (𝓞 F)) k
-  dsimp only at hab
-  subst hab
-  have hb0 : (b : 𝓞 F) ≠ 0 := nonZeroDivisors.coe_ne_zero b
-  have hspan : Ideal.span {(b : 𝓞 F)} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact hb0
-  have hfin := Ideal.finite_factors hspan
-  have hn : ∀ w : HeightOneSpectrum (𝓞 F),
-      ∃ n : ℕ, WithZero.exp (-(n : ℤ)) ≤ w.intValuation (b : 𝓞 F) := by
-    intro w
-    rw [intValuation_def, if_neg hb0]
-    exact ⟨_, le_rfl⟩
-  choose n hn using hn
-  have hdist : ∀ i ∈ insert v hfin.toFinset, ∀ j ∈ insert v hfin.toFinset, i ≠ j →
-      (fun w : HeightOneSpectrum (𝓞 F) => w.asIdeal) i ≠ (fun w => w.asIdeal) j := by
-    intro i _ j _ hij h
-    exact hij (HeightOneSpectrum.ext h)
-  obtain ⟨c, hc⟩ := IsDedekindDomain.exists_forall_sub_mem_ideal (s := insert v hfin.toFinset)
-    (fun w : HeightOneSpectrum (𝓞 F) => w.asIdeal)
-    (fun w => if w = v then 1 else n w)
-    (fun w _ => Ideal.prime_of_isPrime w.ne_bot w.isPrime) hdist
-    (fun w => if (w : HeightOneSpectrum (𝓞 F)) = v then (1 : 𝓞 F) else 0)
-  have hcv : c ∉ v.asIdeal := by
-    intro hmem
-    have h1 := hc v (Finset.mem_insert_self v _)
-    simp at h1
-    apply v.isPrime.ne_top
-    rw [Ideal.eq_top_iff_one]
-    have h2 := v.asIdeal.sub_mem hmem h1
-    simpa using h2
-  have hcw : ∀ w ∈ hfin.toFinset, w ≠ v → c ∈ w.asIdeal ^ n w := by
-    intro w hw hwv
-    have h1 := hc w (Finset.mem_insert_of_mem hw)
-    simpa [hwv] using h1
-  have key : ∀ w : HeightOneSpectrum (𝓞 F),
-      w.valuation F (algebraMap (𝓞 F) F c * IsLocalization.mk' F a b) ≤ 1 := by
-    intro w
-    have hvc : w.valuation F (algebraMap (𝓞 F) F c) = w.intValuation c :=
-      valuation_of_algebraMap w c
-    rw [map_mul, hvc]
-    by_cases hwv : w = v
-    · rw [hwv, intValuation_eq_one_iff.mpr hcv, one_mul]
-      exact hk
-    · rw [valuation_of_mk']
-      have hbne : w.intValuation (b : 𝓞 F) ≠ 0 := by
-        exact intValuation_ne_zero w _ hb0
-      by_cases hwS : w ∈ hfin.toFinset
-      · have hc' : w.intValuation c ≤ w.intValuation (b : 𝓞 F) :=
-          ((intValuation_le_pow_iff_mem w c (n w)).mpr (hcw w hwS hwv)).trans (hn w)
-        rw [div_eq_mul_inv]
-        calc w.intValuation c * (w.intValuation a * (w.intValuation (b : 𝓞 F))⁻¹)
-            ≤ w.intValuation (b : 𝓞 F) * (1 * (w.intValuation (b : 𝓞 F))⁻¹) := by
-              first
-              | exact mul_le_mul' hc' (mul_le_mul_right' (intValuation_le_one w a) _)
-              | (gcongr; exact intValuation_le_one w a)
-          _ = 1 := by rw [one_mul, mul_inv_cancel₀ hbne]
-      · have hb1 : w.intValuation (b : 𝓞 F) = 1 := by
-          rw [intValuation_eq_one_iff]
-          intro hmem
-          exact hwS (hfin.mem_toFinset.mpr (Ideal.dvd_span_singleton.mpr hmem))
-        rw [hb1, div_one]
-        exact mul_le_one' (intValuation_le_one w c) (intValuation_le_one w a)
-  obtain ⟨r', hr'⟩ := RingHom.mem_range.mp (mem_integers_of_valuation_le_one F _ key)
-  have hmax : v.asIdeal.IsMaximal := v.isMaximal
-  obtain ⟨y, i, hi, hyi⟩ := hmax.exists_inv hcv
-  refine ⟨y * r', ?_⟩
-  have hi' : i = 1 - y * c := by linear_combination hyi
-  have hdiff : IsLocalization.mk' F a b - algebraMap (𝓞 F) F (y * r') =
-      IsLocalization.mk' F a b * algebraMap (𝓞 F) F i := by
-    rw [hi']
-    simp only [map_mul, map_sub, map_one, hr']
-    ring
-  rw [hdiff, map_mul]
-  have hvi : v.valuation F (algebraMap (𝓞 F) F i) < 1 := (valuation_lt_one_iff_mem v i).mpr hi
-  calc v.valuation F (IsLocalization.mk' F a b) * v.valuation F (algebraMap (𝓞 F) F i)
-      ≤ 1 * v.valuation F (algebraMap (𝓞 F) F i) := by
-        first
-        | exact mul_le_mul_right' hk _
-        | gcongr
-    _ = v.valuation F (algebraMap (𝓞 F) F i) := one_mul _
-    _ < 1 := hvi
+  first
+  | exact @_root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx
+  | exact _root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx
+  | (apply _root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx <;> assumption)
+  | (intros; apply _root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx <;> assumption)
+  | (intros; apply @_root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx <;> first | assumption | infer_instance)
+  | (intros; exact _root_.Formalism.L2.SG.IntegralApproximation.exists_int_approx ..)
 
 private theorem valued_algebraMap_adicCompletion_eq_valuation' (k : F) :
     Valued.v (algebraMap F (v.adicCompletion F) k) = v.valuation F k := by

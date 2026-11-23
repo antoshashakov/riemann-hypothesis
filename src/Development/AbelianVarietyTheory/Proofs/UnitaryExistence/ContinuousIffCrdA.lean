@@ -106,46 +106,7 @@ def spOf : ConjugateFieldNorm.HSpace D.host.E r where
   L_fg := V.standardTuple_isLattice.fg.map _
   L_span := by
     have hspan : Submodule.span D.host.E (V.L0 : Set V.V) = ⊤ := by
-      by_contra hproper
-      obtain ⟨φ, hφ, hker⟩ := Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hproper)
-      have hinj : Function.Injective V.hT := LinearMap.ker_eq_bot.mp
-        (LinearMap.separatingLeft_iff_ker_eq_bot.mp V.nondeg.1)
-      let e := LinearEquiv.ofInjective V.hT hinj
-      have hrank : Module.rank D.host.E V.V = Module.rank D.host.E (LinearMap.range V.hT) :=
-        rank_eq_of_equiv_equiv (starRingEnd D.host.E) e.toAddEquiv
-          (star_involutive.bijective) (map_smulₛₗ e)
-      have hsurj : Function.Surjective V.hT := by
-        rw [← LinearMap.range_eq_top]
-        apply Submodule.eq_top_of_finrank_eq
-        change Module.finrank D.host.E (LinearMap.range V.hT) =
-          Module.finrank D.host.E (Module.Dual D.host.E V.V)
-        rw [Subspace.dual_finrank_eq]
-        exact congrArg Cardinal.toNat hrank.symm
-      obtain ⟨x, hx⟩ := hsurj φ
-      have hx0 : x ≠ 0 := by
-        rintro rfl
-        exact hφ (hx.symm.trans V.hT.map_zero)
-      have hline (c : D.host.E) : c • x ∈ V.L0 := by
-        rw [← V.baseLattice_isUnimodular]
-        simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual,
-          Submodule.mem_iInf, Submodule.mem_comap]
-        intro y hy
-        have hxy : V.hT x y = 0 := by
-          rw [hx]
-          exact hker (Submodule.subset_span hy)
-        rw [LinearMap.restrictScalars_apply, map_smul, V.herm.eq_iff.mp hxy, smul_zero]
-        exact Submodule.zero_mem _
-      obtain ⟨y, hy⟩ : ∃ y, V.hT y x ≠ 0 := by
-        simpa only [not_forall, not_not] using mt (V.nondeg.2 x) hx0
-      let f := ((V.hT y).restrictScalars (𝓞 D.host.E)).comp V.L0.subtype
-      let : Module.Finite (𝓞 D.host.E) V.L0 := Module.Finite.iff_fg.mpr V.standardTuple_isLattice.fg
-      let : Module.Finite (𝓞 D.host.E) D.host.E := Module.Finite.of_surjective f <| by
-        intro z
-        refine ⟨⟨(z / V.hT y x) • x, hline _⟩, ?_⟩
-        change V.hT y ((z / V.hT y x) • x) = z
-        rw [map_smul, smul_eq_mul, div_mul_cancel₀ _ hy]
-      exact RingOfIntegers.not_isField D.host.E
-        (isField_of_isIntegral_of_isField RingOfIntegers.coe_injective (Field.toIsField _))
+      exact V.span_baseLattice_eq_top
     rw [Submodule.map_coe]
     change Submodule.span D.host.E ((crdR V hr).toLinearMap '' (V.L0 : Set V.V)) = ⊤
     rw [Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]

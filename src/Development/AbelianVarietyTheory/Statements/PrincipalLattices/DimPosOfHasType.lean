@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 
 @[expose] public section
 
@@ -95,7 +96,7 @@ theorem exists_char (hs : Splits E K) {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞
   · exact ⟨τ, e⟩
   · exact ⟨τ.comp H.bar.toRingHom, by
       show τ (H.bar H.rt) = ρ
-      rw [Test.bar_rt, map_neg, e, neg_neg]⟩
+      rw [_root_.GlobalTheory.HostModel.bar_rt, map_neg, e, neg_neg]⟩
 
 theorem dim_pos_of_hasType (hs : Splits E K) {ρ : 𝓞 K} (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) (T : PAT H (Sp (𝓞 K))) {q : ℕ}
     (hT : HasType H T.t.act ρ 1 q) : 1 ≤ T.g := by

@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Formalism.LocalToGlobal.ProjectiveLattices.AlgebraMapCAt
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 
 @[expose] public section
 
@@ -62,22 +63,13 @@ namespace GlobalTheory.ConjSplit
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 theorem bar_rt : H.bar H.rt = -H.rt := by
-  have h1 : H.bar H.rt ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
-  rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h
-  · exfalso
-    obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-    have h2 : IsCMField.complexConj E (H.rt : E) = (H.rt : E) := by rw [← H.bar_eq, h]
-    have h3 : φ (H.rt : E) = starRingEnd ℂ (φ (H.rt : E)) := by
-      rw [← IsCMField.complexEmbedding_complexConj, h2]
-    have h4 : (φ (H.rt : E)) ^ 2 = -(H.d : ℂ) := by
-      have := congrArg (fun a : 𝓞 E => φ (a : E)) H.rt_sq
-      simpa using this
-    obtain ⟨x, hx⟩ := Complex.conj_eq_iff_real.1 h3.symm
-    rw [hx] at h4
-    have h5 : x ^ 2 = -(H.d : ℝ) := by exact_mod_cast h4
-    have h6 : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-    nlinarith [sq_nonneg x]
-  · exact h
+  first
+  | exact @_root_.GlobalTheory.HostModel.bar_rt
+  | exact _root_.GlobalTheory.HostModel.bar_rt
+  | (apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply _root_.GlobalTheory.HostModel.bar_rt <;> assumption)
+  | (intros; apply @_root_.GlobalTheory.HostModel.bar_rt <;> first | assumption | infer_instance)
+  | (intros; exact _root_.GlobalTheory.HostModel.bar_rt ..)
 
 theorem cmHost_bar_halfIntegerGenerator : H.bar H.w0 = 1 - H.w0 := by
   have h := congrArg H.bar H.two_weight_eq_one_add_root

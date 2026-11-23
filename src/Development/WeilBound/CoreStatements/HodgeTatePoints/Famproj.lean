@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 
 @[expose] public section
 
@@ -100,21 +101,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 theorem rt_sq_map (H : Host E) (τ : E →+* ℂ) : τ H.rt ^ 2 = -(H.d : ℂ) := by
   simpa using congrArg (fun w : 𝓞 E => τ w) H.rt_sq
 
-theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
-  have h1 : H.bar H.rt ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
-  rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h
-  · exfalso
-    obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-    have h2 : starRingEnd ℂ (τ H.rt) = τ H.rt := by
-      rw [← IsCMField.complexEmbedding_complexConj, ← H.bar_eq, h]
-    have h3 : τ H.rt ^ 2 = -(H.d : ℂ) := rt_sq_map H τ
-    obtain ⟨r, hr⟩ := Complex.conj_eq_iff_real.1 h2
-    rw [hr] at h3
-    have h4 : r ^ 2 = -(H.d : ℝ) := by exact_mod_cast h3
-    have h5 : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-    nlinarith [sq_nonneg r]
-  · exact h
-
 theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   ext; rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
@@ -128,7 +114,7 @@ theorem exists_label {l : Level H} (c : Coeff l) {Ω : Type} [Field Ω] (j : c.F
     rw [bar_bar]; rfl
   · refine ⟨.inl ⟨τ.comp (IsCMField.complexConj E).toRingEquiv.toRingHom, ?_⟩, fun a => ?_⟩
     · change τ (IsCMField.complexConj E H.rt) = _
-      rw [← H.bar_eq, bar_rt]; simp [h]
+      rw [← H.bar_eq, _root_.GlobalTheory.HostModel.bar_rt]; simp [h]
     · refine congrArg j (Subtype.ext ?_)
       change τ (IsCMField.complexConj E (H.bar a : 𝓞 E)) = τ a
       rw [← H.bar_eq, bar_bar]

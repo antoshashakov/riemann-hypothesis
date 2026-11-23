@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsTangentModuleUniversalGroup
 
 @[expose] public section
 
@@ -170,7 +171,7 @@ theorem split_axes (W : overAt x0 (TrivSqZeroExt S (S × S)) ⟶ G)
       ext <;> simp [Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl]
     rw [e, ← hcomp, h0, MonObj.comp_one]
   apply Over.OverMorphism.ext
-  apply spec_ext_two (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S)
+  apply _root_.GlobalTheory.TanMod.spec_ext_two (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S)
     (tm (LinearMap.snd S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S)
   · intro y
     refine ⟨tm (LinearMap.inl S S S) y, ?_⟩

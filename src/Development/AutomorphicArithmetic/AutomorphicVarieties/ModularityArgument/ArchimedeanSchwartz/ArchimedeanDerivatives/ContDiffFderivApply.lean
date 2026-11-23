@@ -159,28 +159,10 @@ private def dirOp (w : Lie K n) : Module.End ℂ (Smth K n) where
 private def dOp (τ : K →+* ℂ) (a b : Fin n) : Module.End ℂ (Smth K n) :=
   (1 / 2 : ℂ) • (dirOp (eDir τ a b 1) - Complex.I • dirOp (eDir τ a b Complex.I))
 
-private theorem fderiv_fderiv_apply {F : Lie K n → ℂ} (hF : ContDiff ℝ ∞ F) (x u w : Lie K n) :
-    fderiv ℝ (fun y => fderiv ℝ F y w) x u = fderiv ℝ (fderiv ℝ F) x u w := by
-  have hd : DifferentiableAt ℝ (fderiv ℝ F) x :=
-    (hF.fderiv_right (m := ∞) (by simp)).differentiable (by simp) x
-  rw [fderiv_clm_apply hd (differentiableAt_const w)]
-  simp
-
 private theorem x_comm (τ : K →+* ℂ) (a b c e : Fin n) : Commute (xOp τ a b) (xOp τ c e) := by
   refine LinearMap.ext fun F => Subtype.ext (funext fun y => ?_)
   change coordC τ a b y * (coordC τ c e y * F.1 y) = coordC τ c e y * (coordC τ a b y * F.1 y)
   ring
-
-private theorem dir_comm (u w : Lie K n) : Commute (dirOp u) (dirOp w) := by
-  refine LinearMap.ext fun F => Subtype.ext (funext fun y => ?_)
-  change fderiv ℝ (fun z => fderiv ℝ F.1 z w) y u = fderiv ℝ (fun z => fderiv ℝ F.1 z u) y w
-  rw [fderiv_fderiv_apply (cd_of F), fderiv_fderiv_apply (cd_of F)]
-  exact ((cd_of F).contDiffAt.isSymmSndFDerivAt (by simp)) _ _
-
-private theorem d_comm (τ : K →+* ℂ) (a b c e : Fin n) : Commute (dOp τ a b) (dOp τ c e) := by
-  have h : ∀ u : Lie K n, Commute (dirOp u) (dOp τ c e) := fun u =>
-    (((dir_comm u _).sub_right ((dir_comm u _).smul_right _))).smul_right _
-  exact ((h _).sub_left ((h _).smul_left _)).smul_left _
 
 private theorem weyl_rel (τ : K →+* ℂ) (a b c e : Fin n) :
     dOp τ a b * xOp τ c e - xOp τ c e * dOp τ a b = if a = c ∧ b = e then 1 else 0 := by
@@ -254,7 +236,7 @@ private theorem capelli_glob (τ : K →+* ℂ) (G : Smth K n) (x : Lie K n) :
     detAt τ x * detD τ G.1 x = ∑ p : Equiv.Perm (Fin n), (((Equiv.Perm.sign p : ℤˣ) : ℤ) : ℂ) *
       (List.finRange n).foldr (fun j H y => rd τ (p j) j H y +
         (if p j = j then ((n - 1 - j.val : ℕ) : ℂ) else 0) * H y) G.1 x := by
-  have hC := GlobalTheory.CapelliWeyl.capelli_identity (n := n) (xOp τ) (dOp τ) (x_comm τ) (d_comm τ) (weyl_rel τ)
+  have hC := GlobalTheory.CapelliWeyl.capelli_identity (n := n) (xOp τ) (dOp τ) (x_comm τ) (weyl_rel τ)
   have h := congrArg (fun T : Module.End ℂ (Smth K n) => (T G).1 x) hC
   rw [Module.End.mul_apply, xdet_apply, ddet_apply, sum_apply_val] at h
   rw [← h]

@@ -3,6 +3,7 @@ module
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.EveryPointSatisfiesFrameCondition
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRepDefinedOverFiniteExtension
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoCoefOf
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormAlgebraMapLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -43,14 +44,6 @@ import Mathlib.Topology.Connected.Separation
 @[expose] public section
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.HV
-
-private theorem ce_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
-  have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
-  have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
-  rw [h0, spectralValue_le_one_iff (minpoly.monic hi)]
-  intro n
-  rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]
-  exact PadicInt.norm_le_one _
 
 private theorem ce_char {l : ℕ} [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [T2Space Γ] (ka : Γ →* (PadicAlgCl l)ˣ) (h : Continuous ka) :
@@ -123,8 +116,8 @@ theorem UpperTheory.V.Pr.coefEx :
   have l₃ : E₃ ≤ (E₁ ⊔ E₂) ⊔ (E₃ ⊔ E₄) := le_sup_of_le_right le_sup_left
   have l₄ : E₄ ≤ (E₁ ⊔ E₂) ⊔ (E₃ ⊔ E₄) := le_sup_of_le_right le_sup_right
   have hle : c.O ≤ c₁.O := fun x hx => (hc x).2 ⟨l₃ (m₃ ⟨x, hx⟩),
-    ce_norm x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)⟩
-  refine ⟨c₁, hle, fun τ x => (hc _).2 ⟨l₄ (m₄ τ x), ce_norm _ ?_⟩, fun g => (hc _).2 ⟨l₁ (m₁ g).1, (m₁ g).2⟩,
+    _root_.GlobalTheory.IntegralAlgebraMapNormBound.main x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)⟩
+  refine ⟨c₁, hle, fun τ x => (hc _).2 ⟨l₄ (m₄ τ x), _root_.GlobalTheory.IntegralAlgebraMapNormBound.main _ ?_⟩, fun g => (hc _).2 ⟨l₁ (m₁ g).1, (m₁ g).2⟩,
     fun g => (hc _).2 ⟨l₂ (m₂ g).1, (m₂ g).2⟩, ?_⟩
   · exact (x.isIntegral_coe.map τ.toIntAlgHom).tower_top
   · let φ : c.O →+* c₁.O := (Subalgebra.inclusion hle).toRingHom

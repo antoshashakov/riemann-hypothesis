@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Rt0ConjNegNeZero
 
 @[expose] public section
 
@@ -55,22 +56,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
-  have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-  have h1 := congrArg Complex.re H.sqrt_neg_disc_sq
-  have h2 := congrArg Complex.im H.sqrt_neg_disc_sq
-  simp only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re,
-    Complex.natCast_im, neg_zero] at h1 h2
-  have hre : H.rt0.re = 0 := by
-    rcases mul_eq_zero.1 (show H.rt0.re * H.rt0.im * 2 = 0 by linarith) with h | h
-    · rcases mul_eq_zero.1 h with h | h
-      · exact h
-      · exfalso
-        rw [h] at h1
-        nlinarith [mul_self_nonneg H.rt0.re]
-    · norm_num at h
-  apply Complex.ext
-  · simp [hre]
-  · simp
+  first
+  | exact @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero
+  | (apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> assumption)
+  | (intros; apply @_root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero <;> first | assumption | infer_instance)
+  | (intros; exact _root_.UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero ..)
 
 theorem psiCover_holds (H : Host E) : PsiCoverSt H := by
   intro τ

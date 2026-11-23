@@ -55,15 +55,10 @@ namespace GlobalTheory.LieCombBaseChange
 
 variable {R R' : Type} [CommRing R] [CommRing R']
 
-private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
-    (g : A →+* B) (k : B →+* C) : spMap k ≫ spMap g = spMap (k.comp g) := by
-  unfold spMap
-  rw [CommRingCat.ofHom_comp, Spec.map_comp]
-
 theorem dualMap_epsScale (f : R →+* R') (c : R) :
     spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ spMap (epsScaleR c) =
       spMap (epsScaleR (f c)) ≫ spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) := by
-  rw [spMap_comp_moduli_spaces, spMap_comp_moduli_spaces]
+  rw [spMap.comp_hom, spMap.comp_hom]
   congr 1
   refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;>
     simp [epsScaleR, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, mul_comm]
@@ -71,14 +66,14 @@ theorem dualMap_epsScale (f : R →+* R') (c : R) :
 theorem dualMap_over (f : R →+* R') :
     spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ (epsR R).hom = (epsR R').hom ≫ spMap f := by
   simp only [epsR, Over.mk_hom]
-  rw [spMap_comp_moduli_spaces, spMap_comp_moduli_spaces]
+  rw [spMap.comp_hom, spMap.comp_hom]
   congr 1
   refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;>
     simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
 theorem epsScale_over (c : R) : spMap (epsScaleR c) ≫ (epsR R).hom = (epsR R).hom := by
   simp only [epsR, Over.mk_hom]
-  rw [spMap_comp_moduli_spaces]
+  rw [spMap.comp_hom]
   congr 1
   refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;>
     simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
