@@ -3,49 +3,7 @@ module
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.RestrictionMemInvariantH1
 public import Mathlib.RingTheory.Length
 public import Mathlib.Topology.Algebra.Module.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
+import ReciprocityTheory.GroupCohomology.TransgressionA
 
 @[expose] public section
 
@@ -58,11 +16,9 @@ namespace UpperTheory.V.Base
 private theorem len_le_of_ker_le {R P A B : Type} [CommRing R] [AddCommGroup P] [Module R P] [AddCommGroup A]
     [Module R A] [AddCommGroup B] [Module R B] (f : P →ₗ[R] A) (g : P →ₗ[R] B) (hf : Function.Surjective f)
     (hk : LinearMap.ker g ≤ LinearMap.ker f) : Module.length R A ≤ Module.length R B := by
-  have h1 : Module.length R A ≤ Module.length R (P ⧸ LinearMap.ker g) := by
-    refine Module.length_le_of_surjective ((LinearMap.ker g).liftQ f hk) ?_
-    intro a
-    obtain ⟨p, rfl⟩ := hf a
-    exact ⟨Submodule.Quotient.mk p, rfl⟩
+  have hq : Function.Surjective ((LinearMap.ker g).liftQ f hk) := by
+    rwa [← LinearMap.range_eq_top, Submodule.range_liftQ, LinearMap.range_eq_top]
+  have h1 := Module.length_le_of_surjective _ hq
   have h2 : Module.length R (P ⧸ LinearMap.ker g) = Module.length R (LinearMap.range g) :=
     (LinearMap.quotKerEquivRange g).length_eq
   have h3 : Module.length R (LinearMap.range g) ≤ Module.length R B :=
@@ -195,13 +151,6 @@ private theorem exists_ext (ρ : Representation R G M) (hρ : ContAction ρ) {U'
     rw [hL0, map_sub, hc1]
     abel
 
-private theorem exists_normal_conj_inclusion {K : Type} [Group K] {U' U : Subgroup K} [U'.Normal] (h : U' ≤ U) (u : U')
-    (g : U) : ∃ v : U', Subgroup.inclusion h u * g = g * Subgroup.inclusion h v := by
-  refine ⟨⟨(g : K)⁻¹ * u * g, Subgroup.Normal.conj_mem' ‹_› _ u.2 _⟩, ?_⟩
-  apply Subtype.ext
-  simp [mul_assoc]
-
-
 omit [IsTopologicalGroup G] [DiscreteTopology M] in
 private theorem exists_infl (ρ : Representation R G M) {U' U : Subgroup G} [U'.Normal] (h : U' ≤ U)
     [DiscreteTopology (U ⧸ U'.subgroupOf U)] (z : U' → M) (y : U → M)
@@ -209,65 +158,44 @@ private theorem exists_infl (ρ : Representation R G M) {U' U : Subgroup G} [U'.
     (hR : ∀ (u : U') (g : U), y (g * Subgroup.inclusion h u) = y g + ρ g (z u)) :
     ∃ w : Z2 (quotRep ρ U U'), ∀ a b : U,
       (w.1 (QuotientGroup.mk a, QuotientGroup.mk b) : M) = ρ a (y b) - y (a * b) + y a := by
-  set F : U → U → M := fun a b => ρ a (y b) - y (a * b) + y a with hF
-  have hFr : ∀ (a b : U) (u : U'), F a (b * Subgroup.inclusion h u) = F a b := by
-    intro a b u
-    simp only [hF]
-    rw [← mul_assoc, hR, hR]
-    simp only [map_add (f := _), Subgroup.coe_mul, map_mul, Module.End.mul_apply]
-    abel
-  have hFl : ∀ (a b : U) (u : U'), F (a * Subgroup.inclusion h u) b = F a b := by
-    intro a b u
-    obtain ⟨v, hv⟩ := exists_normal_conj_inclusion h u b
-    have key : ρ u (y b) = y b + ρ b (z v) - z u := by
-      have e1 := hL u b
-      rw [hv, hR] at e1
-      rw [e1]
-      abel
-    simp only [hF]
-    rw [mul_assoc a, hv, ← mul_assoc, hR, hR]
-    simp only [Subgroup.coe_mul, Subgroup.coe_inclusion, map_mul, Module.End.mul_apply, key,
-      map_add, map_sub]
-    abel
-  have hinv : ∀ (a b : U) (u : U'), ρ u (F a b) = F a b := by
-    intro a b u
-    obtain ⟨v, hv⟩ := exists_normal_conj_inclusion h u a
-    have e1 : ∀ g : U, ρ u (y g) = y (Subgroup.inclusion h u * g) - z u := by
-      intro g
-      rw [hL]
-      abel
-    calc ρ u (F a b) = F (Subgroup.inclusion h u * a) b := by
-          simp only [hF, map_add (f := _), map_sub, e1, mul_assoc]
-          simp only [Subgroup.coe_mul, Subgroup.coe_inclusion, map_mul, Module.End.mul_apply]
-          abel
-      _ = F (a * Subgroup.inclusion h v) b := by rw [hv]
-      _ = F a b := hFl a b v
-  have hN : ∀ a b : U,
-      F a b ∈ Representation.invariants ((ρ.comp U.subtype).comp (U'.subgroupOf U).subtype) := by
-    intro a b v
-    exact hinv a b ⟨(v : U), Subgroup.mem_subgroupOf.mp v.2⟩
-  have hWF : ∀ a b : U,
-      F (QuotientGroup.mk a : U ⧸ U'.subgroupOf U).out (QuotientGroup.mk b : U ⧸ U'.subgroupOf U).out
-        = F a b := by
-    intro a b
-    obtain ⟨u, hu⟩ := exists_mul_of_mk_eq h (QuotientGroup.out_eq' (QuotientGroup.mk a : U ⧸ U'.subgroupOf U)).symm
-    obtain ⟨v, hv⟩ := exists_mul_of_mk_eq h (QuotientGroup.out_eq' (QuotientGroup.mk b : U ⧸ U'.subgroupOf U)).symm
-    rw [hu, hv, hFl, hFr]
-  let W : (U ⧸ U'.subgroupOf U) × (U ⧸ U'.subgroupOf U) →
-      Representation.invariants ((ρ.comp U.subtype).comp (U'.subgroupOf U).subtype) :=
-    fun p => ⟨F p.1.out p.2.out, hN _ _⟩
-  have hW : ∀ a b : U, (W (QuotientGroup.mk a, QuotientGroup.mk b) : M) = F a b := hWF
-  refine ⟨⟨W, continuous_of_discreteTopology, ?_⟩, fun a b => hW a b⟩
+  let N := U'.subgroupOf U
+  let F (a b : U) := ρ a (y b) - y (a * b) + y a
+  have hI : (∀ (a b : U) (n : N), F a (b * n) = F a b) ∧
+      (∀ (a b : U) (n : N), F (a * n) b = F a b) ∧
+      (∀ (a b : U) (n : N), ρ (n.val : U) (F a b) = F a b) := by
+    -- The descent identities are algebraic, so apply the general lemma with discrete topologies.
+    let _ : TopologicalSpace U := ⊥
+    let _ : TopologicalSpace M := ⊥
+    have := discreteTopology_bot U
+    have := discreteTopology_bot M
+    let _ : ContinuousConstSMul R M := ⟨fun _ => continuous_of_discreteTopology⟩
+    let A : ReciprocityTheory.Coh.TRep R U :=
+      { V := M, rho := ρ.comp U.subtype, cont := continuous_of_discreteTopology }
+    let e : N ≃* U' := Subgroup.subgroupOfEquivOfLe h
+    have hf := ReciprocityTheory.Coh.InflationTransgression.inflD_of_ext A N (z ∘ e) y
+      (fun g n => hR (e n) g) (fun n g => hL (e n) g)
+    exact ⟨hf.right, hf.left, hf.inv⟩
+  let W : (U ⧸ N) × (U ⧸ N) →
+      Representation.invariants ((ρ.comp U.subtype).comp N.subtype) :=
+    fun p => ⟨F p.1.out p.2.out, fun n => hI.2.2 _ _ n⟩
+  have hW (a b : U) : (W (QuotientGroup.mk a, QuotientGroup.mk b) : M) = F a b := by
+    obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul N a
+    obtain ⟨v, hv⟩ := QuotientGroup.mk_out_eq_mul N b
+    change F (QuotientGroup.mk a : U ⧸ N).out (QuotientGroup.mk b : U ⧸ N).out = F a b
+    rw [hu, hv, hI.2.1, hI.1]
+  refine ⟨⟨W, continuous_of_discreteTopology, ?_⟩, hW⟩
   intro p q r
   obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective p
   obtain ⟨b, rfl⟩ := QuotientGroup.mk_surjective q
   obtain ⟨c, rfl⟩ := QuotientGroup.mk_surjective r
   apply Subtype.ext
   rw [← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul]
-  show ρ a (W (QuotientGroup.mk b, QuotientGroup.mk c) : M) - (W (QuotientGroup.mk (a * b), QuotientGroup.mk c) : M)
-    + (W (QuotientGroup.mk a, QuotientGroup.mk (b * c)) : M) - (W (QuotientGroup.mk a, QuotientGroup.mk b) : M) = 0
+  change ρ a (W (QuotientGroup.mk b, QuotientGroup.mk c) : M) -
+      (W (QuotientGroup.mk (a * b), QuotientGroup.mk c) : M) +
+      (W (QuotientGroup.mk a, QuotientGroup.mk (b * c)) : M) -
+      (W (QuotientGroup.mk a, QuotientGroup.mk b) : M) = 0
   rw [hW, hW, hW, hW]
-  simp only [hF, map_add (f := _), map_sub, Subgroup.coe_mul, map_mul, Module.End.mul_apply, mul_assoc]
+  simp only [F, map_add, map_sub, Subgroup.coe_mul, map_mul, mul_apply_eq_comp, mul_assoc]
   abel
 
 omit [IsTopologicalGroup G] [DiscreteTopology M] in
