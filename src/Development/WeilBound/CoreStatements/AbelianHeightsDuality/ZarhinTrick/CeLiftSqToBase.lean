@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.TypeStar
+public import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.KLiftSqToBase
 
 @[expose] public section
 
@@ -137,101 +138,9 @@ theorem ceLam_zb_pt (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A
     {Y : Over (Sp Ω)} (a u : Y ⟶ (Over.pullback s).obj (G4 (A ⊗ B))) :
     lam (cls (zb mu α s P L) (isLB_zb mu α s hD.isLB hL)) a u =
       zcPair hD.isLB l mu α (toBase _ s a) (toBase _ s u) := by
-  haveI := hA.comm
-  haveI := hB.comm
-  have hl1 : ∀ {T : Over S} (b : T ⟶ B), evc hD.isLB (1 : T ⟶ A) b = 0 := by
-    intro T b
-    have h := evc_mul_left hD (1 : T ⟶ A) 1 b
-    rw [_root_.mul_one] at h
-    simpa using h
-  have hr1 : ∀ {T : Over S} (x : T ⟶ A), evc hD.isLB x (1 : T ⟶ B) = 0 := by
-    intro T x
-    have h := evc_mul_right hD hD' x (1 : T ⟶ B) 1
-    rw [_root_.mul_one] at h
-    simpa using h
-  have hlinv : ∀ {T : Over S} (x : T ⟶ A) (b : T ⟶ B), evc hD.isLB x⁻¹ b = -evc hD.isLB x b := by
-    intro T x b
-    have h := evc_mul_left hD x⁻¹ x b
-    rw [inv_mul_cancel, hl1] at h
-    exact eq_neg_of_add_eq_zero_left h.symm
-  have hrinv : ∀ {T : Over S} (x : T ⟶ A) (b : T ⟶ B), evc hD.isLB x b⁻¹ = -evc hD.isLB x b := by
-    intro T x b
-    have h := evc_mul_right hD hD' x b⁻¹ b
-    rw [inv_mul_cancel, hr1] at h
-    exact eq_neg_of_add_eq_zero_left h.symm
-  have hL1 := LB.isLB_linComb hL (phiL mu s) (fun _ => (1 : ℤ))
-  have hP1 := LB.isLB_linComb hD.isLB (phiP (A := A) (B := B) s) (fun ij : Fin 4 × Fin 4 => α ij.1 ij.2)
-  have hcls : cls (zb mu α s P L) (isLB_zb mu α s hD.isLB hL) =
-      ∑ k, (1 : ℤ) • pull (phiL mu s k) (cls L hL) +
-        ∑ ij : Fin 4 × Fin 4, α ij.1 ij.2 • pull (phiP s ij) (cls P hD.isLB) := by
-    rw [← cls_linComb hL _ _ hL1, ← cls_linComb hD.isLB _ _ hP1]
-    exact cls_tens hL1 hP1 _
-  let Λ : Pic ((Over.pullback s).obj (G4 (A ⊗ B))).left →+ Pic Y.left :=
-    AddMonoidHom.mk' (fun c => lam c a u) (fun c c' => by
-      unfold lam
-      simp only [map_add (f := _)]
-      abel)
-  have hΛ : ∀ c, lam c a u = Λ c := fun _ => rfl
-  have hΛ' : ∀ c, Λ c = lam c a u := fun _ => rfl
-  have hφP : ∀ (x : Y ⟶ (Over.pullback s).obj (G4 (A ⊗ B))) (ij : Fin 4 × Fin 4),
-      x.left ≫ phiP s ij =
-        (lift (toBase _ s x ≫ prj _ ij.1 ≫ fst A B) (toBase _ s x ≫ prj _ ij.2 ≫ snd A B)).left := by
-    intro x ij
-    have h := toBase_comp s (G4 (A ⊗ B)) x (𝟙 _)
-    rw [Category.comp_id] at h
-    rw [h, ← comp_lift]
-    simp only [phiP, Over.comp_left, Over.homMk_left, Category.assoc]
-  have hP : ∀ ij : Fin 4 × Fin 4, lam (pull (phiP s ij) (cls P hD.isLB)) a u =
-      evc hD.isLB (toBase _ s a ≫ prj _ ij.1 ≫ fst A B) (toBase _ s u ≫ prj _ ij.2 ≫ snd A B) +
-        evc hD.isLB (toBase _ s u ≫ prj _ ij.1 ≫ fst A B) (toBase _ s a ≫ prj _ ij.2 ≫ snd A B) := by
-    intro ij
-    unfold lam
-    simp only [← pull_comp, hφP]
-    change evc hD.isLB _ _ - evc hD.isLB _ _ - evc hD.isLB _ _ + evc hD.isLB _ _ = _
-    simp only [toBase_mul, toBase_one, MonObj.mul_comp, MonObj.one_comp, evc_mul_left hD,
-      evc_mul_right hD hD', hl1, hr1]
-    abel
-  have hA0 : ∀ i, lam (pull (pA (B := B) s i).left (cls L hL)) a u =
-      evc hD.isLB (toBase _ s a ≫ prj _ i ≫ fst A B) (toBase _ s u ≫ prj _ i ≫ fst A B ≫ l) := by
-    intro i
-    rw [show pA (B := B) s i = (Over.pullback s).map (prj (A ⊗ B) i ≫ fst A B) from rfl, lam_pull,
-      lam_eq_evc_toBase_of_LBIso hD.isLB l s L hL e]
-    simp only [toBase_map, Category.assoc]
-  have hA1 : ∀ i, lam (pull ((pA (B := B) s i)⁻¹).left (cls L hL)) a u =
-      evc hD.isLB (toBase _ s a ≫ prj _ i ≫ fst A B) (toBase _ s u ≫ prj _ i ≫ fst A B ≫ l) := by
-    intro i
-    rw [show pA (B := B) s i = (Over.pullback s).map (prj (A ⊗ B) i ≫ fst A B) from rfl]
-    rw [lam_pull_eq_lam_comp_of_hom _ (fun x y => by simp only [GrpObj.comp_inv, MonObj.mul_comp, mul_inv])
-      (by simp only [GrpObj.comp_inv, MonObj.one_comp, inv_one]), lam_eq_evc_toBase_of_LBIso hD.isLB l s L hL e]
-    simp only [GrpObj.comp_inv, toBase_inv, toBase_map, GrpObj.inv_comp, hlinv, hrinv, neg_neg,
-      Category.assoc]
-  have hM0 : ∀ i, lam (pull (pM mu s i).left (cls L hL)) a u =
-      evc hD.isLB (toBase _ s a ≫ prj _ i ≫ snd A B ≫ mu) (toBase _ s u ≫ prj _ i ≫ snd A B ≫ mu ≫ l) := by
-    intro i
-    rw [show pM mu s i = (Over.pullback s).map (prj (A ⊗ B) i ≫ snd A B ≫ mu) from rfl, lam_pull,
-      lam_eq_evc_toBase_of_LBIso hD.isLB l s L hL e]
-    simp only [toBase_map, Category.assoc]
-  have hM1 : ∀ i, lam (pull ((pM mu s i)⁻¹).left (cls L hL)) a u =
-      evc hD.isLB (toBase _ s a ≫ prj _ i ≫ snd A B ≫ mu) (toBase _ s u ≫ prj _ i ≫ snd A B ≫ mu ≫ l) := by
-    intro i
-    rw [show pM mu s i = (Over.pullback s).map (prj (A ⊗ B) i ≫ snd A B ≫ mu) from rfl]
-    rw [lam_pull_eq_lam_comp_of_hom _ (fun x y => by simp only [GrpObj.comp_inv, MonObj.mul_comp, mul_inv])
-      (by simp only [GrpObj.comp_inv, MonObj.one_comp, inv_one]), lam_eq_evc_toBase_of_LBIso hD.isLB l s L hL e]
-    simp only [GrpObj.comp_inv, toBase_inv, toBase_map, GrpObj.inv_comp, hlinv, hrinv, neg_neg,
-      Category.assoc]
-  have hφ0 : ∀ i, phiL mu s (0, i) = (pA (B := B) s i).left := fun _ => rfl
-  have hφ1 : ∀ i, phiL mu s (1, i) = ((pA (B := B) s i)⁻¹).left := fun _ => rfl
-  have hφ2 : ∀ i, phiL mu s (2, i) = (pM mu s i).left := fun _ => rfl
-  have hφ3 : ∀ i, phiL mu s (3, i) = ((pM mu s i)⁻¹).left := fun _ => rfl
-
-  rw [hΛ, hcls, map_add (f := _), map_sum, map_sum]
-  simp only [map_zsmul, one_smul]
-  simp only [hΛ']
-  rw [Fintype.sum_prod_type, Fintype.sum_prod_type, Fin.sum_univ_four]
-  simp only [hφ0, hφ1, hφ2, hφ3, hA0, hA1, hM0, hM1, hP]
-  unfold zcPair
-  simp only [Fin.sum_univ_four, smul_add, two_nsmul]
-  ac_rfl
+  first
+  | exact _root_.PositivityTheory.PrwZar.kLam_zb_pt
+  | (apply _root_.PositivityTheory.PrwZar.kLam_zb_pt <;> assumption)
 
 private theorem evc_comp_eq_lam_ceLiftPt [IsCommMonObj A] {P : LB (A ⊗ B).left} (hP : P.IsLB) (l : A ⟶ B)
     (s : Sp Ω ⟶ S) (L : LB ((Over.pullback s).obj A).left) (hL : L.IsLB)
