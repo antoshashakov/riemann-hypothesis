@@ -62,12 +62,7 @@ namespace GlobalTheory.ZH.UFib
 
 theorem gm_charUnit_zero_eq_one {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Z : Over S} (τ : Z ⟶ splitTorus S X)
     (z : Z.left) : gm τ.left z ⊤ (charUnit S X 0) = 1 := by
-  have a : splitTorusPointsEquiv S X Z τ (Multiplicative.ofAdd 0) = pullU τ.left ⊤ (charUnit S X 0) :=
-    Units.ext (splitTorusPointsEquiv_val _ _ _ τ 0)
-  have b : pullU τ.left ⊤ (charUnit S X 0) = 1 := a.symm.trans (map_one _)
-  have c := gm_pull (𝟙 Z.left) τ.left z ⊤ trivial (charUnit S X 0)
-  rw [b, map_one, Category.id_comp] at c
-  exact c.symm
+  exact GlobalTheory.ZH.UFib.gm_charUnit_zero τ z
 
 def chartPullH {k : Type} [Field k] (Φ : FibPre k) {Y : Scheme.{0}} {L : LB Y} {π : Φ.E.B.left ⟶ Y} {N : ℕ}
     (c : ChartPull Φ.N₀ (npw L N) π) :

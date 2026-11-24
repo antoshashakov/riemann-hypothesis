@@ -61,13 +61,7 @@ theorem hom_ext_loc {X Y : Scheme.{0}} {f g : X ⟶ Y}
 
 theorem range_of_isPullback {P X Y Z : Scheme.{0}} {a : P ⟶ X} {b : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
     (h : IsPullback a b f g) (x : X) : x ∈ Set.range a ↔ f x ∈ Set.range g := by
-  constructor
-  · rintro ⟨p, rfl⟩
-    exact ⟨b p, by rw [← Scheme.Hom.comp_apply, ← h.w, Scheme.Hom.comp_apply]⟩
-  · rintro ⟨y, hy⟩
-    obtain ⟨q, hq₁, -⟩ := Scheme.Pullback.exists_preimage_pullback x y hy.symm
-    refine ⟨h.isoPullback.inv q, ?_⟩
-    rw [← Scheme.Hom.comp_apply, h.isoPullback_inv_fst, hq₁]
+  exact GlobalTheory.FamRep.range_of_isPullback h x
 
 theorem mul_left_pre {S : Scheme.{0}} {G : Over S} [GrpObj G] {T T' : Over S} (k : T'.left ⟶ T.left)
     (hk : k ≫ T.hom = T'.hom) (x y : T ⟶ G) (x' y' : T' ⟶ G) (hx : x'.left = k ≫ x.left)

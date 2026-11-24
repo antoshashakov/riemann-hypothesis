@@ -53,11 +53,7 @@ namespace GlobalTheory.FGDepth
 
 theorem val_natCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℕ) :
     0 ≤ v (n : C) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    push_cast
-    exact (le_min ih (le_of_eq (AddValuation.map_one v).symm)).trans (AddValuation.map_add v _ _)
+  exact GlobalTheory.FGDepth.natCast_isInt v n
 
 theorem val_intCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℤ) :
     0 ≤ v (n : C) := by

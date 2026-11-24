@@ -353,12 +353,7 @@ theorem cut_S_bound {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   exact h
 
 theorem continuous_two_form_sq (n : ℕ) : Continuous (sq2 n) := by
-  show Continuous fun σ : Fin n → Fin n → ℂ => sq2 n σ
-  simp only [sq2]
-  first
-  | fun_prop
-  | exact (continuous_finset_sum _ fun j _ => continuous_finset_sum _ fun k _ =>
-      ((continuous_apply k).comp (continuous_apply j)).norm.pow 2).div_const _
+  exact ReciprocityTheory.L2DbarEstimates.F.continuous_two_form_norm_sq n
 
 theorem cut_aem {M E : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M]
     [NormedAddCommGroup E] (μ : Measure M) (u : M → E)

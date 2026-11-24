@@ -73,12 +73,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem lead_eq {E : Type} [Field E] {n : ℕ} {Z Z₂ : Matrix (Fin n) (Fin n) E} (h : ZEquiv Z Z₂) (l : ℕ) :
     leadMinorE Z₂ l = leadMinorE Z l := by
-  obtain ⟨A, B, hA0, hA1, hB0, hB1, rfl⟩ := h
-  unfold leadMinorE
-  split_ifs with hl
-  · exact Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.leadingMinorInvariant E n l hl _ Z _ (fun i => by simp [hA1])
-      (fun i j hij => by simp [hA0 i j hij]) (fun i => by simp [hB1]) (fun i j hij => by simp [hB0 i j hij])
-  · rfl
+  exact GlobalTheory.LoopC.GramSize.lead_zequiv h l
 
 
 open GlobalTheory.Mass GlobalTheory.LoopC.DetCard Formalism.HermitianLatticesTheory in

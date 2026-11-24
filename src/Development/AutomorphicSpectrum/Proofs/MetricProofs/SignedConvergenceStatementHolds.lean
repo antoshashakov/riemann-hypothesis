@@ -94,10 +94,7 @@ theorem expand_mInt {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [
 
 theorem isPsh_of_isPosPot {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ : LocPot X) (h : IsPosPot A Θ) : IsPsh A Θ := by
-  intro x j y hy w
-  by_cases hw : w = 0
-  · subst hw; rw [levi_zero]
-  · exact (h x j y hy w hw).le
+  exact GlobalTheory.CompanionTheory.Ar.Giv.EvPsh.isPsh_of_isPosPot A Θ h
 
 theorem isPshOn_of_isPsh {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (U : Set X) (P : LocPot X) (h : IsPsh A P) : IsPshOn A U P :=

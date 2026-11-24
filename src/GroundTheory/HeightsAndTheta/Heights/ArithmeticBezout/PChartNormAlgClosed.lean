@@ -101,60 +101,8 @@ theorem chartLin_self : chartLin I t e t = 1 := by
 theorem adjoin_eq_top :
     Algebra.adjoin (Localization.AtPrime p)
         (Set.range fun m => algebraMap (ChartInc I t e) (ChartLoc I t e p) (chartX I t e (X m))) = ⊤ := by
-  set A := Algebra.adjoin (Localization.AtPrime p)
-    (Set.range fun m => algebraMap (ChartInc I t e) (ChartLoc I t e p) (chartX I t e (X m)))
-  have hS : ∀ x : MvPolynomial (Fin e × Fin n) F,
-      algebraMap (ChartInc I t e) (ChartLoc I t e p) (algebraMap _ (ChartInc I t e) x) ∈ A := by
-    intro x
-    rw [← algebraMap_tower]
-    exact Subalgebra.algebraMap_mem A _
-  let π : MvPolynomial (Fin n ⊕ Fin e × Fin n) F →+* ChartInc I t e := Ideal.Quotient.mk (chartIncIdeal I t e)
-  have hSig : ∀ y : MvPolynomial (Fin n ⊕ Fin e × Fin n) F,
-      algebraMap (ChartInc I t e) (ChartLoc I t e p) (π y) ∈ A := by
-    intro y
-    induction y using MvPolynomial.induction_on with
-    | C a =>
-      have h : π (C a) = algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e) (C a) := by
-        show _ = Ideal.Quotient.mk _ (rename Sum.inr (C a))
-        rw [rename_C]
-        rfl
-      rw [h]
-      exact hS _
-    | add a b ha hb =>
-      rw [map_add (f := _), map_add (f := _)]
-      exact add_mem ha hb
-    | mul_X a v ha =>
-      rw [map_mul, map_mul]
-      refine mul_mem ha ?_
-      rcases v with m | im
-      · refine Algebra.subset_adjoin ⟨m, ?_⟩
-        show algebraMap (ChartInc I t e) (ChartLoc I t e p)
-          ((Ideal.Quotient.mk (chartIncIdeal I t e) (rename Sum.inl (X m)) : ChartInc I t e)) = _
-        rw [rename_X]
-        rfl
-      · have h : π (X (Sum.inr im)) = algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e) (X im) := by
-          show _ = Ideal.Quotient.mk _ (rename Sum.inr (X im))
-          rw [rename_X]
-          rfl
-        rw [h]
-        exact hS _
-  rw [eq_top_iff]
-  intro z _
-  obtain ⟨⟨x, s⟩, rfl⟩ := IsLocalization.mk'_surjective
-    (Algebra.algebraMapSubmonoid (ChartInc I t e) p.primeCompl) z
-  obtain ⟨s₀, hs₀, hs⟩ := s.2
-  obtain ⟨y, rfl⟩ : ∃ y, π y = x := Ideal.Quotient.mk_surjective x
-  set w := algebraMap (Localization.AtPrime p) (ChartLoc I t e p)
-    (IsLocalization.mk' (Localization.AtPrime p) (1 : MvPolynomial (Fin e × Fin n) F) ⟨s₀, hs₀⟩)
-  have hw : algebraMap (ChartInc I t e) (ChartLoc I t e p) (s : ChartInc I t e) * w = 1 := by
-    rw [← hs, ← algebraMap_tower, ← map_mul, IsLocalization.mul_mk'_eq_mk'_of_mul, mul_one,
-      IsLocalization.mk'_self, map_one]
-  have hz : IsLocalization.mk' (ChartLoc I t e p) (π y) s =
-      algebraMap (ChartInc I t e) (ChartLoc I t e p) (π y) * w := by
-    rw [IsLocalization.mk'_eq_iff_eq_mul, mul_assoc, mul_comm w, hw, mul_one]
-  show IsLocalization.mk' (ChartLoc I t e p) (π y) s ∈ A
-  rw [hz]
-  exact mul_mem (hSig y) (Subalgebra.algebraMap_mem A _)
+  apply GroundTheory.Heights₂.Heights.chartLoc_adjoin_eq_top
+  all_goals assumption
 
 end Chart
 

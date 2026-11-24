@@ -73,10 +73,7 @@ theorem analyticOnNhd_eval {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E
 
 theorem sq_div_pow_eq {a r : ℝ} (hr : 0 < r) (n : ℕ) :
     (a / r ^ n) ^ 2 = a ^ 2 * Real.exp (-(n : ℝ) * (2 * Real.log r)) := by
-  have h : Real.exp (-(n : ℝ) * (2 * Real.log r)) = ((r ^ n) ^ 2)⁻¹ := by
-    rw [show -(n : ℝ) * (2 * Real.log r) = -Real.log ((r ^ n) ^ 2) by
-      rw [Real.log_pow, Real.log_pow]; push_cast; ring, Real.exp_neg, Real.exp_log (by positivity)]
-  rw [h, div_pow, div_eq_mul_inv]
+  exact GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionImageSup.sq_div_pow_eq hr n
 
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 

@@ -62,11 +62,7 @@ theorem valAt_comp_top {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (Com
 theorem valAt_spec_map {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} (ψ : B →+* C)
     (y : Spec (CommRingCat.of B) ⟶ X) (s : Γ(X, ⊤)) :
     valAt (Spec.map (CommRingCat.ofHom ψ) ≫ y) ⊤ le_top s = ψ (valAt y ⊤ le_top s) := by
-  rw [valAt_comp_top]
-  have h := Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)
-  have := congrArg (fun φ => φ.hom (y.appTop.hom s)) h
-  simp only [CommRingCat.comp_apply] at this
-  exact this
+  exact PositivityTheory.HtPt.Htat.HTBaseChange.valAt_spec_map ψ y s
 
 abbrev qmap {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (N : ℕ) :
     R ⧸ Ideal.span {(N : R)} →+* R' ⧸ Ideal.span {(N : R')} :=

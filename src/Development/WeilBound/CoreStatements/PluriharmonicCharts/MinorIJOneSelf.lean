@@ -134,77 +134,7 @@ theorem detFac_ne_zero' {N j : ℕ} (hj : j ≤ N) (i : Fin N) {H : Matrix (Fin 
   apply GlobalTheory.CompanionTheory.Ar.PB.StepW.PshW.detFac_ne_zero' <;> assumption
 
 theorem isPshOn_stepPot : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (p : Ψ × Fin N) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (e : ℕ) (R : AnLogRes (mCoordIdeal (y ∘ v)) ⊤ e) (pr : R.X → BM.Rb.X) (hp : HoloMap R.A BM.Rb.A pr), HasStepCharts M BM p κ v R pr → IsPshOn R.A (bdry (fun x y => BM.s (pr x) (pr y)))ᶜ (potOf R (fsHerm ιk fun k => M.dy p (κ k)) + LocPot.ofFun (stepPh M BM p v R pr)) := by
-  intro K _ ι _ Φ _ y Ψ _ _ N j M n BM p Kk _ ιk _ κ v e R pr hp hS x c y₀ hy w
-  obtain ⟨hyt, hyU, hyb⟩ := hy
-  have hU : (R.A.chart c).symm y₀ ∈ R.U x := hyU.1
-  set y₁ := (R.A.chart c).symm y₀ with hy₁
-  obtain ⟨W, l, H, D, hW, hyW, hWU, hWO, hHh, hHd, hDh, hDn, hEq⟩ := hS x y₁ hU
-  have hb : pr y₁ ∉ bdry BM.s := hyb
-  obtain ⟨V, Pi, hV, hVo, hPh, hPg⟩ := BM.period l (pr y₁) ⟨hWO y₁ hyW, hb⟩
-  have hcl : IsClosed (bdry BM.s) := GlobalTheory.T.isClosed_section_boundary _ _ _ _ _ BM.sec
-  let V' : Set R.X := W ∩ pr ⁻¹' (V ∩ (bdry BM.s)ᶜ)
-  have hV'o : IsOpen V' := hW.inter ((hVo.inter hcl.isOpen_compl).preimage hp.1)
-  have hyV' : y₁ ∈ V' := ⟨hyW, hV, hb⟩
-  let g : R.X → Matrix (Fin N) (Fin N) ℂ := fun y' => Pi p.1 (pr y') * H y'
-  have hVW : V' ⊆ W := Set.inter_subset_left
-  have hVP : V' ⊆ pr ⁻¹' V := fun y' h => h.2.1
-  have hPh' : ∀ a b, R.A.HoloOn V' fun y' => Pi p.1 (pr y') a b := fun a b =>
-    holoOn_mono (holoOn_comp hp (hPh p.1 a b)) hVP
-  have hHh' : ∀ a b, R.A.HoloOn V' fun y' => H y' a b := fun a b =>
-    holoOn_mono (hHh a b) hVW
-  have hgh : ∀ a b, R.A.HoloOn V' fun y' => g y' a b := fun a b => by
-    simp only [g, Matrix.mul_apply]
-    exact holoOn_sum _ fun c' => holoOn_mul (hPh' a c') (hHh' c' b)
-  have hstep : ∀ (i : Fin N), ∀ y' ∈ V', InFlagDomain N j (g y') ∧
-      stepPot N j i (g y') = blockPot j i (BM.G l p.1 (pr y')) (H y') + Real.log ‖detFac j i (H y')‖ := by
-    intro i y' hy'
-    have hG := BM.G_pos l p.1 (pr y') ⟨hWO y' hy'.1, hy'.2.2⟩
-    exact GlobalTheory.T.flag_potential_block_decomposition N j i _ _ _ M.j_le (hPg p.1 _ hy'.2.1) hG.1 hG.2 (hHd y' hy'.1).1 (hHd y' hy'.1).2
-  have hdn : ∀ y' ∈ V', detFac j p.2 (H y') ≠ 0 := fun y' hy' =>
-    detFac_ne_zero' M.j_le p.2 (hHd y' hy'.1).1 (hHd y' hy'.1).2
-  let f : R.X → ℂ := fun y' => D y' * (detFac j p.2 (H y'))⁻¹
-  have hfh : R.A.HoloOn V' f :=
-    holoOn_mul (holoOn_mono hDh hVW) (holoOn_inv (holoOn_detFac p.2 hHh') hdn)
-  have hf0 : ∀ y' ∈ V', f y' ≠ 0 := fun y' hy' =>
-    mul_ne_zero (hDn y' hy'.1) (inv_ne_zero (hdn y' hy'))
-  obtain ⟨V'', hV''o, hyV'', hV''s, Gh, hGh, hGre⟩ := exists_log hV'o hfh hyV' (hf0 _ hyV')
-  let Φl : R.X → ℝ := (potOf R (fsHerm ιk fun k => M.dy p (κ k)) + LocPot.ofFun (stepPh M BM p v R pr)).φ x
-  let pot : Unit × Fin N → LocPot R.X := fun q =>
-    LocPot.ofFun (if q.2 = p.2 then Φl else fun y' => stepPot N j q.2 (g y'))
-  have hPC : IsPeriodChart R.A j pot y₁ V'' (fun _ => g) := by
-    refine ⟨hV''o, hyV'', fun _ a b => holoOn_mono (hgh a b) hV''s,
-      fun _ y' hy' => (hstep p.2 y' (hV''s hy')).1, fun q => ?_⟩
-    by_cases hq : q.2 = p.2
-    · refine ⟨Gh, hGh, fun y' hy' => ?_⟩
-      have hy3 := hV''s hy'
-      show (if q.2 = p.2 then Φl else fun y' => stepPot N j q.2 (g y')) y' = stepPot N j q.2 (g y') + (Gh y').re
-      rw [if_pos hq, hq, hGre y' hy', (hstep p.2 y' hy3).2]
-      have hE := hEq y' hy3.1 hy3.2.2
-      have hl : Real.log ‖f y'‖ = Real.log ‖D y'‖ - Real.log ‖detFac j p.2 (H y')‖ := by
-        simp only [f]
-        rw [norm_mul, norm_inv, Real.log_mul (norm_ne_zero_iff.2 (hDn y' hy3.1))
-          (inv_ne_zero (norm_ne_zero_iff.2 (hdn y' hy3))), Real.log_inv, sub_eq_add_neg]
-      rw [hl]
-      show Real.log ((fsHerm ιk fun k => M.dy p (κ k)).h (R.lift x y')) + stepPh M BM p v R pr y' = _
-      rw [hE]
-      ring
-    · refine ⟨fun _ => 0, holoOn_const _ _, fun y' _ => ?_⟩
-      show (if q.2 = p.2 then Φl else fun y' => stepPot N j q.2 (g y')) y' = stepPot N j q.2 (g y') + ((0 : ℂ)).re
-      rw [if_neg hq]
-      simp
-  have hsrc : y₁ ∈ (R.A.chart c).source := (R.A.chart c).map_target hyt
-  obtain ⟨Lm, -, hL, -⟩ := PositivityTheory.Xgp.per_diag.levi_diagonal_of_isPeriodChart e R.X R.A Unit N j M.j_le pot y₁ V'' (fun _ => g) hPC c hsrc
-  have hlev := hL ((), p.2) w
-  have e1 : (R.A.chart c) y₁ = y₀ := (R.A.chart c).right_inv hyt
-  have e2 : (pot ((), p.2)).φ y₁ = Φl := by
-    show (if p.2 = p.2 then Φl else fun y' => stepPot N j p.2 (g y')) = Φl
-    rw [if_pos rfl]
-  rw [e2, e1] at hlev
-  show 0 ≤ levi (Φl ∘ (R.A.chart c).symm) y₀ w
-  rw [hlev]
-  refine Finset.sum_nonneg fun q _ => ?_
-  split_ifs
-  · positivity
-  · exact le_rfl
+  apply GlobalTheory.CompanionTheory.Ar.PB.StepW.PshW.isPshOn_stepPot
+  all_goals assumption
 
 end PositivityTheory.Xgp.plurisubharmonic_charts

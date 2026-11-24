@@ -53,13 +53,7 @@ namespace PositivityTheory.rg.gu.whit
 
 theorem unipB_eq_unipotent (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) : unipB k (Fin n) = GroundTheory.Automorphic.Iwasawa.unipotent k n := by
-  ext g
-  rw [mem_unipB]
-  constructor
-  · rintro ⟨h1, h2⟩
-    exact ⟨fun i j hij => h1 i j hij, h2⟩
-  · rintro ⟨h1, h2⟩
-    exact ⟨fun i j hij => h1 hij, h2⟩
+  exact CompanionTheory.rg.gu.whit.unipB_eq_unipotent k n
 
 theorem whitChar_eq_psiN (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (n : ℕ) (u : unipB k (Fin n)) :

@@ -55,12 +55,7 @@ namespace GlobalTheory.UnfLink
 
 theorem star_psi {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) :
     star (ψ a) = ψ (-a) := by
-  have h1 : ‖ψ a‖ = 1 := hψ.1.2.1 a
-  have h2 : ψ a * star (ψ a) = 1 := by
-    rw [Complex.star_def, Complex.mul_conj', h1]; simp
-  have h3 : ψ a * ψ (-a) = 1 := by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]
-  have h0 : ψ a ≠ 0 := by intro h; rw [h, zero_mul] at h3; exact zero_ne_one h3
-  exact mul_left_cancel₀ h0 (h2.trans h3.symm)
+  exact GlobalTheory.HandFam.star_psi_eq hψ a
 
 theorem heisO_at_zero' {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (w : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T w f 0 = f w := by

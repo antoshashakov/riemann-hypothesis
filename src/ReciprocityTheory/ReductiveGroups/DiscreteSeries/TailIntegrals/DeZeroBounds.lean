@@ -62,10 +62,7 @@ private def qB {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : ℝ :=
   Lsq x l * rhoSq x l + (-(∑ i, ‖x.2.2.1 i‖ ^ 2) / 2 - (bS x l).re) ^ 2
 
 private lemma one_le_Lsq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 1 ≤ Lsq x l := by
-  unfold Lsq
-  have h : 0 ≤ ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) :=
-    Finset.sum_nonneg (fun j _ => by split_ifs <;> positivity)
-  linarith
+  exact ReciprocityTheory.ChartRestriction.DS.Xi.OSAux.Lsq_ge_one x l
 
 private lemma Lsq_last_le_rhoSq {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) :
     Lsq x (Fin.last p) ≤ rhoSq x l := by

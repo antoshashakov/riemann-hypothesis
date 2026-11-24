@@ -61,14 +61,7 @@ namespace GlobalTheory.KZ.H3.KumFam
 
 theorem gamma_dvd {M N : ℕ} (h : M ∣ N) {δ : SL(2, ℤ)} (hδ : δ ∈ CongruenceSubgroup.Gamma N) :
     δ ∈ CongruenceSubgroup.Gamma M := by
-  rw [CongruenceSubgroup.Gamma_mem] at hδ ⊢
-  obtain ⟨h1, h2, h3, h4⟩ := hδ
-  have e : ∀ x : ℤ, ZMod.castHom h (ZMod M) (x : ZMod N) = (x : ZMod M) := fun x => map_intCast _ x
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · rw [← e, h1, map_one]
-  · rw [← e, h2, map_zero]
-  · rw [← e, h3, map_zero]
-  · rw [← e, h4, map_one]
+  exact GlobalTheory.KZ.H3.KumUniq.gamma_mem_of_dvd h hδ
 
 theorem common_level {k : ℕ} (Q : Fin k → ℕ → Prop) (hmono : ∀ i M M', M ∣ M' → Q i M → Q i M')
     (h : ∀ i, ∃ M, 0 < M ∧ Q i M) : ∃ M, 0 < M ∧ ∀ i, Q i M := by

@@ -96,12 +96,7 @@ theorem baseIndexConstant_injective (σ : Setup) : Function.Injective σ.c₀ :=
   exact cst_inj _
 
 theorem abelianSchemeDescent_chart_baseConstants_comp (σ : Setup) (x : Sp σ.R) : (σ.θ x).comp σ.c₀ = (Desc.cst (σ.C x).G.hom).comp (σ.ρ x) := by
-  obtain ⟨l, hl, hl'⟩ := σ.hθ x
-  have e : spMap ((σ.θ x).comp σ.c₀) = spMap ((Desc.cst (σ.C x).G.hom).comp (σ.ρ x)) := by
-    rw [spMap_comp', spMap_comp', Setup.c₀, spMap_cst, spMap_cst, ← Category.assoc, ← hl', ← hl, Category.assoc,
-      (σ.cart x).w]
-    simp only [Category.assoc]
-  exact congrArg CommRingCat.Hom.hom (Spec.map_injective e)
+  exact GlobalTheory.DescGraded.theta_c₀ σ x
 
 theorem linDisj_A (σ : Setup) : LinDisj σ.c₀ (Desc.cst σ.A.hom) (RingHom.id _) := by
   haveI := σ.ab.proper

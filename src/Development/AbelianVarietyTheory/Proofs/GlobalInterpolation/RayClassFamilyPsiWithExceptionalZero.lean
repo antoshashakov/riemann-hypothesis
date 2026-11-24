@@ -175,10 +175,7 @@ theorem shift (ψ : ℂ → ℂ) (S : Finset ℂ) (k : ℂ → ℂ) (u σ c T M 
   linarith
 
 theorem norm_lamChi_le (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (n : ℕ) : ‖𝓕.lamChi χ n‖ ≤ 2 * Λ n := by
-  refine le_trans ?_ (𝓕.lam_le n)
-  refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun g _ => ?_)
-  rw [norm_mul, AddChar.norm_apply, one_mul, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_nonneg (𝓕.lam_nonneg g n)]
+  exact GlobalTheory.Hk.LogDerivHalf.norm_lamChi_le 𝓕 χ n
 
 theorem one_le_ell (𝓕 : LFam) (t : ℝ) : 1 ≤ 𝓕.ell t := by
   rw [LFam.ell, Real.le_log_iff_exp_le (by have := 𝓕.B_ge; positivity)]

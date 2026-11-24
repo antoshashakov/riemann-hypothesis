@@ -96,10 +96,7 @@ end GlobalTheory.GLq.MirabolicComparison
 namespace GlobalTheory.GLq.MirabolicComparison
 
 theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
-  obtain ⟨V, hV⟩ := h
-  intro x y
-  rw [← hV, ← hV]
-  exact FDRep.char_conj V x y
+  exact GlobalTheory.CharDec.isClass_of_isChar h
 
 theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
   obtain ⟨V, _, hV⟩ := h

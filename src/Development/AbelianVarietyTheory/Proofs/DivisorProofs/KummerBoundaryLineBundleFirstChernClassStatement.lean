@@ -59,7 +59,4 @@ theorem _root_.GlobalTheory.T.kummerBoundary_lineBundle_firstChernClass : ∀ (q
   ∀ (E : Spc) (L : E ⟶ ofCat (glCat 1)), Inv q E → ∀ y : H ℤ E (cokernel κ) 1,
     HK.post ℤ _ (cokernel.desc κ ((q : ℤ) • 𝟙 Gm) h0) 1 y = picClass L →
     HK.ext ℤ _ z 1 (1 + 1) rfl y = s • restrH (Int.castRingHom (ZMod q)) E (tw q 1) (1 + 1) (c1 q L) := by
-  first
-  | exact @GlobalTheory.EtC.KumPic.kummer_boundary_picClass
-  | exact GlobalTheory.EtC.KumPic.kummer_boundary_picClass
-  | (intros; apply GlobalTheory.EtC.KumPic.kummer_boundary_picClass <;> assumption)
+  exact GlobalTheory.EtC.KumPic.kummer_boundary_picClass

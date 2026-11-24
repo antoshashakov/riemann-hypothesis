@@ -236,10 +236,7 @@ theorem norm_algebraMap_sq (F E : Type) [Field F] [NumberField F] [Field E] [Num
   rw [Algebra.norm_algebraMap, Module.finrank_baseChange, h2, pow_two]
 
 theorem sq_eq_one_circle (z : Circle) (h : z * z = 1) : z = 1 ∨ z = -1 := by
-  have h3 : (z : ℂ) * z = 1 := by exact_mod_cast congrArg (fun w : Circle => (w : ℂ)) h
-  rcases mul_self_eq_one_iff.1 h3 with h4 | h4
-  · exact Or.inl (Circle.ext h4)
-  · exact Or.inr (Circle.ext (by rw [h4]; simp))
+  exact GlobalTheory.ArchSignChar.sq_eq_one z h
 
 theorem continuous_toUnits : Continuous (Circle.toUnits : Circle → ℂˣ) :=
   Units.continuous_iff.2 ⟨continuous_subtype_val, (continuous_subtype_val.comp (continuous_inv : Continuous fun x : Circle => x⁻¹)).congr fun x => Circle.coe_inv x⟩

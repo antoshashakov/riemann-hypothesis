@@ -59,12 +59,7 @@ open scoped Classical
 namespace GlobalTheory.Hk.ShortInt
 
 lemma one_le_ell (𝓕 : LFam) (t : ℝ) : 1 ≤ 𝓕.ell t := by
-  unfold LFam.ell
-  have hB := 𝓕.B_ge
-  have ht := abs_nonneg t
-  rw [Real.le_log_iff_exp_le (by positivity)]
-  have := Real.exp_one_lt_d9
-  nlinarith
+  exact GlobalTheory.Hk.PsiExc.one_le_ell 𝓕 t
 
 lemma zeros : ∃ c₀ A c : ℝ, 0 < c₀ ∧ c₀ ≤ 1 / 20 ∧ 0 < A ∧ 0 < c ∧ c ≤ 1 ∧ ∀ 𝓕 : LFam,
     ∃ Z : AddChar 𝓕.G ℂ → Finset ℝ, (∀ χ, 𝓕.ExcZ χ c₀ (Z χ)) ∧

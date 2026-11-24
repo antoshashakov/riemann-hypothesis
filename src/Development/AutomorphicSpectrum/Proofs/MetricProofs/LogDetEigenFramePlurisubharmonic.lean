@@ -57,12 +57,7 @@ open ReciprocityTheory.AnForm.A (IsPsh)
 
 theorem psh_add {d : ℕ} {U : Set (Fin d → ℂ)} {φ ψ : (Fin d → ℂ) → ℝ} (hφ : IsPsh U φ) (hψ : IsPsh U ψ) :
     IsPsh U (fun z => φ z + ψ z) := by
-  refine ⟨hφ.1.add hψ.1, fun z w hd => ?_⟩
-  obtain ⟨h1, h2⟩ := hφ.2 z w hd
-  obtain ⟨h3, h4⟩ := hψ.2 z w hd
-  refine ⟨h1.add h3, ?_⟩
-  rw [Real.circleAverage_fun_add h1 h3]
-  exact add_le_add h2 h4
+  exact GlobalTheory.CompanionTheory.Ar.Cusp.PhiI.isPsh_add hφ hψ
 
 theorem psh_const {d : ℕ} (U : Set (Fin d → ℂ)) (c : ℝ) : IsPsh U (fun _ => c) := by
   refine ⟨upperSemicontinuousOn_const, fun z w _ => ⟨circleIntegrable_const c 0 1, ?_⟩⟩

@@ -123,70 +123,7 @@ theorem tri_alg (n : ℕ) (b : ℕ → ℕ → ℂ) (hb : ∀ i k, b i k ∈ For
     (h : ∀ k ≤ n + 1, t ^ k / (k.factorial : ℂ) =
       ∑ i ∈ Finset.range (n + 1), q i * (if i ≤ k then b i (k - i) else 0)) :
     t ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := by
-  let V : ℕ → Submodule Formalism.MainNotions.TaylorLogMetric.Qbar ℂ := fun k => (degreeLE Formalism.MainNotions.TaylorLogMetric.Qbar (k : WithBot ℕ)).map (aeval t).toLinearMap
-  have mono : ∀ j k, j ≤ k → V j ≤ V k := fun j k hjk =>
-    Submodule.map_mono (degreeLE_mono (by exact_mod_cast hjk))
-  have tpow : ∀ k, t ^ k ∈ V k := fun k =>
-    Submodule.mem_map.2 ⟨Polynomial.X ^ k, mem_degreeLE.2 (degree_X_pow_le k), by simp⟩
-  have smulc : ∀ {x : ℂ} {k : ℕ}, x ∈ V k → ∀ {c : ℂ}, c ∈ Formalism.MainNotions.TaylorLogMetric.Qbar → c * x ∈ V k := by
-    intro x k hx c hc
-    have e : c * x = ((⟨c, hc⟩ : Formalism.MainNotions.TaylorLogMetric.Qbar) • x) := rfl
-    rw [e]; exact Submodule.smul_mem _ _ hx
-  have hsum : ∀ k, k ≤ n + 1 → ∑ i ∈ Finset.range (n + 1), q i * (if i ≤ k then b i (k - i) else 0)
-      = ∑ i ∈ Finset.range (min (k + 1) (n + 1)), q i * b i (k - i) := by
-    intro k _
-    have hsub : Finset.range (min (k + 1) (n + 1)) ⊆ Finset.range (n + 1) :=
-      Finset.range_subset_range.2 (min_le_right _ _)
-    rw [← Finset.sum_subset hsub (f := fun i => q i * (if i ≤ k then b i (k - i) else 0))]
-    · refine Finset.sum_congr rfl fun i hi => ?_
-      simp only [Finset.mem_range] at hi
-      rw [if_pos (by omega)]
-    · intro i hi hni
-      simp only [Finset.mem_range] at hi hni
-      rw [if_neg (by omega), mul_zero]
-  have key : ∀ k, k ≤ n → q k ∈ V k := by
-    intro k
-    induction k using Nat.strong_induction_on with
-    | _ k ih =>
-      intro hk
-      have hk' := h k (by omega)
-      rw [hsum k (by omega), show min (k + 1) (n + 1) = k + 1 by omega, Finset.sum_range_succ, Nat.sub_self,
-        hb0, mul_one, div_eq_inv_mul] at hk'
-      have e : q k = ((k.factorial : ℂ))⁻¹ * t ^ k - ∑ i ∈ Finset.range k, q i * b i (k - i) := by
-        linear_combination (-1 : ℂ) * hk'
-      rw [e]
-      refine sub_mem (smulc (tpow k) (inv_mem (natCast_mem _ _))) (sum_mem fun i hi => ?_)
-      simp only [Finset.mem_range] at hi
-      rw [mul_comm]
-      exact smulc (mono i k (by omega) (ih i hi (by omega))) (hb i _)
-  have hl := h (n + 1) le_rfl
-  rw [hsum (n + 1) le_rfl, show min (n + 1 + 1) (n + 1) = n + 1 by omega] at hl
-  have hmem : t ^ (n + 1) ∈ V n := by
-    have e : t ^ (n + 1) = (((n + 1).factorial : ℕ) : ℂ) * ∑ i ∈ Finset.range (n + 1), q i * b i (n + 1 - i) := by
-      have hf : (((n + 1).factorial : ℕ) : ℂ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
-      rw [← hl]; field_simp
-    rw [e]
-    refine smulc (sum_mem fun i hi => ?_) (natCast_mem _ _)
-    simp only [Finset.mem_range] at hi
-    rw [mul_comm]
-    exact smulc (mono i n (by omega) (key i (by omega))) (hb i _)
-  obtain ⟨p, hp, hpt⟩ := Submodule.mem_map.1 hmem
-  have hpd : p.degree ≤ n := mem_degreeLE.1 hp
-  have hP : (Polynomial.X ^ (n + 1) - p : Formalism.MainNotions.TaylorLogMetric.Qbar[X]) ≠ 0 := by
-    intro h0
-    have e : (Polynomial.X ^ (n + 1) : Formalism.MainNotions.TaylorLogMetric.Qbar[X]) = p := sub_eq_zero.1 h0
-    have h1 : (Polynomial.X ^ (n + 1) : Formalism.MainNotions.TaylorLogMetric.Qbar[X]).degree = ((n + 1 : ℕ) : WithBot ℕ) := degree_X_pow (n + 1)
-    rw [e] at h1
-    rw [h1] at hpd
-    have : ((n + 1 : ℕ) : WithBot ℕ) ≤ (n : WithBot ℕ) := hpd
-    norm_cast at this
-    omega
-  have halg : IsAlgebraic Formalism.MainNotions.TaylorLogMetric.Qbar t := ⟨Polynomial.X ^ (n + 1) - p, hP, by
-    rw [map_sub, map_pow, aeval_X]
-    have : (aeval t) p = t ^ (n + 1) := hpt
-    rw [this, sub_self]⟩
-  exact mem_algebraicClosure_iff.2
-    (@IsAlgebraic.restrictScalars ℚ Formalism.MainNotions.TaylorLogMetric.Qbar ℂ _ _ _ _ _ _ _ _ (algebraicClosure.isAlgebraic ℚ ℂ) t halg)
+      exact Formalism.L2.KerInert.Sigma.ChartWirtingerDerivatives.tri_alg n b hb hb0 q t h
 
 theorem prod_expand {ι : Type} (A Y : PowerSeries ℂ) (s : Finset ι) (c : ι → ℂ) :
     ∃ q : ℕ → ℂ, ∏ i ∈ s, (A - C (c i) * Y) =

@@ -62,10 +62,7 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.Reproducing
 
 theorem two_mul_rank_le {n : ℕ} (ε : Fin n → Bool) : 2 * rkR ε ≤ n := by
-  have h := Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)
-  simp only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h
-  unfold rkR
-  omega
+  exact GlobalTheory.KernelExpansion.two_mul_rank_le ε
 
 theorem weight_condition (B : RowsAut) (h s : ℝ) (hn : 1 ≤ B.I.n) (hb : HBig B 40 h)
     (hs : s ≤ 2 * (B.I.n : ℝ) ^ 2) (v : InfinitePlace B.I.F) :

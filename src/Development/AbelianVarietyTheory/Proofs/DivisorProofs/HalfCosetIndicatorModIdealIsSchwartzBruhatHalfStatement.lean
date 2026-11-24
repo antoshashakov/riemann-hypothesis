@@ -61,7 +61,4 @@ open scoped Pointwise
 theorem _root_.GlobalTheory.T.halfCosetIndicatorModIdeal_isSchwartzBruhatHalf : ∀ {D : D7} (S T : HSp D) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),
     Submodule.IsFullLattice D.host.E LS → Submodule.IsFullLattice D.host.E LT → ∀ (a : Formalism.L2.Theta.AE D), infPart D a = 0 →
     ∀ (I : Ideal (𝓞 D.host.E)), I ≠ ⊥ → ∀ x : WO S T, IsHalf a x → IsSBHalf a (latO S T LS LT fun _ => True) (cosetFn a I x) := by
-  first
-  | exact @GlobalTheory.BotSmallDict.cosetFn_isSBHalf
-  | intro D S T LS LT hS hT a ha I hI x hx
-    exact GlobalTheory.BotSmallDict.cosetFn_isSBHalf S T LS LT hS.toIsLattice hT.toIsLattice a ha I hI x hx
+  exact GlobalTheory.BotSmallDict.cosetFn_isSBHalf

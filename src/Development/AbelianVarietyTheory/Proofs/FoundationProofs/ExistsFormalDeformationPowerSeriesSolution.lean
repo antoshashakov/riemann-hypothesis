@@ -64,12 +64,7 @@ namespace GlobalTheory.FormalDeform
 theorem constantCoeff_subst_eq {k : Type} [Field k] (a φ : PowerSeries k)
     (ha : PowerSeries.constantCoeff a = 0) :
     PowerSeries.constantCoeff (φ.subst a : PowerSeries k) = PowerSeries.constantCoeff φ := by
-  have hs := PowerSeries.HasSubst.of_constantCoeff_zero' ha
-  rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_subst' hs,
-    finsum_eq_single _ 0]
-  · simp
-  · intro d hd
-    rw [PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, ha, zero_pow hd, smul_zero]
+  exact GlobalTheory.PicDiv.FormalDeformHasse.constantCoeff_subst_eq a φ ha
 
 theorem not_mem_pow_succ {A : Type} [CommRing A] [IsDedekindDomain A] {N : ℕ} {I : Type}
     [Fintype I] {D P₀ : Ideal A} {Q : I → Ideal A} {f₀ : A} (hP₀ : P₀.IsMaximal)

@@ -68,12 +68,7 @@ theorem per_exists : ∀ (Γ : Subgroup SL(2, ℤ)), Γ.FiniteIndex → ∀ σ :
   rwa [← this]
 
 theorem eichler_mem (w : ℕ) (f : ℍ → ℂ) (τ : ℍ) : eichler w f τ ∈ degreeLT ℂ (w + 1) := by
-  unfold eichler
-  refine Submodule.sum_mem _ fun j hj => ?_
-  rw [mem_degreeLT]
-  refine (degree_C_mul_X_pow_le _ _).trans_lt ?_
-  have := Finset.mem_range.1 hj
-  exact_mod_cast this
+  exact GlobalTheory.EichlerLimit.eichler_mem w f τ
 
 theorem per_cov (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (U : ℍ → ℂ[X]) (hU : ∀ τ, U τ ∈ degreeLT ℂ (w + 1))
     (heq : ∀ (γ : Γ) (τ : ℍ), slP w (mat γ) (U ((γ : SL(2, ℤ)) • τ)) = U τ) (σ : SL(2, ℤ)) (n : ℕ)
