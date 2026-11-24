@@ -53,6 +53,7 @@ import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -763,43 +764,9 @@ theorem mulM_meas : Measurable (mulM (k := k) (r := r)) := by
 attribute [local fun_prop] mulM_meas invM_meas
 
 private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  have hi := i.isLt
-  by_cases hm : r ≤ i.val ∧ i.val ≤ r + k
-  · rw [Finset.sum_eq_single i]
-    · simp only [Hpk]
-      split_ifs <;> (first
-          | (exfalso; (try simp only [Fin.ext_iff, Fin.val_mk, ne_eq, and_true, true_and] at *); omega)
-          | (norm_num; done)
-          | rfl)
-    · intro l _ hl
-      have : Hpk k r i l = 0 := by
-        simp only [Hpk]
-        split_ifs <;> (first
-          | (exfalso; (try simp only [Fin.ext_iff, Fin.val_mk, ne_eq, and_true, true_and] at *); omega)
-          | (norm_num; done)
-          | rfl)
-      rw [this, zero_mul]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
-  · have hp : 2 * r + k - i.val < 2 * r + k + 1 := by omega
-    rw [Finset.sum_eq_single ⟨2 * r + k - i.val, hp⟩]
-    · simp only [Hpk]
-      split_ifs <;> (first
-          | (exfalso; (try simp only [Fin.ext_iff, Fin.val_mk, ne_eq, and_true, true_and] at *); omega)
-          | (norm_num; done)
-          | rfl)
-    · intro l _ hl
-      have : Hpk k r i l = 0 := by
-        simp only [Hpk]
-        split_ifs <;> (first
-          | (exfalso; (try simp only [Fin.ext_iff, Fin.val_mk, ne_eq, and_true, true_and] at *); omega)
-          | (norm_num; done)
-          | rfl)
-      rw [this, zero_mul]
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem uw_unit {z : Vc k r} {h : Mat k r} (hh : h ∈ UWset k r z) : IsUnit h.det := by
   have h1 : hᴴ * Hpk k r * h = Hpk k r := hh.1

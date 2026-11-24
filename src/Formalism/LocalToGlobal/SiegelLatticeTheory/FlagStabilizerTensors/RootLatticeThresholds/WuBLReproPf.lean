@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -80,32 +81,9 @@ theorem meas_rmul (a : Formalism.FourierDecayAlt.B.Mat k r) : Measurable (Formal
   fun_prop
 
 private theorem hpk_sq_lemma {k r : ℕ} : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  by_cases hm : r ≤ i.val ∧ i.val ≤ r + k
-  · rw [Finset.sum_eq_single i]
-    · simp only [Hpk]
-      split_ifs <;> (try simp only [Fin.ext_iff, ne_eq, Fin.val_mk, and_true, true_and, not_true_eq_false, not_false_eq_true] at *) <;>
-        first | omega | (norm_num; done) | (exfalso; omega)
-    · intro l _ hl
-      have h0 : Hpk k r i l = 0 := by
-        simp only [Hpk]
-        split_ifs <;> (try simp only [Fin.ext_iff, ne_eq, Fin.val_mk, and_true, true_and, not_true_eq_false, not_false_eq_true] at *) <;>
-        first | omega | (norm_num; done) | (exfalso; omega)
-      rw [h0, zero_mul]
-    · simp
-  · have hlt : 2 * r + k - i.val < 2 * r + k + 1 := by omega
-    rw [Finset.sum_eq_single ⟨2 * r + k - i.val, hlt⟩]
-    · simp only [Hpk]
-      split_ifs <;> (try simp only [Fin.ext_iff, ne_eq, Fin.val_mk, and_true, true_and, not_true_eq_false, not_false_eq_true] at *) <;>
-        first | omega | (norm_num; done) | (exfalso; omega)
-    · intro l _ hl
-      have h0 : Hpk k r i l = 0 := by
-        simp only [Hpk]
-        split_ifs <;> (try simp only [Fin.ext_iff, ne_eq, Fin.val_mk, and_true, true_and, not_true_eq_false, not_false_eq_true] at *) <;>
-        first | omega | (norm_num; done) | (exfalso; omega)
-      rw [h0, zero_mul]
-    · simp
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem reproduction_translation : ReproTr := by
   intro k r μG hμ H _ _ σ hσ hiso Vp _ _ W w y hy hrep x hx

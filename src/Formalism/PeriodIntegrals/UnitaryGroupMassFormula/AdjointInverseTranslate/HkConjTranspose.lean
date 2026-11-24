@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -83,13 +84,9 @@ theorem hk_star_eps (k r : ℕ) (i : Fin (2 * r + k + 1)) : star (hkEps k r i) =
   split_ifs <;> simp
 
 theorem hk_mul_self (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply]
-  simp_rw [hk_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true,
-    hk_sig_sig, hk_eps_sig]
-  by_cases h : j = i
-  · subst h; simp [hk_eps_mul_self]
-  · simp [h, one_apply_ne' h]
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem hk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
