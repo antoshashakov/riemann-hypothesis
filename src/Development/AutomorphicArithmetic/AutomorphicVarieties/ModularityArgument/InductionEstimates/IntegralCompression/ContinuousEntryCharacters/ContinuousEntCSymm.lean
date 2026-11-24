@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Development.WeilBound.ThetaLifts.LeviDeterminants.GrowSplit
 
 @[expose] public section
 
@@ -182,19 +183,15 @@ private theorem unitary_cF (n : ℕ) (g : archGroup F n) : g ∈ archCompact F n
 
 private theorem continuous_psi (K : Type) [Field K] [NumberField K] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace K) := by
-  have e : ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace K) = ⇑(GroundTheory.Global.homeomorphMixedSpace K) :=
-    funext fun x => (GroundTheory.Global.homeomorphMixedSpace_apply K x).symm
-  rw [e]
-  exact (GroundTheory.Global.homeomorphMixedSpace K).continuous
+  first
+  | exact _root_.PositivityTheory.ThKF0.Split.continuous_toMixed
+  | (apply _root_.PositivityTheory.ThKF0.Split.continuous_toMixed <;> assumption)
 
 private theorem continuous_psi_symm (K : Type) [Field K] [NumberField K] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm := by
-  have e : ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace K).symm = ⇑(GroundTheory.Global.homeomorphMixedSpace K).symm := by
-    funext x
-    apply (InfiniteAdeleRing.ringEquiv_mixedSpace K).injective
-    rw [RingEquiv.apply_symm_apply, ← GroundTheory.Global.homeomorphMixedSpace_apply, Homeomorph.apply_symm_apply]
-  rw [e]
-  exact (GroundTheory.Global.homeomorphMixedSpace K).symm.continuous
+  first
+  | exact _root_.PositivityTheory.ThKF0.Split.continuous_ofMixed
+  | (apply _root_.PositivityTheory.ThKF0.Split.continuous_ofMixed <;> assumption)
 
 variable {F} {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E ≃ₐ[F] E}
 
