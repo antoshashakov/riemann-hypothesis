@@ -52,18 +52,4 @@ theorem _root_.GlobalTheory.T.lintegral_theta_below_det_one : ∀ (E : Type) [Fi
     ∀ (μ : Measure (GA E (m + 1))) [μ.IsHaarMeasure] (𝓕 : Set (GA E (m + 1))),
     IsFundamentalDomain (ratGL E (m + 1)).range 𝓕 μ → ∀ x : ℝ, 1 < x →
       ∫⁻ g in 𝓕 ∩ {g | GlobalTheory.RSnm.detAbs g ≤ 1}, ‖φ' g‖ₑ ^ 2 * (∑' ξ : {ξ : Fin (m + 1) → E // ξ ≠ 0}, ‖G (Matrix.vecMul (fun j => algebraMap E (Ad E) (ξ.1 j)) g.val)‖ₑ) * ENNReal.ofReal (GlobalTheory.RSnm.detAbs g ^ x) ∂μ ≠ ⊤ := by
-  intro E _ _ _ m π' hπ φ' hφ G hG μ _ 𝓕 h𝓕 x hx
-  have hbound := GlobalTheory.ThetaSqLow.exists_bound hπ hφ hG
-  obtain ⟨C, hC⟩ := hbound
-  have hi : IntegrableOn (fun g : GA E (m + 1) => GlobalTheory.RSnm.detAbs g ^ (x - 1))
-      (𝓕 ∩ {g | GlobalTheory.RSnm.detAbs g ≤ 1}) μ :=
-    GlobalTheory.T.integrableOn_absDet_rpow_le_one_fundamentalDomain
-      E (m + 1) m.succ_pos μ 𝓕 h𝓕 (x - 1) (by linarith)
-  refine ne_top_of_le_ne_top (hi.const_mul C).2.ne (lintegral_mono fun g => ?_)
-  have hδ := GlobalTheory.RSnm.detAbs_pos g
-  refine (mul_le_mul_left (hC g) _).trans ?_
-  rw [mul_comm, ← ENNReal.ofReal_mul (Real.rpow_nonneg hδ.le _), Real.eNorm_eq_ofReal_abs]
-  refine ENNReal.ofReal_le_ofReal (le_trans (le_of_eq ?_) (le_abs_self _))
-  beta_reduce
-  rw [Real.rpow_sub_one hδ.ne']
-  ring
+        exact GlobalTheory.ThetaSqLow.lintegral_low_ne_top

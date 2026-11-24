@@ -62,33 +62,7 @@ theorem card_le_of_idem_indep {R : Type} [CommRing R] {e : R} (he : e * e = e) (
     {ι κ : Type} [Fintype ι] [Fintype κ] (a : ι → κ → R)
     (h : ∀ r : ι → R, (∀ j, ∑ i, r i * a i j = 0) → ∀ i, e * r i = 0) :
     Fintype.card ι ≤ Fintype.card κ := by
-  let I : Ideal R := Ideal.span {1 - e}
-  have hI : ∀ x, x ∈ I ↔ e * x = 0 := by
-    intro x
-    rw [Ideal.mem_span_singleton']
-    constructor
-    · rintro ⟨c, rfl⟩
-      linear_combination (-c) * he
-    · intro hx
-      exact ⟨x, by linear_combination -hx⟩
-  haveI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.2 (by
-    intro hT
-    have : (1 : R) ∈ I := by rw [hT]; trivial
-    rw [hI, mul_one] at this
-    exact he0 this)
-  have hli : LinearIndependent (R ⧸ I) (fun i j => Ideal.Quotient.mk I (a i j)) := by
-    rw [Fintype.linearIndependent_iff]
-    intro g hg i
-    choose r hr using fun i => Ideal.Quotient.mk_surjective (g i)
-    rw [← hr, Ideal.Quotient.eq_zero_iff_mem, hI, ← he, mul_assoc]
-    refine h (fun i => e * r i) (fun j => ?_) i
-    have := congrFun hg j
-
-    simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, ← hr, ← map_mul,
-    ← map_sum] at this
-    rw [Ideal.Quotient.eq_zero_iff_mem, hI, Finset.mul_sum] at this
-    simpa only [mul_assoc] using this
-  simpa using hli.fintype_card_le_finrank
+      exact GlobalTheory.Per.LetterDim.card_le_of_idem he he0 a h
 
 section Bound
 

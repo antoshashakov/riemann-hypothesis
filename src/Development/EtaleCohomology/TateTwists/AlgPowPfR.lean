@@ -80,30 +80,7 @@ theorem pow_q {A : Type} [CommRing A] (q : ℕ) (z : A) (hz : aeval z (cyclotomi
 
 theorem self_sq {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) (x y : A)
     (hx : x ^ q = 1) (hy : y ^ q = 1) : ∃ w : A, x - y = (x - y) ^ 2 * w := by
-  set d := x - y
-  set u := ∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i)
-  have hdu : u * d = 0 := by
-    have := geom_sum₂_mul x y q
-    rw [hx, hy, sub_self] at this
-    exact this
-  have hyu : IsUnit y := isUnit_iff_exists_inv.2 ⟨y ^ (q - 1), by rw [← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero (NeZero.ne q)), hy]⟩
-  set c : A := (q : A) * y ^ (q - 1)
-  have hc : IsUnit c := hq.mul (hyu.pow _)
-  have hmem : u - c ∈ Ideal.span {d} := by
-    rw [← Ideal.Quotient.eq_zero_iff_mem]
-    have hxy : Ideal.Quotient.mk (Ideal.span {d}) x = Ideal.Quotient.mk (Ideal.span {d}) y := by
-      rw [Ideal.Quotient.eq]; exact Ideal.subset_span rfl
-
-    simp only [u, c, map_sub, map_sum, map_mul, map_pow, map_natCast, hxy]
-    rw [geom_sum₂_self, sub_self]
-  obtain ⟨w0, hw0⟩ := Ideal.mem_span_singleton'.1 hmem
-  obtain ⟨cu, hcu⟩ := hc
-  refine ⟨-(w0 * ↑cu⁻¹), ?_⟩
-  have hdc : d * c = -(d ^ 2 * w0) := by
-    have : c = u - w0 * d := by rw [hw0]; ring
-    rw [this]; linear_combination hdu
-  calc d = d * c * ↑cu⁻¹ := by rw [← hcu, mul_assoc, Units.mul_inv, mul_one]
-    _ = _ := by rw [hdc]; ring
+      exact LateralTheory.E.H2CurveOrder.TwLocGenPfSec.self_sq q hq x y hx hy
 
 theorem self_pow {A : Type} [CommRing A] (d w : A) (h : d = d ^ 2 * w) (k : ℕ) : d = d ^ (k + 1) * w ^ k := by
   induction k with
