@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -232,17 +233,9 @@ private lemma sign_mul_sign_piI_eq_one (i : Fin (2 * r + k + 1)) :
     rw [if_neg h1, if_neg h2, one_mul]
 
 private lemma Hpk_mul_Hpk : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply, Finset.sum_eq_single (piI k r i)]
-  · rw [Hpk_applyUnitaryQuotientCompactness i (piI k r i), if_pos rfl, Hpk_applyUnitaryQuotientCompactness (piI k r i) j, piI_piI']
-    by_cases hij : i = j
-    · subst hij
-      rw [if_pos rfl, if_pos rfl, sign_mul_sign_piI_eq_one]
-    · rw [if_neg (Ne.symm hij), if_neg hij, mul_zero]
-  · intro x _ hx
-    rw [Hpk_applyUnitaryQuotientCompactness i x, if_neg hx, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 lemma inv_fix {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : a ∈ UH (Hpk k r))
     {v : Fin (2 * r + k + 1) → ℂ} (hv : a *ᵥ v = v) : a⁻¹ *ᵥ v = v := by

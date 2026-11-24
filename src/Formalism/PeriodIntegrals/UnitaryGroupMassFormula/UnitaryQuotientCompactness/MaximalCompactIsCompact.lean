@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -109,18 +110,9 @@ lemma hs_mul (k r : ℕ) (i : Fin (2 * r + k + 1)) : hs k r i * hs k r (hσ k r 
   split_ifs <;> first | (exfalso; omega) | norm_num
 
 lemma hpk_mul_self (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Finset.sum_eq_single (hσ k r i)]
-  · rw [hpk_eq, hpk_eq, if_pos rfl, hσ_hσ, Matrix.one_apply]
-    by_cases h : i = j
-    · subst h
-      rw [if_pos rfl, if_pos rfl]
-      exact hs_mul k r _
-    · rw [if_neg (Ne.symm h), if_neg h, mul_zero]
-  · intro l _ hl
-    rw [hpk_eq, if_neg hl, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 lemma hs_hσ (k r : ℕ) (i : Fin (2 * r + k + 1)) : hs k r (hσ k r i) = hs k r i := by
   have hi := i.isLt

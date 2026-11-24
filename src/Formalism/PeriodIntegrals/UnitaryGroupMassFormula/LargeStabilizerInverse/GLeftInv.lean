@@ -46,6 +46,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -121,16 +122,9 @@ private theorem Hpk_apply_eq_ite_tau (p m : Fin (2 * r + k + 1)) :
     rw [if_neg h2, if_neg h]
 
 private theorem Hpk_mul_self' : Hpk k r * Hpk k r = 1 := by
-  ext p q
-  have e1 : ∀ m, Hpk k r m q = if m = tau k r q then sgn k r q else 0 := fun m => hpk_col m q
-  rw [Matrix.mul_apply]
-  simp only [e1, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
-  rw [hpk_col, tau_tau_lemma, Matrix.one_apply]
-  split_ifs with h
-  · rw [sgn_tau']
-    unfold sgn
-    split_ifs <;> norm_num
-  · simp
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem adj_apply (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (p q : Fin (2 * r + k + 1)) :

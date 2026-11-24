@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -62,24 +63,9 @@ open PI.UpqRep
 variable {k r : ℕ}
 
 private lemma Hpk_mul_self_eq_one : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  have hi := i.isLt
-  have hj := j.isLt
-  obtain ⟨p, hp⟩ : ∃ p : Fin (2 * r + k + 1),
-      (p : ℕ) = if (i : ℕ) < r ∨ r + k < (i : ℕ) then 2 * r + k - i else i :=
-    ⟨⟨if (i : ℕ) < r ∨ r + k < (i : ℕ) then 2 * r + k - i else i, by split_ifs <;> omega⟩, rfl⟩
-  rw [Finset.sum_eq_single p]
-  · unfold Hpk
-    simp only [Fin.ext_iff]
-    split_ifs at hp ⊢ <;> first | omega | (norm_num; done) | (simp; done)
-  · intro l _ hl
-    rw [Ne, Fin.ext_iff] at hl
-    unfold Hpk
-    simp only [Fin.ext_iff]
-    split_ifs at hp ⊢ <;> first | omega | (simp; done) | (norm_num; done)
-  · intro h
-    exact absurd (Finset.mem_univ p) h
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 private lemma Hpk_conjTranspose_Hpk_mul_eq_one_of_mem_UH {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hU : a ∈ UH (Hpk k r)) : (Hpk k r * aᴴ * Hpk k r) * a = 1 := by
