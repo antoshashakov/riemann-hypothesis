@@ -47,6 +47,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEqu
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.BcDefs
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
 
 @[expose] public section
 
@@ -125,15 +126,7 @@ variable {L : Type} [Field L] [NumberField L] [Algebra F L]
 
 theorem AttRes.normV_eq_pow (w : HeightOneSpectrum (𝓞 L)) :
     normV w = normV (w.under (𝓞 F)) ^ w.asIdeal.inertiaDeg (𝓞 F) := by
-  have : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩
-  have := w.isMaximal
-  have := (w.under (𝓞 F)).isMaximal
-  have nv {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) :
-      normV v = Ideal.absNorm v.asIdeal := by
-    rw [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
-  rw [nv, nv]
-  rw [← Ideal.absNorm_relNorm (𝓞 F) (𝓞 L) w.asIdeal,
-    Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 F)).asIdeal, map_pow]
+  apply _root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow
 
 
 theorem AttRes.hasSat_trivial [IsTotallyReal F] (v : HeightOneSpectrum (𝓞 F)) :

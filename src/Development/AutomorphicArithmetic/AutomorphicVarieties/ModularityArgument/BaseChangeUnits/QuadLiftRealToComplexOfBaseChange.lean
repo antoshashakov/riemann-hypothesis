@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
 
 @[expose] public section
 
@@ -66,12 +67,7 @@ def UpperTheory.V.Z.Bc.CyclicBaseChangeLiftRankTwo : Prop :=
 
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
-  have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
-  have := w.isMaximal
-  have := (w.under (𝓞 K)).isMaximal
-  simp only [normV, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]
-  rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
-    Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
+  apply _root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow
 
 private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
     algSat n (q ^ f) (B.map (· ^ f)) = (algSat n q B).map (· ^ f) := by

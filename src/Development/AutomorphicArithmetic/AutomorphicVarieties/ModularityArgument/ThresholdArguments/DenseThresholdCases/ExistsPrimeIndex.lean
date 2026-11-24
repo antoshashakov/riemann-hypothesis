@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
 
 @[expose] public section
 
@@ -60,16 +61,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Base UpperTheory.V.Published UpperTheory.V.Sd Formalism.L2.Host.CT UpperTheory.V.Z.Bc
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
-  have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
-  have := w.isMaximal
-  have := (w.under (𝓞 K)).isMaximal
-  have hnorm : ∀ {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)),
-      normV v = Ideal.absNorm v.asIdeal := by
-    intro L _ _ v
-    rw [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
-  rw [hnorm, hnorm]
-  rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
-    Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
+  apply _root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow
 private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
     algSat n (q ^ f) (B.map (· ^ f)) = (algSat n q B).map (· ^ f) := by
   have e : ∀ (q : ℕ) (B : Multiset ℂˣ),

@@ -52,6 +52,7 @@ public import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SubsingletonRankZero
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.BaseChangeUnits.CycCOfCyclic
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
 
 @[expose] public section
 
@@ -140,11 +141,7 @@ open Formalism.L2.Host Formalism.ConjugateSelfDual
 
 private theorem norm_deg (w : HeightOneSpectrum (𝓞 E)) :
     normV w = normV (w.under (𝓞 F)) ^ w.asIdeal.inertiaDeg (𝓞 F) := by
-  have : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩
-  have := w.isMaximal
-  have := (w.under (𝓞 F)).isMaximal
-  simpa only [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply] using
-    (Ideal.absNorm_pow_inertiaDeg (w.under (𝓞 F)).asIdeal w.asIdeal).symm
+  apply _root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow
 
 private theorem deg_sum (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F))
     (T : Finset (v.asIdeal.primesOver (𝓞 E))) : ∑ q ∈ T, q.1.inertiaDeg (𝓞 F) ≤ 2 := by

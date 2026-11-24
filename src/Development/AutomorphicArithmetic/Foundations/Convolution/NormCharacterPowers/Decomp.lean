@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
 
 @[expose] public section
 
@@ -50,16 +51,7 @@ variable (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algeb
 
 private theorem normV_inertia (w : HeightOneSpectrum (𝓞 M)) :
     normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
-  have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
-  have := w.isMaximal
-  have := (w.under (𝓞 K)).isMaximal
-  have norm_eq {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
-      normV v = Ideal.absNorm v.asIdeal := by
-    rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
-    rfl
-  rw [norm_eq, norm_eq]
-  rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 M) w.asIdeal,
-    Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
+  apply _root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow
 
 private theorem unram_ae : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
     ∀ w : HeightOneSpectrum (𝓞 M), w.under (𝓞 K) = v → w.asIdeal.ramificationIdx (𝓞 K) = 1 := by

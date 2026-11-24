@@ -47,6 +47,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalys
 import GroundTheory.AutomorphicForms.GL2.GJMatrixInfinite
 public import GroundTheory.GlobalFields.SemilocalAlgebras.ContinuousCompletionMap
 public import GroundTheory.GlobalFields.SemilocalAlgebras.Finite
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
 
 @[expose] public section
 
@@ -66,11 +67,7 @@ private theorem normV_abs {K : Type} [Field K] [NumberField K] (w : HeightOneSpe
 
 private theorem normV_eq_pow (w : HeightOneSpectrum (𝓞 E)) :
     normV w = normV (w.under (𝓞 F)) ^ w.asIdeal.inertiaDeg (𝓞 F) := by
-  have : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩
-  have := w.isMaximal
-  have := (w.under (𝓞 F)).isMaximal
-  rw [normV_abs, normV_abs, ← Ideal.absNorm_relNorm (𝓞 F) (𝓞 E) w.asIdeal,
-    Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 F)).asIdeal, map_pow]
+  apply _root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow
 
 private theorem one_lt_normV {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) :
     1 < normV v := by
