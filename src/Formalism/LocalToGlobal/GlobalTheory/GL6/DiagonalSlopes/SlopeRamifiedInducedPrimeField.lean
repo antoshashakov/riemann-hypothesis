@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.LocalToGlobal.GlobalTheory.GL6.SlopeRamifiedInducedPrimeField
 
 @[expose] public section
 
@@ -203,114 +204,9 @@ theorem induced_of_slice (B : HLat K) (hB : B.Good) (hB0 : B.L ≠ ⊥)
         (∀ v F F', majAt B.b B.X v (Ψ F) (Ψ F') = ∑ a, majAt Wh.b Wh.X v (F a) (F' a)) ∧
         B.L = (T2.piL (∀ i, G i) Wh.L).map (Ψ.restrictScalars (𝓞 K)) ∧
         (⨅ i, LinearMap.ker (t2sNm B ρ i)) = (RamFun.ramFun K G Wh.V).map Ψ := by
-  haveI : Module.Finite K B.V := Module.Finite.of_basis B.b
-  have hsub : Function.Injective W.subtype := Subtype.val_injective
-  obtain ⟨hX, hm, -⟩ := pull_spec1 B (Module.finBasis K W) W.subtype hB.1 hsub
-  set Ψ := t2sPsi B ρ W with hΨ
-
-  have hL : B.L = (T2.piL (∀ i, G i) (B.L.comap (W.subtype.restrictScalars (𝓞 K)))).map
-      (Ψ.restrictScalars (𝓞 K)) := by
-    ext x
-    constructor
-    · intro hx
-      obtain ⟨F, rfl⟩ := hbij.2 x
-      exact ⟨F, fun g _ => (hLc F).1 hx g, rfl⟩
-    · rintro ⟨F, hF, rfl⟩
-      exact (hLc F).2 fun g => hF g (Set.mem_univ g)
-
-  let e := LinearEquiv.ofBijective Ψ hbij
-  let π : B.V →ₗ[K] W := (LinearMap.proj (1 : ∀ i, G i)).comp e.symm.toLinearMap
-  have hπ : ∀ w : W, π (w : B.V) = w := by
-    intro w
-    have h1 : Ψ (Pi.single 1 w) = (w : B.V) := by
-      rw [hΨ, t2sPsi_apply, Finset.sum_eq_single (1 : ∀ i, G i)]
-      · simp
-      · intro g _ hg
-        simp [hg]
-      · simp
-    show (e.symm (w : B.V)) 1 = w
-    have h2 : e.symm (w : B.V) = Pi.single 1 w := by
-      rw [LinearEquiv.symm_apply_eq]
-      exact h1.symm
-    rw [h2]
-    simp
-  have hπL : ∀ x ∈ B.L, π x ∈ B.L.comap (W.subtype.restrictScalars (𝓞 K)) := by
-    intro x hx
-    obtain ⟨F, rfl⟩ := hbij.2 x
-    have h3 : π (Ψ F) = F 1 := by
-      show (e.symm (e F)) 1 = F 1
-      rw [LinearEquiv.symm_apply_apply]
-    rw [h3]
-    exact (hLc F).1 hx 1
-  refine ⟨sub B W, ⟨hX, comap_fg W.subtype hsub hB.2.1, ?_⟩, ?_, Ψ, hbij.1, ?_, hL, ?_⟩
-  ·
-    rw [eq_top_iff]
-    intro w _
-    have hw : (w : B.V) ∈ Submodule.span K (B.L : Set B.V) := by rw [hB.2.2]; trivial
-    have h4 := Submodule.mem_map_of_mem (f := π) hw
-    rw [Submodule.map_span, hπ] at h4
-    refine Submodule.span_mono ?_ h4
-    rintro _ ⟨x, hx, rfl⟩
-    exact hπL x hx
-  ·
-    intro h0
-    apply hB0
-    rw [eq_bot_iff]
-    intro x hx
-    rw [Submodule.mem_bot]
-    obtain ⟨F, rfl⟩ := hbij.2 x
-    have hF : ∀ g, F g = 0 := by
-      intro g
-      have h5 : (F g : B.V) ∈ B.L := (hLc F).1 hx g
-      have h6 : F g ∈ (sub B W).L := h5
-      rw [h0, Submodule.mem_bot] at h6
-      exact h6
-    rw [t2sPsi_apply]
-    simp [hF]
-  ·
-    intro v F F'
-    rw [hΨ, t2sPsi_apply, t2sPsi_apply]
-    have hs := T2.sesq_sum_zsmul (isSesq_maj B.b B.X) v (fun _ => (1 : ℤ)) (fun g => ρ g (F g : B.V))
-      (fun _ => (1 : ℤ)) (fun h => ρ h (F' h : B.V))
-    simp only [one_smul, Int.cast_one, one_mul] at hs
-    rw [hs]
-    refine Finset.sum_congr rfl fun g _ => ?_
-    rw [Finset.sum_eq_single g]
-    · rw [horth, if_pos rfl, hm]
-      rfl
-    · intro h _ hgh
-      rw [horth, if_neg (Ne.symm hgh)]
-    · simp
-  ·
-    ext x
-    simp only [Submodule.mem_iInf, LinearMap.mem_ker, Submodule.mem_map]
-    constructor
-    · intro hx
-      obtain ⟨F, rfl⟩ := hbij.2 x
-      refine ⟨F, ?_, rfl⟩
-      simp only [RamFun.ramFun, Submodule.mem_iInf, LinearMap.mem_ker]
-      intro i
-      have h7 := hx i
-      rw [norm_slice_map_sum] at h7
-      have h8 : (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = 0 :=
-        hbij.1 (h7.trans (map_zero _).symm)
-      rw [sum_inv_mulSingle_zero_iff] at h8
-      funext h
-      have := congrFun h8 h
-      simp only [RamFun.nmF, LinearMap.sum_apply, Finset.sum_apply, RamFun.trl_apply, Pi.zero_apply] at this ⊢
-      exact this
-    · rintro ⟨F, hF, rfl⟩ i
-      simp only [RamFun.ramFun, Submodule.mem_iInf, LinearMap.mem_ker] at hF
-      have h9 := hF i
-      rw [norm_slice_map_sum]
-      have h10 : (fun h => ∑ a : G i, F (Pi.mulSingle i a * h)) = 0 := by
-        funext h
-        have := congrFun h9 h
-        simp only [RamFun.nmF, LinearMap.sum_apply, Finset.sum_apply, RamFun.trl_apply, Pi.zero_apply] at this ⊢
-        exact this
-      rw [← sum_inv_mulSingle_zero_iff] at h10
-      show t2sPsi B ρ W (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = 0
-      rw [h10, map_zero]
+  first
+  | exact _root_.Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.induced_of_slice
+  | (apply _root_.Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.induced_of_slice <;> assumption)
 
 end Slice
 

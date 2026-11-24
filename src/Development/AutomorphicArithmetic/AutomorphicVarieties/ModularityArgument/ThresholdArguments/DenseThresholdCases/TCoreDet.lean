@@ -54,6 +54,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.IntIffNormLe
 
 @[expose] public section
 
@@ -78,18 +79,9 @@ private theorem cd_compact {R : Type} [CommRing R] [WithIdeal R] [IsAdicComplete
   refine Set.mem_biUnion (Set.mem_range_self (Ideal.Quotient.mk _ x)) ⟨x - s (Ideal.Quotient.mk _ x), hN ?_, by simp⟩
   exact Ideal.Quotient.eq.1 (hs _).symm
 private theorem cd_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
-  have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
-  rw [h0, spectralValue_le_one_iff (minpoly.monic hi)]
-  constructor
-  · intro h n
-    rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, coeff_map]
-    exact PadicInt.norm_le_one _
-  · intro h
-    have hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l]) :=
-      (lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩
-    obtain ⟨q, hq, -, hqm⟩ := lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)
-    exact ⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
+  first
+  | exact _root_.UpperTheory.V.Hi.Up.intIff
+  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
 private theorem cd_norm_lt {l : ℕ} [Fact l.Prime] (c : Coef l) {R : Type} [CommRing R] [IsLocalRing R] [Algebra c.O R]
     (y : R →ₐ[c.O] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.Gs5b.cd_norm_lt c y a ha

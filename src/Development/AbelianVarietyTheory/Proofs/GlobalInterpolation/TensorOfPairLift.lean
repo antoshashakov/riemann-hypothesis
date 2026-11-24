@@ -89,6 +89,7 @@ public import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CardEqChainS
 public import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CoarseDegreesLargeOfStd
 public import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.LiftSubstStart
 public import Formalism.SharpRestriction.GrowthBounds.CoarseMultiplicity.Loc4DivOf
+public import Formalism.SharpRestriction.GrowthBounds.StandardPolynomials.TCXNum
 
 @[expose] public section
 
@@ -229,152 +230,9 @@ theorem core_termS {A A' w w' g g' K q : ℕ} (hA : A ≤ A' + K) (hw : w' ≤ w
 theorem numCore_std {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X) :
     NumCoreAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
-  intro X hD hH hcB mm _ n hn1 hnc e he1 hen j b hb
-  have St := hstd X hD hH hcB
-  have hc : 1 ≤ X.c := le_trans hn1 hnc
-  obtain ⟨hdig, hU, hS, _, hP2⟩ := hb
-  have hk5 := St.k5
-  have hQ1 := St.Q1
-  have hN1pos : (1 : ℝ) ≤ X.N1 := by exact_mod_cast St.N1pos
-  have hde0 : 0 ≤ X.de C0 Cde := le_trans (mul_nonneg (by norm_num) St.eps0) St.forty_epsilon_le_delta
-  have hde6 := St.de6
-  have he1r : (1 : ℝ) ≤ e := by exact_mod_cast he1
-  have hecr : (e : ℝ) ≤ X.c := by exact_mod_cast (le_of_lt (lt_of_lt_of_le hen hnc))
-  have hkdef : X.k = (X.m : ℝ) + 1 := rfl
-  have hQdef : X.Q = (X.p : ℝ) ^ X.G' := rfl
-  have hk0 : 0 < X.k := by linarith
-  have hQ0 : 0 < X.Q := by linarith
-  have hka : ka1 X = 13 * X.k * X.N1 * X.Q := rfl
-  have hkapos : 0 ≤ ka1 X := by
-    rw [hka]
-    have : (0 : ℝ) ≤ X.N1 := by linarith
-    positivity
-  have hE : (((X.c - n : ℕ)) : ℝ) ≤ X.c := by exact_mod_cast Nat.sub_le _ _
-  have hE' : (((X.c - (n - e) : ℕ)) : ℝ) * ka1 X = ((X.c - n : ℕ) : ℝ) * ka1 X + e * ka1 X := by
-    have : X.c - (n - e) = (X.c - n) + e := by omega
-    rw [this]
-    push_cast
-    ring
-  have hne : (((n - e : ℕ)) : ℝ) = (n : ℝ) - e := Nat.cast_sub (le_of_lt hen)
-
-  have hkQ1 : 1 ≤ X.k * X.Q := one_le_mul_of_one_le_of_one_le (by linarith) hQ1
-  have hQe1 : 1 ≤ X.Q * e := one_le_mul_of_one_le_of_one_le hQ1 he1r
-  have hx : e * ka1 X = 13 * (X.N1 * X.k * X.Q * e) := by rw [hka]; ring
-  have hN0 : (0 : ℝ) ≤ X.N1 := by linarith
-  have b1 : (X.N1 : ℝ) * e ≤ X.N1 * X.k * X.Q * e := by
-    have := mul_le_mul_of_nonneg_left hkQ1 (mul_nonneg hN0 (by linarith : (0:ℝ) ≤ e))
-    nlinarith
-  have b2 : (X.N1 : ℝ) * X.k ≤ X.N1 * X.k * X.Q * e := by
-    have := mul_le_mul_of_nonneg_left hQe1 (mul_nonneg hN0 hk0.le)
-    nlinarith
-  have b3 : (X.N1 : ℝ) * (X.Q * e) ≤ X.N1 * X.k * X.Q * e := by
-    have h1k : (1 : ℝ) ≤ X.k := by linarith
-    have := mul_le_mul_of_nonneg_left h1k (mul_nonneg hN0 (by linarith : (0:ℝ) ≤ X.Q * e))
-    nlinarith
-  have b4 : X.k ≤ (X.N1 : ℝ) * X.k := le_mul_of_one_le_left hk0.le hN1pos
-  have b5 : X.Q * e ≤ (X.N1 : ℝ) * (X.Q * e) := le_mul_of_one_le_left (by linarith) hN1pos
-  have hnumA : 3 * X.k + 2 * (X.Q * e) ≤ e * ka1 X := by rw [hx]; linarith
-  have hnumB : (X.N1 : ℝ) * e + ((X.N1 : ℝ) + 1) * (X.k + X.Q * e) + (X.N1 : ℝ) * (3 * X.k + 2 * (X.Q * e)) ≤
-      e * ka1 X := by
-    have e1 : (X.N1 : ℝ) * e + ((X.N1 : ℝ) + 1) * (X.k + X.Q * e) + (X.N1 : ℝ) * (3 * X.k + 2 * (X.Q * e)) =
-        (X.N1 : ℝ) * e + 4 * ((X.N1 : ℝ) * X.k) + 3 * ((X.N1 : ℝ) * (X.Q * e)) + X.k + X.Q * e := by ring
-    rw [e1, hx]
-    linarith
-  refine ⟨?_, ?_⟩
-  ·
-    intro i hi
-    obtain ⟨-, hoR, -, -⟩ := hU i hi
-    have room := core_room St hc j b hdig i
-    have hEk : (((X.c - n : ℕ)) : ℝ) * ka1 X ≤ X.c * ka1 X := mul_le_mul_of_nonneg_right hE hkapos
-    have hQec : X.Q * e ≤ X.Q * X.c := mul_le_mul_of_nonneg_left hecr hQ0.le
-    have hkc : 0 ≤ X.k * X.c := by positivity
-    have goalR : ((1 + 2 * (X.p ^ X.G' * e) + b.o i : ℕ) : ℝ) ≤ (coarseA X.p (X.seg C0 CE1 CE2 j) b i : ℝ) := by
-      push_cast
-      rw [← hQdef]
-      have e1 : (coarseA X.p (X.seg C0 CE1 CE2 j) b i : ℝ) * (1 - X.de C0 Cde / 4) =
-          (coarseA X.p (X.seg C0 CE1 CE2 j) b i : ℝ) - X.de C0 Cde / 4 * (coarseA X.p (X.seg C0 CE1 CE2 j) b i : ℝ) := by
-        ring
-      have e2 : (X.c : ℝ) * (ka1 X + 2 * X.Q + 3 * X.k) = X.c * ka1 X + 2 * (X.Q * X.c) + 3 * (X.k * X.c) := by ring
-      rw [e1] at hoR
-      rw [e2] at room
-      linarith
-    exact_mod_cast goalR
-  · intro b' hdig' hA hU' hS' hP1' hP2'
-    refine ⟨⟨hdig', ?_, ?_, hP1', ?_⟩, ?_⟩
-    · intro i hi
-      obtain ⟨h1, h2, h3, h4⟩ := hU' i hi
-      obtain ⟨-, hoR, -, -⟩ := hU i hi
-      refine ⟨h1, ?_, h3, h4⟩
-      have h2R : (b'.o i : ℝ) ≤ (b.o i : ℝ) + 2 * (X.k + X.Q * e) := by
-        have := (Nat.cast_le (α := ℝ)).2 h2
-        push_cast at this
-        rw [hkdef, hQdef]
-        linarith
-      have hAR : (coarseA X.p (X.seg C0 CE1 CE2 j) b i : ℝ) ≤ (coarseA X.p (X.seg C0 CE1 CE2 j) b' i : ℝ) + X.k := by
-        have := (Nat.cast_le (α := ℝ)).2 (hA i)
-        push_cast at this
-        rw [hkdef]
-        linarith
-      have hm : 0 ≤ 1 - X.de C0 Cde / 4 := by linarith
-      have h5 := mul_le_mul_of_nonneg_right hAR hm
-      have h6 : X.k * (1 - X.de C0 Cde / 4) ≤ X.k := by nlinarith
-      rw [hE']
-      have e1 : ((coarseA X.p (X.seg C0 CE1 CE2 j) b' i : ℝ) + X.k) * (1 - X.de C0 Cde / 4) =
-          (coarseA X.p (X.seg C0 CE1 CE2 j) b' i : ℝ) * (1 - X.de C0 Cde / 4) + X.k * (1 - X.de C0 Cde / 4) := by ring
-      rw [e1] at h5
-      linarith
-    · intro i hi
-      obtain ⟨h1, h2, h3, h4, -⟩ := hS' i hi
-      obtain ⟨-, -, -, hsR⟩ := hS i hi
-      refine ⟨h1, h2, h3, ?_⟩
-      have h4R : (b'.sg i : ℝ) ≤ (b.sg i : ℝ) + (X.k + X.Q * e) := by
-        have := (Nat.cast_le (α := ℝ)).2 h4
-        push_cast at this
-        rw [hkdef, hQdef]
-        linarith
-      rw [hE']
-      linarith
-    · have hPR : (b'.oPlus : ℝ) ≤ (b.oPlus : ℝ) + X.Q * e := by
-        have := (Nat.cast_le (α := ℝ)).2 hP2'
-        push_cast at this
-        rw [hQdef]
-        linarith
-      rw [hE']
-      linarith
-    · intro l V hV
-      have hterm : ∀ i : Fin (segS X.TT j),
-          ((coarseA X.p (X.seg C0 CE1 CE2 j) b i : ℤ) - (oEff (X.seg C0 CE1 CE2 j) b i : ℤ)) -
-            ((coarseA X.p (X.seg C0 CE1 CE2 j) b' i : ℤ) - (oEff (X.seg C0 CE1 CE2 j) b' i : ℤ)) ≤
-            ((3 * (X.m + 1) + 2 * (X.p ^ X.G' * e) : ℕ) : ℤ) := by
-        intro i
-        by_cases hi : (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma
-        · have e1 : oEff (X.seg C0 CE1 CE2 j) b i = b.w i + b.sg i := if_pos hi
-          have e2 : oEff (X.seg C0 CE1 CE2 j) b' i = b'.w i + b'.sg i := if_pos hi
-          rw [e1, e2]
-          obtain ⟨-, -, -, hg, hw⟩ := hS' i hi
-          exact core_termS (hA i) hw hg
-        · have e1 : oEff (X.seg C0 CE1 CE2 j) b i = b.o i := if_neg hi
-          have e2 : oEff (X.seg C0 CE1 CE2 j) b' i = b'.o i := if_neg hi
-          rw [e1, e2]
-          obtain ⟨-, ho, -, -⟩ := hU' i (not_lt.1 hi)
-          exact core_termU (hA i) ho
-      have hcd := core_capdiff X.p (X.seg C0 CE1 CE2 j) b b' l _ (by positivity) hterm
-      have hcdR := (Int.cast_le (R := ℝ)).2 hcd
-      push_cast at hcdR
-      have hsN : ((segS X.TT j : ℕ) : ℝ) ≤ X.N1 := by exact_mod_cast (St.segB j).2
-      have hD0 : (0 : ℝ) ≤ 3 * ((X.m : ℝ) + 1) + 2 * ((X.p : ℝ) ^ X.G' * e) := by positivity
-      have hsD := mul_le_mul_of_nonneg_right hsN hD0
-      have hVR := (Int.cast_le (R := ℝ)).2 hV
-      push_cast at hVR
-      rw [add_assoc]
-      apply core_floor
-      rw [hne]
-      push_cast
-      rw [hkdef, hQdef] at hnumB
-      have e1 : (mm + (n : ℝ) * ka1 X) - (mm + ((n : ℝ) - e) * ka1 X) = e * ka1 X := by ring
-      have e2 : (X.N1 : ℝ) * (3 * ((X.m : ℝ) + 1) + 2 * ((X.p : ℝ) ^ X.G' * e)) =
-          (X.N1 : ℝ) * (3 * ((X.m : ℝ) + 1) + 2 * ((X.p : ℝ) ^ X.G' * e)) := rfl
-      linarith
+  first
+  | exact _root_.Formalism.MainNotions.ColumnSystems.Pf.numCore_of_std
+  | (apply _root_.Formalism.MainNotions.ColumnSystems.Pf.numCore_of_std <;> assumption)
 
 theorem numCore_thr : RestNumCore :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => numCore_std h.2) thr_std

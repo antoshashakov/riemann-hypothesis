@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Formalism.SharedLemmas.IntIffNormLe
 
 @[expose] public section
 
@@ -58,24 +59,9 @@ open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV Uppe
 
 open Polynomial in
 private theorem pts_int {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  have halg : IsIntegral ℚ_[l] x := (Algebra.IsAlgebraic.isAlgebraic (R := ℚ_[l]) x).isIntegral
-  have hmon : (minpoly ℚ_[l] x).Monic := minpoly.monic halg
-  have hn : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
-  rw [hn, spectralValue_le_one_iff hmon]
-  constructor
-  · intro hx n
-    rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hx, Polynomial.coeff_map]
-    exact PadicInt.norm_le_one ((minpoly ℤ_[l] x).coeff n)
-  · intro h
-    have hl : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l]) := by
-      rw [Polynomial.lifts_iff_coeff_lifts]
-      intro n
-      exact ⟨⟨_, h n⟩, rfl⟩
-    obtain ⟨q, hq, -, hqm⟩ := Polynomial.lifts_and_natDegree_eq_and_monic hl hmon
-    refine ⟨q, hqm, ?_⟩
-    rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l), ← Polynomial.eval₂_map, hq,
-      ← Polynomial.aeval_def]
-    exact minpoly.aeval ℚ_[l] x
+  first
+  | exact _root_.UpperTheory.V.Hi.Up.intIff
+  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
 
 private theorem pts_unit {B K : Type} [CommRing B] [Field K] [Algebra B K] (hi : Function.Injective (algebraMap B K))
     (b : B) (h0 : algebraMap B K b ≠ 0) (h : IsIntegral B (algebraMap B K b)⁻¹) : IsUnit b := by
