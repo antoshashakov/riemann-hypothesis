@@ -56,6 +56,7 @@ import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.RestrictionMemInvariantH1
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.DirichletPrimeToLPartMulLPowerPart
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.UnitaryThreeReflectionRight
+public import Formalism.SharedLemmas.TotDiscQuot
 
 @[expose] public section
 
@@ -65,41 +66,9 @@ open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTh
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
     TotallyDisconnectedSpace (G ⧸ N) := by
-  haveI : TotallySeparatedSpace (G ⧸ N) := by
-    rw [totallySeparatedSpace_iff_exists_isClopen]
-    intro a b hab
-    obtain ⟨x, rfl⟩ := QuotientGroup.mk_surjective a
-    obtain ⟨y, rfl⟩ := QuotientGroup.mk_surjective b
-    have hxy : x⁻¹ * y ∉ ((ClosedSubgroup.mk N hN : ClosedSubgroup G) : Subgroup G) :=
-      fun h => hab (QuotientGroup.eq.2 h)
-    rw [ProfiniteGrp.closedSubgroup_eq_sInf_open (ClosedSubgroup.mk N hN), Subgroup.mem_sInf] at hxy
-    push_neg at hxy
-    obtain ⟨U, ⟨hUo, hNU⟩, hyU⟩ := hxy
-    let W : Set G := {g | x⁻¹ * g ∈ U}
-    have hWo : IsOpen W := by
-      show IsOpen ((fun g => x⁻¹ * g) ⁻¹' (U : Set G))
-      exact hUo.preimage (continuous_const.mul continuous_id)
-    have hWc : IsClosed W := by
-      show IsClosed ((fun g => x⁻¹ * g) ⁻¹' (U : Set G))
-      exact (Subgroup.isClosed_of_isOpen U hUo).preimage (continuous_const.mul continuous_id)
-    have hsat : (QuotientGroup.mk : G → G ⧸ N) ⁻¹' (QuotientGroup.mk '' W) = W := by
-      ext g
-      constructor
-      · rintro ⟨h, hh, he⟩
-        have hn := QuotientGroup.eq.1 he
-        show x⁻¹ * g ∈ U
-        have := U.mul_mem hh (hNU hn)
-        simpa [mul_assoc] using this
-      · intro hg
-        exact ⟨g, hg, rfl⟩
-    refine ⟨QuotientGroup.mk '' W, ⟨?_, QuotientGroup.isOpenMap_coe W hWo⟩, ⟨x, by simp [W], rfl⟩, ?_⟩
-    · rw [← (QuotientGroup.isQuotientMap_mk N).isCoinducing.isClosed_preimage, hsat]
-      exact hWc
-    · intro hy
-      have hy' : y ∈ (QuotientGroup.mk : G → G ⧸ N) ⁻¹' (QuotientGroup.mk '' W) := hy
-      rw [hsat] at hy'
-      exact hyU hy'
-  infer_instance
+  first
+  | exact _root_.Formalism.SharedLemmas.totDisc_quot
+  | (apply _root_.Formalism.SharedLemmas.totDisc_quot <;> assumption)
 
 private def permR (R : Type) [CommRing R] {Γ : Type} [Group Γ] (H : Subgroup Γ) :
     Representation R Γ (Γ ⧸ H → R) where

@@ -56,6 +56,7 @@ import Mathlib.Topology.Separation.Connected
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.DirichletPrimeToLPartMulLPowerPart
+public import Formalism.SharedLemmas.TotDiscQuot
 
 @[expose] public section
 
@@ -331,31 +332,9 @@ end Desc
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
     TotallyDisconnectedSpace (G ⧸ N) := by
-  haveI : IsClosed (N : Set G) := hN
-  rw [totallyDisconnectedSpace_iff_connectedComponent_one]
-  refine Set.eq_singleton_iff_unique_mem.mpr ⟨mem_connectedComponent, fun q hq => ?_⟩
-  induction q using QuotientGroup.induction_on with
-  | H g =>
-    by_contra hne
-    have hgN : g ∉ N := fun h => hne ((QuotientGroup.eq_one_iff g).mpr h)
-    have key := ProfiniteGrp.closedSubgroup_eq_sInf_open (⟨N, hN⟩ : ClosedSubgroup G)
-    have hmem : g ∉ (⟨N, hN⟩ : ClosedSubgroup G).toSubgroup := hgN
-    rw [key, Subgroup.mem_sInf] at hmem
-    push_neg at hmem
-    obtain ⟨K, ⟨hKo, hNK⟩, hgK⟩ := hmem
-    let H : Subgroup (G ⧸ N) := K.map (QuotientGroup.mk' N)
-    have hHo : IsOpen (H : Set (G ⧸ N)) := by
-      have hset : (H : Set (G ⧸ N)) = (QuotientGroup.mk : G → G ⧸ N) '' K := by
-        simp [H]
-      rw [hset]
-      exact QuotientGroup.isOpenQuotientMap_mk.isOpenMap _ hKo
-    have hHc : IsClopen (H : Set (G ⧸ N)) := ⟨H.isClosed_of_isOpen hHo, hHo⟩
-    have hgH := hHc.connectedComponent_subset H.one_mem hq
-    obtain ⟨k, hk, hkg⟩ := Subgroup.mem_map.mp hgH
-    apply hgK
-    have hkN : k⁻¹ * g ∈ N := QuotientGroup.eq.mp hkg
-    have hmul := K.mul_mem hk (hNK hkN)
-    simpa using hmul
+  first
+  | exact _root_.Formalism.SharedLemmas.totDisc_quot
+  | (apply _root_.Formalism.SharedLemmas.totDisc_quot <;> assumption)
 
 section Quot
 

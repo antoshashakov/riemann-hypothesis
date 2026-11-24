@@ -47,6 +47,7 @@ import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Mathlib.Topology.Algebra.ProperAction.Basic
 import Mathlib.Topology.Compactness.Paracompact
 import Mathlib.Topology.Connected.Separation
+public import Formalism.SharedLemmas.TotDiscQuot
 
 @[expose] public section
 
@@ -55,37 +56,9 @@ open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
     TotallyDisconnectedSpace (G ⧸ N) := by
-  rw [totallyDisconnectedSpace_iff_connectedComponent_one]
-  refine Set.eq_singleton_iff_unique_mem.mpr ⟨mem_connectedComponent, ?_⟩
-  intro x hx
-  induction x using QuotientGroup.induction_on with
-  | H g =>
-    by_contra hg
-    have hgN : g ∉ N := fun h => hg ((QuotientGroup.eq_one_iff g).mpr h)
-    have hcl := ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G) ⟨N, hN⟩
-    have hnot : g ∉ sInf {K : Subgroup G | IsOpen (K : Set G) ∧ ((⟨N, hN⟩ : ClosedSubgroup G) : Subgroup G) ≤ K} := by
-      rw [← hcl]
-      exact hgN
-    rw [Subgroup.mem_sInf] at hnot
-    push_neg at hnot
-    obtain ⟨K, ⟨hKo, hNK⟩, hgK⟩ := hnot
-    have hNK' : N ≤ K := hNK
-    have hpre : (QuotientGroup.mk : G → G ⧸ N) ⁻¹' ((QuotientGroup.mk : G → G ⧸ N) '' (K : Set G)) = K := by
-      ext y
-      constructor
-      · rintro ⟨k, hk, hky⟩
-        have h1 : k⁻¹ * y ∈ N := QuotientGroup.eq.mp hky
-        simpa using K.mul_mem hk (hNK' h1)
-      · intro hy
-        exact ⟨y, hy, rfl⟩
-    have hclo : IsClopen ((QuotientGroup.mk : G → G ⧸ N) '' (K : Set G)) := by
-      rw [← (QuotientGroup.isQuotientMap_mk N).isClopen_preimage, hpre]
-      exact ⟨K.isClosed_of_isOpen hKo, hKo⟩
-    have hsub := hclo.connectedComponent_subset (x := 1) ⟨1, K.one_mem, rfl⟩
-    obtain ⟨k, hk, hkg⟩ := hsub hx
-    apply hgK
-    have h2 : k⁻¹ * g ∈ N := QuotientGroup.eq.mp hkg
-    simpa using K.mul_mem hk (hNK' h2)
+  first
+  | exact _root_.Formalism.SharedLemmas.totDisc_quot
+  | (apply _root_.Formalism.SharedLemmas.totDisc_quot <;> assumption)
 
 private def permR (R : Type) [CommRing R] {Γ : Type} [Group Γ] (H : Subgroup Γ) :
     Representation R Γ (Γ ⧸ H → R) where
