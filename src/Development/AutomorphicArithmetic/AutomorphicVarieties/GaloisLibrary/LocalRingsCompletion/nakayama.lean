@@ -45,6 +45,7 @@ import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.IsCharOneOfSubsingleton
 public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 import Mathlib.RingTheory.PowerSeries.Basic
+public import Formalism.SharedLemmas.PrecompleteFinite
 
 @[expose] public section
 
@@ -52,36 +53,11 @@ open PowerSeries IsLocalRing UpperTheory.V.abelian₂
 open IsDiscreteValuationRing (addVal)
 open scoped Pointwise TensorProduct Topology
 
-private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : Fin r → R) :
-    x ∈ J • (⊤ : Submodule R (Fin r → R)) ↔ ∀ i, x i ∈ J := by
-  constructor
-  · intro hx
-    refine Submodule.smul_induction_on hx (fun a ha y _ i => ?_) (fun a b ha hb i => ?_)
-    · exact J.mul_mem_right _ ha
-    · exact J.add_mem (ha i) (hb i)
-  · intro hx
-    rw [pi_eq_sum_univ x]
-    exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
-
 private theorem isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
     IsPrecomplete I (Fin r → R) := by
-  refine ⟨fun {f} hf => ?_⟩
-  have hc : ∀ i : Fin r, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)] := by
-    intro i
-    refine IsPrecomplete.prec' (f := fun n => f n i) ?_
-    intro m n hmn
-    have h := hf hmn
-    rw [SModEq.sub_mem] at h ⊢
-    rw [mem_smul_top_pi] at h
-    have := h i
-    simpa [Ideal.smul_top_eq_map, smul_eq_mul, Ideal.mul_top] using this
-  choose L hL using hc
-  refine ⟨L, fun n => ?_⟩
-  rw [SModEq.sub_mem, mem_smul_top_pi]
-  intro i
-  have := hL i n
-  rw [SModEq.sub_mem] at this
-  simpa [smul_eq_mul, Ideal.mul_top] using this
+  first
+  | exact _root_.Formalism.SharedLemmas.isPrecomplete_fin_pi
+  | (apply _root_.Formalism.SharedLemmas.isPrecomplete_fin_pi <;> assumption)
 
 theorem UpperTheory.V.abelian₂.nakayama :
     ∀ (R : Type) [CommRing R] (I : Ideal R) [IsPrecomplete I R] (M : Type) [AddCommGroup M] [Module R M] [IsHausdorff I M],

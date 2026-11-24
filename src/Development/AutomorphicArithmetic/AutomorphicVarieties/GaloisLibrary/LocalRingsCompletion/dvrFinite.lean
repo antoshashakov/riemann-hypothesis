@@ -52,6 +52,7 @@ import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.IsCharOneOfSubsingleton
 public import Mathlib.LinearAlgebra.FreeModule.PID
 import Mathlib.RingTheory.PowerSeries.Basic
+public import Formalism.SharedLemmas.PrecompleteFinite
 
 @[expose] public section
 
@@ -75,26 +76,10 @@ private theorem mem_smul_top_iff_repr {R M ι : Type*} [CommRing R] [AddCommGrou
 
 private theorem prec_free {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Free R M] [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] :
-    IsPrecomplete I M := ⟨fun f hf => by
-  let b := Module.Free.chooseBasis R M
-  have key : ∀ i, ∃ L : R, ∀ k, b.repr (f k) i - L ∈ I ^ k := fun i => by
-    obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := I) (fun k => b.repr (f k) i)
-      (fun {m n} hmn => by
-        have h := hf hmn
-        rw [SModEq.sub_mem, mem_smul_top_iff_repr b] at h
-        rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
-        simpa using h i)
-    refine ⟨L, fun k => ?_⟩
-    have := hL k
-    rwa [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at this
-  choose L hL using key
-  refine ⟨b.equivFun.symm L, fun n => ?_⟩
-  rw [SModEq.sub_mem, mem_smul_top_iff_repr b]
-  intro i
-  have : b.repr (b.equivFun.symm L) i = L i := by
-    rw [← b.equivFun_apply, LinearEquiv.apply_symm_apply]
-  rw [map_sub, Finsupp.sub_apply, this]
-  exact hL i n⟩
+    IsPrecomplete I M := by
+  first
+  | exact _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite
+  | (apply _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite <;> assumption)
 
 private theorem prec_cofinal {R : Type*} [CommRing R] {I J : Ideal R} (hJI : J ≤ I) {e : ℕ}
     (he : I ^ e ≤ J) (hJ : IsPrecomplete J R) : IsPrecomplete I R := ⟨fun f hf => by

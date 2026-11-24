@@ -51,90 +51,17 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+public import Formalism.SharedLemmas.PrecompleteFinite
 
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
-private theorem spanMono_prec_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
-    IsPrecomplete I (Fin r → R) := by
-  have key : ∀ (n : ℕ) (x : Fin r → R), x ∈ (I ^ n • ⊤ : Submodule R (Fin r → R)) ↔ ∀ i, x i ∈ I ^ n := by
-    intro n x
-    constructor
-    · intro hx i
-      refine Submodule.smul_induction_on hx ?_ ?_
-      · intro a ha m _
-        simpa using (I ^ n).mul_mem_right (m i) ha
-      · intro y z hy hz
-        simpa using add_mem hy hz
-    · intro hx
-      have hx' : x = ∑ i, x i • Pi.single i (1 : R) := by
-        ext j
-        simp [Finset.sum_apply, Pi.single_apply]
-      rw [hx']
-      exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
-  have hR : ∀ (n : ℕ) (a : R), a ∈ (I ^ n • ⊤ : Submodule R R) ↔ a ∈ I ^ n := by
-    intro n a
-    simp [smul_eq_mul, Ideal.mul_top]
-  refine ⟨fun f hf => ?_⟩
-  choose L hL using fun i : Fin r => IsPrecomplete.prec' (I := I) (M := R) (fun n => f n i)
-    (fun {m n} hmn => by
-      have h := hf hmn
-      rw [SModEq.sub_mem] at h ⊢
-      rw [hR]
-      simpa using (key m _).1 h i)
-  refine ⟨L, fun n => ?_⟩
-  rw [SModEq.sub_mem, key]
-  intro i
-  have h := hL i n
-  rw [SModEq.sub_mem, hR] at h
-  simpa using h
-
 private theorem spanMono_prec {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete I M := by
-  obtain ⟨n, π, hπ⟩ := Module.Finite.exists_fin' R M
-  haveI := spanMono_prec_pi I n
-  have hmap : ∀ k, (I ^ k • ⊤ : Submodule R (Fin n → R)).map π = I ^ k • ⊤ := by
-    intro k
-    rw [Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.2 hπ]
-  refine ⟨fun f hf => ?_⟩
-  have hd : ∀ k, f (k + 1) - f k ∈ (I ^ k • ⊤ : Submodule R M) := by
-    intro k
-    have h := (hf (Nat.le_succ k)).symm
-    rw [SModEq.sub_mem] at h
-    exact h
-  have hlift : ∀ k, ∃ e, e ∈ (I ^ k • ⊤ : Submodule R (Fin n → R)) ∧ π e = f (k + 1) - f k := by
-    intro k
-    have h := hd k
-    rw [← hmap k] at h
-    obtain ⟨e, he, hpe⟩ := h
-    exact ⟨e, he, hpe⟩
-  choose e he hpe using hlift
-  obtain ⟨g0, hg0⟩ := hπ (f 0)
-  let g : ℕ → (Fin n → R) := fun m => g0 + ∑ k ∈ Finset.range m, e k
-  have hg : ∀ m, π (g m) = f m := by
-    intro m
-    induction m with
-    | zero => simp [g, hg0]
-    | succ m ih =>
-      simp only [g, Finset.sum_range_succ, map_add (f := _)] at ih ⊢
-      rw [← add_assoc, ih, hpe]
-      abel
-  have hcau : ∀ {a b : ℕ}, a ≤ b → g a ≡ g b [SMOD (I ^ a • ⊤ : Submodule R (Fin n → R))] := by
-    intro a b hab
-    rw [SModEq.sub_mem]
-    have hs : g a - g b = -∑ k ∈ Finset.Ico a b, e k := by
-      simp only [g]
-      rw [← Finset.sum_range_add_sum_Ico _ hab]
-      abel
-    rw [hs, neg_mem_iff]
-    exact Submodule.sum_mem _ fun k hk => Submodule.pow_smul_top_le I _ (Finset.mem_Ico.1 hk).1 (he k)
-  obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := I) g hcau
-  refine ⟨π L, fun m => ?_⟩
-  have h := hL m
-  rw [SModEq.sub_mem] at h ⊢
-  rw [← hmap m]
-  exact ⟨_, h, by rw [map_sub, hg]⟩
+  first
+  | exact _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite
+  | (apply _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite <;> assumption)
 
 private theorem exists_pow_mem_map_maxIdeal_of_monic_aeval_mem {O B : Type} [CommRing O] [IsLocalRing O] [CommRing B] [IsLocalRing B]
     [Algebra O B] (x : B) (hx : x ∈ maximalIdeal B)
