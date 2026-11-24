@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Normed.Ring.Basic
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImportsAlt
 
 @[expose] public section
 
@@ -56,13 +57,8 @@ theorem norm_pow_two_pow_sub_one_ge {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ 
   apply GlobalTheory.IterationConvergence.iter <;> assumption
 
 theorem main : ∀ {z : ℂ}, (∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) → z = (1 : ℂ) := by
-  intro z h
-  by_contra hne
-  have hpos : 0 < ‖z - 1‖ := norm_pos_iff.mpr (sub_ne_zero.mpr hne)
-  obtain ⟨k, hk⟩ := pow_unbounded_of_one_lt ((1 / 2 : ℝ) / ‖z - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)
-  have h1 : (1 / 2 : ℝ) < (3 / 2 : ℝ) ^ k * ‖z - 1‖ := (div_lt_iff₀ hpos).mp hk
-  have h2 := norm_pow_two_pow_sub_one_ge h k
-  have h3 := h (2 ^ k)
-  linarith
+  first
+  | exact _root_.GlobalTheory.KeyLemmaTwo.main
+  | (apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)
 
 end GlobalTheory.PowerTwoNormLowerBound

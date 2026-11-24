@@ -51,6 +51,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Compactness.Paracompact
 import Mathlib.Topology.LocallyConstant.Algebra
 import Mathlib.Topology.Sheaves.Init
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImportsAlt
 
 @[expose] public section
 
@@ -109,12 +110,8 @@ theorem eq_zero_of_mul_invariant {X : Type} [TopologicalSpace X] (l : (X → ℂ
 
 theorem eq_one_of_forall_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
-  | exact @_root_.GlobalTheory.PowerTwoNormLowerBound.main
-  | exact _root_.GlobalTheory.PowerTwoNormLowerBound.main
-  | (apply _root_.GlobalTheory.PowerTwoNormLowerBound.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.PowerTwoNormLowerBound.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.PowerTwoNormLowerBound.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.PowerTwoNormLowerBound.main ..)
+  | exact _root_.GlobalTheory.KeyLemmaTwo.main
+  | (apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)
 
 theorem isLocallyConstant_addChar {V : Type} [AddCommGroup V] [TopologicalSpace V] [NonarchimedeanAddGroup V]
     (ψ : AddChar V ℂ) (hψ : Continuous ψ) : IsLocallyConstant ψ := by

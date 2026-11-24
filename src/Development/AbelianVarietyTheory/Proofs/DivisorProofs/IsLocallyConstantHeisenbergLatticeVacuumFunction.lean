@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImportsAlt
 
 @[expose] public section
 
@@ -63,12 +64,8 @@ namespace GlobalTheory.HeisLatVac
 
 theorem lc_pow_near_one {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
-  | exact @_root_.GlobalTheory.IsotropicVectorExistence.main
-  | exact _root_.GlobalTheory.IsotropicVectorExistence.main
-  | (apply _root_.GlobalTheory.IsotropicVectorExistence.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IsotropicVectorExistence.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IsotropicVectorExistence.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IsotropicVectorExistence.main ..)
+  | exact _root_.GlobalTheory.KeyLemmaTwo.main
+  | (apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)
 
 theorem lc_exists_open_ker {K : Type} [AddCommGroup K] [TopologicalSpace K] [NonarchimedeanAddGroup K]
     (ψ₀ : AddChar K ℂ) (hψ : Continuous ψ₀) : ∃ U₀ : OpenAddSubgroup K, ∀ t ∈ U₀, ψ₀ t = 1 := by

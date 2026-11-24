@@ -46,6 +46,7 @@ import Mathlib.Topology.MetricSpace.Ultra.Pi
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImportsAlt
 
 @[expose] public section
 
@@ -67,12 +68,8 @@ namespace GlobalTheory.CompactCharDual
 
 theorem eq_one_of_pow_close {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
-  | exact @_root_.GlobalTheory.UnitNormRealPartBound.main
-  | exact _root_.GlobalTheory.UnitNormRealPartBound.main
-  | (apply _root_.GlobalTheory.UnitNormRealPartBound.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.UnitNormRealPartBound.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.UnitNormRealPartBound.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.UnitNormRealPartBound.main ..)
+  | exact _root_.GlobalTheory.KeyLemmaTwo.main
+  | (apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)
 
 theorem exists_ball_ker {K : Type} [NormedAddCommGroup K] [IsUltrametricDist K] (ψ : AddChar K ℂ)
     (hc : Continuous ψ) : ∃ δ > 0, ∀ x : K, ‖x‖ < δ → ψ x = 1 := by

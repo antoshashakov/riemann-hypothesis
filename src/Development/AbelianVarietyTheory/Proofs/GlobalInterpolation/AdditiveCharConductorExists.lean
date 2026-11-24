@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImportsAlt
 
 @[expose] public section
 
@@ -54,9 +55,8 @@ namespace GlobalTheory.CharConductor
 
 theorem eq_one_of_pow_near_one {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
-  | exact @_root_.GlobalTheory.IterationConvergence.main
-  | exact _root_.GlobalTheory.IterationConvergence.main
-  | (apply _root_.GlobalTheory.IterationConvergence.main <;> assumption)
+  | exact _root_.GlobalTheory.KeyLemmaTwo.main
+  | (apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)
 
 theorem exists_exponent_of_valued {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) (hψ : Continuous ψ) (hne : ∃ t, ψ t ≠ 1) :
