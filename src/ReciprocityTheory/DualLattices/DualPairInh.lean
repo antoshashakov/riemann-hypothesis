@@ -51,10 +51,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.DualLattices.ATowerInh
-public import Mathlib.Algebra.Polynomial.AlgebraMap
-public import Mathlib.Algebra.Polynomial.Div
-public import Mathlib.RingTheory.LocalRing.Basic
-public import Mathlib.RingTheory.Nilpotent.Basic
 
 @[expose] public section
 

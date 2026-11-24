@@ -53,10 +53,6 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.DualLattices.EigPowEqOne
 public import ReciprocityTheory.DualLattices.IsAdicCompleteOfBasis
-public import Mathlib.Algebra.CharP.Frobenius
-public import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
-public import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
-public import Mathlib.RingTheory.AdjoinRoot
 
 @[expose] public section
 

@@ -47,13 +47,9 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SameUnifRefl
 public import Lean.Elab.AutoBound
 public import Mathlib.Algebra.Field.Defs
 public import Mathlib.CategoryTheory.Comma.Over.Basic
-import Mathlib.CategoryTheory.Monoidal.Cartesian.Basic
-import Mathlib.CategoryTheory.Monoidal.Category
 public import Mathlib.CategoryTheory.Monoidal.Grp
-import Mathlib.CategoryTheory.Monoidal.Mon
 public import Mathlib.NumberTheory.NumberField.Basic
 public import Mathlib.NumberTheory.NumberField.CMField
-import Mathlib.Topology.Sheaves.Presheaf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot

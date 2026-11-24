@@ -58,12 +58,6 @@ public import ReciprocityTheory.DualLattices.HasLenCokerDet
 public import ReciprocityTheory.DualLattices.LengthDegreeAbelianVariety
 import ReciprocityTheory.DualLattices.ProdDvdOfIso
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.IsEigBasisIff
-public import Mathlib.Algebra.Module.Torsion.Basic
-public import Mathlib.LinearAlgebra.Vandermonde
-public import Mathlib.RingTheory.Flat.Basic
-public import Mathlib.RingTheory.Flat.TorsionFree
-public import Mathlib.RingTheory.LocalRing.Module
-import Mathlib.Topology.Sheaves.Presheaf
 import ReciprocityTheory.DualLattices.FormalChartAtZero
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.LePreimageOfNil

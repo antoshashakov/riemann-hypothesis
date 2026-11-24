@@ -49,12 +49,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.APrimeA
 public import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.APrimeB
-public import Mathlib.Analysis.Calculus.ContDiff.Basic
-public import Mathlib.Analysis.Calculus.ContDiff.Comp
-public import Mathlib.Analysis.Calculus.ContDiff.Operations
-public import Mathlib.Analysis.Calculus.ContDiff.RCLike
-public import Mathlib.MeasureTheory.Function.Jacobian
-public import Mathlib.MeasureTheory.Measure.Haar.Unique
 import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FamilyLeCoords
 
 @[expose] public section

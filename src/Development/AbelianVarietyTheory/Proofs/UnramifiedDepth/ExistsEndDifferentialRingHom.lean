@@ -49,11 +49,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.DualLattices.DualPairInh
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.Algebra.Polynomial.AlgebraMap
 public import Mathlib.LinearAlgebra.TensorProduct.Basis
-public import Mathlib.RingTheory.Ideal.Quotient.Defs
-public import Mathlib.RingTheory.Ideal.Quotient.Operations
-public import Mathlib.RingTheory.Nilpotent.Basic
 import Mathlib.Topology.Sheaves.Presheaf
 import ReciprocityTheory.DualLattices.CotangentSurjective
 import ReciprocityTheory.DualLattices.FormalChartAtZero

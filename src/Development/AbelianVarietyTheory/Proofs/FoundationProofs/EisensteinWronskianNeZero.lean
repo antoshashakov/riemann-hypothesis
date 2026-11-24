@@ -45,10 +45,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.DualLattices.HasSumNormalizedDeriv
-public import Mathlib.Analysis.Complex.Periodic
-public import Mathlib.NumberTheory.ModularForms.CuspFormSubmodule
-public import Mathlib.NumberTheory.ModularForms.Derivative
-public import Mathlib.NumberTheory.ModularForms.Discriminant
 
 @[expose] public section
 

@@ -58,12 +58,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.RingTheory.EssentialFiniteness
-public import Mathlib.RingTheory.Ideal.BigOperators
-public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Basic
-public import Mathlib.RingTheory.Localization.AtPrime.Basic
-public import Mathlib.RingTheory.Nakayama
-public import Mathlib.RingTheory.Smooth.Basic
 
 @[expose] public section
 

@@ -56,13 +56,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsDPMorphismB
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.InstAddCommGroup
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.WittExactSequences.IsCompl
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.XSmulSucc
-public import Mathlib.Algebra.Ring.GeomSum
-import Mathlib.RingTheory.DividedPowers.Basic
-public import Mathlib.RingTheory.Finiteness.Basic
 public import Mathlib.RingTheory.Ideal.BigOperators
-public import Mathlib.RingTheory.Ideal.Operations
-public import Mathlib.RingTheory.Nilpotent.Basic
-import Mathlib.Topology.Sheaves.Presheaf
 
 @[expose] public section
 

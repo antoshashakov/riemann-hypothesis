@@ -44,11 +44,6 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.L2DbarEstimates.LeviForms.OfRealNormSqSumMul
 import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.HoloContDiffAtComplex
-public import Mathlib.Analysis.Calculus.ContDiff.Basic
-public import Mathlib.Analysis.Calculus.ContDiff.Comp
-public import Mathlib.Analysis.Calculus.ContDiff.Operations
-public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 public import ReciprocityTheory.L2DbarEstimates.LeviForms.EventuallyDifferentiableAtOfContDiffAt
 public import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.HoloSmooth
 

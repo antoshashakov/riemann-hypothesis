@@ -46,10 +46,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Analysis.Analytic.Composition
-public import Mathlib.Analysis.Analytic.Linear
-public import Mathlib.Analysis.Calculus.ContDiff.Defs
-public import Mathlib.Analysis.Calculus.ContDiff.RCLike
 public import Mathlib.Topology.Algebra.Module.FiniteDimension
 
 @[expose] public section

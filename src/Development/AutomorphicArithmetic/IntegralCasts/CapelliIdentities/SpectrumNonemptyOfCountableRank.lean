@@ -50,11 +50,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Algebra.Algebra.Spectrum.Basic
-public import Mathlib.Algebra.Polynomial.AlgebraMap
-public import Mathlib.Algebra.Polynomial.Splits
 public import Mathlib.Analysis.Complex.Cardinality
-public import Mathlib.FieldTheory.IsAlgClosed.Basic
 
 @[expose] public section
 

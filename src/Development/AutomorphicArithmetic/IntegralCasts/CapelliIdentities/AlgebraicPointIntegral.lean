@@ -49,11 +49,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Algebra.Polynomial.Div
 public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
-public import Mathlib.RingTheory.Polynomial.Content
-public import Mathlib.RingTheory.Polynomial.Eisenstein.Distinguished
-public import Mathlib.RingTheory.PowerSeries.Inverse
 
 @[expose] public section
 
