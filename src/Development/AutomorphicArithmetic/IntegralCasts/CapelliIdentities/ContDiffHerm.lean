@@ -50,6 +50,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Calculus.ContDiff.Basic
 public import Mathlib.Analysis.Calculus.ContDiff.Operations
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -145,24 +146,9 @@ private theorem Hpk_herm (k r : ℕ) : (Hpk k r).conjTranspose = Hpk k r := by
   split_ifs <;> first | omega | simp
 
 private theorem Hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  rw [Matrix.mul_apply]
-  obtain ⟨s, hs⟩ : ∃ s : Fin (2 * r + k + 1),
-      (s : ℕ) = if r ≤ (i : ℕ) ∧ (i : ℕ) ≤ r + k then (i : ℕ) else 2 * r + k - i :=
-    ⟨⟨if r ≤ (i : ℕ) ∧ (i : ℕ) ≤ r + k then (i : ℕ) else 2 * r + k - i,
-      by split_ifs <;> omega⟩, rfl⟩
-  rw [Finset.sum_eq_single s]
-  · simp only [Hpk, Matrix.one_apply, Fin.ext_iff]
-    split_ifs at hs <;> split_ifs <;> first | omega | simp
-  · intro b _ hb
-    have hb' : (b : ℕ) ≠ s := fun h => hb (Fin.ext h)
-    have h0 : Hpk k r i b = 0 := by
-      simp only [Hpk, Fin.ext_iff]
-      split_ifs at hs <;> split_ifs <;> first | omega | rfl
-    rw [h0, zero_mul]
-  · simp
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 private theorem Hpk_inv (k r : ℕ) : (Hpk k r)⁻¹ = Hpk k r :=
   Matrix.inv_eq_right_inv (Hpk_sq k r)

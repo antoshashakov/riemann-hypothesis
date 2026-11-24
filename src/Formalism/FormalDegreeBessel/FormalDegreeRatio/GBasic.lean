@@ -49,6 +49,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.BitVec
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -274,17 +275,9 @@ lemma Hpk_herm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   · rw [if_neg (fun e => h ((eq_sig_iff k r i j).1 e)), if_neg h, star_zero]
 
 lemma Hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply]
-  simp only [Hpk_eq, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, sig_sig,
-    sgn_sig, Matrix.one_apply]
-  by_cases h : i = j
-  · subst h
-    simp only [if_true]
-    unfold sgn
-    split_ifs <;> norm_num
-  · rw [if_neg (fun e => h e.symm), if_neg h]
-    exact mul_zero _
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 end GBasic
 

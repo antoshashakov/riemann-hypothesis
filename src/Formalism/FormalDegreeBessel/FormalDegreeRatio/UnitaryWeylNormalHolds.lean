@@ -48,6 +48,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Complex.Trigonometric
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -168,12 +169,9 @@ theorem sgn_mul_self (i : Fin (2 * r + k + 1)) : sgn k r i * sgn k r i = 1 := by
   split_ifs <;> norm_num
 
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [hpk_mul_apply, hpk_row, tau_tau, sgn_tau, Matrix.one_apply]
-  by_cases h : i = j
-  · subst h
-    rw [if_pos rfl, if_pos rfl, sgn_mul_self]
-  · rw [if_neg (Ne.symm h), if_neg h, mul_zero]
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem isUnit_of_uh {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by

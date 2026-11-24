@@ -58,6 +58,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -648,15 +649,9 @@ theorem mulVec_bvec (g : Mat k r) (x i : Fin (2 * r + k + 1)) : (g *ᵥ bvec x) 
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 theorem H_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  have h1 : (Hpk k r * Hpk k r) i j = (Hpk k r *ᵥ (Hpk k r *ᵥ Pi.single j 1)) i := by
-    rw [Matrix.mulVec_mulVec]
-    simp [Matrix.mulVec, dotProduct, Pi.single_apply]
-  rw [h1]
-  simp only [Formalism.QuantumDeterminants.gn_Hpk_mulVec, Pi.single_apply, Matrix.one_apply, Fin.ext_iff, Fin.val_mk]
-  have hi := i.isLt
-  have hj := j.isLt
-  split_ifs <;> first | rfl | (exfalso; omega) | norm_num
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem isUnit_det_of_mem {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg

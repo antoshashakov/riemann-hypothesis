@@ -49,6 +49,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -338,11 +339,9 @@ theorem inN_of_nset (h : IsReal H k r σ Φ) (ht : ∀ a, t a ≠ 0)
 end Flag
 
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [WeylGroupFacts.hpk_mul_apply, WeylGroupFacts.hpk_row, WeylGroupFacts.tau_tau, Matrix.one_apply]
-  unfold WeylGroupFacts.sgn WeylGroupFacts.tau
-  simp only [Fin.ext_iff]
-  split_ifs <;> first | (exfalso; omega) | simp
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem isUnit_det {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
   have : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by

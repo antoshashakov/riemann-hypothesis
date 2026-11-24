@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -65,16 +66,9 @@ lemma gram_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> simp only [Fin.ext_iff] at * <;> first | rfl | omega
 
 lemma gram_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  rw [Matrix.mul_apply, Finset.sum_eq_single (partner k r i)]
-  · rw [gram_apply, gram_apply, Matrix.one_apply, if_pos rfl]
-    unfold partner
-    split_ifs <;> simp only [Fin.ext_iff] at * <;> first | omega | (simp; done) | (split_ifs <;> first | omega | simp)
-  · intro b _ hb
-    rw [gram_apply k r i b, if_neg hb, zero_mul]
-  · simp
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 end GlobalTheory.BesselUnitary
 

@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -96,12 +97,9 @@ theorem herm_e (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   simp [bvec, dotProduct, Pi.single_apply, apply_ite]
 
 theorem HH : Hpk k r * Hpk k r = 1 := by
-  ext x y
-  rw [Matrix.mul_apply, sum3]
-  induction x using cases3 <;> induction y using cases3 <;>
-    simp [H_ee, H_ew, H_es, H_we, H_ww, H_ws, H_se, H_sw, H_ss, Matrix.one_apply,
-      eI_inj, wI_inj, esI_inj, eI_ne_wI, eI_ne_esI, wI_ne_esI, wI_ne_eI, esI_ne_eI, esI_ne_wI]
-  unfold sg; split_ifs <;> simp_all
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem HbHb : Hb k * Hb k = 1 := by
   unfold Hb; rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]

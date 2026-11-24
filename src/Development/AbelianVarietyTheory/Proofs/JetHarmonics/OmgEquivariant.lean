@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -86,34 +87,9 @@ private lemma hpk_apply_of_middle {i : Fin (2 * r + k + 1)} (hi : r ≤ i.val �
   split_ifs <;> first | rfl | (exfalso; omega)
 
 private lemma hpk_mul_hpk : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  have := i.isLt
-  have := j.isLt
-  by_cases hout : i.val < r ∨ r + k < i.val
-  · have hp : 2 * r + k - i.val < 2 * r + k + 1 := by omega
-    have hp' : 2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val := by omega
-    rw [Finset.sum_eq_single ⟨2 * r + k - i.val, hp⟩]
-    · rw [hpk_apply_of_outer hout, hpk_apply_of_outer (i := ⟨2 * r + k - i.val, hp⟩) hp']
-      simp only [Fin.ext_iff]
-      split_ifs <;> first | rfl | (exfalso; omega) | norm_num
-    · intro l _ hl
-      rw [hpk_apply_of_outer hout, if_neg, zero_mul]
-      intro e
-      exact hl (Fin.ext (show l.val = 2 * r + k - i.val by omega))
-    · intro h
-      exact absurd (Finset.mem_univ _) h
-  · have hmid : r ≤ i.val ∧ i.val ≤ r + k := by omega
-    rw [Finset.sum_eq_single i]
-    · rw [hpk_apply_of_middle hmid, hpk_apply_of_middle hmid]
-      by_cases hij : i = j
-      · subst hij
-        by_cases hv : i.val = r + k <;> simp [hv]
-      · simp [hij]
-    · intro l _ hl
-      rw [hpk_apply_of_middle hmid, if_neg (Ne.symm hl), zero_mul]
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 private lemma hpk_conjTranspose_hpk_mul_eq_one_of_mem_UH {g : Mx k r} (hg : g ∈ UH (Hpk k r)) :
     Hpk k r * gᴴ * Hpk k r * g = 1 := by
