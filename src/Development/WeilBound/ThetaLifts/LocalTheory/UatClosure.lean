@@ -41,6 +41,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Divisors.MatchingOfParts
+public import Development.WeilBound.ThetaLifts.TowerModels.PlaneReal
 
 @[expose] public section
 
@@ -143,17 +144,9 @@ theorem uat_closure {R : Type} [Zero R] {ev : AF F → R} {g : UA σ W.J} (h : g
   | inv x _ hx => exact uat_inv hx
 
 theorem det_of_sig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
-  obtain ⟨rfl, A, hA⟩ := h
-  intro h0
-  let e : Fin (r + s) ≃ Fin r ⊕ Fin s := finSumFinEquiv.symm
-  have e1 : (A.submatrix e.symm id)ᵀ * M.submatrix e.symm e.symm * (A.submatrix e.symm id).map star =
-      Matrix.fromBlocks 1 0 0 (-1) := by
-    rw [← hA, Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv]
-    rfl
-  have e2 := congrArg Matrix.det e1
-  rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_submatrix_equiv_self, h0, Matrix.det_fromBlocks_zero₂₁] at e2
-  simp [Matrix.det_neg] at e2
-  exact pow_ne_zero _ (by norm_num) e2.symm
+  first
+  | exact _root_.PositivityTheory.ThKG.Tow.Pln.det_ne_zero_of_hasSig
+  | (apply _root_.PositivityTheory.ThKG.Tow.Pln.det_ne_zero_of_hasSig <;> assumption)
 
 theorem det_skew {B : Base F E} {r s : ℕ} (h : W.IsSkew σ B r s) : W.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance

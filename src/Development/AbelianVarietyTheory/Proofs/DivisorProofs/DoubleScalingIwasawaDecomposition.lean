@@ -43,6 +43,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Divisors.MatchingOfParts
+public import Development.WeilBound.ThetaLifts.TowerModels.PlaneReal
 
 @[expose] public section
 
@@ -277,17 +278,9 @@ namespace GlobalTheory.DblSurj
 open scoped Matrix
 
 theorem det_ne_zero_of_sig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
-  obtain ⟨hn, A, hA⟩ := h
-  let e : Fin r ⊕ Fin s ≃ Fin n := finSumFinEquiv.trans (finCongr hn)
-  have key : (A.submatrix id e.symm)ᵀ * M * (A.submatrix id e.symm).map star =
-      (Aᵀ * M * A.map star).submatrix e.symm e.symm := by
-    ext i j; rfl
-  have hd := congrArg Matrix.det key
-  rw [Matrix.det_submatrix_equiv_self, hA, Matrix.det_mul, Matrix.det_mul] at hd
-  intro h0
-  rw [h0] at hd
-  simp [Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg] at hd
-  exact pow_ne_zero _ (by norm_num) hd.symm
+  first
+  | exact _root_.PositivityTheory.ThKG.Tow.Pln.det_ne_zero_of_hasSig
+  | (apply _root_.PositivityTheory.ThKG.Tow.Pln.det_ne_zero_of_hasSig <;> assumption)
 
 end GlobalTheory.DblSurj
 

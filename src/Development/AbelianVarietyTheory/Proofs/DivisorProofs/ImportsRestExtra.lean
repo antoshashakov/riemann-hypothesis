@@ -39,6 +39,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+public import Development.WeilBound.ThetaLifts.TowerModels.PlaneReal
 
 @[expose] public section
 
@@ -52,19 +53,9 @@ namespace GlobalTheory.GramDet
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
-  obtain ⟨hn, A, hA⟩ := h
-  subst hn
-  set A' : Matrix (Fin (r + s)) (Fin (r + s)) ℂ := A.submatrix id finSumFinEquiv.symm with hA'
-  have key : A'ᵀ * M * A'.map star =
-      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm := by
-    rw [← hA]
-    ext i j
-    simp [hA', Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply]
-  intro h0
-  have hd := congrArg Matrix.det key
-  rw [Matrix.det_mul, Matrix.det_mul, h0, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁] at hd
-  simp [Matrix.det_neg] at hd
-  exact pow_ne_zero s (neg_ne_zero.mpr one_ne_zero) hd.symm
+  first
+  | exact _root_.PositivityTheory.ThKG.Tow.Pln.det_ne_zero_of_hasSig
+  | (apply _root_.PositivityTheory.ThKG.Tow.Pln.det_ne_zero_of_hasSig <;> assumption)
 
 theorem det_ne_zero_of_map {n : ℕ} {K : Type} [Field K] (φ : K →+* ℂ) {J : Matrix (Fin n) (Fin n) K}
     (h : (J.map φ).det ≠ 0) : J.det ≠ 0 := by

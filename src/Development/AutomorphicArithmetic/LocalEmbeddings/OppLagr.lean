@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.Divisors.MatchingOfParts
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndicatorIntMMemSB
+public import Development.WeilBound.ThetaLifts.TowerModels.PlaneReal
 
 @[expose] public section
 
@@ -56,23 +57,9 @@ namespace GlobalTheory.OppLagr
 open scoped TensorProduct
 
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
-  obtain ⟨hrs, A, hA⟩ := h
-  have hNN : Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) *
-      Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) = 1 := by
-    rw [Matrix.fromBlocks_multiply]; simp [Matrix.fromBlocks_one]
-  have hN : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ)) :=
-    ⟨⟨_, _, hNN, hNN⟩, rfl⟩
-  have h1 := Matrix.rank_of_isUnit _ hN
-  have h2 : (Aᵀ * M * A.map star).rank ≤ M.rank := (Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)
-  rw [hA, h1] at h2
-  simp only [Fintype.card_sum, Fintype.card_fin, hrs] at h2
-  have h3 : LinearMap.range M.mulVecLin = ⊤ := by
-    apply Submodule.eq_top_of_finrank_eq
-    have := M.rank_le_width
-    simp only [← Matrix.finrank_range_mulVecLin, Fintype.card_fin] at h2 this
-    rw [Module.finrank_fin_fun]; omega
-  have hu : IsUnit M := (Matrix.mulVec_surjective_iff_isUnit).mp (LinearMap.range_eq_top.mp h3)
-  exact ((Matrix.isUnit_iff_isUnit_det M).mp hu).ne_zero
+  first
+  | exact _root_.PositivityTheory.ThKG.Tow.Pln.det_ne_zero_of_hasSig
+  | (apply _root_.PositivityTheory.ThKG.Tow.Pln.det_ne_zero_of_hasSig <;> assumption)
 
 end GlobalTheory.OppLagr
 
