@@ -36,6 +36,7 @@ import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
 
 @[expose] public section
 
@@ -74,15 +75,7 @@ private theorem place_between {A : ValuationSubring Ω} {v : HeightOneSpectrum (
 
 private theorem normV_under (w : HeightOneSpectrum (𝓞 L)) :
     normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
-  have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
-  have := w.isMaximal
-  have := (w.under (𝓞 K)).isMaximal
-  have hnorm {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
-      normV v = Ideal.absNorm v.asIdeal := by
-    rw [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
-  rw [hnorm, hnorm]
-  rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 L) w.asIdeal,
-    Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
+  apply _root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow
 
 omit [NumberField K] in
 private theorem frob_val {A : ValuationSubring Ω} {q : ℕ} (hq : q ≠ 0) {σ : G K Ω} (hσ : IsFrob A q σ) {x : Ω}
