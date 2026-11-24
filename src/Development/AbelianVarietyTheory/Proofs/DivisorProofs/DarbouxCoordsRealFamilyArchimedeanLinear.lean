@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.WeilBound.ThetaLifts.LeviDeterminants.GrowSplit
 
 @[expose] public section
 
@@ -55,11 +56,9 @@ namespace GlobalTheory.RealDirCoord
 
 theorem continuous_ringEquiv_mixed (F : Type) [Field F] [NumberField F] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
-  refine Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)
-  · exact (NumberField.InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp
-      (continuous_apply _)
-  · exact (NumberField.InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp
-      (continuous_apply _)
+  first
+  | exact _root_.PositivityTheory.ThKF0.Split.continuous_toMixed
+  | (apply _root_.PositivityTheory.ThKF0.Split.continuous_toMixed <;> assumption)
 
 theorem eps_smul_gen {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (z : AF F ⊗[F] E) :

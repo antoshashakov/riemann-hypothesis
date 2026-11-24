@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Development.WeilBound.ThetaLifts.LeviDeterminants.GrowSplit
 
 @[expose] public section
 
@@ -140,30 +141,9 @@ namespace GlobalTheory.ThetaTransform.RealSchwartz
 variable {F : Type} [Field F] [NumberField F]
 
 theorem continuous_mixedSpace_symm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
-  apply continuous_pi
-  intro v
-  by_cases hv : v.IsReal
-  · have hE := (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding
-    refine hE.isInducing.continuous_iff.2 ?_
-    have h : (InfinitePlace.Completion.extensionEmbeddingOfIsReal hv ∘
-        fun y => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm y v) = fun y => y.1 ⟨v, hv⟩ := by
-      funext y
-      have h0 := congrArg (fun z => z.1 ⟨v, hv⟩) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)
-      rw [Function.comp_apply]
-      exact h0
-    rw [h]
-    exact (continuous_apply _).comp continuous_fst
-  · have hc : v.IsComplex := InfinitePlace.not_isReal_iff_isComplex.1 hv
-    have hE := (InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding
-    refine hE.isInducing.continuous_iff.2 ?_
-    have h : (InfinitePlace.Completion.extensionEmbedding v ∘
-        fun y => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm y v) = fun y => y.2 ⟨v, hc⟩ := by
-      funext y
-      have h0 := congrArg (fun z => z.2 ⟨v, hc⟩) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)
-      rw [Function.comp_apply]
-      exact h0
-    rw [h]
-    exact (continuous_apply _).comp continuous_snd
+  first
+  | exact _root_.PositivityTheory.ThKF0.Split.continuous_ofMixed
+  | (apply _root_.PositivityTheory.ThKF0.Split.continuous_ofMixed <;> assumption)
 
 theorem embR_add {N : ℕ} (a b : Fin N → mixedEmbedding.mixedSpace F) :
     (embR (a + b) : Fin N → AF F) = embR a + embR b := by

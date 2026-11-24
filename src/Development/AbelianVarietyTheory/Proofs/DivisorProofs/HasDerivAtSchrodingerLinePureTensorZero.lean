@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Development.WeilBound.ThetaLifts.LeviDeterminants.GrowSplit
 
 @[expose] public section
 
@@ -67,20 +68,9 @@ namespace GlobalTheory.CompanionTheory.SchrLine
 variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
-  have h : ⇑(InfiniteAdeleRing.ringEquiv_mixedSpace F) = fun x : InfiniteAdeleRing F =>
-      ((fun v : {w : InfinitePlace F // w.IsReal} =>
-          InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)),
-        (fun v : {w : InfinitePlace F // w.IsComplex} =>
-          InfinitePlace.Completion.extensionEmbedding v.1 (x v))) :=
-    funext fun x => InfiniteAdeleRing.ringEquiv_mixedSpace_apply F x
-  rw [h]
-  exact Continuous.prodMk
-    (continuous_pi fun v =>
-      (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp
-        (continuous_apply v.1))
-    (continuous_pi fun v =>
-      (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp
-        (continuous_apply v.1))
+  first
+  | exact _root_.PositivityTheory.ThKF0.Split.continuous_toMixed
+  | (apply _root_.PositivityTheory.ThKF0.Split.continuous_toMixed <;> assumption)
 
 def arch : AF F →+* mixedEmbedding.mixedSpace F :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (fstA F).toRingHom
