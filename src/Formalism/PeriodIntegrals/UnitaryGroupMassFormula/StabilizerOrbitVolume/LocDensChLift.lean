@@ -126,22 +126,6 @@ theorem sum_sgl {F : Type} [Field F] [NumberField F] (x : InfiniteAdeleRing F) :
 
 open ChLiftW in
 theorem chLift_holds : ChLift := by
-  intro F _ _ χ hχ
-  have key : ∀ v : InfinitePlace F, ∃ ℓ : v.Completion →+ ℂ, Continuous ℓ ∧
-      ∀ t, χ (sgl v t) = exp (ℓ t) := by
-    intro v
-    exact lift_place v (fun t => χ (sgl v t)) (hχ.comp (continuous_sgl v))
-      (fun x y => by simp only [sgl_add, AddChar.map_add_eq_mul]) (by simp only [sgl_zero, AddChar.map_zero_eq_one])
-  choose ℓ hℓc hℓ using key
-  refine ⟨AddMonoidHom.mk' (fun x => ∑ v, ℓ v (x v)) (fun x y => ?_), ?_, fun x => ?_⟩
-  · rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl fun v _ => ?_
-    rw [← map_add (f := _)]
-    rfl
-  · exact continuous_finsetSum _ fun v _ => (hℓc v).comp (continuous_apply v)
-  · show χ x = Complex.exp (∑ v, ℓ v (x v))
-    conv_lhs => rw [← sum_sgl x]
-    rw [ChLiftW.addChar_sum, Complex.exp_sum]
-    exact Finset.prod_congr rfl fun v _ => hℓ v (x v)
+  exact PI.VolStabS.chLift_holds
 
 end PI.VolStabSW

@@ -195,19 +195,7 @@ theorem coeff_of_diag {σ : Type*} (T : Module.End ℂ (MvPolynomial σ ℂ)) (f
     (hT : ∀ β, T (MvPolynomial.monomial β 1) = f β • MvPolynomial.monomial β 1)
     (P : MvPolynomial σ ℂ) (α : σ →₀ ℕ) :
     AddMonoidAlgebra.coeff (T P) α = f α * AddMonoidAlgebra.coeff P α := by
-  classical
-  induction P using MvPolynomial.induction_on'
-  next u a =>
-    have hm : MvPolynomial.monomial u a = a • MvPolynomial.monomial u (1 : ℂ) := by
-      rw [MvPolynomial.smul_monomial, smul_eq_mul, mul_one]
-    rw [hm, map_smul, hT]
-    simp only [MvPolynomial.coeff_smul, MvPolynomial.coeff_monomial, smul_eq_mul]
-    split_ifs with h
-    · subst h
-      ring
-    · simp
-  next P Q hP hQ =>
-    rw [map_add (f := _), MvPolynomial.coeff_add, MvPolynomial.coeff_add, hP, hQ, mul_add]
+      exact PI.FockOneDegW.Diag.coeff_of_diag T f hT P α
 
 theorem exists_monomial_weight {σ ι : Type*} [Fintype σ]
     (T : ι → Module.End ℂ (MvPolynomial σ ℂ)) (f : ι → (σ →₀ ℕ) → ℚ)

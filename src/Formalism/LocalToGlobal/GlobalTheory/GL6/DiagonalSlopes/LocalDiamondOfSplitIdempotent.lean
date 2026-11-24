@@ -62,17 +62,7 @@ theorem subgroup_prime_card_eq_top {G : Type} [AddCommGroup G] {p : ℕ} (hp : p
 
 theorem idempotent_action_prime_card {O : Type} [Ring O] {G : Type} [AddCommGroup G] [Module O G] {p : ℕ} (hp : p.Prime)
     (hG : Nat.card G = p) {e : O} (he : e * e = e) : (∀ y : G, e • y = 0) ∨ (∀ y : G, e • y = y) := by
-  by_cases h : ∀ y : G, e • y = 0
-  · exact Or.inl h
-  · obtain ⟨y0, hy0⟩ := not_forall.1 h
-    right
-    have htop := subgroup_prime_card_eq_top hp hG (DistribSMul.toAddMonoidHom G e).range ⟨y0, rfl⟩ hy0
-    intro y
-    have hy : y ∈ (DistribSMul.toAddMonoidHom G e).range := by rw [htop]; exact AddSubgroup.mem_top y
-    obtain ⟨z, hz⟩ := AddMonoidHom.mem_range.1 hy
-    rw [← hz]
-    show e • e • z = e • z
-    rw [smul_smul, he]
+      exact Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.idempotent_action_prime_card hp hG he
 
 theorem unit_lift_int_prime_field {K : Type} [Field K] [Fintype K] {p : ℕ} (hp : p.Prime) (hK : Fintype.card K = p) (a : Kˣ) :
     ∃ k : ℤ, (k : K) = a ∧ ¬ (p : ℤ) ∣ k := by

@@ -63,14 +63,4 @@ theorem _root_.GlobalTheory.T.phiGammaLatticeFamily_image_of_surjective :
         (∀ i, IsLat (N i)) → CondAB D.φ w w' N → (∀ i, CondC (D.γ i) (N i)) →
         (let N' := fun i => (N i).map ((f i).restrictScalars k⟦X⟧)
          (∀ i, IsLat (N' i)) ∧ CondAB D'.φ w w' N' ∧ ∀ i, CondC (D'.γ i) (N' i)) := by
-  intro k _ l _ _ R n _ V _ _ _ _ _ _ _ _ W _ _ _ _ _ _ _ _ D D' f hf hφ hγ w w' N hN hAB hC N'
-  refine ⟨fun i => Img.isLat_map (f i) (hf i) (hN i), fun i => ?_, fun i => ?_⟩
-  · simp only [N']
-    rw [← Img.map_pull (f i) (f (i - 1)) (D.φ i) (D'.φ i) (hφ i), ← Img.map_sh, ← Img.map_sh]
-    exact ⟨Submodule.map_mono (hAB i).1, Submodule.map_mono (hAB i).2⟩
-  · rintro _ ⟨x, hx, rfl⟩
-    simp only [N']
-    rw [← Img.map_sh]
-    refine ⟨_, hC i x hx, ?_⟩
-    change f i _ = D'.γ i (f i x) - f i x
-    rw [map_sub, hγ]
+           exact GlobalTheory.PhiGam.Img.image_lattice

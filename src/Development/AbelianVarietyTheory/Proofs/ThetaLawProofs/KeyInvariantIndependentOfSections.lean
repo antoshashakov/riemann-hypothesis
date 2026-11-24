@@ -64,19 +64,7 @@ namespace GlobalTheory.KaIndep
 
 theorem exists_coords {R : Type} [CommRing R] (x : KeyIn R) {l N : ℕ} (b : Fin N → RR x l) (c : Fin N → R) :
     ∃ s : RR x l, Coords x b c s.f := by
-  refine ⟨⟨fun i => ∑ k, cst x.P.A.hom ((pw x.P.L (l : ℤ)).U i) (c k) * (b k).f i, ?_⟩, fun i => rfl⟩
-  intro i j
-  have e4 : ∀ (V W : x.P.A.left.Opens) (h : W ≤ V) (a : R),
-      (x.P.A.left.presheaf.map (homOfLE h).op).hom (cst x.P.A.hom V a) = cst x.P.A.hom W a := by
-    intro V W h a
-    simp only [AbLaw.cst, RingHom.comp_apply]
-    exact GlobalTheory.KeyVia.res_appLE (φ := x.P.A.hom) (U := ⊤) _ h _
-
-  simp only [map_sum, map_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  have e3 := (b k).compat i j
-  rw [e4, e4, e3]
-  ring
+      exact GlobalTheory.KeyGeneric.exists_coords x b c
 
 theorem eq_of_coords {R : Type} [CommRing R] {x : KeyIn R} {l N : ℕ} {b : Fin N → RR x l} {c : Fin N → R}
     {s t : RR x l} (hs : Coords x b c s.f) (ht : Coords x b c t.f) : s = t := by

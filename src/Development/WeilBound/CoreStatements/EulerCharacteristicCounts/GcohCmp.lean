@@ -51,23 +51,7 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel
 namespace PositivityTheory.LocalTateOrthogonality.Gcoh
 
 theorem gcRep : SgcRep := by
-  intro G _ _ _ R _ M _ _ _ _ rho hrho
-  letI : Module (ULift.{0} ℤ) M := Module.compHom M (ULift.ringEquiv : ULift.{0} ℤ ≃+* ℤ).toRingHom
-  let σ : Representation (ULift.{0} ℤ) G M :=
-    { toFun := fun g =>
-        { toFun := rho g
-          map_add' := map_add _
-          map_smul' := fun c m => map_zsmul (rho g) c.down m }
-      map_one' := LinearMap.ext fun m => by
-        change rho 1 m = m
-        rw [map_one]; rfl
-      map_mul' := fun g h => LinearMap.ext fun m => by
-        change rho (g * h) m = rho g (rho h m)
-        rw [map_mul]; rfl }
-  refine ⟨Rep.of σ, ⟨fun a => ?_⟩, AddEquiv.refl M, fun g m => rfl⟩
-  have hc : Continuous fun g : G => rho g (a : M) :=
-    hrho.comp (continuous_id.prodMk continuous_const)
-  exact (isOpen_discrete {(a : M)}).preimage hc
+  exact CompanionTheory.LocalTateOrthogonality.Gcoh.gcRep
 
 attribute [local instance 2000] Rep.hV2
 

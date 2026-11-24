@@ -52,19 +52,7 @@ open NumberField Formalism.FrobeniusOrbits Formalism.BasicNotions Formalism.Main
 namespace Formalism.MainNotions.AuxBlock8.Pf.St
 
 theorem ev_log (c α : ℝ) (hα : 0 < α) : ∀ᶠ x : ℝ in atTop, c * Real.log x ≤ x ^ α := by
-  have hε : (0 : ℝ) < 1 / (|c| + 1) := by positivity
-  have h := (isLittleO_log_rpow_atTop hα).def hε
-  filter_upwards [h, eventually_gt_atTop 0] with x hx hx0
-  have hxa : 0 < x ^ α := Real.rpow_pos_of_pos hx0 α
-  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hxa] at hx
-  have hc : |c| * (1 / (|c| + 1)) ≤ 1 := by
-    rw [mul_one_div, div_le_one (by positivity)]
-    linarith
-  calc c * Real.log x ≤ |c| * |Real.log x| := by rw [← abs_mul]; exact le_abs_self _
-    _ ≤ |c| * (1 / (|c| + 1) * x ^ α) := by gcongr
-    _ = (|c| * (1 / (|c| + 1))) * x ^ α := by ring
-    _ ≤ 1 * x ^ α := by gcongr
-    _ = x ^ α := one_mul _
+  exact Formalism.MainNotions.AuxBlock8.Pf.ev_log c α hα
 
 theorem ev_pow (c α β : ℝ) (h : α < β) : ∀ᶠ x : ℝ in atTop, c * x ^ α ≤ x ^ β := by
   have ht := tendsto_rpow_atTop (sub_pos.2 h)
