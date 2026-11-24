@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -104,14 +105,9 @@ theorem mul_Hpk_apply (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
   simp [Matrix.mul_apply, Hpk_apply, h, mul_ite, sgnB_flip]
 
 theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Hpk_mul_apply, Hpk_apply, flipB_flipB, sgnB_flip, Matrix.one_apply]
-  by_cases h : i = j
-  · subst h
-    rw [if_pos rfl, if_pos rfl]
-    unfold sgnB
-    split_ifs <;> norm_num
-  · rw [if_neg (Ne.symm h), if_neg h, mul_zero]
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem Hpk_herm : (Hpk k r)ᴴ = Hpk k r := by
   ext i j

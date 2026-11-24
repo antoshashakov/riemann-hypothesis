@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -234,27 +235,9 @@ section dl
 variable (k r : ℕ)
 
 private lemma Hpk_mul_Hpk_eq_one : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  by_cases hc : i.val < r ∨ r + k < i.val
-  · rw [Finset.sum_eq_single (⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1))]
-    · simp only [Hpk, Fin.val_mk, Fin.ext_iff, and_true, true_and]
-      (try split_ifs) <;> (first | omega | norm_num)
-    · intro m _ hm
-      have hm' : m.val ≠ 2 * r + k - i.val := fun h => hm (Fin.ext h)
-      simp only [Hpk, Fin.ext_iff, and_true, true_and]
-      (try split_ifs) <;> (first | omega | norm_num)
-    · intro h
-      exact absurd (Finset.mem_univ _) h
-  · rw [Finset.sum_eq_single i]
-    · simp only [Hpk, Fin.ext_iff, and_true, true_and]
-      (try split_ifs) <;> (first | omega | norm_num)
-    · intro m _ hm
-      have hm' : m.val ≠ i.val := fun h => hm (Fin.ext h)
-      simp only [Hpk, Fin.ext_iff, and_true, true_and]
-      (try split_ifs) <;> (first | omega | norm_num)
-    · intro h
-      exact absurd (Finset.mem_univ _) h
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 private lemma herm_sub_smul_left' {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (v w u : Fin m → ℂ) (c : ℂ) :
     herm H (v - c • w) u = herm H v u - c * herm H w u := by

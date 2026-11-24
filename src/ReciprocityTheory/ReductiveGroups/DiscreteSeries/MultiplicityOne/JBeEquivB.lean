@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -65,24 +66,9 @@ theorem mc_sig_left (X : SigData k r) (u u' : X.Hs) {a b : Mat k r} (ha : a ∈ 
   rw [X.rep.1.2 a ha b hb, ContinuousLinearMap.comp_apply]
 
 private theorem Hpk_mul_self_eq_one : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  rw [Finset.sum_eq_single (if i.val < r ∨ r + k < i.val then i.rev else i)]
-  · by_cases h : i.val < r ∨ r + k < i.val
-    · rw [if_pos h]
-      simp only [Hpk, Fin.val_rev, Fin.ext_iff, and_true]
-      split_ifs <;> first | (exfalso; omega) | norm_num
-    · rw [if_neg h]
-      simp only [Hpk, Fin.ext_iff, and_true]
-      split_ifs <;> first | (exfalso; omega) | norm_num
-  · intro l _ hl
-    have hl' := l.isLt
-    simp only [Hpk, Fin.ext_iff, Fin.val_rev, and_true, ne_eq] at hl ⊢
-    split_ifs at hl ⊢ <;> (try simp only [ne_eq, Fin.ext_iff, Fin.val_rev] at hl) <;>
-      first | (exfalso; omega) | norm_num
-  · simp
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 private theorem mul_inv_and_inv_mul_of_mem_UH_Hpk {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 ∧ g⁻¹ * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg

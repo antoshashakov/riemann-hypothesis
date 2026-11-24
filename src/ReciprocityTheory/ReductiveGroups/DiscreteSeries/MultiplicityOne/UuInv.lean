@@ -49,6 +49,7 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.J
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.JInvGroup
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.JTransM
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.StReps
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -65,24 +66,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 private theorem hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  have hi := i.isLt
-  have hj := j.isLt
-  let l : Fin (2 * r + k + 1) :=
-    ⟨if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val, by split_ifs <;> omega⟩
-  rw [Finset.sum_eq_single l]
-  · simp only [Hpk, l, Fin.ext_iff, Fin.val_mk]
-    split_ifs <;> first | (exfalso; omega) | norm_num
-  · intro b _ hb
-    have hb' : b.val ≠ l.val := fun h => hb (Fin.ext h)
-    simp only [l, Fin.val_mk] at hb'
-    have hbl := b.isLt
-    apply mul_eq_zero_of_left
-    simp only [Hpk, Fin.ext_iff]
-    split_ifs at hb' ⊢ <;> first | (exfalso; omega) | rfl
-  · intro h
-    exact absurd (Finset.mem_univ l) h
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 lemma uu_inv {z : Fin (2 * r + k + 1) → ℂ} {γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} {u : Mat k r}
     (hu : u ∈ UUset k r z γ) : u⁻¹ ∈ UUset k r z γ := by

@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.UHMulInv
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -116,18 +117,9 @@ theorem gv_mul {a b : Mat k r} (ha : a ∈ GV k r) (hb : b ∈ GV k r) : a * b �
     _ = Hpk k r := by rw [ha', hb']
 
 private theorem hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Finset.sum_eq_single
-    (⟨if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val, by split_ifs <;> omega⟩ :
-      Fin (2 * r + k + 1))]
-  · simp only [Hpk, Matrix.one_apply, Fin.ext_iff, Fin.val_mk]
-    split_ifs <;> first | (norm_num; done) | omega
-  · intro l _ hl
-    rw [Ne, Fin.ext_iff] at hl
-    simp only [Hpk, Fin.ext_iff, Fin.val_mk] at hl ⊢
-    split_ifs at hl ⊢ <;> first | (simp; done) | omega
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 private theorem isUnit_det_of_mem_GV' {a : Mat k r} (ha : a ∈ GV k r) : IsUnit a.det := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha

@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -112,11 +113,9 @@ lemma Hpk_mulVec_apply (v : Fin (2 * r + k + 1) → ℂ) (i) :
   simp [Matrix.mulVec, dotProduct, Hpk_apply, ite_mul]
 
 lemma Hpk_mul_self : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Hpk_mul_apply, Hpk_apply, piI_piI, epsI_piI, Matrix.one_apply]
-  by_cases h : i = j
-  · subst h; simp [epsI_mul_self]
-  · simp [h, Ne.symm h]
+  first
+  | exact _root_.Formalism.SharedLemmas.upq_hpk_mul_self
+  | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 lemma Hpk_conjTranspose : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
