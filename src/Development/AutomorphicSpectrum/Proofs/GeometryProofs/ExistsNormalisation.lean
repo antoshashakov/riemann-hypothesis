@@ -163,20 +163,7 @@ theorem map_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω]
 theorem exists_of_mem_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} (x : κ → Ω)
     (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [Algebra o Ω'] [IsScalarTower o Ω Ω'] (c : κ) (a : Ω')
     (ha : a ∈ chRing o (fun k => algebraMap Ω Ω' (x k)) c) : ∃ b ∈ chRing o x c, algebraMap Ω Ω' b = a := by
-  induction ha using Algebra.adjoin_induction with
-  | mem a h =>
-    obtain ⟨j, rfl⟩ := h
-    exact ⟨x j / x c, Algebra.subset_adjoin ⟨j, rfl⟩, map_div₀ _ _ _⟩
-  | algebraMap r =>
-    exact ⟨algebraMap o Ω r, Subalgebra.algebraMap_mem _ r, (IsScalarTower.algebraMap_apply o Ω Ω' r).symm⟩
-  | add a b _ _ ha hb =>
-    obtain ⟨a', h1, rfl⟩ := ha
-    obtain ⟨b', h2, rfl⟩ := hb
-    exact ⟨a' + b', add_mem h1 h2, map_add _ _ _⟩
-  | mul a b _ _ ha hb =>
-    obtain ⟨a', h1, rfl⟩ := ha
-    obtain ⟨b', h2, rfl⟩ := hb
-    exact ⟨a' * b', mul_mem h1 h2, map_mul _ _ _⟩
+      exact PositivityTheory.HtPt.Mb.LNormExists.NormEx.exists_of_mem_chRing x Ω' c a ha
 
 theorem normal_of_charts {o : Type} [CommRing o] {Ω' : Type} [Field Ω'] [Algebra o Ω'] {κ' : Type} [Finite κ']
     {y : κ' → Ω'} (M' : PModel o y) (S : Set κ') (hS : ∀ p' : Cpt M'.ξ, ∃ c ∈ S, InChart M'.ξ y c p')

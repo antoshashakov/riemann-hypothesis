@@ -308,15 +308,7 @@ end Localisation
 theorem intSpan_smul' (D : D7) {n : ℕ} (w : D.what₂.places.Pl) (lam : D.what₂.Tau → DomWeight n) (r : D.what₂.LL)
     (hr : r ∈ intW D.what₂.places w) (p : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ)
     (hp : p ∈ Formalism.MainNotions.product_first_zeroth_parts.IntSpan D w lam) : D.what₂.embLL r • p ∈ Formalism.MainNotions.product_first_zeroth_parts.IntSpan D w lam := by
-  unfold Formalism.MainNotions.product_first_zeroth_parts.IntSpan at *
-  induction hp using AddSubgroup.closure_induction with
-  | mem q hq =>
-    obtain ⟨r', f, hr', hf, rfl⟩ := hq
-    apply AddSubgroup.subset_closure
-    exact ⟨r * r', f, mul_mem hr hr', hf, by rw [map_mul, mul_smul]⟩
-  | zero => rw [smul_zero]; exact zero_mem _
-  | add p q _ _ hp hq => rw [smul_add]; exact add_mem hp hq
-  | neg p _ hp => rw [smul_neg]; exact neg_mem hp
+      exact GlobalTheory.PtCo.intSpan_smul' D w lam r hr p hp
 
 theorem root_mem_intW (D : D7) (w : D.what₂.places.Pl) (r : D.what₂.LL) (n : ℕ) (hn : 0 < n) (h : r ^ n = 1) :
     r ∈ intW D.what₂.places w := by

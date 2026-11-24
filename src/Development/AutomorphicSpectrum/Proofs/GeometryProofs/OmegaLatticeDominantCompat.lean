@@ -147,20 +147,7 @@ theorem char_descends {R R' : Type} [CommRing R] [CommRing R'] [IsDomain R'] (s 
     (hs : Function.Injective s) {T : Type} [CommGroup T] {N : ℕ} (hN : 0 < N) {z : R} (hz : IsPrimitiveRoot z N)
     (hT : ∀ t : T, t ^ N = 1) (χ' : T →* R'ˣ) :
     ∃ χ : T →* Rˣ, (Units.map (s : R →* R')).comp χ = χ' := by
-  haveI : NeZero N := ⟨hN.ne'⟩
-  have hz' : IsPrimitiveRoot (s z) N := hz.map_of_injective hs
-  let zu : Rˣ := (hz.isUnit hN.ne').unit
-  have hinj : Function.Injective (Units.map (s : R →* R')) := Units.map_injective hs
-  have ex : ∀ t, ∃ u : Rˣ, Units.map (s : R →* R') u = χ' t := fun t => by
-    have e : ((χ' t : R'ˣ) : R') ^ N = 1 := by
-      rw [← Units.val_pow_eq_pow_val, ← map_pow, hT t, map_one, Units.val_one]
-    obtain ⟨m, -, hm⟩ := hz'.eq_pow_of_pow_eq_one e
-    refine ⟨zu ^ m, Units.ext ?_⟩
-    simpa [zu] using hm
-  choose c hc using ex
-  refine ⟨MonoidHom.mk' c fun a b => hinj (by rw [map_mul, hc, hc, hc, map_mul]), ?_⟩
-  ext t
-  simp [hc]
+      exact GlobalTheory.CompanionTheory.Ar.HTPullK.char_descends s hs hN hz hT χ'
 
 theorem core {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [Algebra R R']
     (hs : Function.Injective (algebraMap R R')) {X X' : Scheme.{0}} (x : Sp R ⟶ X) (x' : Sp R' ⟶ X') (f : X' ⟶ X)

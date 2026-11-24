@@ -81,17 +81,7 @@ theorem exists_equiv_of_span {R Q : Type} [CommRing R] [AddCommGroup Q] [Module 
 
 theorem exists_span {R Q : Type} [CommRing R] [AddCommGroup Q] [Module R Q] (I : Ideal R) (r : ℕ)
     (e : Q ≃ₗ[R] (Fin r → R ⧸ I)) : ∃ x : Fin r → Q, Submodule.span R (Set.range x) = ⊤ := by
-  refine ⟨fun b => e.symm (Pi.single b 1), eq_top_iff.2 fun q _ => ?_⟩
-  have h : q = ∑ b, e.symm (Pi.single b (e q b)) := by
-    set_option synthInstance.maxHeartbeats 100000 in
-      rw [← map_sum, Finset.univ_sum_single, e.symm_apply_apply]
-  rw [h]
-  refine Submodule.sum_mem _ fun b _ => ?_
-  obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (e q b)
-  have : (Pi.single b (e q b) : Fin r → R ⧸ I) = a • Pi.single b 1 := by
-    rw [← Pi.single_smul, ← ha, Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq]
-  rw [this, map_smul]
-  exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
+      exact GlobalTheory.ShortVal.Halves.exists_span I r e
 
 theorem existsUnique_equiv {R Q : Type} [CommRing R] [AddCommGroup Q] [Module R Q] (I : Ideal R) (r : ℕ)
     (e : Q ≃ₗ[R] (Fin r → R ⧸ I)) (x x' : Fin r → Q) (hx : Submodule.span R (Set.range x) = ⊤)
