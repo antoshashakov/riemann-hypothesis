@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.WeilDeligneUnramified.WeilCharpolySupport.ExistsInjectiveSection
 
 @[expose] public section
 
@@ -57,10 +58,9 @@ private theorem norm_le_one {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [Comp
 
 private theorem norm_eq_one {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] [NormedField K]
     (ψ : Γ →* Kˣ) (hψ : Continuous fun s => (ψ s : K)) (s : Γ) : ‖(ψ s : K)‖ = 1 := by
-  refine le_antisymm (norm_le_one ψ hψ s) ?_
-  have h := norm_le_one ψ hψ s⁻¹
-  rw [map_inv, Units.val_inv_eq_inv_val, norm_inv] at h
-  exact (inv_le_one₀ (norm_pos_iff.2 (ψ s).ne_zero)).1 h
+  first
+  | exact _root_.UpperTheory.V.Z.Sym.AboveWeight.norm_one
+  | (apply _root_.UpperTheory.V.Z.Sym.AboveWeight.norm_one <;> assumption)
 
 theorem UpperTheory.continuous_character_compact_unit_values :
     UpperTheory.V.Af.Wd.CharEnd := by

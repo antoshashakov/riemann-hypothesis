@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.HCFFromRecipA
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EqOneOfMemLev
 
 @[expose] public section
 
@@ -78,34 +79,9 @@ def lev (K : Type) [Field K] [NumberField K] (N : ℕ) : Subgroup (Ideles K) whe
 
 theorem lev_mem_nhds (K : Type) [Field K] [NumberField K] {N : ℕ} (hN : N ≠ 0) :
     (lev K N : Set (Ideles K)) ∈ nhds (1 : Ideles K) := by
-  have hO : IsOpen {a : FiniteAdeleRing (𝓞 K) K | ∀ v, a v ∈ v.adicCompletionIntegers K} :=
-    RestrictedProduct.isOpen_forall_mem
-      (A := fun v : HeightOneSpectrum (𝓞 K) => (v.adicCompletionIntegers K : Set (v.adicCompletion K)))
-      fun _ => Valued.isOpen_valuationSubring _
-  have h1 : Continuous fun x : Ideles K => x.val.2 := continuous_snd.comp Units.continuous_val
-  have h2 : Continuous fun x : Ideles K => (x⁻¹).val.2 := h1.comp continuous_inv
-  have h3 : Continuous fun x : Ideles K =>
-      (x.val.2 - 1) * algebraMap K (FiniteAdeleRing (𝓞 K) K) (N : K)⁻¹ :=
-    (h1.sub continuous_const).mul continuous_const
-  have hU := ((hO.preimage h1).inter (hO.preimage h2)).inter (hO.preimage h3)
-  refine Filter.mem_of_superset (hU.mem_nhds ⟨⟨fun v => one_mem _, fun v => one_mem _⟩, fun v => ?_⟩) ?_
-  · have : ((1 : Ideles K).val.2 - 1) = 0 := sub_self _
-    simp only [this, zero_mul]
-    exact zero_mem _
-  · rintro y ⟨⟨hy, hy'⟩, hy''⟩
-    refine ⟨fun v => ?_, fun v => ?_⟩
-    · have e : y.val.2 v * (y⁻¹).val.2 v = 1 :=
-        congrArg (fun a : AdeleRing (𝓞 K) K => a.2 v) y.mul_inv
-      have e' := congrArg Valued.v e
-      rw [map_mul, map_one] at e'
-      exact eq_one_of_one_le_mul_left (hy v) (hy' v) e'.ge
-    · have e : Valued.v ((y.val.2 v - 1) * algebraMap K (v.adicCompletion K) (N : K)⁻¹) ≤ 1 := hy'' v
-      haveI : CharZero (v.adicCompletion K) := charZero_of_injective_algebraMap (algebraMap K _).injective
-      have h0 : Valued.v (N : v.adicCompletion K) ≠ 0 := by
-        rw [Valuation.ne_zero_iff]
-        exact Nat.cast_ne_zero.2 hN
-      rw [map_inv₀, map_natCast, map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 h0), one_mul] at e
-      exact e
+  first
+  | exact _root_.GlobalTheory.HeckeUnrExt.lev_mem_nhds
+  | (apply _root_.GlobalTheory.HeckeUnrExt.lev_mem_nhds <;> assumption)
 
 theorem ideleMap_mem_lev (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (N : ℕ) (y : Ideles K) : ideleMap K L y ∈ lev L N ↔ y ∈ lev K N := by
