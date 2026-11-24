@@ -64,17 +64,9 @@ theorem m_ge_one : (1 : ℝ) ≤ D.R.m := by
   have h := D.R.two_le_m
   exact_mod_cast (by omega : 1 ≤ D.R.m)
 theorem m_le_f : (D.R.m : ℝ) ≤ D.R.f := by
-  have h := D.R.m_le_f
-  have h' : D.R.m ≤ D.R.f := by
-    unfold Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n
-    exact h
-  exact_mod_cast h'
+  exact_mod_cast D.R.m_le_f
 theorem f_le_k : (D.R.f : ℝ) ≤ D.R.k := by
-  have h := D.R.f_le_k
-  have h' : D.R.f ≤ D.R.k := by
-    unfold Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n
-    exact h
-  exact_mod_cast h'
+  exact_mod_cast D.R.f_le_k
 theorem m_le_k : (D.R.m : ℝ) ≤ D.R.k := by
   exact (m_le_f D).trans (f_le_k D)
 theorem k_ge_five : (5 : ℝ) ≤ D.R.k := by
@@ -108,11 +100,7 @@ theorem r_le_two_k : (D.R.r : ℝ) ≤ 2 * D.R.k := by
     omega
   exact_mod_cast h'
 theorem t_ge : (D.R.r : ℝ) + 5 ≤ D.R.t := by
-  have h2 := D.R.rank_add_five_le
-  have h' : D.R.r + 5 ≤ D.R.t := by
-    unfold Formalism.BasicNotions.Ranks.r
-    omega
-  exact_mod_cast h'
+  exact_mod_cast D.R.rank_add_five_le
 theorem r_le_N : (D.R.r : ℝ) ≤ D.R.N D.R.m := by
   have hm : D.R.m ≤ D.R.m * (D.R.t + 1) := Nat.le_mul_of_pos_right _ (Nat.succ_pos _)
   have h' : D.R.r ≤ D.R.N D.R.m := by
@@ -666,10 +654,7 @@ variable {C : ℝ} (hC : 0 < C) (P : ParameterChoice' D L) (hPar : ParametersPol
 include hC P hPar hL
 
 theorem Lw_le : (D.host.Lw : ℝ) ≤ C * Real.log L.sc.x := by
-  have h := P.Lw_le
-  have h2 := hPar.1
-  have hl := Real.log_pos L.sc.one_lt_alt
-  nlinarith
+  nlinarith [P.Lw_le, hPar.1, Real.log_pos L.sc.one_lt_alt]
 
 theorem Lw_pos : (0 : ℝ) < D.host.Lw := by
   have := L.weightLength_ge_depth
