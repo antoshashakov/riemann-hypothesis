@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.HRSumSmulRight
 
 @[expose] public section
 
@@ -116,20 +117,7 @@ theorem b_sc_mem {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) : sc (E :=
 
 theorem b_mul_mem {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x * y ∈ OEv (E := E) v := by
-  induction hx using Submodule.span_induction with
-  | mem a ha =>
-    obtain ⟨a, -, rfl⟩ := ha
-    induction hy using Submodule.span_induction with
-    | mem b hb =>
-      obtain ⟨b, -, rfl⟩ := hb
-      have := b_inclR_mem (E := E) v (a * b)
-      simpa using this
-    | zero => rw [mul_zero]; exact Submodule.zero_mem _
-    | add y1 y2 _ _ h1 h2 => rw [mul_add]; exact Submodule.add_mem _ h1 h2
-    | smul c y _ h => rw [mul_smul_comm]; exact Submodule.smul_mem _ c h
-  | zero => rw [zero_mul]; exact Submodule.zero_mem _
-  | add x1 x2 _ _ h1 h2 => rw [add_mul]; exact Submodule.add_mem _ h1 h2
-  | smul c x _ h => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c h
+  first | exact _root_.PI.OmLocU.oEv_mul | (apply _root_.PI.OmLocU.oEv_mul <;> assumption)
 
 theorem b_trace_mem {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) x ∈ v.adicCompletionIntegers F := by

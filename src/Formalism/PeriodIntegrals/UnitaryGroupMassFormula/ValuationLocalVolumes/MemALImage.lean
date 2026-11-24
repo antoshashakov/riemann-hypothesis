@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.HRSumSmulRight
 
 @[expose] public section
 
@@ -132,18 +133,7 @@ private theorem int_of_alg_lemma_2 (a : 𝓞 E) (z : Fv F v ⊗[F] E) (hz : z �
 
 private theorem int_of_alg_lemma_3 (x z : Fv F v ⊗[F] E) (hx : x ∈ OEv (E := E) v) (hz : z ∈ OEv (E := E) v) :
     x * z ∈ OEv (E := E) v := by
-  change x ∈ Submodule.span (v.adicCompletionIntegers F) _ at hx
-  induction hx using Submodule.span_induction with
-  | mem y hy =>
-    obtain ⟨a, -, rfl⟩ := hy
-    exact int_of_alg_lemma_2 v a z hz
-  | zero => rw [zero_mul]; exact (Submodule.span _ _).zero_mem
-  | add y w _ _ hy hw =>
-    rw [add_mul]
-    exact (Submodule.span (v.adicCompletionIntegers F) _).add_mem hy hw
-  | smul c y _ hy =>
-    rw [show c • y = (c : Fv F v) • y from rfl, smul_mul_assoc]
-    exact (Submodule.span (v.adicCompletionIntegers F) _).smul_mem c hy
+  first | exact _root_.PI.OmLocU.oEv_mul | (apply _root_.PI.OmLocU.oEv_mul <;> assumption)
 
 theorem int_of_alg {θ : Fv F v ⊗[F] E} (hθO : θ ∈ OEv (E := E) v)
     (hθ : Algebra.trace (Fv F v) (Fv F v ⊗[F] E) θ = 1) {x : Fv F v}

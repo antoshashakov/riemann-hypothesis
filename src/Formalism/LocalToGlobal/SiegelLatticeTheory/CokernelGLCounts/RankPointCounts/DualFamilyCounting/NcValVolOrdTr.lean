@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.HRSumSmulRight
 
 @[expose] public section
 
@@ -123,26 +124,7 @@ theorem alg_mem {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) :
 
 theorem mul_mem {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x * y ∈ OEv (E := E) v := by
-  simp only [OEv, SetLike.mem_coe] at hx hy ⊢
-  have key : ∀ a : 𝓞 E, ∀ y ∈ Submodule.span (v.adicCompletionIntegers F)
-      ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ),
-      inclR (F := F) (Fv F v) (a : E) * y ∈ Submodule.span (v.adicCompletionIntegers F)
-        ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ) := by
-    intro a y hy
-    induction hy using Submodule.span_induction with
-    | mem z hz =>
-      obtain ⟨b, -, rfl⟩ := hz
-      exact Submodule.subset_span ⟨a * b, Set.mem_univ _, by simp [map_mul]⟩
-    | zero => rw [mul_zero]; exact Submodule.zero_mem _
-    | add x z _ _ hx hz => rw [mul_add]; exact Submodule.add_mem _ hx hz
-    | smul c x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ c hx
-  induction hx using Submodule.span_induction with
-  | mem z hz =>
-    obtain ⟨a, -, rfl⟩ := hz
-    exact key a y hy
-  | zero => rw [zero_mul]; exact Submodule.zero_mem _
-  | add x z _ _ hx hz => rw [add_mul]; exact Submodule.add_mem _ hx hz
-  | smul c x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c hx
+  first | exact _root_.PI.OmLocU.oEv_mul | (apply _root_.PI.OmLocU.oEv_mul <;> assumption)
 
 theorem trace_mem {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) x ∈ v.adicCompletionIntegers F := by
