@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Divisors.MatchingOfParts
+public import Development.WeilBound.ThetaLifts.LeviDeterminants.MCSpan
 
 @[expose] public section
 
@@ -110,44 +111,9 @@ theorem exists_invariant {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg :
 theorem exists_sum_cosets {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     ∃ a : F, a ≠ 0 ∧ ∃ R : Finset (κ → FiniteAdeleRing (𝓞 F) F),
       g = ∑ r ∈ R, g r • Set.indicator {y | y - r ∈ scaledInt F κ a} (fun _ => (1 : ℂ)) := by
-  obtain ⟨a, ha, hinv⟩ := exists_invariant hg
-  have hg' : IsLocallyConstant g ∧ HasCompactSupport g := hg
-  have hK : IsCompact (tsupport g) := hg'.2
-  have hopen : IsOpen ((scaledInt F κ a : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)) :
-      Set (κ → FiniteAdeleRing (𝓞 F) F)) := GlobalTheory.EvAdm.isOpen_scaledInt a
-  obtain ⟨t, -, ht⟩ := hK.elim_nhds_subcover (fun x => {y | y - x ∈ scaledInt F κ a}) (fun x _ =>
-    (continuous_sub_right x).continuousAt.preimage_mem_nhds
-      (hopen.mem_nhds (by simp)))
-  refine ⟨a, ha, (t.image (fun x => (QuotientAddGroup.mk x :
-    (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a))).image Quotient.out, ?_⟩
-  funext y
-  have hmem : ∀ q : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a,
-      y - Quotient.out q ∈ scaledInt F κ a ↔
-        (QuotientAddGroup.mk y : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a) = q := by
-    intro q
-    have hq : (QuotientAddGroup.mk (Quotient.out q) :
-        (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a) = q := Quotient.out_eq' q
-    calc y - Quotient.out q ∈ scaledInt F κ a ↔ -y + Quotient.out q ∈ scaledInt F κ a := by
-          rw [← (scaledInt F κ a).neg_mem_iff, neg_sub, sub_eq_neg_add]
-      _ ↔ (QuotientAddGroup.mk y : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a) =
-          QuotientAddGroup.mk (Quotient.out q) := QuotientAddGroup.eq.symm
-      _ ↔ _ := by rw [hq]
-  rw [Finset.sum_apply, Finset.sum_image (by intro q _ q' _ h; exact Quotient.out_injective h)]
-  simp only [Pi.smul_apply, smul_eq_mul, Set.indicator_apply, Set.mem_ofPred_eq, hmem, mul_ite,
-    mul_one, mul_zero]
-  rw [Finset.sum_ite_eq]
-  split_ifs with hy
-  · have h1 := hinv (Quotient.out (QuotientAddGroup.mk y :
-        (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a)) (y - Quotient.out (QuotientAddGroup.mk y :
-        (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a)) ((hmem _).2 rfl)
-    simpa using h1
-  · by_contra hne
-    have hyK : y ∈ tsupport g := subset_tsupport g hne
-    obtain ⟨x, hx, hyx⟩ := Set.mem_iUnion₂.1 (ht hyK)
-    apply hy
-    refine Finset.mem_image.2 ⟨x, hx, ?_⟩
-    rw [QuotientAddGroup.eq, neg_add_eq_sub]
-    exact hyx
+  first
+  | exact _root_.PositivityTheory.ThKF0.Span.exists_sum_cosets
+  | (apply _root_.PositivityTheory.ThKF0.Span.exists_sum_cosets <;> assumption)
 
 theorem exists_sum_finprod {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     ∃ (m : ℕ) (c : Fin m → ℂ) (φ : Fin m → ∀ v : HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ),

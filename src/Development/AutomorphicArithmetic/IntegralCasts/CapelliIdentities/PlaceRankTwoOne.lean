@@ -57,6 +57,7 @@ import Mathlib.Topology.Sheaves.Init
 public import Mathlib.LinearAlgebra.Determinant
 public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 public import Mathlib.RingTheory.Norm.Transitivity
+public import Formalism.RealPlaceAnalysis.Complexify
 
 @[expose] public section
 
@@ -131,11 +132,9 @@ section JLemmas
 open Matrix
 
 private theorem Jm_sq {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> simp
+  first
+  | exact _root_.Formalism.REAL.Jm_mul_self
+  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
 
 private theorem normSq_det {n : ℕ} {ε : Fin n → Bool}
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : Complex.normSq g.det = 1 := by

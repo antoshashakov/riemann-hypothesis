@@ -36,6 +36,7 @@ import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.LocCompROfAdmissibleReal
 
 @[expose] public section
 
@@ -74,33 +75,9 @@ private theorem exists_type (κ : Representation ℂ K V) (φ : V)
     (hφ : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => κ k φ))) :
     ∃ (d : ℕ) (ξ : K →* Matrix (Fin d) (Fin d) ℂ), ∀ x ∈ annPart κ φ, ∃ f : (Fin d → ℂ) →ₗ[ℂ] V,
       (∀ k v, f (ξ k *ᵥ v) = κ k (f v)) ∧ x ∈ LinearMap.range f ∧ ∀ v, ∃ c, f v = orb κ x c := by
-  have hO : ∀ k, ∀ y ∈ LinearMap.range (orb κ φ), κ k y ∈ LinearMap.range (orb κ φ) := by
-    rintro k _ ⟨c, rfl⟩
-    exact ⟨_, orb_act κ φ k c⟩
-  haveI : FiniteDimensional ℂ (LinearMap.range (orb κ φ)) := by
-    rw [orb, Finsupp.range_linearCombination]; exact hφ
-  let b := Module.finBasis ℂ (LinearMap.range (orb κ φ))
-  obtain ⟨s, hs⟩ := (orb κ φ).rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict _)
-  refine ⟨_, (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp (sub κ _ hO), fun x hx => ?_⟩
-  have key : ∀ c, orb κ x (s ((orb κ φ).rangeRestrict c)) = orb κ x c := fun c => by
-    rw [← sub_eq_zero, ← map_sub]
-    refine hx _ ?_
-    rw [map_sub, sub_eq_zero]
-    exact congrArg Subtype.val (LinearMap.congr_fun hs ((orb κ φ).rangeRestrict c))
-  refine ⟨orb κ x ∘ₗ s ∘ₗ b.equivFun.symm.toLinearMap, fun k v => ?_,
-    ⟨b.equivFun ((orb κ φ).rangeRestrict (Finsupp.single 1 1)), ?_⟩, fun v => ⟨_, rfl⟩⟩
-  · obtain ⟨y, rfl⟩ := b.equivFun.surjective v
-    obtain ⟨c, rfl⟩ := (orb κ φ).surjective_rangeRestrict y
-    have h1 : (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp (sub κ _ hO) k *ᵥ b.equivFun ((orb κ φ).rangeRestrict c) =
-        b.equivFun ((orb κ φ).rangeRestrict (c.mapDomain (k * ·))) := by
-      have h2 : (orb κ φ).rangeRestrict (c.mapDomain (k * ·)) = sub κ _ hO k ((orb κ φ).rangeRestrict c) :=
-        Subtype.ext (orb_act κ φ k c)
-      rw [h2]
-      exact LinearMap.toMatrix_mulVec_repr b b _ _
-    rw [h1]
-    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, key, orb_act]
-  · simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, key]
-    simp [orb]
+  first
+  | exact _root_.GlobalTheory.RealGal.LocCompRProof.exists_type
+  | (apply _root_.GlobalTheory.RealGal.LocCompRProof.exists_type <;> assumption)
 end Gen
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {n : ℕ}
 private theorem smooth_fin (π : TR.CuspSub F n) : IsSmooth π.finPart := fun v => by

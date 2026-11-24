@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.PairedDualFirstOrderDualMatrixSpace
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.NormsAndPolarizations.CjApply
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.OrdinaryHeckeAlgebraIntegral
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.WeilDeligneUnramified.WeilCharpolySupport.ExistsInjectiveSection
 
 @[expose] public section
 
@@ -51,17 +52,9 @@ open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheor
 
 private theorem norm_one {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] [NormedField K]
     (ψ : Γ →* Kˣ) (hψ : Continuous fun s => (ψ s : K)) (s : Γ) : ‖(ψ s : K)‖ = 1 := by
-  have key : ∀ t, ‖(ψ t : K)‖ ≤ 1 := fun t => by
-    obtain ⟨C, hC⟩ := (isCompact_range hψ.norm).bddAbove
-    refine not_lt.1 fun hlt => ?_
-    obtain ⟨m, hm⟩ := pow_unbounded_of_one_lt C hlt
-    have h1 := hC ⟨t ^ m, rfl⟩
-    simp only [map_pow, Units.val_pow_eq_pow_val, norm_pow] at h1
-    exact absurd hm (not_lt.2 h1)
-  refine le_antisymm (key s) ?_
-  have h2 := key s⁻¹
-  rw [map_inv, Units.val_inv_eq_inv_val, norm_inv] at h2
-  exact (inv_le_one₀ (norm_pos_iff.2 (ψ s).ne_zero)).1 h2
+  first
+  | exact _root_.UpperTheory.V.Z.Sym.AboveWeight.norm_one
+  | (apply _root_.UpperTheory.V.Z.Sym.AboveWeight.norm_one <;> assumption)
 
 open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands in
 private theorem emb_ne (H : GlobalTheory.Published.GlobalArtinReciprocity) {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω]
