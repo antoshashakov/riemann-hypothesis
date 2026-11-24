@@ -47,6 +47,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Calculus.Deriv.Shift
+public import Formalism.RealPlaceAnalysis.Complexify
 
 @[expose] public section
 
@@ -76,10 +77,9 @@ lemma p0auxiliary_theta_single {n : ℕ} (ε : Fin n → Bool) (a b : Fin n) :
   split_ifs <;> simp_all
 
 private lemma Jm_mul_selfRealPlaceTaylor {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
+  first
+  | exact _root_.Formalism.REAL.Jm_mul_self
+  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
 
 private lemma conjTranspose_Jm {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, Matrix.diagonal_conjTranspose]

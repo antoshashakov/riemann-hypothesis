@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrMultVOfNotJump
 
 @[expose] public section
 
@@ -70,16 +71,9 @@ variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower 
   (ρ : Representation LL G V)
 
 theorem FilV_anti (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
-  unfold FilV
-  refine le_trans (le_of_eq ?_) (LinearMap.range_comp_le_range
-    (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V)
-      (Submodule.inclusion (show (PD.Fil (a + 1)).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp from
-        fun x hx => PD.Fil_anti a hx)))
-    (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil a).restrictScalars Qp).subtype))
-  congr 1
-  apply TensorProduct.AlgebraTensorModule.ext
-  intro v w
-  first | rfl | simp
+  first
+  | exact _root_.Formalism.MainNotions.N.Ln34.UniversalFiltration.fr_filV_succ
+  | (apply _root_.Formalism.MainNotions.N.Ln34.UniversalFiltration.fr_filV_succ <;> assumption)
 
 theorem FildR_anti (τ : K →ₐ[Qp] LL) (a : ℤ) : FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a := by
   unfold FildR

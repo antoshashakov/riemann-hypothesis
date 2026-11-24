@@ -50,6 +50,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Topology.Algebra.Group.Matrix
+public import Formalism.RealPlaceAnalysis.Complexify
 
 @[expose] public section
 
@@ -78,11 +79,9 @@ def Kset {n : ℕ} (ε : Fin n → Bool) : Set (Matrix (Fin n) (Fin n) ℂ) :=
 def hs {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖g i j‖ ^ 2
 
 lemma Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
+  first
+  | exact _root_.Formalism.REAL.Jm_mul_self
+  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
 
 lemma Jm_conjTranspose {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm

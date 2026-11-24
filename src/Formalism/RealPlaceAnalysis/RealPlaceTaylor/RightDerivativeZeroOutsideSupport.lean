@@ -65,6 +65,7 @@ public import Mathlib.Analysis.Calculus.Deriv.Shift
 public import Mathlib.Analysis.Calculus.ParametricIntegral
 public import Mathlib.Analysis.Complex.RealDeriv
 public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
+public import Formalism.RealPlaceAnalysis.Complexify
 
 @[expose] public section
 
@@ -253,11 +254,9 @@ lemma continuous_frobenius_exp_neg_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) �
   exact h1.comp (continuous_exp_neg_smul X)
 
 private lemma Jm_mul_Jm_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
+  first
+  | exact _root_.Formalism.REAL.Jm_mul_self
+  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
 
 private lemma inUJ_exp_real_smul_of_inG {n : ℕ} {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inG ε X) (u : ℝ) : inUJ ε (NormedSpace.exp ((u : ℂ) • X)) := by

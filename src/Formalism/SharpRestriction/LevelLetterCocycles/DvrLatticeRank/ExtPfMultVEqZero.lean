@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrMultVOfNotJump
 
 @[expose] public section
 
@@ -62,13 +63,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 
 theorem extPf_filV_succ_le (a : ℤ) :
     FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
-  have hle : (PD.Fil (a + 1)).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp :=
-    fun x hx => PD.Fil_anti a hx
-  unfold FilV
-  rintro _ ⟨t, rfl⟩
-  refine ⟨AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion hle) t, ?_⟩
-  rw [← LinearMap.comp_apply, ← AlgebraTensorModule.map_comp]
-  rfl
+  first
+  | exact _root_.Formalism.MainNotions.N.Ln34.UniversalFiltration.fr_filV_succ
+  | (apply _root_.Formalism.MainNotions.N.Ln34.UniversalFiltration.fr_filV_succ <;> assumption)
 
 theorem extPf_fildR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) :
     FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a :=

@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.RealPlaceAnalysis.Complexify
 
 @[expose] public section
 
@@ -56,11 +57,9 @@ def coeMatrixAlt {n : ℕ} (ε : Fin n → Bool) : UJ ε → Matrix (Fin n) (Fin
   fun g => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
 
 private lemma jm_sq_lemma {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
+  first
+  | exact _root_.Formalism.REAL.Jm_mul_self
+  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
 
 lemma coeMatrix_left_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
     (Jm ε * gᴴ * Jm ε) * g = 1 := by

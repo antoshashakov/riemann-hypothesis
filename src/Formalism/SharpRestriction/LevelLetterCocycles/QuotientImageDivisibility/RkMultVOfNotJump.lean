@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrMultVOfNotJump
 
 @[expose] public section
 
@@ -69,13 +70,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 theorem rk_filV_succ (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
-  rintro x ⟨y, rfl⟩
-  induction y using TensorProduct.induction_on with
-  | zero => simp
-  | tmul v b => exact ⟨v ⊗ₜ ⟨b.1, PD.Fil_anti a b.2⟩, by simp [AlgebraTensorModule.map_tmul]⟩
-  | add y z hy hz =>
-    rw [map_add (f := _)]
-    exact Submodule.add_mem _ hy hz
+  first
+  | exact _root_.Formalism.MainNotions.N.Ln34.UniversalFiltration.fr_filV_succ
+  | (apply _root_.Formalism.MainNotions.N.Ln34.UniversalFiltration.fr_filV_succ <;> assumption)
 
 theorem rk_filV_anti : Antitone (fun a : ℤ => FilV PD (LL := LL) (V := V) a) := by
   exact antitone_int_of_succ_le fun a => rk_filV_succ PD a

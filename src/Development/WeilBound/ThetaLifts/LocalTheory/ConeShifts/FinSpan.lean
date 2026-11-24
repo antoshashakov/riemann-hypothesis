@@ -48,6 +48,7 @@ import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.Divisors.MatchingOfParts
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+public import Development.WeilBound.ThetaLifts.LeviDeterminants.MCSpan
 
 @[expose] public section
 
@@ -275,53 +276,9 @@ theorem exists_invariant {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg :
 theorem exists_sum_cosets {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     ∃ a : F, a ≠ 0 ∧ ∃ R : Finset (κ → FiniteAdeleRing (𝓞 F) F),
       g = ∑ r ∈ R, g r • Set.indicator {y | y - r ∈ scaledInt F κ a} (fun _ => (1 : ℂ)) := by
-  obtain ⟨a, ha, hinv⟩ := exists_invariant hg
-  refine ⟨a, ha, ?_⟩
-  set U := scaledInt F κ a
-  have hN : ∀ y ∈ tsupport g, {x | x - y ∈ U} ∈ 𝓝 y := fun y _ =>
-    ((isOpen_scaledInt a).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp)
-  obtain ⟨t, -, ht⟩ := IsCompact.elim_nhds_subcover hg.2 _ hN
-  let R : Finset (κ → FiniteAdeleRing (𝓞 F) F) :=
-    (t.image (QuotientAddGroup.mk : (κ → FiniteAdeleRing (𝓞 F) F) → _ ⧸ U)).image Quotient.out
-  have hdist : ∀ r ∈ R, ∀ r' ∈ R, ∀ x, x - r ∈ U → x - r' ∈ U → r = r' := by
-    intro r hr r' hr' x h h'
-    obtain ⟨q, -, rfl⟩ := Finset.mem_image.1 hr
-    obtain ⟨q', -, rfl⟩ := Finset.mem_image.1 hr'
-    have e1 : (QuotientAddGroup.mk q.out : _ ⧸ U) = QuotientAddGroup.mk x :=
-      QuotientAddGroup.eq.2 (by rwa [neg_add_eq_sub])
-    have e2 : (QuotientAddGroup.mk q'.out : _ ⧸ U) = QuotientAddGroup.mk x :=
-      QuotientAddGroup.eq.2 (by rwa [neg_add_eq_sub])
-    rw [QuotientAddGroup.out_eq'] at e1 e2
-    rw [e1, e2]
-  have hcover : ∀ x ∈ tsupport g, ∃ r ∈ R, x - r ∈ U := by
-    intro x hx
-    obtain ⟨y, hy, hxy⟩ := Set.mem_iUnion₂.1 (ht hx)
-    refine ⟨(QuotientAddGroup.mk y : _ ⧸ U).out, Finset.mem_image_of_mem _ (Finset.mem_image_of_mem _ hy), ?_⟩
-    have e : -(QuotientAddGroup.mk y : _ ⧸ U).out + y ∈ U :=
-      QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' _)
-    have := U.add_mem hxy e
-    convert this using 1
-    abel
-  refine ⟨R, funext fun x => ?_⟩
-  rw [Finset.sum_apply]
-  by_cases hx : ∃ r ∈ R, x - r ∈ U
-  · obtain ⟨r0, hr0, hxr0⟩ := hx
-    rw [Finset.sum_eq_single_of_mem r0 hr0]
-    · have h := hinv r0 (x - r0) hxr0
-      rw [add_sub_cancel] at h
-      simp only [Pi.smul_apply, smul_eq_mul, Set.indicator_of_mem (show x ∈ {y | y - r0 ∈ U} from hxr0), mul_one, h]
-    · intro r hr hne
-      have hm : x ∉ {y | y - r ∈ U} := fun h => hne (hdist r hr r0 hr0 _ h hxr0)
-      simp only [Pi.smul_apply, smul_eq_mul, Set.indicator_of_notMem hm, mul_zero]
-  · push Not at hx
-    have hK : x ∉ tsupport g := fun h => by
-      obtain ⟨r, hr, h'⟩ := hcover _ h
-      exact hx r hr h'
-    rw [image_eq_zero_of_notMem_tsupport hK]
-    symm
-    refine Finset.sum_eq_zero fun r hr => ?_
-    have hm : x ∉ {y | y - r ∈ U} := hx r hr
-    simp only [Pi.smul_apply, smul_eq_mul, Set.indicator_of_notMem hm, mul_zero]
+  first
+  | exact _root_.PositivityTheory.ThKF0.Span.exists_sum_cosets
+  | (apply _root_.PositivityTheory.ThKF0.Span.exists_sum_cosets <;> assumption)
 
 theorem exists_sum_finprod {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     ∃ (m : ℕ) (c : Fin m → ℂ) (φ : Fin m → ∀ v : HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ),

@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.RealPlaceAnalysis.Complexify
 
 @[expose] public section
 
@@ -113,11 +114,9 @@ lemma io_smooth_smul {f : Matrix (Fin n) (Fin n) ℂ → E} (c : ℂ) (hf : Smoo
   simp only [hfF g hg hgJ]
 
 private lemma Jm_mul_self_eq_oneFormalDegreeRatio {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext i
-  split_ifs <;> norm_num
+  first
+  | exact _root_.Formalism.REAL.Jm_mul_self
+  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
 
 private lemma Jm_conjTranspose_eq_selfFormalDegreeRatio {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm

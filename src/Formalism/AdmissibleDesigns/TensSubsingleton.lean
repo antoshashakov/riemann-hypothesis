@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrMultVOfNotJump
 
 @[expose] public section
 
@@ -77,12 +78,9 @@ variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower 
   (ρ : Representation LL G V)
 
 theorem filV_anti (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
-  unfold FilV
-  rintro _ ⟨z, rfl⟩
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul v f => exact ⟨v ⊗ₜ ⟨(f : BdR), PD.Fil_anti a f.2⟩, by simp⟩
-  | add x y hx hy => rw [map_add (f := _)]; exact Submodule.add_mem _ hx hy
+  first
+  | exact _root_.Formalism.MainNotions.N.Ln34.UniversalFiltration.fr_filV_succ
+  | (apply _root_.Formalism.MainNotions.N.Ln34.UniversalFiltration.fr_filV_succ <;> assumption)
 
 theorem fildR_anti (τ : K →ₐ[Qp] LL) (a : ℤ) : FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a := inf_le_inf_left _ (filV_anti PD a)
 
