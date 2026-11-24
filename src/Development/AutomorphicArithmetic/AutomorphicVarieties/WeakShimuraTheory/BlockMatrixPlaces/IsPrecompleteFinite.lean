@@ -40,47 +40,17 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Formalism.SharedLemmas.PrecompleteFinite
 
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
-private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : Fin r → R) :
-    x ∈ J • (⊤ : Submodule R (Fin r → R)) ↔ ∀ i, x i ∈ J := by
-  constructor
-  · intro hx
-    refine Submodule.smul_induction_on hx (fun a ha y _ i => ?_) (fun a b ha hb i => ?_)
-    · exact J.mul_mem_right _ ha
-    · exact J.add_mem (ha i) (hb i)
-  · intro hx
-    rw [pi_eq_sum_univ x]
-    exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
-
-private theorem isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
-    IsPrecomplete I (Fin r → R) := by
-  refine ⟨fun f hf => ?_⟩
-  have key : ∀ i, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)] := fun i =>
-    IsPrecomplete.prec' (I := I) (fun n => f n i) fun {m n} hmn => by
-      have h := hf hmn
-      rw [SModEq.sub_mem, mem_smul_top_pi] at h
-      rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
-      exact h i
-  choose L hL using key
-  refine ⟨L, fun n => ?_⟩
-  rw [SModEq.sub_mem, mem_smul_top_pi]
-  intro i
-  have h := hL i n
-  rwa [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at h
-
 private theorem isPrecomplete_finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete I M := by
-  obtain ⟨r, π, hπ⟩ := Module.Finite.exists_fin' R M
-  haveI := isPrecomplete_pi I r
-  rw [← AdicCompletion.of_surjective_iff]
-  intro y
-  obtain ⟨z, rfl⟩ := AdicCompletion.map_surjective I hπ y
-  obtain ⟨w, rfl⟩ := AdicCompletion.of_surjective I (Fin r → R) z
-  exact ⟨π w, (AdicCompletion.map_of I π w).symm⟩
+  first
+  | exact _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite
+  | (apply _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite <;> assumption)
 
 private theorem lift_seq {A : Type} [CommRing A] [IsLocalRing A] {T : Type} [AddCommGroup T] [Module A T]
     [IsPrecomplete (maximalIdeal A) T] (x : ∀ n, T ⧸ lev A T n) (hx : ∀ n, redn A T n (x (n + 1)) = x n) :

@@ -65,6 +65,7 @@ import Formalism.ConjugateSelfDual.Statement
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import ReciprocityTheory.GaloisValuations.GlobalA
+public import Formalism.SharedLemmas.PrecompleteFinite
 
 @[expose] public section
 
@@ -87,29 +88,15 @@ private theorem psm_mem_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : 
 
 private theorem psm_prec_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
     IsPrecomplete I (Fin r → R) := by
-  refine ⟨fun f hf => ?_⟩
-  have key : ∀ i, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)] := fun i =>
-    IsPrecomplete.prec' (I := I) (fun n => f n i) fun {m n} hmn => by
-      have h := hf hmn
-      rw [SModEq.sub_mem, psm_mem_pi] at h
-      rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
-      exact h i
-  choose L hL using key
-  refine ⟨L, fun n => ?_⟩
-  rw [SModEq.sub_mem, psm_mem_pi]
-  intro i
-  have h := hL i n
-  rwa [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at h
+  first
+  | exact _root_.Formalism.SharedLemmas.isPrecomplete_fin_pi
+  | (apply _root_.Formalism.SharedLemmas.isPrecomplete_fin_pi <;> assumption)
 
 private theorem psm_prec_finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete I M := by
-  obtain ⟨r, π, hπ⟩ := Module.Finite.exists_fin' R M
-  haveI := psm_prec_pi I r
-  rw [← AdicCompletion.of_surjective_iff]
-  intro y
-  obtain ⟨z, rfl⟩ := AdicCompletion.map_surjective I hπ y
-  obtain ⟨w, rfl⟩ := AdicCompletion.of_surjective I (Fin r → R) z
-  exact ⟨π w, (AdicCompletion.map_of I π w).symm⟩
+  first
+  | exact _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite
+  | (apply _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite <;> assumption)
 
 private theorem psm_ev {R S σ : Type} [CommRing R] [CommRing S] [Finite σ] (m : Ideal S) [IsAdicComplete m S]
     (f : R →+* S) (a : σ → S) (ha : ∀ s, a s ∈ m.radical) :

@@ -52,6 +52,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.FieldTheory.Finite.Basic
 public import Mathlib.FieldTheory.PrimitiveElement
+public import Formalism.SharedLemmas.PrecompleteFinite
 
 @[expose] public section
 
@@ -79,63 +80,15 @@ private theorem op_mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : �
 
 private theorem op_isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
     IsPrecomplete I (Fin r → R) := by
-  refine ⟨fun f hf => ?_⟩
-  have hc : ∀ i, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)] := by
-    intro i
-    refine IsPrecomplete.prec' (I := I) (fun n => f n i) (fun {m n} hmn => ?_)
-    have h := hf hmn
-    rw [SModEq.sub_mem, op_mem_smul_top_pi] at h
-    rw [SModEq.sub_mem]
-    simpa [smul_eq_mul, Ideal.mul_top] using h i
-  choose L hL using hc
-  refine ⟨L, fun n => ?_⟩
-  rw [SModEq.sub_mem, op_mem_smul_top_pi]
-  intro i
-  have h := hL i n
-  rw [SModEq.sub_mem] at h
-  simpa [smul_eq_mul, Ideal.mul_top] using h
+  first
+  | exact _root_.Formalism.SharedLemmas.isPrecomplete_fin_pi
+  | (apply _root_.Formalism.SharedLemmas.isPrecomplete_fin_pi <;> assumption)
 
 private theorem op_isPrecomplete_finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] : IsPrecomplete I M := by
-  obtain ⟨r, φ, hφ⟩ := Module.Finite.exists_fin' R M
-  haveI := op_isPrecomplete_pi I r
-  have hmap : ∀ n, (I ^ n • ⊤ : Submodule R M) = (I ^ n • ⊤ : Submodule R (Fin r → R)).map φ := by
-    intro n
-    rw [Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.mpr hφ]
-  refine ⟨fun f hf => ?_⟩
-  have hd : ∀ n, ∃ d ∈ (I ^ n • ⊤ : Submodule R (Fin r → R)), φ d = f (n + 1) - f n := by
-    intro n
-    have h := hf (Nat.le_succ n)
-    rw [SModEq.sub_mem, hmap] at h
-    obtain ⟨d, hd, he⟩ := h
-    exact ⟨-d, Submodule.neg_mem _ hd, by rw [map_neg, he, neg_sub]⟩
-  choose d hdm hde using hd
-  obtain ⟨x0, hx0⟩ := hφ (f 0)
-  let F : ℕ → Fin r → R := fun n => x0 + ∑ k ∈ Finset.range n, d k
-  have hF : ∀ n, φ (F n) = f n := by
-    intro n
-    induction n with
-    | zero => simp [F, hx0]
-    | succ n ih =>
-      simp only [F, Finset.sum_range_succ, ← add_assoc, map_add (f := _)] at ih ⊢
-      rw [ih, hde]
-      abel
-  have hFc : ∀ {m n}, m ≤ n → F m ≡ F n [SMOD (I ^ m • ⊤ : Submodule R (Fin r → R))] := by
-    intro m n hmn
-    rw [SModEq.sub_mem]
-    have he : F m - F n = -∑ k ∈ Finset.Ico m n, d k := by
-      simp only [F]
-      rw [← Finset.sum_range_add_sum_Ico _ hmn]
-      abel
-    rw [he]
-    refine Submodule.neg_mem _ (Submodule.sum_mem _ fun k hk => ?_)
-    exact Submodule.smul_mono_left (Ideal.pow_le_pow_right (Finset.mem_Ico.mp hk).1) (hdm k)
-  obtain ⟨L, hL⟩ := IsPrecomplete.prec' F hFc
-  refine ⟨φ L, fun n => ?_⟩
-  have h := hL n
-  rw [SModEq.sub_mem] at h ⊢
-  rw [hmap, ← hF n, ← map_sub]
-  exact Submodule.mem_map_of_mem h
+  first
+  | exact _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite
+  | (apply _root_.Formalism.SharedLemmas.isPrecomplete_of_moduleFinite <;> assumption)
 
 private theorem op_localHom (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Finite K] [Algebra O K] : IsLocalHom (algebraMap O K) := by
