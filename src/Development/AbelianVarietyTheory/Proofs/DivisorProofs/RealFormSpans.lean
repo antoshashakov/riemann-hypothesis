@@ -61,11 +61,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.RealFormSpan
 
 theorem jm_sq (n : ℕ) (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
+  first
+  | exact _root_.Formalism.REAL.Jm_mul_self
+  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
 
 theorem jm_ct (n : ℕ) (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm
