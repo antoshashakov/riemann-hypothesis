@@ -105,9 +105,7 @@ theorem pr_add_left (a b : Matrix (Fin n) (Fin n) D.host.E) (x : Mx D n n) :
   exact Matrix.add_mul _ _ _
 
 theorem pr_zero_left (x : Mx D n n) : pr (0 : Matrix (Fin n) (Fin n) D.host.E) x = 0 := by
-  have h := pr_add_left (0 : Matrix (Fin n) (Fin n) D.host.E) 0 x
-  rw [add_zero] at h
-  exact left_eq_add.1 h
+  simpa using pr_add_left (0 : Matrix (Fin n) (Fin n) D.host.E) 0 x
 
 theorem continuous_halfTr : Continuous (halfTr : AE D → AF D.host.F) := by
   have h : Continuous fun z : AE D => Algebra.trace (AF D.host.F) (AE D) z := by

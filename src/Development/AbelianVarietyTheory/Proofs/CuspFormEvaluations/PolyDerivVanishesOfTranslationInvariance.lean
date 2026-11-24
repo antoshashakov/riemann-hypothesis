@@ -405,9 +405,7 @@ theorem polyDeriv_eq_zero_y_of_fderiv {c : T → Fin p → ℕ} {c' : T → Fin 
 
 theorem eq_zero_of_last_lt {m : ℕ} {i : Fin m} (hi : i.val + 1 = m) (v : Fin m → ℂ) (a : Fin m)
     (h : i < a) : v a = 0 := by
-  have := a.isLt
-  rw [Fin.lt_def] at h
-  omega
+  exact_mod_cast (by omega : _)
 
 theorem polyDeriv_eq_zero_x_dir {c : T → Fin p → ℕ} {c' : T → Fin q → ℕ}
     {P : Poly ℂ T p q κ} (hP : P ∈ minorSpan κ c c') {t : T} {i : Fin p} (hi : i.val + 1 = p)

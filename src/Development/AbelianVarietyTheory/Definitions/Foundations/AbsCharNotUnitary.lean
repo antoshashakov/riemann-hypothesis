@@ -85,9 +85,7 @@ theorem logInf_mul (a b : (InfiniteAdeleRing F)ˣ) : logInf F (a * b) = logInf F
   rw [this, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (inf_ne F a w)) (norm_ne_zero_iff.2 (inf_ne F b w)), mul_add]
 
 theorem logInf_one : logInf F 1 = 0 := by
-  have := logInf_mul F 1 1
-  rw [mul_one] at this
-  linarith
+  simpa using logInf_mul F 1 1
 
 theorem continuous_logInf : Continuous (logInf F) := by
   unfold logInf
@@ -106,9 +104,7 @@ theorem logFin_mul (t s : (FiniteAdeleRing (𝓞 F) F)ˣ) : logFin F (t * s) = l
   rw [GlobalTheory.Idele.idealOf_mul, map_mul, Rat.cast_mul, Real.log_mul (h t) (h s)]
 
 theorem logFin_one : logFin F 1 = 0 := by
-  have := logFin_mul F 1 1
-  rw [mul_one] at this
-  linarith
+  simpa using logFin_mul F 1 1
 
 theorem logFin_eventually : ∀ᶠ t in nhds (1 : (FiniteAdeleRing (𝓞 F) F)ˣ), logFin F t = 0 := by
   have hO : IsOpen {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ v.adicCompletionIntegers F} :=

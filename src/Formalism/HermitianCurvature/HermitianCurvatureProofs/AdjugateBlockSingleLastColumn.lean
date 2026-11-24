@@ -235,9 +235,7 @@ theorem lowV_liftVec (u : Fin (2 * 0 + k + 1) → ℂ) : lowV k j 0 (liftVec k j
 theorem det_extendOne (Z : Matrix (Fin j) (Fin j) ℂ) (ζ : ℂ) :
     (Matrix.reindex (Ux3.eC j 0) (Ux3.eC j 0) (Matrix.fromBlocks Z 0 0 (Matrix.of fun (_ _ : Fin (0 + 1)) => ζ))).det =
       Z.det * ζ := by
-  rw [Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁,
-    Matrix.det_unique (Matrix.of fun (_ _ : Fin (0 + 1)) => ζ)]
-  rfl
+  norm_num
 
 theorem adjugate_block_diagonal_single (Z : Matrix (Fin j) (Fin j) ℂ) (ζ : ℂ) (hZ : IsUnit Z.det) (hζ : ζ ≠ 0) :
     (Matrix.reindex (Ux3.eC j 0) (Ux3.eC j 0) (Matrix.fromBlocks Z 0 0 (Matrix.of fun (_ _ : Fin (0 + 1)) => ζ))).adjugate =

@@ -182,9 +182,7 @@ theorem apply_theta {N : ℕ} [NeZero N] (hζ : IsPrimitiveRoot ζ N) (τ : Gal(
   rw [map_add (f := _), map_inv₀, ← hζ.autToPow_spec ℚ τ, inv_pow]
 
 theorem two_lt (e : ℕ) : 2 < 2 ^ (e + 2) := by
-  have h4 : 2 ^ 2 ≤ 2 ^ (e + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
-  calc 2 < 2 ^ 2 := by norm_num
-    _ ≤ 2 ^ (e + 2) := h4
+  grind
 
 theorem one_val (e : ℕ) : (1 : ZMod (2 ^ (e + 2))).val = 1 := by
   rw [ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt (lt_trans one_lt_two (two_lt e))]

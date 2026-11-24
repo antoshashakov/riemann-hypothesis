@@ -179,9 +179,7 @@ theorem tm_smul_right (a : R) (c : F) (γ : Matrix (Fin nT) (Fin nS) E) : tm F a
   simp [tm, TensorProduct.smul_tmul]
 
 theorem tm_nsmul (n : ℕ) (a : R) (γ : Matrix (Fin nT) (Fin nS) E) : n • tm F a γ = tm F (n • a) γ := by
-  induction n with
-  | zero => simp [tm_zero_left]
-  | succ n ih => rw [succ_nsmul, ih, succ_nsmul, tm_add_left]
+  rfl
 
 
 variable (R) in

@@ -132,14 +132,10 @@ theorem symplOH_add_right (S T : HSp D) (x y y' : WO S T) :
   simp only [Matrix.add_apply, mul_add, add_mul, Finset.sum_add_distrib, map_add (f := _)]
 
 theorem symplOH_zero_left (S T : HSp D) (y : WO S T) : symplOH S T 0 y = 0 := by
-  have := symplOH_add_left S T 0 0 y
-  rw [add_zero] at this
-  exact left_eq_add.1 this
+  simpa using symplOH_add_left S T 0 0 y
 
 theorem symplOH_zero_right (S T : HSp D) (y : WO S T) : symplOH S T y 0 = 0 := by
-  have := symplOH_add_right S T y 0 0
-  rw [add_zero] at this
-  exact left_eq_add.1 this
+  simpa using symplOH_add_right S T y 0 0
 
 theorem gram_inv_star (V : HSp D) (i j) : star (V.gram⁻¹ i j) = V.gram⁻¹ j i := by
   have h : V.gram.IsHermitian :=
@@ -374,9 +370,7 @@ def dLine (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (L : ℝ →+ WO S T) (
   fun x => deriv (fun t : ℝ => heisO ψ S T (L t) f x) 0
 
 theorem additive_real (φ : ℝ →+ ℂ) (h : Continuous φ) (t : ℝ) : φ t = t * φ 1 := by
-  have := (φ.toRealLinearMap h).map_smul t 1
-  rw [smul_eq_mul, mul_one] at this
-  exact this
+  simpa using (φ.toRealLinearMap h).map_smul t 1
 
 theorem psi_sympl_line {lam : AF D.host.F →+ ℂ} (hl : Continuous lam)
     (hlam : ∀ a, sndA D.host.F a = 0 → ψ a = Complex.exp (lam a)) {L : ℝ →+ WO S T} (hL : Continuous L)

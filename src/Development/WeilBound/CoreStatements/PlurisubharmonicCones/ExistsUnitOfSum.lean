@@ -198,10 +198,7 @@ theorem chartMono_add {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (a b :
 
 omit [∀ k, Fintype (J k)] in
 theorem chartMono_neg (c : ∀ k, J k) (a : K → ℤ) : chartMono y c (-a) = (chartMono y c a)⁻¹ := by
-  unfold chartMono
-  rw [← Finset.prod_inv_distrib]
-  refine Finset.prod_congr rfl (fun k _ => ?_)
-  rw [Pi.neg_apply, _root_.zpow_neg]
+  norm_num [chartMono]
 
 omit [∀ k, Fintype (J k)] in
 theorem chartMono_sum {c : ∀ k, J k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (S : Finset ℕ) (b : ℕ → K → ℤ) :

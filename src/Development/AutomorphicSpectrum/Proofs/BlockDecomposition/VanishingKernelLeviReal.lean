@@ -100,26 +100,11 @@ theorem kpart_erase (i : Pos n) (S : Finset (Lt n)) :
 
 theorem ppart_insert (i : Pos n) (S : Finset (Lt n)) :
     ppart (insert ((false, i) : Lt n) S) = ppart S := by
-  ext l
-  simp only [mem_filter, mem_insert]
-  constructor
-  · rintro ⟨rfl | h, h2⟩
-    · simp at h2
-    · exact ⟨h, h2⟩
-  · rintro ⟨h, h2⟩
-    exact ⟨Or.inr h, h2⟩
+  grind
 
 theorem ppart_erase (i : Pos n) (S : Finset (Lt n)) :
     ppart (S.erase ((false, i) : Lt n)) = ppart S := by
-  ext l
-  simp only [mem_filter, mem_erase]
-  constructor
-  · rintro ⟨⟨-, h⟩, h2⟩
-    exact ⟨h, h2⟩
-  · rintro ⟨h, h2⟩
-    refine ⟨⟨?_, h⟩, h2⟩
-    rintro rfl
-    simp at h2
+  grind
 
 theorem kpart_emb {B : Finset (Lt n)} (hB : ∀ l ∈ B, l.1 = true) (A : Finset (Pos n)) :
     kpart (A.map embK ∪ B) = A := by

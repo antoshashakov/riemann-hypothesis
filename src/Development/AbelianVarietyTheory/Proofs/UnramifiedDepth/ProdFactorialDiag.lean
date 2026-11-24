@@ -302,9 +302,7 @@ def dgOne (j : Fin N × Fin N' → σ) (ρ n : ℕ) : σ →₀ ℕ :=
 def dg (j : Fin N × Fin N' → σ) (f : ℕ → ℕ) : σ →₀ ℕ := ∑ ρ ∈ Finset.range N, dgOne j ρ (f ρ)
 
 theorem dgOne_eq_smul (j : Fin N × Fin N' → σ) (ρ n : ℕ) : dgOne j ρ n = n • dgOne j ρ 1 := by
-  classical
-  unfold dgOne
-  split_ifs <;> simp [Finsupp.smul_single]
+  norm_num [dgOne]
 
 theorem monAl_eq_zero (e : ℕ → ℕ) {ρ : ℕ} (h : ¬ ρ < N') : monAl N N' e ρ = 0 := by
   classical

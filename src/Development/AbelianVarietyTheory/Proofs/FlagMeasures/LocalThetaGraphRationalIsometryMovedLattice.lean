@@ -243,11 +243,7 @@ variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M 
 
 theorem mem_map_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (W : Submodule E V) (y : V) :
     c.e (g y) ∈ (W.map (g : V →ₗ[E] V)).map (c.e : V →ₗ[E] S.V) ↔ y ∈ W := by
-  constructor
-  · rintro ⟨x, ⟨z, hz, rfl⟩, hx⟩
-    have : z = y := g.injective (c.e.injective hx)
-    exact this ▸ hz
-  · intro hy; exact ⟨g y, ⟨y, hy, rfl⟩, rfl⟩
+  norm_num
 
 theorem mem_lat_eg (c : WCoord P S) (g : V ≃ₗ[E] V) (Λ0 : Submodule M.L.O V) (y : V) :
     c.e (g y) ∈ c.lat (LocNG.img g Λ0) ↔ y ∈ Λ0 := by

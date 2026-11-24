@@ -215,9 +215,7 @@ theorem cst_apply (n p : ℕ) (a : Fin (p + 1)) (j : Fin (n + 1)) : cst n a j = 
 theorem front_zero (n : ℕ) : front n 0 = 0 := rfl
 
 theorem front_one (n : ℕ) : front n 1 = 1 := by
-  apply Fin.ext
-  change ((1 : Fin 2) : ℕ) = ((1 : Fin (n + 2)) : ℕ)
-  simp
+  rfl
 
 theorem back_apply (n : ℕ) (j : Fin (n + 1)) : back n j = j.succ := by
   simp [back]

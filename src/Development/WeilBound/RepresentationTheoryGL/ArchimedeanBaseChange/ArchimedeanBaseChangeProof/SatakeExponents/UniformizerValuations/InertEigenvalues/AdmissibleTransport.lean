@@ -224,9 +224,7 @@ theorem cone_gap {m : ℕ} {l : Fin m → ℤ} (hl : Cone l) :
     omega
 
 theorem cone_anti {m : ℕ} {l : Fin m → ℤ} (hl : Cone l) {i j : Fin m} (h : i < j) : l j < l i := by
-  have hij : (i : ℕ) < j := h
-  have := cone_gap hl ((j : ℕ) - i - 1) i j (by omega)
-  omega
+  linarith [cone_gap hl ((j : ℕ) - i - 1) i j (by omega)]
 
 theorem wexp_lt (n : ℕ) (l : Fin (n / 2) → ℤ) (i : Fin (n / 2)) (h : (i : ℕ) < n) :
     wexp n l ⟨i, h⟩ = l i := by
@@ -234,21 +232,7 @@ theorem wexp_lt (n : ℕ) (l : Fin (n / 2) → ℤ) (i : Fin (n / 2)) (h : (i : 
   rw [dite_eq_left (show ((⟨i, h⟩ : Fin n) : ℕ) < n / 2 from i.2)]
 
 theorem wexp_rev (n : ℕ) (l : Fin (n / 2) → ℤ) (i : Fin n) : wexp n l i.rev = - wexp n l i := by
-  unfold wexp
-  have hr : (i.rev : ℕ) = n - 1 - i := by rw [Fin.val_rev]; omega
-  have hi := i.2
-  by_cases h1 : (i : ℕ) < n / 2
-  · have h2 : ¬ (i.rev : ℕ) < n / 2 := by omega
-    have h3 : n - 1 - (i.rev : ℕ) < n / 2 := by omega
-    have e : (⟨n - 1 - (i.rev : ℕ), h3⟩ : Fin (n / 2)) = ⟨i, h1⟩ := Fin.ext (by show n - 1 - (i.rev : ℕ) = i; omega)
-    rw [dite_eq_right h2, dite_eq_left h3, dite_eq_left h1, e]
-  · by_cases h4 : n - 1 - (i : ℕ) < n / 2
-    · have h5 : (i.rev : ℕ) < n / 2 := by omega
-      have e : (⟨(i.rev : ℕ), h5⟩ : Fin (n / 2)) = ⟨n - 1 - i, h4⟩ := Fin.ext (by show (i.rev : ℕ) = n - 1 - i; omega)
-      rw [dite_eq_left h5, dite_eq_right h1, dite_eq_left h4, neg_neg, e]
-    · have h5 : ¬ (i.rev : ℕ) < n / 2 := by omega
-      have h6 : ¬ n - 1 - (i.rev : ℕ) < n / 2 := by omega
-      rw [dite_eq_right h5, dite_eq_right h6, dite_eq_right h1, dite_eq_right h4, neg_zero]
+  grind [wexp]
 
 theorem wexp_anti (n : ℕ) {l : Fin (n / 2) → ℤ} (hl : Cone l) {i j : Fin n} (h : i < j) :
     wexp n l j < wexp n l i := by

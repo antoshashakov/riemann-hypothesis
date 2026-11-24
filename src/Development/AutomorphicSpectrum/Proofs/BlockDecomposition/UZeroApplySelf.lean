@@ -166,10 +166,7 @@ theorem exists_common (a : Q p d) : ∃ (m : ℕ) (c : Fin d → ℕ), ∀ k, (p
 
 theorem single_sum_one {ι : Type} (s : Finset ι) (f : ι → Q p d) :
     (single (∑ j ∈ s, f j) (1 : D) : A p D d) = ∏ j ∈ s, single (f j) 1 := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp [AddMonoidAlgebra.one_def]
-  | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, ← ih, single_mul_single, one_mul]
+  norm_num
 
 theorem sum_smul_u_apply (c : Fin d → ℕ) (m : ℕ) (k : Fin d) :
     (∑ j, c j • u p j m) k = c k • pinv p m := by
