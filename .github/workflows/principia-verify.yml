@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       sha:
-        description: commit to check (default: the branch head)
+        description: "commit to check (default is the branch head)"
         required: false
 concurrency:
   group: principia-official-check
