@@ -66,15 +66,8 @@ theorem exists_mul_mem (x : K) (hx : v.valuation K x ≤ 1) :
     ∃ s : 𝓞 K, s ∉ v.asIdeal ∧ ∃ a : 𝓞 K, (s : K) * x = (a : K) := by
   apply Formalism.MainNotions.BridgeLemma.exists_den <;> assumption
 
-theorem dense_algebraMap : DenseRange (algebraMap K (v.adicCompletion K)) := by
-  have h1 := HeightOneSpectrum.adicCompletion.continuous_ofCompletion K v
-  have h2 : DenseRange (HeightOneSpectrum.adicCompletion.ofCompletion (K := K) (v := v)) :=
-    Function.Surjective.denseRange fun x => ⟨x.toCompletion, rfl⟩
-  have h3 : DenseRange (UniformSpace.Completion.coe' ∘ (WithVal.equiv (HeightOneSpectrum.valuation K v)).symm) := by
-    unfold DenseRange
-    rw [Set.range_comp, (WithVal.equiv (HeightOneSpectrum.valuation K v)).symm.surjective.range_eq, Set.image_univ]
-    exact UniformSpace.Completion.denseRange_coe
-  exact h2.comp h3 h1
+theorem dense_algebraMap : DenseRange (algebraMap K (v.adicCompletion K)) :=
+  _root_.IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (K := K) v
 
 theorem valued_algebraMap (x : K) : Valued.v (algebraMap K (v.adicCompletion K) x) = v.valuation K x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x

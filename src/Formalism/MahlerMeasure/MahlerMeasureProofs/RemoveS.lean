@@ -194,22 +194,8 @@ private theorem pderiv_X_pow_mul_of_ne {i j : σ} (h : j ≠ i) (z : ℕ) (g : M
   rw [MvPolynomial.pderiv_mul, pderiv_X_pow_of_ne h, zero_mul, zero_add]
 
 theorem pderiv_comm (i j : σ) (p : MvPolynomial σ k) :
-    pderiv i (pderiv j p) = pderiv j (pderiv i p) := by
-  classical
-  refine MvPolynomial.induction_on' p ?_ ?_
-  · intro s a
-    by_cases hij : i = j
-    · subst hij; rfl
-    · simp only [MvPolynomial.pderiv_monomial]
-      have h1 : (s - Finsupp.single j 1 : σ →₀ ℕ) i = s i := by
-        simp [Ne.symm hij]
-      have h2 : (s - Finsupp.single i 1 : σ →₀ ℕ) j = s j := by
-        simp [hij]
-      rw [h1, h2, tsub_right_comm]
-      congr 1
-      ring
-  · intro p q hp hq
-    simp only [map_add (f := _), hp, hq]
+    pderiv i (pderiv j p) = pderiv j (pderiv i p) :=
+  _root_.MvPolynomial.pderiv_comm i j p
 
 end Formalism.GM.ProjS
 

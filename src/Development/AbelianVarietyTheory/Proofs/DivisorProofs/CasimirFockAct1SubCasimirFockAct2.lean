@@ -95,14 +95,8 @@ theorem sum_mul_normal_order {A ι κ : Type} [Ring A] [Algebra ℂ A] [Fintype 
 variable {p q r s : ℕ}
 
 theorem pderiv_pderiv_comm {σ : Type} (l m : σ) (P : MvPolynomial σ ℂ) :
-    pderiv l (pderiv m P) = pderiv m (pderiv l P) := by
-  classical
-  induction P using MvPolynomial.induction_on with
-  | C a => simp
-  | add P Q hP hQ => simp [hP, hQ]
-  | mul_X P n hP =>
-    simp only [Derivation.leibniz, pderiv_X, smul_eq_mul, map_add (f := _), hP, Pi.single_apply]
-    split_ifs <;> simp <;> ring
+    pderiv l (pderiv m P) = pderiv m (pderiv l P) :=
+  _root_.MvPolynomial.pderiv_comm l m P
 
 theorem lowB_comm (l m : Ln p q r s) : lowB l * lowB m = lowB m * lowB l := by
   by_cases hlm : l = m

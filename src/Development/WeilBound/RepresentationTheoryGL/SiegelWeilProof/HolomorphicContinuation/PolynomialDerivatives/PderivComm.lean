@@ -70,15 +70,8 @@ theorem sw_inj {k k' : Fin m × Fin n × Bool} : sw k = sw k' ↔ k = k' := by
   cases b <;> cases b' <;> simp [sw]
 
 theorem pderiv_comm (i j : Fin m × Fin n × Bool) (P : PX m n) :
-    pderiv i (pderiv j P) = pderiv j (pderiv i P) := by
-  classical
-  have h : ⁅(pderiv (R := ℂ) i : Derivation ℂ (PX m n) (PX m n)), pderiv (R := ℂ) j⁆ = 0 := by
-    apply MvPolynomial.derivation_ext
-    intro k
-    rw [Derivation.commutator_apply, pderiv_X, pderiv_X]
-    by_cases hi : i = k <;> by_cases hj : j = k <;> simp [Pi.single_apply, hi, hj]
-  have := congrArg (fun D : Derivation ℂ (PX m n) (PX m n) => D P) h
-  simpa [Derivation.commutator_apply, sub_eq_zero] using this
+    pderiv i (pderiv j P) = pderiv j (pderiv i P) :=
+  _root_.MvPolynomial.pderiv_comm i j P
 
 theorem cr_apply (c : ℝ) (k : Fin m × Fin n × Bool) (Q : PX m n) :
     cr c k Q = -(pderiv k Q) + (2 * c : ℂ) • ((X (sw k) : PX m n) * Q) := by

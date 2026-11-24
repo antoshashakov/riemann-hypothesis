@@ -466,20 +466,8 @@ theorem supp_X_mul_pderiv (a b : σ) (F : MvPolynomial σ K) (m : σ →₀ ℕ)
   simp [Ne.symm hxa, Ne.symm hxb]
 
 theorem pderiv_comm (a b : σ) (F : MvPolynomial σ K) :
-    pderiv a (pderiv b F) = pderiv b (pderiv a F) := by
-  classical
-  refine MvPolynomial.induction_on' F (fun s c => ?_) (fun p q hp hq => ?_)
-  · simp only [pderiv_monomial]
-    by_cases hab : a = b
-    · subst hab
-      rfl
-    · rw [show s - Finsupp.single b 1 - Finsupp.single a 1 = s - Finsupp.single a 1 - Finsupp.single b 1 from
-        tsub_right_comm]
-      congr 1
-      rw [Finsupp.tsub_apply, Finsupp.tsub_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg hab,
-        if_neg (Ne.symm hab), tsub_zero, tsub_zero]
-      ring
-  · simp only [map_add (f := _), hp, hq]
+    pderiv a (pderiv b F) = pderiv b (pderiv a F) :=
+  _root_.MvPolynomial.pderiv_comm a b F
 
 private theorem mvPolynomial_pderiv_X_eq_ite [DecidableEq σ] (x y : σ) :
     pderiv x (X y : MvPolynomial σ K) = if x = y then 1 else 0 := by

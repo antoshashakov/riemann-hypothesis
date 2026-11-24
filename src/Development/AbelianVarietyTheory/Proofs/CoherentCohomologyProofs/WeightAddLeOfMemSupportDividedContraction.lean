@@ -192,12 +192,8 @@ theorem dividedDeriv_single_one (i : σ) (P : MvPolynomial σ R) :
   simpa [dividedDeriv_zero] using (pderiv_dividedDeriv 0 i P).symm
 
 theorem pderiv_pderiv_comm (i j : σ) (P : MvPolynomial σ R) :
-    pderiv i (pderiv j P) = pderiv j (pderiv i P) := by
-  by_cases h : i = j
-  · rw [h]
-  · rw [← dividedDeriv_single_one j, ← dividedDeriv_single_one i P, pderiv_dividedDeriv,
-      pderiv_dividedDeriv, add_comm (Finsupp.single j 1), Finsupp.single_eq_of_ne h,
-      Finsupp.single_eq_of_ne' h]
+    pderiv i (pderiv j P) = pderiv j (pderiv i P) :=
+  _root_.MvPolynomial.pderiv_comm i j P
 
 theorem commute_pderiv (i j : σ) :
     Commute ((pderiv i).toLinearMap : Module.End R (MvPolynomial σ R)) (pderiv j).toLinearMap :=

@@ -58,14 +58,8 @@ namespace GlobalTheory.Capelli
 variable {K σ : Type*} [CommRing K]
 
 theorem pderiv_swap (u v : σ) (P : MvPolynomial σ K) :
-    pderiv u (pderiv v P) = pderiv v (pderiv u P) := by
-  classical
-  induction P using MvPolynomial.induction_on with
-  | C a => simp
-  | add p q hp hq => simp [hp, hq]
-  | mul_X p i hp =>
-    simp only [Derivation.leibniz, map_add (f := _), smul_eq_mul, pderiv_X, Pi.single_apply, hp]
-    split_ifs <;> simp <;> ring
+    pderiv u (pderiv v P) = pderiv v (pderiv u P) :=
+  _root_.MvPolynomial.pderiv_comm u v P
 
 theorem pderiv_X_mul' [DecidableEq σ] (v w : σ) (Q : MvPolynomial σ K) :
     pderiv v (X w * Q) = X w * pderiv v Q + (if v = w then Q else 0) := by

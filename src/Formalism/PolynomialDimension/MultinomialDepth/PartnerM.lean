@@ -775,18 +775,8 @@ section Comm
 variable {k σ : Type} [Field k]
 
 private theorem pderiv_pderiv_lemma [DecidableEq σ] (i j : σ) (g : MvPolynomial σ k) :
-    pderiv i (pderiv j g) = pderiv j (pderiv i g) := by
-  have hX : ∀ (l i : σ) (n : σ), pderiv l (pderiv i (X n : MvPolynomial σ k)) = 0 := by
-    intro l i n
-    by_cases h : n = i
-    · subst h; simp
-    · rw [pderiv_X_of_ne h, map_zero]
-  apply MvPolynomial.induction_on g
-  · intro a; simp
-  · intro p q hp hq; simp only [map_add (f := _), hp, hq]
-  · intro p n hp
-    simp only [Derivation.leibniz, smul_eq_mul, map_add (f := _), hp, hX, mul_zero, zero_add, add_zero]
-    ring
+    pderiv i (pderiv j g) = pderiv j (pderiv i g) :=
+  _root_.MvPolynomial.pderiv_comm i j g
 
 theorem comm_XD [DecidableEq σ] (u v u' v' : σ) (g : MvPolynomial σ k) :
     X u * pderiv v (X u' * pderiv v' g) - X u' * pderiv v' (X u * pderiv v g) =

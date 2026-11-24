@@ -66,16 +66,8 @@ section
 variable {R σ : Type} [CommSemiring R]
 
 theorem pderiv_comm' (i j : σ) (p : MvPolynomial σ R) :
-    pderiv i (pderiv j p) = pderiv j (pderiv i p) := by
-  classical
-  induction p using MvPolynomial.induction_on
-  · simp
-  · rename_i p q hp hq; simp only [map_add (f := _), hp, hq]
-  · rename_i p n hp
-    have h0 : ∀ a b : σ, pderiv a (Pi.single (M := fun _ => MvPolynomial σ R) b 1 n) = 0 := by
-      intro a b; rw [Pi.single_apply]; split_ifs <;> simp
-    simp only [Derivation.leibniz, map_add (f := _), smul_eq_mul, pderiv_X, h0, hp, mul_zero, zero_add, add_zero]
-    ring
+    pderiv i (pderiv j p) = pderiv j (pderiv i p) :=
+  _root_.MvPolynomial.pderiv_comm i j p
 
 noncomputable abbrev Dp (v : σ) : Module.End R (MvPolynomial σ R) := (pderiv v).toLinearMap
 

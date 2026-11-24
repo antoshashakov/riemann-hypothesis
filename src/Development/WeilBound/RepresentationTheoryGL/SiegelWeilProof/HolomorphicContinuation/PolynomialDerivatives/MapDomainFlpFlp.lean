@@ -79,17 +79,8 @@ theorem cr_apply (c : ℝ) (k : Ix m n) (P : PX m n) :
   cases b <;> (simp [cr, flp]; try abel)
 
 theorem pderiv_comm' (k l : Ix m n) (P : PX m n) :
-    pderiv k (pderiv l P) = pderiv l (pderiv k P) := by
-  classical
-  have h : ⁅(pderiv k : Derivation ℂ (PX m n) (PX m n)), (pderiv l : Derivation ℂ (PX m n) (PX m n))⁆ = 0 := by
-    apply MvPolynomial.derivation_ext
-    intro i
-    rw [Derivation.commutator_apply, pderiv_X, pderiv_X]
-    simp only [Pi.single_apply]
-    split_ifs <;> simp
-  have h2 := congrArg (fun D : Derivation ℂ (PX m n) (PX m n) => D P) h
-  simp only [Derivation.commutator_apply] at h2
-  exact sub_eq_zero.mp (by simpa using h2)
+    pderiv k (pderiv l P) = pderiv l (pderiv k P) :=
+  _root_.MvPolynomial.pderiv_comm k l P
 
 theorem cr_comm (c : ℝ) (k l : Ix m n) (P : PX m n) :
     cr c k (cr c l P) = cr c l (cr c k P) := by

@@ -984,19 +984,8 @@ section Ops
 variable {K : Type} [CommRing K] {σ : Type} [DecidableEq σ]
 
 private theorem pderiv_comm_lemma (y y' : σ) (F : MvPolynomial σ K) :
-    pderiv y (pderiv y' F) = pderiv y' (pderiv y F) := by
-  refine MvPolynomial.induction_on' F ?_ ?_
-  · intro u a
-    rw [pderiv_monomial, pderiv_monomial, pderiv_monomial, pderiv_monomial]
-    by_cases h : y = y'
-    · subst h
-      rfl
-    · rw [tsub_right_comm]
-      congr 1
-      simp only [Finsupp.tsub_apply, Finsupp.single_apply, if_neg h, if_neg (Ne.symm h), tsub_zero]
-      ring
-  · intro p q hp hq
-    rw [map_add (f := _), map_add (f := _), hp, hq, map_add (f := _), map_add (f := _)]
+    pderiv y (pderiv y' F) = pderiv y' (pderiv y F) :=
+  _root_.MvPolynomial.pderiv_comm y y' F
 
 theorem XD_comm (x y x' y' : σ) (F : MvPolynomial σ K) :
     X x * pderiv y (X x' * pderiv y' F) - X x' * pderiv y' (X x * pderiv y F) =

@@ -364,19 +364,8 @@ theorem hc_pderiv (l : σ) (e : ℕ) (P : MvPolynomial σ ℂ) :
   | add P Q hP hQ => simp only [map_add (f := _), hP, hQ]
 
 theorem pderiv_comm (i j : σ) (P : MvPolynomial σ ℂ) :
-    pderiv i (pderiv j P) = pderiv j (pderiv i P) := by
-  classical
-  have h : ⁅pderiv (R := ℂ) i, pderiv (R := ℂ) j⁆ = (0 : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ)) := by
-    apply derivation_ext
-    intro k
-    rw [Derivation.commutator_apply, pderiv_X, pderiv_X]
-    simp only [Pi.single_apply]
-    split_ifs <;> simp
-  have h2 : ⁅pderiv (R := ℂ) i, pderiv (R := ℂ) j⁆ P =
-      (0 : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ)) P := by rw [h]
-  rw [Derivation.commutator_apply] at h2
-  have h3 : (0 : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ)) P = 0 := by simp
-  exact sub_eq_zero.mp (h2.trans h3)
+    pderiv i (pderiv j P) = pderiv j (pderiv i P) :=
+  _root_.MvPolynomial.pderiv_comm i j P
 
 theorem hc_hc (m n : ℕ) (P : MvPolynomial σ ℂ) :
     homogeneousComponent m (homogeneousComponent n P) =

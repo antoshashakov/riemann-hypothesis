@@ -445,16 +445,8 @@ section dop
 variable {σ : Type} [DecidableEq σ]
 
 theorem pderiv_comm' (i j : σ) (q : MvPolynomial σ ℚ_[p]) :
-    pderiv i (pderiv j q) = pderiv j (pderiv i q) := by
-  ext m
-  rw [coeff_pderiv, coeff_pderiv, coeff_pderiv, coeff_pderiv]
-  by_cases h : i = j
-  · subst h; rfl
-  · have h1 : ((m + Finsupp.single i 1 : σ →₀ ℕ) : σ → ℕ) j = m j := by simp [Finsupp.single_apply, h]
-    have h2 : ((m + Finsupp.single j 1 : σ →₀ ℕ) : σ → ℕ) i = m i := by simp [Finsupp.single_apply, Ne.symm h]
-    rw [h1, h2, show m + Finsupp.single i 1 + Finsupp.single j 1 = m + Finsupp.single j 1 + Finsupp.single i 1 by
-      rw [add_assoc, add_comm (Finsupp.single i 1), ← add_assoc]]
-    ring
+    pderiv i (pderiv j q) = pderiv j (pderiv i q) :=
+  _root_.MvPolynomial.pderiv_comm i j q
 
 noncomputable def Dop (u v : σ) : Module.End ℚ_[p] (MvPolynomial σ ℚ_[p]) :=
   (pderiv u).toLinearMap ∘ₗ (pderiv v).toLinearMap

@@ -84,14 +84,8 @@ theorem so_smul (c : σ → σ → k) (r : k) (P : MvPolynomial σ k) :
   | simp [so_def, Finset.smul_sum, mul_smul_comm]
 
 private theorem mvPolynomial_pderiv_comm (a b : σ) (P : MvPolynomial σ k) :
-    pderiv a (pderiv b P) = pderiv b (pderiv a P) := by
-  classical
-  induction P using MvPolynomial.induction_on
-  · simp
-  · simp [*]
-  · rename_i p m hp
-    simp only [Derivation.leibniz, smul_eq_mul, map_add (f := _), hp, pderiv_X]
-    by_cases ha : a = m <;> by_cases hb : b = m <;> simp [Pi.single_apply, ha, hb] <;> ring
+    pderiv a (pderiv b P) = pderiv b (pderiv a P) :=
+  _root_.MvPolynomial.pderiv_comm a b P
 
 theorem pd4 (P : MvPolynomial σ k) (a b c d : σ) :
     pderiv a (pderiv b (pderiv c (pderiv d P))) = pderiv c (pderiv d (pderiv a (pderiv b P))) := by

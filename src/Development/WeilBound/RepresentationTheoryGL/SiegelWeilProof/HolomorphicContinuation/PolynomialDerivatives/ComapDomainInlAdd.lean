@@ -64,17 +64,8 @@ abbrev Ix (m n : ℕ) := Fin m × Fin n × Bool
 
 abbrev Dk (k : Ix m n) : Module.End ℂ (PX m n) := (pderiv (R := ℂ) k).toLinearMap
 
-theorem pderiv_comm (i j : Ix m n) (p : PX m n) : pderiv i (pderiv j p) = pderiv j (pderiv i p) := by
-  induction p using MvPolynomial.induction_on with
-  | C a => simp
-  | add p q hp hq => simp only [map_add (f := _), hp, hq]
-  | mul_X p k hp =>
-    have hc : ∀ a b : Ix m n, pderiv a (pderiv b (X k : PX m n)) = 0 := by
-      intro a b; rw [pderiv_X]; by_cases h : b = k
-      · subst h; simp
-      · simp [Pi.single_apply, h]
-    simp only [pderiv_mul, map_add (f := _), hp, hc, mul_zero, add_zero]
-    ring
+theorem pderiv_comm (i j : Ix m n) (p : PX m n) : pderiv i (pderiv j p) = pderiv j (pderiv i p) :=
+  _root_.MvPolynomial.pderiv_comm i j p
 
 theorem dk_comm (i j : Ix m n) : Commute (Dk i) (Dk j) :=
   LinearMap.ext fun p => pderiv_comm i j p

@@ -137,18 +137,8 @@ theorem mom_pderiv (c : ℝ) (hc : 0 < c) (k : Fin m × Fin n × Bool) (Q : PX m
   | add P Q hP hQ => rw [map_add (f := _), mom_add hM c hc, hP, hQ, mul_add, mom_add hM c hc, mul_add]
 
 theorem pderiv_comm (k j : Fin m × Fin n × Bool) (Q : PX m n) :
-    pderiv k (pderiv j Q) = pderiv j (pderiv k Q) := by
-  have : ⁅(pderiv k : Derivation ℂ (PX m n) (PX m n)), (pderiv j : Derivation ℂ (PX m n) (PX m n))⁆ = 0 := by
-    apply MvPolynomial.derivation_ext
-    intro l
-    rw [Derivation.commutator_apply, Derivation.zero_apply]
-    classical
-    rw [pderiv_X, pderiv_X]
-    simp only [Pi.single_apply]
-    split_ifs <;> simp
-  have h := congrArg (fun D : Derivation ℂ (PX m n) (PX m n) => D Q) this
-  simp only [Derivation.commutator_apply, Derivation.zero_apply] at h
-  exact sub_eq_zero.1 h
+    pderiv k (pderiv j Q) = pderiv j (pderiv k Q) :=
+  _root_.MvPolynomial.pderiv_comm k j Q
 
 theorem cr_apply (c : ℝ) (k : Fin m × Fin n × Bool) (Q : PX m n) :
     cr c k Q = -pderiv k Q + (2 * c : ℂ) • (X (flip k) * Q) := by
