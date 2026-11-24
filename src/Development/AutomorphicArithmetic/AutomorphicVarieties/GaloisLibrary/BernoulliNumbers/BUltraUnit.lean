@@ -56,6 +56,7 @@ public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 public import Mathlib.RingTheory.PrincipalIdealDomain
 public import Mathlib.RingTheory.Valuation.Integers
 public import Mathlib.Topology.Algebra.Valued.NormedValued
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -63,10 +64,7 @@ open Finset UpperTheory.V.Bern
 
 private theorem b_ultra_int {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω] {y : Ω}
     (h : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
-  have h1 : IsIntegral (NormedField.valuation (K := Ω)).integer y := h.tower_top
-  have h2 := (Valuation.integer.integers (NormedField.valuation (K := Ω))).mem_of_integral h1
-  have h3 : ‖y‖₊ ≤ 1 := h2
-  exact_mod_cast h3
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 private theorem b_ultra_unit {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω] (l : ℕ)
     [hl : Fact l.Prime] (hn : ‖(l : Ω)‖ = (l : ℝ)⁻¹) (m : ℤ) (hm : ¬ (l : ℤ) ∣ m) :

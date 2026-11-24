@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -55,12 +56,7 @@ open NumberField
 
 theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (y : PadicAlgCl l)
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
-  have hv := Valuation.integer.integers (Valued.v : Valuation (PadicAlgCl l) NNReal)
-  have h2 : IsIntegral (Valued.v : Valuation (PadicAlgCl l) NNReal).integer y :=
-    IsIntegral.tower_top hy
-  have h3 := hv.isIntegral_iff_v_le_one.mp h2
-  rw [PadicAlgCl.valuation_def] at h3
-  exact_mod_cast h3
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 theorem norm_natCast_prime {l : ℕ} [Fact (Nat.Prime l)] :
     ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by

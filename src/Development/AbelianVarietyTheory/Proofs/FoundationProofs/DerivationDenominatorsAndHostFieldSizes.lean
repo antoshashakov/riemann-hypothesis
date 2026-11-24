@@ -50,6 +50,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -60,10 +61,7 @@ namespace GlobalTheory.NormSum.Denom
 
 theorem norm_le_one {C : Type*} [NormedField C] [IsUltrametricDist C] {x : C}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
-  have h : x ∈ (NormedField.valuation (K := C)).integer :=
-    (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top
-  rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
-  exact_mod_cast h
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 theorem norm_natCast (p : ℕ) [Fact p.Prime] {N : ℕ} (hN : N ≠ 0) :
     ‖(N : ℂ_[p])‖ = (p : ℝ) ^ (-(N.factorization p : ℝ)) := by

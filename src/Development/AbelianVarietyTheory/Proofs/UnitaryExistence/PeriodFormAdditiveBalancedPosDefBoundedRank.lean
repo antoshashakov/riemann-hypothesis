@@ -57,6 +57,7 @@ import Formalism.LocalRingCardinality.DataTheta
 import Formalism.LocalToGlobal.BesselHermitianTheta.NoncompactGapAtLeastRange
 import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.AbelianAt
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -71,22 +72,7 @@ open Formalism.MainNotions.DIV.Cons
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
 theorem norm_le_one_of_integral {x : C} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
-  by_contra h
-  push_neg at h
-  obtain ⟨q, hq, hqx⟩ := hx
-  have hx0 : 0 < ‖x‖ := one_pos.trans h
-  rw [Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hq.coeff_natDegree, map_one, one_mul] at hqx
-  have h1 : ‖∑ i ∈ Finset.range q.natDegree, algebraMap ℤ C (q.coeff i) * x ^ i‖ < ‖x‖ ^ q.natDegree := by
-    rcases Finset.eq_empty_or_nonempty (Finset.range q.natDegree) with he | he
-    · rw [he]; simpa using pow_pos hx0 _
-    · obtain ⟨i, hi, hle⟩ := IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty he
-        (fun i => algebraMap ℤ C (q.coeff i) * x ^ i)
-      refine hle.trans_lt ?_
-      rw [norm_mul, norm_pow]
-      refine (mul_le_of_le_one_left (by positivity) (IsUltrametricDist.norm_intCast_le_one C _)).trans_lt ?_
-      exact pow_lt_pow_right₀ h (Finset.mem_range.1 hi)
-  rw [eq_neg_of_add_eq_zero_left hqx, norm_neg, norm_pow] at h1
-  exact lt_irrefl _ h1
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 theorem dvd_of_norm_le {a b : intO C} (ha : a ≠ 0) (h : ‖(b : C)‖ ≤ ‖(a : C)‖) : a ∣ b := by
   have ha' : (a : C) ≠ 0 := fun e => ha (Subtype.ext e)

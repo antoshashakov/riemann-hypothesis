@@ -42,6 +42,7 @@ import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.CycFieldA
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.ExistsDvdQKPowSubOne
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.CycDefs
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -51,10 +52,7 @@ namespace GlobalTheory.FrobEmb
 
 theorem norm_le_one_of_isIntegral {C : Type*} [NormedField C] [IsUltrametricDist C] {x : C}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
-  have h : x ∈ (NormedField.valuation (K := C)).integer :=
-    (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top
-  rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
-  exact_mod_cast h
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 def compPerm {E C : Type} [Field E] [Field C] (f : C ≃+* C) : Equiv.Perm (E →+* C) where
   toFun τ := f.toRingHom.comp τ

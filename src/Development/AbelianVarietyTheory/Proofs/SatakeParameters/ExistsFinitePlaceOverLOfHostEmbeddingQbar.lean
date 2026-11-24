@@ -50,6 +50,7 @@ import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
 import Formalism.LocalToGlobal.ProjectiveLattices.ErealAddIInf
 import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import ReciprocityTheory.Automorphisms.PlaceA
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -61,9 +62,7 @@ namespace GlobalTheory.PlaceOfEmb
 
 theorem norm_le_one_of_isIntegral' {K : Type} [NormedField K] [IsUltrametricDist K] {x : K}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
-  have := (Valuation.integer.integers (NormedField.valuation (K := K))).mem_of_integral hx.tower_top
-  rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at this
-  exact_mod_cast this
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 variable {E : Type} [Field E] [NumberField E] {C : Type} [NormedField C] [IsUltrametricDist C]
 

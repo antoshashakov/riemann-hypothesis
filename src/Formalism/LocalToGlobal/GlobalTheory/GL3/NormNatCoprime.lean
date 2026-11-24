@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -54,38 +55,7 @@ variable {D : D7}
 
 theorem norm_le_one_of_int {k : Type} [NormedField k] [IsUltrametricDist k] {y : k}
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
-  by_contra hlt
-  push_neg at hlt
-  obtain ⟨P, hPm, hPy⟩ := hy
-  rw [hPm.as_sum] at hPy
-  simp only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finsetSum, Polynomial.eval₂_mul,
-    Polynomial.eval₂_C] at hPy
-  have h1 := eq_neg_of_add_eq_zero_left hPy
-  have hn0 : P.natDegree ≠ 0 := by
-    intro h0
-    rw [h0] at hPy
-    simp at hPy
-  have hc : ∀ z : ℤ, ‖(Int.castRingHom k) z‖ ≤ 1 := by
-    intro z
-    rw [eq_intCast]
-    exact IsUltrametricDist.norm_intCast_le_one k z
-  have hbound : ‖∑ i ∈ Finset.range P.natDegree, (Int.castRingHom k) (P.coeff i) * y ^ i‖ ≤ ‖y‖ ^ (P.natDegree - 1) := by
-    apply IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)
-    intro i hi
-    rw [norm_mul, norm_pow]
-    have hi' : i ≤ P.natDegree - 1 := by
-      rw [Finset.mem_range] at hi
-      omega
-    calc ‖(Int.castRingHom k) (P.coeff i)‖ * ‖y‖ ^ i ≤ 1 * ‖y‖ ^ (P.natDegree - 1) := by
-          apply mul_le_mul (hc _) (pow_le_pow_right₀ hlt.le hi') (by positivity) zero_le_one
-      _ = ‖y‖ ^ (P.natDegree - 1) := one_mul _
-  have h2 : ‖y‖ ^ P.natDegree ≤ ‖y‖ ^ (P.natDegree - 1) := by
-    rw [← norm_pow, h1, norm_neg]
-    have he : algebraMap ℤ k = Int.castRingHom k := RingHom.ext_int _ _
-    simpa only [Polynomial.eval₂_finsetSum, Polynomial.eval₂_mul, Polynomial.eval₂_C,
-      Polynomial.eval₂_X_pow, he] using hbound
-  have h3 : ‖y‖ ^ (P.natDegree - 1) < ‖y‖ ^ P.natDegree := pow_lt_pow_right₀ hlt (by omega)
-  linarith
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 theorem norm_nat_coprime (p : ℕ) [Fact p.Prime] {s : ℕ} (h : Nat.Coprime s p) : ‖(s : ℂ_[p])‖ = 1 := by
   have hs : ¬ p ∣ s := (Nat.Prime.coprime_iff_not_dvd (Fact.out : p.Prime)).mp h.symm

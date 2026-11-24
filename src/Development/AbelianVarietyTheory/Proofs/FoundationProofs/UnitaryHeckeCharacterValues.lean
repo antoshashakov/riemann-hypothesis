@@ -51,6 +51,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Adelstab
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -229,10 +230,7 @@ theorem norm_natCast_eq_one {p : ℕ} [Fact p.Prime] {M : ℕ} (hM : M.Coprime p
 
 theorem norm_le_one_of_isIntegral {C : Type} [NormedField C] [IsUltrametricDist C] {x : C}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
-  have h : x ∈ (NormedField.valuation (K := C)).integer :=
-    (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top
-  rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
-  exact_mod_cast h
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 theorem norm_le_one_of_denom {E : Type} [Field E] {p : ℕ} [Fact p.Prime] (ψ : E →+* ℂ_[p]) {M : ℕ}
     (hM : M.Coprime p) {b : E} (hb : IsIntegral ℤ ((M : E) * b)) : ‖ψ b‖ ≤ 1 := by

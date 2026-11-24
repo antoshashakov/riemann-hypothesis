@@ -51,6 +51,7 @@ import Mathlib.Topology.Sheaves.Init
 import Formalism.ConjugateSelfDual.Statement
 public import Mathlib.NumberTheory.NumberField.Norm
 public import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -63,10 +64,7 @@ namespace GlobalTheory.CongW.PlaceEmb
 variable {K : Type} [Field K] [NumberField K] {p : ℕ} [Fact p.Prime]
 
 theorem norm_le_one_of_isIntegral_int {x : PadicAlgCl p} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
-  have h1 : IsIntegral (NormedField.valuation (K := PadicAlgCl p)).integer x := hx.tower_top
-  have h2 := (Valuation.integer.integers (NormedField.valuation (K := PadicAlgCl p))).mem_of_integral h1
-  have h3 : ‖x‖₊ ≤ 1 := h2
-  exact_mod_cast h3
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 theorem norm_int_le (σ : K →+* PadicAlgCl p) (y : 𝓞 K) : ‖σ (y : K)‖ ≤ 1 :=
   norm_le_one_of_isIntegral_int (by

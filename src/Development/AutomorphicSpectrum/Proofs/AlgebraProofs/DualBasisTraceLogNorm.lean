@@ -56,6 +56,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -453,10 +454,7 @@ theorem mem_dual_of_int {c : E}
 
 theorem norm_le_one_of_integral {C : Type} [NormedField C] [IsUltrametricDist C] {x : C}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
-  have h : x ∈ (NormedField.valuation (K := C)).integer :=
-    (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top
-  rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
-  exact_mod_cast h
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 theorem norm_int_le_one {p : ℕ} [Fact p.Prime] (j : E →+* ℂ_[p]) (a : 𝓞 E) : ‖j (a : E)‖ ≤ 1 :=
   norm_le_one_of_integral (map_isIntegral_int j a.isIntegral_coe)

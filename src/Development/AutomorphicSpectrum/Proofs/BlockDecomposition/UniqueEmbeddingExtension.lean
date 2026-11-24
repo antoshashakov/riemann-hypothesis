@@ -50,6 +50,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TripleAtt
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import ReciprocityTheory.NeutralLocalFields.Reciprocity
+public import Formalism.SharedLemmas.NormLeOneOfIntegral
 
 @[expose] public section
 
@@ -70,10 +71,7 @@ theorem norm_coe_algHom {K L : FinExt l} (τ : ↥K.1 →ₐ[ℚ_[l]] ↥L.1) (x
   rw [← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm, c]
 
 theorem norm_le_one_of_isIntegral {x : Om l} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
-  have h1 : IsIntegral (NormedField.valuation (K := Om l)).integer x := hx.tower_top
-  have h2 := (Valuation.integer.integers (NormedField.valuation (K := Om l))).mem_of_integral h1
-  have h3 : ‖x‖₊ ≤ 1 := h2
-  exact_mod_cast h3
+  apply _root_.Formalism.SharedLemmas.norm_le_one_of_isIntegral <;> assumption
 
 variable {E : Type} [Field E] [NumberField E]
 
