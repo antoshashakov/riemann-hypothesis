@@ -1,0 +1,36 @@
+name: Principia official check
+# Every push to Principia's version of the proof is put through the same check as upstream: the protected files
+# (Main/Statements/Challenge/lakefile/toolchain/manifest/comparator.json) must match the upstream base, `lake build Main`
+# must succeed, and the five theorems of comparator.json must depend only on propext, Quot.sound and Classical.choice.
+# It runs on Principia's own build machine (self-hosted runner "rh-golf"), where the built oleans already live; the build
+# is incremental, so a run costs minutes for a leaf proof and hours only when a widely imported module changes.
+on:
+  push:
+    branches: [principia-rh]
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: commit to check (default: the branch head)
+        required: false
+concurrency:
+  group: principia-official-check
+  cancel-in-progress: true          # a newer push supersedes the running check; Lake resumes where it stopped
+jobs:
+  official-check:
+    runs-on: [self-hosted, rh-golf]
+    timeout-minutes: 1440
+    steps:
+      - name: Official check (lake build Main + axioms of the five theorems)
+        run: bash /opt/golf-ours/verify_github.sh "${{ inputs.sha || github.sha }}"
+      - name: Keep the log
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/verify-log"
+          ls -t /data/golf-ours/logs/verify/github-*.log 2>/dev/null | head -1 | xargs -r -I{} tail -c 2000000 {} > "$RUNNER_TEMP/verify-log/verify.log"
+          ls -t /data/golf-ours/logs/verify/github-*.log.axioms 2>/dev/null | head -1 | xargs -r -I{} cp {} "$RUNNER_TEMP/verify-log/axioms.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-check-log
+          path: ${{ runner.temp }}/verify-log
+          if-no-files-found: ignore
