@@ -188,36 +188,7 @@ theorem latG_mul {D : D7} (W : HSp D) {u : GA D W} (hu : u ∈ GinfC W) (k : GA 
 
 theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) :
     (H.w0 : E) + cc (H.w0 : E) = 1 := by
-  have h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E) := by
-    have := congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root
-    rw [map_mul, map_add (f := _), map_one, map_ofNat] at this
-    exact this
-  have hs : (H.rt : E) ^ 2 = -(H.d : E) := by
-    have := congrArg (algebraMap (𝓞 E) E) H.rt_sq
-    rw [map_pow, map_neg, map_natCast] at this
-    exact this
-  have hc : cc (H.rt : E) = -(H.rt : E) := by
-    obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-    apply τ.injective
-    have h1 : τ (H.rt : E) ^ 2 = -(H.d : ℂ) := by rw [← map_pow, hs, map_neg, map_natCast]
-    have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-    have hre := congrArg Complex.re h1
-    have him := congrArg Complex.im h1
-    simp only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re,
-      Complex.natCast_im, neg_zero] at hre him
-    have h0 : (τ (H.rt : E)).re = 0 := by
-      by_contra h
-      have h5 : (τ (H.rt : E)).im = 0 := mul_left_cancel₀ h (by linarith)
-      rw [h5] at hre
-      nlinarith [mul_self_nonneg (τ (H.rt : E)).re]
-    rw [cc, IsCMField.complexEmbedding_complexConj, map_neg]
-    apply Complex.ext <;> simp [h0]
-  have h3 : (2 : E) * cc (H.w0 : E) = 1 - (H.rt : E) := by
-    have := congrArg (IsCMField.complexConj E) h2
-    rw [map_mul, map_add (f := _), map_one, map_ofNat] at this
-    rw [sub_eq_add_neg, ← hc]
-    exact this
-  linear_combination (h2 + h3) / 2
+      exact GlobalTheory.AdTh.VacLine.hostHalfRoot_add_conj_eq_one H
 
 theorem mem_stdL {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Fin n → E) :
     w ∈ stdL E n ↔ ∀ j, ∃ b : 𝓞 E, (b : E) = w j := by

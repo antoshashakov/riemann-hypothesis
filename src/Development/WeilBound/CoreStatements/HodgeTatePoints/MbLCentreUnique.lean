@@ -92,15 +92,7 @@ theorem eq_of_dominated_of_inChart {o : Type} [CommRing o] {Ω : Type} [Field Ω
   apply (config := { allowSynthFailures := true }) GlobalTheory.CompanionTheory.Ar.Centre.Sep.eq_of_dominated_of_inChart <;> assumption
 
 theorem eq_of_dominated : ∀ {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ] {x : κ → Ω} (M : PModel o x) {X' : Scheme.{0}} {Ω' : Type} [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (p' : Cpt ξ') (q₁ q₂ : Cpt M.ξ), ((∀ a ∈ regAt M.ξ q₁, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ q₁, unitAt ξ' p' (i a) → unitAt M.ξ q₁ a) → ((∀ a ∈ regAt M.ξ q₂, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ q₂, unitAt ξ' p' (i a) → unitAt M.ξ q₂ a) → q₁ = q₂ := by
-  intro o _ Ω _ _ κ _ x M X' Ω' _ ξ' i p' q₁ q₂ d₁ d₂
-  obtain ⟨c₁, hc₁⟩ := M.tie.cover q₁
-  obtain ⟨c₂, hc₂⟩ := M.tie.cover q₂
-  have hctr : p' ∈ ctrSet o x i ξ' :=
-    ⟨c₁, hc₁.1, fun a ha => d₁.1 a ((PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c₁ q₁ hc₁).1 a ha)⟩
-  obtain ⟨p₀, d₀, -, hp₀⟩ := PositivityTheory.HtPt.Mb.centre o Ω κ x M X' Ω' ξ' i p' hctr
-  have e₁ : q₁ = p₀ := eq_of_dominated_of_inChart M hc₁ (hp₀ c₁ hc₁.1 fun j => d₁.1 _ (hc₁.2 j)) d₁ d₀
-  have e₂ : q₂ = p₀ := eq_of_dominated_of_inChart M hc₂ (hp₀ c₂ hc₂.1 fun j => d₂.1 _ (hc₂.2 j)) d₂ d₀
-  exact e₁.trans e₂.symm
+  exact GlobalTheory.CompanionTheory.Ar.Centre.Sep.eq_of_dominated
 
 end PositivityTheory.HtPt.Mb.LCentreUnique.Centre.Sep
 
