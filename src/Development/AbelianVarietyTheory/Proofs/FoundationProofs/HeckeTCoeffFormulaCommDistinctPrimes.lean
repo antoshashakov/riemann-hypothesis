@@ -58,18 +58,7 @@ namespace GlobalTheory.Hk
 
 lemma isDia_mul_of_isDia {N l : ℕ} {d e : ℤ} {σ τ : SL(2, ℤ)} (hσ : IsDia N l d σ)
     (hτ : IsDia N l e τ) : IsDia N l (d * e) (σ * τ) := by
-  obtain ⟨h1, h2⟩ := hσ
-  obtain ⟨h3, h4⟩ := hτ
-  have h1' : ((σ 1 0 : ℤ) : ZMod N) = 0 := by
-    have := congrArg (ZMod.castHom (dvd_mul_right N l) (ZMod N)) h1
-    simpa using this
-  refine ⟨?_, ?_⟩
-  · simp only [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]
-    push_cast
-    rw [h1, h3]; ring
-  · simp only [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]
-    push_cast
-    rw [h1', h2, h4]; ring
+      exact GlobalTheory.Hk.isDia_mul hσ hτ
 
 lemma heckeT_congr_dia {N l q : ℕ} {k : ℤ} {σ τ : SL(2, ℤ)} (hN : 0 < N)
     (hσ : IsDia N l q σ) (hτ : IsDia N l q τ) (f : ModularForm (lev N l) k) :

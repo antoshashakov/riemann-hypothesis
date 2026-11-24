@@ -57,16 +57,7 @@ namespace GlobalTheory.FN
 
 private theorem gamma_le_of_dvd' {N N' : ℕ} (hd : N ∣ N') :
     CongruenceSubgroup.Gamma N' ≤ CongruenceSubgroup.Gamma N := by
-  intro γ hγ
-  rw [CongruenceSubgroup.Gamma_mem] at hγ ⊢
-  have key : ∀ x : ℤ, (x : ZMod N) = ZMod.castHom hd (ZMod N) (x : ZMod N') := fun x => by
-    rw [map_intCast]
-  obtain ⟨h1, h2, h3, h4⟩ := hγ
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · rw [key, h1, map_one]
-  · rw [key, h2, map_zero]
-  · rw [key, h3, map_zero]
-  · rw [key, h4, map_one]
+      exact GlobalTheory.FN.gamma_le_of_dvd hd
 
 theorem exists_common_lv {E : Subring ℂ} {n : ℕ} (M : ℕ) (hM : 0 < M) (r : Fin n → ℍ → ℂ)
     (hr : ∀ j, InR E (r j)) : ∃ N w : ℕ, 0 < N ∧ M ∣ N ∧ ∀ j, Lv E N w (r j) := by

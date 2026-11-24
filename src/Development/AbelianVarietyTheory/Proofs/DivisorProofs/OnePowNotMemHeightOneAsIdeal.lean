@@ -129,16 +129,7 @@ theorem good_congr {lo hi t : ℤ} {A B A' B' : Finset ℚ} (h : Good lo hi t A 
     Good lo hi t A' B' := hA ▸ hB ▸ h
 
 theorem block_succ_top (c : ℚ) (n : ℕ) : TPar.block c (n + 1) = {c + (n : ℚ) / 2} ∪ TPar.block (c - 1 / 2) n := by
-  ext x
-  simp only [mem_union, mem_singleton, mem_block]
-  constructor
-  · rintro ⟨a, ha, rfl⟩
-    rcases Nat.eq_zero_or_pos a with rfl | h
-    · left; push_cast; ring
-    · right; exact ⟨a - 1, by omega, by rw [Nat.cast_sub h]; push_cast; ring⟩
-  · rintro (rfl | ⟨a, ha, rfl⟩)
-    · exact ⟨0, by omega, by push_cast; ring⟩
-    · exact ⟨a + 1, by omega, by push_cast; ring⟩
+  exact GlobalTheory.WtInterlace.block_succ_top c n
 
 theorem block_succ_bot (c : ℚ) (n : ℕ) : TPar.block c (n + 1) = TPar.block (c + 1 / 2) n ∪ {c - (n : ℚ) / 2} := by
   ext x

@@ -124,15 +124,7 @@ theorem uni_bij {M I C : Type*} (L : M ≃ I) (c : M → C) (w : M → ℕ) (b :
     (hb : ∀ m, w m ≤ b (c m)) (h1 : ∀ m, f m (L m) = 1)
     (hlt : ∀ m n, f m (L n) ≠ 0 → c m = c n ∧ (m = n ∨ w m < w n)) :
     Function.Bijective (Finsupp.linearCombination ℤ f) := by
-  refine ⟨uni_inj L w f h1 fun m n h => (hlt m n h).2, ?_⟩
-  intro y
-  refine Finsupp.induction_linear y ?_ ?_ ?_
-  · exact ⟨0, map_zero _⟩
-  · rintro y z ⟨a, ha⟩ ⟨a', ha'⟩
-    exact ⟨a + a', by rw [map_add (f := _), ha, ha']⟩
-  · intro i r
-    obtain ⟨a, -, ha⟩ := uni_exists L c w b f hb h1 hlt (L.symm i)
-    exact ⟨r • a, by rw [map_smul, ha, L.apply_symm_apply, Finsupp.smul_single_one]⟩
+      exact PositivityTheory.Groth.ChartWirtingerDerivatives.uni_bij L c w b f hb h1 hlt
 
 end CompanionTheory.Groth.ChartWirtingerDerivatives
 
