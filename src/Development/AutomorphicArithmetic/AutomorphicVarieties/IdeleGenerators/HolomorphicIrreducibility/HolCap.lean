@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RChar2
+public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.PfHCap
 
 @[expose] public section
 
@@ -51,20 +52,9 @@ open NumberField Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V
 
 private theorem infGL_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (u : (Rinf F)ˣ) :
     infGL F 2 (GeneralLinearGroup.scalar (Fin 2) u) = GeneralLinearGroup.scalar (Fin 2) (infId F u) := by
-  have h : ∀ x, pInf F (sInf F x) = x := fun x => (infEq F).symm_apply_apply x
-  have h1 : pInf F (infId F u : Ideles F) = u := by
-    change pInf F (1 - sInf F 1 + sInf F _) = _
-    simp [h]
-  have h2 : pFin F (infId F u : Ideles F) = 1 := by
-    change (1 : Af F) - 0 + 0 = 1
-    simp
-  refine ga_ext ?_ ?_
-  · rw [TR.pInf_infGL]
-    ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]
-  · rw [TR.pFin_infGL]
-    ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]
+  first
+  | exact _root_.UpperTheory.Esk.CasimirEigenvalueLemmas.infGL_scalar
+  | (apply _root_.UpperTheory.Esk.CasimirEigenvalueLemmas.infGL_scalar <;> assumption)
 
 private theorem fin_expU {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ω : HChar F} (h : IsOfFinOrder ω)
     (z : Rinf F) : ω.1 (infId F (expU z)) = 1 := by
