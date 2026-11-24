@@ -64,16 +64,7 @@ theorem isLocalRing_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (Co
 
 theorem isUnit_regAt_iff {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p : Cpt ξ)
     (a : regAt ξ p) : IsUnit a ↔ unitAt ξ p (a : Ω) := by
-  constructor
-  · intro h
-    obtain ⟨b, hb⟩ := h.exists_right_inv
-    have e : (a : Ω) * (b : Ω) = 1 := congrArg Subtype.val hb
-    have ha : (a : Ω) ≠ 0 := fun h0 => by simp [h0] at e
-    refine ⟨ha, a.2, ?_⟩
-    rw [inv_eq_of_mul_eq_one_right e]
-    exact b.2
-  · rintro ⟨h0, -, h2⟩
-    exact isUnit_iff_exists_inv.2 ⟨⟨_, h2⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩
+      exact GlobalTheory.CompanionTheory.Ar.Centre.isUnit_regAt_iff ξ p a
 
 theorem unitAt_iff_of_dominated {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω']
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {i : Ω →+* Ω'} {p' : Cpt ξ'} {q : Cpt ξ}

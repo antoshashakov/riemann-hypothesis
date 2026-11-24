@@ -51,18 +51,7 @@ open NumberField
 
 theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * a) := by
-  have h1 : IsAlgebraic ℚ a := Algebra.IsAlgebraic.isAlgebraic a
-  have h2 : IsAlgebraic ℤ a := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr h1
-  obtain ⟨y, hy, hi⟩ := h2.exists_integral_multiple
-  refine ⟨y.natAbs, Int.natAbs_pos.mpr hy, ?_⟩
-  rw [zsmul_eq_mul] at hi
-  have hc : ((y.natAbs : ℕ) : E) = ((y.natAbs : ℤ) : E) := (Int.cast_natCast _).symm
-  rcases Int.natAbs_eq y with h | h
-  · rw [hc, ← h]
-    exact hi
-  · have h' : (y.natAbs : ℤ) = -y := by omega
-    rw [hc, h', Int.cast_neg, neg_mul]
-    exact hi.neg
+      exact GlobalTheory.NatMulIntegralExists.exists_nat_mul_integral a
 
 theorem nat_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (RingOfIntegers E) (Fin n → E)) (d : ℕ) {x : Fin n → E} (hx : x ∈ L) :

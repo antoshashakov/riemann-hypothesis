@@ -100,16 +100,7 @@ theorem secPull_sum_smul {X Y : Scheme.{0}} {L : LB X} {J : Type} (S : Finset J)
 theorem secMaps_sum_smul {X : Scheme.{0}} {A B : LB X} (w : LB.Iso A B) {J : Type} (S : Finset J)
     (c : J → Γ(X, ⊤)) (a : J → A.Sec) (b : J → B.Sec) (h : ∀ i, Cartier.SecMaps w (a i) (b i)) :
     Cartier.SecMaps w (∑ i ∈ S, c i • a i) (∑ i ∈ S, c i • b i) := by
-  classical
-  induction S using Finset.induction_on with
-  | empty =>
-    intro p
-    simp [GlobalTheory.LB.zero_f]
-  | insert x S hx ih =>
-    intro p
-    rw [Finset.sum_insert hx, Finset.sum_insert hx]
-    simp only [GlobalTheory.LB.add_f, GlobalTheory.LB.smul_f, map_add (f := _), map_mul, ih p, h x p, Cartier.resG_resG]
-    ring
+      exact UpperTheory.Lit.Nos.C2.secMaps_sum_smul' w S c a b h
 
 theorem spMap_tower (R S T : Type) [CommRing R] [CommRing S] [CommRing T] [Algebra R S] [Algebra S T]
     [Algebra R T] [IsScalarTower R S T] :
