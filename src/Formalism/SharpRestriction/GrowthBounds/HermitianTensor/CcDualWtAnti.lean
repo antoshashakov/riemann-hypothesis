@@ -253,11 +253,7 @@ theorem cc_dualW {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1)
     simp
 
 theorem cc_D_one {K : Type*} [Field K] (k : ℕ) : lb_D k 1 (1 : K) = 1 := by
-  unfold lb_D
-  have : (fun a : Fin k => if a.val < 1 then ((1 : K))⁻¹ else 1) = fun _ => 1 := by
-    funext a
-    split_ifs <;> simp
-  rw [this, Matrix.diagonal_one]
+  norm_num [lb_D]
 
 theorem cc_D_mul {K : Type*} [Field K] (k : ℕ) (c : K) : lb_D k 1 c * lb_D k 1 c = lb_D k 1 (c * c) := by
   unfold lb_D

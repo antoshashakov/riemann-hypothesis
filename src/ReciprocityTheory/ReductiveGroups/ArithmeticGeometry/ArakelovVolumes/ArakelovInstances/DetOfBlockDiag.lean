@@ -79,28 +79,13 @@ theorem det_of_blockDiag {m α : Type} [Fintype m] [DecidableEq m] [LinearOrder 
 
 theorem ent_eq_iff (e e' : Ent X) :
     e = e' ↔ e.1 = e'.1 ∧ e.2.1.1 = e'.2.1.1 ∧ e.2.1.2 = e'.2.1.2 := by
-  constructor
-  · rintro rfl; exact ⟨rfl, rfl, rfl⟩
-  · obtain ⟨τ, ⟨⟨a, c⟩, h⟩⟩ := e
-    obtain ⟨τ', ⟨⟨a', c'⟩, h'⟩⟩ := e'
-    rintro ⟨h1, h2, h3⟩
-    simp only at h1 h2 h3
-    subst h1 h2 h3
-    rfl
+  grind
 
 def embF (v : Ent X → ℂ) (τ : X.Ψ) (x c : Fin r) : ℂ := if h : c < x then v ⟨τ, ⟨(x, c), h⟩⟩ else 0
 
 theorem embF_single (e' : Ent X) (τ : X.Ψ) (x c : Fin r) :
     embF X (Pi.single e' 1) τ x c = if τ = e'.1 ∧ x = e'.2.1.1 ∧ c = e'.2.1.2 then 1 else 0 := by
-  unfold embF
-  by_cases h1 : c < x
-  · rw [dite_eq_left h1, Pi.single_apply]
-    by_cases h2 : τ = e'.1 ∧ x = e'.2.1.1 ∧ c = e'.2.1.2
-    · rw [if_pos h2, if_pos ((ent_eq_iff X _ _).2 h2)]
-    · rw [if_neg h2, if_neg (fun h => h2 ((ent_eq_iff X _ _).1 h))]
-  · rw [dite_eq_right h1, if_neg]
-    rintro ⟨rfl, rfl, rfl⟩
-    exact h1 e'.2.2
+  grind [embF]
 
 def lmulL (N : Frame X.Ψ r) : (Ent X → ℂ) →ₗ[ℂ] (Ent X → ℂ) where
   toFun v e := ∑ x, N e.1 e.2.1.1 x * embF X v e.1 x e.2.1.2

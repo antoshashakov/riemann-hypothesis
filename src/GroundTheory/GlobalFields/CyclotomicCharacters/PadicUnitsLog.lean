@@ -216,9 +216,7 @@ noncomputable def logMod (n : ℕ) : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ →* 
 
 theorem expHom_logMod (n : ℕ) (x : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ) :
     expHom ℓ n (logMod ℓ n x) = x ^ torsionExponent ℓ := by
-  have := congrArg Subtype.val ((expEquiv ℓ n).apply_symm_apply (powKer ℓ n x))
-  rw [coe_expEquiv] at this
-  exact this
+  exact congrArg Subtype.val ((expEquiv ℓ n).apply_symm_apply (powKer ℓ n x))
 
 theorem logMod_eq_iff (n : ℕ) (x : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ)
     (a : Multiplicative (ZMod (ℓ ^ n))) :

@@ -67,9 +67,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 section SlopeTestRemainingChoices
 
 theorem kOf_spec (σ : K →+* ℂ) {z : ℂ} (h : ∃ a : K, σ a = z) : σ (kOf σ z) = z := by
-  unfold kOf
-  rw [dite_eq_left h]
-  exact h.choose_spec
+  grind [kOf]
 
 theorem kOf_of (σ : K →+* ℂ) (a : K) : kOf σ (σ a) = a :=
   σ.injective (kOf_spec σ ⟨a, rfl⟩)

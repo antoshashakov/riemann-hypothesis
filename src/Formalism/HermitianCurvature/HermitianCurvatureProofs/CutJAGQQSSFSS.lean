@@ -204,10 +204,7 @@ private theorem lo_le_rho_and_rho_le_hi (hP : P.OK) {m : ℕ} (h1 : 1 ≤ m) (h2
   constructor <;> linarith
 
 private theorem hi_succ_lt_lo (m : ℕ) : P.hi (m + 1) < P.lo m := by
-  unfold M.Par.hi M.Par.lo
-  have h1 := min_le_left (P.u (m + 1)) (P.u' (m + 1))
-  have h2 := le_max_left (P.u (m + 1)) (P.u' (m + 1))
-  linarith
+  grind [M.Par.hi, M.Par.lo]
 
 private theorem hi_le_hi_of_le (hP : P.OK) {a b : ℕ} (ha : 1 ≤ a) (hab : a ≤ b) (hb : b ≤ P.k - 1) :
     P.hi b ≤ P.hi a := by

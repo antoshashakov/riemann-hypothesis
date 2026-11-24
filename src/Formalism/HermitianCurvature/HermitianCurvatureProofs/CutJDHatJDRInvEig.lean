@@ -127,9 +127,7 @@ theorem w_col_e {z' : Fin (2 * r + k + 1) → ℂ} {w : B.Mat k r} (hw : w ∈ U
 
 theorem m_col_e {m : B.Mat k r} (hm : m ∈ Nset k r) (q i : Fin (2 * r + k + 1)) (hq : q.val < r) (hi : q.val ≤ i.val) :
     m i q = if i = q then 1 else 0 := by
-  have := hm.2.1 ⟨q.val, hq⟩ i hi
-  have e : eI k r ⟨q.val, hq⟩ = q := Fin.ext rfl
-  rwa [e] at this
+  exact_mod_cast hm.2.1 ⟨q.val, hq⟩ i hi
 
 theorem mw_X {z' : Fin (2 * r + k + 1) → ℂ} {w m : B.Mat k r} (hw : w ∈ UWset k r z') (hm : m ∈ Nset k r)
     (i q : Fin (2 * r + k + 1)) (hi : r ≤ i.val) (hq : q.val < r) : (m * w) i q = 0 := by

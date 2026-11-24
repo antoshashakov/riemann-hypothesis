@@ -100,15 +100,11 @@ theorem SmoothR.comp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
 
 theorem SmoothR.add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℝ) (hf : SmoothR n z f) (hg : SmoothR n z g) :
     SmoothR n z (fun x => f x + g x) := by
-  have h1 := Smooth.add n z _ _ hf hg
-  unfold SmoothR
-  simpa using h1
+  exact_mod_cast Smooth.add n z _ _ hf hg
 
 theorem SmoothR.mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℝ) (hf : SmoothR n z f) (hg : SmoothR n z g) :
     SmoothR n z (fun x => f x * g x) := by
-  have h1 := Smooth.mul n z _ _ hf hg
-  unfold SmoothR
-  simpa using h1
+  exact_mod_cast Smooth.mul n z _ _ hf hg
 
 theorem Holo.const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) :
     Holo n z (fun _ => c) := by

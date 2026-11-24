@@ -113,18 +113,12 @@ private theorem derivative_exp_eq_exp : derivative (R := K) (exp K) = exp K := b
 
 private theorem derivative_eq_pderiv_unit (f : PowerSeries K) :
     derivative (R := K) f = MvPowerSeries.pderiv (R := K) () f := by
-  ext n
-  rw [PowerSeries.coeff_derivative]
-  change _ = MvPowerSeries.coeff (Finsupp.single () n) _
-  rw [MvPowerSeries.coeff_pderiv, ← Finsupp.single_add, Finsupp.single_eq_same]
   rfl
 
 private theorem derivative_subst_eq_chain_rule {g : PowerSeries K} (hg : constantCoeff g = 0)
     (φ : PowerSeries K) :
     derivative (R := K) (φ.subst g) = (derivative (R := K) φ).subst g * derivative (R := K) g := by
-  have h := Formalism.G.LogCR.pderiv_psubst (R := K) (τ := Unit) (a := g) hg φ ()
-  simp only [derivative_eq_pderiv_unit]
-  exact h
+  exact_mod_cast Formalism.G.LogCR.pderiv_psubst (R := K) (τ := Unit) (a := g) hg φ ()
 
 theorem log_subst_exp : (log K).subst (exp K - 1) = X := by
   have hc : constantCoeff (exp K - 1 : PowerSeries K) = 0 := by simp

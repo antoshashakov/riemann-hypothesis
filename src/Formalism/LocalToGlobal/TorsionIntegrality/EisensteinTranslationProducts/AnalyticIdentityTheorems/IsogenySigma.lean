@@ -158,9 +158,7 @@ lemma num_add (hq : SgStarQuasi) (hst : MulStable L α) (hc : (S.card : ℝ) + 1
 
 lemma sg_add_order (hord : SigmaOrder) (he : SigmaEntire) (P z : ℂ) :
     meromorphicOrderAt (fun w : ℂ => sgStar L (w + P)) z = ind L (z + P) := by
-  have := sg_order L hord he 1 P z one_ne_zero
-  simp only [one_mul] at this
-  exact this
+  simpa using sg_order L hord he 1 P z one_ne_zero
 
 lemma sg_sub_order (hord : SigmaOrder) (he : SigmaEntire) (P z : ℂ) :
     meromorphicOrderAt (fun w : ℂ => sgStar L (w - P)) z = ind L (z - P) := by
@@ -199,9 +197,7 @@ lemma fac_order (hord : SigmaOrder) (he : SigmaEntire) (hb : SgStarBasic) (P z :
 
 lemma sg_id_order (hord : SigmaOrder) (he : SigmaEntire) (z : ℂ) :
     meromorphicOrderAt (sgStar L) z = ind L z := by
-  have := sg_order L hord he 1 0 z one_ne_zero
-  simp only [one_mul, add_zero] at this
-  exact this
+  simpa using sg_order L hord he 1 0 z one_ne_zero
 
 lemma num_analyticAt (hb : SgStarBasic) (z : ℂ) : AnalyticAt ℂ (num L α) z := by
   have hd := (hb L).1

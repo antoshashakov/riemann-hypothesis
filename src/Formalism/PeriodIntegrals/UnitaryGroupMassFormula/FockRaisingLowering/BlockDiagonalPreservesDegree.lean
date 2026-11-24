@@ -316,9 +316,7 @@ theorem fi_smul_left (hL : FockLinL) (c : ℂ) (P Q : MvPolynomial σ ℂ) :
 
 theorem fi_add_left (hL : FockLinL) (P₁ P₂ Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (P₁ + P₂) Q = FockH1Action.fockInner P₁ Q + FockH1Action.fockInner P₂ Q := by
-  have h := hL σ 1 P₁ P₂ Q
-  simp only [one_smul, map_one, one_mul] at h
-  exact h
+  simpa using hL σ 1 P₁ P₂ Q
 
 theorem fi_smul_right (hR : FockLinR) (c : ℂ) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (c • Q) = c * FockH1Action.fockInner P Q := by
@@ -328,9 +326,7 @@ theorem fi_smul_right (hR : FockLinR) (c : ℂ) (P Q : MvPolynomial σ ℂ) :
 
 theorem fi_add_right (hR : FockLinR) (P Q₁ Q₂ : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (Q₁ + Q₂) = FockH1Action.fockInner P Q₁ + FockH1Action.fockInner P Q₂ := by
-  have h := hR σ 1 P Q₁ Q₂
-  simp only [one_smul, one_mul] at h
-  exact h
+  simpa using hR σ 1 P Q₁ Q₂
 
 theorem fi_sum_left {ι : Type} (hL : FockLinL) (t : Finset ι) (f : ι → MvPolynomial σ ℂ)
     (Q : MvPolynomial σ ℂ) :
@@ -343,9 +339,7 @@ theorem fi_sum_left {ι : Type} (hL : FockLinL) (t : Finset ι) (f : ι → MvPo
 
 private theorem fockInner_neg_right' (hR : FockLinR) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (-Q) = -FockH1Action.fockInner P Q := by
-  have h := fi_smul_right hR (-1 : ℂ) P Q
-  rw [neg_one_smul, neg_one_mul] at h
-  exact h
+  simpa using fi_smul_right hR (-1 : ℂ) P Q
 
 theorem fi_sum_right {ι : Type} (hR : FockLinR) (t : Finset ι) (f : ι → MvPolynomial σ ℂ)
     (P : MvPolynomial σ ℂ) :

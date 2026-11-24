@@ -118,10 +118,7 @@ theorem sbp (L : ℕ → ℝ) : ∀ r : ℕ, ∑ i ∈ Finset.range r, ((2 * i :
     ring
 
 theorem Lm_zero (x : Frame X.Ψ r) (τ : X.Ψ) : Lm X x τ 0 = 0 := by
-  unfold Lm dmin lminor
-  haveI : IsEmpty (Fin ((0 : Fin (r + 1)) : ℕ)) := ⟨fun i => by have := i.isLt; simp at this⟩
-  rw [Matrix.det_isEmpty]
-  simp
+  simp [Lm, dmin, lminor]
 
 private theorem gram_eq_lemma (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ) := by

@@ -84,10 +84,7 @@ theorem midOf_midI (r : ℕ) (j : Fin r) : midOf (midI r j) = some j := by
   · exact absurd ⟨by omega, by omega⟩ h
 
 theorem midOf_last (r : ℕ) : midOf (Fin.last (r + 1)) = none := by
-  unfold midOf
-  split_ifs with h
-  · exact absurd h.2 (by simp)
-  · rfl
+  norm_num [midOf]
 
 theorem fin_cases3 (r : ℕ) (t : Fin (r + 1 + 1)) : t = 0 ∨ t = Fin.last (r + 1) ∨ ∃ j, t = midI r j := by
   by_cases h0 : t.val = 0

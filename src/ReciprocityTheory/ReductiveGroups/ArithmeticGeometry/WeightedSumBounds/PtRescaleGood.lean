@@ -74,10 +74,7 @@ def ptSumL (G : LogFGL v d) {τ : Type*} :
 theorem ptc_elim_const {τ : Type*} {x y : Fin d → MvPowerSeries τ C}
     (hx : ∀ a, constantCoeff (x a) = 0) (hy : ∀ a, constantCoeff (y a) = 0) :
     ∀ s, constantCoeff (Sum.elim x y s) = 0 := by
-  intro s
-  cases s with
-  | inl s => exact hx s
-  | inr s => exact hy s
+  grind
 
 private theorem hs_lemma {σ τ : Type*} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) : HasSubst a :=

@@ -147,9 +147,7 @@ theorem ee_mul_right (u : Gf) (h : D.H) : D.ee (u * h) = D.ee u * D.χ h := by
     rw [dite_eq_right hhu, dite_eq_right hu, zero_mul]
 
 theorem ee_inv_mul (h : D.H) (u : Gf) : D.ee ((h : Gf)⁻¹ * u) = (D.χ h : ℂ)⁻¹ * D.ee u := by
-  have e := ee_mul_left D h⁻¹ u
-  rw [Subgroup.coe_inv, map_inv, Units.val_inv_eq_inv_val] at e
-  exact e
+  simpa using ee_mul_left D h⁻¹ u
 
 theorem norm_ee_le (hx : D.Ax) (u : Gf) : ‖D.ee u‖ ≤ 1 := by
   unfold Dat.ee

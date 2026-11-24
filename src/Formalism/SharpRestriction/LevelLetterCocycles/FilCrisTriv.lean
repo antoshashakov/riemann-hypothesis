@@ -251,10 +251,7 @@ variable {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 private theorem crisMap_rT_lemma_9 {V V' : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V'] (C : Type) [CommRing C] [Algebra Qp C]
     (f : V →ₗ[LL] V') (x : V ⊗[Qp] C) :
     crisMap C f x = LinearMap.rTensor C (f.restrictScalars Qp) x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul v c => simp [crisMap]
-  | add x y hx hy => simp only [map_add (f := _), hx, hy]
+  rfl
 
 private theorem crisMap_inj_lemma_10 {V V' : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V'] (C : Type) [CommRing C] [Algebra Qp C]
     (f : V →ₗ[LL] V') (hf : Function.Injective f) : Function.Injective (crisMap (Qp := Qp) C f) := by
@@ -286,10 +283,7 @@ private theorem crisMap_act_lemma_12 {V V' : Type} [AddCommGroup V] [Module LL V
 private theorem algmap_lT_lemma_15 {U : Type} [AddCommGroup U] [Module LL U] [Module Qp U] [IsScalarTower Qp LL U] {C D : Type} [AddCommGroup C] [Module Qp C]
     [AddCommGroup D] [Module Qp D] (g : C →ₗ[Qp] D) (w : U ⊗[Qp] C) :
     AlgebraTensorModule.map (LinearMap.id : U →ₗ[LL] U) g w = LinearMap.lTensor U g w := by
-  induction w using TensorProduct.induction_on with
-  | zero => simp
-  | tmul v c => simp
-  | add x y hx hy => simp only [map_add (f := _), hx, hy]
+  rfl
 
 private theorem filV_iff_lemma_13 {U : Type} [AddCommGroup U] [Module LL U] [Module Qp U] [IsScalarTower Qp LL U] (a : ℤ) (y : U ⊗[Qp] BdR) :
     y ∈ FilV PD (LL := LL) (V := U) a ↔ LinearMap.lTensor U ((PD.Fil a).restrictScalars Qp).mkQ y = 0 := by
