@@ -196,12 +196,7 @@ lemma mul_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 := mul_inv
 lemma inv_eq {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := inv_eq_hpk_mul_conjTranspose_mul_hpk hg
 
 lemma mul_mem {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
-  have ea : aᴴ * Hpk k r * a = Hpk k r := ha
-  have eb : bᴴ * Hpk k r * b = Hpk k r := hb
-  show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r
-  rw [Matrix.conjTranspose_mul]
-  calc bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b := by simp only [Matrix.mul_assoc]
-    _ = Hpk k r := by rw [ea, eb]
+  first | exact _root_.PI.HwUniqW.mul_mem_UH | (apply _root_.PI.HwUniqW.mul_mem_UH <;> assumption)
 
 lemma wb_comm {h : Mx k r} (hh : h ∈ UWset k r z) (v : Fin (2 * r + k + 1) → ℂ) :
     (fun i : Fin (2 * r + k + 1) => if r ≤ i.val ∧ i.val ≤ r + k then (h *ᵥ v) i else 0) =

@@ -51,6 +51,7 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.SpectralGap.ContinuousBlkWConj
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.HermitianMeasures.JSIntFin
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.InHolds
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -199,12 +200,7 @@ theorem one_mem_UH (k r : ℕ) : (1 : Mat k r) ∈ UH (Hpk k r) := by
 
 theorem uh_mul' {k r : ℕ} {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
     a * b ∈ UH (Hpk k r) := by
-  show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r
-  have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
-  have hb' : bᴴ * Hpk k r * b = Hpk k r := hb
-  calc (a * b)ᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b := by
-        simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
-    _ = Hpk k r := by rw [ha', hb']
+  first | exact _root_.PI.HwUniqW.mul_mem_UH | (apply _root_.PI.HwUniqW.mul_mem_UH <;> assumption)
 
 theorem inUJ_conj {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     {a : Mat k r} (ha : a ∈ UH (Hpk k r)) : Formalism.REAL.inUJ ε (P * a * P⁻¹) := by

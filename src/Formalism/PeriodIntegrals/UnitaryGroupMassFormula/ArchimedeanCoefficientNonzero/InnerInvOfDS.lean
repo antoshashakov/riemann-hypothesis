@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -166,12 +167,7 @@ end hs
 
 private theorem mul_mem_UH_Hpk_archimedean_coefficient_nonzero {k r : ℕ} {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
     a * b ∈ UH (Hpk k r) := by
-  have ha' : a.conjTranspose * Hpk k r * a = Hpk k r := ha
-  have hb' : b.conjTranspose * Hpk k r * b = Hpk k r := hb
-  show (a * b).conjTranspose * Hpk k r * (a * b) = Hpk k r
-  rw [Matrix.conjTranspose_mul]
-  calc b.conjTranspose * a.conjTranspose * Hpk k r * (a * b) = b.conjTranspose * (a.conjTranspose * Hpk k r * a) * b := by simp only [Matrix.mul_assoc]
-    _ = Hpk k r := by rw [ha', hb']
+  first | exact _root_.PI.HwUniqW.mul_mem_UH | (apply _root_.PI.HwUniqW.mul_mem_UH <;> assumption)
 
 private theorem aDil_mem_gv {k r : ℕ} {t : ℝ} (ht : 0 < t) : aDil k r t ∈ UH (Hpk k r) := by
   show (aDil k r t).conjTranspose * Hpk k r * aDil k r t = Hpk k r

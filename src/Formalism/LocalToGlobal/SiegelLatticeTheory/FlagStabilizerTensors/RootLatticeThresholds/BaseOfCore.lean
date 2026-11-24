@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.HaarUniq
 
 @[expose] public section
 
@@ -82,14 +83,9 @@ theorem trG_closedEmb {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) {
 
 private theorem isUnit_det_of_mem_UH_Hpk {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
-  have h : gᴴ * Hpk k r * g = Hpk k r := hg
-  have hd := congrArg Matrix.det h
-  rw [Matrix.det_mul, Matrix.det_mul] at hd
-  have hH : (Hpk k r).det ≠ 0 := (Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r).ne_zero
-  rw [isUnit_iff_ne_zero]
-  intro h0
-  rw [h0, mul_zero] at hd
-  exact hH hd.symm
+  first
+  | exact _root_.PI.RhsWLim.W.HU.isUnit_of_uh
+  | (apply _root_.PI.RhsWLim.W.HU.isUnit_of_uh <;> assumption)
 
 private theorem measurable_inv_apply (i j : Fin (2 * r + k + 1)) :
     Measurable fun x : Mt k r => (Matrix.of x)⁻¹ i j := by

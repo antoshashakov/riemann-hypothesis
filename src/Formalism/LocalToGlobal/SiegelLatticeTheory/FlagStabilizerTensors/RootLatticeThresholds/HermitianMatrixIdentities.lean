@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GroupFactorizationHolds
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.HaarUniq
 
 @[expose] public section
 
@@ -86,13 +87,9 @@ theorem herm_sum_right (H : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
 
 private lemma isUnit_det_of_mem_UH_Hpk' {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
-  have hH := hpk_isUnit (k := k) (r := r)
-  have h : gᴴ * Hpk k r * g = Hpk k r := hg
-  have h2 := congrArg Matrix.det h
-  rw [Matrix.det_mul, Matrix.det_mul] at h2
-  have h3 : gᴴ.det * g.det * (Hpk k r).det = 1 * (Hpk k r).det := by linear_combination h2
-  have h4 := mul_right_cancel₀ hH.ne_zero h3
-  exact isUnit_iff_exists.mpr ⟨gᴴ.det, by rw [mul_comm]; exact h4, h4⟩
+  first
+  | exact _root_.PI.RhsWLim.W.HU.isUnit_of_uh
+  | (apply _root_.PI.RhsWLim.W.HU.isUnit_of_uh <;> assumption)
 
 theorem herm_UH {ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hρ : ρ ∈ UH (Hpk k r))
     (x y : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) (ρ *ᵥ x) y = herm (Hpk k r) x (ρ⁻¹ *ᵥ y) := by

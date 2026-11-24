@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.BesselUnitNorm.BesselLine
+public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
 
@@ -67,12 +68,7 @@ theorem hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   apply ReciprocityTheory.ChartRestriction.DS.Mult1.InvChr.Hpk_sq <;> assumption
 
 theorem uh_mul {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
-  show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r
-  have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
-  have hb' : bᴴ * Hpk k r * b = Hpk k r := hb
-  rw [Matrix.conjTranspose_mul]
-  calc bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b := by simp only [mul_assoc]
-    _ = Hpk k r := by rw [ha', hb']
+  first | exact _root_.PI.HwUniqW.mul_mem_UH | (apply _root_.PI.HwUniqW.mul_mem_UH <;> assumption)
 
 theorem uh_inv {a : Mx k r} (ha : a ∈ UH (Hpk k r)) :
     a * a⁻¹ = 1 ∧ a⁻¹ * a = 1 ∧ a⁻¹ ∈ UH (Hpk k r) := by

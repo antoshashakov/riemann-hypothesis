@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.HaarUniq
 public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
@@ -279,11 +280,9 @@ theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem isUnit_of_uh {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
-  apply Matrix.isUnit_det_of_left_inverse (B := Hpk k r * gᴴ * Hpk k r)
-  have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
-  calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by
-        simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [hg', hpk_sq]
+  first
+  | exact _root_.PI.RhsWLim.W.HU.isUnit_of_uh
+  | (apply _root_.PI.RhsWLim.W.HU.isUnit_of_uh <;> assumption)
 
 theorem uh_one : (1 : Mx k r) ∈ UH (Hpk k r) := by
   show (1 : Mx k r)ᴴ * Hpk k r * 1 = Hpk k r
