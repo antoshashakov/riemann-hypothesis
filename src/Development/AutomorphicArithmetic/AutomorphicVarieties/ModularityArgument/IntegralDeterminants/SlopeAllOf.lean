@@ -4,7 +4,8 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityA
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AutomorphicFormsFiniteGL
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GelfandKazhdanDualOfTwoHyps
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetShalikaRigidityHolds
+public import
+Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.JacquetShalikaRigidity
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InfiniteQuadraticCMGoodBaseChangeSplitStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PolarizedPairBaseChangePolarizedSameWeightStatement
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.IntCrit
@@ -168,7 +169,7 @@ theorem UpperTheory.V.Z.Int.slopeAllOf :
     GlobalTheory.GalCut.QuadLift → UpperTheory.V.Z.Int.SlopeOn .good → UpperTheory.V.Z.Int.SlopeAll := by
   intro hQL hS E _ _ _ n hn m hm π hinf ⟨χ, hpol⟩ w B hB
   have hAF := GlobalTheory.automorphicFormsFiniteGL
-  have hJS := GlobalTheory.JSW.jacquetShalikaRigidity_holds
+  have hJS := PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity
   have hGK := GlobalTheory.GelfandKazhdanTop.gelfandKazhdanDual_of_jacquetShalika (PositivityTheory.JacquetShalikaLocal.jacquetShalika_of hJS) hAF
   have hic : ∀ τ, (CG.mk π).infChar τ = infOf m := fun τ => CG.HasInfChar.infChar_eq (hinf τ)
   have hreg : (CG.mk π).IsRegAlg := (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by
