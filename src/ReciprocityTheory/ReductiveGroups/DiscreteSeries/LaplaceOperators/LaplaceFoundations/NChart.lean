@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
@@ -110,15 +111,7 @@ theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
   | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem Hpk_herm : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rw [conjTranspose_apply, Hpk_apply, Hpk_apply]
-  by_cases h : j = flipB k r i
-  · have h' : i = flipB k r j := by rw [h, flipB_flipB]
-    rw [if_pos h, if_pos h', h, sgnB_flip]
-    unfold sgnB
-    split_ifs <;> simp
-  · have h' : ¬ i = flipB k r j := fun h' => h (by rw [h', flipB_flipB])
-    rw [if_neg h, if_neg h', star_zero]
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 private lemma levB_add_levB_flipB_eq_two_mul (a : Fin (2 * r + k + 1)) :
     levB k r a + levB k r (flipB k r a) = 2 * r := by

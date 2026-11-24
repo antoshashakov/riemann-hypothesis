@@ -45,6 +45,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -91,10 +92,7 @@ theorem hpk_mulVec' (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) 
     · simp
 
 theorem hpk_conjT' : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rcases i with ⟨i, hi⟩; rcases j with ⟨j, hj⟩
-  simp only [conjTranspose_apply, Hpk, Fin.mk.injEq]
-  split_ifs <;> first | (exfalso; omega) | simp
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem herm_bvec (v : Fin (2 * r + k + 1) → ℂ) (q : Fin (2 * r + k + 1)) :
     herm (Hpk k r) (bvec q) v = star ((Hpk k r *ᵥ v) q) := by

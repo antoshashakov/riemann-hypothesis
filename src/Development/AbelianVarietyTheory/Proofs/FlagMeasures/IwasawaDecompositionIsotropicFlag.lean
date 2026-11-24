@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
@@ -190,13 +191,7 @@ theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
   | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem Hpk_herm : (Hpk k r)ᴴ = Hpk k r := by
-  ext x y
-  rw [conjTranspose_apply]
-  induction x using cases3 <;> induction y using cases3 <;>
-    simp [H_ee, H_ew, H_es, H_we, H_ww, H_ws, H_se, H_sw, H_ss, apply_ite (starRingEnd ℂ), eq_comm]
-  split_ifs with h
-  · subst h; exact (star_sg _).symm
-  · rfl
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem stab (p : Mat k r) (hp : p ∈ GG k r) (a : Fin r → ℝ) (ha : ∀ b, 0 < a b)
     (h1 : ∀ (b : Fin r) (i : Fin (2 * r + k + 1)), b.val ≤ i.val → p i (eI k r b) = if i = eI k r b then (a b : ℂ) else 0) :

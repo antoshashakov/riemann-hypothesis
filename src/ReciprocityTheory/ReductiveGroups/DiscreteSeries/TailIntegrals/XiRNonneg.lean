@@ -47,6 +47,7 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.Fix
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.GaNonneg
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.XphiLinInd
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.HpkMulVecMulVec
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -62,12 +63,7 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ}
 
 theorem hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  simp only [conjTranspose_apply, hpk_apply]
-  by_cases h : j = sigI k r i
-  · subst h; rw [if_pos (sig_sig i).symm, if_pos rfl, sgn_sig, star_sgn]
-  · have h' : ¬ i = sigI k r j := fun h2 => h (by rw [h2, sig_sig])
-    rw [if_neg h', if_neg h, star_zero]
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem hpk_K : Hpk k r ∈ Kset k r := by
   have h2 := HermitianLiftIdentities.hpk_sq (k := k) (r := r)

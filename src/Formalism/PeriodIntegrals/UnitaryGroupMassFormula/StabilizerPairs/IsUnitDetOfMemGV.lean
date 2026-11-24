@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -94,19 +95,7 @@ theorem hpk_det_ne : (Hpk k r).det ≠ 0 := by
   exact zero_ne_one h1
 
 theorem hpk_conjTranspose : (Hpk k r)ᴴ = Hpk k r := by
-  ext i l
-  rw [Matrix.conjTranspose_apply, hpk_apply, hpk_apply]
-  by_cases h : i.val = sgI k r l.val
-  · have h' : l.val = sgI k r i.val := by rw [h, sgI_sgI]
-    have hs : (i.val = r + k ↔ l.val = r + k) := by rw [h, sgI_eq_iff]
-    rw [if_pos h, if_pos h']
-    by_cases hl : l.val = r + k
-    · simp [hl, hs.2 hl]
-    · have hi : ¬ i.val = r + k := fun h2 => hl (hs.1 h2)
-      simp [hl, hi]
-  · have h' : ¬ l.val = sgI k r i.val := fun h' => h (by rw [h', sgI_sgI])
-    rw [if_neg h, if_neg h']
-    simp
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem mem_GV_iff {g : B.Mat k r} : g ∈ B.GV k r ↔ gᴴ * Hpk k r * g = Hpk k r := Iff.rfl
 

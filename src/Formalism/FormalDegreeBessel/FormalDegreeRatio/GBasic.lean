@@ -49,6 +49,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.BitVec
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
@@ -266,13 +267,7 @@ lemma PJP (k r : ℕ) : (Pk k r)ᴴ * Formalism.REAL.Jm (epsK k r) * Pk k r = Hp
   exact PJP_apply k r i j
 
 lemma Hpk_herm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rw [Matrix.conjTranspose_apply, Hpk_eq, Hpk_eq]
-  by_cases h : j = sig k r i
-  · rw [if_pos ((eq_sig_iff k r i j).2 h), if_pos h, h, sgn_sig]
-    unfold sgn
-    split_ifs <;> simp
-  · rw [if_neg (fun e => h ((eq_sig_iff k r i j).1 e)), if_neg h, star_zero]
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 lemma Hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   first

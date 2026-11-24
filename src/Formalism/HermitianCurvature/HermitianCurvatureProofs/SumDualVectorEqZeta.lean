@@ -56,6 +56,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -111,10 +112,7 @@ theorem hpk_sq' : Hpk k r * Hpk k r = 1 := by
   apply ReciprocityTheory.ChartRestriction.DS.Mult1.InvChr.Hpk_sq <;> assumption
 
 theorem hpk_h : (Hpk k r)ᴴ = Hpk k r := by
-  ext a b
-  rw [Matrix.conjTranspose_apply]
-  simp only [Hpk]
-  split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | (simp; done) | omega
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem hpk_inv : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv hpk_sq'
 

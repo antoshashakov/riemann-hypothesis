@@ -48,6 +48,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
@@ -152,11 +153,7 @@ theorem herm_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) (x y : Fin (2 * r + k + 
   rw [key2]
 
 private theorem hpk_conjTranspose_eq_self (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  have := i.2
-  have := j.2
-  simp only [Matrix.conjTranspose_apply, Hpk, Fin.ext_iff]
-  split_ifs <;> first | omega | norm_num
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem herm_self (z : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) z z = -((Tz k r z : ℝ) : ℂ) := by
   have hH := hpk_conjTranspose_eq_self k r

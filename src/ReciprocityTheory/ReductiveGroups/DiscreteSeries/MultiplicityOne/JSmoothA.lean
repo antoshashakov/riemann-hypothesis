@@ -50,6 +50,7 @@ import Mathlib.Topology.UniformSpace.Uniformizable
 public import Mathlib.Geometry.Manifold.ContMDiff.Basic
 public import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
 public import Mathlib.Geometry.Manifold.ContMDiffMap
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -128,11 +129,7 @@ theorem hpk_sq : Hpk k r * Hpk k r = 1 := mat_eq_of_mulVec fun v => by
   rw [← Matrix.mulVec_mulVec, hpk_mulVec_mulVec, Matrix.one_mulVec]
 
 theorem hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  simp only [Matrix.conjTranspose_apply, Hpk, Fin.ext_iff]
-  split_ifs <;> first | rfl | (exfalso; omega) | simp | (simp_all; omega) | simp_all
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem gv_left_inv {g : Mat k r} (hg : g ∈ GV k r) : Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg

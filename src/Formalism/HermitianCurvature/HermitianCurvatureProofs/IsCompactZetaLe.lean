@@ -49,6 +49,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -112,12 +113,7 @@ section Wb
 variable {k r : ℕ}
 
 theorem hpk_herm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  simp only [Matrix.conjTranspose_apply, Hpk]
-  rcases i with ⟨a, ha⟩
-  rcases j with ⟨b, hb⟩
-  simp only [Fin.mk.injEq]
-  split_ifs <;> first | (exfalso; omega) | simp
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem inWb_add {x y : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) (hy : inWb k r y) : inWb k r (x + y) := by
   intro i hi

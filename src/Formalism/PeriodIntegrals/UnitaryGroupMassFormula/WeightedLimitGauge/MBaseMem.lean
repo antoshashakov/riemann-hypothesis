@@ -48,6 +48,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -63,11 +64,7 @@ open PI.RhsWLim
 variable {k r : ℕ}
 
 theorem hpk_herm : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rw [conjTranspose_apply]
-  unfold Hpk
-  simp only [Fin.ext_iff]
-  split_ifs <;> first | (exfalso; omega) | simp
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 abbrev mid (k r : ℕ) (i : Fin (2 * r + k + 1)) : Prop := r ≤ i.val ∧ i.val ≤ r + k
 

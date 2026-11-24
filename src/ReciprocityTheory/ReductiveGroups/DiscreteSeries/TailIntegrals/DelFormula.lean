@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -137,11 +138,7 @@ private theorem Hpk_mulVec_apply_of_val_eq_add (k r : ℕ) (y : Fin (2 * r + k +
     exact absurd (Finset.mem_univ _) hm
 
 private theorem Hpk_conjTranspose_eq_self (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  have hi := i.isLt
-  have hj := j.isLt
-  rw [Matrix.conjTranspose_apply]
-  simp only [Hpk, Fin.ext_iff] <;> (try split_ifs) <;> first | (exfalso; omega) | simp
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 private theorem Hpk_mulVec_Hpk_mulVec (k r : ℕ) (y : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk k r *ᵥ y) = y := by
   funext i

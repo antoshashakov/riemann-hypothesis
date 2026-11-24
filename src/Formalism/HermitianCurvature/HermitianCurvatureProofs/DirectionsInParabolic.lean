@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -181,14 +182,7 @@ theorem wMat_conjTranspose (d : ℕ) : (G.wMat d)ᴴ = G.wMat d := by
     simp [h, h']
 
 theorem hpk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
-  ext a b
-  simp only [Matrix.conjTranspose_apply, Hpk]
-  by_cases hab : a = b
-  · subst hab
-    split_ifs <;> simp
-  · have hba : b ≠ a := Ne.symm hab
-    simp only [hab, hba, and_false, if_false]
-    split_ifs <;> first | (exfalso; omega) | simp
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem hpkBlocks : HpkBlocks := by
   intro k j ρ

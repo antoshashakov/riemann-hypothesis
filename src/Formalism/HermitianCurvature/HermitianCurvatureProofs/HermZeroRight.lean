@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -85,10 +86,7 @@ theorem hpk_symm' : (Hpk k r)ᵀ = Hpk k r := by
   apply GlobalTheory.DualFRep.gram_transpose <;> assumption
 
 theorem hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rw [conjTranspose_apply, ← transpose_apply (Hpk k r) j i, hpk_symm']
-  unfold Hpk
-  split_ifs <;> simp
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem herm_eq (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x y = ∑ i, star (y i) * (Hpk k r *ᵥ x) i := rfl

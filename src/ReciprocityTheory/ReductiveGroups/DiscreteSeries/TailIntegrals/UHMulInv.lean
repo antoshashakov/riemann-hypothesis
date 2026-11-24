@@ -44,6 +44,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
+public import Formalism.SharedLemmas.HpkHerm
 
 @[expose] public section
 
@@ -141,10 +142,7 @@ theorem Hpk_sq : Hpk k r * Hpk k r = 1 :=
   mat_eq_of_mulVec fun v => by rw [← Matrix.mulVec_mulVec, Hpk_mulVec_mulVec, Matrix.one_mulVec]
 
 theorem Hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rcases i with ⟨i, hi⟩; rcases j with ⟨j, hj⟩
-  simp only [conjTranspose_apply, Hpk, Fin.mk.injEq]
-  split_ifs <;> first | (exfalso; omega) | simp
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem UH_left_inv {g : Mat k r} (hg : g ∈ GV k r) : Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg

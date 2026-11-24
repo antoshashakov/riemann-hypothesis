@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkHerm
 public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
@@ -131,12 +132,7 @@ lemma hσ_eq_iff (k r : ℕ) (i j : Fin (2 * r + k + 1)) : i = hσ k r j ↔ j =
     exact (hσ_hσ k r i).symm
 
 lemma hpk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rw [Matrix.conjTranspose_apply, hpk_eq, hpk_eq]
-  by_cases h : j = hσ k r i
-  · subst h
-    rw [if_pos (hσ_hσ k r i).symm, if_pos rfl, star_hs, hs_hσ]
-  · rw [if_neg (fun h' => h ((hσ_eq_iff k r i j).1 h')), if_neg h, star_zero]
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 lemma hpk_inv (k r : ℕ) : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv (hpk_mul_self k r)
 

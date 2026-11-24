@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkHerm
 public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
@@ -89,13 +90,7 @@ theorem hk_mul_self (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem hk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rw [conjTranspose_apply, hk_apply, hk_apply]
-  by_cases h : j = hkSig k r i
-  · subst h
-    simp [hk_sig_sig, hk_eps_sig, hk_star_eps]
-  · have h' : i ≠ hkSig k r j := fun e => h (by rw [e, hk_sig_sig])
-    simp [h, h']
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem hpk_involution : HpkInvol := fun k r => ⟨hk_conjTranspose k r, hk_mul_self k r⟩
 

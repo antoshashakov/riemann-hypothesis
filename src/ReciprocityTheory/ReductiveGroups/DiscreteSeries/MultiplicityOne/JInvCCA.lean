@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharedLemmas.HpkHerm
 public import Formalism.SharedLemmas.HpkSq
 
 @[expose] public section
@@ -103,14 +104,7 @@ theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   | (apply _root_.Formalism.SharedLemmas.upq_hpk_mul_self <;> assumption)
 
 theorem hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rw [Matrix.conjTranspose_apply, hpk_row, hpk_row]
-  by_cases h : j = tau k r i
-  · have h' : i = tau k r j := by rw [h, tau_tau]
-    rw [if_pos h', if_pos h, h, sgn_tau]
-    unfold sgn; split_ifs <;> simp
-  · have h' : ¬ i = tau k r j := fun h' => h (by rw [h', tau_tau])
-    rw [if_neg h', if_neg h, star_zero]
+  exact _root_.Formalism.SharedLemmas.upq_hpk_conjTranspose
 
 theorem isUnit_of_uh {g : Mat k r} (hg : g ∈ GV k r) : IsUnit g.det := by
   apply Matrix.isUnit_det_of_left_inverse (B := Hpk k r * gᴴ * Hpk k r)
