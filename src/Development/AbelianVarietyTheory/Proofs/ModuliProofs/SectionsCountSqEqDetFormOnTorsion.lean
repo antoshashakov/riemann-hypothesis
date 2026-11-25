@@ -7,13 +7,16 @@ public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DenseTorsionA
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EqProdOfMul
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSecImageNonzeroLocus
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSqAddSubDvd
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MapDegreeEqExpCharPowMulCardKernelStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MatrixPolynomialDetNormFixedPointsStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThickTransComp
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MapDegreeEqExpCharPowMulCardKernel
+public import Mathlib.Algebra.Polynomial.AlgebraMap
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MatrixPolynomialDetNormFixedPoints
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolarisationFormIntPolynomialBundlesStatement
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmpleStatement
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsDimSymmetricAmplePowEqMulPow
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsGrowthBasicPropertiesAbelianVarietyStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsPowerGrowthVolumePullFiniteEndomorphismStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsPowerGrowthVolumePullFiniteEndomorphism
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SumMonomialAddSingle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -234,7 +237,7 @@ theorem exists_matrix (hL : Out.Laws) (hL2 : Out.Laws2) (P : Out.PolAV (Sp K)) (
       (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl)
     rw [mul_comm (2 * P.g) j, pow_mul, ← this]
     exact Nat.card_congr (Equiv.subtypeEquiv Additive.toMul fun x => Iff.rfl)
-  obtain ⟨U, hU1, hU2, hU3⟩ := GlobalTheory.T.matrix_polynomial_det_norm_fixed_points l (2 * P.g) _ (ptEnd P s) hcard
+  obtain ⟨U, hU1, hU2, hU3⟩ := _root_.GlobalTheory.TorsionMatrix.exists_padic_matrix l (2 * P.g) _ (ptEnd P s) hcard
   have eq : ∀ F, {x : Additive (Out.baseOver (Sp K) ⟶ P.A) // Polynomial.aeval (ptEnd P s) F x = 0} ≃
       {x : Out.baseOver (Sp K) ⟶ P.A // x ≫ ev F = 1} := fun F =>
     Equiv.subtypeEquiv Additive.toMul fun x => by rw [hact]; exact Iff.rfl
@@ -293,14 +296,14 @@ theorem sq_vol_eq_det : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsA
     have hA2 := (fa _ _ 1 one_pos hP hid).2.2.2 _ (hB _) (hsq F G).symm ((fa _ _ 1 one_pos (hB F) hf).1 hA)
     refine ⟨hA2, ?_⟩
     have := uniq _ _ hA2 ((GlobalTheory.T.sectionsGrowth_basic_properties_abelianVariety K P _ P.g hP).2.2.1 _ _ (hB _) (hsq F G).symm
-      (GlobalTheory.T.sectionsPowerGrowthVolume_pull_finite_endomorphism K P (ev G) d _ _ (hmon G) hf hd (hB F) hA (hDv F hA)))
+      (_root_.GlobalTheory.vol_pull_of_isFinite K P (ev G) d _ _ (hmon G) hf hd (hB F) hA (hDv F hA)))
     exact_mod_cast this
   have hN : ∀ G, ((D (G ^ 2) / 2 ^ P.g : ℚ) : ℚ_[l]) = ((Polynomial.aeval U G).det : ℤ_[l]) := by
     refine GlobalTheory.PolyNorm.eq_det l (2 * P.g) U (fun G => D (G ^ 2) / 2 ^ P.g) (fun G => IsFinite (ev G).left)
       (hDp.sq.div (2 ^ P.g)) (by simp [hD1]) (fun F => (hDe F).mono fun t h => h.2) ?_ ?_
     · intro F G hF hG
-      obtain ⟨-, e, hd⟩ := GlobalTheory.T.mapDegree_eq_expChar_pow_mul_card_kernel K P (ev F) (hmon F) hF
-      obtain ⟨-, e', hd'⟩ := GlobalTheory.T.mapDegree_eq_expChar_pow_mul_card_kernel K P (ev G) (hmon G) hG
+      obtain ⟨-, e, hd⟩ := _root_.GlobalTheory.mapDeg_eq_pow_mul_card_ker K P (ev F) (hmon F) hF
+      obtain ⟨-, e', hd'⟩ := _root_.GlobalTheory.mapDeg_eq_pow_mul_card_ker K P (ev G) (hmon G) hG
       obtain ⟨a1, a2⟩ := hpull G 1 _ hG hd' hA1
       have a3 := (hpull F 1 _ hF hd hA1).2
       have a4 := (hpull F _ _ hF hd a1).2
@@ -309,7 +312,7 @@ theorem sq_vol_eq_det : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsA
       rw [mul_pow, a4, a3, hD1]
       field_simp
     · intro F hF
-      obtain ⟨hfin, e, hd⟩ := GlobalTheory.T.mapDegree_eq_expChar_pow_mul_card_kernel K P (ev F) (hmon F) hF
+      obtain ⟨hfin, e, hd⟩ := _root_.GlobalTheory.mapDeg_eq_pow_mul_card_ker K P (ev F) (hmon F) hF
       have a3 := (hpull F 1 _ hF hd hA1).2
       rw [_root_.mul_one] at a3
       show ‖((D (F ^ 2) / _ : ℚ) : ℚ_[l])‖ = _

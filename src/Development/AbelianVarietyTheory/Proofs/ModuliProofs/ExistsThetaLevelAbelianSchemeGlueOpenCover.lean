@@ -1,21 +1,29 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsBinaryOpGluedAlongCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGlueRigidifiedLineBundlesCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGrpObjOfLocalGroupLawsOnCoverStatement
+public import Mathlib.AlgebraicGeometry.Pullbacks
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Mathlib.Order.CompletePartialOrder
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsBinaryOpGluedAlongCover
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGlueRigidifiedLineBundlesCover
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGrpObjOfLocalGroupLawsOnCover
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullback
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueHom
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GlueSchemesOverOpensAlongCocycleStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GroupLawsOnCoverAgreeOnCommonPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeAndRelDimOfOpenCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleOfCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SymmetricLocalOnBaseCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaGroupKernelTrivialOfOpenCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaObjectComparisonMapsCocycleStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TorsionAndIsMonHomOfOpenCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TorsionBasisGeometricFibresOfOpenCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsLocalOnBaseOfOpenCoverStatement
+public import Mathlib.AlgebraicGeometry.Restrict
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GlueSchemesOverOpensAlongCocycle
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GroupLawsOnCoverAgreeOnCommonPoints
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeAndRelDimOfOpenCover
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.NonzeroLocus
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleOfCover
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SymmetricLocalOnBaseCover
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaGroupKernelTrivialOfOpenCover
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaObjectComparisonMapsCocycle
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TorsionAndIsMonHomOfOpenCover
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TorsionBasisGeometricFibresOfOpenCover
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.BaseOver
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsLocalOnBaseOfOpenCover
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -113,26 +121,26 @@ theorem exists_tobj_of_cover : ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type
   simp only [TMap] at hl hr
   choose a ha using hl
   choose a' ha' using hr
-  have hcoc := GlobalTheory.T.thetaObject_comparison_maps_cocycle tObj_pull o g k J b S s I U t u a a'
+  have hcoc := _root_.GlobalTheory.ThetaCocycle.cocycle tObj_pull o g k J b S s I U t u a a'
     (fun i j => ⟨(ha i j).1, (ha i j).2.1, (ha i j).2.2.1⟩)
     (fun i j => ⟨(ha' i j).1, (ha' i j).2.1, (ha' i j).2.2.1⟩) hrig
-  obtain ⟨A, ψ, hp, hB⟩ := GlobalTheory.T.glue_schemes_over_opens_along_cocycle S I U (fun i => (t i).A) (fun i j => (u i j).A) a a'
+  obtain ⟨A, ψ, hp, hB⟩ := _root_.GlobalTheory.CocycleGlue.glue_over_opens S I U (fun i => (t i).A) (fun i j => (u i j).A) a a'
     (fun i j => (ha i j).1.1) (fun i j => (ha' i j).1.1) hcoc
-  have hgl := GlobalTheory.T.group_laws_on_cover_agree_on_common_points S I U A (fun i => (t i).A) ψ (fun i j => (u i j).A) a a' hp
+  have hgl := _root_.GlobalTheory.CoverOpCompat.opCompat S I U A (fun i => (t i).A) ψ (fun i j => (u i j).A) a a' hp
     (fun i j => (ha i j).1) (fun i j => (ha' i j).1) hB
-  obtain ⟨m, hm⟩ := GlobalTheory.T.exists_binary_op_glued_along_cover S I U A (fun i => (t i).A) ψ (fun i => μ) hU hp
+  obtain ⟨m, hm⟩ := _root_.GlobalTheory.CoverGlue.exists_binary_op S I U A (fun i => (t i).A) ψ (fun i => μ) hU hp
     (fun i j T r r' x y x' y' hx hy => by
       simpa only [Hom.mul_def] using (hgl.1 i j T r r' x y x' y' hx hy).1)
-  obtain ⟨n, hn⟩ := GlobalTheory.T.exists_binary_op_glued_along_cover S I U A (fun i => (t i).A) ψ (fun i => fst _ _ ≫ ι) hU hp
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.CoverGlue.exists_binary_op S I U A (fun i => (t i).A) ψ (fun i => fst _ _ ≫ ι) hU hp
     (fun i j T r r' x y x' y' hx hy => by
       simpa only [lift_fst_assoc, Hom.inv_def] using (hgl.1 i j T r r' x y x' y' hx hy).2)
   obtain ⟨e, he⟩ := exists_section_of_compatible_local_sections hU hp (fun i => (1 : Out.baseOver (U i).toScheme ⟶ (t i).A)) hgl.2
-  obtain ⟨inst, hgp⟩ := GlobalTheory.T.exists_grpObj_of_local_group_laws_on_cover S I U A (fun i => (t i).A) ψ m n e hU hp
+  obtain ⟨inst, hgp⟩ := _root_.GlobalTheory.CoverGlue.exists_grpObj_of_cover S I U A (fun i => (t i).A) ψ m n e hU hp
     (fun i T x y x₀ y₀ hx hy => ⟨by simpa only [Hom.mul_def] using hm i T x y x₀ y₀ hx hy,
       by simpa only [lift_fst_assoc, Hom.inv_def] using hn i T x y x₀ y₀ hx hy⟩) he
-  have hab := GlobalTheory.T.isAbelianScheme_and_relDim_of_open_cover S I U A (fun i => (t i).A) ψ hU hgp
+  have hab := _root_.GlobalTheory.CoverGlue.isAbelianScheme_and_relDim_of_cover S I U A (fun i => (t i).A) ψ hU hgp
   have hA : IsAbelianScheme A := hab.1 (fun i => (t i).ab)
-  obtain ⟨L, hL, hrigL, hLi⟩ := GlobalTheory.T.exists_glue_rigidified_lineBundles_cover S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab)
+  obtain ⟨L, hL, hrigL, hLi⟩ := _root_.GlobalTheory.RigidBundleGlue.exists_glue S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab)
     (fun i => (t i).L) (fun i j => (u i j).A.left) a a' hB (fun i => (t i).isLB) (fun i => (t i).rigid)
     (fun i j => LBIso.trans (pull_isLB (t i).isLB _) (u i j).isLB (pull_isLB (t j).isLB _)
       (ha i j).2.1.symm (ha' i j).2.1)
@@ -142,21 +150,21 @@ theorem exists_tobj_of_cover : ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type
   choose F hF using fun w => exists_endo_of_compatible_local_endos hU hp hB (fun i => (t i).act w) (fun i j => by
     rw [← Category.assoc, ← (ha i j).2.2.2 w, Category.assoc, (hB i j).w, ← Category.assoc,
       (ha' i j).2.2.2 w, Category.assoc])
-  have h82 := GlobalTheory.T.torsion_and_isMonHom_of_open_cover S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab)
-  have hsym := GlobalTheory.T.symmetric_local_on_base_cover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL
+  have h82 := _root_.GlobalTheory.CoverGlue.tors_and_isMonHom_of_cover S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab)
+  have hsym := _root_.GlobalTheory.CoverGlue.sym_of_cover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL
     (fun i => (t i).isLB) hLi (fun i => (t i).sym)
-  have hamp := GlobalTheory.T.relAmple_of_open_cover_grpPullback_relAmple S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL
+  have hamp := _root_.GlobalTheory.CoverGlue.relAmple_of_cover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL
     (fun i => (t i).isLB) hLi hA (fun i => (t i).ab) (fun i => (t i).ample)
-  have hkt := GlobalTheory.T.thetaGroupKernel_trivial_of_open_cover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL
+  have hkt := _root_.GlobalTheory.CoverGlue.kTriv_of_cover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL
     (fun i => (t i).isLB) hLi hA (fun i => (t i).ab) (fun i => (t i).ktriv)
   have htor : ∀ l, P l ^ k = 1 := fun l =>
     h82.1 k (P l) (fun i => (t i).pt l) (fun i => hP l i) (fun i => (t i).torsion l)
-  have hbij := GlobalTheory.T.torsionBasis_geometric_fibres_of_open_cover S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab) g k P
+  have hbij := _root_.GlobalTheory.CoverGlue.torsionBasis_of_cover S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab) g k P
     (fun i => (t i).pt) (fun i l => hP l i) (fun i => (t i).bij)
   have hunit : ∀ i, Units.map (U i).ι.appTop.hom.toMonoidHom (unitS s b.ζ) = unitS ((U i).ι ≫ s) b.ζ :=
     fun i => hcompl_unit_property_of_isPrime (U i).ι s b.ζ
   have hpair : ∀ l l', Out.WeilIs A L k (P l) (P l') (unitS s b.ζ ^ Out.stdSymp g l l') := fun l l' =>
-    GlobalTheory.T.weilIs_local_on_base_of_openCover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL
+    _root_.GlobalTheory.weilIs_of_openCover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL
       (fun i => (t i).isLB) hLi hA (fun i => (t i).ab) k (P l) (P l') (fun i => (t i).pt l)
       (fun i => (t i).pt l') _ (fun i => hP l i) (fun i => hP l' i) (fun i => by
         rw [map_zpow, hunit i]
