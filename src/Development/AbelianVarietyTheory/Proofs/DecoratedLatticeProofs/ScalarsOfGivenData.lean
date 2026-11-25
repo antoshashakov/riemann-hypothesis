@@ -10,32 +10,32 @@ public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HeckeFormNSOfHeckeForm
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ArchimedeanThetaCorrespondenceTowersRealDataStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainFirstStageLValuesPositiveStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainLevelIntegralRealZetaOfTwistedTransformLawsStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainStepScalarsOfRealisationStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainThetaLiftUpEqAdjointValueStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainThetaLiftUpLowerBlockParameterProofStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainThetaLiftUpParameterOfTransferStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainThetaLiftsAdjointOfCuspRapidDecayStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainTwistEulerFactorsRestoreProofStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainTwistPlacesIntegralPeelOfDoublingStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowerBlockParameterOfOneNonzeroValueStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealDatumNormShrinkOfScalarHypothesesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealFormsRangeMultiplicityOfScalarHypothesesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealLastStageNormalizedOfScalarHypothesesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealMeasureUniformInTupleOfThetaLiftScalarStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealQuotientVolumeGrowthOfScalarHypothesesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealTupleTwistedChainOfScalarHypothesesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RowsOfPartHavePartParamsFirstChainMemberStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchurProductTypingsAgreeThetaChainStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLiftChainStepExactInnerProductStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainDatumLawsUnderLevelsStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainRealZetaNonvanishingStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainStageSoftPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainStepConstantsTupleIndepStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainThetaLiftUpSpanStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedThetaChainLValueQuotientFactorizationStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedThetaChainStepAdjointScalarStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainFirstStageLValuesPositive
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainLevelIntegralRealZetaOfTwistedTransformLaws
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainStepScalarsOfRealisation
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainThetaLiftUpEqAdjointValue
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainThetaLiftUpLowerBlockParameterProof
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainThetaLiftUpParameterOfTransfer
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainThetaLiftsAdjointOfCuspRapidDecay
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainTwistEulerFactorsRestoreProof
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ChainTwistPlacesIntegralPeelOfDoubling
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowerBlockParameterOfOneNonzeroValue
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealDatumNormShrinkOfScalarHypotheses
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealFormsRangeMultiplicityOfScalarHypotheses
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealLastStageNormalizedOfScalarHypotheses
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealMeasureUniformInTupleOfThetaLiftScalar
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealQuotientVolumeGrowthOfScalarHypotheses
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RealTupleTwistedChainOfScalarHypotheses
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RowsOfPartHavePartParamsFirstChainMember
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchurProductTypingsAgreeThetaChain
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaLiftChainStepExactInnerProduct
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainDatumLawsUnderLevels
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainRealZetaNonvanishing
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainStageSoftProperties
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainStepConstantsTupleIndep
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedChainThetaLiftUpSpan
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedThetaChainLValueQuotientFactorization
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistedThetaChainStepAdjointScalar
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -90,23 +90,23 @@ namespace GlobalTheory.ChainTw
 
 theorem scalars_of_given_all : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.UnramifiedDoublingGL → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D → GlobalTheory.Core.Rk.SW.HeckeFormNS D → GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.Scalars R := by
   intro hHCF hCRD hDSC hHCM hCW hHowe hUDG D G _ _ Pl0 T A Ks _ _ _ R F g hNG hHecke
-  have soft : SoftQ D := GlobalTheory.T.twistedChain_stage_soft_properties hHCF hCRD D
-  have law : LevelLawQ D := GlobalTheory.T.twistedChain_datum_laws_under_levels D
-  have restore : Restore D := GlobalTheory.T.chainTwistEulerFactorsRestore_proof D
-  have lfull : LFull D := GlobalTheory.T.twistedThetaChain_LValue_quotientFactorization D
-  have upSpan : UpSpanQ D := GlobalTheory.T.twistedChain_thetaLiftUpSpan hDSC hHCM hCRD hCW D law
-  have upAdj : UpAdjQ D := GlobalTheory.T.chainThetaLiftsAdjoint_of_cuspRapidDecay hCRD D
-  have upVal : UpVal D := GlobalTheory.T.chain_theta_lift_up_eq_adjoint_value D soft upSpan upAdj
+  have soft : SoftQ D := _root_.GlobalTheory.ChainTw.softQ_all hHCF hCRD D
+  have law : LevelLawQ D := _root_.GlobalTheory.ChainTw.TwLaw.levelLawQ D
+  have restore : Restore D := _root_.GlobalTheory.ChainTw.restore_holds D
+  have lfull : LFull D := _root_.GlobalTheory.ChainTw.lFull_holds D
+  have upSpan : UpSpanQ D := _root_.GlobalTheory.ChainTw.UpSpanTw.upSpanQ_of hDSC hHCM hCRD hCW D law
+  have upAdj : UpAdjQ D := _root_.GlobalTheory.ChainTw.upAdjQ_of_cuspRapidDecay hCRD D
+  have upVal : UpVal D := _root_.GlobalTheory.ChainTw.upVal_of_span_adj D soft upSpan upAdj
   have exact : StepExactNS D :=
-    GlobalTheory.T.thetaLiftChainStep_exact_innerProduct D hHecke soft (GlobalTheory.T.chainTwistPlacesIntegralPeel_of_doubling hUDG hCRD D) (GlobalTheory.T.chainLevelIntegralRealZeta_of_twisted_transform_laws D law)
-  have lam : StepLam D := GlobalTheory.T.twistedThetaChain_step_adjoint_scalar D soft (GlobalTheory.T.chainThetaLiftUp_parameter_of_transfer hCRD hHowe D) (GlobalTheory.T.chainThetaLiftUpLowerBlockParameter_proof hCRD D)
-    (GlobalTheory.T.lowerBlockParameter_of_one_nonzeroValue D soft) upVal exact lfull restore
-  have hX : RangeX R := GlobalTheory.T.realFormsRangeMultiplicity_of_scalarHypotheses R F g
-  have chain : ∀ h : RangeX R, RChain R h := GlobalTheory.T.realTupleTwistedChain_of_scalarHypotheses R F g
-  have zeta : RealZetaQ D := GlobalTheory.T.twistedChain_realZeta_nonvanishing hHCM D (GlobalTheory.T.archimedeanThetaCorrespondence_towers_real_data hDSC hHCM D)
-  have unif : RUnif R hX := GlobalTheory.T.twistedChain_step_constants_tuple_indep R F g hNG zeta restore hX (chain hX)
-    (GlobalTheory.T.realMeasureUniformInTuple_of_thetaLiftScalar R F g chain hX) (GlobalTheory.T.realQuotientVolumeGrowth_of_scalarHypotheses R F g chain hX) (GlobalTheory.T.realDatumNormShrink_of_scalarHypotheses R F g)
-  exact GlobalTheory.T.chainStep_scalars_of_realisation R F g hNG soft (GlobalTheory.T.lowerBlockParameter_of_one_nonzeroValue D soft) (GlobalTheory.T.chain_first_stage_L_values_positive hCRD D) lfull lam hX
-    (chain hX) (GlobalTheory.T.realLastStageNormalized_of_scalarHypotheses R F g hX) unif (GlobalTheory.T.rows_of_part_have_part_params_first_chain_member hCRD R F g chain hX) (GlobalTheory.T.schurProduct_typings_agree_thetaChain R F g)
+    _root_.GlobalTheory.ChainTw.ExactNS.stepExactNS D hHecke soft (_root_.GlobalTheory.ChainTw.Peel.qPeel_holds hUDG hCRD D) (_root_.GlobalTheory.ChainTw.LevIntProof.levInt D law)
+  have lam : StepLam D := _root_.GlobalTheory.ChainTw.stepLam_of_ns D soft (_root_.GlobalTheory.ChainTw.upParQ_of_transfer hCRD hHowe D) (_root_.GlobalTheory.ChainTw.upQ_holds hCRD D)
+    (_root_.GlobalTheory.LowerBlockParam.qOfVal D soft) upVal exact lfull restore
+  have hX : RangeX R := _root_.GlobalTheory.ChainTw.rangeX_of_given R F g
+  have chain : ∀ h : RangeX R, RChain R h := _root_.GlobalTheory.ChainTw.rChain_of_given R F g
+  have zeta : RealZetaQ D := _root_.GlobalTheory.RealZetaTw.realZetaTw hHCM D (GlobalTheory.T.archimedeanThetaCorrespondence_towers_real_data hDSC hHCM D)
+  have unif : RUnif R hX := _root_.GlobalTheory.ChainTw.UnifFree.rUnif_of R F g hNG zeta restore hX (chain hX)
+    (_root_.GlobalTheory.RealMeasOne.one_real_measure R F g chain hX) (_root_.GlobalTheory.ChainTw.VolScale.rVol_of_given R F g chain hX) (_root_.GlobalTheory.ChainTw.RNrmProof.rNrm_of_given R F g)
+  exact _root_.GlobalTheory.ChainTw.scalars_of_realisation R F g hNG soft (_root_.GlobalTheory.LowerBlockParam.qOfVal D soft) (_root_.GlobalTheory.ChainTw.lPos_of_rapidDecay hCRD D) lfull lam hX
+    (chain hX) (_root_.GlobalTheory.ChainTwNorm.normX R F g hX) unif (_root_.GlobalTheory.ChainTw.rowPar_of_chain hCRD R F g chain hX) (_root_.GlobalTheory.ChainTw.IPDictPf.main R F g)
 
 end GlobalTheory.ChainTw

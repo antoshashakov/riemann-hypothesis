@@ -4,9 +4,10 @@ public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevChiE
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TwTrans
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitFrameGLFiniteMatrixOffPlaceEqOneStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceComponentKeepsLevelFunctional
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceComponentMemBaseLatticeLevelOfFixesPaiStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceFrameGLMemCompactRealTrivialStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StandardDatumSplitPlacesOverLevelPrimeStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceComponentMemBaseLatticeLevelOfFixesPai
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceFrameGLMemCompactRealTrivial
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.StandardDatumSplitPlacesOverLevelPrime
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryClassRepresentativesBijective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -61,16 +62,16 @@ theorem stab_mem_level : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok �
     GlobalTheory.AdForm.StdT I l Z u p β Q L → ∀ j, j ≤ B.R.m → ∀ b, ∀ i (g : GL (Fin ((I.rec7 l Z).sp.X j).rank) k), g • Q j i = Q j i → (β j i).gl g ∈ A.U j b := by
   intro B X I hOk hPins l Z u a Ch A hA k _ _ _ _ ι p β Q L hStd j hj b i g hg
   rw [hA.U j hj b]
-  refine ⟨GlobalTheory.T.splitPlaceFrameGL_mem_compactRealTrivial _ _ _ _ _ _ _, ?_⟩
+  refine ⟨_root_.GlobalTheory.FrameGfC.gl_mem_GfC _ _ _ _ _ _ _, ?_⟩
   obtain ⟨x, hx⟩ := GlobalTheory.AdForm.RdVal.finM_mem ((I.rec7 l Z).sp.X j) (rankN (I.rec7 l Z) j hj) (gramN (I.rec7 l Z) j hj) rfl ((β j i).gl g)
   have hmem : x.1 ∈ (A.K j hj b).lev.U := by
     rw [(A.K j hj b).lev.U_eq]
     refine ⟨x.2, fun v => ?_⟩
     by_cases hv : v = (p i).v
     · subst hv
-      have hT := GlobalTheory.T.standardDatum_splitPlaces_over_levelPrime I hOk hPins l Z u k ι p β Q L hStd i
+      have hT := _root_.GlobalTheory.AdForm.stdT_levelPrime_mem_v I hOk hPins l Z u k ι p β Q L hStd i
       exact _root_.GlobalTheory.StabFnLev.comp_mem_Uloc I hOk hPins l Z u a Ch A hA k ι p β Q L hStd j hj b i g hg x hx hT
-        (GlobalTheory.T.splitPlace_component_mem_baseLattice_level_of_fixes_pair I hOk hPins l Z u a Ch A hA k ι p β Q L hStd j hj b i g hg x hx)
+        (_root_.GlobalTheory.AdForm.std_comp_mem_levelVL I hOk hPins l Z u a Ch A hA k ι p β Q L hStd j hj b i g hg x hx)
     · rw [GlobalTheory.T.splitFrameGL_finiteMatrix_offPlace_eq_one _ _ _ _ _ _ g _ (rankN (I.rec7 l Z) j hj) x.1 hx v hv]
       exact Subgroup.one_mem _
   exact ⟨⟨x.1, hmem⟩, hx⟩

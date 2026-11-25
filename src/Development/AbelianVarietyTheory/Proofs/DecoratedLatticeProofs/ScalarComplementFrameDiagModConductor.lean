@@ -3,17 +3,19 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSingle
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlagLevelCharacterEqPsiDivN
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.PoincareInHH
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCoprimeMultiplierHyperbolicTermsNearRefereStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCoprimeMultiplierNegativeVectorTermNearStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCoprimeMultiplierOneSubNormCongrZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsUnitaryScalarBlendSelfAdjointIdempotentStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FrameMatrixDiagonalModLevelOfDiagonalActionStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NatCoprimeOfCongrMulOneSubModLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthProjHyperbolicNegativeSpanFixesBasisAndIdempStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthProjHyperbolicNegativeSpanSelfAdjointStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthProjReferenceFrameOnFlagBasisModLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ScalarBlendProjectionMemStabilizerAndCommutesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WordElementConjOrthProjHyperbolicNegativeSpanEqStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCoprimeMultiplierHyperbolicTermsNearRefere
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCoprimeMultiplierNegativeVectorTermNear
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCoprimeMultiplierOneSubNormCongrZero
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsUnitaryScalarBlendSelfAdjointIdempotent
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FrameMatrixDiagonalModLevelOfDiagonalAction
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.NatCoprimeOfCongrMulOneSubModLevel
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthProjHyperbolicNegativeSpanFixesBasisAndIdemp
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ScalWIdent
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthProjHyperbolicNegativeSpanSelfAdjoint
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthProjReferenceFrameOnFlagBasisModLevel
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ScalarBlendProjectionMemStabilizerAndCommutes
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WordElementConjOrthProjHyperbolicNegativeSpanEq
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ProjectionMovesTypeVectorsModLevel
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHGamUnipKuProj
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LevelSubgroupCharacterUnitary
@@ -70,22 +72,22 @@ namespace GlobalTheory.ScalW
 theorem scalar_diag_mod_g : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (β : GL (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F)), IsLiftFrame X.B.I X.B.g (flagVec X.e0 X.f0 X.z0 X.bw X.bwd) β → ∀ c : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E, c * sigInt X.B.I c = 1 → (∀ N : ℕ, Nat.Coprime N X.B.g → ZMod' X.B.I N (1 - c.1)) → ∃ h ∈ Hfin X u, (∀ h' ∈ Hfin X u, h * h' = h' * h) ∧ ∃ x : GL (Fin X.B.I.n) (Formalism.L2.Herm.intAf X.B.I.F X.B.I.E), frGL β x = (((X.xu u)⁻¹ * h * X.xu u : X.B.I.Gf) : GL (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F)) ∧ ∀ i j, ZMod' X.B.I X.B.g (((x : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Formalism.L2.Herm.intAf X.B.I.F X.B.I.E)) - midDiag X.B.I.n D.R.rS D.R.k 1 c) i j).1 := by
   intro D X u β hβ c hc hN
   have hg1 : 1 ≤ X.B.g := Formalism.L2.SG.PoincareInHH.Cut.one_le_g X
-  obtain ⟨M6, hM6, hz6⟩ := GlobalTheory.T.exists_coprime_multiplier_one_sub_norm_congr_zero D X u
-  have hTg : Nat.Coprime (D.mem u).A.T X.B.g := GlobalTheory.T.nat_coprime_of_congr_mul_one_sub_mod_level X.B.I X.B.g _ M6 hg1 hM6 hz6
+  obtain ⟨M6, hM6, hz6⟩ := _root_.GlobalTheory.TorusCong.one_sub_T_zmod D X u
+  have hTg : Nat.Coprime (D.mem u).A.T X.B.g := _root_.GlobalTheory.TorusCop.natCoprime_of_zmod_mul_one_sub X.B.I X.B.g _ M6 hg1 hM6 hz6
   have hT0 : (D.mem u).A.T ≠ 0 := (D.mem u).A.T_prime.ne_zero
-  obtain ⟨Mb, hMb, hb7⟩ := GlobalTheory.T.exists_coprime_multiplier_hyperbolic_terms_near_reference D X
-  obtain ⟨Mc, hMc, hc7⟩ := GlobalTheory.T.exists_coprime_multiplier_negativeVector_term_near D X u
+  obtain ⟨Mb, hMb, hb7⟩ := _root_.GlobalTheory.ScalW.ef_near_ref D X
+  obtain ⟨Mc, hMc, hc7⟩ := _root_.GlobalTheory.ScalW.znear_term D X u
   have hc' : c.1 * sigA X.B.I c.1 = 1 := by
     have := congrArg Subtype.val hc
     simpa [sigInt_coe] using this
-  obtain ⟨hfix, hfz, hidem⟩ := GlobalTheory.T.orthProjHyperbolicNegativeSpan_fixes_basis_and_idempotent D X u
-  obtain ⟨h, hh, hhi⟩ := GlobalTheory.T.exists_unitary_scalarBlend_selfAdjoint_idempotent X.B.I (GlobalTheory.ScalW.prjM X u) c.1
+  obtain ⟨hfix, hfz, hidem⟩ := _root_.GlobalTheory.ScalW.prj_fix_idem D X u
+  obtain ⟨h, hh, hhi⟩ := _root_.GlobalTheory.unitTorus_unit X.B.I (GlobalTheory.ScalW.prjM X u) c.1
     (fun y => by rw [GlobalTheory.ScalW.prjM_mulVec, GlobalTheory.ScalW.prjM_mulVec, hidem])
-    (fun x y => by rw [GlobalTheory.ScalW.prjM_mulVec, GlobalTheory.ScalW.prjM_mulVec, GlobalTheory.T.orthProjHyperbolicNegativeSpan_selfAdjoint]) hc'
+    (fun x y => by rw [GlobalTheory.ScalW.prjM_mulVec, GlobalTheory.ScalW.prjM_mulVec, _root_.GlobalTheory.ScalW.prj_selfAdjoint]) hc'
   have hh' : X.B.I.fmat h = GlobalTheory.ScalW.hMat X u c.1 := hh
   have hhi' : X.B.I.fmat h⁻¹ = GlobalTheory.ScalW.hMat X u (sigA X.B.I c.1) := hhi
-  obtain ⟨hH, hcomm⟩ := GlobalTheory.T.scalarBlend_projection_mem_stabilizer_and_commutes D X u c.1 h hfix hfz hh'
-  obtain ⟨hP0, hfl⟩ := GlobalTheory.T.orthProjReferenceFrame_on_flagBasis_mod_level D X
+  obtain ⟨hH, hcomm⟩ := _root_.GlobalTheory.ScalW.hMat_mem_hfin_comm D X u c.1 h hfix hfz hh'
+  obtain ⟨hP0, hfl⟩ := _root_.GlobalTheory.RefProjFlag.prj0_flagVec_mem_mL_or_sub_mem_mL D X
 
   set P' : VA X.B.I → VA X.B.I := fun y => X.B.I.fmat (X.xu u)⁻¹ *ᵥ GlobalTheory.ScalW.prj X u (X.B.I.fmat (X.xu u) *ᵥ y)
     with hP'
@@ -101,7 +103,7 @@ theorem scalar_diag_mod_g : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word
     intro y hy
     rw [hP']
     beta_reduce
-    rw [GlobalTheory.T.wordElement_conj_orthProjHyperbolicNegativeSpan_eq]
+    rw [_root_.GlobalTheory.ScalW.Conj.prj_conj]
     simp only [GlobalTheory.ScalW.prj0]
     have hA1 : (Mb : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((∑ a, hA X.B.I (GlobalTheory.ScalW.fV X a) y • GlobalTheory.ScalW.eV X a) -
         ∑ a, hA X.B.I (X.f0 a) y • X.e0 a) ∈ mL X.B.I X.B.g := by
@@ -159,7 +161,7 @@ theorem scalar_diag_mod_g : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word
   have hinvY : ((X.xu u)⁻¹ * h * X.xu u)⁻¹ = (X.xu u)⁻¹ * h⁻¹ * X.xu u := by group
   set d : Fin X.B.I.n → Formalism.L2.Herm.intAf X.B.I.F X.B.I.E :=
     fun i => if D.R.rS ≤ i.val ∧ i.val < D.R.rS + D.R.k then c else 1 with hd
-  obtain ⟨x, hx1, hx2⟩ := GlobalTheory.T.frame_matrix_diagonal_mod_level_of_diagonal_action X.B.I X.B.g _ β ((X.xu u)⁻¹ * h * X.xu u) d hβ
+  obtain ⟨x, hx1, hx2⟩ := _root_.GlobalTheory.FrameDiag.diag_mod_in_frame X.B.I X.B.g _ β ((X.xu u)⁻¹ * h * X.xu u) d hβ
     (fun y hy => by rw [hact _ h hh']; exact hint _ c.2 hcM y hy)
     (fun y hy => by
       rw [hinvY, hact _ _ hhi']
