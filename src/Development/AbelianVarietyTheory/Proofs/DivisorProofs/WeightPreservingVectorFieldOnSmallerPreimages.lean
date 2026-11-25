@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianPartConst
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueWeightDecompositionRaynaudAffineStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageProjectionAbelianPartStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLinearHomPull
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenPreimageProjectionAbelianPart
+public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRaynaudTorusWeightFunctionOfBasicOpensStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantHeatOperatorPreservesWeight
 import Mathlib.Algebra.Order.Floor.Extended
@@ -201,6 +203,6 @@ theorem isWt_field_of_le : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre 
   obtain ⟨hadd, hmul, hres⟩ := hd
   rw [← hres _ _ (Y.q.left.preimage_mono hg) hle f]
   exact isWt_basicOpen Y V d ⟨hadd, hmul, hres⟩ hpres (fun W hW => GlobalTheory.T.existsUnique_weightDecomposition_raynaud_affine R Q O oa Y W hW)
-    (GlobalTheory.T.isAffineOpen_preimage_projection_abelianPart R Q O oa Y V) g α _ (isWt_res _ hf)
+    (_root_.GlobalTheory.RayEv.Ray.isAffineOpen_preimage_q R Q O oa Y V) g α _ (isWt_res _ hf)
 
 end GlobalTheory.Heat.WtSub

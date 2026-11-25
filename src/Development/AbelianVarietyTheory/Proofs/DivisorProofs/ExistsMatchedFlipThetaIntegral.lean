@@ -16,7 +16,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsINeZeroKind
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaTripleOfSquareGridLatticeCompatibleStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNatDatumSquareFlip
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealPolynomialVectorReachedByRealDatumStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralConjugateScaledUnitaryGroupEqStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralConjugateScaledUnitaryGroupEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareFlipReachesLocalQuotientClasses
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrongApproximationSplitPlaceSkewHermitianUnitarStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TestPlacesPrimeToLevel
@@ -134,7 +134,7 @@ theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (h
   refine ⟨M, hM, a, τ, τ', n, Φ, hnat, hF, g.1, g.2, ?_⟩
   have hfd := (hM.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).haar_fund
   simp only [hker]
-  rw [integral_const_mul, GlobalTheory.T.setIntegral_conjugate_scaled_unitaryGroup_eq _ 1 one_ne_zero h.JW _ _ hfd.1 hfd.2 Γ.M.dom (h.μW ▸ hT.geo.hM.dom)
+  rw [integral_const_mul, _root_.GlobalTheory.ConjUIntegral.setIntegral_conjU_eq _ 1 one_ne_zero h.JW _ _ hfd.1 hfd.2 Γ.M.dom (h.μW ▸ hT.geo.hM.dom)
     (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om _ x _) fun γ hγ x => ?_, ← h.μW]
   · exact mul_ne_zero hξ hne
   · have e3 : ((γ * x, blkU _ _ e h.JWW (g.1, g.2)) : UB Γ.V.J × UB Γ.W.J) = (γ, 1) * (x, blkU _ _ e h.JWW (g.1, g.2)) := by

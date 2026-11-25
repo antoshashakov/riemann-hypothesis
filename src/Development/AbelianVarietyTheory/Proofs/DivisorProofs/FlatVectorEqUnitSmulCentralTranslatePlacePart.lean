@@ -14,7 +14,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterConjHalfIdeleEqProdLocal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIsometrySignFirst
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftDatumConjugateHalfFiniteFourierSumStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftDatumConjugateHalfFiniteFourierSum
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.ActsLinOfSplitLin
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceS
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarDilationElementSupportDetPullback
@@ -230,7 +230,7 @@ theorem lift_part {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A :
       ∀ Tm, IsModel R i eQ fg Tm → ∀ φ, ThAt R i (cA D eQ) fg (adjDat R i Q (R.xiR t) (cA D eQ)) φ →
         φ = Tm (fun x => Gc * flatDat R i Q (R.xiR t) eQ (dil i (ϖ : D.host.E) x)) := by
   have hK := kerDat_tuple (i := i) hC.lev hC.thP t
-  obtain ⟨Y, a, Gc, hU, hY, hΦ, hS⟩ := GlobalTheory.T.lift_datum_conjugate_half_finite_fourier_sum D G Pl0 T0 A Ks R F hC hG i hV (R.xiR t) Q ⟨t, hQ⟩
+  obtain ⟨Y, a, Gc, hU, hY, hΦ, hS⟩ := _root_.GlobalTheory.LiftFour.datum_conj_half_fourier D G Pl0 T0 A Ks R F hC hG i hV (R.xiR t) Q ⟨t, hQ⟩
     (fun PP hP => kerDat_xiR_ne D G Pl0 T0 A Ks R F hC i _ _ _ _ _ _ hK PP (hQ hP)) N hN hNQ eQ hq ϖ hϖ0 hϖ
   refine ⟨Gc, hU, GlobalTheory.T.dilatedFlatDatum_isSBHalf_tameKernel D G Pl0 T0 A Ks R F hC hG i hV (R.xiR t) Q ⟨t, hQ⟩ eQ hq ϖ hϖ0 hϖ Gc, fun Tm hTm φ hθ => ?_⟩
   have h1 := GlobalTheory.DatumFourier.thetaAt_eq_sum (fun q : Y => q.1) (fun q : Y => a q.1) hθ

@@ -1,7 +1,6 @@
 module
 
 public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.AutDef
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergOperatorFPreservesIsThetaFunctionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIntertwinerRepContinuousGroup
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntAFSmulMemLatOF
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
@@ -53,6 +52,8 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSelfOfTrivial
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergOperatorFPreservesIsThetaFunction
 
 @[expose] public section
 
@@ -121,7 +122,7 @@ theorem exists_fin_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT �
   · rw [ho _ f hf, hreal g hg k hk, show z (g, k) = 1 by
       simp [z, zF, GlobalTheory.SplitDetCharF.cutDet_real ε hε.idem hε.fin g hg, GlobalTheory.SplitDetCharF.cutDet_real ε hε.idem hε.fin k hk],
       Circle.coe_one, one_smul]
-  · have hf' := GlobalTheory.T.heisenbergOperatorF_preserves_isThetaFunction F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 u f hf
+  · have hf' := _root_.GlobalTheory.HeisKeepF.isThetaFunOF_heisOF F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 u f hf
     rw [ho _ f hf, ho _ _ hf', heisOF_smul, hheis g hg k hk u ⟨f, hf⟩ ⟨_, hf'⟩ rfl]
   · obtain ⟨r, hr, h1⟩ := hsplit e he g k hg hk
     refine ⟨r, hr, fun ℓ hℓ f hf => ?_⟩
@@ -201,7 +202,7 @@ theorem datum_of_aut_A (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT
     fun p q f h => fin_inf_comm_A C hO hof hi p q f h
   have hth : ∀ (w₀ : WOF F E nS nT) f, IsThetaFunOF σ JS JT ξ₀ B.ψ f →
       IsThetaFunOF σ JS JT ξ₀ B.ψ (heisOF σ JS JT ξ₀ B.ψ w₀ f) :=
-    fun w₀ f h => GlobalTheory.T.heisenbergOperatorF_preserves_isThetaFunction F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 w₀ f h
+    fun w₀ f h => _root_.GlobalTheory.HeisKeepF.isThetaFunOF_heisOF F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 w₀ f h
   let Th := thetaSubF σ JS JT ξ₀ B.ψ
   let Om2 : GAF σ JS × GAF σ JT →* Module.End ℂ Th :=
     { toFun := fun p => (of p * oi p).restrict (p := Th) (q := Th) fun f h1 => hf.pres p _ (hi.pres p f h1)

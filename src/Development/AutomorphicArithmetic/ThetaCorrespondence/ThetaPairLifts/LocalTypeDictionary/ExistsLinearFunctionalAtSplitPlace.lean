@@ -12,7 +12,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceAde
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianSelfDualLatticeSpaceFormHermitianNondeg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzBruhat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicCharacterNontrivialAtPlaces
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StoneVonNeumannSchwartzBruhatAnyCharacterStatement
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StoneVonNeumannSchwartzBruhatAnyCharacter
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -167,7 +168,7 @@ theorem exists_linearFunctional_at_split_place : _root_.GlobalTheory.FunPr.Theta
   haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F _).injective
   have hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v) := GlobalTheory.SchrSB.continuous_psiAt B.ψ hstd.1 v
   have hψne : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1 := GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hstd v
-  obtain ⟨ι, hbij, htr, hmu⟩ := GlobalTheory.T.stoneVonNeumann_schwartzBruhat_anyCharacter (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψne wT wM
+  obtain ⟨ι, hbij, htr, hmu⟩ := _root_.GlobalTheory.SvNAnyChar.stoneVonNeumann_any_char (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψne wT wM
     (fun Y Y' => by
       rw [hwT, hwT, hform _ _ (hUat _ _), hcoX0, hcoX0, hcoY0, hcoY0]
       simp [GlobalTheory.FlipMatch.pairM])

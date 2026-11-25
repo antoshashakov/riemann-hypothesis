@@ -6,7 +6,11 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjTauEOver
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitCompletelyAuxiliaryPlaceOutsideFinset
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasArchimedeanCharExponentsConjOfHasInfExp
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleCMBaseDataOfSquareTupleStanding
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadratiStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadrati
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsNormEqOfNcardPlacesOver
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NcardPrimesOverOfStabilizer
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsInertPlOfInertOff
@@ -177,7 +181,7 @@ theorem exists_base_chars : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (W W�
     · intro v hv
       obtain ⟨ε, -, -, -, hd⟩ := hS v hv
       exact GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ v (fun hle => hd (Ideal.dvd_iff_le.2 hle))
-  · refine ⟨hT.hecA, hT.hecB, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ D.sp.cm.deg2 _ _ hT.resA, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ D.sp.cm.deg2 _ _ hT.resB,
+  · refine ⟨hT.hecA, hT.hecB, _root_.GlobalTheory.LFun.resEtaPow_of_resEta _ _ D.sp.cm.deg2 _ _ hT.resA, _root_.GlobalTheory.LFun.resEtaPow_of_resEta _ _ D.sp.cm.deg2 _ _ hT.resB,
       hmα, hmβ, Finset.disjoint_empty_right _, ?_, ?_, ?_, ?_, ?_⟩
     · rw [hT']
     · intro w hw

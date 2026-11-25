@@ -3,7 +3,10 @@ module
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRepresentationVacuumCosetVectorsGrid
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadratiStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadrati
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnramifiedHeckeCharHalfExponentRestrictQua
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsAtAndSeedFacts
 import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasChr
@@ -124,6 +127,6 @@ theorem square_chars : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G 
     resEta_parity (resEta_mul hμ0 hη1) (by rw [zero_add]; exact p2)
   have h2 : Module.finrank D.host.F D.host.E = 2 := D.sp.cm.deg2
   exact ⟨isHeckeChar_mul' hχ hη, isHeckeChar_mul' hμ hη,
-    GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow D.host.F D.host.E h2 _ _ hβ, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow D.host.F D.host.E h2 _ _ hα⟩
+    _root_.GlobalTheory.LFun.resEtaPow_of_resEta D.host.F D.host.E h2 _ _ hβ, _root_.GlobalTheory.LFun.resEtaPow_of_resEta D.host.F D.host.E h2 _ _ hα⟩
 
 end GlobalTheory.SquareChars

@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.IsLatRepL
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.RedWpDatum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNsmulFix
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergOperatorFPreservesIsThetaFunctionStatement
+import Formalism.LocalToGlobal.IndefiniteReal.DatumF
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergOperatorFPreservesIsThetaFunction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantFormNormalizedHeisenbergIntertwinerEqStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIntertwinerRepSplitPlacePositiveScalar
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDistributionInvariantRationalTarget
@@ -176,7 +177,7 @@ theorem existsFinK_k (hI : IdxSign) (C : _root_.PositivityTheory.ThKW.Ctx_k σ B
   · rw [ho _ f hf, hreal g hg k hk, show z (g, k) = 1 by
       simp [z, zF, GlobalTheory.SplitDetCharF.cutDet_real ε hε.idem hε.fin g hg, GlobalTheory.SplitDetCharF.cutDet_real ε hε.idem hε.fin k hk],
       Circle.coe_one, one_smul]
-  · have hf' := GlobalTheory.T.heisenbergOperatorF_preserves_isThetaFunction F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 u f hf
+  · have hf' := _root_.GlobalTheory.HeisKeepF.isThetaFunOF_heisOF F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 u f hf
     rw [ho _ f hf, ho _ _ hf', heisOF_smul, hheis g hg k hk u ⟨f, hf⟩ ⟨_, hf'⟩ rfl]
   · obtain ⟨r, hr, h1⟩ := _root_.UpperTheory.TP.W.splitK_k hI C hG hO hκ he hg hk hx hy
     refine ⟨r, hr, fun ℓ hℓ f hf => ?_⟩

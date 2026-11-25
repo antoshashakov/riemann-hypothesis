@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Statements.SemistableTorsion.Imme
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BilinFormPsdOfMinimalTupleModNStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsE8FormValueCoprimeOddPrimePowStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FractionRingEqUniformiserZpowMulUnitStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralModelValueProdZpowLocalUnitsStatement
+public import Development.AbelianVarietyTheory.Definitions.Degenerations.InducedModelMorphismCompStructureMap
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralModelValueProdZpowLocalUnits
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinimiserCellFunctionMinFinitelyManyCombinationsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaModelLocalLatticeFourierPartsOrdersStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformiserZpowMulUnitExponentUniqueStatement
@@ -146,7 +147,7 @@ theorem GlobalTheory.Poinc.exists_locTuples_theta_of_adm : ∀ (g n : ℕ), 1 �
     exact left_ne_zero_of_mul_eq_one h1.symm
   have hpow : ∀ c, M.val y (e c ^ S.N) = M.val y (e c) ^ S.N := by
     intro c
-    have := GlobalTheory.T.integralModel_value_prod_zpow_localUnits M y z₀ hsp (Finset.univ : Finset Unit) (fun _ => e c) (fun _ => (S.N : ℤ)) fun _ => hunit c
+    have := _root_.GlobalTheory.Poinc.RatModel.val_prod_zpow M y z₀ hsp (Finset.univ : Finset Unit) (fun _ => e c) (fun _ => (S.N : ℤ)) fun _ => hunit c
     simpa using this
   choose v w hvw using fun c => GlobalTheory.T.fractionRing_eq_uniformiser_zpow_mul_unit T.irr (M.val y (e c)) (hvne c)
 
@@ -186,7 +187,7 @@ theorem GlobalTheory.Poinc.exists_locTuples_theta_of_adm : ∀ (g n : ℕ), 1 �
   have hval : ∀ ν, M.val y (∏ c, e c ^ ((mult R : ℤ) * ν c)) = algebraMap T.V (FractionRing T.V) T.ϖ ^ E ν *
       algebraMap T.V (FractionRing T.V) ((∏ c, w c ^ ((mult R : ℤ) * ν c) : T.Vˣ) : T.V) := by
     intro ν
-    rw [GlobalTheory.T.integralModel_value_prod_zpow_localUnits M y z₀ hsp _ _ _ fun c => hunit c]
+    rw [_root_.GlobalTheory.Poinc.RatModel.val_prod_zpow M y z₀ hsp _ _ _ fun c => hunit c]
     simp only [hvw, mul_zpow, Finset.prod_mul_distrib, ← zpow_mul, ← hunitK]
     rw [hzs, Units.coe_prod, map_prod]
   have hprodO : ∀ ν : (Fin 8 → Fin r → ZMod S.N) → ℤ, (∏ c, e c ^ ((mult R : ℤ) * ν c)) ∈ M.O z₀ := by

@@ -7,7 +7,10 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlphaDivBeta
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlphaUnramifiedOutsideStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BetaUnramifiedOutsideStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridLocalTensorPlacesOverSplitPlacesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadratiStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadrati
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridAlphaBetaRestrictQuadraticPowRankStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridCharacterQuotientNotUnramifiedOverBasePStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -85,7 +88,7 @@ theorem squareChars_isGood : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Const
   · intro B hsub hv₁ hsp hα hβ
     have h2 : Module.finrank D.host.F D.host.E = 2 := D.sp.cm.deg2
     obtain ⟨rα, rβ⟩ := GlobalTheory.T.thetaGrid_alpha_beta_restrict_quadratic_pow_rank hL t i j
-    refine ⟨?_, ?_, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ h2 _ _ rα, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ h2 _ _ rβ, hα, hβ, ?_, hsub, ?_, ?_, ?_, ⟨hv₁, hsp⟩⟩
+    refine ⟨?_, ?_, _root_.GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ rα, _root_.GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ rβ, hα, hβ, ?_, hsub, ?_, ?_, ?_, ⟨hv₁, hsp⟩⟩
     · have hm := (hL.mu0 j).1
       have hx := (hL.xi t).1
       have he := hL.eta.1

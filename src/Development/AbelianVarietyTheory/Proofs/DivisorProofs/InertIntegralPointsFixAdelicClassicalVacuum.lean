@@ -15,7 +15,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPrimeIf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvDifferentLatticeProductHermitianIsSelfDualStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvSmulMemRationalHomLatticeScaledOfNormScaleStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVacuumMovedThetaVacuum
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOIffScaleMulFinitePartMemIdealLatticeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOIffScaleMulFinitePartMemIdealLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaEqZeroOfReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaOfUnitVacuum
@@ -284,8 +284,8 @@ theorem actO_mem_iff {S T : HSp D} (hS : S.gram = 1) {cc : Ideal (𝓞 D.host.K)
       latO S T (lsB D cc r S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) (fun _ => True) := by
     intro g hg h hh u hu
     have h0 := GlobalTheory.VacUnique.latO_inf S T _ _ _ hu
-    have h1 := (GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T hS cc r hc hr u h0).1 hu
-    refine (GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T hS cc r hc hr _ ?_).2 fun i j => ?_
+    have h1 := (_root_.GlobalTheory.SplitLatDict.mem_latO_iff_ihE D S T hS cc r hc hr u h0).1 hu
+    refine (_root_.GlobalTheory.SplitLatDict.mem_latO_iff_ihE D S T hS cc r hc hr _ ?_).2 fun i j => ?_
     · rw [actO, Matrix.map_mul, Matrix.map_mul, h0, Matrix.mul_zero, Matrix.zero_mul]
     · have e : finQ D (actO S T g h u i j) = ∑ l, (∑ k, finQ D (mt T h i k) * finQ D (u k l)) * finQ D (mt S g⁻¹ l j) := by
         have e1 : (actO S T g h u).map (finQ D) = (mt T h).map (finQ D) * u.map (finQ D) * (mt S g⁻¹).map (finQ D) := by

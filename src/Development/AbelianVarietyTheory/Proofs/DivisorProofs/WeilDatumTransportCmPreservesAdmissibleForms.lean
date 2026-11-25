@@ -13,7 +13,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqFinsetSumP
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHaarAdelicVectorsBoundsPureTensorsSlices
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearModelArchimedeanSchroedingerStandard
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFixedInvariantOpenCompactCompactSuppor
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralSqCompContinuousLinearEquivMixedSpaceStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralSqCompContinuousLinearEquivMixedSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAddCharArchimedeanEqExpNondegenerateStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAdelicAddCharFiniteRationalEqExpStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumCMPreservesSchwartzHeisenber
@@ -98,7 +100,7 @@ theorem realcont (ps : AddChar (AF F) ℂ) (hψ : IsStd ps) (κ : Type) [Fintype
     Continuous A := by
   obtain ⟨β, hβ1, hnd⟩ := std_beta ps hψ
   obtain ⟨n, Q, P, hQP⟩ := _root_.GlobalTheory.WeilAdm.RealModel.exists_model F ps β hβ1 hnd κ
-  obtain ⟨c, hc⟩ := GlobalTheory.T.lintegral_sq_comp_continuousLinearEquiv_mixedSpace F κ n Q
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.lintegral_sq_comp_linearEquiv_mixed F κ n Q
   let CQ := SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) Q
   let CQi := SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) Q.symm
   have hCQ : ∀ f, ⇑(CQ f) = ⇑f ∘ ⇑Q := fun f => SchwartzMap.compCLMOfContinuousLinearEquiv_apply ℂ Q f

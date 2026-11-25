@@ -18,7 +18,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergTr
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPrimeIffNonSplitPlaceIdempotentStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvDifferentLatticeProductHermitianIsSelfDualStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVacuumMovedThetaVacuum
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOIffScaleMulFinitePartMemIdealLatticeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOIffScaleMulFinitePartMemIdealLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanHeisenbergTranslatesOfLatticeVacuaEqTopStatement
@@ -182,7 +182,7 @@ theorem back_rhoF (gS : S.gram = 1) (gT : T.gram = 1) (r : D.host.E) {x : Formal
 theorem back_mem_iff (gS : S.gram = 1) {cc : Ideal (𝓞 D.host.K)} {r : D.host.E} (hc : cc ≠ ⊥) (hr : IsScale D cc r)
     (u : XF S T) : back S T r u ∈ latA D cc S.rank T.rank ↔
       u ∈ latF S T (GlobalTheory.VacRead.lsB D cc r S.rank) (stdL D T.rank) := by
-  rw [mem_latF, GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T gS cc r hc hr _ u.fin, mem_latA]
+  rw [mem_latF, _root_.GlobalTheory.SplitLatDict.mem_latO_iff_ihE D S T gS cc r hc hr _ u.fin, mem_latA]
   simp only [back_apply, neg_mem_iff]
 
 theorem exists_deep {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}

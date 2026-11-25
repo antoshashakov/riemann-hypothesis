@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeltaTApply
 public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSymplecticTraceFormAlternatingSwap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfPartFPlaceIdem
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatricesDiscreteCocompactAdelicMatrixSpaStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatricesDiscreteCocompactAdelicMatrixSpa
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalPointsSelfAnnihilatorSymplecticStandardCStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurLemmaHeisenbergCommutingThetaOperator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAddCharIsStandardCharOfAdmissibleCM
@@ -134,8 +134,8 @@ theorem exists_prod_domain : ∃ (μ : Measure (WOF F E nS nT)) (𝓕 : Set (WOF
     μ.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 μ ∧
     μ₂.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratLF F E nS (nT + nT)) 𝓕₂ μ₂ ∧
     ∀ φ χ : WOF F E nS nT → ℂ, ∫ x in 𝓕₂, φ (topR x) * χ (botR x) ∂μ₂ = (∫ x in 𝓕, φ x ∂μ) * ∫ x in 𝓕, χ x ∂μ := by
-  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT
-  obtain ⟨j1, j2, j3, j4, j5, -⟩ := GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS (nT + nT)
+  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := _root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT
+  obtain ⟨j1, j2, j3, j4, j5, -⟩ := _root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E nS (nT + nT)
   have : BorelSpace (WOF F E nS nT) := ⟨rfl⟩
   have : BorelSpace (WOF F E nS (nT + nT)) := ⟨rfl⟩
   obtain ⟨μ, 𝓕, hμ, h𝓕, -⟩ :=
@@ -214,7 +214,7 @@ theorem abstract {n m : ℕ} {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin m)
     (h𝓕 : IsAddFundamentalDomain (ratLF F E n m) 𝓕 μ)
     (hs : ∀ i i', ∫ x in 𝓕, A i x * star (A i' x) ∂μ = ∫ x in 𝓕, B i x * star (B i' x) ∂μ) :
     ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ i, A i = c • B i := by
-  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E n m
+  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := _root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E n m
   have : BorelSpace (WOF F E n m) := ⟨rfl⟩
   have : Countable (ratLF F E n m) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
   have : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by

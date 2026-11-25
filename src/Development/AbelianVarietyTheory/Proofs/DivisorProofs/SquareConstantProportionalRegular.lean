@@ -24,7 +24,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfSt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrientedHermitianFormQuadSumEqTrace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealPolynomialVectorReachedByRealDatum
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealPolynomialVectorReachedByRealDatumStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralConjugateScaledUnitaryGroupEqStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralConjugateScaledUnitaryGroupEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareFlipReachesLocalQuotientClasses
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StrongApproximationSplitPlaceSkewHermitianUnitarStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDistributionRationalPointsInvariantTripleStatement
@@ -197,7 +197,7 @@ theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (h
   refine ⟨M, hM, a, τ, τ', n, Φ, hnat, hF, g.1, g.2, ?_⟩
   have hfd := (hM.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).haar_fund
   simp only [hker]
-  rw [integral_const_mul, GlobalTheory.T.setIntegral_conjugate_scaled_unitaryGroup_eq _ 1 one_ne_zero h.JW _ _ hfd.1 hfd.2 Γ.M.dom (h.μW ▸ hT.geo.hM.dom)
+  rw [integral_const_mul, _root_.GlobalTheory.ConjUIntegral.setIntegral_conjU_eq _ 1 one_ne_zero h.JW _ _ hfd.1 hfd.2 Γ.M.dom (h.μW ▸ hT.geo.hM.dom)
     (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om _ x _) fun γ hγ x => ?_, ← h.μW]
   · exact mul_ne_zero hξ hne
   · have e3 : ((γ * x, blkU _ _ e h.JWW (g.1, g.2)) : UB Γ.V.J × UB Γ.W.J) = (γ, 1) * (x, blkU _ _ e h.JWW (g.1, g.2)) := by
@@ -249,7 +249,7 @@ theorem exists_read {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsIn
       rw [thO, h2, rho_zero, ← eF] at h1
       exact h1.symm
     simp only [thetaInt, key]
-    rw [GlobalTheory.T.setIntegral_conjugate_scaled_unitaryGroup_eq _ 1 one_ne_zero hR.JW _ _ hν.1 hν.2 Γ.M.dom (hμ ▸ hg.hM.dom)
+    rw [_root_.GlobalTheory.ConjUIntegral.setIntegral_conjU_eq _ 1 one_ne_zero hR.JW _ _ hν.1 hν.2 Γ.M.dom (hμ ▸ hg.hM.dom)
       (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om Φ x (toUX X e hR.JX h)) fun γ hγ x => ?_, ← hμ]
     · rfl
     · have e3 : ((γ * x, toUX X e hR.JX h) : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB Γ.V.J × GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB Γ.W.J) =

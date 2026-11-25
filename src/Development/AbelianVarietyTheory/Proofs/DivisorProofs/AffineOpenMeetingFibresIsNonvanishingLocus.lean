@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.EqOfAgreeOnTorsion
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierLocusOverDenseOpenBaseStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemPreimageSupOfStalkKrullDimLeOneFlatStatement
+public import Mathlib.AlgebraicGeometry.Geometrically.Integral
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemPreimageSupOfStalkKrullDimLeOneFlat
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonvanishingLocusExtendFromBigOpenStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonvanishingLocusPullbackAndVanishIntoLocusStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoSmulPicardClassExtendsAbelianSchemeStatement
@@ -74,7 +76,7 @@ theorem isLocus_of_isAffineOpen_of_meets_fibres : ∀ (R : Type) [CommRing R] [I
     exact hc.add hc
   have : Flat A.hom := inferInstance
   have : GeometricallyIntegral A.hom := GlobalTheory.geometricallyIntegral_of_smooth _
-  have hbig := GlobalTheory.T.mem_preimage_sup_of_stalk_krullDim_le_one_flat A.left (Sp R) A.hom V U hfib hU
+  have hbig := _root_.GlobalTheory.CodimOne.mem_preimage_sup_of_ringKrullDim_stalk_le_one A.left (Sp R) A.hom V U hfib hU
   have : IsLocallyNoetherian A.left := LocallyOfFiniteType.isLocallyNoetherian A.hom
   have : A.left.IsSeparated := by
     have : IsSeparated (terminal.from A.left) := by rw [← terminal.comp_from A.hom]; infer_instance
