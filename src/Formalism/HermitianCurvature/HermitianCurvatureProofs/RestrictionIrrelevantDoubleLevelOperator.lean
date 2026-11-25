@@ -245,21 +245,12 @@ theorem isStart_pair (t : ℂ → Fin 2 → Fin 2 → Module.End ℂ V) (q : ℂ
     exact h
   have hcomm : ∀ (a b : Fin 2) (u v : ℂ), t u a b * t v a b = t v a b * t u a b := by
     intro a b u v
-    have h1 := hrtt u v a b a b
-    have h2 := hrtt v u a b a b
-    have e1 : (u - v - 1) • (t u a b * t v a b - t v a b * t u a b) = 0 := by
-      rw [sub_smul, one_smul, h1, sub_self]
-    have e2 : (u - v + 1) • (t u a b * t v a b - t v a b * t u a b) = 0 := by
-      have : (v - u - 1) • (t v a b * t u a b - t u a b * t v a b) = 0 := by
-        rw [sub_smul, one_smul, h2, sub_self]
-      rw [← neg_sub (t u a b * t v a b), smul_neg, ← neg_smul] at this
-      rw [← this]
-      congr 1
-      ring
-    have e3 : (2 : ℂ) • (t u a b * t v a b - t v a b * t u a b) = 0 := by
-      have : (2 : ℂ) = (u - v + 1) - (u - v - 1) := by ring
-      rw [this, sub_smul, e1, e2, sub_zero]
-    exact sub_eq_zero.mp ((smul_eq_zero.mp e3).resolve_left two_ne_zero)
+    have huv := hrtt u v a b a b
+    have hvu := hrtt v u a b a b
+    rw [← neg_sub u v, ← neg_sub (t u a b * t v a b) (t v a b * t u a b), neg_smul_neg] at hvu
+    have hz : (2 : ℂ) • (t u a b * t v a b - t v a b * t u a b) = 0 := by
+      simpa only [two_smul] using add_eq_zero_iff_eq_neg.mpr (huv.symm.trans hvu)
+    exact sub_eq_zero.mp ((smul_eq_zero.mp hz).resolve_left two_ne_zero)
   refine ⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩
   · intro Y hY
     ext a b : 1
@@ -2292,44 +2283,23 @@ theorem prod_match (a b : ℕ → ℝ) (n : ℕ) (ha : ∀ i j, 1 ≤ i → i < 
     (hb : ∀ i j, 1 ≤ i → i < j → j ≤ n → b j < b i)
     (h : ∀ Y : ℂ, ∏ i ∈ Finset.Icc 1 n, (Y + (a i : ℂ)) = ∏ i ∈ Finset.Icc 1 n, (Y + (b i : ℂ))) :
     ∀ j ∈ Finset.Icc 1 n, a j = b j := by
-  have root : ∀ (a b : ℕ → ℝ), (∀ Y : ℂ, ∏ i ∈ Finset.Icc 1 n, (Y + (a i : ℂ)) = ∏ i ∈ Finset.Icc 1 n, (Y + (b i : ℂ))) →
-      ∀ j ∈ Finset.Icc 1 n, ∃ m ∈ Finset.Icc 1 n, b m = a j := by
-    intro a b h j hj
-    have h0 : ∏ i ∈ Finset.Icc 1 n, (-(a j : ℂ) + (a i : ℂ)) = 0 :=
-      Finset.prod_eq_zero hj (by ring)
-    rw [h] at h0
-    obtain ⟨m, hm, hm0⟩ := Finset.prod_eq_zero_iff.1 h0
-    refine ⟨m, hm, ?_⟩
-    have : (b m : ℂ) = (a j : ℂ) := by linear_combination hm0
-    exact_mod_cast this
-  intro j
-  induction j using Nat.strong_induction_on with
-  | _ j ih =>
-    intro hj
-    have hj' := Finset.mem_Icc.1 hj
-    obtain ⟨m, hm, hbm⟩ := root a b h j hj
-    obtain ⟨m', hm', ham'⟩ := root b a (fun Y => (h Y).symm) j hj
-    have hm1 := Finset.mem_Icc.1 hm
-    have hm1' := Finset.mem_Icc.1 hm'
-    have h1 : a j ≤ b j := by
-      rcases lt_trichotomy m j with hlt | heq | hgt
-      · exfalso
-        have := ih m hlt hm
-        have h2 := ha m j hm1.1 hlt hj'.2
-        linarith
-      · rw [← hbm, heq]
-      · have := hb j m hj'.1 hgt hm1.2
-        linarith
-    have h2 : b j ≤ a j := by
-      rcases lt_trichotomy m' j with hlt | heq | hgt
-      · exfalso
-        have := ih m' hlt hm'
-        have h2 := hb m' j hm1'.1 hlt hj'.2
-        linarith
-      · rw [← ham', heq]
-      · have := ha j m' hj'.1 hgt hm1'.2
-        linarith
-    exact le_antisymm h1 h2
+  let s : Finset ℕ := Finset.Icc 1 n
+  let onInterval (x : ℕ → ℝ) : s → ℝᵒᵈ := fun i => x i
+  have strict (x : ℕ → ℝ) (hx : ∀ i j, 1 ≤ i → i < j → j ≤ n → x j < x i) :
+      StrictMono (onInterval x) := fun i j hij =>
+    hx i j (Finset.mem_Icc.mp i.property).1 hij (Finset.mem_Icc.mp j.property).2
+  have roots (x y : ℕ → ℝ)
+      (hxy : ∀ Y : ℂ, ∏ i ∈ s, (Y + (x i : ℂ)) = ∏ i ∈ s, (Y + (y i : ℂ))) :
+      Set.range (onInterval x) ⊆ Set.range (onInterval y) := by
+    rintro _ ⟨i, rfl⟩
+    have hz : ∏ j ∈ s, (-(x i : ℂ) + (x j : ℂ)) = 0 :=
+      Finset.prod_eq_zero i.property (neg_add_cancel _)
+    rw [hxy] at hz
+    obtain ⟨j, hj, h0⟩ := Finset.prod_eq_zero_iff.mp hz
+    exact ⟨⟨j, hj⟩, Complex.ofReal_injective (neg_add_eq_zero.mp h0).symm⟩
+  intro j hj
+  exact congrFun ((strict a ha).eq_of_range_eq (strict b hb)
+    (Set.Subset.antisymm (roots a b h) (roots b a fun Y => (h Y).symm))) ⟨j, hj⟩
 
 theorem rho_anti (h : P.OK) (π : Ty P) : ∀ i j, 1 ≤ i → i < j → j ≤ P.k - 1 → rho P π j < rho P π i := by
   apply anti_of_step
