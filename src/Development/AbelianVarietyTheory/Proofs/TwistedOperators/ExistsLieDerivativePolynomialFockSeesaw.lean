@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchOperatorUnitaryWSeesawStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmoothWeilOrbitPreservedByHeisenbergDerivatives
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionOneParamSubgroupGaussVacuumSmoothStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionOneParamSubgroupGaussVacuumSmooth
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -91,7 +91,7 @@ theorem exists_lie_deriv_pol : ∀ {F E : Type} [Field F] [NumberField F] [Field
         simpa using (hf2 x).const_mul c }
   have hPN : G.M.Pol B.ψ B.emb ≤ N := by
     refine sInf_le ⟨fun f₀ h => ?_, fun u hu f hf f₁ h => ?_⟩
-    · exact ⟨hvac f₀ h, GlobalTheory.T.weilAction_oneParamSubgroup_gaussVacuum_smooth B G X om om' hT γ hγ T hT' f₀ h⟩
+    · exact ⟨hvac f₀ h, _root_.GlobalTheory.GaussLine.smooth_vacuum_line B G X om om' hT γ hγ T hT' f₀ h⟩
     · obtain ⟨hf0, hf1, hf2⟩ := hf
       exact ⟨hstab u hu f hf0 f₁ h, _root_.GlobalTheory.HeisOrbit.orbit_heis B G X om om' hT γ hγ T hT' u hu f hf0 hf1 hf2 f₁ h⟩
   have hex : ∀ f : G.M.Pol B.ψ B.emb, ∃ f' : SInf F (Fin a × Fin (a + a')), f' ∈ G.M.Pol B.ψ B.emb ∧

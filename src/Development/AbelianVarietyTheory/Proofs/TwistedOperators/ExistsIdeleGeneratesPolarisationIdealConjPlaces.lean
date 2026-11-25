@@ -9,7 +9,11 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInt
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdeleFrameAdjointIntegralIffDualLatticeStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdeleFrameAdjointMatrixHalfIdempotentSmulStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IncASmulMemAdelicCompletionMatrixGroupStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdPrimesSquarefreeConjugateIdealProdStatement
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible
+public import Formalism.LocalToGlobal.Divisibility.DefGroup
+public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdPrimesSquarefreeConjugateIdealProd
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ShiftedTensorLatticePartMemLiftGroupPoints
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -113,7 +117,7 @@ theorem exists_isGen : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤
   have hback : incA D γ • (incA D γ⁻¹ • x) = x := by
     rw [smul_smul, ← map_mul, mul_inv_cancel₀ hγ, map_one, one_smul]
   rw [hadj]
-  obtain ⟨hsq, hle, hconj⟩ := GlobalTheory.T.prod_primes_squarefree_conjugateIdeal_prod D (Pg ∪ Q)
+  obtain ⟨hsq, hle, hconj⟩ := _root_.GlobalTheory.primeProd_squarefree_le_conj D (Pg ∪ Q)
   have hmem : ∀ (I : Ideal (𝓞 D.host.E)),
       (incA D γ⁻¹ • x ∈ hatA S T (tens (stdL D.host.E S.rank) (I • ΛT)) ↔
         x ∈ hatA S T (tens (stdL D.host.E S.rank) (I • C.X.Λ))) := by

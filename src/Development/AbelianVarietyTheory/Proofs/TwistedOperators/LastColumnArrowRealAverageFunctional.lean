@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfOfMulF
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.KerFockMovedReal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridCharactersArchExponentsGapGtRank
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompAtMtOfMemGfC
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactPairRealAverageFockEqJetOperatorStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactPairRealAverageFockEqJetOperator
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFockFrameChangeLastColumnDefinitePairStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridFiniteDatumVectorThetaFockVacuumStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpOfOrder
@@ -136,7 +136,7 @@ theorem real_average : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G 
   intro D T L sc G W U S μ0 hL i hi Q Λ
   obtain ⟨a, b, e₁, e₂, ha, hb, he₁, he₂⟩ := exps_chi G hL i hi
   obtain ⟨σ₀, hσf, hσr⟩ := GlobalTheory.T.exists_fockFrameChange_lastColumn_definitePair S hL i hi
-  obtain ⟨Λ', hΛ'⟩ := GlobalTheory.T.compactPair_realAverage_fock_eq_jetOperator S hL i hi a b ha hb e₁ e₂ he₁ he₂ (σ₀ Q) Λ
+  obtain ⟨Λ', hΛ'⟩ := _root_.GlobalTheory.RowHoweAvg.real_average_jet S hL i hi a b ha hb e₁ e₂ he₁ he₂ (σ₀ Q) Λ
   refine ⟨Λ', fun t ht d hd κ hκ hκp x h v => ?_⟩
   have hp : DefPair D.R.m (.chi i D.R.m : Pair T) := ⟨hi, rfl⟩
   have hh : h = ((finOf _ h : GfC (G.V (.grid (i + 1) D.R.m))) : GA D (G.V (.grid (i + 1) D.R.m))) *

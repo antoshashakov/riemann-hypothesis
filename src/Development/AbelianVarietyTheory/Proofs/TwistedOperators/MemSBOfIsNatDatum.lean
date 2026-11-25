@@ -22,7 +22,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGau
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsMixedLagrangianChartIntegralRowChangeStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPartialFourierColumnBlockSchwartzBruhatStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlaceIsoReadingComponentsCharactersStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsScalarFiniteTensorEqDatumSmallModelStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsScalarFiniteTensorEqDatumSmallModel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLagrModelOfIsLin
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteDatumLocalFunctionsEqPureTensorScalar
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorIsotropicTranslationCharSplitStatement
@@ -434,7 +434,7 @@ theorem finite_match (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (ρ : RealMat
   obtain ⟨f, f1, f2, f3⟩ := GlobalTheory.T.exists_gaussianVacuum_product_unitVacua hL W ρ t i j M hst e Bs Γ X om om' h hT hti.1
   obtain ⟨f', g1, g2, g3⟩ := GlobalTheory.T.unitVacua_product_eq_gaussianDatum_smallModel hL W ρ t i j M hst e Bs Γ X om om' h hT hti
   obtain ⟨s, hs, a⟩ := _root_.GlobalTheory.FlipMatch.datum_placesA hL W B ρ t i j M hst e Bs Γ X om om' h hT hti.1 f f3 ι h1
-  obtain ⟨s', hs', b⟩ := GlobalTheory.T.exists_scalar_finiteTensor_eq_datum_smallModel hL W B ρ t i j M hst e Bs Γ X om om' h hT hti f' g3 ι' h2
+  obtain ⟨s', hs', b⟩ := _root_.GlobalTheory.SmallPlaces.exists_scalar_datum hL W B ρ t i j M hst e Bs Γ X om om' h hT hti f' g3 ι' h2
   refine ⟨s • f, s' • f', ⟨smul_ne_zero hs f1, isGauss_smul f2 hs⟩, ⟨smul_ne_zero hs' g1, isGauss_smul g2 hs'⟩, ?_⟩
   rintro n Φ τ τ' hn ⟨ε, hε, c, d⟩
   have hf : ∀ w ∈ locPl G t, IsNatDatum (unifAt w) (n w) (flipAt W t i j w (n w) (Φ w)) := fun w hw =>

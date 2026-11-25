@@ -10,7 +10,8 @@ public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDua
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOfBasis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinPartIdemMulMemIff
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIdemAtConjOfOtherPrimeOverSplitStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIdemAtConjOfOtherPrimeOverSplit
+public import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexHalfActionSplitPlaceFramesStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexIntegralMatricesCartanDoubleCosetStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexMovedHomLatticeEqProdHalvesSplitPlaceStatement
@@ -123,7 +124,7 @@ theorem index_moved_split : ∀ (D : D7) (S T : HSp D) (v : HeightOneSpectrum (�
   have h' : w'.under (𝓞 D.host.F) = v := (hunder w').2 (Or.inr rfl)
   obtain ⟨c, hc, hq', -, he'⟩ := GlobalTheory.LFun.ConjPlace.exists_conj_chart (GlobalTheory.AdelicU.isCMExt_host D)
     (GlobalTheory.Mem.VolExists.isHermND D.sp.cm T) (GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D T v) hne h h' he
-  have hε' := GlobalTheory.T.isIdemAt_conj_of_other_prime_over_split D v w w' hne h h' ε hε
+  have hε' := _root_.GlobalTheory.ConjSplitIdem.isIdemAt_cA_of_ne D v w w' hne h h' ε hε
   rw [GlobalTheory.T.relIndex_movedHomLattice_eq_prod_halves_splitPlace D S T ε hε.1 _ (GlobalTheory.T.suppAt_unitaryGroupLocalToAdelicEmbedding D T v w h ε hε (e.symm (k₁ * t * k₂))),
     half_index D S T v w h hs e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂ ε hε]
   have hO := GlobalTheory.LFun.ConjPlace.map_mem_Ov_iff c hc

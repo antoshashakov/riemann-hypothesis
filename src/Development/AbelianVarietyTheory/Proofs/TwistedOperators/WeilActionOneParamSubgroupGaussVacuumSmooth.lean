@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousArchimedeanWeilOperatorLineTripleStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsComplexStructureGaussVacuumFockEquations
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneParameterOperatorUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneParameterOperatorUnique
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairInfApply
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneParameterWeilOperatorDerivative
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTriplePolynomialFockStableMulTraceLinearStatement
@@ -76,7 +76,7 @@ theorem smooth_vacuum_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × (Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F) => T p.1 f₀ p.2) ∧ ∃ f' ∈ G.M.Pol B.ψ B.emb, ∀ x, HasDerivAt (fun t => T t f₀ x) (f' x) 0 := by
   intro F E _ _ _ _ _ σ a a' B G X om om' hT γ hγ T hTa f₀ hf₀
   obtain ⟨h1, h0⟩ := GlobalTheory.T.unitaryArchimedeanLine_operators_oneParameter B G X om om' hT γ hγ T hTa
-  have hU := GlobalTheory.T.one_parameter_operator_unique B G X om om' hT γ hγ T hTa Measure.addHaar inferInstance
+  have hU := _root_.GlobalTheory.ArchimedeanUnitaryL2.integral_norm_sq_eq B G X om om' hT γ hγ T hTa Measure.addHaar inferInstance
   obtain ⟨A, hAc, hAadd, hA0, hAint⟩ := _root_.GlobalTheory.ArchLineAct.intertwine B G X om om' hT γ hγ T hTa
   have hC := GlobalTheory.T.continuous_archimedeanWeilOperator_line_triple B G X om om' hT γ hγ T hTa
   obtain ⟨J₀, hJ, hvac⟩ := _root_.GlobalTheory.GaussFockJ.exists_complex_structure B G X om om' hT f₀ hf₀

@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.Algebraic
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjugateUnitaryAdelicIsoMapHaarFundamentalDomaiStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAddEquivSymplecticCoordsOrientedModelStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGoodRationalSchroedingerModelStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlacewiseTripleSpacesOfSeesawStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlkGLMem
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlacewiseTripleSpacesOfSeesaw
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsThetaTripleBaseDataCharactersStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilRepOrientedPairRationalSchrodingerStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -74,7 +76,7 @@ theorem GlobalTheory.SquareAgree.exists_isOver : ∀ (D : D7) (ψ : AddChar (AF 
   have hrk := hT.rank
   let e : Fin X.rank ≃ Fin (W.rank + W₁.rank) := finCongr hT.rank
   obtain ⟨Bs, Xc, hψ, hα, hβ, hB, hXc, hemb, hκ⟩ := GlobalTheory.T.exists_thetaTriple_baseData_characters D ψ W W₁ X α β hT ωA hωA
-  obtain ⟨V, V', Ws, hJV, hJV', hJW, hV, hV', hWs, hcart⟩ := GlobalTheory.T.exists_placewise_triple_spaces_of_seesaw D W W₁ X A A₁ B α β hT p q hs e Bs hB hemb
+  obtain ⟨V, V', Ws, hJV, hJV', hJW, hV, hV', hWs, hcart⟩ := _root_.GlobalTheory.PlaceSpaces.spaces_of_triple D W W₁ X A A₁ B α β hT p q hs e Bs hB hemb
   obtain ⟨cA, hcA⟩ := GlobalTheory.T.exists_addEquiv_symplecticCoords_orientedModel D W X e (-1) (by norm_num)
   obtain ⟨cB, hcB⟩ := GlobalTheory.T.exists_addEquiv_symplecticCoords_orientedModel D W₁ X e 1 one_ne_zero
   obtain ⟨hμ1, hd1⟩ := GlobalTheory.T.conjugateUnitaryAdelicIso_map_haar_fundamentalDomain D W 1 hJV one_ne_zero ν 𝓕 hν

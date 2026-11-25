@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries
 public import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LocalIntegralGL
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LowerZeroUpperBlockIndicatorSqSumEqCardStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormFiniteThetaDatumEqIndicatorProductStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormSqProductDatumThetaConjugateHalfStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormSqProductDatumThetaConjugateHalf
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TypePlacesDisjointTwistPlacesStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -63,7 +63,7 @@ theorem levelVector_squareNorm_eq_prod_localVolumes_alt : GlobalTheory.Indefinit
   obtain ⟨hcore, -, -, -, -, -, -, hlev, -⟩ := hL'
   obtain ⟨-, e, he, hth⟩ := hlev
   subst hP
-  have h1 := GlobalTheory.T.normSq_productDatumTheta_conjugateHalf R F hPM i t σ s (LevelP.ofLocal Hl cl) cμ cη m ω BW f₀ f c io hL e he
+  have h1 := _root_.GlobalTheory.PlancherelHalf.normSq_thetaAt_halfProd R F hPM i t σ s (LevelP.ofLocal Hl cl) cμ cη m ω BW f₀ f c io hL e he
     (fun y => omegaG (R.datWp i (LevelP.ofLocal Hl cl)) m y * omegaQ (R.Q t) (Wc D i).rank m (-1) y)
     (fun PP z => GlobalTheory.LevelVecNorm.suppInd D.R.r (GlobalTheory.LevelVecNorm.locH R.Pg Hl PP) z)
     (GlobalTheory.T.norm_finiteThetaDatum_eq_indicator_product R i t Hl cl m) f hth μ 𝓧 hμ
