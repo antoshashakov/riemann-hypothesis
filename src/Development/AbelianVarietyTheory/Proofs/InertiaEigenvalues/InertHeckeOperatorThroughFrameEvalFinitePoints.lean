@@ -2,7 +2,12 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinIso
 public import Formalism.AlgebraicWeights.InertDatumExists
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CosetSumTransferAlongSurjectionPreimageStatement
+public import Mathlib.Algebra.BigOperators.Finprod
+public import Mathlib.Algebra.Module.LinearMap.Defs
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.GroupTheory.Coset.Defs
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CosetSumTransferAlongSurjectionPreimage
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralFrameConjUnitaryIntegralIffGLIntegralStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnramifiedOfSphericalVectorDictionary
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalComponentMemMaxCompactGLIffMemMaxCompactStatement
@@ -143,7 +148,7 @@ theorem heckeVec_frame_eval : ∀ (L : Type) [Field L] [NumberField L] [IsCMFiel
   have hφ' : ∀ t : T, φ (F.j g * ((ψ t : locU n w) : UA L n)) = lam (f (g * t)) := by
     intro t
     rw [hψv, ← map_mul]; exact hφ _
-  have key := GlobalTheory.T.cosetSum_transfer_along_surjection_preimage U0 K' T ψ hsurj hiff (fun x => h (p x))
+  have key := _root_.GlobalTheory.cosetSum_transfer_surj U0 K' T ψ hsurj hiff (fun x => h (p x))
     (fun d => φ (F.j g * (d : UA L n))) (fun x => f (g * x)) lam haK hsupp hβ hφ'
   have hv : ∀ x (hx : TrivOutside {v} x), D.hval h (D.loc x) = h (p (ψ ⟨x, hx⟩)) := by
     intro x hx

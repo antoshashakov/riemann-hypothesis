@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCom
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBlockDiagonalWithIdentity
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ThetaDataExists
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjugateBlockUpperOfEigenfunctionUnipotentTypeStatement
+public import Formalism.LocalToGlobal.GaloisLevelStructure.DefsLevel
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjugateBlockUpperOfEigenfunctionUnipotentType
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtMemberImp
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ImportsMoreBisStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MtInputOfStatement
@@ -67,7 +68,7 @@ theorem blockTri_at_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root
     have h2 := (w.st Z).toD7.R.m_add_three_le_k
     unfold Formalism.BasicNotions.Ranks.r
     omega
-  exact GlobalTheory.T.conjugate_blockUpper_of_eigenfunction_unipotentType (t := (w.st Z).toD7.R.t) rfl hr s' φ hres (h.2 _ hP) F hF J χ ψ₀ ξ hψ hJ hFJ b hS
+  exact _root_.GlobalTheory.CenFrameGen.block_upper_of_eigen (t := (w.st Z).toD7.R.t) rfl hr s' φ hres (h.2 _ hP) F hF J χ ψ₀ ξ hψ hJ hFJ b hS
 end GlobalTheory.FrameBlockTriangular
 end
 end

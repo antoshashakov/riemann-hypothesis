@@ -4,7 +4,7 @@ public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLif
 public import Development.AbelianVarietyTheory.Definitions.Divisors.PairsOfSquareTriple
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAdelicUnitaryFactorFiniteSetOfPlacesStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFinsetAdelicUnitaryPreservesLatticeAlmostAStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteSupportUnitaryPointReplacesPureTensorFactoStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteSupportUnitaryPointReplacesPureTensorFacto
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeStabilizersFixVacuaFixesPureTensorLeftStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.LatticeVacuumFixedOutsideFiniteSet
 import Mathlib.Algebra.Order.Floor.Extended
@@ -94,7 +94,7 @@ theorem finite_adele_acts_placewise : _root_.GlobalTheory.FunPr.ThetaLocalInputs
     have hfin := Filter.eventually_cofinite.1 hvac
     set S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl (F := F)) := S₀ ∪ S₁ ∪ hfin.toFinset with hSdef
     obtain ⟨gS, k, hgk, hgS, hkS, hkI, hkL⟩ := GlobalTheory.T.exists_adelicUnitary_factor_finiteSetOfPlaces σ Y g S
-    obtain ⟨φ', hφ'SB, hφ'off, hφ'aug, hφ'eq⟩ := GlobalTheory.T.finiteSupport_unitaryPoint_replaces_pureTensorFactors σ B Y G.W M χX χW ω r s r' s' hP S gS hgS f φ hφ hvac
+    obtain ⟨φ', hφ'SB, hφ'off, hφ'aug, hφ'eq⟩ := _root_.GlobalTheory.PlaceProd.pure_of_finSupp σ B Y G.W M χX χW ω r s r' s' hP S gS hgS f φ hφ hvac
     have hk : ω (k, 1) (pure f φ) = pure f φ := by
       refine GlobalTheory.T.latticeStabilizers_fix_vacua_fixes_pureTensor_left σ B Y G.W M χX χW ω r s r' s' hP S (fun v hv => hsph v (fun h => hv (by simp [hSdef, h])))
         k (fun u hu => by rw [hkI u hu]; exact hg u hu) hkS (fun w hw z hz => ?_) f φ hφ (fun w hw => ?_)

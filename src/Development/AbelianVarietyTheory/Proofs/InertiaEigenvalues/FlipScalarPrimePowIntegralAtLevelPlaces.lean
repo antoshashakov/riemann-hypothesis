@@ -4,7 +4,10 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFlipD
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.BaseIntSet
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInertTop
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValRingLocRing
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipScalarMemCoefficientFieldStatement
+public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipScalarMemCoefficientField
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharInvCentralFlipIdeleEqProdLocalComponentsStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFieldElementLocalComponentsLevelNumberStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharInfinityEqCoeffMulHalfNormPowStatement
@@ -135,7 +138,7 @@ theorem flipScal_pow_mem : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : I
   refine hc k σ la O hla hO ?_
   obtain ⟨a, hai, hA1, hA2⟩ := GlobalTheory.T.exists_field_element_local_components_level_number D.host.E χ M₀ u rfl T
   have hinf := GlobalTheory.T.heckeChar_infinity_eq_coeff_mul_halfNorm_pow D ψ θ V W χV χW om ΛV ΛW sW f₀ hVP χ hχ.1 k σ hconj a
-  have := GlobalTheory.T.centralFlipScalar_mem_coefficientField D.host.E χ M₀ V.rank W.rank u a T k σ hW rfl hai hTM (fun v hv => hχ.2.1 v hv) hval hinf hA1 hA2
+  have := _root_.GlobalTheory.FlipScalField.mem_fieldRange D.host.E χ M₀ V.rank W.rank u a T k σ hW rfl hai hTM (fun v hv => hχ.2.1 v hv) hval hinf hA1 hA2
   simpa [hz, flipIdx] using this
 
 end GlobalTheory.LevelSeries

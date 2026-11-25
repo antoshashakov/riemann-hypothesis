@@ -2,7 +2,8 @@ module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.GlobalDifferentialForms.PullHEq
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.GlobalDifferentialForms.FormCos
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechHodgeToCohomologyIsoStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechHodgeToCohomologyIso
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverIntersectionGradedVanishStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverStarIsCosieveStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedRestrictPullBijective
@@ -101,7 +102,7 @@ theorem glob_site : ∀ (K : Type) [Field K] [CharZero K],
       HT.pullH u hu a (a + j) ((e p W a j).symm ((CrystallineSemistableComparison.Pb.cechH (Fk p W a) (Vk p W a) a).cx.cls c h0)) =
         (e q U a j).symm ((CrystallineSemistableComparison.Pb.cechH (Fk q U a) (Vk q U a) a).cx.cls _ h1) := by
   intro K _ _
-  obtain ⟨E, hE⟩ := GlobalTheory.T.cech_hodge_to_cohomology_iso K
+  obtain ⟨E, hE⟩ := _root_.GlobalTheory.CompanionTheory.CechSerre.cech_deg K
   refine ⟨fun q _ U a j => (rho q U a (a + j)).trans
       (E (Fk q U a) (Vk q U a) (GlobalTheory.T.cover_star_isCosieve q U a) (vk_cover q U a) a
         (fun n i r hr => GlobalTheory.T.cover_intersection_graded_vanish q U a n i r hr) j), ?_⟩

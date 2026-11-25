@@ -1,7 +1,10 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFamilyPeriods
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerivationDeterminesChartStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Mathlib.RingTheory.Smooth.StandardSmooth
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerivationDeterminesChart
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerivationVanishingConstantsStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExpChartStandardSmoothStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -105,7 +108,7 @@ theorem exp_chart : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [Is
     · rw [hl, hχv, hχv]
     · rw [hD]; exact (hθ (ψ b₀) hρ).2.2 c c'
   obtain ⟨N, f, ε, δ, Ψa, hε, hδ, hεB, hΨ₀, hprop, hdiff, hft, huniq⟩ :=
-    GlobalTheory.T.derivation_determines_chart R Γ(G.left, V) n g B ψ hB.1 hB.2 b₀ hb₀ χ₀ t hχc ht₀ hD₀ hS₀
+    _root_.GlobalTheory.CompanionTheory.Ar.StdSmoothChart.exists_sections R Γ(G.left, V) n g B ψ hB.1 hB.2 b₀ hb₀ χ₀ t hχc ht₀ hD₀ hS₀
 
   have hev : ∀ᶠ b in 𝓝 b₀, ψ b ρ ≠ 0 ∧
       ∀ j, ‖valAt' (1 : Over.mk (spMap (ψ b)) ⟶ G).left V (f j) - χ₀ (f j)‖ < δ := by

@@ -4,7 +4,8 @@ public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLif
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRtensOp
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlkGLMem
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DarbouxModelAlgebraicVectorsLeAdelicSchwartz
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalOperatorThetaQuotientFinitePlaceStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalOperatorThetaQuotientFinitePlace
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilArchimedeanFactor
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.PlacewisePureTensorFinitePlaces
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TripleProductAlgebraWeilRepRangeEqTop
@@ -92,7 +93,7 @@ theorem theta_triple_maps_equivariant_on_finite_vectors : GlobalTheory.Published
         T (GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ) := by
     intro g hg
     obtain ⟨hv, hvU, fA, fB⟩ := _root_.GlobalTheory.T.theta_pure_tensor_placewise_finite hP D W W₁ X e Bs Γ Xc om om' R Rf hM h.JX g hg
-    choose a ha using fun v => GlobalTheory.T.exists_localOperator_thetaQuotient_finitePlace D.sp.cm.sig W.rank W₁.rank Bs Γ Xc om om' R Rf hM v (hv v) (hvU v)
+    choose a ha using fun v => _root_.GlobalTheory.LocalDescent.exists_localOp D.sp.cm.sig W.rank W₁.rank Bs Γ Xc om om' R Rf hM v (hv v) (hvU v)
     obtain ⟨T₀, hT₀⟩ := GlobalTheory.TripleAssembly.exists_rtensOp (GlobalTheory.TripleAssembly.vacIm Γ Rf) a
     refine ⟨LinearMap.lTensor R.Pi T₀, ?_, ?_⟩
     · have st := GlobalTheory.TripleAssembly.EqFin.darbAlg_stable Γ.M Bs.ψ Bs.emb gM R.p Rf.p (GlobalTheory.TripleAssembly.vacIm Γ Rf) hsA

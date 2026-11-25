@@ -4,7 +4,8 @@ public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLif
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemSum
 public import Development.AbelianVarietyTheory.Definitions.Foundations.EqPlaceIdemOfIsPrimeIdem
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSuppVecLocEq
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsUnitMultipliersLineInMovedLatticeSplitStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.HermitianSpaceBaseLatticeEqFrameLattice
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsUnitMultipliersLineInMovedLatticeSplit
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FirstIsotropicVectorCoordinatesNeZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevelPlaceFrameExists
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlacedBesselTranslateVector
@@ -111,7 +112,7 @@ theorem line_atG_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : F
     have hΛ := (_root_.GlobalTheory.T.selfDual_and_frame_of_pkHyp W hW 0 hm).1
     haveI : Submodule.IsLattice D.host.E ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0) := hΛ.1
     have hfg : ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0).FG := Submodule.IsLattice.fg (A := D.host.E) ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0)
-    obtain ⟨α, hα⟩ := GlobalTheory.T.exists_unit_multipliers_line_in_movedLattice_split D v hτ _ ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0)
+    obtain ⟨α, hα⟩ := _root_.GlobalTheory.LineIdeal.exists_unit_mult_latLoc D v hτ _ ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0)
       (Formalism.IndefR.Fin.PDA.selfDual_isFullLattice _ _ hΛ)
       ((GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig (D.sp.Y 0).gram
         (GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v (_root_.GlobalTheory.MiTop.translationElement f₀ B₀ b₀₀ b₀₁)))⁻¹) _ (GlobalTheory.T.firstIsotropicVector_coordinates_ne_zero W.S.X W.Q.instEq hr)

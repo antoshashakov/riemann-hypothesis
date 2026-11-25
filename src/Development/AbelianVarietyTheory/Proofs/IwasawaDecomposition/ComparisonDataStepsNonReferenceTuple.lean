@@ -6,7 +6,8 @@ public import Formalism.SharpRestriction.GrowthBounds.ChartComparison
 public import Formalism.SharpRestriction.GrowthBounds.ChartComparison.WtTieOf
 public import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ExistsIsCGBases
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsChainChartLocalUnitCharacterCompatibleLeveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOrthonormalStepBasisBaseLatticeChartsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelsTwG
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOrthonormalStepBasisBaseLatticeCharts
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ServedPlaceNoChainPlaceOrTypePrimeOverStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnChoiceExistsStandardChainDataStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedChainChartsHyperspecialStabiliseLatticeStatement
@@ -129,7 +130,7 @@ theorem cmpJ_data_ne : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (
   obtain ⟨tt, htt⟩ := GlobalTheory.T.trueColumnChoice_exists_standardChainData w.I w.ok w.pins w.l Z w.l0 nch n.tp t.C n.xi t.std t.stdLv
   have hpl := GlobalTheory.T.served_place_no_chain_place_or_type_prime_over w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
   obtain ⟨dt, hdt⟩ := GlobalTheory.T.twisted_chart_levels_determinant_maps_values w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
-  have hB := GlobalTheory.T.exists_orthonormal_step_basis_base_lattice_charts w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
+  have hB := _root_.GlobalTheory.Mem.Top.KerTwLv.stepBasis_std w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
   have hψ := GlobalTheory.T.exists_chainChart_localUnitCharacter_compatible_level w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
   have hfin := fin_of w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
   have hfill := fill_of w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg

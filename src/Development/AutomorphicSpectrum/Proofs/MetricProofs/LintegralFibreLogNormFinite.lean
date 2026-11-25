@@ -12,7 +12,8 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGoodProj
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSmoothMetricsNonnegDensityStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegrableChartAbsDensityStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegralDensityIndependentProjectionStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MeasurableDomCellLogNormChartStatement
+public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.SegreChartProjObjects
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MeasurableDomCellLogNormChart
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RingKrullDimChartComponentsStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SetFibreFiniteOfGoodProjStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ZeroSetChartIdealEqChartSetStatement
@@ -139,7 +140,7 @@ theorem cell_mass_lt_top {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type
   have hint : Integrable (fun y => ∑ J ∈ chartComponents (conePts Q) σ i,
       chartAbsDens J (chartProjMatrix σ Ψ) (chartWeight σ i G) (chartPot σ i N) y) :=
     integrable_finsetSum _ fun J hJ =>
-      GlobalTheory.T.integrable_domCell_logNorm_chart K ι Q e _ σ i Ψ N A s a J hA hAa hs hGm hzero hJ (hfin J hJ) fun R C =>
+      _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.integrable_chartAbsDens_cellWeight K ι Q e _ σ i Ψ N A s a J hA hAa hs hGm hzero hJ (hfin J hJ) fun R C =>
         GlobalTheory.T.integrable_chartAbsDensity _ e J _ _ _ R C (mem_chartComponents.1 hJ).1.1 (hdim J hJ) (hfin J hJ)
           (GlobalTheory.T.chartSection_not_mem_components K ι Q e _ σ i s a hQ hs hsQ J hJ) fun j => hsm j J hJ
   refine lt_of_le_of_lt (lintegral_mono_ae ?_) hint.lintegral_lt_top
