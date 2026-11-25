@@ -3,13 +3,14 @@ module
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CPAsIdeal
 public import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowsJoinPinned
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjugateResidueFlagTermsReindexSymmetricEdgeStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairTable
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjugateResidueFlagTermsReindexSymmetricEdge
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemDeeperLevelIffReductionsSymmetricUnipotentStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OtherInstanceFormFlagPairingIntegralOnFrameLattiStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueConjugatePlaceHermitianDualBasisStabiliseStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueConjugatePlaceHermitianFormAdjointStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueOtherInstanceFormFlagPairingEqSignedDeltaStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueOtherInstanceFormFrameStabilizerMulVecStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OtherInstanceFormFlagPairingIntegralOnFrameLatti
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueConjugatePlaceHermitianDualBasisStabilise
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueConjugatePlaceHermitianFormAdjoint
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueOtherInstanceFormFlagPairingEqSignedDelta
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueOtherInstanceFormFrameStabilizerMulVec
 import Formalism.LocalToGlobal.Divisibility.TiedLemmas
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.LevelSubgroupProperties
 import Mathlib.Algebra.Order.Floor.Extended
@@ -129,12 +130,12 @@ theorem GlobalTheory.SeeConjChar.resT_cP_argT : ∀ {D : D7} {G : Type} [Group G
       resT (GlobalTheory.IdemSupport.cP PP) (hT X h (flagAt X h PP j) (Matrix.mulVec (finE (Yc D 0) κ).val (pairAt X h PP a))) =
         conjRes PP ((sgnD D.R.rS D.R.k a : kP PP) * ((redFn β PP (finE (Yc D 0) κ))⁻¹).val a j) := by
     intro a j
-    have c1 := GlobalTheory.T.residue_conjugatePlace_hermitianForm_adjoint X h PP κ (flagAt X h PP j) (pairAt X h PP a)
-    have c2 := GlobalTheory.T.residue_otherInstanceForm_frameStabilizer_mulVec X h β PP (flagAt X h PP) (hred PP hP) _ hMinv (pairAt X h PP a) (GlobalTheory.T.otherInstanceForm_flagPairing_integral_on_frameLattice X h β hβ PP a) j
+    have c1 := _root_.GlobalTheory.SeeConjAdj.resCP_adjoint X h PP κ (flagAt X h PP j) (pairAt X h PP a)
+    have c2 := _root_.GlobalTheory.SeeConjChar.resT_hT_mulVec_stab X h β PP (flagAt X h PP) (hred PP hP) _ hMinv (pairAt X h PP a) (_root_.GlobalTheory.SeeConjChar.hT_pairAt_int X h β hβ PP a) j
     refine ⟨c1.1.2 c2.1, ?_⟩
     rw [c1.2, c2.2, hredinv]
     congr 1
-    simp only [GlobalTheory.T.residue_otherInstanceForm_flagPairing_eq_signedDelta R X h hL PP hP a, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    simp only [_root_.GlobalTheory.SeeConjChar.resT_hT_pair_flag R X h hL PP hP a, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
   let fF : Fin D.R.rS → Fin (Yc D 0).rank := fun a => ⟨2 * D.R.rS + D.R.k - a.1, by have := a.2; omega⟩
   let fN : Fin D.R.rS → Fin (Yc D 0).rank := fun a =>
@@ -195,7 +196,7 @@ theorem GlobalTheory.SeeConjChar.resT_cP_argT : ∀ {D : D7} {G : Type} [Group G
     · rw [dite_eq_left hi, dite_eq_left hi]
       by_cases hs : GlobalTheory.SeeConjChar.sideAt X h PP = true
       · rw [if_pos hs]
-        obtain ⟨h1, h2⟩ := GlobalTheory.T.residue_conjugatePlace_hermitian_dualBasis_stabiliser_eq_zero X h β hβ PP hs _ hS i ⟨i.1 + 1, hi⟩
+        obtain ⟨h1, h2⟩ := _root_.GlobalTheory.SeeConjChar.resT_cP_hT_bwd_eq_zero X h β hβ PP hs _ hS i ⟨i.1 + 1, hi⟩
         exact ⟨h1, by rw [h2, map_zero]⟩
       · rw [if_neg hs, hBd hs i, hBw hs ⟨i.1 + 1, hi⟩]
         exact hC _ _
@@ -207,4 +208,4 @@ theorem GlobalTheory.SeeConjChar.resT_cP_argT : ∀ {D : D7} {G : Type} [Group G
   resT_sum _ _ (fun i => (hbterm i).1), Finset.sum_congr rfl fun a _ => (hfterm a).2,
   Finset.sum_congr rfl fun i _ => (hbterm i).2, ← map_sum, ← map_sum, ← map_add]
   congr 1
-  exact GlobalTheory.T.conjugateResidue_flagTerms_reindex_symmetricEdge (r_le_Y (D := D) 0) D.R.rS D.R.k hn hrn _ hU (GlobalTheory.SeeConjChar.sideAt X h PP) fF fN gB (fun a => rfl) (fun a => rfl) (fun i => rfl)
+  exact _root_.GlobalTheory.SeeConjComb.conj_residue_reindex (r_le_Y (D := D) 0) D.R.rS D.R.k hn hrn _ hU (GlobalTheory.SeeConjChar.sideAt X h PP) fF fN gB (fun a => rfl) (fun a => rfl) (fun i => rfl)
