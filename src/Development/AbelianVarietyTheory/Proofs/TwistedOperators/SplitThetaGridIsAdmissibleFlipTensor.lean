@@ -8,7 +8,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlipGridP
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSplitThetaGridPathFlipGridPathAtSquareStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemGridPathInnerVerticesFlipGridPathAtSquareStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitThetaGridPathAvoidsOppositeCornerStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SquareFlipEquivariantBlockDiagonalColumnSubstituStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SquareFlipEquivariantBlockDiagonalColumnSubstitu
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SquareFlipRowsIntegralGLInvariantStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -197,7 +197,7 @@ theorem pathAct_flipTensor {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : I
   have hN : IsNatDatum ϖ e Φ := isNatDatum_sliceB hT (by simp) (by simp) _
   have hM₁ : invT (g (i, j + 1)) ∈ KO k _ := invT_mem_KO (hK _)
   have hM₂ : g (i + 1, j) ∈ KO k _ := hK _
-  have hcol := GlobalTheory.T.squareFlip_equivariant_blockDiagonal_columnSubstitution (haarVol ((J (i, j)).map invT)) (stdSplit (G.rank_square i j)) ψ (G.nu i j) ϖ e hϖ hψ he hν
+  have hcol := _root_.GlobalTheory.SquareFlipCols.squareFlip_blockDiag_cols (haarVol ((J (i, j)).map invT)) (stdSplit (G.rank_square i j)) ψ (G.nu i j) ϖ e hϖ hψ he hν
     Φ hN _ hM₁ _ hM₂ (G.joinA i j x)
   have hrow := GlobalTheory.T.squareFlip_rows_integralGL_invariant (haarVol ((J (i, j)).map invT)) (stdSplit (G.rank_square i j)) ψ (G.nu i j) ϖ e hϖ hψ he hν
     Φ hN _ (hK (i + 1, j + 1))

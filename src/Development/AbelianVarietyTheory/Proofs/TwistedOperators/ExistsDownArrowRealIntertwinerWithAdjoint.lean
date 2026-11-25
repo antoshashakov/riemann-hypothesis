@@ -13,7 +13,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluingLawHoldsSt
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridColumnParametersNegatedDataARPairStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsItWOfGlobIt
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealIntertwinerAdjointSmoothValues
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealIntertwinerDownArrowTransportAdjointStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.HermitianOrthogonalExtensionData
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealIntertwinerDownArrowTransportAdjoint
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsEqCoverDiscreteSeriesStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaVacuumCharactersAtRealPlacesStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TprodNeZeroOfNe
@@ -89,7 +91,7 @@ theorem down_intertwiner_adj : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] 
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc hDC hHC hH F hC hgap G' W hW G hsp hch hag hcos i hi ω f hω hf
   have hθ : IsInfFam R.θ := hC.models.inf
   obtain ⟨ω₀, f₀, χ₀, e, hω₀, hχ₀, hf₀, htr⟩ :=
-    GlobalTheory.T.realIntertwiner_downArrow_transport_adjoint (G.P (i + 1)) (G.P i) R.ψ R.θ (G.chi (D.R.m - i)) ω f hθ hω hf
+    _root_.GlobalTheory.AdjTr.downArrow_transport (G.P (i + 1)) (G.P i) R.ψ R.θ (G.chi (D.R.m - i)) ω f hθ hω hf
   have hm1 : 1 ≤ D.R.m - i := by omega
   have hm2 : D.R.m - i ≤ D.R.m := by omega
   have hexp : ∀ τ, HasInfExp D (G.chi (D.R.m - i)) τ (GlobalTheory.Grid.cen D τ (D.R.m - i)) :=

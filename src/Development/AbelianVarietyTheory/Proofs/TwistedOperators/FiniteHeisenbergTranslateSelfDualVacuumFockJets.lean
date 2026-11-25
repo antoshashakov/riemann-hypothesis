@@ -12,7 +12,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockVectorNe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsVacuumConjOfNegHermitianSpace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusHermitianFormScaledCoordinateEq
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationVacuumSignInertPlaces
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DeltaOrthonormalCoordsMemLatticeOfFiniteRationalStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DeltaOrthonormalCoordsMemLatticeOfFiniteRational
 public import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EntireEqOfMonomialDerivationsAtZeroEq
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
@@ -198,7 +198,7 @@ theorem core (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
   · have hv : GlobalTheory.VacUnique.finRat S T (-(n • M)) ∈
         latO S T (GlobalTheory.MovedDict.inV frS Ls) (GlobalTheory.MovedDict.inV frT Lt) (fun _ => True) := by
       rw [map_neg]; exact neg_mem hnM
-    have := GlobalTheory.T.delta_orthonormalCoords_mem_lattice_of_finiteRational S T frS frT hS hT Ls Lt hLs hLt δ (-(n • M)) hv
+    have := _root_.GlobalTheory.MovedTransLat.mem_La_of_finRat S T frS frT hS hT Ls Lt hLs hLt δ (-(n • M)) hv
     convert this using 1
     have e : ∀ τ, Matrix.of (GlobalTheory.VacUnique.infRat S T (-(n • M)) τ) =
         -((n : ℂ) • Matrix.of (GlobalTheory.VacUnique.infRat S T M τ)) := by

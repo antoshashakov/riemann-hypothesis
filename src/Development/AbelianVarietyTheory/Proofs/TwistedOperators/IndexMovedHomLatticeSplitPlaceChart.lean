@@ -19,7 +19,7 @@ public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecU
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexIntegralMatricesCartanDoubleCoset
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RelIndexMovedHomLatticeEqProdHalvesSplitPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceChartFramesConjMaximalCompactStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SuppAtUnitaryGroupLocalToAdelicEmbeddingStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SuppAtUnitaryGroupLocalToAdelicEmbedding
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -128,7 +128,7 @@ theorem index_moved_split : ∀ (D : D7) (S T : HSp D) (v : HeightOneSpectrum (�
   obtain ⟨c, hc, hq', -, he'⟩ := GlobalTheory.LFun.ConjPlace.exists_conj_chart (GlobalTheory.AdelicU.isCMExt_host D)
     (GlobalTheory.Mem.VolExists.isHermND D.sp.cm T) (GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D T v) hne h h' he
   have hε' := _root_.GlobalTheory.ConjSplitIdem.isIdemAt_cA_of_ne D v w w' hne h h' ε hε
-  rw [GlobalTheory.T.relIndex_movedHomLattice_eq_prod_halves_splitPlace D S T ε hε.1 _ (GlobalTheory.T.suppAt_unitaryGroupLocalToAdelicEmbedding D T v w h ε hε (e.symm (k₁ * t * k₂))),
+  rw [GlobalTheory.T.relIndex_movedHomLattice_eq_prod_halves_splitPlace D S T ε hε.1 _ (_root_.GlobalTheory.SuppAtPlace.suppAt_embV D T v w h ε hε (e.symm (k₁ * t * k₂))),
     half_index D S T v w h hs e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂ ε hε]
   have hO := GlobalTheory.LFun.ConjPlace.map_mem_Ov_iff c hc
   have hk : ∀ k ∈ KGL w (n := T.rank), GlobalTheory.LFun.ConjPlace.invT c T.rank k ∈ KGL w' (n := T.rank) := fun k hk =>

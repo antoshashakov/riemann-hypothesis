@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfOfMulF
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightBelow
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrChInv
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColumnArrowKernelRealEqDetCharMulFockKernel
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactUnitaryAverageFockPolynomialJetFunctionalStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EvalAtOneExtremalMul
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactUnitaryAverageFockPolynomialJetFunctional
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockComponentTransportedPointsEqJetOperatorStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPointsTopNodeOntoUnitaryHaarUniqueStatement
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemElt
@@ -86,7 +87,7 @@ theorem avg_col : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : Gri
   · obtain ⟨κ₀, h1, h2⟩ := hex
     haveI := h1
     haveI := h2
-    obtain ⟨Λ', hΛ'⟩ := GlobalTheory.T.compactUnitaryAverage_fockPolynomial_jetFunctional D.what₂.Tau _ _ hab ha (wt G (.top j)) (wt G (.top (j + 1))) (nuEnd G (.top μ0 j)) hJ
+    obtain ⟨Λ', hΛ'⟩ := _root_.GlobalTheory.AvgJet.avg_jet D.what₂.Tau _ _ hab ha (wt G (.top j)) (wt G (.top (j + 1))) (nuEnd G (.top μ0 j)) hJ
       (GinfC (G.V (.top j))) κ₀ r hr (frChInv W S.N j Q) Λ
     refine ⟨Λ', fun t ht d hd κ hκ hκp x h v => ?_⟩
     obtain rfl := huniq κ κ₀ hκ hκp h1 h2

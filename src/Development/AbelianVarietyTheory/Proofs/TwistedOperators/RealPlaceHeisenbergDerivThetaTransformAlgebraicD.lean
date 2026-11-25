@@ -9,7 +9,9 @@ public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ArchimedeanLineEqRealScalarSmulSupported
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasDerivAtThetaSumHeisenbergLine
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchrodingerModelSymplecticEqOrientedPairStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.HermitianOrthogonalExtensionData
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchrodingerModelSymplecticEqOrientedPair
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -192,7 +194,7 @@ theorem heisDeriv_algD : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
   have key : ∀ t : ℝ, GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ u' (M.co.rho Bs.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u) ΦD)) =
       heisO Bs.ψ (sgn ε S) X (lineAt θ τ z t) f (cS u') := by
     intro t
-    rw [rho_rho, thetaSum_smul, hf.2, map_add (f := _), ← hLt t, heisO, symplOH, ← GlobalTheory.T.schrodingerModel_symplectic_eq_orientedPair D ε S X e Vs Ws hJ hJW cS hcS, h2]
+    rw [rho_rho, thetaSum_smul, hf.2, map_add (f := _), ← hLt t, heisO, symplOH, ← _root_.GlobalTheory.SquareAgree.SympForm.symp_model_eq_symplO D ε S X e Vs Ws hJ hJW cS hcS, h2]
   have hd := _root_.GlobalTheory.HeisLineTheta.hasDerivAt_thetaSum_line M.co Bs.ψ hstd u hu ΦD (algD_le_schA M Bs.ψ Bs.emb hM hΦD) Φ' (algD_le_schA M Bs.ψ Bs.emb hM hΦ')
     hder u'
   simp only [key] at hd

@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Ade
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FinitePartTraceCharacterIdempotentInverseDiffere
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMaps
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdeleIdempotentMulIntegralOfUnitFactorStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdeleIdempotentSmulMemLatticeCompletionAtPlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdeleIdempotentSmulMemLatticeCompletionAtPlace
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AuxiliaryWittIsotropicCoordinateEqPairingStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitMemSpanStaircaseIdealProductsStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianPairingSelfDualCompletionIntegralAtPlacStatement
@@ -184,7 +184,7 @@ theorem uni_off : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D
     have hwv : w ∈ latA (G.V (.grid (2 * ρ + 1) 0)) (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) :=
       gen_mem _ {a | a ∈ D.host.AA} _ v _ (fun w hw => hw) ha hxJ
     have hMy : M *ᵥ y ∈ latA (G.V (.grid (2 * ρ + 1) 0)) (G.Λ (.grid (2 * ρ + 1) 0)) (fun _ => True) := hMlat.2 y hyT
-    have hMy' := GlobalTheory.T.adeleIdempotent_smul_mem_latticeCompletionAtPlace D _ _ _ v _ hMy
+    have hMy' := _root_.GlobalTheory.FinPlLoc.idem_smul_mem_latMul_at D _ _ _ v _ hMy
     have hyy : idem D (· = v) • (M *ᵥ y) = M *ᵥ y := by
       rw [← Matrix.mulVec_smul]
       congr 1

@@ -10,7 +10,9 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedMode
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermDerivAlongRationalPairingStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelTermLinearThetaFunctionsStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SupNormWordSumSubLeAndDerivativeCostStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TsumLeOfLatticeCoordsQuadraticDecayStatement
+public import Mathlib.Topology.Algebra.InfiniteSum.Defs
+public import Mathlib.Topology.Order.Real
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TsumLeOfLatticeCoordsQuadraticDecay
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -190,7 +192,7 @@ theorem mixed_terms_bound : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matr
   have hh1 := (GlobalTheory.Size.height_laws W).1 h
   have ht0 : (0 : ℝ) ≤ GlobalTheory.Grow.height V g * GlobalTheory.Grow.height W h :=
     mul_nonneg (by linarith) (by linarith)
-  have hbound := GlobalTheory.T.tsum_le_of_lattice_coords_quadraticDecay (Y := Matrix (Fin W.rank) (Fin r) D.host.E) n N hNpos
+  have hbound := _root_.GlobalTheory.TwBoundFour.tsum_le (Y := Matrix (Fin W.rank) (Fin r) D.host.E) n N hNpos
     (fun y => ‖term ψ V V' W C C' B μ 𝓨 F y‖ₑ) (fun j y => ratPair W y (X j))
     (fun y y' _ _ hyy => hXsep y y' hyy)
     (fun y hy j => hint F hF hfix y (enorm_ne_zero.mp hy) (X j) (hXint j))

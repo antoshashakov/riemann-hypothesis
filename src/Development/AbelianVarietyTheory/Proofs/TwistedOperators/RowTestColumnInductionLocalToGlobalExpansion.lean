@@ -8,7 +8,9 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColumnCom
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCombinationOperatorColumnProductStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsPassPlaceModelsLargeDepthStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIdemSumEqSumSinglePlacesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIdemSumPlacesUniqueStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIdemSumPlacesUnique
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProductFiniteDatumLargeDepthStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealLineOfPeriodsOnLine
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowTestDoubleCosetPointsChainPlaceByPlaceStatement
@@ -150,7 +152,7 @@ theorem columnInduction : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (s : ℤ
         intro i hi j
         have h := (d w i j).e_is
         rw [(hdc w i hi j).1] at h
-        exact GlobalTheory.T.isIdemSum_places_unique D _ _ _ h (heL w)
+        exact _root_.GlobalTheory.IdemSumSet.places_eq_of_isIdemSum D _ _ _ h (heL w)
       have hsum : ∑ w' ∈ insert w S₀, eL w' = eL w + ∑ w' ∈ S₀, eL w' := Finset.sum_insert hw
       have hmap : (insert w S₀).map (Function.Embedding.subtype (· ∈ locPl ch.G t)) =
           {w.1} ∪ S₀.map (Function.Embedding.subtype (· ∈ locPl ch.G t)) := by

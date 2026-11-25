@@ -12,7 +12,10 @@ public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUni
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSatVecUOfDiag
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjLocalTwistedLFactorRatioInertEqZetaSumStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjLocalTwistedLFactorRatioSplitEqZetaSumStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySubOneLe
+public import Formalism.SatakeDualWeyl.StatementE
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjLocalTwistedLFactorRatioSplitEqZetaSum
+public import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumQuotientTransportStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumUnramifiedZetaSumUnitaryInertStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SatakeParameterGLStarEqInvOfUnitarisableStatement
@@ -129,7 +132,7 @@ theorem value_split (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.h
       eulerFac ((B w).map (star (m w) * ·)) (npow w (-((1 + (D.R.t : ℂ)) / 2))) *
         eulerFac ((B w).map fun β => (star (m w) * β)⁻¹) (npow w (-((1 + (D.R.t : ℂ)) / 2))) *
         ∏ i ∈ Finset.Ioc D.R.t (D.R.r + D.R.t), (1 - ((qV D.host.E w : ℂ) ^ i)⁻¹) :=
-  GlobalTheory.T.conj_localTwistedLFactor_ratio_split_eq_zetaSum D B m v w w' hne hall hN hN' hB' hs hm hm1 hq
+  _root_.GlobalTheory.LocZetaSplit.conj_LvTw_div_dLoc D B m v w w' hne hall hN hN' hB' hs hm hm1 hq
 
 theorem value_inert (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.host.E) → ℂˣ)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E))

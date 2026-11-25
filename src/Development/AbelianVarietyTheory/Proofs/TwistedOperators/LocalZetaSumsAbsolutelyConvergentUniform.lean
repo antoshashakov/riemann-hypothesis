@@ -8,7 +8,9 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumNor
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumNormSphericalZetaKernelUnramifiedUnitaryStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoExcludedParameterOfLiftParameters
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormGLZetaSumTrivialParameterSubOneLeStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormUnitaryZetaSumTrivialBoundSubOneLeStatement
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.TrivialParameterBound
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySubOneLe
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormUnitaryZetaSumTrivialBoundSubOneLe
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoOneOfSummable
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Mathlib.Algebra.Order.Floor.Extended
@@ -118,7 +120,7 @@ theorem uSum : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ)
   intro L _ _ _ ϖ σ q r t hU ht z φ hz hk
   obtain ⟨α, hb, hs⟩ := GlobalTheory.T.hasSum_norm_sphericalZetaKernel_unramifiedUnitary L ϖ σ q r t hU (by omega) z φ hz hk
   refine ⟨_, by simpa using Complex.hasSum_re hs, ?_⟩
-  refine le_trans ?_ (GlobalTheory.T.norm_unitaryZetaSum_trivialBound_sub_one_le q r t hU.2.2.2.2.2.1 ht α hb)
+  refine le_trans ?_ (_root_.GlobalTheory.FinZeta.UnitaryBound.norm_zetaSum_sub_one_le q r t hU.2.2.2.2.2.1 ht α hb)
   have := Complex.abs_re_le_norm (eulerFac (bcParam r α) (((q : ℂ) ^ (t + 1))⁻¹) *
     ∏ j ∈ Finset.range r, (1 - (-(q : ℂ)) ^ j * ((q : ℂ) ^ (r + t))⁻¹) - 1)
   simpa using this

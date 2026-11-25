@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.EllipticPartTestData
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ForallEventuallyFinLocIff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCompatFiniteIsometry
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalUnitaryGroupIsoConjIsometryStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.OfInfProjInfMulOfFinProjFin
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalUnitaryGroupIsoConjIsometry
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryPart
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteAdelicUnitaryPointExtLocalComponentsStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePartLocalToFiniteAdelicComponentNeStatement
@@ -140,7 +141,7 @@ theorem locData (σ : E →ₐ[F] E) {r r' : ℕ} (J : Matrix (Fin r) (Fin r) E)
     · ext i k; subst hcm; exact (comm_sigR' σ v _).symm
     · ext i k; subst hcm; simp [JR, Formalism.UG.inclE, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
     · ext i k; subst hcm; simp [JR, Formalism.UG.inclE, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]
-  obtain ⟨φ, hφ⟩ := GlobalTheory.T.exists_localUnitaryGroupIso_conj_isometry σ J J' v _ _ hab hba hJ
+  obtain ⟨φ, hφ⟩ := _root_.GlobalTheory.LocIsoConj.exists_locIso σ J J' v _ _ hab hba hJ
   refine ⟨φ, ?_, hφ⟩
   have injv : Function.Injective jv.mulVec := fun x y hxy => by
     have := congrArg jv'.mulVec hxy

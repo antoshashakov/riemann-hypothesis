@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CartFrSgn
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AutomorphicCuspFormsHermitianSpaceSignTwistStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsDiscreteSeriesNegSignatureOfIsDiscreteSeriesStatement
+public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsDiscreteSeriesNegSignatureOfIsDiscreteSeries
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignedUnitaryGroupCompatStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -68,7 +69,7 @@ def negM {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) : DSModel (s
     refine ⟨h1, q, hq, ?_⟩
     rw [hS, GlobalTheory.SignedHC.flip, Finset.image_image]
     rfl
-  ds τ := GlobalTheory.T.isDiscreteSeries_neg_signature_of_isDiscreteSeries _ _ _ _ _ (M.ds τ)
+  ds τ := _root_.GlobalTheory.PairLift.isDS_flip _ _ _ _ _ (M.ds τ)
   fr_unit := M.fr_unit
   fr_gram τ := by
     have e : gramAt D (neg V) τ = -gramAt D V τ := by ext i j; simp [gramAt, neg_gram]

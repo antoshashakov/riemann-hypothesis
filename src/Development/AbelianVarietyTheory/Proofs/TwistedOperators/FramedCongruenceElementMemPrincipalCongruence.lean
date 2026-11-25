@@ -14,7 +14,8 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjPlace
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrameCongruentSubOneMulVecMemIdealLatticeComplet
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GridModulusExactOrderWitnessStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegerOutsidePrimePowDvdMaximalIdealPowStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubMemLatticeCompletionOfSupportedPlacesStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubMemLatticeCompletionOfSupportedPlaces
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -116,13 +117,13 @@ theorem gl_mem_lev : All fun {D} _ _ {sc} {G} _ _ => ∀ (X : Node), IsSelfDualC
   refine Lev.mem_levA.2 ⟨GlobalTheory.SplitHecke.Stab.mem_GfC p.split (β.gl_supp _), ?_⟩
   show Lev.finE (G.V X) g ∈ congLev D.sp.cm (G.V X).gram (G.Λ X) G.modul
   refine mem_congLev.2 ⟨GlobalTheory.LevSplit.finE_mem_UA _ _, fun x => ⟨fun hx => ?_, fun hx => ?_⟩, fun x hx => ?_⟩
-  · have h1 := add_mem (GlobalTheory.T.sub_mem_lattice_completion_of_supported_places D (G.V X) _ (G.Λ X) (G.Λ X) g hgrp (hmov g hinK) x hx) hx
+  · have h1 := add_mem (_root_.GlobalTheory.LatBridge.sub_mem_hatL D (G.V X) _ (G.Λ X) (G.Λ X) g hgrp (hmov g hinK) x hx) hx
     rwa [sub_add_cancel] at h1
-  · have h1 := add_mem (GlobalTheory.T.sub_mem_lattice_completion_of_supported_places D (G.V X) _ (G.Λ X) (G.Λ X) g⁻¹ (inv_mem hgrp) (hmov g⁻¹ (inK_inv hinK)) _ hx) hx
+  · have h1 := add_mem (_root_.GlobalTheory.LatBridge.sub_mem_hatL D (G.V X) _ (G.Λ X) (G.Λ X) g⁻¹ (inv_mem hgrp) (hmov g⁻¹ (inK_inv hinK)) _ hx) hx
     rwa [sub_add_cancel, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one,
       Matrix.one_mulVec] at h1
   · obtain ⟨⟨m, hm, hm'⟩, m₂, hm₂, hm₂'⟩ := GlobalTheory.T.gridModulus_exact_order_witness G v hv
-    refine GlobalTheory.T.sub_mem_lattice_completion_of_supported_places D (G.V X) _ (G.Λ X) (G.modul • G.Λ X) g hgrp (fun y hy => ?_) x hx
+    refine _root_.GlobalTheory.LatBridge.sub_mem_hatL D (G.V X) _ (G.Λ X) (G.modul • G.Λ X) g hgrp (fun y hy => ?_) x hx
     have hz := hmov g hinK y hy
     obtain ⟨ε, hε, hsum⟩ := p.above
     have hsplit : (mt (G.V X) g - 1) *ᵥ y = (fun i => p.e * ((mt (G.V X) g - 1) *ᵥ y) i) +

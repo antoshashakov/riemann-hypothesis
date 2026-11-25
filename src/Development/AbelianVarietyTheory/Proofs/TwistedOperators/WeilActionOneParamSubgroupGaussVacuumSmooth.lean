@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneParame
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairInfApply
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneParameterWeilOperatorDerivative
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTriplePolynomialFockStableMulTraceLinear
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracePairingArchimedeanVarsNondegenerateRightStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracePairingArchimedeanVarsNondegenerateRight
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryArchimedeanLineOperatorsOneParameterStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOneParamMovesFockVacuumSmoothlyStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -82,7 +82,7 @@ theorem smooth_vacuum_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E
   obtain ⟨J₀, hJ, hvac⟩ := _root_.GlobalTheory.GaussFockJ.exists_complex_structure B G X om om' hT f₀ hf₀
   haveI : BorelSpace (Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F) := Pi.borelSpace
   obtain ⟨hsm, n, qs, qs', cs, c, hd⟩ := GlobalTheory.T.weilOneParam_moves_fockVacuum_smoothly (V := Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F) Measure.addHaar (GlobalTheory.GaussLine.pairInf F (Fin a × Fin (a + a')))
-    (GlobalTheory.T.tracePairingArchimedeanVars_nondegenerate_right F _) T h1 h0 hU A hAc hAadd hA0 hAint hC J₀ hJ f₀ hvac
+    (_root_.GlobalTheory.GaussLine.pairInf_nondeg F _) T h1 h0 hU A hAc hAadd hA0 hAint hC J₀ hJ f₀ hvac
   refine ⟨hsm, ?_⟩
   have hf₀P : f₀ ∈ G.M.Pol B.ψ B.emb := Submodule.mem_sInf.2 fun N hN => hN.1 f₀ hf₀
   have hmul := _root_.GlobalTheory.PolMul.pol_mul_pairInf B G X om om' hT

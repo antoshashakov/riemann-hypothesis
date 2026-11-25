@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAuxiliaryVectorWittDec
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FunctionalEquationLocalLattice
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsIntegralInvNegXi0
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitFrameLatticeFunctionalStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitFrameLatticeFunctional
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.VecMulEntry
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -92,7 +92,7 @@ theorem GlobalTheory.FrameFB.frame_fb : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ
   · intro a ha
     have hu2 : (p.pr (incA D (star (-D.host.xi0)))) ≠ 0 := right_ne_zero_of_mul_eq_one hu₂
     refine ⟨fun q i => ?_, fun q i => ?_⟩
-    · obtain ⟨z, hz, hz'⟩ := GlobalTheory.T.split_frame_lattice_functional D hq T L μ0 hL sc G W M hM F hF σ h h' v hv k p β ϖ hpv hid hlat hmax a ha q i
+    · obtain ⟨z, hz, hz'⟩ := _root_.GlobalTheory.DepthColumn.col_mem_depth D hq T L μ0 hL sc G W M hM F hF σ h h' v hv k p β ϖ hpv hid hlat hmax a ha q i
       exact ⟨z, hz, hz'⟩
     · obtain ⟨z, hz, hz'⟩ := GlobalTheory.ConjClause.functional_equation_local_lattice D hq T L μ0 hL sc G W M hM F hF σ h h' v hv k p β ϖ hpv hid hlat hmax a ha q i
       refine ⟨z * (if q.1 = σ then -1 else 1), Ideal.mul_mem_right _ _ hz, ?_⟩
