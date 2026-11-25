@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.SplitStab
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoMulInvOf
 public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.DCdE
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSymplecticTraceFormAlternatingSwapStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSymplecticTraceFormAlternatingSwap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilTransportAdelicSchwartzCmExtension
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurLemmaHeisenbergCommutingThetaOperator
 public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.IntegralMul
@@ -139,7 +140,7 @@ theorem coords_k {σ : E →ₐ[F] E} {B : Base F E} (hB : _root_.UpperTheory.TP
         (dC (AF F ⊗[F] E) nT * u') = 0 := by rw [symplOF, h_CC, mul_zero, map_zero]
     have s2 : symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ (dCd F JT * v) (dCd F JT * v') = 0 := by
       rw [symplOF, dCd_eq, Matrix.mul_assoc, Matrix.mul_assoc, h_AA, mul_zero, map_zero]
-    have s3 := GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap F E σ hinv _ _ JS _ hS (GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT) ξ₀ hσ
+    have s3 := _root_.GlobalTheory.SymplSkew.symplOF_swap F E σ hinv _ _ JS _ hS (GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT) ξ₀ hσ
       (dCd F JT * v') (dC (AF F ⊗[F] E) nT * u)
     rw [hd', hd', he, he, GlobalTheory.ThetaSchurF.symplOF_add_left, GlobalTheory.ThetaSchurF.symplOF_add_right,
       GlobalTheory.ThetaSchurF.symplOF_add_right, s1, s2, s3, hP, hP, symV]

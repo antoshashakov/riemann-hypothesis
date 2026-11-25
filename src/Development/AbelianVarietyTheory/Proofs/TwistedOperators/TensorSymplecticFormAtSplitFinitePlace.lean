@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocIsoRefl
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicTraceSupportedAtSplitPlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicTraceSupportedAtSplitPlace
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairChangeBasis
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SumFourSwap
 import Mathlib.Algebra.Order.Floor.Extended
@@ -120,7 +121,7 @@ theorem symp_at_split : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Nu
     unfold GlobalTheory.WeilM.hTens
     simp only [Finset.smul_sum, ← smul_mul_assoc, h, zero_mul, Finset.sum_const_zero, mul_zero]
   unfold GlobalTheory.WeilM.symp
-  rw [GlobalTheory.T.adelicTrace_supportedAtSplitPlace hcm v t _ hz]
+  rw [_root_.GlobalTheory.SplitAdeleTrace.trace_at_split hcm v t _ hz]
   change psiLoc ψ v _ = psiLoc ψ v _
   congr 1
   rw [pairM_comm (coY σ X Y t b c x), coX, coX, coY, coY, pairM_chart, pairM_chart]

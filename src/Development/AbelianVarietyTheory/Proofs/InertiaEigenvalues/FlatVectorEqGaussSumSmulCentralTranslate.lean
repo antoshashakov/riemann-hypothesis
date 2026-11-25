@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussGL
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.UnderEqOfConj
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarDilationElementSupportDetPullback
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumHeisenbergTranslatesBaseVectorEqCardSmulStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.ActsLinOfSplitLin
+public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceS
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumHeisenbergTranslatesBaseVectorEqCardSmul
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameKernelTypePlaceThetaVectorLatticeFixedStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepApplyEqSmulOfHalfIndicatorBaseStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjFourierCoefficientsConjugateTuples
@@ -246,7 +248,7 @@ theorem om_model_eq_dilate : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 
     GlobalTheory.DilScalar.scalar_dil_facts D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (R.Q t₀) eQ heQ _ hN hNQ ϖ hϖE hϖ z hz'
   have hom := GlobalTheory.SumHecke.om_eq_sum_idemSum D R.ψ (Vc D i) (Wc D i) _ _ _ hW (R.ΛV i) (R.ΛW i) hSV hSW (R.Q t₀) eQ heQ z x hsupp hx
     Rr hR1 hR2 hR3 fg hθ hfix
-  have hsum := GlobalTheory.T.sum_heisenbergTranslates_baseVector_eq_card_smul D R.ψ hW.std (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) hSV hSW (R.Q t₀) eQ heQ z hlat Rr hR1 hR2 hR3 fg Tm hTm
+  have hsum := _root_.GlobalTheory.HeisTranslSum.sum_heisO_base_eq D R.ψ hW.std (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) hSV hSW (R.Q t₀) eQ heQ z hlat Rr hR1 hR2 hR3 fg Tm hTm
   rw [← hcard]
   have hvac : R.ωP i t (z, 1) fg = ((((Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).2 x : Circle) : ℂ)⁻¹ *
       ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ)) •

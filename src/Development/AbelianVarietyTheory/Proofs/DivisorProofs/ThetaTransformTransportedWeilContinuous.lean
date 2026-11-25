@@ -2,9 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffThetaTransformAdelicSchwartzRealDirection
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousThetaTransformAdelicSchwartzStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformFixedBySmallFiniteHeisenbergStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformRationalTranslateQuasiInvariantStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousThetaTransformAdelicSchwartz
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformFixedBySmallFiniteHeisenberg
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformRationalTranslateQuasiInvariant
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryPairPartnerInverseTransposeStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -77,8 +77,8 @@ theorem thetaTr_om_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), I
       GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JB) =>
     GlobalTheory.T.unitaryPair_partner_inverse_transpose D S T JA JB ξ hA hB p.1 p.2
   have hθ : Formalism.IndefR.Datum.IsThetaFunO ψ S T (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ) :=
-    ⟨GlobalTheory.T.thetaTransform_rational_translate_quasiInvariant D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, GlobalTheory.T.thetaTransform_fixed_by_small_finiteHeisenberg D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ,
-      GlobalTheory.T.continuous_thetaTransform_adelicSchwartz D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, _root_.GlobalTheory.ThetaSmooth.contDiff_thetaTr_real D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ⟩
+    ⟨_root_.GlobalTheory.ThetaQuasiRat.thetaTr_ratW_add D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, _root_.GlobalTheory.ThetaLevel.thetaTr_level D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ,
+      _root_.GlobalTheory.ThetaTrCont.continuous_thetaTr D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, _root_.GlobalTheory.ThetaSmooth.contDiff_thetaTr_real D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ⟩
   have hhU : ∀ p, matHom T (h p) = p.1.1 := fun p => Units.ext (hh p)
   have hgU : ∀ p, (matHom S (g p))⁻¹.1 = p.2.1.1ᵀ := by
     intro p

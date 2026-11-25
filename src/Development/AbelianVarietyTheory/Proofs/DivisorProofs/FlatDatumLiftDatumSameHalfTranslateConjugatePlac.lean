@@ -20,7 +20,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCompletedPairLat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCompletedPairLatticeIffFrameMatrixIntegralOnH
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeIffUniformiserReductionVanishes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScalarDilationElementSupportDetPullback
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumHeisenbergTranslatesBaseVectorEqCardSmulStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumHeisenbergTranslatesBaseVectorEqCardSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TameKernelTypePlaceThetaVectorLatticeFixedStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedSplittingCharacterUnitOffPlaces
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepApplyEqSmulOfHalfIndicatorBaseStatement
@@ -724,7 +724,7 @@ theorem om_model {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χ
   refine ⟨_, hRc, fun Tm hTm Φ hΦ => ?_⟩
   have hom := GlobalTheory.T.weilOperator_idempotentSum_vacuum_normalised_sum D ψ S T _ _ _ hW ΛS ΛT hS hT _ _ he' g x hg' (by rw [hcc]; exact hx) Rr
     (by rw [hcc]; exact hR1) (by rw [hcc]; exact hR2) (by rw [hcc]; exact l1) f hθ hfix'
-  have hsum := GlobalTheory.T.sum_heisenbergTranslates_baseVector_eq_card_smul D ψ hW.std S T ΛS ΛT hS hT _ _ he' g l3 Rr
+  have hsum := _root_.GlobalTheory.HeisTranslSum.sum_heisO_base_eq D ψ hW.std S T ΛS ΛT hS hT _ _ he' g l3 Rr
     (by rw [hcc]; exact hR1) (by rw [hcc]; exact hR2) (by rw [hcc]; exact l1) f Tm hTm
   have hvac : om (g, 1) f = ((((χT x : Circle) : ℂ))⁻¹ * ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ)) •
       Tm (actPull (g, (1 : GA D T)) (halfInd (cA D e) (latAll S T ΛS ΛT))) := by

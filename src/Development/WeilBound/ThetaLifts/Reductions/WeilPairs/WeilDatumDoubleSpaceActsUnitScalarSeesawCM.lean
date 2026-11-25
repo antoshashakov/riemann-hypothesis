@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeltaTApply
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSymplecticTraceFormAlternatingSwapStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSymplecticTraceFormAlternatingSwap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfPartFPlaceIdem
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatricesDiscreteCocompactAdelicMatrixSpaStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalPointsSelfAnnihilatorSymplecticStandardCStatement
@@ -309,7 +310,7 @@ theorem PositivityTheory.ThKW.weil_rep_unitary_pair_equivariant : ∀ (F E : Typ
     ext x
     simp only [deltaT, star_mul]
     ring
-  obtain ⟨c, hc, H⟩ := abstract hψ (GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap F E σ hinv _ _ JS _ hS hT' ξ₀ hσξ)
+  obtain ⟨c, hc, H⟩ := abstract hψ (_root_.GlobalTheory.SymplSkew.symplOF_swap F E σ hinv _ _ JS _ hS hT' ξ₀ hσξ)
     (GlobalTheory.T.rational_points_self_annihilator_symplectic_standardChar F E σ B hB _ _ JS _ hS hT' ξ₀ hξ)
     (fun p : T × T => ωd (1, hd) (deltaT p.1.1 p.2.1)) (fun p => deltaT (ω (1, h) p.1.1) p.2.1)
     (fun p => hωd.om_pres _ _ (theta_delta hψ.2.1 p.1.2 p.2.2))

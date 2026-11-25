@@ -4,8 +4,10 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFor
 public import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigRouteKernelEqConstMulThetaStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmissibleFormConvergentThetaIntegralStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigRouteKernelEqConstMulTheta
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmissibleFormConvergentThetaIntegral
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDetOneMulBlockUnitaryDecompositionStatement
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLagrModelOfIsLin
@@ -88,7 +90,7 @@ theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (h
   obtain ⟨R, Rf, hm⟩ := hLM _ _ _ Bs _ _ Γ X om om' hT
   obtain ⟨dec, hk⟩ := hK.1 _ _ _ Bs _ _ Γ X om om' hT
   obtain ⟨hc, hco⟩ := hk R Rf hm
-  obtain ⟨l, hla, hl⟩ := GlobalTheory.T.exists_adm_eq_thetaIntegral_of_conv Γ.M Bs.ψ _ _ om hT.weil dec.1
+  obtain ⟨l, hla, hl⟩ := _root_.GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral Γ.M Bs.ψ _ _ om hT.weil dec.1
   have hw0 : G.pl.w G.pl.v0 ∈ locPl G t :=
     Finset.mem_union_left _ (by
       have : G.pl.v0 ∈ G.pl.S0 := by unfold Places.S0; convert Finset.mem_insert_self _ _
@@ -128,7 +130,7 @@ theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (h
   obtain ⟨b', hb'⟩ := ρ.onto_big i j (toTens a)
   obtain ⟨b, rfl⟩ := toTens_surjective b'
   have hΘ : IsMatched B t ρ i j (tensT W a τ) (tensT W b τ') := ⟨a, b, τ, τ', n, Φ, hb', hnat, hF, rfl, rfl⟩
-  obtain ⟨ξ, hξ, hker⟩ := GlobalTheory.T.big_route_kernel_eq_const_mul_theta hL W B ρ t i j M _ _ hΘ e Bs Γ X om om' h hT _ ha g.1 g.2
+  obtain ⟨ξ, hξ, hker⟩ := _root_.GlobalTheory.BigKernel.kerBig_eq_theta hL W B ρ t i j M _ _ hΘ e Bs Γ X om om' h hT _ ha g.1 g.2
   refine ⟨M, hM, a, τ, τ', n, Φ, hnat, hF, g.1, g.2, ?_⟩
   have hfd := (hM.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).haar_fund
   simp only [hker]

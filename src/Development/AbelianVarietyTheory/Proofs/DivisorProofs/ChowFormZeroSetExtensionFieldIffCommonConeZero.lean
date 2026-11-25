@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.JoinCastSucc
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialSolvabilityTransferAlgClosedFieldsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishTransferOfVanishOverAlgebraicClosureStatement
+public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishTransferOfVanishOverAlgebraicClosure
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -116,7 +117,7 @@ theorem aeval_eq_zero_of_common_zero (hf : IsChowForm I D d f) {Ω : Type} [Fiel
     (u : Fin (D + 1) × Fin N → Ω) (y : Fin N → Ω) (hy : y ≠ 0) (hI : ∀ g ∈ I, aeval y g = 0)
     (hu : ∀ i, ∑ j, u (i, j) * y j = 0) : aeval u f = 0 := by
   obtain ⟨z, hz⟩ := exists_dual hy
-  have key := GlobalTheory.T.vanish_transfer_of_vanish_over_algebraicClosure F _ (incIdeal (D + 1) I) (rename Sum.inl f) (fun x hx => by
+  have key := _root_.GlobalTheory.vanish_transfer_of_algClosure F _ (incIdeal (D + 1) I) (rename Sum.inl f) (fun x hx => by
     obtain ⟨h1, h2, h3⟩ := (forall_incIdeal_iff I x).1 hx
     rw [aeval_rename]
     exact (hf.zero_iff _).2 ⟨_, ne_zero_of_dual h3, h1, h2⟩) Ω (Sum.elim u (Sum.elim y z))

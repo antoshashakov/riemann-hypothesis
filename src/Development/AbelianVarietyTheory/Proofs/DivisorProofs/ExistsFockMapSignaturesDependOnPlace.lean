@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FramedDConst
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativeAdditiveCommutatorStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativeAdditiveCommutator
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExistStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanTraceSymplecticOrthonormalFramesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGaussianVacuumFramesPlaceSignaturesStatement
@@ -66,7 +67,7 @@ theorem exists_isFockMapD : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
       fderiv ℝ f x (fun i => evI F ((d.e u).1 i)) - 2 * Real.pi * Complex.I *
         (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * evI F ((d.e u).2 i)) : ℝ) * f x :=
     fun u hu f x => (hD u hu f).2 x
-  obtain ⟨hadd, hsm, hcom⟩ := GlobalTheory.T.archHeisenbergDerivative_additive_commutator σ JA JB d D hDf
+  obtain ⟨hadd, hsm, hcom⟩ := _root_.GlobalTheory.HeisDerivLaws.heis_deriv_laws σ JA JB d D hDf
   have hex := fun c : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ =>
     GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hCM (fun w => A w * c w * (C w)ᵀ)
   choose uOf huOf using fun c => (hex c).exists

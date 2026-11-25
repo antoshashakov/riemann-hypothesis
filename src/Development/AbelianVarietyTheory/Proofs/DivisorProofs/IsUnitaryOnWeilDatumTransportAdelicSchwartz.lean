@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffThetaTransformArchimedeanCmStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffThetaTransformArchimedeanCm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousThetaTransformSchwartzCmStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DarbouxCoordsTransferHaarFundamentalDomainCmStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHaarFundamentalDomainRationalMatricesTowerStatement
@@ -86,7 +88,7 @@ theorem isUnitaryOn_transportF : ∀ (F E : Type) [Field F] [NumberField F] [Fie
     ⟨GlobalTheory.T.thetaTransform_rationalTranslate_quasiInvariant_cm F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat Φ hΦ,
      GlobalTheory.T.thetaTransform_adelicSchwartz_hasFiniteLevel_CM F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat Φ hΦ,
      GlobalTheory.T.continuous_thetaTransform_schwartz_cm F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat Φ hΦ,
-     GlobalTheory.T.contDiff_thetaTransform_archimedean_cm F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat Φ hΦ⟩
+     _root_.GlobalTheory.ThetaSmoothF.contDiff_thetaTr_realF F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat Φ hΦ⟩
   have ht := hom a b g h hh hg Φ hΦ
   calc
     _ = c * ∫⁻ w in 𝓕, ‖GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ ((om (a, b)) Φ) w‖ₑ ^ 2 ∂ν := hiso _ ht.1

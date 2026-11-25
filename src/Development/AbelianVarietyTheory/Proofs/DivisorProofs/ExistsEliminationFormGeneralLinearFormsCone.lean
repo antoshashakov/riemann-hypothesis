@@ -3,7 +3,8 @@ module
 public import Mathlib.RingTheory.KrullDimension.Basic
 public import Mathlib.RingTheory.MvPolynomial.Homogeneous
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AevalEqZeroOfPoint
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishTransferOfVanishOverAlgebraicClosureStatement
+public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishTransferOfVanishOverAlgebraicClosure
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -112,7 +113,7 @@ theorem exists_elim_form_of_field : ∀ (F : Type) [Field F] [CharZero F] (D N d
       · simpa [x0, ey] using hlin i
       · simp [x0, ey, ez, z, hj0]
     exact hle hp
-  have := GlobalTheory.T.vanish_transfer_of_vanish_over_algebraicClosure F ((Fin D × Fin N) ⊕ (Fin N ⊕ Fin N)) (Ideal.span gens) f hclos K x0 hx0
+  have := _root_.GlobalTheory.vanish_transfer_of_algClosure F ((Fin D × Fin N) ⊕ (Fin N ⊕ Fin N)) (Ideal.span gens) f hclos K x0 hx0
   simpa [f, aeval_rename, Function.comp_def, x0] using this
 
 end GlobalTheory.HSShort

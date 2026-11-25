@@ -2,9 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffThetaTransformAdelicSchwartzRealDirection
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousThetaTransformAdelicSchwartzStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformFixedBySmallFiniteHeisenbergStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformRationalTranslateQuasiInvariantStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousThetaTransformAdelicSchwartz
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformFixedBySmallFiniteHeisenberg
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformRationalTranslateQuasiInvariant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,9 +66,9 @@ theorem isThetaFunO_thetaTr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsS
           Formalism.IndefR.Datum.IsThetaFunO ψ S T (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ φ) := by
   intro D ψ hψ S T JA JB ξ hA hB κ _ co hco φ hφ
   exact
-    { quasi := fun γ w => GlobalTheory.T.thetaTransform_rational_translate_quasiInvariant D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ γ w
-      level := GlobalTheory.T.thetaTransform_fixed_by_small_finiteHeisenberg D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ
-      cont := GlobalTheory.T.continuous_thetaTransform_adelicSchwartz D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ
+    { quasi := fun γ w => _root_.GlobalTheory.ThetaQuasiRat.thetaTr_ratW_add D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ γ w
+      level := _root_.GlobalTheory.ThetaLevel.thetaTr_level D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ
+      cont := _root_.GlobalTheory.ThetaTrCont.continuous_thetaTr D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ
       smooth := fun k L hL hfin w => _root_.GlobalTheory.ThetaSmooth.contDiff_thetaTr_real D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ k L hL hfin w }
 
 end GlobalTheory.ThetaTransformTheta

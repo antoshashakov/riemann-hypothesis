@@ -5,11 +5,14 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeri
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsCompactIsOpenUnitsAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodinger
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicTraceSupportedAtSplitPlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicTraceSupportedAtSplitPlace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSmulOfCommuteHeisenbergLinearModelSchwartzBruhStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceAdelicMatrixGivenComponentsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianSelfDualLatticeSpaceFormHermitianNondeg
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianTensorSkewHermitianSplitSymplecticPairStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianTensorSkewHermitianSplitSymplecticPair
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzBruhat
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicCharacterNontrivialAtPlaces
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticFormUnitaryInvariant
@@ -181,11 +184,11 @@ theorem shape_right : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Fie
       B.ψ (symp (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) (-1) ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) X.J) ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) W.J) x u) =
         GlobalTheory.LatVac.psiAt B.ψ v (∑ k, ∑ l, (A0 * x.map (piW t) * B0) k l * u.map (piW (t.comp σ)) k l) := by
     intro x u hx hx0 hu1
-    have key := GlobalTheory.T.hermitianTensor_skewHermitian_split_symplectic_pair hcm (t.comp σ) X.J W.J hp.herm.herm hp.skew.skew x u hx0 (by rw [hts]; exact hu1)
+    have key := _root_.GlobalTheory.HTensSplitPair.hTens_split_pair hcm (t.comp σ) X.J W.J hp.herm.herm hp.skew.skew x u hx0 (by rw [hts]; exact hu1)
     rw [hts] at key
     dsimp only [cA, incM] at key
     unfold symp
-    rw [GlobalTheory.T.adelicTrace_supportedAtSplitPlace hcm v t _ (at_hTens _ _ x u hx)]
+    rw [_root_.GlobalTheory.SplitAdeleTrace.trace_at_split hcm v t _ (at_hTens _ _ x u hx)]
     rw [map_mul, map_mul, map_neg, map_neg, map_one, map_one, neg_one_mul, neg_one_mul, ← neg_add, add_comm, key]
     show GlobalTheory.LatVac.psiAt B.ψ v _ = GlobalTheory.LatVac.psiAt B.ψ v _
     congr 1

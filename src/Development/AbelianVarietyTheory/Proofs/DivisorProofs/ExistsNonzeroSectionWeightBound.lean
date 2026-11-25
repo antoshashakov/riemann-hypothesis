@@ -19,7 +19,9 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedP
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointBaseChangeLaws
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FullLinearLevelCoverBaseChangeTorsor
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaNullValueExistsUniqueNaturalLinear
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartFrameChangeDiagonalUnitsIntegralFrameStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartFrameChangeDiagonalUnitsIntegralFrame
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSectionThetaKeyRuleWeightFour
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeyScalarIsUnitOnIntegralModelsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionValuationBoundsDifferent
@@ -541,7 +543,7 @@ theorem through_point (y : Y₀ X Z) (T : CDVR) (io : c.F →+* T.Fr) (y' : IntF
     refine (evR_eq_val_secOf f hOf hQ ht).trans (congrArg (_ * ·) ?_)
     rw [val_congr_pt hx' _ hOf (hx' ▸ hOf) hz (hx' ▸ hz)]
     exact (H0.val_pull (inc₀ X Z) (le_refl (U₀ X Z)) _ j hO hj _ _ (secOf X _ f)).symm
-  have hu := GlobalTheory.T.chartFrame_change_diagonal_units_integral_frame X T io y' _ hpt' (j PUnit.unit) hzV hz Q t hQ ht
+  have hu := _root_.GlobalTheory.IntFrameDiag.diag_unit_of_intFr X T io y' _ hpt' (j PUnit.unit) hzV hz Q t hQ ht
   have ex : ∀ ix, ∃ u : T.Vˣ, Units.map (algebraMap T.V T.Fr : T.V →* T.Fr) u = t ix ^ AllWt.exOf Dw la 0 ix := by
     intro ix
     rcases ix with _ | ⟨σ, i⟩
