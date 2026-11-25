@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 public import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.DecompositionFixesSquareRoot
 public import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.InertiaMovesSquareRoot
 public import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.InfinitePrimesNegSquarePadic
+import Lemmata.GeneralBFactLeftTail.Imports
 
 @[expose] public section
 
@@ -85,23 +86,8 @@ theorem finite_primes_of_finite {B : Set (HeightOneSpectrum (𝓞 F))} (hB : B.F
   exact Set.mem_biUnion hu ⟨hp, h⟩
 
 theorem exists_mem_of_prime {p : ℕ} (hp : p.Prime) :
-    ∃ u : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ u.asIdeal := by
-  have hnu : ¬ IsUnit ((p : ℕ) : 𝓞 F) := by
-    intro h
-    have h2 := h.map (Algebra.norm ℤ (S := 𝓞 F))
-    rw [show ((p : ℕ) : 𝓞 F) = algebraMap ℤ (𝓞 F) (p : ℤ) by simp, Algebra.norm_algebraMap,
-      isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff] at h2
-    have := hp.two_le
-    omega
-  obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 F)})
-    (by rwa [Ne, Ideal.span_singleton_eq_top])
-  have hne : M ≠ ⊥ := by
-    intro h
-    rw [h] at hle
-    have h0 := hle (Ideal.mem_span_singleton_self _)
-    rw [Ideal.mem_bot] at h0
-    exact hp.ne_zero (by exact_mod_cast h0)
-  exact ⟨⟨M, hM.isPrime, hne⟩, hle (Ideal.mem_span_singleton_self _)⟩
+    ∃ u : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ u.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 theorem mem_range_res_iff (K : IntermediateField F Ω) (σ : G F Ω) :
     σ ∈ (res F Ω ↥K).range ↔ ∀ x ∈ K, σ x = x := by
