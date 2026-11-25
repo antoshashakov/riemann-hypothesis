@@ -6,7 +6,7 @@ public import Mathlib.Analysis.Complex.Circle
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensInfAll
-public import Lemmata.FunctionAtZero.FZero
+public import Lemmata.GeneralBFactThirdFurther.Imports
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,7 +67,7 @@ open MeasureTheory Complex Filter Topology
 
 theorem char_real (f : ℝ → ℂ) (hc : Continuous f) (hadd : ∀ s t, f (s + t) = f s * f t)
     (hn : ∀ s, ‖f s‖ = 1) : ∃ b : ℝ, ∀ s : ℝ, f s = exp (↑(b * s) * I) := by
-  first | exact Bl.FunctionAtZero.goal1 .. | (apply Bl.FunctionAtZero.goal1 <;> assumption) | (intros; apply Bl.FunctionAtZero.goal1 <;> assumption)
+  exact Bl.general_b_fact_third_further.goal1 f hc hadd hn
 
 theorem freq_unique {u v : ℝ} (h : ∀ s : ℝ, exp (↑(u * s) * I) = exp (↑(v * s) * I)) : u = v := by
   by_contra huv
