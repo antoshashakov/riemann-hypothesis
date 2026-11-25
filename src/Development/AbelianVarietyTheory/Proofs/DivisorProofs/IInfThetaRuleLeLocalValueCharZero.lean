@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfT
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.WchartLePreimage
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaValueExistsUniqueOfChartIndependence
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarmonicValueIntegralGermFramePowerCharZeroStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarmonicValueIntegralGermFramePowerCharZero
 public import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarmonicValueTranslateDivisorLevelIntegralChart
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetsOnCopiesAny
@@ -128,7 +130,7 @@ theorem iInf_thRule_le_nuLocOf_charZero : ∀ (E : Type) [Field E] [NumberField 
     exact Finset.sup_le fun m' hm' => (key m' hm').le
   unfold nuLocOf
   refine le_iInf_add_coe fun f => le_iInf_add_coe fun hf => ?_
-  obtain ⟨f', hf', hff'⟩ := GlobalTheory.T.harmonic_value_integral_germ_frame_power_charZero E H Dw l Xo c T io y C hchar a n l.M q P₁ hP₁ f hf
+  obtain ⟨f', hf', hff'⟩ := _root_.GlobalTheory.FramePower.exists_nabValN_eq_of_harmonic E H Dw l Xo c T io y C hchar a n l.M q P₁ hP₁ f hf
   set Pp : MvPolynomial (LtN Dw n) T.Fr := MvPolynomial.map io P₁ with hPp
   set x0 := nabValN C.ch.B T.Fr C.ch.h H.w0 l.M f (fun ℓ : LtN Dw n => ℓ.2.2)
     (fun ℓ : LtN Dw n => C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩) Pp with hx0def

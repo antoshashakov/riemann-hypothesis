@@ -7,7 +7,7 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaConjInvariantStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaPosIndexStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisjointTranslatesVolumeBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumFiniteAverageBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumFiniteAverageBound
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.InnerProductSpace.Basic
 public import Mathlib.MeasureTheory.Integral.Bochner.Basic
@@ -126,7 +126,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   have hbd : ‖starLoc (Af F) σ J (psiFin F ψ) μ Q bc‖ ≤
       (∑ a ∈ s, ‖Q a‖) * √((μ (L : Set _)).toReal * (μ S).toReal) := by
     have hw := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.weyl_sq_compact_open _ μ L hLc hLo q B hp1 hp2 (GlobalTheory.T.phase_cocycle_bimultiplicative F E σ hCM M J hJ n ψ hψ bc) hq1 hq2
-    exact GlobalTheory.T.gauss_sum_finite_average_bound _ μ L hLc hLo q hp1 hp2 _ hw Q s hs
+    exact _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.CosetBound.twisted_integral_finite_coset_combination_bound _ μ L hLc hLo q hp1 hp2 _ hw Q s hs
 
   have hSm : MeasurableSet S := by
     have e : S = (L : Set _) ∩ ⋂ l ∈ L, (B l) ⁻¹' {1} := by
