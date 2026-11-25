@@ -635,7 +635,8 @@ theorem quot_finite (h : Ctx K R ϖ) (k l : ℤ) :
   have : CompactSpace (Pk R ϖ k) := isCompact_iff_compactSpace.mp (Pk_isCompact h k)
   exact AddSubgroup.quotient_finite_of_isOpen _ ((Pk_isOpen h l).preimage continuous_subtype_val)
 
-theorem crossVanish : Formalism.FourierDecayAlt.A6.CrossVanish := by
+theorem _root_.Formalism.FourierDecayAlt.P.crossTermsVanish :
+    Formalism.FourierDecayAlt.A6.CrossVanish := by
   intro K _ _ _ R ψ hD hnat m hm Om Λ Sg ζ hOm hΛ hstab hζ hζ1
   obtain ⟨ϖ, hϖ, hex⟩ := hD.unif
   have h : Ctx K R ϖ := ⟨hD.t2, hD.isOpen, hD.isCompact, hϖ, hex, hD.red, hnat⟩
@@ -936,6 +937,3 @@ theorem crossVanish : Formalism.FourierDecayAlt.A6.CrossVanish := by
 end Main
 
 end Formalism.FourierDecayAlt.P.HenselRootsBounded
-
-theorem Formalism.FourierDecayAlt.P.crossTermsVanish : Formalism.FourierDecayAlt.A6.CrossVanish :=
-  Formalism.FourierDecayAlt.P.HenselRootsBounded.crossVanish
