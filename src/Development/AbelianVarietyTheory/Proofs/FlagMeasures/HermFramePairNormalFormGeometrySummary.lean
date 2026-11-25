@@ -761,114 +761,27 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} {r : ℕ} (N : _root_.GlobalTheory.DegCnt.NF H r) in
 theorem _root_.GlobalTheory.DegCnt.NFGeom.isCompl [FiniteDimensional K V] :
     IsCompl N.Wt N.Pi := by
-  have hfull := _root_.GlobalTheory.DegCnt.NFGeom.full N
-  unfold _root_.Formalism.HermitianLatticeCounting.S6.NFFull at hfull
-  refine ⟨?_, ?_⟩
-  · rw [disjoint_iff, eq_bot_iff]
-    intro x hx
-    obtain ⟨h1, h2⟩ := Submodule.mem_inf.1 hx
-    exact (Submodule.mem_bot K).2 (_root_.GlobalTheory.DegCnt.NFGeom.Wt_inf_Pi N h1 h2)
-  · have hDl := _root_.GlobalTheory.DegCnt.NFGeom.Dl_ne N
-    have hbII : ∀ b : Fin r, N.j ≤ b.val → ∀ u ∈ N.F'.X,
-        H.B (N.F.e b.castSucc) u = 0 := by
-      intro b hb u hu
-      have hm := _root_.GlobalTheory.DegCnt.NFGeom.e_mem_II N b hb
-      unfold _root_.Formalism.HermitianLatticeCounting.S6.II at hm
-      exact _root_.Formalism.HermitianLatticeCounting.P.X_iso _ (Submodule.mem_inf.1 hm).2 hu
-    have hF8 := hfull.2.2.2.2.2.2.2.1
-    have hL3 : ∀ (w : V), (∀ y ∈ _root_.Formalism.HermitianLatticeCounting.S6.V0 N.F N.F',
-        (H.B y) w = 0) → w ∈ N.Wt ⊔
-          _root_.Formalism.HermitianLatticeCounting.S6.II N.F N.F' := by
-      have hL := _root_.GlobalTheory.DegCnt.NFGeom.isLift N
-      unfold _root_.Formalism.HermitianLatticeCounting.S6.IsLift at hL
-      exact hL.2.2
-    have hPi := _root_.GlobalTheory.DegCnt.NFGeom.Pi_eq N
-    rw [codisjoint_iff, eq_top_iff]
-    intro v _
-    have hc0 : N.c ≠ 0 := left_ne_zero_of_mul_eq_one N.c_norm
-    have hzz : H.B N.F.z N.F.z ≠ 0 := by
-      rw [_root_.Formalism.HermitianLatticeCounting.P.pairing_lastVector_lastVector]
-      exact neg_ne_zero.2 N.F.hT
-    have hz' : N.F'.z = N.c • N.F.z :=
-      N.same (Fin.last r) N.j_le
-    have hjr : N.j ≤ r + 1 := N.j_le.trans (Nat.le_succ r)
-    have hDl' : _root_.Formalism.HermitianLatticeCounting.S6.Dl N.F' N.F N.j hjr
-        ≠ 0 := by
-      rw [_root_.Formalism.HermitianLatticeCounting.P.Dl_swap]
-      exact star_ne_zero.2 hDl
-    set p2 : V := ∑ a ∈ Finset.univ.filter (fun a : Fin r => N.j ≤ a.val),
-      star (H.B (N.F.e a.castSucc) v) • N.ist a with hp2
-    set s : K := star (H.B N.F.z v / H.B N.F.z
-      N.F.z) with hs
-    have hp2I : p2 ∈ N.Ist := by
-      unfold _root_.GlobalTheory.DegCnt.NF.Ist
-      exact Submodule.sum_mem _ fun a ha => Submodule.smul_mem _ _
-        (Submodule.subset_span ⟨a, (Finset.mem_filter.1 ha).2, rfl⟩)
-    have hi : ∀ b : Fin r, N.j ≤ b.val →
-        H.B (N.F.e b.castSucc) (v - p2 - s • N.F.z) = 0 := by
-      intro b hb
+  have hPerp (v : V) : v ∈ N.Pi ↔ ∀ w ∈ N.Wt, H.B w v = 0 :=
+    mem_perp' (H := H) N.Wt v
+  let pairing : V →ₗ⋆[K] Module.Dual K N.Wt := H.B.flip.compl₂ N.Wt.subtype
+  let restricted := pairing.comp N.Wt.subtype
+  have hInjective : Function.Injective restricted :=
+    LinearMap.ker_eq_bot.1 (LinearMap.ker_eq_bot'.2 fun w hw =>
+      Subtype.ext (Wt_inf_Pi N w.property ((hPerp w).2 fun x hx =>
+        DFunLike.congr_fun hw ⟨x, hx⟩)))
+  have hSurjective : Function.Surjective restricted := by
+    apply LinearMap.range_eq_top.mp (Submodule.eq_top_of_finrank_eq ?_)
+    rw [Subspace.dual_finrank_eq]
+    let e : N.Wt ≃ₗ⋆[K] restricted.range := LinearEquiv.ofInjective restricted hInjective
+    exact (congrArg Cardinal.toNat (rank_eq_of_equiv_equiv (star : K → K) e.toAddEquiv
+      star_involutive.bijective e.map_smulₛₗ)).symm
+  refine ⟨disjoint_iff.2 (eq_bot_iff.2 fun v hv =>
+    (Submodule.mem_bot K).2 (Wt_inf_Pi N hv.1 hv.2)), codisjoint_iff.2 (eq_top_iff.2 fun v _ => ?_)⟩
+  obtain ⟨w, hw⟩ := hSurjective (pairing v)
+  refine Submodule.mem_sup.2 ⟨w, w.property, v - w, (hPerp _).2 fun x hx => ?_, by abel⟩
+  have hpair : H.B x (w : V) = H.B x v := DFunLike.congr_fun hw ⟨x, hx⟩
+  rw [map_sub, hpair, sub_self]
 
-      rw [map_sub, map_sub, map_smulₛₗ, _root_.Formalism.HermitianLatticeCounting.P.pairing_isotropicSpan_lastVector _ (_root_.Formalism.HermitianLatticeCounting.P.e_mem_X _ b), smul_zero, sub_zero, hp2, map_sum,
-      Finset.sum_eq_single_of_mem b (Finset.mem_filter.2 ⟨Finset.mem_univ _, hb⟩)]
-      · rw [map_smulₛₗ, N.ist_e _ _ hb, if_pos rfl, starRingEnd_apply,
-          star_star, smul_eq_mul, mul_one, sub_self]
-      · intro a ha hab
-        rw [map_smulₛₗ, N.ist_e _ _ (Finset.mem_filter.1 ha).2,
-          if_neg (fun h => hab h.symm), smul_zero]
-    have hii : H.B N.F.z (v - p2 - s • N.F.z) = 0 := by
-
-      rw [map_sub, map_sub, map_smulₛₗ, hp2, map_sum]
-      have h0 : ∀ a ∈ Finset.univ.filter (fun a : Fin r => N.j ≤ a.val),
-          H.B N.F.z (star (H.B (N.F.e a.castSucc) v) •
-            N.ist a) = 0 := by
-        intro a ha
-        rw [map_smulₛₗ, N.normalForm_dual_orthogonal_last a (Finset.mem_filter.1 ha).2, smul_zero]
-      rw [Finset.sum_eq_zero h0, hs, starRingEnd_apply, star_star, smul_eq_mul,
-        div_mul_cancel₀ _ hzz]
-      simp
-    obtain ⟨p1, hp1, hp1e⟩ := _root_.Formalism.HermitianLatticeCounting.P.Dl_solveL N.F' N.F
-      N.j_le hDl'
-      (fun b => H.B (v - p2 - s • N.F.z)
-        (N.F.e (Fin.castLE hjr b)))
-    have hp1X : p1 ∈ N.F'.X := _root_.Formalism.HermitianLatticeCounting.P.Xa_le_X _ _ hp1
-    have hw : ∀ a : Fin (r + 1),
-        H.B (N.F.e a) (v - p2 - s • N.F.z - p1) = 0 := by
-      intro a
-      rcases Fin.eq_castSucc_or_eq_last a with ⟨b, rfl⟩ | rfl
-      · by_cases hb : b.val < N.j
-        · apply _root_.Formalism.HermitianLatticeCounting.P.B_swap0
-          have h1 := hp1e ⟨b.val, hb⟩
-          have hcast : Fin.castLE hjr (⟨b.val, hb⟩ : Fin N.j) = b.castSucc :=
-            Fin.ext rfl
-          simp only [hcast] at h1
-          rw [LinearMap.map_sub, LinearMap.sub_apply, h1, sub_self]
-        · rw [map_sub, hi b (not_lt.1 hb), hbII b (not_lt.1 hb) p1 hp1X, sub_zero]
-      · have h2 : H.B N.F.z p1 = 0 := by
-          have h3 := _root_.Formalism.HermitianLatticeCounting.P.z_X N.F' hp1X
-          rw [hz', map_smul, LinearMap.smul_apply, smul_eq_mul] at h3
-          exact (mul_eq_zero.1 h3).resolve_left hc0
-        exact (by rw [map_sub, hii, h2, sub_zero] :
-          H.B N.F.z (v - p2 - s • N.F.z - p1) = 0)
-    obtain ⟨x, hxX, hx⟩ := hF8 _ hw
-    have hrest := hL3 _ hx
-    have hP : x + p1 + s • N.F.z + p2 ∈ N.Pi := by
-      rw [hPi]
-      refine Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.add_mem _ (Submodule.add_mem _
-        (_root_.Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_left _ _ hxX) (_root_.Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_right _ _ hp1X)) (Submodule.smul_mem _ _ (_root_.Formalism.HermitianLatticeCounting.P.lastVector_mem_jointSpan_left _ _))))
-        (Submodule.mem_sup_right hp2I)
-    have hrest' : v - p2 - s • N.F.z - p1 - x ∈
-        N.Wt ⊔ N.Pi := by
-      have hle : _root_.Formalism.HermitianLatticeCounting.S6.II N.F N.F' ≤
-          N.Pi := by
-        intro y hy
-        rw [hPi]
-        unfold _root_.Formalism.HermitianLatticeCounting.S6.II at hy
-        exact Submodule.mem_sup_left (_root_.Formalism.HermitianLatticeCounting.P.isotropicSpan_le_jointSpan_left _ _ (Submodule.mem_inf.1 hy).1)
-      exact sup_le_sup_left hle _ hrest
-    have hv : v = (v - p2 - s • N.F.z - p1 - x) +
-        (x + p1 + s • N.F.z + p2) := by abel
-    rw [hv]
-    exact Submodule.add_mem _ hrest' (Submodule.mem_sup_right hP)
 
 open NumberField in
 open scoped Pointwise ENNReal Classical in
