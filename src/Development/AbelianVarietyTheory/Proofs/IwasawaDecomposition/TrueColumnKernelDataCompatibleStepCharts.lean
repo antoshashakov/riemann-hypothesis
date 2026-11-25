@@ -4,31 +4,39 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Lifts
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsTwIffCanonEq
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StdLvPr
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ColNorm
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLawsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartReadsAtClassGLStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CongruentAutomorphismsLiftStepGroupElementsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetInFramesPreimageUnderLiftStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BaseDataEmbeddingConj
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLaws
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartReadsAtClassGL
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CongruentAutomorphismsLiftStepGroupElements
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetInFramesPreimageUnderLift
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetInFramesShapeAtBadPrimeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBadPrimeOverBadPlaceOfChainStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBadPrimeOverBadPlaceOfChain
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFullHermitianColumnsTrueColumns
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMiddleStepLevelInverseLiftsStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRationalFramesNearAdelicAtBadPrimesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStepGroupElementOfChartLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTopStepLevelCongruentBlockSumOneStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteAdeleFieldIdentificationEqBaseChangeRingEqStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelChoicesStandardTrueColumnsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStepGroupElementOfChartLevel
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTopStepLevelCongruentBlockSumOne
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TrueColumnChoicesHeckeCharReferenceEqOne
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtLattice
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteAdeleFieldIdentificationEqBaseChangeRingEq
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetIdStdBot
+public import Formalism.LocalToGlobal.KernelLattices.KerMemPin
+public import Formalism.LocalToGlobal.KernelLattices.KerMtPin
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelChoicesStandardTrueColumns
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelEntriesCompatibleTrueColumns
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LastStepCharacterInverseTypeAtLiftsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LastStepCharacterInverseTypeAtLifts
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOkTwists
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelPrimeFunctionalsEqMovedLevelFunctionalsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalConstantWeilCharacterValuesIsIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalGroupElementEqLevelComponentBadPrimeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodLatticeIdealTrivialAtChainBadPrimesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalAutomorphismCongruentNearFrameReadingStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalAutomorphismsNearSameAdelicCongruentStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RepresentativeLatticeEqCompanionOfAdelicRepStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepGroupCharacterInverseTypeAtLiftsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepNearLiftsComponentMemLocalChartGroupStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FunKilled
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelPrimeFunctionalsEqMovedLevelFunctionals
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalConstantWeilCharacterValuesIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalGroupElementEqLevelComponentBadPrime
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodLatticeIdealTrivialAtChainBadPrimes
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalAutomorphismCongruentNearFrameReading
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalAutomorphismsNearSameAdelicCongruent
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RepresentativeLatticeEqCompanionOfAdelicRep
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepGroupCharacterInverseTypeAtLifts
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepNearLiftsComponentMemLocalChartGroup
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoords
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -91,10 +99,10 @@ theorem locLe_of (hd : ∀ P, dep P ≤ (I.cst a).D P)
     (h : ∀ κ : (I.stp u a i).G c.1, Keeps I κ ((I.stp u a i).rep c) → ∀ P, ∃ g g' z, Rel P g z ∧ LiftsInv I κ P g' ∧ CongE P.1 (dep P) g g') :
     GlobalTheory.TwU.LocLe (sm I l Z) (K (chOf c)).lev fb dep Rel := by
   intro P v hv κ hκ hU
-  obtain ⟨x, hx, hxκ⟩ := GlobalTheory.T.local_group_element_eq_level_component_bad_prime I hOk l Z a (B.T u) i hi bad (K (chOf c)).lev P v hv κ hκ hU
-  obtain ⟨κ', hk, -, hin⟩ := GlobalTheory.T.exists_stepGroupElement_of_chartLevel I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb hfin ⟨x, hx⟩
+  obtain ⟨x, hx, hxκ⟩ := _root_.GlobalTheory.Mem.Col2.AdT.LocSplice.main I hOk l Z a (B.T u) i hi bad (K (chOf c)).lev P v hv κ hκ hU
+  obtain ⟨κ', hk, -, hin⟩ := _root_.GlobalTheory.Mem.Col2.AdT.exists_stepElt_of_level I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb hfin ⟨x, hx⟩
   obtain ⟨g, g', z, hg, hl, hc⟩ := h κ' hk P
-  exact ⟨g, z, hg, hxκ fb dep g (GlobalTheory.T.rational_automorphism_congruent_near_frame_reading I hOk l Z a i fb _ dep P x g' g hl.1 (hd P) (hin P g' hl) hc)⟩
+  exact ⟨g, z, hg, hxκ fb dep g (_root_.GlobalTheory.Mem.Col2.AdT.NearCong.main I hOk l Z a i fb _ dep P x g' g hl.1 (hd P) (hin P g' hl) hc)⟩
 
 
 include hOk hP hR hfb hfin in
@@ -104,10 +112,10 @@ theorem chiIs_of (hd : ∀ P, 1 ≤ dep P ∧ dep P ≤ (I.cst a).D P)
       (((I.stp u a i).chr c.1 κ : B.fields.Kˣ) : B.fields.K) * ∏ P, z P = 1) :
     GlobalTheory.TwU.ChiIs (sm I l Z) (K (chOf c)).lev fb dep Rel := by
   intro κ g z hg
-  obtain ⟨κ', -, hχ, hin⟩ := GlobalTheory.T.exists_stepGroupElement_of_chartLevel I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb hfin κ
+  obtain ⟨κ', -, hχ, hin⟩ := _root_.GlobalTheory.Mem.Col2.AdT.exists_stepElt_of_level I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb hfin κ
   choose g' hg' using hex κ'
   have e := h κ' g g' z fun P => ⟨(hg P).1, hg' P,
-    GlobalTheory.T.rational_automorphisms_near_same_adelic_congruent I hOk l Z a i fb _ dep P κ.1 (g' P) (g P) (hg' P).1 (hd P).1 (hd P).2 (hin P _ (hg' P)) (hg P).2⟩
+    _root_.GlobalTheory.Mem.Col2.AdT.AdTieNear.main I hOk l Z a i fb _ dep P κ.1 (g' P) (g P) (hg' P).1 (hd P).1 (hd P).2 (hin P _ (hg' P)) (hg P).2⟩
   rw [hχ]
   exact (map_mul B.embLL _ _).symm.trans ((congrArg B.embLL e).trans (map_one _))
 
@@ -122,25 +130,25 @@ theorem lev_mid (hm : i < B.R.m) (y0 : SBof I a → Sp B.fields.E (B.R.N i))
     chiIs_of hOk hP hR c hfb hfin (fun P => ⟨(hOk.idx_ok a).cst_ok.D_pos P, le_rfl⟩) (fun κ P => ?_) fun κ g g' z h => ?_⟩
   · obtain ⟨g, z, hg, hl⟩ := GlobalTheory.T.exists_middleStep_level_inverse_lifts I hOk u a i hm c.1 κ P
     refine ⟨g, g, z, (hRel P g z).2 ⟨hg, fun h1 => ?_⟩, hl, congE_refl _ _ _⟩
-    have h2 := (GlobalTheory.T.couplingCosetInFrames_preimage_under_lift I hOk u a i c.1 κ _ P g hκ.1 hl (y0 P)).1 (by rw [hκ.2]; exact hy0 h1 P)
+    have h2 := (_root_.GlobalTheory.Mem.Col2.AdT.cosetIn_act_of_liftsInv I hOk u a i c.1 κ _ P g hκ.1 hl (y0 P)).1 (by rw [hκ.2]; exact hy0 h1 P)
     exact ((((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a i _ P).2 h1).2.2 _ (hy0 h1 P)).1 _).1 h2
   · rintro P v hv κ hκ ⟨g, z, hg, hin⟩
     obtain ⟨hg1, hg2⟩ := (hRel P g z).1 hg
-    obtain ⟨hint, hc⟩ := GlobalTheory.T.congruent_automorphisms_lift_step_group_elements I hOk u a i hm c.1 P g z hg1
-    refine GlobalTheory.T.stepNearLifts_component_mem_localChartGroup I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb P v hv κ hκ g hint hin fun g' hg' hgg => ?_
+    obtain ⟨hint, hc⟩ := _root_.GlobalTheory.Mem.Col2.AdT.midAt_lifts I hOk u a i hm c.1 P g z hg1
+    refine _root_.GlobalTheory.Mem.Col2.AdT.LevGe.mem_uloc I hOk hP l Z u a i hi bad Ch chOf K k hR c fb hfb P v hv κ hκ g hint hin fun g' hg' hgg => ?_
     obtain ⟨κ', e1, e2, e3⟩ := hc g' hg' hgg
     refine ⟨κ', ⟨e1, funext fun P' => Set.ext fun z' => ?_⟩, e2, e3⟩
     by_cases hPP : P' = P
     · subst hPP
-      rw [GlobalTheory.T.couplingCosetInFrames_preimage_under_lift I hOk u a i c.1 κ' _ P' g' e1 e2 z']
+      rw [_root_.GlobalTheory.Mem.Col2.AdT.cosetIn_act_of_liftsInv I hOk u a i c.1 κ' _ P' g' e1 e2 z']
       by_cases h1 : i + 1 = B.R.m
       · exact (((GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a i _ P').2 h1).2.2 _ (hy0 h1 P')).2 g g' hg' hgg (hg2 h1) z'
       · rw [(GlobalTheory.T.couplingCosetInFrames_shape_at_bad_prime I hOk u a i _ P').1 h1]
         exact Iff.rfl
-    · exact GlobalTheory.T.couplingCosetInFrames_preimage_under_lift I hOk u a i c.1 κ' _ P' 1 e1 (e3 P' hPP) z'
+    · exact _root_.GlobalTheory.Mem.Col2.AdT.cosetIn_act_of_liftsInv I hOk u a i c.1 κ' _ P' 1 e1 (e3 P' hPP) z'
   · obtain ⟨g, z, -, hl⟩ := GlobalTheory.T.exists_middleStep_level_inverse_lifts I hOk u a i hm c.1 κ P
     exact ⟨g, hl⟩
-  · exact GlobalTheory.T.step_group_character_inverse_type_at_lifts I hOk u a i hm c.1 κ g g' z fun P => ⟨((hRel P _ _).1 (h P).1).1, (h P).2⟩
+  · exact _root_.GlobalTheory.Mem.Col2.AdT.chr_mul_prod_midAt I hOk u a i hm c.1 κ g g' z fun P => ⟨((hRel P _ _).1 (h P).1).1, (h P).2⟩
 
 
 include hOk hP hR hfb hfin in
@@ -153,9 +161,9 @@ theorem lev_top (hm : i = B.R.m) :
     split_ifs with h
     · exact ⟨le_rfl, (hOk.idx_ok a).cst_ok.D_pos P⟩
     · exact ⟨by omega, (hOk.idx_ok a).depthQ P h⟩
-  refine ⟨locLe_of hOk hP hR c hfb hfin (fun P => (hd P).2) fun κ _ P => GlobalTheory.T.exists_topStep_level_congruent_blockSum_one I hOk u a i hm c.1 κ P,
-    chiIs_of hOk hP hR c hfb hfin hd (fun κ P => ?_) fun κ g g' z h => GlobalTheory.T.last_step_character_inverse_type_at_lifts I hOk u a i hm c.1 κ g g' z h⟩
-  obtain ⟨g, g', z, -, hl, -⟩ := GlobalTheory.T.exists_topStep_level_congruent_blockSum_one I hOk u a i hm c.1 κ P
+  refine ⟨locLe_of hOk hP hR c hfb hfin (fun P => (hd P).2) fun κ _ P => _root_.GlobalTheory.Mem.Col2.AdT.exists_topLev_liftsInv I hOk u a i hm c.1 κ P,
+    chiIs_of hOk hP hR c hfb hfin hd (fun κ P => ?_) fun κ g g' z h => _root_.GlobalTheory.Mem.Col2.AdT.chr_mul_prod_topVal I hOk u a i hm c.1 κ g g' z h⟩
+  obtain ⟨g, g', z, -, hl, -⟩ := _root_.GlobalTheory.Mem.Col2.AdT.exists_topLev_liftsInv I hOk u a i hm c.1 κ P
   exact ⟨g', hl⟩
 
 end Lev
@@ -164,7 +172,7 @@ end Lev
 
 theorem adTie_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex) (u : B.Word) (a : I.ι) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : ∀ i, i ≤ B.R.m → Type) (chOf : ∀ i hi, (I.stp u a i).Cl → Ch i hi) (eY : ∀ i (hi : i ≤ B.R.m), (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi) (Kc : ∀ i hi (β : Ch i hi), LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf i hi c = β} => (I.chain l u a).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1))) (dt : Formalism.L2.Herm.unitaryOneFiniteAdeles (I.rec7 l Z).sp.cm →* (I.rec7 l Z).Dt), I.IsTw → I.StdKer l Z t → GlobalTheory.Pdv.StdRd I l Z t → (∀ (u : B.Word) (a : I.ι) (i : ℕ) (c : ((I.rec7 l Z).chTw u a).cls i), (t.rd u a).pin i c ↔ (i + 1 ≤ B.R.m ∨ ∃ d, OverRow (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u d ((I.stp u a i).rep c).1.1)) → ex.errX.piT = X.piT → I.StdDt l Z dt → (∀ v ∈ bad, v ∈ badG (I.rec7 l Z) ∨ I.UnderQ a v) → (∀ i hi, I.ReadsK l Z u a i hi (chOf i hi) (Kc i hi) ∧ I.IdY l Z u a i hi (eY i hi)) → (∀ i hi β, FunKilled (Kc i hi β).lev (X.piT u)) → (∀ i hi β, ∃ n : ℕ, 0 < n ∧ ∀ κ : (Kc i hi β).lev.U, (∀ v ∈ badG (I.rec7 l Z), bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (Kc i hi β).lev.chi κ ^ n = 1) → (a ≠ I.mu0 → ∀ i hi c (y : Formalism.L2.Herm.unitaryOneFiniteAdeles (I.rec7 l Z).sp.cm), Matrix.GeneralLinearGroup.det y.1 = Matrix.GeneralLinearGroup.det ((Kc i hi (chOf i hi c)).y ⟨c, rfl⟩).1 → detPt B.host I.SQ ((I.stp u a i).rep c).1.1 = dt y) → ∃ A : GlobalTheory.TwU.AdData t u a (fun i hi => ⟨B.T u, bad, eY i hi, Ch i hi, chOf i hi, fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c), Kc i hi⟩), GlobalTheory.TwU.AdPins A dt ∧ GlobalTheory.TwU.AdTie A dt (B.fields.conjO (X.piT u)) := by
   intro B X I hOk hP l Z L hT Gi Gl K Y cX ex t u a bad Ch chOf eY Kc dt hTw hSK hRd hPin hX hDt hbad hRK hFun hFin hDet
-  have hch : t.ChTie := (GlobalTheory.T.kernelChoices_standard_trueColumns I hOk hP l Z L hT Gi Gl K Y cX ex t ⟨hSK.X_eq, hSK.seam, hSK.Pr, hSK.Ch, hSK.sel, hSK.S, hSK.word, hSK.tup,
+  have hch : t.ChTie := (_root_.GlobalTheory.Mem.Col2.TC.k_pins_tie I hOk hP l Z L hT Gi Gl K Y cX ex t ⟨hSK.X_eq, hSK.seam, hSK.Pr, hSK.Ch, hSK.sel, hSK.S, hSK.word, hSK.tup,
     hSK.cst, hSK.idx, hSK.m2, hSK.glob, hSK.amb, hSK.δ, hSK.O⟩ hX).1
   rcases t with ⟨cc, cc_rec, cc_ok, δ, δ_ok, Bb, χ, χ_ok, idl, idl_ok, χ_rec, cD, Xf, seam, seam_ok, Pr, pr_ok, g_rec, Ch', sel, S, word, T_rec, tup, Q_rec, cst, idx, m2, glob, glob_σ, glob_xi, idx_ok, O, rd, rd_chain, O_dgen, O_S, O_lat, O_Th, unf, ent, ent_lam, kf, kf_un, served⟩
   obtain ⟨hXf, hseam, hPr, hCh, hsel, hSS, hword, htup, hcst, hidx, hm2, hglob, hamb, hδ, hO⟩ := hSK
@@ -205,7 +213,7 @@ theorem adTie_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC
             ib := fun i hi β => Idx.get (sc i hi.le β).1 hi
             fb := fb
             y0 := y0 }, ?_, ?_⟩
-  · refine ⟨(GlobalTheory.T.base_fields_definite_laws B).1, hOk.sel_ok, ⟨hOk.g_mem, hOk.T_mem u⟩, hch, hOk.ch_tied.mu0, GlobalTheory.T.localConstantWeilCharacter_values_isIntegral I hOk hTw a, fun _ => rfl, fun _ => Iff.rfl,
+  · refine ⟨(_root_.GlobalTheory.Mem.FieldsLaws.fields_satisfy_definite_laws B).1, hOk.sel_ok, ⟨hOk.g_mem, hOk.T_mem u⟩, hch, hOk.ch_tied.mu0, _root_.GlobalTheory.Mem.Col2.AdT.psi_isIntegral I hOk hTw a, fun _ => rfl, fun _ => Iff.rfl,
       ⟨fun y => ?_, fun k z hz => ?_⟩, fun x y hxy => ?_, fun ι hι j b x hb hx => ?_, fun h => ?_,
       fun μ _ _ => ⟨tildeQ B.host I.SQ (I.xi μ), fun x => ?_, fun u => ?_⟩, fun i hi => ?_, fun i hi y τ => ?_⟩
     · obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective (show DtQ B.host I.SQ from y)
@@ -225,7 +233,7 @@ theorem adTie_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC
       exact hxy.symm
     · show muTilQ B.host I.SQ I.C.mu0 (j.1 + 1) (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) x)) = _
       have e : (QuotientGroup.mk (finIdele (afIso B.host.F B.host.E) x) : DtQ B.host I.SQ) = QuotientGroup.mk b :=
-        mk_eq_of_snd_eq B.host I.SQ ((GlobalTheory.T.finiteAdeleFieldIdentification_eq_baseChangeRingEquiv _ _ ι hι x).symm.trans hx)
+        mk_eq_of_snd_eq B.host I.SQ ((_root_.GlobalTheory.isAdIso_eq_afIso _ _ ι hι x).symm.trans hx)
       rw [e, muTilQ_succ B.host I.SQ I.C.mu0 j, tildeQ_mk B.host I.SQ (reference_characters_factor_tame I.SQ I.C j), finPartI_eq_self hb]
       rfl
     · obtain rfl : a = I.mu0 := h
@@ -253,7 +261,7 @@ theorem adTie_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC
       rw [map_one, one_mul]
     refine ⟨⟨fun i _ c => hN i c, fun c => PtAt.mem_ybSet _ hm3, fun i hi c c' x => ?_, fun c c' x => ?_, ⟨fun c => hN _ c, fun c c' x => ?_⟩,
       fun i hi c => (hPin u a i c).2 (Or.inl (by have : i ≤ B.R.m - 2 + 1 := hi; omega)), fun c' => (hPin u a _ c').trans (or_iff_right (by show ¬ B.R.m - 2 + 1 + 1 + 1 ≤ B.R.m; omega))⟩,
-      fun _ _ => rfl, fun _ _ v hv => GlobalTheory.T.exists_badPrime_over_bad_place_of_chain I hOk l Z a v (hbad v hv), fun i hi c => ?_, fun i hi c P => ?_, fun i hi β P v h hv => ?_,
+      fun _ _ => rfl, fun _ _ v hv => _root_.GlobalTheory.Mem.Col2.AdT.exists_SBof_over I hOk l Z a v (hbad v hv), fun i hi c => ?_, fun i hi c P => ?_, fun i hi β P v h hv => ?_,
       fun c y hy P => ?_, fun i hi hi2 β => ?_, fun β => ?_, fun β => ?_, fun i hi c y hy => ?_, ?_⟩
     · have hi' : i < B.R.m - 2 := hi
       refine (hXi i (by omega) c c' x).trans ?_
@@ -265,11 +273,11 @@ theorem adTie_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC
     · refine (hXi (B.R.m - 2 + 1) (by omega) c c' x).trans ?_
       rw [xiAt_last I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega : B.R.m - 2 + 1 + 1 = B.R.m), xiOver_eq_topG]
       rfl
-    · exact (seamOf_lat _ _ _ _ _ _ _ _).trans ((hN i c).trans (GlobalTheory.T.representativeLattice_eq_companion_of_adelicRep I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) c))
-    · have h := GlobalTheory.T.chart_reads_at_class_GL I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) c _ (hfb i hi _) P
+    · exact (seamOf_lat _ _ _ _ _ _ _ _).trans ((hN i c).trans (_root_.GlobalTheory.Mem.Col2.AdT.lat_rep_eq_latCo I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) c))
+    · have h := _root_.GlobalTheory.Mem.Col2.AdT.FrameMove.frame_near I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) c _ (hfb i hi _) P
       rw [← hmov ((Kc i hi (chOf i hi c)).y ⟨c, rfl⟩).1] at h
       exact h
-    · obtain ⟨ι, hι⟩ := GlobalTheory.T.levelPrimeFunctionals_eq_moved_level_functionals I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) β (hFun i hi β) P v h hv
+    · obtain ⟨ι, hι⟩ := _root_.GlobalTheory.Mem.Col2.TC.funMoved_charts I hOk hP l Z u a i hi bad _ _ _ _ (hk i hi) β (hFun i hi β) P v h hv
       refine ⟨ι, fun c hc => ?_⟩
       have h := hι c hc
       rw [← hmov ((Kc i hi (chOf i hi c)).y ⟨c, rfl⟩).1] at h
@@ -296,7 +304,7 @@ theorem adTie_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC
         exact (FullDt.detPt_of_reads I hOk u i (hk i hi) c y hy).trans (hdt y).symm
       · exact hDet ha i hi c y hy
     · have e := eq_of_heq hamb
-      have h := GlobalTheory.T.periodLatticeIdeal_trivial_at_chain_bad_primes I hOk u a χ
+      have h := _root_.GlobalTheory.Mem.Col2.AdT.aaUnit_sall I hOk u a χ
       rw [← e] at h
       exact h
 
