@@ -5,7 +5,10 @@ public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLif
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AlgebraicModularFormsStrongMultiplicityOneStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNonsplitPlaceWithInertDatumStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSplitPlaceOfSplitPlaceRealSubfieldHostStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitarySatakeEqOfSameUnramifiedBaseChangeStatement
+public import Formalism.SatakeDualWeyl.StatementF
+public import Formalism.SharpRestriction.LevelLetterCocycles.DataN
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitarySatakeEqOfSameUnramifiedBaseChange
 public import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.SphRead
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MAvGood
 import Mathlib.Algebra.Order.Floor.Extended
@@ -77,7 +80,7 @@ theorem repOfLocal_h_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D 
     refine ⟨w, Dv, α₁, hO, hα₁, ?_⟩
     obtain ⟨f, hf, hf0, U, hU, hUv, hh⟩ := hα₂
     refine ⟨f, hf, hf0, U, hU, hUv, fun h hh' => ?_⟩
-    rw [GlobalTheory.T.unitarySatake_eq_of_same_unramifiedBaseChange _ Dv.ϖ Dv.σw _ D.R.nV Dv.unram α₁ α₂ hu h hh']
+    rw [_root_.GlobalTheory.SatBcZero.satU_eq_of_ubc_eq _ Dv.ϖ Dv.σw _ D.R.nV Dv.unram α₁ α₂ hu h hh']
     exact hh h hh'
 end UpperTheory.One.M
 end

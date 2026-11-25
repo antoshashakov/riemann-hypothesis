@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.FamilyConstants
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.KeepsPairs
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CarriesLatticeCompletionIffForallPlaceStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CarriesLatticeCompletionIffForallPlace
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBesselCoreMatrixEqBlockDiagonalOneStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceUnitaryStabilizesSelfDualLatticeIffStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TrueGeometryFinalRelation
@@ -73,7 +74,7 @@ theorem GlobalTheory.OffTrace.embA_moves_off_level_iff_alt : ∀ {B : GlobalTheo
   have hm : 0 < (I.rec7 l Z).R.m := by omega
   have hN : Submodule.IsLattice (I.rec7 l Z).host.E (a.v.N 0) := (ha.vis.sd 0 hm).1
   have hL : Submodule.IsLattice (I.rec7 l Z).host.E (a.g.x 0).L := (ha.x 0 (Nat.zero_le _)).sd.1
-  rw [GlobalTheory.T.carriesLatticeCompletion_iff_forall_place _ _ _ hN, GlobalTheory.T.carriesLatticeCompletion_iff_forall_place _ _ _ hL]
+  rw [_root_.GlobalTheory.FinPlMovesLoc.moves_iff _ _ _ hN, _root_.GlobalTheory.FinPlMovesLoc.moves_iff _ _ _ hL]
   have hA : ∀ v, Moves ((commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g).V 0)
       (((commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g).B 0 _ h0).d.emb0 (((commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g).B 0 _ h0).o.emb (κ, 1))) (a.v.N 0) (a.v.N 0) (· = v) ↔
       Moves ((commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g).B 0 _ h0).V₀ (((commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g).B 0 _ h0).o.emb (κ, 1)) (a.o.M 0 _ h0)

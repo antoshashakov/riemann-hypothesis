@@ -4,7 +4,10 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
 public import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.NormSmall
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ToricSymbols
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedThetaValueValuationLeDivSqStatement
+public import Formalism.QuotientMetricDivisors.Statement
+public import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedThetaValueValuationLeDivSq
+public import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ReadTwistedStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ToricRatioFieldDataCm
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ValuesAsToricSumsStatement
@@ -65,7 +68,7 @@ theorem val_bound_twisted_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D
   obtain ⟨lam, a, u, ha, he⟩ := _root_.GlobalTheory.T.toric_ratio_field_data_cm_alt p CF d hp hfit hG hF w hw i j s hs1 hs2 T₀ ψc T hv h0 h0ne hψ hT' z
     (by rw [← hd, hz, hΛs]) (_root_.GlobalTheory.T.toric_ratio_field_data_abelian_alt p CF d hp hfit hG hF w hw i j s hs1 hs2 T₀ ψc T hv h0 h0ne hψ hT')
   obtain ⟨N0, hN⟩ := hfit.1.powers
-  exact GlobalTheory.T.twistedThetaValue_valuation_le_div_sq ex.nch w N0 lam a u z (hN w hw a ha) he
+  exact _root_.GlobalTheory.TwistValBound.vw_le_of_bound ex.nch w N0 lam a u z (hN w hw a ha) he
 end GlobalTheory.ThmAUpper
 end
 end

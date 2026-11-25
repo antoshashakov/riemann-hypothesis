@@ -16,7 +16,7 @@ public import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalUnitCharacterNontrivial
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsReadsAtOfCover
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRingClassGroupDescentOfCoeffFieldTwistStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRingClassGroupDescentOfCoeffFieldTwist
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StatementCOfCasselmanWallach
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TupTiedOfMuIs
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistConductorsAvoidExcludedPrimesStatement
@@ -112,7 +112,7 @@ theorem exists_level_comparison_choice_alt (hP : _root_.GlobalTheory.HeightCount
   have c4 : ∀ v, ψ₀ (D.what₂.places.conj v) = ψ₀ v := fun v => by simp only [ψ₀, c1, (h7 v).1, (h7 v).2]
   have hd := fun v b (ρ : Reading (s v) (k v) b v) =>
     let ⟨a1, a2, a3⟩ := _root_.GlobalTheory.T.exists_galoisRep_of_twist_of_prime hP D _ (Q v) (χ v) (ψ₀ v) (D.ntw.lPrime (s v)).out (hl v ▸ h1 v) (hψ v).1
-    GlobalTheory.T.exists_ringClassGroup_descent_of_coeffFieldTwist D (s v) (k v) b v ρ (Q v) (ψ₀ v) (h1 v).split (h5 v) (hψ v).1.1 a1 (hψ v).2 a2 a3
+    _root_.GlobalTheory.TwistDescent.exists_pulls_twOK D (s v) (k v) b v ρ (Q v) (ψ₀ v) (h1 v).split (h5 v) (hψ v).1.1 a1 (hψ v).2 a2 a3
   obtain ⟨b, ρ, ψ, hr, hp, hb, hc⟩ := exists_data hG s Q k ψ₀ hs c1 (fun v => hQ _ _ (h7 v).1) (fun v => (h7 v).2) c4
     fun v b ρ => (hd v b ρ).1
   have hok := fun v => (hd v _ (ρ v)).2 _ (hp v)

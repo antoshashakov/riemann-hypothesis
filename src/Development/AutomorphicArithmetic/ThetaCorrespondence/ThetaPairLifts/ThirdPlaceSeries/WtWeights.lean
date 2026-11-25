@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharZ
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmTypeEmbeddingAtSideDistinctNonconjugateStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContragredientIsIrreducibleFiniteDimensionalStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HighestWeightDoubleDualCoefficientSpaceUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAlgWeightFWeightTensorDualRepOfEmbeddingsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncludeLInjective
+public import Formalism.LocalToGlobal.NormalizedHeckeFactors.ExpDefs
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAlgWeightFWeightTensorDualRepOfEmbeddings
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIrreducibleBaseChangeWeightTensorDualRepOfEmbeStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftWeightParamEqInfinitesimalCharacterOfHalfIntStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightTensorDualRepDualHighestWeightAtEmbeddingStatement
@@ -97,7 +99,7 @@ theorem wt_weights_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (
   have hE := GlobalTheory.T.cmTypeEmbeddingAtSide_distinct_nonconjugate D T i b
   have hl : lamD j = lamF ⟨j - 1, by omega⟩ := by
     simp only [lamD, dif_pos (And.intro hj hjm)]
-  refine ⟨GlobalTheory.T.contragredient_isIrreducible_finiteDimensional _ _ _ _ (GlobalTheory.T.weightTensorRepOfEmbeddings_isIrreducible _ _ _ _ _ _ hE), GlobalTheory.T.isAlgWeightF_weightTensorDualRepOfEmbeddings _ _ _ _ _ _,
+  refine ⟨GlobalTheory.T.contragredient_isIrreducible_finiteDimensional _ _ _ _ (GlobalTheory.T.weightTensorRepOfEmbeddings_isIrreducible _ _ _ _ _ _ hE), _root_.GlobalTheory.AlgWtF.wtRepF_alg _ _ _ _ _ _,
     fun k => @GlobalTheory.T.isIrreducible_baseChange_weightTensorDualRepOfEmbeddings _ _ _ _ _ _ _ _ _ _ _ _ hE (FractionRing (T.Ok i k)) _ (algKkT D T i k),
     fun t => ⟨_, hc ▸ GlobalTheory.T.weightTensorDualRep_dual_highestWeight_at_embedding _ _ _ _ _ _ hE t⟩, fun t sh lam hs hw => ?_⟩
   rw [hc] at hw

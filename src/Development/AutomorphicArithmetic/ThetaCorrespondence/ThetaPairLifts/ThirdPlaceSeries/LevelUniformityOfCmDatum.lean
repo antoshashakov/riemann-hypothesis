@@ -23,7 +23,7 @@ public import Formalism.LocalToGlobal.NormalizedHeckeFactors.RingHomOfBaseOrderT
 public import Formalism.SharpRestriction.Divisibility.LiftErrorLocal
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemLevelIffUnipotentAtTypePlace
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalDatumCharactersNeOneAtFixedElementResiduStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceEqOfCmFieldPlaceEqStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceEqOfCmFieldPlaceEq
 public import ReciprocityTheory.Automorphisms.SplitCoeAlgebraMap
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlacesSameRealPlaceNatCastMem
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedTupleFiniteOrderPartUnramifiedAtTypePrimeStatement
@@ -87,7 +87,7 @@ theorem level_uniformity_transfer_alt : _root_.GlobalTheory.HeightCounting.Up.Pu
   let kv0 : Σ k : Fin 2, (Dof x).nd.PlG k := ⟨kk, u⟩
   have hsw : ((cell (D := Dof x) l.b.Bs.exp b hA j).sp (NX.pG (Dof x) kv0)).w = s.w := by
     rw [(cell (D := Dof x) l.b.Bs.exp b hA j).sp_w _ (Or.inr (Or.inr ⟨kv0, rfl⟩)), hs]
-  obtain rfl := GlobalTheory.T.splitPlace_eq_of_cmFieldPlace_eq _ _ _ hsw
+  obtain rfl := _root_.GlobalTheory.SplitByCompl.eq_of_w_eq _ _ _ hsw
   have hg : (((Dof x).host.g kk : ℕ) : 𝓞 (Dof x).host.E) ∈
       ((cell (D := Dof x) l.b.Bs.exp b hA j).sp (NX.pG (Dof x) kv0)).w.asIdeal := by
     rw [hsw, hs]; exact (Dof x).naut.plGw_over kk u

@@ -10,7 +10,10 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Exist
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSplitPlaceOfIsSplitPlaceCmFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FifteenNotMemAndDeltaInertiaOrderDividesFifteenPStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PlacesOverRealSubfieldSplit
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlacesAvoidAuxiliaryStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TwistBaseCoefficientRingResidueFieldFinite
+public import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.TwistedCharacterValue
+public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlacesAvoidAuxiliary
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameValuesGaloisCharFormResidueUnitCharacterStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -96,7 +99,7 @@ theorem levDatum_forms_alt : GlobalTheory.Published.GlobalArtinReciprocity → �
     · exact hsp P (hQs P (qpOf_sub D Pq Q h))
     · exact hsp P (hDs P (qpOf_sub D Pq _ h))
     · exact hsp _ (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D kv.1 kv.2)
-  obtain ⟨hv, hdisj1, hdisj2, hpG⟩ := GlobalTheory.T.split_places_avoid_auxiliary D T i Q Pq sp hPq hQs hQ2 hDs hspw
+  obtain ⟨hv, hdisj1, hdisj2, hpG⟩ := _root_.GlobalTheory.LevelPlaceSep.levelPlaces_sep D T i Q Pq sp hPq hQs hQ2 hDs hspw
   let redG : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk),
       (sp (NX.pG D kv)).v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1) := fun kv =>
     (GlobalTheory.T.exists_residueHom_zmod_at_typePlace D kv (sp (NX.pG D kv)) (hspw _ (Or.inr (Or.inr ⟨kv, rfl⟩)))).some

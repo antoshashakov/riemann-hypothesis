@@ -8,7 +8,10 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Col
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralAdaptedElement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralElementHomotheticGluedCoresStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCentralGlueLocalHomothetiesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsFrameFinitePartMulOfCarriesLatticeStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsFrameFinitePartMulOfCarriesLattice
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LineLatAt
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemChainLevelIffCarriesLatticeOffLevelStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OrthogonalSumCoresHomotheticOffLevelStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualImageAdelicPointWittCore
@@ -146,7 +149,7 @@ theorem exists_center_stab_at_of_transport_correction : ∀ {D : D7} {L : SizeDa
     (latS D) hLm s1 (fun v a ha => embA_mem_grpAt _ _ ha) (fun v => by simpa only [map_mul] using loc v)
   rw [← map_mul] at hmvz
   exact ⟨a, haf, hac, stab_of_frame W.S.X W.Q.instEq u ((_root_.GlobalTheory.Fam.pk_z W).βY 0) _ _ z hz
-    (GlobalTheory.T.isFrame_finitePart_mul_of_carries_lattice D (D.sp.Y 0) _ ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0) (latS D) ((_root_.GlobalTheory.Fam.pk_z W).βY 0) (moves_trans (hmv _) hmvz) hfr)⟩
+    (_root_.GlobalTheory.Core.Mi.FrameMove.isFrame_of_moves D (D.sp.Y 0) _ ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0) (latS D) ((_root_.GlobalTheory.Fam.pk_z W).βY 0) (moves_trans (hmv _) hmvz) hfr)⟩
 end GlobalTheory.LevZero.StabMatch
 end
 end

@@ -9,7 +9,8 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AutRe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivOfMapEq
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteHeckeDoubleCosetCosetsAtSplitPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SphericalVectorFixedLocal
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceFixedVectorSumSphericalImagesStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceFixedVectorSumSphericalImages
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceHeckeOperatorEigenvalueConjSpherical
@@ -84,7 +85,7 @@ theorem heckeSide_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {L : Type} [
       ((normV (conjSplit s).w : ℕ) : ℂ) ^ (k * (k - 1) / 2) * c k = (twEig (conjSplit s).w α).esymm k := by
   obtain ⟨i, T, hic, hcomp, hinj, hmem, heq⟩ := hσ
   have hf' := GlobalTheory.T.autRep_isotypic_splitPlace_localComponent L n π (conjSplit s) σ i T hinj hmem heq f hf
-  obtain ⟨m, Tj, ej, hTj, hej, hsum⟩ := GlobalTheory.T.splitPlace_fixed_vector_sum_spherical_images L n π (conjSplit s) σ i hic hcomp f hf' hfix
+  obtain ⟨m, Tj, ej, hTj, hej, hsum⟩ := _root_.GlobalTheory.SphAvg.exists_sum_fixed L n π (conjSplit s) σ i hic hcomp f hf' hfix
   have hne : ∃ j, ej j ≠ 0 := by
     by_contra h
     push Not at h

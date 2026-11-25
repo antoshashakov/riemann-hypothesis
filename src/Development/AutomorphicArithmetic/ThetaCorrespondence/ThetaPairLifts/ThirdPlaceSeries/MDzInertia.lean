@@ -4,7 +4,9 @@ public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLif
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.SglobDzBigDef
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DepthZeroInertiaOfLanglands
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegerApproxUnitAdicCompletionStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRegularCharacterLabelRootProductStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrincipalCongruenceFixedVectorsLeSmoothVectors
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenRegularCharacters
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRegularCharacterLabelRootProduct
 public import Formalism.ConjugateSelfDual.Statement
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsResidueFieldEmbeddingPlaceOver
@@ -123,7 +125,7 @@ theorem depthZeroInertiaBig_of_narrowBig_m_alt : _root_.DiscreteGroups.sglob.DzT
   obtain ⟨ι, hι⟩ := _root_.GlobalTheory.residue_ringOfIntegers_to_place E' Ω g A w' h' κ
   have hcard : Nat.card (𝓞 E' ⧸ w'.asIdeal) = g ^ n := hN
   haveI : Finite (𝓞 E' ⧸ w'.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)
-  obtain ⟨θ, hreg, ⟨x0, hx0, hθ⟩, hprod⟩ := GlobalTheory.T.exists_regularCharacter_labelRoot_product g L n hn P hP.1 _ hcard ι
+  obtain ⟨θ, hreg, ⟨x0, hx0, hθ⟩, hprod⟩ := _root_.GlobalTheory.RegLabelChar.exists_regularChar g L n hn P hP.1 _ hcard ι
   have hιz : ι (Ideal.Quotient.mk _ x) = L.gen n := by rw [hι]; exact h2
   have hgen0 : L.gen n ≠ 0 := by
     intro e
