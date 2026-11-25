@@ -14,24 +14,31 @@ public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NotAntiIsomet
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeInFamilies
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsFormExtendToAllLattices
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsStabiliserInvariantPullBoundedSection
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EtaleLinearHomFramedPointEigenbasesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsEquivHeckeKernelSchemePointsHeckeKernelsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsEtaleCoverListingHeckeKernelSchemeStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteEtaleAlgebraPullbackAffineStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EtaleLinearHomFramedPointEigenbases
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsEquivHeckeKernelSchemePointsHeckeKernels
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsEtaleCoverListingHeckeKernelScheme
+public import Mathlib.AlgebraicGeometry.Morphisms.Etale
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteEtaleAlgebraPullbackAffine
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFunctionOfSmoothLocalDescentReducedStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeckeIsogenyFamilyPullbackCorrespondenceStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalIsometryOfTraceSimilitudeSqStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsScalarHeckeTraceThetaGeneratorFamilyStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSimilitudeTriangularPeriodsOfHeckePointStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsThetaLineGeneratorZariskiLocallyStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTraceEqFinsumGeometricPointsEtaleStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FramesDifferByIsometryOfTriangularPeriodsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyGeneratorRatioLeTraceTermsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeKernelValueSumWeightTriangularFrameStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeckeIsogenyFamilyPullbackCorrespondence
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalIsometryOfTraceSimilitudeSq
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsScalarHeckeTraceThetaGeneratorFamily
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSimilitudeTriangularPeriodsOfHeckePoint
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsThetaLineGeneratorZariskiLocally
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.RingTheory.Etale.Basic
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsTraceEqFinsumGeometricPointsEtale
+public import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.FibrePushforward
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FramesDifferByIsometryOfTriangularPeriods
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyGeneratorRatioLeTraceTerms
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeKernelValueSumWeightTriangularFrame
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsHkIsogEtaleUnique
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieDividedHomTangentImageBaseChangeStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCuspSectionsOfDominatedRationalIsometriesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SectionValueAtMultipleOfBaseChangedGeneratorStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LieDividedHomTangentImageBaseChange
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCuspSectionsOfDominatedRationalIsometries
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SectionValueAtMultipleOfBaseChangedGenerator
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMap
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteDimensionalOfLeHolSub
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeCommBaseChange
@@ -170,9 +177,9 @@ theorem exists_term_of_family (hA : admitted l P p) (hT : TotalAt Xo c P p i)
       (x₁' : Sp Ω ⟶ Xo.X) (Ψ₁ : Gx y₁.x ⟶ Gx x₁') (C : hkKer (Xo := Xo) P p i Ω y₁), FrMap χ y y₁ →
       IsFib χ.toRingHom Ψ Ψ₁ → C.1 = transKer Xo.univ.t.G Ψ₁ → χ b = term P p i f y₁ C := by
   have hp : p ≠ 0 := hA.2.2.1.ne_zero
-  obtain ⟨u, hu, he, hb⟩ := GlobalTheory.T.etale_linear_hom_framed_point_eigenbases E H Dw l Xo c T y x' Ψ p hp hΨ.1 hΨ.2.1
+  obtain ⟨u, hu, he, hb⟩ := _root_.GlobalTheory.HeckePointLawRing.exists_frame_image E H Dw l Xo c T y x' Ψ p hp hΨ.1 hΨ.2.1
   let z₀ : FrPt Xo c T := ⟨x', hx', u, fun τ j => (hu τ j).2.1, he, hb, s₀, hs₀⟩
-  obtain ⟨a₀, ha₀⟩ := GlobalTheory.T.exists_scalar_heckeTrace_thetaGenerator_family E H Dw l Xo c P p i m T y x' Ψ σ s₀ hA hΨ hσ hs₀ (fun Ω _ _ _ χ y₁ x₁' Ψ₁ _ hF => by
+  obtain ⟨a₀, ha₀⟩ := _root_.GlobalTheory.HeckeScal.exists_scal_of_family E H Dw l Xo c P p i m T y x' Ψ σ s₀ hA hΨ hσ hs₀ (fun Ω _ _ _ χ y₁ x₁' Ψ₁ _ hF => by
     obtain ⟨hC, hI⟩ := hΨ.2.2.2.2 Ω _ _ _ Ψ₁ hF
     obtain ⟨z, hz⟩ := hT Ω y₁ ⟨_, hC⟩
     obtain ⟨rfl, -, h⟩ := hkPt_along hA hC hI hz
@@ -185,10 +192,10 @@ theorem exists_term_of_family (hA : admitted l P p) (hT : TotalAt Xo c P p i)
   generalize hex.choose = z at hz ⊢
   obtain ⟨rfl, h₁, h₂⟩ := hkPt_along hA C.2 (hC ▸ hI) hz
   have : CharZero Ω := charZero_of_injective_algebraMap (algebraMap c.F Ω).injective
-  exact (GlobalTheory.T.section_value_at_multiple_of_baseChanged_generator E H Dw l Xo c a n f hf T Ω χ z₀ z a₀ (by
+  exact (_root_.GlobalTheory.HkValueMul.evR_of_secBC_mul E H Dw l Xo c a n f hf T Ω χ z₀ z a₀ (by
     obtain ⟨_, _, _, h, _⟩ := hF
     exact h.1) (fun τ j => by
-    refine GlobalTheory.T.lie_divided_hom_tangent_image_baseChange E H Dw l Xo T Ω _ _ _ _ _ Ψ Ψ₁ p _ _ _ (Nat.cast_ne_zero.2 hp).isUnit hF (hu τ j) ?_
+    refine _root_.GlobalTheory.HeckeLieBC.lieImg_baseChange E H Dw l Xo T Ω _ _ _ _ _ Ψ Ψ₁ p _ _ _ (Nat.cast_ne_zero.2 hp).isUnit hF (hu τ j) ?_
     rw [← hy.2.1]
     exact h₁ τ j)
     (ha₀ Ω χ y₁ z.x Ψ₁ z.s hy hF z.gen h₂)).symm
@@ -200,12 +207,12 @@ theorem exists_term (hA : admitted l P p) (hT : TotalAt Xo c P p i) (Z : Corr Xo
       (C : hkKer (Xo := Xo) P p i Ω y₁), FrMap χ y y₁ → Z.toKerScheme.Carries (spMap χ.toRingHom ≫ h) y₁.x C.1 →
       χ b = term P p i f y₁ C := by
   choose bc hbc using fun (Ω : Type) [Field Ω] [Algebra c.F Ω] (χ : B →ₐ[c.F] Ω) => bc_exists χ y
-  choose e he using GlobalTheory.T.exists_equiv_heckeKernelScheme_points_heckeKernels E H Dw l Xo P p i Z.toKerScheme hA
+  choose e he using _root_.GlobalTheory.HeckeEx.exists_equiv_carries E H Dw l Xo P p i Z.toKerScheme hA
   have hw : ∀ (Ω : Type) [Field Ω] [Algebra c.F Ω] (χ : B →ₐ[c.F] Ω),
       (spMap χ.toRingHom ≫ h) ≫ Z.π₁ = (bc Ω χ).x := fun Ω _ _ χ => by
     rw [Category.assoc, hh, (hbc Ω χ).1]
   obtain ⟨b, hb⟩ := GlobalTheory.T.exists_function_of_smooth_local_descent_reduced c.F B (fun Ω _ _ _ χ => term P p i f (bc Ω χ) (e Ω _ ⟨_, hw Ω χ⟩)) (fun q => by
-    obtain ⟨T', _, _, m, σ, hT', hs, hσ, hl⟩ := GlobalTheory.T.exists_etale_cover_listing_heckeKernelScheme E H Dw l Xo P p i Z.toKerScheme hA B h
+    obtain ⟨T', _, _, m, σ, hT', hs, hσ, hl⟩ := _root_.GlobalTheory.HeckeEx.exists_etale_cover_lists_kerScheme E H Dw l Xo P p i Z.toKerScheme hA B h
     obtain ⟨q', rfl⟩ := hs q
     letI : Algebra c.F T' := ((algebraMap B T').comp (algebraMap c.F B)).toAlgebra
     haveI : IsScalarTower c.F B T' := IsScalarTower.of_algebraMap_eq fun _ => rfl
@@ -213,7 +220,7 @@ theorem exists_term (hA : admitted l P p) (hT : TotalAt Xo c P p i) (Z : Corr Xo
         (spMap (algebraMap B T) ≫ h ≫ Z.π₂) ≫ Xo.s = sOf c T := fun T _ _ _ _ => by
       rw [Category.assoc, Category.assoc, Z.base₂, reassoc_of% hh, y.x_over, sOf, sOf, ChgBC.spMap_comp_ring,
         ← RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]
-    obtain ⟨g, hg, s₀, hs₀⟩ := GlobalTheory.T.exists_thetaLine_generator_zariski_locally E H Dw l Xo c T' _ (hso T') q'
+    obtain ⟨g, hg, s₀, hs₀⟩ := _root_.GlobalTheory.HeckeEx.exists_secGen_away E H Dw l Xo c T' _ (hso T') q'
     let T := Localization.Away g
     have hsm : Algebra.Smooth B T := by
       have : Algebra.Smooth T' T := Algebra.Smooth.of_isLocalization_Away g
@@ -223,7 +230,7 @@ theorem exists_term (hA : admitted l P p) (hT : TotalAt Xo c P p i) (Z : Corr Xo
       rw [ChgBC.spMap_comp_ring, ← IsScalarTower.algebraMap_eq]
     obtain ⟨yT, hyT⟩ := bc_exists (IsScalarTower.toAlgHom c.F B T) y
     have hx : yT.x = (spMap (algebraMap B T) ≫ h) ≫ Z.π₁ := by rw [Category.assoc, hh]; exact hyT.1
-    obtain ⟨Ψ, hΨ, hc⟩ := GlobalTheory.T.exists_heckeIsogenyFamily_pullback_correspondence E H Dw l Xo P p i Z hA T (spMap (algebraMap B T) ≫ h) yT.x
+    obtain ⟨Ψ, hΨ, hc⟩ := _root_.GlobalTheory.HeckeEx.exists_isHeckeFam_carries E H Dw l Xo P p i Z hA T (spMap (algebraMap B T) ≫ h) yT.x
       (spMap (algebraMap T' T) ≫ spMap (algebraMap B T') ≫ h ≫ Z.π₂) hx (by rw [reassoc_of% e₁, Category.assoc])
     obtain ⟨b', hb'⟩ := exists_term_of_family hA hT hf yT (by rw [reassoc_of% e₁]; exact hso T) hΨ
       (σ := fun j => Over.homMk (spMap (algebraMap T' T) ≫ σ j) (by
@@ -256,15 +263,15 @@ theorem exists_sum (hr : 1 ≤ Dw.p + Dw.q) (hA : admitted l P p) (hT : TotalAt 
     ∃ v : R, ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (φ : R →ₐ[c.F] Ω) (z : FrPt Xo c Ω),
       FrMap φ y z → φ v = ∑ᶠ C, term P p i f z C := by
   obtain ⟨⟨Z, -⟩, -⟩ := heckeInFamilies E H Dw l Xo P p i hr hA
-  obtain ⟨B, _, _, h, hfin, het, hh, -, hu⟩ := GlobalTheory.T.exists_finiteEtale_algebra_pullback_affine _ _ Z.π₁ Z.fin₁ Z.et₁ R y.x
+  obtain ⟨B, _, _, h, hfin, het, hh, -, hu⟩ := _root_.GlobalTheory.HeckeEx.exists_finiteEtale_algebra_pullback _ _ Z.π₁ Z.fin₁ Z.et₁ R y.x
   letI : Algebra c.F B := ((algebraMap R B).comp (algebraMap c.F R)).toAlgebra
   haveI : IsScalarTower c.F R B := IsScalarTower.of_algebraMap_eq fun _ => rfl
   have hred : IsReduced B := GlobalTheory.isReduced_algebra_of_smooth_of_isReduced R B
   obtain ⟨yB, hyB⟩ := bc_exists (IsScalarTower.toAlgHom c.F R B) y
   obtain ⟨b, hb⟩ := exists_term hA hT Z hf yB h (hh.trans hyB.1.symm)
-  obtain ⟨v, hv⟩ := GlobalTheory.T.exists_trace_eq_finsum_geometric_points_etale R B hfin het b
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.EtaleTraceGeom.exists_trace_eq_finsum R B hfin het b
   refine ⟨v, fun Ω _ _ _ φ z hz => ?_⟩
-  obtain ⟨e, he⟩ := GlobalTheory.T.exists_equiv_heckeKernelScheme_points_heckeKernels E H Dw l Xo P p i Z.toKerScheme hA Ω z.x
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.HeckeEx.exists_equiv_carries E H Dw l Xo P p i Z.toKerScheme hA Ω z.x
   let k : {χ : B →+* Ω // χ.comp (algebraMap R B) = φ.toRingHom} → {w : Sp Ω ⟶ Z.Hk // w ≫ Z.π₁ = z.x} := fun χ =>
     ⟨spMap χ.1 ≫ h, by rw [Category.assoc, hh, ← Category.assoc, ChgBC.spMap_comp_ring, χ.2, hz.1]⟩
   have hk : Function.Bijective k := by
@@ -301,7 +308,7 @@ theorem secTransform (hL : GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDet
     · obtain ⟨w, hw⟩ := bc_exists ψ y
       obtain ⟨w', hw'⟩ := bc_exists ψ y'
       rw [map_mul, hg q y Ω ψ w hw, hg q y' Ω ψ w' hw']
-      refine (GlobalTheory.T.heckeKernel_value_sum_weight_triangular_frame E H Dw l Xo c P p i a n hA hT (hL.2.2.1 E H Dw l Xo c P p i hP) f hf Ω _ w w'
+      refine (_root_.GlobalTheory.HeckeWeight.hkVal_frBor E H Dw l Xo c P p i a n hA hT (hL.2.2.1 E H Dw l Xo c P p i hP) f hf Ω _ w w'
         (frBorBC (Xo := Xo) (c := c) _ _ ψ t y y' w w' h hw hw')).trans ?_
       congr 1
       simp [wchar]
@@ -348,8 +355,8 @@ theorem exists_qmatch (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L
     ∃ (a : GL (Fin r) E) (h : QMatch (U.X k) (U.X k') p a), ∃ b ∈ Bor (U.X k').Ψ r,
       x'.1 = rmul (lact a (castFr h.psi x.1)) b ∧ (∀ τ i, ‖b τ i i‖ = 1) ∧ ∀ j, cabs (t (some j) : CAt σ) = 1 := by
   have hp0 : 0 < p := hA.2.2.1.pos
-  obtain ⟨gam, A, htr, hsur, hA0, hAp, hAt⟩ := GlobalTheory.T.exists_similitude_triangular_periods_of_heckePoint E H Dw l Xo c σ r U hσ hU P p i k k' x x' C z t hA hC hm hb
-  obtain ⟨a, ε, hε, hξ, hav, hlat, hiso⟩ := GlobalTheory.T.exists_rational_isometry_of_trace_similitude_sq E r (U.X k) (U.X k') p hp0 (hxi k k') gam htr hsur
+  obtain ⟨gam, A, htr, hsur, hA0, hAp, hAt⟩ := _root_.GlobalTheory.HeckeEx.exists_similitude_tri_of_hkPt E H Dw l Xo c σ r U hσ hU P p i k k' x x' C z t hA hC hm hb
+  obtain ⟨a, ε, hε, hξ, hav, hlat, hiso⟩ := _root_.GlobalTheory.TraceSimilitude.exists_gl_of_trace_similitude E r (U.X k) (U.X k') p hp0 (hxi k k') gam htr hsur
   obtain ⟨hbij, hrt, -, -⟩ := GlobalTheory.Relab.relab_good E H l c σ hσ
   obtain ⟨hrr, hty, -⟩ := hU
   have hΨ : (U.X k).Ψ = (U.X k').Ψ := Finset.ext fun τ => ((hty k).2 τ).trans ((hty k').2 τ).symm
@@ -374,7 +381,7 @@ theorem exists_qmatch (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L
   · have h : QMatch (U.X k) (U.X k') p a :=
       ⟨hΨ, hp, by rw [hξ, _root_.one_mul], fun u v => by rw [hiso, _root_.one_mul],
         fun v hv => hav ⟨v, hv⟩ ▸ (gam ⟨v, hv⟩).2, hlat⟩
-    obtain ⟨b, hb, hxb, hu⟩ := GlobalTheory.T.frames_differ_by_isometry_of_triangular_periods E r _ _ p a h hp0 (fun τ => Dw.mult (e.symm τ)) m1 m2 x.1 x.2 x'.1 x'.2
+    obtain ⟨b, hb, hxb, hu⟩ := _root_.GlobalTheory.PeriodBorelQ.borel_of_periods_q E r _ _ p a h hp0 (fun τ => Dw.mult (e.symm τ)) m1 m2 x.1 x.2 x'.1 x'.2
       (fun τ => A (e.symm τ)) (fun τ => hA0 _) hrel
     obtain ⟨h1, h2⟩ := hu hx hx'
     refine ⟨a, h, b, hb, hxb, h1, fun ⟨τ, i⟩ => ?_⟩
@@ -399,7 +406,7 @@ theorem rdU_mem_SS (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.P
   have hsec := hU.2.2.2.2.1 w n hD g hg k
   obtain ⟨hun1, hun2⟩ := GlobalTheory.FrameNorm.exists_unitFr_frBor E H Dw l Xo c σ r U hσ hU
   obtain ⟨M, hM⟩ := exists_card_heckeKer_le (Xo := Xo) (i := i) hA
-  refine GlobalTheory.T.mem_cuspSections_of_dominated_rational_isometries E r _ U.Comp U.X _ _ _ _ p (‖σ (hkScal c cq P i n)‖ * (M * ((Ideal.absNorm P : ℝ) ^ i) ^ n))
+  refine _root_.GlobalTheory.HeckeEx.mem_SS_of_dom E r _ U.Comp U.X _ _ _ _ p (‖σ (hkScal c cq P i n)‖ * (M * ((Ideal.absNorm P : ℝ) ^ i) ^ n))
     hA.2.2.1.pos (by positivity) hsec hfc (fun j a h => laU_qmatch h w n) fun x hx B hB0 hB => ?_
   obtain ⟨x₀, hx₀, ⟨b₀, hb₀, e₀⟩, -⟩ := hun1 k ⟨x, hx⟩
   letI := fieldCAt σ
@@ -415,7 +422,7 @@ theorem rdU_mem_SS (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.P
     generalize hex.choose = z at hz ⊢
     obtain ⟨k', x', t, hx', hb⟩ := hun2 z
     obtain ⟨a, h, b, hbB, hxb, hb1, ht⟩ := exists_qmatch hσ hU hr hxi hA C.2 hz hb hx₀ hx'
-    have ht0 := GlobalTheory.T.heckeIsogeny_generatorRatio_le_traceTerms E H Dw l Xo c σ r U hσ hU P p i k k' x₀ x' C.1 z t hA C.2 hz hb hx₀ hx'
+    have ht0 := _root_.GlobalTheory.HeckeEx.cabs_gen_le_of_hkPt E H Dw l Xo c σ r U hσ hU P p i k k' x₀ x' C.1 z t hA C.2 hz hb hx₀ hx'
     have hQ := (hfc k').1.1
     have v2 : Formalism.L2.PjFree.rdU U f k' x'.1 = Formalism.L2.PjFree.toC (evR Xo c f (U.un k' x')) := dif_pos x'.2
     have v3 := (GlobalTheory.Frames.algebraic_laws GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c).2.2.2.2.2.2 (CAt σ)
