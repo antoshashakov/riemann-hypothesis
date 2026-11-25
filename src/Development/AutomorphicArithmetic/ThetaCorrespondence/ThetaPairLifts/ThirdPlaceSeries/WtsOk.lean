@@ -4,13 +4,13 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AtPtsImp
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExportSt
 public import Formalism.PieriBlockIdeals.LatticeInclusionRealSettingAlt
 public import Formalism.SharpRestriction.Divisibility.JumpSets
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoBlockConstantCentredStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoEntriesLeFloorHeightStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoEntryValuesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoLowsDistanceBoundsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoNonThickPlaceCentreWidthStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoThickPlaceCentreWindowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoWindowContainsCloudStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoBlockConstantCentred
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoEntriesLeFloorHeight
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoEntryValues
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoLowsDistanceBounds
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoNonThickPlaceCentreWidth
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoThickPlaceCentreWindow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LiftWeightRhoWindowContainsCloud
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtPtsImp
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtPtsStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ParOfFurtherStatement
@@ -68,12 +68,12 @@ theorem wts_ok_alt : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ j 
   refine _root_.GlobalTheory.ExpTie.atPts_mono (_root_.GlobalTheory.ExpTie.atPts_and_alt _root_.GlobalTheory.T.isLamPrime_at_all_points _root_.GlobalTheory.T.parameter_large_at_all_points) ?_
   intro eps Fm x hx i p hp j
   obtain ⟨hF, hLg⟩ := hp
-  have hv : ∀ τ, ValsAt (Fm.L x i) j τ := fun τ => GlobalTheory.T.liftWeightRho_entryValues (Fm.L x i) j τ (hF j τ)
-  refine ⟨wts (Fm.L x i) j, ⟨anti _ j, what₂ _ j, fun τ => (GlobalTheory.T.liftWeightRho_block_constant_centred (Fm.L x i) j τ (hv τ)).1, fun τ => (GlobalTheory.T.liftWeightRho_block_constant_centred (Fm.L x i) j τ (hv τ)).2,
-    fun τ => (GlobalTheory.T.liftWeightRho_window_contains_cloud (Fm.L x i) j τ (hv τ)).1, fun τ => (GlobalTheory.T.liftWeightRho_window_contains_cloud (Fm.L x i) j τ (hv τ)).2,
-    fun τ => GlobalTheory.T.liftWeightRho_lows_distance_bounds (Fm.L x i) (Fm.params x hx i) j τ (hv τ), fun τ h => GlobalTheory.T.liftWeightRho_thickPlace_centre_window (Fm.L x i) j τ (hv τ) h,
-    fun τ h => GlobalTheory.T.liftWeightRho_nonThickPlace_centre_width (Fm.L x i) (Fm.params x hx i) j τ (hv τ) h⟩, fun τ => ⟨-(lamL j τ).detShift, fun a => ?_⟩,
-    fun τ a ha => ⟨U_nonneg _ j τ a ha, GlobalTheory.T.liftWeightRho_entries_le_floor_height (Fm.L x i) (Fm.params x hx i) j τ (hLg j) (hv τ) a ha⟩, T2_card _ j, rfl⟩
+  have hv : ∀ τ, ValsAt (Fm.L x i) j τ := fun τ => _root_.GlobalTheory.ExpTie.Lift.valsAt_of_isLamPrime (Fm.L x i) j τ (hF j τ)
+  refine ⟨wts (Fm.L x i) j, ⟨anti _ j, what₂ _ j, fun τ => (_root_.GlobalTheory.ExpTie.Lift.block_centre (Fm.L x i) j τ (hv τ)).1, fun τ => (_root_.GlobalTheory.ExpTie.Lift.block_centre (Fm.L x i) j τ (hv τ)).2,
+    fun τ => (_root_.GlobalTheory.ExpTie.Lift.window_cloud (Fm.L x i) j τ (hv τ)).1, fun τ => (_root_.GlobalTheory.ExpTie.Lift.window_cloud (Fm.L x i) j τ (hv τ)).2,
+    fun τ => _root_.GlobalTheory.ExpTie.Lift.low_dist (Fm.L x i) (Fm.params x hx i) j τ (hv τ), fun τ h => _root_.GlobalTheory.ExpTie.Lift.thick_of_mem (Fm.L x i) j τ (hv τ) h,
+    fun τ h => _root_.GlobalTheory.ExpTie.Lift.other_of_not_thick (Fm.L x i) (Fm.params x hx i) j τ (hv τ) h⟩, fun τ => ⟨-(lamL j τ).detShift, fun a => ?_⟩,
+    fun τ a ha => ⟨U_nonneg _ j τ a ha, _root_.GlobalTheory.ExpTie.Lift.wts_U_le_h0_of_large (Fm.L x i) (Fm.params x hx i) j τ (hLg j) (hv τ) a ha⟩, T2_card _ j, rfl⟩
   have := lamT_of_lt j τ a a.2
   show (lamT j τ a : ℤ) = _
   rw [this]
