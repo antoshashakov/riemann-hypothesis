@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsContOnOfLocal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryPartnerDiagStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNhdsTransportedActionFiniteOpenSubgroupsStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNhdsTransportedActionFiniteOpenSubgroups
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenSubgroupsSchroedingerFixStandardCharStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactFiniteAdeleAnnihilatorStdCharStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodicAdelicSchwartzFiniteCosetDecompositionStatement
@@ -96,7 +97,7 @@ theorem exists_local_finite_parts : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ
   intro D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hJA hJB κ _ co hco ω hω om hom Φ hΦ p0
   obtain ⟨pres, impl⟩ := GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hJA hJB κ co hco ω hω om hom
   obtain ⟨L₁, L₂, hL₁, hL₂, hinv⟩ := GlobalTheory.T.exists_openSubgroups_schroedinger_fix_standardChar D ψ hψ κ Φ hΦ
-  obtain ⟨N, hN, L₁', L₂', hL₁', hL₁c, hL₂', hNL⟩ := GlobalTheory.T.exists_nhds_transportedAction_finite_openSubgroups D T.rank S.rank JA JB ξ κ co L₁ L₂ hL₁ hL₂ p0
+  obtain ⟨N, hN, L₁', L₂', hL₁', hL₁c, hL₂', hNL⟩ := _root_.GlobalTheory.WeilTransNbhdD.exists_nhds_finite_preimage_D D T.rank S.rank JA JB ξ κ co L₁ L₂ hL₁ hL₂ p0
   have hK := GlobalTheory.T.isCompact_finiteAdeleAnnihilator_stdChar D ψ hψ κ L₂' hL₂'
   have hA := GlobalTheory.T.periodic_adelicSchwartz_finite_coset_decomposition D.host.F κ L₁' hL₁' hL₁c _ hK
   obtain ⟨m, g, y, hg, hgy, hrep⟩ := hA

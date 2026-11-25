@@ -3,7 +3,10 @@ module
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValRingLocRing
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInertTop
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsNatCastSmulCoeffIsIntegral
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockSubstitutionHomogeneousCoeffMemAfterScalingStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TranslateMemCoefLatFn
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockSubstitutionHomogeneousCoeffMemAfterScaling
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockSubstitutionPreservesHarmonicLetterPolynomiaStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RealComponentEqConjInverseRationalMatrixStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RealPointActsOnThetaFockVacuaByDetPowerStatement
@@ -119,7 +122,7 @@ theorem real_act_harm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
       obtain ⟨mo, rfl⟩ := Finsupp.mapDomain_surjective lt.surjective mo
       rw [MvPolynomial.coeff_rename_mapDomain _ lt.injective]
       exact hQO mo
-    have h1 := GlobalTheory.T.fockSubstitution_homogeneous_coeff_mem_after_scaling D W.rank V.rank (fun _ => Dw.p) u O ((l : ℂ) ^ c) hden' d _ hhom hcO mo'
+    have h1 := _root_.GlobalTheory.FockCoefInt.fockSubst_coeff_mem D W.rank V.rank (fun _ => Dw.p) u O ((l : ℂ) ^ c) hden' d _ hhom hcO mo'
     have h2 : (l : ℂ) ^ (∑ τ, c * (V.rank * (k τ).natAbs)) *
         ∏ τ, (Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a)).det ^ k τ ∈ O := by
       rw [← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]

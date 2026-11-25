@@ -15,7 +15,11 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeFormAni
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelOfIsBlockLevel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalIndexLocalNormNormalizingFactorEqPartialStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexBlockLevel
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareNuUnramifiedOffPairPartialLPrimitiveStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyEqOfIsPreconnected
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBottomTriIs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareNuUnramifiedOffPairPartialLPrimitive
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowBlockIndicatorFromLtIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatticeSelfDualAndIntegralIffStabilizesStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.RallisInnerProductBottomNormEq
 import Mathlib.Algebra.Order.Floor.Extended
@@ -134,7 +138,7 @@ theorem petersson_norm_bottom_theta_lift_eq (hP : _root_.GlobalTheory.FunPr.Thet
   have h5 := hdict.2.2 X r K₀ μ₀ h4.1 h4.2
   have hX := h5.1.1
   have hχ := GlobalTheory.T.heckeCharEq_of_finitePart_power_inverse X.χB P.W.chV' P.W.ep' (nuH G t i j) hX.2.weil.hecT h4.1.chB hb.chars.2
-  have hl := GlobalTheory.T.squareNu_unramified_off_pair_partial_L_primitive hL hR.hF G t i j X.χB hχ
+  have hl := _root_.GlobalTheory.NuOffPair.main hL hR.hF G t i j X.χB hχ
   have hT := _root_.GlobalTheory.NormRatio.theta_lift_petersson_norm_eq_rallis_integral hP hI h4.1 hX h4.2 hm hb.std (by rw [zero_add]; exact P.a_le) (by omega) (by omega) hl.1 Λ
     (hl.2 Λ hΛ)
   have hidx : ((P.J.relIndex (intG D P.d) : ℕ) : ℝ) = locIdx D (modT G t) P.a (P.d - P.a) :=

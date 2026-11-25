@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgePeri
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsLatBasisZero
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOnBallOfEqOnPunctPolydiscCoveringExpImageStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonIntKernelPsdBlockNotPosDefStatement
+public import Mathlib.LinearAlgebra.Matrix.PosDef
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonIntKernelPsdBlockNotPosDef
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPeriodFrameOfHolomorphicLatticeFamilyStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodChartRescaleBallToUnitPolydiscStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodMatrixBoundaryExtensionMonodromyPosSemidefStatement
@@ -69,7 +70,7 @@ theorem GlobalTheory.ShFam.Hor.LogCh.exists_periodChart_of_latFam : ∀ (n a g r
   have htoric : (((∑ k, B k).map (Int.cast : ℤ → ℝ)).submatrix
       (Subtype.val : {j : Fin g // j.val < rk} → Fin g) Subtype.val).PosDef := by
     by_contra hnot
-    obtain ⟨v, hv0, hvs, hBv⟩ := GlobalTheory.T.exists_common_int_kernel_psd_block_not_posDef a g rk B hpsd hB hnot
+    obtain ⟨v, hv0, hvs, hBv⟩ := _root_.GlobalTheory.intPsd_common_kernel_of_sum_not_posDef a g rk B hpsd hB hnot
     refine hcl v hv0 hvs (fun z => (τ₀ z).mulVec (fun j => (v j : ℂ))) ?_ ?_
     · refine continuousOn_pi.2 fun j => ?_
       simp only [Matrix.mulVec, dotProduct]

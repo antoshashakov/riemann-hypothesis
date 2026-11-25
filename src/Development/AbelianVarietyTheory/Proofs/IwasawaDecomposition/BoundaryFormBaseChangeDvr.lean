@@ -2,7 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AssociatedPsiCoordinatesOfTauUnitsStatement
+public import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.GeneratorValues
+public import Formalism.LocalToGlobal.ProjectiveLattices.BetaAtSymm
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AssociatedPsiCoordinatesOfTauUnits
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharactersRestrictLinearToTraitUniformisationStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -63,6 +66,6 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
         ∀ (y : P.D.toPre.X) (r : R) (r' : W), PsiCoord P.D.toPre y r → PsiCoord P'.D.toPre (ρ y) r' → Associated (g r) r' := by
   intro E _ _ _ H R _ _ _ t P hR hT W _ _ _ hW g hg hnl t' m P'
   obtain ⟨ρ, hs, hτ⟩ := GlobalTheory.T.characters_restrict_linear_to_trait_uniformisation E H R t P hR hT W hW g hg hnl t' m P'
-  exact ⟨ρ, hs, GlobalTheory.T.associated_psi_coordinates_of_tau_units E H R t P W g hg t' P' ρ hτ⟩
+  exact ⟨ρ, hs, _root_.GlobalTheory.PsiFromTau.associated_of_tau E H R t P W g hg t' P' ρ hτ⟩
 
 end GlobalTheory.TraitCmp

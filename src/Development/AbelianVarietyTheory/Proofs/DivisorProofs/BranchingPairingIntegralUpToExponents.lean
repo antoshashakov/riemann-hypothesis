@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BrPairFApply
 public import Formalism.PieriBlockIdeals.StatementLA
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjugateSubstLinearEquivSymmMemNablaStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualLatticeEmbeddedLastCoordinateSumStatement
+public import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualLatticeEmbeddedLastCoordinateSum
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLatticeOfLastCoordinateExtensionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumExactExponentsSmulMemLocalizedCoeffLattice
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StatementWithTransposeOfBranching
@@ -114,7 +115,7 @@ theorem finLocal : ∀ {E K ι : Type} [Field E] [NumberField E] [Field K] [Numb
     unfold delAtr
     congr 1
     funext τ
-    exact GlobalTheory.T.dualLattice_embedded_lastCoordinate_sum emb hN M L hL τ
+    exact _root_.GlobalTheory.dualFr_tauLat_sumLat emb hN M L hL τ
   rw [hdel] at hsu
   have h2 := GlobalTheory.BranchFormula.integrality Formalism.L2.DIV.BrJ.branching_interlacing_pairs K ι N n hN Λ σ hI hS
     (fun τ => dualFr (tauLat emb τ M)) (fun _ => 1) (fun _ => one_ne_zero) _ hsu

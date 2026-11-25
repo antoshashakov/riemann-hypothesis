@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTenso
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchActionReadingsCompatible
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativesExistStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffHeisenbergArchimedeanDiffOperatorFamilyStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergArchimedeanDiffOperatorHasDerivAtFamilStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DOpDef
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergArchimedeanDiffOperatorHasDerivAtFamil
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOrbitCoefficientSmoothStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorRightIntertwinesHeisenbergDerivativeStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -120,7 +121,7 @@ theorem orbit_heis : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   refine ⟨g₁ + g₂, add_mem hg₁P hg₂P, fun x => ?_⟩
   have hP := (hasFDerivAt_fst (𝕜 := ℝ)).comp_hasDerivAt (0 : ℝ) hφd
   have hQ := (hasFDerivAt_snd (𝕜 := ℝ)).comp_hasDerivAt (0 : ℝ) hφd
-  have h4 := GlobalTheory.T.heisenbergArchimedeanDiffOperator_hasDerivAt_family (fun t => T t f) (fun t => (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).1)
+  have h4 := _root_.GlobalTheory.HeisOrbit.DOpDeriv.dOp_hasDerivAt (fun t => T t f) (fun t => (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).1)
     (fun t => (archCo G.M.co (u * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).2) f' _ _ hsm hf'd hP hQ x
   simp only [hφ0, hT0] at h4
   rw [SchwartzMap.add_apply, hg₁, hg₂]

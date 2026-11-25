@@ -4,7 +4,11 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.Definitions.Divisors.TwistedPlaceChoiceLiesOverPair
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEmbeddingFixedFieldOfLeComplexImageStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNumberFieldGridCharactersUniformStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalSubfieldComplexFinitelyGenerateStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.RingTheory.Algebraic.Defs
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalSubfieldComplexFinitelyGenerate
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LeastSplitAuxiliaryPrimePosAllStatesStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyThetaLiftGridDataUnitGapAllStatesStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -53,7 +57,7 @@ theorem exists_grid_fieldHas : ∀ cDep : ℝ, AllSt fun K _ _ _ _ _ x => ∃ G 
   refine EvG.imp h (fun K _ _ _ _ hK => ?_)
   obtain ⟨S₁, P₁, A, S₂, a1, a2, hh⟩ := hK
   choose M hMf hM using GlobalTheory.T.exists_numberField_gridCharacters_uniform cDep K.s.b
-  choose S hSa hS using fun B₀ => GlobalTheory.T.finiteDimensional_subfield_complex_finitelyGenerated (M B₀) (hMf B₀)
+  choose S hSa hS using fun B₀ => _root_.GlobalTheory.finDimSubfield_finGen (M B₀) (hMf B₀)
   refine ⟨fun B f F => S₁ B f F ∪ S B, P₁, A, S₂, ?_, a2, ?_⟩
   · intro B f F z hz
     rcases Finset.mem_union.1 hz with hz | hz

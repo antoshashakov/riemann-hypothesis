@@ -22,7 +22,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeOI
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanHeisenbergTranslatesOfLatticeVacuaEqTopStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumSplitSupportedEqIntertwinerMulHalfDetChStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumSplitSupportedEqIntertwinerMulHalfDetCh
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdelicWeilVacuumFixedAndTranslatesSpanStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedStandardAdelicLatticePropertiesStatement
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAdelicWeilRepresentationModelStatement
@@ -439,7 +440,7 @@ theorem reads_om_split : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
   obtain ⟨Lt', hLt', -⟩ := GlobalTheory.NormSum.exists_lattice_of_adelic_point D T.rank
   have h1 := reads_latRep hset (hph ψ θ S T cc δ r hset) dS dT hsq hL hodd.1 W.nz ⟨f₀, hf.1⟩ hf hg hh sx sy
     (hLt x).1 (hLt' y).1
-  have h2 := GlobalTheory.T.weilDatum_splitSupported_eq_intertwiner_mul_halfDetChar D ψ hset.std S T χS χT om hom _ _ dS dT lam hlam hsq w Om hL ε hε g h sg sh u v hu hv ⟨f₀, hf.1⟩
+  have h2 := _root_.GlobalTheory.SplitWeilDict.splitWeil_eq D ψ hset.std S T χS χT om hom _ _ dS dT lam hlam hsq w Om hL ε hε g h sg sh u v hu hv ⟨f₀, hf.1⟩
   have h3 := W.split x y x₀ y₀ _ _ sx sy (fun q hq hi => ⟨zx q hq hi, zy q hq hi⟩) dx dy (hLt x).1 (hLt' y).1
   have h4 : ((splitFacO χS χT u v : Circle) : ℂ) = ((W.chV.f y₀ ^ W.ep * W.chV'.f x₀ ^ W.ep' : ℂˣ) : ℂ) := by
     rw [splitFacO, Circle.coe_mul, Circle.coe_inv, cS v y₀ iv, cT u x₀ iu, zpow_neg, Units.val_inv_eq_inv_val, inv_inv,

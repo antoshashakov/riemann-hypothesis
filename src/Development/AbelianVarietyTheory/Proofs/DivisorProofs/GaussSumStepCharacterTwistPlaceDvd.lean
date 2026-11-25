@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFits
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EpsMulOfCondExp
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalGaussSumIntegerDvdResidueCardPowStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalGaussSumIntegerDvdResidueCardPow
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterUnramifiedAeAndExistsLevel
 import Mathlib.Algebra.Order.Floor.Extended
@@ -100,7 +102,7 @@ theorem gauss_dvd : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : 
     have hd : 1 ≤ depthAt G (GlobalTheory.AdelicU.splitPrime τ) := le_max_right _ _
     obtain ⟨k, hk⟩ : ∃ k, depthAt G (GlobalTheory.AdelicU.splitPrime τ) = k + 1 := ⟨_, (Nat.sub_add_cancel hd).symm⟩
     rw [hk, pow_succ, pow_mul', hζ, one_pow]
-  obtain ⟨g, g', hg, hgg⟩ := GlobalTheory.T.localGaussSum_integer_dvd_residueCard_pow D.what₂.embLL ψ v ν hψ hcont hnorm (by rw [hc]) (fun x _ _ => hrange x) hroots
+  obtain ⟨g, g', hg, hgg⟩ := _root_.GlobalTheory.GaussDiv.gauss_dvd_pow D.what₂.embLL ψ v ν hψ hcont hnorm (by rw [hc]) (fun x _ _ => hrange x) hroots
   refine ⟨g, hg, ⟨g', ?_⟩⟩
   rw [hgg, hc, pow_one]
 

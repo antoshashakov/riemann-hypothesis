@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.StepUnfold
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfOfMulFinOf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightBelow
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColumnArrowKernelRealEqDetCharMulFockKernelStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrChInv
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColumnArrowKernelRealEqDetCharMulFockKernel
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactUnitaryAverageFockPolynomialJetFunctionalStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockComponentTransportedPointsEqJetOperatorStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPointsTopNodeOntoUnitaryHaarUniqueStatement
@@ -104,7 +105,7 @@ theorem avg_col : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : Gri
               (fun τ => (((r k τ)⁻¹ : GL (Fin (G.V (.top j)).rank) ℂ) : Matrix (Fin (G.V (.top j)).rank) (Fin (G.V (.top j)).rank) ℂ)ᵀ) (frChInv W S.N j Q)) *
             Λ (rhoK (wt G (.top j)) (invTrK (r k⁻¹)) v) := by
       intro k
-      rw [GlobalTheory.T.columnArrowKernel_real_eq_detChar_mul_fockKernel S hL j hj t d hd Q x k k.2 h, hℓ]
+      rw [_root_.GlobalTheory.ColKer.kerA_col_mul_real S hL j hj t d hd Q x k k.2 h, hℓ]
       rfl
     rw [integral_congr_ae (Filter.Eventually.of_forall e1), hΛ' ℓ (realIn W.θ S.N.fr (.top (j + 1)) h) v,
       GlobalTheory.T.fockComponent_transportedPoints_eq_jetOperator S hL j hj t d hd x (finOf _ h)]

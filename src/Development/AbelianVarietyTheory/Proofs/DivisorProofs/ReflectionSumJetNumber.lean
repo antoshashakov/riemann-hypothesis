@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Definitions.Foundations.NonnegOfM
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarmonicPolyLocalInvariantNonposChar0Statement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsShortPeriodLatticeBasisBalancedSlope
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IInfThetaRuleLeLocalValueCharZeroStatement
+public import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.WchartLePreimage
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IInfThetaRuleLeLocalValueCharZero
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsProductDataCopiesTrivialisationValuation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -92,7 +94,7 @@ theorem exists_thRule_value_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   have hρ0 : (0 : ℝ) ≤ ρ := Nat.cast_nonneg _
   have hN0 : (0 : ℝ) ≤ N := hρ0.trans hρN'
   have hM0' : (DF Dw a : ℝ) * (2 * Real.sqrt ρ) < q := lt_of_le_of_lt (by gcongr) hM0
-  have hup := GlobalTheory.T.iInf_thetaRule_le_localValue_charZero E H Dw l Xo c nab hnab T io y C hTr P hP hch ϖ hϖ Q hQ ρ _ _ hSB α q hα hq hMb a n 1 hn one_pos h4
+  have hup := _root_.GlobalTheory.JetsLevelZero.iInf_thRule_le_nuLocOf_charZero E H Dw l Xo c nab hnab T io y C hTr P hP hch ϖ hϖ Q hQ ρ _ _ hSB α q hα hq hMb a n 1 hn one_pos h4
     hM0' P₁ hP₁
   have hloc := hB T io y C hch 1 l.M one_pos
   have hφ0 := hφ.nonneg
