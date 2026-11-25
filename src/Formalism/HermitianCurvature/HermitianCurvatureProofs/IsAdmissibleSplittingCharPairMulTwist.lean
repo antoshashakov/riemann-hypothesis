@@ -5054,101 +5054,83 @@ theorem csR_flip (x0R q0R : ℝ → ℝ) (L : ℝ) (hL : 2 ≤ L) (la : Letter �
     rw [List.pairwise_cons] at hp'
     have hposv : ∀ c ∈ v, 0 < x0R c.pt.re ∧ 0 < x0R (c.pt.re + 1) ∧ 0 < q0R c.pt.re :=
       fun c hc => hpos c (List.mem_cons_of_mem _ hc)
-    have hK1 : 1 ≤ (1 + 2 / L) * (1 + 1 / L) := by
-      have : 0 ≤ 2 / L := by positivity
-      have : 0 ≤ 1 / L := by positivity
-      nlinarith
-    have hKpos : 0 < (1 + 2 / L) * (1 + 1 / L) := by linarith
+    let K := (1 + 2 / L) * (1 + 1 / L)
+    have h₁ : 1 ≤ 1 + 1 / L := le_add_of_nonneg_right (by positivity)
+    have h₂ : 1 ≤ 1 + 2 / L := le_add_of_nonneg_right (by positivity)
+    have hK1 : 1 ≤ K := one_le_mul_of_one_le_of_one_le h₂ h₁
+    have hKpos := zero_lt_one.trans_le hK1
     have hcs' := csR_pos x0R q0R L hL v e' hp'.2 hposv
     obtain ⟨hb1, hb2, hb3⟩ := hpos b List.mem_cons_self
     simp only [csR, List.length_cons]
     rcases List.mem_cons.1 h with rfl | h'
-    · have hv : ∀ c ∈ v, e c.intersection_update_fsHerm_neg_one = e' c.intersection_update_fsHerm_neg_one := fun c hc => he _ (fun e0 => hnd'.1 (e0 ▸ List.mem_map_of_mem hc))
-      rw [csR_congr x0R q0R v e e' hv, if_pos hea, if_neg he'a]
-      simp only [xsR, qwR]
-      rw [phR_congr v e e' hv]
-      have hph0 := (phR_bounds L hL v e' la.pt.re fun c hc => hp'.1 c hc)
-      have hph1 := (phR_bounds L hL v e' (la.pt.re + 1) fun c hc => by have := hp'.1 c hc; linarith)
-      have hps := (psR_bounds L hL v la.pt.re fun c hc => hp'.1 c hc)
-      have hKn : (1 + 1 / L) ^ v.length ≤ ((1 + 2 / L) * (1 + 1 / L)) ^ (v.length + 1) := by
-        calc (1 + 1 / L) ^ v.length ≤ ((1 + 2 / L) * (1 + 1 / L)) ^ v.length := by
-              apply pow_le_pow_left₀ (by positivity)
-              have : 0 ≤ 2 / L := by positivity
-              have : 0 ≤ 1 / L := by positivity
-              nlinarith
-          _ ≤ ((1 + 2 / L) * (1 + 1 / L)) ^ (v.length + 1) := pow_le_pow_right₀ hK1 (Nat.le_succ _)
-      have key : psR v la.pt.re / phR v e' (la.pt.re + 1) ≤
-          phR v e' la.pt.re * ((1 + 2 / L) * (1 + 1 / L)) ^ (v.length + 1) := by
-        calc psR v la.pt.re / phR v e' (la.pt.re + 1) ≤ psR v la.pt.re := div_le_self (by linarith [hps.1]) hph1.1
-          _ ≤ ((1 + 2 / L) * (1 + 1 / L)) ^ (v.length + 1) := hps.2.trans hKn
-          _ ≤ phR v e' la.pt.re * ((1 + 2 / L) * (1 + 1 / L)) ^ (v.length + 1) :=
-              le_mul_of_one_le_left (by positivity) hph0.1
-      have e1 : csR x0R q0R v e' * (q0R la.pt.re * psR v la.pt.re / (x0R (la.pt.re + 1) * phR v e' (la.pt.re + 1))) =
-          csR x0R q0R v e' * (q0R la.pt.re / x0R (la.pt.re + 1)) * (psR v la.pt.re / phR v e' (la.pt.re + 1)) := by
-        field_simp
-      have e2 : csR x0R q0R v e' * (x0R la.pt.re * phR v e' la.pt.re) * (q0R la.pt.re / (x0R la.pt.re * x0R (la.pt.re + 1))) *
-          ((1 + 2 / L) * (1 + 1 / L)) ^ (v.length + 1) =
-          csR x0R q0R v e' * (q0R la.pt.re / x0R (la.pt.re + 1)) *
-            (phR v e' la.pt.re * ((1 + 2 / L) * (1 + 1 / L)) ^ (v.length + 1)) := by
-        field_simp
-      rw [e1, e2]
-      exact mul_le_mul_of_nonneg_left key (by positivity)
-    · have hb : b.intersection_update_fsHerm_neg_one ≠ la.intersection_update_fsHerm_neg_one := fun e0 => hnd'.1 (e0 ▸ List.mem_map_of_mem h')
+    · have hv (c) (hc : c ∈ v) :=
+        he _ (fun eq => hnd'.1 (eq ▸ List.mem_map_of_mem hc))
+      rw [csR_congr x0R q0R v e e' hv, ite_eq_left hea, ite_eq_right he'a]
+      simp only [xsR, qwR, phR_congr v e e' hv]
+      let z := la.pt.re
+      have hph0 := phR_bounds L hL v e' z fun c hc => hp'.1 c hc
+      have hph1 := phR_bounds L hL v e' (z + 1) fun c hc => by
+        have := hp'.1 c hc
+        change L ≤ z - c.pt.re at this
+        linarith
+      have hps := psR_bounds L hL v z fun c hc => hp'.1 c hc
+      have hK' : 1 + 1 / L ≤ K := le_mul_of_one_le_left (zero_le_one.trans h₁) h₂
+      have hP : psR v z / phR v e' (z + 1) ≤ phR v e' z * K ^ (v.length + 1) :=
+        (div_le_self (zero_le_one.trans hps.1) hph1.1).trans <| hps.2.trans <|
+          (pow_le_pow_left₀ (by positivity) hK' _).trans <|
+            (pow_le_pow_right₀ hK1 (Nat.le_succ _)).trans <|
+              le_mul_of_one_le_left (pow_nonneg hKpos.le _) hph0.1
+      calc
+        _ = csR x0R q0R v e' * (q0R z / x0R (z + 1)) * (psR v z / phR v e' (z + 1)) := by
+          dsimp [z] at *
+          field_simp
+        _ ≤ csR x0R q0R v e' * (q0R z / x0R (z + 1)) * (phR v e' z * K ^ (v.length + 1)) :=
+          mul_le_mul_of_nonneg_left hP (mul_nonneg hcs'.le (div_nonneg hb3.le hb2.le))
+        _ = _ := by
+          dsimp [z, K] at *
+          field_simp
+    · have hb : b.intersection_update_fsHerm_neg_one ≠ la.intersection_update_fsHerm_neg_one :=
+        fun eq => hnd'.1 (eq ▸ List.mem_map_of_mem h')
       have ih := csR_flip x0R q0R L hL la e e' he hea he'a v hnd'.2 h' hp'.2 hposv
-      have hba : L ≤ b.pt.re - la.pt.re := hp'.1 la h'
-      have hφ0 := phi_bounds L (b.pt.re - la.pt.re) hL hba
-      have hφ1 := phi_bounds L (b.pt.re + 1 - la.pt.re) hL (by linarith)
-      have hflip0 := phR_flip la e e' he hea he'a b.pt.re v hnd'.2 h'
-      have hflip1 := phR_flip la e e' he hea he'a (b.pt.re + 1) v hnd'.2 h'
-      have hph0 := (phR_bounds L hL v e' b.pt.re fun c hc => hp'.1 c hc)
-      have hph1 := (phR_bounds L hL v e' (b.pt.re + 1) fun c hc => by have := hp'.1 c hc; linarith)
-      have hps := (psR_bounds L hL v b.pt.re fun c hc => hp'.1 c hc)
       rw [he _ hb]
-      have hcse : 0 ≤ csR x0R q0R v e := (csR_pos x0R q0R L hL v e hp'.2 hposv).le
-      have hF : (if e' b.intersection_update_fsHerm_neg_one = 0 then qwR q0R v b.pt.re / xsR x0R v e (b.pt.re + 1) else xsR x0R v e b.pt.re) ≤
-          (if e' b.intersection_update_fsHerm_neg_one = 0 then qwR q0R v b.pt.re / xsR x0R v e' (b.pt.re + 1) else xsR x0R v e' b.pt.re) *
-            ((1 + 2 / L) * (1 + 1 / L)) := by
-        simp only [xsR, qwR]
-        rw [hflip0, hflip1]
+      let f (d : Ix S) : ℝ := if e' b.intersection_update_fsHerm_neg_one = 0 then
+        qwR q0R v b.pt.re / xsR x0R v d (b.pt.re + 1) else xsR x0R v d b.pt.re
+      let R := q0R la.pt.re / (x0R la.pt.re * x0R (la.pt.re + 1))
+      change csR x0R q0R v e * f e ≤ csR x0R q0R v e' * f e' * R * K ^ (v.length + 1)
+      let r0 := (b.pt.re - la.pt.re) / (b.pt.re - la.pt.re - 1)
+      let r1 := (b.pt.re + 1 - la.pt.re) / (b.pt.re + 1 - la.pt.re - 1)
+      let r := if e' b.intersection_update_fsHerm_neg_one = 0 then r1⁻¹ else r0
+      have hF : f e = f e' * r := by
+        dsimp [f, r]
         split_ifs
-        · have hA : 0 < q0R b.pt.re * psR v b.pt.re := mul_pos hb3 (by linarith [hps.1])
-          have hB : 0 < x0R (b.pt.re + 1) * phR v e' (b.pt.re + 1) := mul_pos hb2 (by linarith [hph1.1])
-          calc q0R b.pt.re * psR v b.pt.re / (x0R (b.pt.re + 1) * (phR v e' (b.pt.re + 1) *
-                ((b.pt.re + 1 - la.pt.re) / (b.pt.re + 1 - la.pt.re - 1))))
-              ≤ q0R b.pt.re * psR v b.pt.re / (x0R (b.pt.re + 1) * phR v e' (b.pt.re + 1)) := by
-                rw [← mul_assoc]
-                apply div_le_div_of_nonneg_left hA.le hB
-                exact le_mul_of_one_le_right hB.le hφ1.1
-            _ ≤ q0R b.pt.re * psR v b.pt.re / (x0R (b.pt.re + 1) * phR v e' (b.pt.re + 1)) *
-                ((1 + 2 / L) * (1 + 1 / L)) := le_mul_of_one_le_right (by positivity) hK1
-        · have hA : 0 < x0R b.pt.re * phR v e' b.pt.re := mul_pos hb1 (by linarith [hph0.1])
-          have : (1 + 2 / L) ≤ (1 + 2 / L) * (1 + 1 / L) := by
-            have : 0 ≤ 1 / L := by positivity
-            have : 0 ≤ 2 / L := by positivity
-            nlinarith
-          calc x0R b.pt.re * (phR v e' b.pt.re * ((b.pt.re - la.pt.re) / (b.pt.re - la.pt.re - 1)))
-              = x0R b.pt.re * phR v e' b.pt.re * ((b.pt.re - la.pt.re) / (b.pt.re - la.pt.re - 1)) := by ring
-            _ ≤ x0R b.pt.re * phR v e' b.pt.re * ((1 + 2 / L) * (1 + 1 / L)) :=
-                mul_le_mul_of_nonneg_left (hφ0.2.trans this) hA.le
-      have hFnn : 0 ≤ (if e' b.intersection_update_fsHerm_neg_one = 0 then qwR q0R v b.pt.re / xsR x0R v e (b.pt.re + 1) else xsR x0R v e b.pt.re) := by
-        simp only [xsR, qwR]
-        rw [hflip0, hflip1]
+        · rw [xsR, xsR, phR_flip la e e' he hea he'a _ v hnd'.2 h']
+          simp only [r1, div_eq_mul_inv, mul_inv]
+          ring
+        · rw [xsR, xsR, phR_flip la e e' he hea he'a _ v hnd'.2 h']
+          dsimp [r0]
+          ring
+      have hba := hp'.1 la h'
+      have hr0 := phi_bounds L (b.pt.re - la.pt.re) hL hba
+      have hr1 := phi_bounds L (b.pt.re + 1 - la.pt.re) hL (by linarith)
+      have hr : 0 ≤ r ∧ r ≤ K := by
+        dsimp [r]
         split_ifs
-        · apply div_nonneg (mul_nonneg hb3.le (by linarith [hps.1]))
-          exact mul_nonneg hb2.le (mul_nonneg (by linarith [hph1.1]) (by linarith [hφ1.1]))
-        · exact mul_nonneg hb1.le (mul_nonneg (by linarith [hph0.1]) (by linarith [hφ0.1]))
-      calc csR x0R q0R v e * (if e' b.intersection_update_fsHerm_neg_one = 0 then qwR q0R v b.pt.re / xsR x0R v e (b.pt.re + 1) else xsR x0R v e b.pt.re)
-          ≤ (csR x0R q0R v e' * (q0R la.pt.re / (x0R la.pt.re * x0R (la.pt.re + 1))) *
-              ((1 + 2 / L) * (1 + 1 / L)) ^ v.length) *
-            ((if e' b.intersection_update_fsHerm_neg_one = 0 then qwR q0R v b.pt.re / xsR x0R v e' (b.pt.re + 1) else xsR x0R v e' b.pt.re) *
-              ((1 + 2 / L) * (1 + 1 / L))) := mul_le_mul ih hF hFnn (by
-                have hla := hpos la (List.mem_cons_of_mem _ h')
-                have : 0 < q0R la.pt.re / (x0R la.pt.re * x0R (la.pt.re + 1)) :=
-                  div_pos hla.2.2 (mul_pos hla.1 hla.2.1)
-                positivity)
-        _ = csR x0R q0R v e' * (if e' b.intersection_update_fsHerm_neg_one = 0 then qwR q0R v b.pt.re / xsR x0R v e' (b.pt.re + 1)
-              else xsR x0R v e' b.pt.re) * (q0R la.pt.re / (x0R la.pt.re * x0R (la.pt.re + 1))) *
-              ((1 + 2 / L) * (1 + 1 / L)) ^ (v.length + 1) := by ring
+        · exact ⟨inv_nonneg.mpr (zero_le_one.trans hr1.1),
+            (inv_le_one_of_one_le₀ hr1.1).trans hK1⟩
+        · exact ⟨zero_le_one.trans hr0.1,
+            hr0.2.trans (le_mul_of_one_le_right (zero_le_one.trans h₂) h₁)⟩
+      have hf : 0 ≤ f e' := by
+        have hc := csR_pos x0R q0R L hL (b :: v) e' hp hpos
+        change 0 < csR x0R q0R v e' * f e' at hc
+        exact (pos_of_mul_pos_right hc hcs'.le).le
+      obtain ⟨ha1, ha2, ha3⟩ := hpos la (List.mem_cons_of_mem _ h')
+      have hR : 0 ≤ R := div_nonneg ha3.le (mul_nonneg ha1.le ha2.le)
+      rw [hF, pow_succ]
+      calc
+        _ ≤ (csR x0R q0R v e' * R * K ^ v.length) * (f e' * K) :=
+          mul_le_mul ih (mul_le_mul_of_nonneg_left hr.2 hf) (mul_nonneg hf hr.1)
+            (mul_nonneg (mul_nonneg hcs'.le hR) (pow_nonneg hKpos.le _))
+        _ = _ := by ring
 
 end Real
 
