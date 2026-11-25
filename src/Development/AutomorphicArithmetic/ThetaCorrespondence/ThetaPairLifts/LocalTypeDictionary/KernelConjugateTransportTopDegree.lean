@@ -9,7 +9,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockVacEqJet
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HighestWeightBelow
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetOperatorRationalFormConjEqConjTableStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PairIntAt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaCombinationJetsAlgebraicConjEqConjSeriesStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+public import Formalism.LocalToGlobal.KernelLattices.ThDistC
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaCombinationJetsAlgebraicConjEqConjSeries
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTwoTorsionCMPointAllConjugates
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -103,7 +105,7 @@ theorem kernel_conjugate_transport_top_degree : _root_.GlobalTheory.FunPr.ThetaL
   obtain ⟨ρ', hρσ, hlam⟩ := GlobalTheory.T.exists_algebraicNumbers_extension_curveField_conjLattice D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 σ ρ hρ
   obtain ⟨t', ht'⟩ := ((hI D).t0Ex D.host.ccK ch.S.Z.δ ch.S.Z.crv).2 (GlobalTheory.KerConjMean.fld D ch.S.Z.δ ch.S.Z.t0) ρ
     (IntermediateField.subset_adjoin ℚ _ (Or.inr (by simp))) (IntermediateField.subset_adjoin ℚ _ (Or.inr (by simp)))
-  have hDj := GlobalTheory.T.thetaCombinationJets_algebraic_conj_eq_conjSeries D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 _ _ hev _ he0 Ls Lt hLs hLt κ hκ _ n hk r s hs ρ'
+  have hDj := _root_.GlobalTheory.ConjJetComb.conj_jet D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 _ _ hev _ he0 Ls Lt hLs hLt κ hκ _ n hk r s hs ρ'
   refine ⟨ρ', ch.S.Z.e0 (.top A.μ0 j), Ls, Lt, κ, _, n, r, s, hev, he0, hLs, hLt, hκ, hk, hs, hr, hlam, ⟨t', ht'⟩, hJ,
     fun u => ?_⟩
   rw [GlobalTheory.T.jetOperator_rationalForm_conj_eq_conjTable _ _ _ _ σ ρ' f hJ (fun m => (hDj m).1) hρσ (fun u => by rw [← hkk]; exact hf u) u]

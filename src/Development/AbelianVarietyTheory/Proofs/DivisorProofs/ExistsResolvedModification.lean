@@ -8,7 +8,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Geometricall
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataViehwegVanishingNumberFieldTwist
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemNonzeroLocusFormMap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopologicalKrullDimEqOfOpenImmersionIntegralScheStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeakResolutionOfPrincipalisationStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeakResolutionOfPrincipalisation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -135,7 +135,7 @@ theorem exists_resolved_modification : GlobalTheory.Published.Principalisation �
     rw [← hdX, ← hdV, hdV']
     exact le_antisymm h₁ h₂
 
-  obtain ⟨W', s, UW, hW', hsm, hpj, hUW, hiso⟩ := GlobalTheory.T.weak_resolution_of_principalisation hP F W sW n hsW hdW
+  obtain ⟨W', s, UW, hW', hsm, hpj, hUW, hiso⟩ := _root_.GlobalTheory.WeakRes.weak_resolution hP F W sW n hsW hdW
   haveI := hW'
   haveI := hiso
   have hηUW : genericPoint W ∈ UW := genericPoint_mem UW hUW

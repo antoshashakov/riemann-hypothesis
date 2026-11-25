@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunModel
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelChangeUnitriangularUnipotentModPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeOverTypePrimeFixedPlaceOrConjStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentModIdealOfTrivialModHalfStatement
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnipotentModIdealOfTrivialModHalf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryUnipotentModIdealModConjIdealStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -104,7 +105,7 @@ theorem levelCondition_restrict_of_halfUnipotent (p : PtAt ex Csz) (r : TwoRuns 
     intro v w hw
     obtain ⟨n, hn⟩ := hd2 c u huc'
     rw [Units.val_mul]
-    exact GlobalTheory.T.unipotent_mod_ideal_of_trivial_mod_half _ _ _ (half_le_plGw p r h k v) (φ c) (r.lev i u) n (GlobalTheory.T.levelChange_unitriangular_unipotent_modPlace p r h i u k v (hk u u.2 v)) _ _ (fun w hw => (hγL w).1 hw)
+    exact _root_.GlobalTheory.UnipModHalf.unip_mod_half _ _ _ (half_le_plGw p r h k v) (φ c) (r.lev i u) n (GlobalTheory.T.levelChange_unitriangular_unipotent_modPlace p r h i u k v (hk u u.2 v)) _ _ (fun w hw => (hγL w).1 hw)
       (hd1 c γ hγ) hn w hw
   obtain ⟨v, rfl | rfl⟩ := GlobalTheory.T.prime_over_typePrime_fixedPlace_or_conj D k P hP hgP
   · exact half v
