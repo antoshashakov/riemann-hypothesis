@@ -53,6 +53,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRankDeficientFibreInfinite
 
 @[expose] public section
 
@@ -90,8 +91,8 @@ theorem kernel_eq_of_maximal {k d r : ℕ} (A : (Fin k → ℂ) →L[ℂ] (Fin d
     rw [hfun]
     exact hv.finCons hs
 
-theorem proof : HolomorphicFibreInfinite.Statement := by
-  intro k d U f hdk hU hUne hf
+theorem rankDeficient : RankDeficientFibreInfinite.Statement := by
+  intro k d U f hU hUne hf hinj
   classical
   have hfa : AnalyticOnNhd ℂ f U :=
     GroundTheory.Heights₂.Heights.ImplicitCurve.analyticOnNhd_of_differentiableOn hU hf
@@ -101,15 +102,16 @@ theorem proof : HolomorphicFibreInfinite.Statement := by
   have hQ0 : Q 0 := by
     obtain ⟨t, ht⟩ := hUne
     exact ⟨t, ht, Fin.elim0, linearIndependent_empty_type⟩
-  have hspec : Q (Nat.findGreatest Q d) := Nat.findGreatest_spec (Nat.zero_le d) hQ0
-  have hle : ∀ m, m ≤ d → Q m → m ≤ Nat.findGreatest Q d := fun m hmd hm => Nat.le_findGreatest hmd hm
-  have hrd : Nat.findGreatest Q d ≤ d := Nat.findGreatest_le d
-  generalize Nat.findGreatest Q d = r at hspec hle hrd
+  have hspec : Q (Nat.findGreatest Q k) := Nat.findGreatest_spec (Nat.zero_le k) hQ0
+  have hle : ∀ m, m ≤ k → Q m → m ≤ Nat.findGreatest Q k := fun m hmk hm => Nat.le_findGreatest hmk hm
+  generalize Nat.findGreatest Q k = r at hspec hle
   obtain ⟨s, hs, v, hv⟩ := hspec
   have hmax : ∀ t ∈ U, ∀ u : Fin (r + 1) → Fin k → ℂ,
       ¬ LinearIndependent ℂ (fun j => fderiv ℂ f t (u j)) := by
     intro t ht u hu
-    have hcard : r + 1 ≤ d := by simpa using hu.fintype_card_le_finrank
+    have hu' : LinearIndependent ℂ u :=
+      LinearIndependent.of_comp (fderiv ℂ f t : (Fin k → ℂ) →ₗ[ℂ] (Fin d → ℂ)) hu
+    have hcard : r + 1 ≤ k := by simpa using hu'.fintype_card_le_finrank
     have := hle (r + 1) hcard ⟨t, ht, u, hu⟩
     omega
 
@@ -143,10 +145,13 @@ theorem proof : HolomorphicFibreInfinite.Statement := by
       exact (Pi.basisFun ℂ (Fin r)).linearIndependent
     exact hc.eventually h0.eventually
 
-  obtain ⟨w, hw, hw0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot
-    (LinearMap.ker_ne_bot_of_finrank_lt (f := Λ ∘ₗ (fderiv ℂ f s : (Fin k → ℂ) →ₗ[ℂ] (Fin d → ℂ)))
-      (by simp; omega))
-  have hw' : Λ (fderiv ℂ f s w) = 0 := by simpa using hw
+  obtain ⟨w, hw, hw0⟩ : ∃ w, fderiv ℂ f s w = 0 ∧ w ≠ 0 := by
+    by_contra hno
+    push Not at hno
+    apply hinj s hs
+    intro x y hxy
+    exact sub_eq_zero.1 (hno _ (by rw [map_sub, hxy, sub_self]))
+  have hw' : Λ (fderiv ℂ f s w) = 0 := by rw [hw, map_zero]
 
   let A' : ℂ × (Fin r → ℂ) →L[ℂ] (Fin k → ℂ) :=
     (ContinuousLinearMap.fst ℂ ℂ (Fin r → ℂ)).smulRight w +
@@ -249,6 +254,13 @@ theorem proof : HolomorphicFibreInfinite.Statement := by
   refine (hinf.image hPinj.injOn).mono ?_
   rintro _ ⟨z, hz, rfl⟩
   exact ⟨hPU z hz, hconst z hz⟩
+
+theorem proof : HolomorphicFibreInfinite.Statement := fun k d U f hdk hU hUne hf =>
+  rankDeficient k d U f hU hUne hf fun t _ hi => by
+    have := LinearMap.finrank_le_finrank_of_injective
+      (f := ((fderiv ℂ f t : (Fin k → ℂ) →L[ℂ] (Fin d → ℂ)) : (Fin k → ℂ) →ₗ[ℂ] (Fin d → ℂ))) hi
+    simp only [Module.finrank_fin_fun] at this
+    omega
 
 end HolomorphicFibreInfinite
 
