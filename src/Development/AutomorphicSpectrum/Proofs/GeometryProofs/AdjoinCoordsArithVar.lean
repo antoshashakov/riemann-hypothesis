@@ -5,16 +5,21 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ValRPullbackTwistingSheafTransition
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncChartPoint
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsReducedAlgebraOfSmoothOfIsNoetherianRing
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStandardSmoothLocalizationStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HomogeneousFormNonvanishingPointStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LiftGenericPointOverIsoOpenStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectivePointCoordsExistStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectivePointImageReducedStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularValuesInAdjoinedFieldStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreProductAffineChartStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncChartOfSmoothCoordsStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StandardSmoothBasicOpenStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StandardSmoothChartOfNonzeroStatement
+public import Mathlib.RingTheory.Smooth.StandardSmooth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStandardSmoothLocalization
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HomogeneousFormNonvanishingPoint
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LiftGenericPointOverIsoOpen
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectivePointCoordsExist
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectivePointImageReduced
+public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemRangeCompIffOfIsClosedImmersion
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularValuesInAdjoinedField
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreProductAffineChart
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncChartOfSmoothCoords
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StandardSmoothBasicOpen
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StandardSmoothChartOfNonzero
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ZarhinBundleKernelFirstCoordEquations
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -73,29 +78,29 @@ variable {Ω : Type} [Field Ω] [CharZero Ω]
 
 theorem closure_facts {N : ℕ} (x : Fin (N + 1) → Ω) (hx : x ≠ 0) :
     IsReduced (point ℚ x hx).image ∧ IsDominant (point ℚ x hx).toImage :=
-  GlobalTheory.T.projective_point_image_reduced Ω N x hx
+  _root_.GlobalTheory.CompanionTheory.Ar.SncRes.closure_reduced_dominant Ω N x hx
 
 theorem smooth_basicOpen {Z : Scheme.{0}} (ζ : Sp Ω ⟶ Z) [IsDominant ζ] [IsReduced Z] (g : Z ⟶ Sp ℚ)
     (e : ℕ) {W : Z.Opens} (hW : IsAffineOpen W) (h : ⊤ ≤ ζ ⁻¹ᵁ W) (A : Subalgebra ℚ Ω)
     (hA : Set.range (valMap ζ W h).hom = A) (σ : Γ(Z, W)) (g₀ : A) (hg : (g₀ : Ω) = valR ζ W σ)
     [Algebra.IsStandardSmoothOfRelativeDimension e ℚ (Localization.Away g₀)] :
     SmoothOfRelativeDimension e ((Z.basicOpen σ).ι ≫ g) :=
-  GlobalTheory.T.standard_smooth_basic_open Ω Z ζ g e W hW h A hA σ g₀ hg
+  _root_.GlobalTheory.CompanionTheory.Ar.SncRes.smoothOfRelativeDimension_basicOpen_of_away Ω Z ζ g e W hW h A hA σ g₀ hg
 
 theorem lift_generic {X X' : Scheme.{0}} (ξ : Sp Ω ⟶ X) [IsDominant ξ] (f : X' ⟶ X) (U : X.Opens)
     [IsIso (f ∣_ U)] (hd : Dense ((f ⁻¹ᵁ U : X'.Opens) : Set X')) (hU : ⊤ ≤ ξ ⁻¹ᵁ U) :
     ∃ ζ : Sp Ω ⟶ X', ζ ≫ f = ξ ∧ IsDominant ζ ∧ ⊤ ≤ ζ ⁻¹ᵁ (f ⁻¹ᵁ U) :=
-  GlobalTheory.T.lift_generic_point_over_iso_open Ω X X' ξ f U hd hU
+  _root_.GlobalTheory.CompanionTheory.Ar.Coords.dense_point_lift Ω X X' ξ f U hd hU
 
 theorem exists_coords {r : ℕ} (p : Sp Ω ⟶ PSpace ℚ r) : ∃ (x' : Fin (r + 1) → Ω) (hx' : x' ≠ 0), p = point ℚ x' hx' :=
-  GlobalTheory.T.projective_point_coords_exist Ω r p
+  _root_.GlobalTheory.CompanionTheory.Ar.TupleCoords.exists_tuple_eq_point Ω r p
 
 theorem val_mem_field {X X' : Scheme.{0}} (ξ : Sp Ω ⟶ X) [IsDominant ξ] [IsReduced X] (f : X' ⟶ X) (U : X.Opens)
     [IsIso (f ∣_ U)] (ζ : Sp Ω ⟶ X') (hζ : ζ ≫ f = ξ) (hU : ⊤ ≤ ζ ⁻¹ᵁ (f ⁻¹ᵁ U)) {W₀ : X.Opens}
     (hW₀ : IsAffineOpen W₀) (h₀ : ⊤ ≤ ξ ⁻¹ᵁ W₀) (A : Subalgebra ℚ Ω) (hA : Set.range (valMap ξ W₀ h₀).hom = A)
     (W' : X'.Opens) (h' : ⊤ ≤ ζ ⁻¹ᵁ W') (s : Γ(X', W')) :
     valR ζ W' s ∈ IntermediateField.adjoin ℚ (A : Set Ω) :=
-  GlobalTheory.T.regular_values_in_adjoined_field Ω X X' ξ f U ζ hζ hU W₀ hW₀ h₀ A hA W' h' s
+  _root_.GlobalTheory.CompanionTheory.Ar.SncRes.valR_mem_adjoin_of_modification Ω X X' ξ f U ζ hζ hU W₀ hW₀ h₀ A hA W' h' s
 
 theorem prod_chart {N r : ℕ} {Z : Scheme.{0}} (j : Z ⟶ pullback (PSpace.str ℚ N) (PSpace.str ℚ r))
     [IsClosedImmersion j] (ζ : Sp Ω ⟶ Z) (x : Fin (N + 1) → Ω) (hx : x ≠ 0) (x' : Fin (r + 1) → Ω) (hx' : x' ≠ 0)
@@ -105,13 +110,13 @@ theorem prod_chart {N r : ℕ} {Z : Scheme.{0}} (j : Z ⟶ pullback (PSpace.str 
       ∃ h : ⊤ ≤ ζ ⁻¹ᵁ ((j ≫ pullback.fst _ _) ⁻¹ᵁ chart ℚ N a ⊓ (j ≫ pullback.snd _ _) ⁻¹ᵁ chart ℚ r l),
         Set.range (valMap ζ _ h).hom =
           Algebra.adjoin ℚ (Set.range (fun k => x k / x a) ∪ Set.range (fun k => x' k / x' l)) :=
-  GlobalTheory.T.segre_product_affine_chart Ω N r Z j ζ x hx x' hx' h₁ h₂ a l ha hl
+  _root_.GlobalTheory.CompanionTheory.Ar.SncRes.ProdChart.prod_chart Ω N r Z j ζ x hx x' hx' h₁ h₂ a l ha hl
 
 theorem snc_transfer {Z : Scheme.{0}} (ζ : Sp Ω ⟶ Z) [IsDominant ζ] [IsReduced Z] (g : Z ⟶ Sp ℚ) (e : ℕ) (T : Set Z)
     (hsm : SmoothOfRelativeDimension e g) (hc : HasSncCoords g e T) {W : Z.Opens} (hW : IsAffineOpen W)
     (h : ⊤ ≤ ζ ⁻¹ᵁ W) (A : Subalgebra ℚ Ω) (hA : Set.range (valMap ζ W h).hom = A) (σ : Γ(Z, W))
     (hσ : ∀ t ∈ W, t ∈ T ↔ t ∉ Z.basicOpen σ) : SncChart A e (valR ζ W σ) :=
-  GlobalTheory.T.snc_chart_of_smooth_coords Ω Z ζ g e T hsm hc W hW h A hA σ hσ
+  _root_.GlobalTheory.CompanionTheory.Ar.SncRes.sncChart_of_coords Ω Z ζ g e T hsm hc W hW h A hA σ hσ
 
 theorem form_section {N : ℕ} {Z : Scheme.{0}} (u : Z ⟶ PSpace ℚ N) (η : Sp Ω ⟶ Z) (x : Fin (N + 1) → Ω) (hx : x ≠ 0)
     (hu : η ≫ u = point ℚ x hx) {W : Z.Opens} (hW : ⊤ ≤ η ⁻¹ᵁ W) {a : Fin (N + 1)} (hi : W ≤ u ⁻¹ᵁ chart ℚ N a)
@@ -314,7 +319,7 @@ theorem exists_smooth (y : (Σ k, ι k) → Ω) (e : ℕ) (hA : IsArithVar (mCoo
     (E : Fin (N + 1) ≃ ((k : K) → ι k)) (c₀ : Fin (N + 1)) (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) :
     ∃ s : Algebra.adjoin ℚ (Set.range fun j => (∏ k, y ⟨k, E j k⟩) / ∏ k, y ⟨k, E c₀ k⟩), s ≠ 0 ∧
       Algebra.IsStandardSmoothOfRelativeDimension e ℚ (Localization.Away s) :=
-  GlobalTheory.T.exists_standard_smooth_localization Ω K ι y e hA N E c₀ hc
+  _root_.GlobalTheory.CompanionTheory.Ar.SegreChart.exists_away_standardSmooth Ω K ι y e hA N E c₀ hc
 
 theorem exists_form (y : (Σ k, ι k) → Ω) (e : ℕ) (β : MRing ι) (b : K → ℕ) (hb : IsMultiHomog β b)
     (hβ : β ∉ mCoordIdeal y) (N : ℕ) (E : Fin (N + 1) ≃ ((k : K) → ι k)) (c₀ : Fin (N + 1))
@@ -328,7 +333,7 @@ theorem exists_form (y : (Σ k, ι k) → Ω) (e : ℕ) (β : MRing ι) (b : K �
       Algebra.IsStandardSmoothOfRelativeDimension e ℚ (Localization.Away g₀) ∧
       ∀ z ∈ mcPts (mCoordIdeal y), evC z β = 0 →
         eval (fun j => ∏ k, z ⟨k, E j k⟩) (map (Int.castRingHom ℂ) Gz) = 0 :=
-  GlobalTheory.T.standard_smooth_chart_of_nonzero Ω K ι y e β b hb hβ N E c₀ hc s hs
+  _root_.GlobalTheory.CompanionTheory.Ar.SncRes.exists_segre_form Ω K ι y e β b hb hβ N E c₀ hc s hs
 
 theorem final_data (y : (Σ k, ι k) → Ω) (e : ℕ) (β : MRing ι) (N : ℕ) (E : Fin (N + 1) ≃ ((k : K) → ι k))
     (d : ℕ) (Gz : MvPolynomial (Fin (N + 1)) ℤ) (r : ℕ) (x' : Fin (r + 1) → Ω)
@@ -345,7 +350,7 @@ theorem final_data (y : (Σ k, ι k) → Ω) (e : ℕ) (β : MRing ι) (N : ℕ)
       ¬ J ≤ mCoordIdeal (joinVec y y') ∧ IsSncModel (joinVec y y') e J ∧
       ∀ z ∈ mcPts (mCoordIdeal (joinVec y y')),
         evC z (rename (joinInl ι fun _ : Unit => Fin (r + 1)) β) = 0 → z ∈ mcPts J :=
-  GlobalTheory.T.homogeneous_form_nonvanishing_point Ω K ι y e β N E d Gz r x' hG h0 hβ hx' hF hch
+  _root_.GlobalTheory.CompanionTheory.Ar.SegreChart.final_data_main Ω K ι y e β N E d Gz r x' hG h0 hβ hx' hF hch
 
 theorem adjoin_seg_le (y : (Σ k, ι k) → Ω) (N : ℕ) (E : Fin (N + 1) ≃ ((k : K) → ι k)) (c₀ : Fin (N + 1))
     (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) :

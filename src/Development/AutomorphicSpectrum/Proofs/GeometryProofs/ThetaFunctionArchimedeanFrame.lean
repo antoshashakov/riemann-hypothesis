@@ -5,20 +5,21 @@ public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsValLineLogN
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfValues
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArchimedeanFrameOfPullbackStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArchimedeanFrameOfPullback
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexAbelianFibreAmpleStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsArchimedeanFrameStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsArchimedeanFrame
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExpChartCoordinatesStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsThetaBasisOfFactorStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FnFactorStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameCoordinatesUniqueStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NonzeroCoordsOfNonzeroVectorStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionDifferentiableStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionUniqueStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FnFactor
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameCoordinatesUnique
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NonzeroCoordsOfNonzeroVector
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionDifferentiable
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionUnique
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionsFiniteDimStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierNormalFormStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationDimEqPpDimStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationIsoTransferStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationDimEqPpDim
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationIsoTransfer
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -97,17 +98,17 @@ theorem GlobalTheory.CompanionTheory.Ar.Sl.frames_main : ∀ (E : Type) [Field E
   obtain ⟨t', m, hP, hA⟩ := GlobalTheory.T.complex_abelian_fibre_ample E H L D σ
   obtain ⟨hab, g, u, Hm, χ, hAH, d₁, d₂⟩ := exists_goodUnif E H _ D.t (emb σ) t' m hP hA
   have hcart : IsGrpPullback t'.G D.t.G (emb σ) m.φ := m.cart
-  have hg : D.g = g := GlobalTheory.T.uniformization_dim_eq_pp_dim E H L D σ t'.G m.φ _ g u hcart d₁ d₂
+  have hg : D.g = g := _root_.GlobalTheory.CompanionTheory.Ar.Sl.rank_eq_unif_dim E H L D σ t'.G m.φ _ g u hcart d₁ d₂
   subst hg
-  refine ⟨GlobalTheory.T.exists_archimedean_frame _ D.t.G D.t.PP (emb σ) t'.G m.φ D.g u Hm χ hcart hAH, fun a => ?_⟩
+  refine ⟨_root_.GlobalTheory.CompanionTheory.Ar.Sl.exists_archFrame_of_isAH _ D.t.G D.t.PP (emb σ) t'.G m.φ D.g u Hm χ hcart hAH, fun a => ?_⟩
   obtain ⟨e, hmon, -⟩ := grpPullback_iso a.cart hcart
   haveI := hmon
-  obtain ⟨a₁, a₂⟩ := GlobalTheory.T.uniformization_iso_transfer t'.G a.A _ _ D.g u a.u e hab d₁ d₂
-  refine ⟨fun n s => GlobalTheory.T.theta_function_unique _ D.t.G D.t.PP (emb σ) D.g a n s,
-    fun n s θ h => ⟨GlobalTheory.T.theta_function_differentiable _ D.t.G D.t.PP (emb σ) D.g a n s θ h,
-      GlobalTheory.T.theta_add_lattice_eq_of_isFn _ D.t.G D.t.PP (emb σ) D.g a n s θ h⟩,
-    fun x => ⟨GlobalTheory.T.frame_coordinates_unique E H L D σ a a₁ a₂ x, fun c hc => ?_⟩⟩
-  have hl := GlobalTheory.T.archimedean_frame_of_pullback E H L D σ t'.G m.φ D.g u Hm χ hab hcart d₁ d₂ hAH a x c hc
-  exact ⟨hl, GlobalTheory.T.nonzero_coords_of_nonzero_vector E H L D σ a x c hl⟩
+  obtain ⟨a₁, a₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.TanIso.tangentCoords_of_iso t'.G a.A _ _ D.g u a.u e hab d₁ d₂
+  refine ⟨fun n s => _root_.GlobalTheory.CompanionTheory.Ar.Sl.frame_fn_existsUnique _ D.t.G D.t.PP (emb σ) D.g a n s,
+    fun n s θ h => ⟨_root_.GlobalTheory.CompanionTheory.Ar.Sl.isFn_differentiable _ D.t.G D.t.PP (emb σ) D.g a n s θ h,
+      _root_.GlobalTheory.CompanionTheory.Ar.Sl.Fac.fn_factor _ D.t.G D.t.PP (emb σ) D.g a n s θ h⟩,
+    fun x => ⟨_root_.GlobalTheory.CompanionTheory.Ar.Sl.FrameVec.isVec_existsUnique E H L D σ a a₁ a₂ x, fun c hc => ?_⟩⟩
+  have hl := _root_.GlobalTheory.CompanionTheory.Ar.Sl.FrameLen.len_sq_eq_pi_herm E H L D σ t'.G m.φ D.g u Hm χ hab hcart d₁ d₂ hAH a x c hc
+  exact ⟨hl, _root_.GlobalTheory.CompanionTheory.Ar.Sl.FrameZero.coord_ne_zero E H L D σ a x c hl⟩
 
 end

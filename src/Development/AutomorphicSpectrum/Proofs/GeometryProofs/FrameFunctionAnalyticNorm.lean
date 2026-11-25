@@ -5,13 +5,16 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFamilyPeriods
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.NotIsLineFnZero
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentOpenStalksDomainStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentOpenStalksDomain
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentPointValueHolomorphic
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFramesAnalyticStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundleStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionsFlatAgreeStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicChartNearPointStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValueLocallyRegularFunctionStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicChartNearPoint
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import Mathlib.Basic.Complex.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValueLocallyRegularFunction
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGeneratorStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -227,7 +230,7 @@ theorem ext_frames {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) {τ
       ∃ (v : Vecs y D.p) (w : Vecs y D.q), IsFramed U τ σ y v w ∧ φ ℂ y v w = κ₀ * Φ y v w) :
     ∀ (y : Sp ℂ ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q), IsFramed U τ σ y v w → φ ℂ y v w = κ₀ * Φ y v w := by
   intro y₀ v₀ w₀ hf
-  obtain ⟨U', hU', hdom⟩ := GlobalTheory.T.component_open_stalks_domain _ H D l Xo c O β Y U Z hO
+  obtain ⟨U', hU', hdom⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain _ H D l Xo c O β Y U Z hO
   have hframes := LocFrames.exists_local_eigenframes _ H D l Xo c O β Y U Z τ σ y₀ hO hτ hf.1 hf.2.1
   obtain ⟨V₀, hV₀, c₁, c₂, vR, wR, hy₀, l₁, s₁, l₂, s₂, hfr⟩ := hframes
   obtain ⟨α, hα⟩ := ha c₁ l₁ s₁
@@ -252,7 +255,7 @@ theorem ext_frames {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) {τ
     rw [← hχ₀]
     exact ⟨_, (val χ₀ (by rw [hχ₀]; exact hf.1) (by rw [hχ₀]; exact hf.2.1)).2⟩
   obtain ⟨r₀, hr₀⟩ := hval₀
-  obtain ⟨W₁, hW₁, hsec⟩ := GlobalTheory.T.value_locally_regular_function _ _ Y.j Z.Ω (Z.ξ₀ ≫ Y.j) Z.gen y₀ _ r₀ hr₀
+  obtain ⟨W₁, hW₁, hsec⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SectionNear.section_near _ _ Y.j Z.Ω (Z.ξ₀ ≫ Y.j) Z.gen y₀ _ r₀ hr₀
   have hcU : centre y₀ ∈ U := hf.2.1 ⟨_, rfl⟩
   have hy₀' : ⊤ ≤ y₀ ⁻¹ᵁ (V₀ ⊓ U' ⊓ W₁) := by
     intro t ht
@@ -261,7 +264,7 @@ theorem ext_frames {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) {τ
   have hsm : SmoothOfRelativeDimension D.dim
       (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) := by
     exact (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) Xo.smooth
-  obtain ⟨V, hV, ψ, hle, hhol, hψ0, hover, hinj⟩ := GlobalTheory.T.holomorphic_chart_near_point c.F σ (Xo.XF c) (pullback.snd _ _) D.dim hsm y₀ _ hf.1 hy₀'
+  obtain ⟨V, hV, ψ, hle, hhol, hψ0, hover, hinj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.SmoothChart.exists_polydisc_chart c.F σ (Xo.XF c) (pullback.snd _ _) D.dim hsm y₀ _ hf.1 hy₀'
     (hdom _ hcU)
   obtain ⟨g, hg⟩ := hsec V hV (hle.trans inf_le_right)
   have hVV₀ : V ≤ V₀ := hle.trans (inf_le_left.trans inf_le_left)

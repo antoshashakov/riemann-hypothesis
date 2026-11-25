@@ -3,17 +3,17 @@ module
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UnitAtOfMulRight
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryGeneratorUnitStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryPointsCoordsStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartPrimeGivesComponentStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentGivesChartPrimeStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerBasisAdjoinInverseStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationsEqualBasicOpensStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryGeneratorUnit
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryPointsCoords
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartPrimeGivesComponent
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentGivesChartPrime
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerBasisAdjoinInverse
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalizationsEqualBasicOpens
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIsLocalRingIsFractionRingStalk
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularRingDeterminesComponentStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothAdjoinInverseStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncModelFromLocalPatchesStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncPatchBoundaryUnitsStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothAdjoinInverse
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncModelFromLocalPatches
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncPatchBoundaryUnits
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -98,8 +98,8 @@ theorem patch_invAdj {Ω : Type} [Field Ω] [Algebra ℚ Ω] {Pt Bd : Set (Subri
     {z : Fin e → A} {n : ℕ} (hA : IsSncPatch Pt Bd e A z n) {g : Ω} (hg : g ∈ A) (h0 : g ≠ 0) :
     ∃ z' : Fin e → invAdj A g, IsSncPatch Pt Bd e (invAdj A g) z' n ∧ ∀ i, (z' i : Ω) = z i := by
   let z' : Fin e → invAdj A g := fun i => ⟨z i, le_invAdj A g (z i).2⟩
-  have hd := GlobalTheory.T.kaehler_basis_adjoin_inverse Ω A g hg h0 e z z' (fun _ => rfl) hA.li hA.span
-  refine ⟨z', ⟨?_, GlobalTheory.T.smooth_adjoin_inverse Ω A g hg h0 hA.smooth, hA.le, hd.1, hd.2, ?_⟩, fun _ => rfl⟩
+  have hd := _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.differentials_basis_invAdj Ω A g hg h0 e z z' (fun _ => rfl) hA.li hA.span
+  refine ⟨z', ⟨?_, _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.smooth_invAdj Ω A g hg h0 hA.smooth, hA.le, hd.1, hd.2, ?_⟩, fun _ => rfl⟩
   · obtain ⟨S, hS⟩ := hA.fg
     classical
     refine ⟨insert g⁻¹ S, ?_⟩
@@ -133,8 +133,8 @@ theorem exists_patch {N : ℕ} {x : Fin (N + 1) → Ω} {e : ℕ} {B : Set (Cpt 
     ∃ h ∈ chartQ x c, unitAt ξ p h ∧ ∃ (z : Fin e → invAdj (chartQ x c) h) (n : ℕ),
       IsSncPatch (Pts ξ) (regAt ξ '' B) e (invAdj (chartQ x c) h) z n := by
   obtain ⟨A, z, n, q, hA, hq, hl⟩ := hP p hp
-  obtain ⟨I, hI, hu, hIl⟩ := GlobalTheory.T.component_gives_chart_prime Ω X ξ _ x c hT p hp hc
-  obtain ⟨g, h, hg, hh, he⟩ := GlobalTheory.T.localizations_equal_basic_opens Ω A (chartQ x c) q I (regAt ξ p) hA.fg (chartQ_fg x c) hq hI hl hIl
+  obtain ⟨I, hI, hu, hIl⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.exists_prime_chartQ Ω X ξ _ x c hT p hp hc
+  obtain ⟨g, h, hg, hh, he⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SncBase.CommonLoc.exists_common_loc Ω A (chartQ x c) q I (regAt ξ p) hA.fg (chartQ_fg x c) hq hI hl hIl
   have hg0 : (g : Ω) ≠ 0 := fun h0 => hg (by
     have : g = 0 := Subtype.ext h0
     rw [this]; exact q.zero_mem)
@@ -148,7 +148,7 @@ theorem primePoint {κ : Type} {x : κ → Ω} {c : κ} (hT : CoordTie ℤ ξ x)
     ∃ p : Cpt ξ, Char0 ξ p ∧ InChart ξ x c p ∧ unitAt ξ p h ∧
       (∀ s : invAdj (chartQ x c) h, s ∉ q ↔ unitAt ξ p (s : Ω)) ∧
       IsLocAt (invAdj (chartQ x c) h) q (regAt ξ p) := by
-  obtain ⟨p, hp, hc, hu, hl⟩ := GlobalTheory.T.chart_prime_gives_component Ω X ξ κ x c hT hx (primeUnder _ h q) (Ideal.comap_isPrime _ _)
+  obtain ⟨p, hp, hc, hu, hl⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.chartPrime_point Ω X ξ κ x c hT hx (primeUnder _ h q) (Ideal.comap_isPrime _ _)
   have hhu : unitAt ξ p h := (hu ⟨h, hh⟩).1 (not_mem_primeUnder hh h0 hq)
   refine ⟨p, hp, hc, hhu, ?_, isLocAt_invAdj hh h0 hq hl⟩
   intro s
@@ -182,7 +182,7 @@ theorem pointPrime {κ : Type} {x : κ → Ω} {c : κ} (hT : CoordTie ℤ ξ x)
       exact b.2
     · rintro ⟨h0, -, hinv⟩
       exact isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩
-  obtain ⟨I, -, hI, hIl⟩ := GlobalTheory.T.component_gives_chart_prime Ω X ξ κ x c hT p hp hc
+  obtain ⟨I, -, hI, hIl⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.exists_prime_chartQ Ω X ξ κ x c hT p hp hc
   have e : primeUnder (chartQ x c) h (Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p))) = I := by
     ext a
     exact not_iff_not.1 ((hs ⟨a, le_invAdj _ h a.2⟩).trans (hI a).symm)
@@ -223,12 +223,12 @@ theorem exists_isSncModel_of_patches : ∀ (Ω : Type) [Field Ω] [CharZero Ω] 
       rw [patchClause hT hz Q hQ q hl]
       refine exists_congr fun i => and_congr_right fun _ => ?_
       rw [← hs (z i), not_not]
-    obtain ⟨a, ha, hau, hnon⟩ := GlobalTheory.T.snc_patch_boundary_units Ω X ξ _ x c B h e n z p hT.gen hB hh hu.1 hcl hp hc hu hnB
-    exact GlobalTheory.T.boundary_generator_unit Ω X ξ N x c B p a hB hp hc ha hau hnon
-  refine ⟨Ideal.span (bdGens ξ x B), ?_, GlobalTheory.T.boundary_points_coords Ω X ξ N x B hT.gen hsep⟩
-  refine GlobalTheory.T.snc_model_from_local_patches Ω X ξ N x e B _ hcov ?_ ?_ ?_
+    obtain ⟨a, ha, hau, hnon⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.exists_chartQ_unit_sep Ω X ξ _ x c B h e n z p hT.gen hB hh hu.1 hcl hp hc hu hnB
+    exact _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.Sep.exists_bdGens_unitAt Ω X ξ N x c B p a hB hp hc ha hau hnon
+  refine ⟨Ideal.span (bdGens ξ x B), ?_, _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.mem_mcPts_span_bdGens_iff Ω X ξ N x B hT.gen hsep⟩
+  refine _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.isSncModel_of_chart_patches Ω X ξ N x e B _ hcov ?_ ?_ ?_
   · intro c hx I hI
-    obtain ⟨p, a, b, d, -⟩ := GlobalTheory.T.chart_prime_gives_component Ω X ξ _ x c hT hx I hI
+    obtain ⟨p, a, b, d, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Mdl.chartPrime_point Ω X ξ _ x c hT hx I hI
     exact ⟨p, a, b, d⟩
   · intro c h hx hh h0 q hq
     obtain ⟨p, hp, hc, -, hs, hl⟩ := primePoint hT hx hh h0 q hq
