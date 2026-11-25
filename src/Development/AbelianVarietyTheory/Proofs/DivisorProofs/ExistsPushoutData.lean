@@ -1,16 +1,23 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageUpOpen
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppEqOfFactorStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlueToLocallyDirectedColimitOfBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodMemStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FerrandPushoutGoodBasicOpenStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImmersionSurjectivePreimageStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalizationAwayFibStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyDirectedOfBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionSpecMapOfThickeningStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackConeFstSndRingNilpotentStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResSurjectiveNilpotentKerStatement
+public import Mathlib.AlgebraicGeometry.AffineScheme
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AppEqOfFactor
+public import Mathlib.AlgebraicGeometry.Gluing
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGlueToLocallyDirectedColimitOfBasis
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodMem
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FerrandPushoutGoodBasicOpen
+public import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImmersionSurjectivePreimage
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocalizationAwayFib
+public import Mathlib.AlgebraicGeometry.Restrict
+public import Mathlib.CategoryTheory.LocallyDirected
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyDirectedOfBasis
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionSpecMapOfThickening
+public import Mathlib.Algebra.Category.Ring.Constructions
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackConeFstSndRingNilpotent
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResSurjectiveNilpotentKer
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSchemeOfThickenings
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -98,8 +105,8 @@ theorem exists_pushout_data : ∀ (Y₀ Y₁ Y₂ : Scheme.{0}) (i₁ : Y₀ ⟶
   intro Y₀ Y₁ Y₂ i₁ i₂ hc₁ hc₂ hs₁ hs₂ hn₁ hn₂
   haveI := hc₁; haveI := hc₂; haveI := hs₁; haveI := hs₂
   have hR : ∀ U ∈ good i₁ i₂, _ := fun U (hU : U ∈ good i₁ i₂) ↦
-    GlobalTheory.T.pullbackCone_surjective_nilpotent_ker (res i₁ U) (res i₂ U) (GlobalTheory.T.ferrandPush_res_surjective_and_isNilpotent_ker i₁ hn₁ U hU.2.1).1 (GlobalTheory.T.ferrandPush_res_surjective_and_isNilpotent_ker i₁ hn₁ U hU.2.1).2
-      (GlobalTheory.T.ferrandPush_res_surjective_and_isNilpotent_ker i₂ hn₂ U hU.2.2).1 (GlobalTheory.T.ferrandPush_res_surjective_and_isNilpotent_ker i₂ hn₂ U hU.2.2).2
+    _root_.GlobalTheory.pullbackCone_fst_snd_ring_nilpotent (res i₁ U) (res i₂ U) (_root_.GlobalTheory.FerrandPush.res_surjective_nilpotent_ker i₁ hn₁ U hU.2.1).1 (_root_.GlobalTheory.FerrandPush.res_surjective_nilpotent_ker i₁ hn₁ U hU.2.1).2
+      (_root_.GlobalTheory.FerrandPush.res_surjective_nilpotent_ker i₂ hn₂ U hU.2.2).1 (_root_.GlobalTheory.FerrandPush.res_surjective_nilpotent_ker i₂ hn₂ U hU.2.2).2
   have hπ : ∀ U ∈ good i₁ i₂, Function.Surjective ((fibπ i₁ i₂).app (op U)).hom ∧
       IsNilpotent (RingHom.ker ((fibπ i₁ i₂).app (op U)).hom) := fun U hU ↦ (hR U hU).2.2
   have hbas₀ : ∀ U ∈ good i₁ i₂, ∀ (W : Y₀.Opens) (x : Y₀), x ∈ U → x ∈ W →
@@ -107,13 +114,13 @@ theorem exists_pushout_data : ∀ (Y₀ Y₁ Y₂ : Scheme.{0}) (i₁ : Y₀ ⟶
     intro U hU W x hxU hxW
     obtain ⟨f, hf, hxf⟩ := hU.1.exists_basicOpen_le (V := W) ⟨x, hxW⟩ hxU
     obtain ⟨a, rfl⟩ := (hπ U hU).1 f
-    exact ⟨_, GlobalTheory.T.ferrand_pushout_good_basic_open i₁ i₂ U hU a, hxf, Y₀.basicOpen_le _, hf⟩
-  have hopen := GlobalTheory.T.isOpenImmersion_of_nilpotent_thickening_cover Y₀ (good i₁ i₂) (fun U hU ↦ hU.1) (fib i₁ i₂) (fibπ i₁ i₂) hπ (GlobalTheory.T.isLocalization_away_ferrandPush_fib i₁ i₂)
+    exact ⟨_, _root_.GlobalTheory.FerrandPush.basicOpen_fibπ_mem_good i₁ i₂ U hU a, hxf, Y₀.basicOpen_le _, hf⟩
+  have hopen := _root_.GlobalTheory.ThickGlue.isOpenImmersion_specMap_of_thickening Y₀ (good i₁ i₂) (fun U hU ↦ hU.1) (fib i₁ i₂) (fibπ i₁ i₂) hπ (_root_.GlobalTheory.FerrandPush.isLocalization_away_fib i₁ i₂)
   let F := ThickGlue.specDiagram (good i₁ i₂) (fib i₁ i₂)
   haveI hF : ∀ {U V : good i₁ i₂} (f : U ⟶ V), IsOpenImmersion (F.map f) :=
     fun {U V} f ↦ hopen _ U.2 _ V.2 f.le
   haveI : (F ⋙ Scheme.forget).IsLocallyDirected :=
-    GlobalTheory.T.isLocallyDirected_of_bijective_basis_compatible (good i₁ i₂) (fun U hU V _ x hx hy ↦ hbas₀ U hU V x hx hy) F hF
+    _root_.GlobalTheory.ThickGlue.isLocallyDirected_of_basis (good i₁ i₂) (fun U hU V _ x hx hy ↦ hbas₀ U hU V x hx hy) F hF
       (fun U ↦ ThickGlue.toSpec (fibπ i₁ i₂) U.1)
       (fun U ↦ by
         haveI := ThickGlue.isClosedImmersion_toSpec (fibπ i₁ i₂) U.2.1 (hπ U.1 U.2).1
@@ -152,16 +159,16 @@ theorem exists_pushout_data : ∀ (Y₀ Y₁ Y₂ : Scheme.{0}) (i₁ : Y₀ ⟶
       ∀ y : Yk, ∃ U ∈ good i₁ i₂, y ∈ upOpen ik U := by
     intro Yk ik _ _ y
     obtain ⟨x, rfl⟩ := ik.surjective y
-    obtain ⟨U, hU, hx⟩ := GlobalTheory.T.exists_mem_good_of_closedImmersions i₁ i₂ x
+    obtain ⟨U, hU, hx⟩ := _root_.GlobalTheory.FerrandPush.exists_good_mem i₁ i₂ x
     exact ⟨U, hU, (mem_upOpen_iff ik U x).2 hx⟩
-  obtain ⟨j₁, hj₁⟩ := GlobalTheory.T.exists_glue_to_locallyDirected_colimit_of_basis (good i₁ i₂) F Y₁ (upOpen i₁) (upOpen_mono i₁) (hbasK i₁)
+  obtain ⟨j₁, hj₁⟩ := _root_.GlobalTheory.ColimitGlue.exists_glue (good i₁ i₂) F Y₁ (upOpen i₁) (upOpen_mono i₁) (hbasK i₁)
     (hcovK i₁) e₁ hn1
-  obtain ⟨j₂, hj₂⟩ := GlobalTheory.T.exists_glue_to_locallyDirected_colimit_of_basis (good i₁ i₂) F Y₂ (upOpen i₂) (upOpen_mono i₂) (hbasK i₂)
+  obtain ⟨j₂, hj₂⟩ := _root_.GlobalTheory.ColimitGlue.exists_glue (good i₁ i₂) F Y₂ (upOpen i₂) (upOpen_mono i₂) (hbasK i₂)
     (hcovK i₂) e₂ hn2
-  obtain ⟨ci₁, su₁, pre₁⟩ := GlobalTheory.T.isClosedImmersion_surjective_to_colimit (good i₁ i₂) F Y₁ (upOpen i₁) (upOpen_mono i₁) (hcovK i₁) e₁
+  obtain ⟨ci₁, su₁, pre₁⟩ := _root_.GlobalTheory.GlueColim.isClosedImmersion_surjective_preimage (good i₁ i₂) F Y₁ (upOpen i₁) (upOpen_mono i₁) (hcovK i₁) e₁
     (fun U ↦ isClosedImmersion_toSpecΓ_comp _ U.2.2.1 _ (hR U.1 U.2).1.1)
     (fun U ↦ surjective_toSpecΓ_comp _ U.2.2.1 _ (hR U.1 U.2).1.1 (hR U.1 U.2).1.2) hn1 j₁ hj₁
-  obtain ⟨ci₂, su₂, pre₂⟩ := GlobalTheory.T.isClosedImmersion_surjective_to_colimit (good i₁ i₂) F Y₂ (upOpen i₂) (upOpen_mono i₂) (hcovK i₂) e₂
+  obtain ⟨ci₂, su₂, pre₂⟩ := _root_.GlobalTheory.GlueColim.isClosedImmersion_surjective_preimage (good i₁ i₂) F Y₂ (upOpen i₂) (upOpen_mono i₂) (hcovK i₂) e₂
     (fun U ↦ isClosedImmersion_toSpecΓ_comp _ U.2.2.2 _ (hR U.1 U.2).2.1.1)
     (fun U ↦ surjective_toSpecΓ_comp _ U.2.2.2 _ (hR U.1 U.2).2.1.1 (hR U.1 U.2).2.1.2) hn2 j₂ hj₂
   have key1 : ∀ U : good i₁ i₂, U.1.ι ≫ i₁ ≫ j₁ =
@@ -176,7 +183,7 @@ theorem exists_pushout_data : ∀ (Y₀ Y₁ Y₂ : Scheme.{0}) (i₁ : Y₀ ⟶
     simp only [e₂, res, Spec.map_comp, Category.assoc, Scheme.Opens.toSpecΓ_SpecMap_appLE_assoc]
   have hw : i₁ ≫ j₁ = i₂ ≫ j₂ := by
     refine Scheme.hom_ext_of_forall _ _ fun x ↦ ?_
-    obtain ⟨U, hU, hx⟩ := GlobalTheory.T.exists_mem_good_of_closedImmersions i₁ i₂ x
+    obtain ⟨U, hU, hx⟩ := _root_.GlobalTheory.FerrandPush.exists_good_mem i₁ i₂ x
     refine ⟨U, hx, ?_⟩
     rw [key1 ⟨U, hU⟩, key2 ⟨U, hU⟩, (cone i₁ i₂ U).condition]
   have h0 : ∀ U : good i₁ i₂, (i₁ ≫ j₁) ⁻¹ᵁ (colimit.ι F U).opensRange = U.1 := by
@@ -188,7 +195,7 @@ theorem exists_pushout_data : ∀ (Y₀ Y₁ Y₂ : Scheme.{0}) (i₁ : Y₀ ⟶
   · rw [TopologicalSpace.Opens.isBasis_iff_nbhd]
     intro O y hy
     obtain ⟨x, rfl⟩ := (i₁ ≫ j₁).surjective y
-    obtain ⟨U₀, hU₀, hx₀⟩ := GlobalTheory.T.exists_mem_good_of_closedImmersions i₁ i₂ x
+    obtain ⟨U₀, hU₀, hx₀⟩ := _root_.GlobalTheory.FerrandPush.exists_good_mem i₁ i₂ x
     obtain ⟨U, hU, hxU, -, hUO⟩ := hbas₀ U₀ hU₀ ((i₁ ≫ j₁) ⁻¹ᵁ O) x hx₀ hy
     refine ⟨_, ⟨⟨U, hU⟩, rfl⟩, ?_, ?_⟩
     · show x ∈ (i₁ ≫ j₁) ⁻¹ᵁ (colimit.ι F ⟨U, hU⟩).opensRange
@@ -208,9 +215,9 @@ theorem exists_pushout_data : ∀ (Y₀ Y₁ Y₂ : Scheme.{0}) (i₁ : Y₀ ⟶
       infer_instance
     let ψ : Γ(colimit F, (colimit.ι F U).opensRange) ≅ (fib i₁ i₂).obj (op U.1) :=
       asIso ((colimit.ι F U).appLE (colimit.ι F U).opensRange ⊤ hle) ≪≫ Scheme.ΓSpecIso _
-    have a1 := GlobalTheory.T.app_opensRange_eq_appLE_comp_of_factor (A := (fib i₁ i₂).obj (op U.1)) (colimit.ι F U) j₁ (upOpen i₁ U.1)
+    have a1 := _root_.GlobalTheory.SectionsPinch.app_eq_of_factor (A := (fib i₁ i₂).obj (op U.1)) (colimit.ι F U) j₁ (upOpen i₁ U.1)
       (cone i₁ i₂ U.1).fst (pre₁ U) (hj₁ U)
-    have a2 := GlobalTheory.T.app_opensRange_eq_appLE_comp_of_factor (A := (fib i₁ i₂).obj (op U.1)) (colimit.ι F U) j₂ (upOpen i₂ U.1)
+    have a2 := _root_.GlobalTheory.SectionsPinch.app_eq_of_factor (A := (fib i₁ i₂).obj (op U.1)) (colimit.ι F U) j₂ (upOpen i₂ U.1)
       (cone i₁ i₂ U.1).snd (pre₂ U) (hj₂ U)
     have P := IsPullback.of_isLimit (coneIsLimit i₁ i₂ U.1)
     refine P.of_iso ψ.symm (Y₁.presheaf.mapIso (eqToIso (pre₁ U)).op)

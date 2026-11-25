@@ -2,16 +2,25 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsRatPointOfFiniteType
 import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemNonzeroLocusIffPowFn
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMorphismValuativeLiftingNormalDomainStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThickTransComp
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteMorphismValuativeLiftingNormalDomain
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteOverProjectiveSpaceProjectiveAmpleTwist
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteNormalNormalisationProjectiveSpaceArithStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionDenseGenericFibreNormalisationStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModuliSchemeCoefficientFieldNormalNoetherianSepaStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsProjectivelyIntegralNormalModelsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMapAbelianSchemeNormalCharZeroBaseStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMapFiniteGeometricFibresOfLargeLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMapPullO1PowerStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedPointExtendsAlongThetaMapStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Finite
+public import Mathlib.AlgebraicGeometry.Normalization
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteNormalNormalisationProjectiveSpaceArith
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionDenseGenericFibreNormalisation
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModuliSchemeCoefficientFieldNormalNoetherianSepa
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaConstantsProjectivelyIntegralNormalModels
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMapAbelianSchemeNormalCharZeroBase
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMapFiniteGeometricFibresOfLargeLevel
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsChartOfIsLocalRing
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaMapPullO1Power
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsOverIff
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedPointExtendsAlongThetaMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniversalTripleFibrePrincipallyPolarisedDimensio
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -99,8 +108,8 @@ theorem integral_normal_model_dense : ∀ (o F : Type) [CommRing o] [IsDomain o]
   haveI : QuasiSeparated f := QuasiSeparated.of_comp f (PSpace.str o n)
   have hw : f.toNormalization ≫ (f.fromNormalization ≫ PSpace.str o n) = s ≫ spMap b := by
     rw [← Category.assoc, Scheme.Hom.toNormalization_fromNormalization, hcomm]
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.isFinite_normal_normalisation_projectiveSpace_arith o F b n X s f hb hfr hX hsep hlft hqc hcomm hfin
-  obtain ⟨h3, h4⟩ := GlobalTheory.T.isOpenImmersion_dense_genericFibre_normalisation o F b n X s f hb hfr hX hsep hlft hqc hcomm hfin
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.ThetaFin.isFinite_fromNormalization_and_normal o F b n X s f hb hfr hX hsep hlft hqc hcomm hfin
+  obtain ⟨h3, h4⟩ := _root_.GlobalTheory.UMin.isOpenImmersion_dense_genericFibre_normalization o F b n X s f hb hfr hX hsep hlft hqc hcomm hfin
     (pullback.lift _ _ hw) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)
   refine ⟨f.normalization, f.fromNormalization, pullback.lift _ _ hw, h1, h2, h3, h4,
     pullback.lift_snd _ _ _, ?_, ?_⟩
@@ -116,15 +125,15 @@ namespace GlobalTheory
 
 theorem umin_theta_compactification_exists : UMinSt := by
   have h_dim := @GlobalTheory.UMin.polFib_univ
-  have h_xf := GlobalTheory.T.moduliScheme_coefficientField_normal_noetherian_separated
-  have h_map_gen := GlobalTheory.T.thetaMap_abelianScheme_normal_charZero_base
-  have h_qf := GlobalTheory.T.thetaMap_finite_geometricFibres_of_large_level
+  have h_xf := _root_.GlobalTheory.UMin.xF_props
+  have h_map_gen := _root_.GlobalTheory.UMin.ThetaMapGen.main
+  have h_qf := _root_.GlobalTheory.UMin.QF.finite_fibre_thMap
   have h_zb := GlobalTheory.UMinTop.integral_normal_model_dense
   have h_zb_amp := @GlobalTheory.FiniteOverPSpace.isProjOver_and_isAmpleLB
-  have h_zb_lift := GlobalTheory.T.finite_morphism_valuative_lifting_normal_domain
-  have h_ext_P := GlobalTheory.T.uniformisedPoint_extends_along_thetaMap
-  have h_thint_P := GlobalTheory.T.thetaConstants_projectively_integral_normalModels
-  have h_om_P := GlobalTheory.T.theta_map_pull_O1_power
+  have h_zb_lift := _root_.GlobalTheory.finite_lift_fractionField
+  have h_ext_P := _root_.GlobalTheory.UMin.ExtP.extend_theta
+  have h_thint_P := _root_.GlobalTheory.UMin.thetaInt_hasDiv
+  have h_om_P := _root_.GlobalTheory.ThetaPullback.theta_pull_O1_pow
   intro E _ _ _ H Dw _ l Xo c
   have hM'0 : l.M' ≠ 0 := Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'
   have hd0 : H.d ≠ 0 := H.d_prime.ne_zero

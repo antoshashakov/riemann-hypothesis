@@ -4,9 +4,10 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStab
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodingerStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDotProductRepresentationCompactCharacterLoStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergLatticeVacuumFnApplyAddStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergLatticeVacuumFnHasCompactSupportStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDotProductRepresentationCompactCharacterLo
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergLatticeVacuumFnApplyAdd
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergLatticeVacuumFnHasCompactSupport
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacFn
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantHeisenbergLatticeVacuumFunction
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
@@ -119,7 +120,7 @@ theorem exists_local_vac {F : Type} [Field F] [NumberField F] (v : GlobalTheory.
   have hL' : IsOpen (L' : Set (κ → Fv F v)) := by
     rw [AddSubgroup.coe_comap]
     exact ho.preimage (continuous_const.prodMk (continuous_const.smul continuous_id))
-  obtain ⟨x₀, hx₀⟩ := GlobalTheory.T.exists_dotProduct_representation_compact_character_local v ψ₀ hc hne L hL L' hL' (fun y => χ (0, y))
+  obtain ⟨x₀, hx₀⟩ := _root_.GlobalTheory.CompactCharDual.exists_dotProduct_eq_local v ψ₀ hc hne L hL L' hL' (fun y => χ (0, y))
     (fun y hy y' hy' => by
       have e := hco _ hy _ hy'
       simp only [AddMonoidHom.inr_apply, Prod.mk_add_mk, add_zero, zero_dotProduct, sub_self, mul_zero,
@@ -131,10 +132,10 @@ theorem exists_local_vac {F : Type} [Field F] [NumberField F] (v : GlobalTheory.
         DistribSMul.toAddMonoidHom_apply, Prod.mk_add_mk, add_zero] at e
       rwa [← add_smul, invOf_two_add_invOf_two, one_smul] at e)
   have hx : ∀ y : κ → Fv F v, ((0 : κ → Fv F v), y) ∈ Λ → χ (0, y) = ψ₀ (x₀ ⬝ᵥ y) := fun y hy => hx₀ y hy
-  refine ⟨vacFn ψ₀ Λ χ x₀, ⟨_root_.GlobalTheory.HeisLatVac.isLocallyConstant_vacFn_place v ψ₀ hc Λ ho χ x₀ hco hx h2, GlobalTheory.T.heisenbergLatticeVacuumFn_hasCompactSupport v ψ₀ Λ χ x₀ hk⟩, ?_,
+  refine ⟨vacFn ψ₀ Λ χ x₀, ⟨_root_.GlobalTheory.HeisLatVac.isLocallyConstant_vacFn_place v ψ₀ hc Λ ho χ x₀ hco hx h2, _root_.GlobalTheory.HeisLatVac.vacFn_hasCompactSupport_of_isCompact v ψ₀ Λ χ x₀ hk⟩, ?_,
     _root_.GlobalTheory.HeisLatVac.schr_vacFn ψ₀ Λ χ x₀ hco hx hiso⟩
   intro h
-  have e := GlobalTheory.T.heisenbergLatticeVacuumFn_apply_add ψ₀ Λ χ x₀ hco hx 0 (zero_mem _)
+  have e := _root_.GlobalTheory.HeisLatVac.vacFn_apply_add ψ₀ Λ χ x₀ hco hx 0 (zero_mem _)
   simp only [Prod.fst_zero, Prod.snd_zero, add_zero, dotProduct_zero, neg_zero, mul_zero, sub_zero,
     AddChar.map_zero_eq_one, h0, mul_one, h, Pi.zero_apply] at e
   exact zero_ne_one e

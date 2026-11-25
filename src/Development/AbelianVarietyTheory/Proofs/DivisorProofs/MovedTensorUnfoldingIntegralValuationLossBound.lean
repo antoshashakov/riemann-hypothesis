@@ -2,21 +2,25 @@ module
 
 public import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
 import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddCharNegUnfoldingPhaseMulUniformizerPowLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffPlaceValuationResidueFieldCardEqZeroOfNotMeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffValuationLossFinsetSumAndInvPowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffValuationLossLeAddCharNegUnfoldingPhaseStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddCharNegUnfoldingPhaseMulUniformizerPowLattice
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffPlaceValuationResidueFieldCardEqZeroOfNotMe
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffValuationLossFinsetSumAndInvPow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffValuationLossLeAddCharNegUnfoldingPhase
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteCoefficientBound
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportFlatIntegrand
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralEqVolumeSumCharacterTwistedCosetsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedStaircaseTensorPeriodicUniformizerPowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedTensorChosenPlaceCoeffValuationLossLeStatement
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralEqVolumeSumCharacterTwistedCosets
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemVarLat
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedStaircaseTensorPeriodicUniformizerPow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedTensorChosenPlaceCoeffValuationLossLe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedTensorFactorCoeffValuationLossLeAwayPrimeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneCosetOfIsTensor
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StepVariablesCountGridLocalFlipGridLeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StepVariablesCountGridLocalFlipGridLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumOKEx
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VariablesUniformizerPowerLatticeBasisOpenVolumeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VariablesUniformizerPowerLatticeBasisOpenVolume
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatIntegrandFlippedTensorLocallyConstantCompact
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralUnfoldingVariablesMemFieldRange
@@ -136,7 +140,7 @@ theorem datum_loss {large₂ : SizeData₂ D} {F : Face D A} {CF b : ℝ} (hS : 
     by_cases hv : S (fill one_le_sLen X Y v) = 0
     · have : f v = 0 := by simp [hf, flatIntegrand, hv]
       rw [this]; exact ⟨0, map_zero _, Or.inl rfl⟩
-    · have hψ := GlobalTheory.T.coeffValuationLossLe_addChar_neg_unfoldingPhase ch large₂ F CF b hS hIs hSc hF t Φ β hβ P X Y v h0 hv w
+    · have hψ := _root_.GlobalTheory.UnfoldLoss.lossLe_psi_neg_phase ch large₂ F CF b hS hIs hSc hF t Φ β hβ P X Y v h0 hv w
       have := lossLe_mul' (hK (fill one_le_sLen X Y v)) hψ
       rw [add_zero] at this
       exact this
@@ -145,11 +149,11 @@ theorem datum_loss {large₂ : SizeData₂ D} {F : Face D A} {CF b : ℝ} (hS : 
       (∀ v, LossLe w (f v) (c + K1)) →
       LossLe w ((ch.S.term t Φ β P).datum X Y) (c + K1 + ((n * varCount (locGrid ch.G t P) : ℕ) : ℝ) * vq) := by
     intro n K1 hrel hv
-    obtain ⟨-, hlat⟩ := GlobalTheory.T.variablesUniformizerPowerLattice_basis_open_volume (locGrid ch.G t P) (unitVol P.1) (isUnitVol_unitVol P.1) (unifAt P.1) (isUnif_unifAt P.1)
+    obtain ⟨-, hlat⟩ := _root_.GlobalTheory.UnfoldLoss.LatVol.varLat_basis_open_vol (locGrid ch.G t P) (unitVol P.1) (isUnitVol_unitVol P.1) (unifAt P.1) (isUnif_unifAt P.1)
     obtain ⟨hop, hfin, hvol⟩ := hlat n
-    obtain ⟨s, hs⟩ := GlobalTheory.T.integral_eq_volume_sum_characterTwistedCosets (varsVol (locGrid ch.G t P) (unitVol P.1)) _ hop hfin f hcpt hrel
+    obtain ⟨s, hs⟩ := _root_.GlobalTheory.TwistedCosetSum.integral_eq_sum_twisted (varsVol (locGrid ch.G t P) (unitVol P.1)) _ hop hfin f hcpt hrel
     rw [hdat, hs, hvol]
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.coeffValuationLoss_finsetSum_and_invPow w
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.LossSum.lossLe_sum_and_pow w
     exact lossLe_mul' (h1 s f _ fun i _ => hv i) (h2 q _ hq0)
   by_cases hW : (P : Pl D.host.E) ∈ ch.G.pl.W0
   · set e := cosExp ch.G P with he
@@ -174,9 +178,9 @@ theorem datum_loss {large₂ : SizeData₂ D} {F : Face D A} {CF b : ℝ} (hS : 
     have hrel : ∀ v, ∀ u ∈ varLat (locGrid ch.G t P) (unifAt P.1) (D.R.m * e),
         ∀ u' ∈ varLat (locGrid ch.G t P) (unifAt P.1) (D.R.m * e), f (v + u + u') * f v = f (v + u) * f (v + u') := by
       intro v u hu u' hu'
-      have hper := GlobalTheory.T.movedStaircaseTensor_periodic_uniformizerPow (locGrid ch.G t P) one_le_sLen (unifAt P.1) (isUnif_unifAt P.1) e _ hTT (givenLevel ch.G t P)
+      have hper := _root_.GlobalTheory.UnfoldLoss.moved_stair_periodic (locGrid ch.G t P) one_le_sLen (unifAt P.1) (isUnif_unifAt P.1) e _ hTT (givenLevel ch.G t P)
         (keepAt ch.G P) X Y
-      have hψ2 := GlobalTheory.T.addChar_neg_unfoldingPhase_mul_uniformizerPowLattice (locGrid ch.G t P) (psiAt ch.W P.1) hcond (unifAt P.1) (isUnif_unifAt P.1) _ X v u u' hu hu'
+      have hψ2 := _root_.GlobalTheory.UnfoldLoss.PhaseQuad.psi_phase_mul (locGrid ch.G t P) (psiAt ch.W P.1) hcond (unifAt P.1) (isUnif_unifAt P.1) _ X v u u' hu hu'
       have e1 := hper (v + u) u' hu'
       have e2 := hper v u hu
       have e3 := hper v u' hu'
@@ -184,10 +188,10 @@ theorem datum_loss {large₂ : SizeData₂ D} {F : Face D A} {CF b : ℝ} (hS : 
       simp only [hf, flatIntegrand]
       rw [e1, e2, e3]
       linear_combination (S (fill one_le_sLen X Y v)) ^ 2 * hψ2
-    have hmov := GlobalTheory.T.movedTensorChosenPlace_coeffValuationLoss_le ch large₂ F CF b hS hIs hSc hF t Φ β hβ P hW w c hc hT
+    have hmov := _root_.GlobalTheory.UnfoldLoss.MovedChosen.moved_loss ch large₂ F CF b hS hIs hSc hF t Φ β hβ P hW w c hc hT
     have h1 := hint (D.R.m * e) _ hrel (hval _ hmov)
     refine h1.mono ?_
-    have hcount := GlobalTheory.T.stepVariablesCount_gridLocalFlipGrid_le ch.G t P
+    have hcount := _root_.GlobalTheory.UnfoldLoss.varCount_locGrid_le ch.G t P
     have hle : ((D.R.m * e * varCount (locGrid ch.G t P) : ℕ) : ℝ) ≤ (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 * (e : ℝ) := by
       have h2 : D.R.m * e * varCount (locGrid ch.G t P) ≤ D.R.m * e * (D.R.m * bigN D ^ 2) := Nat.mul_le_mul_left _ hcount
       calc ((D.R.m * e * varCount (locGrid ch.G t P) : ℕ) : ℝ) ≤ ((D.R.m * e * (D.R.m * bigN D ^ 2) : ℕ) : ℝ) := by
@@ -196,7 +200,7 @@ theorem datum_loss {large₂ : SizeData₂ D} {F : Face D A} {CF b : ℝ} (hS : 
     have h3 := mul_le_mul_of_nonneg_right hle hvq0
     nlinarith
   · have hw : ((Formalism.EigenvalueLevelCeiling.plc (P : Pl D.host.E) : ℕ) : 𝓞 D.what₂.LL) ∉ w.asIdeal := hcase.resolve_left hW
-    have hv0 : vq = 0 := by rw [hvq]; exact_mod_cast GlobalTheory.T.coeffPlace_valuation_residueFieldCard_eq_zero_of_not_mem P.1 w hw
+    have hv0 : vq = 0 := by rw [hvq]; exact_mod_cast _root_.GlobalTheory.UnfoldLoss.ResCardAway.vw_resCard_eq_zero P.1 w hw
     have he0 : cosExp ch.G P = 0 := (depthAt_of_notMem ch.G hW).1
     have hlc : IsLocallyConstant f := by
       have hmv : Continuous ((locGrid ch.G t P).moveArgs .one ((repsAt ch.G t P).elt (β P))) := continuous_pi fun b =>
@@ -205,7 +209,7 @@ theorem datum_loss {large₂ : SizeData₂ D} {F : Face D A} {CF b : ℝ} (hS : 
         ((hcond.isLocallyConstant.comp Subtype.val).comp_continuous (continuous_phase X).neg)
       exact ((IsLocallyConstant.const _).mul ((IsLocallyConstant.const _).mul
         ((isLocallyConstant_of_isTensor hTT).comp_continuous (hmv.comp (continuous_fill one_le_sLen X Y))))).mul hψ
-    obtain ⟨hbasis, -⟩ := GlobalTheory.T.variablesUniformizerPowerLattice_basis_open_volume (locGrid ch.G t P) (unitVol P.1) (isUnitVol_unitVol P.1) (unifAt P.1) (isUnif_unifAt P.1)
+    obtain ⟨hbasis, -⟩ := _root_.GlobalTheory.UnfoldLoss.LatVol.varLat_basis_open_vol (locGrid ch.G t P) (unitVol P.1) (isUnitVol_unitVol P.1) (unifAt P.1) (isUnif_unifAt P.1)
     obtain ⟨n, hn⟩ := hbasis _ ((GlobalTheory.LCIntegralField.isOpen_stab hlc hcpt).mem_nhds (zero_mem _))
     have hrel : ∀ v, ∀ u ∈ varLat (locGrid ch.G t P) (unifAt P.1) n,
         ∀ u' ∈ varLat (locGrid ch.G t P) (unifAt P.1) n, f (v + u + u') * f v = f (v + u) * f (v + u') := by
