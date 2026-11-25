@@ -3,20 +3,21 @@ module
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColLieApply
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodFiniteOfHcFinite
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnHighestRowIntertwinersProportionalStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ColumnHighestRowIntertwinersProportional
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteThetaIntegralIntegrableContinuousStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteThetaIntegralInvariantRealTranslateStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnitaryRealPointsActFockSubstitutionStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.OrthogonalComplementCharacterisation
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteThetaIntegralIntegrableContinuous
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteThetaIntegralInvariantRealTranslate
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnitaryRealPointsActFockSubstitution
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOrEqOfPlaceIdem
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBilinearFischerPairingMatrixEntryPolynomiaStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsColStableDisjointStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsColumnHighestWeightPolynomialMapStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDegreeBoundOfRowUnitaryInvariantPairingStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteSmoothIrreducibleStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMultTOfEquivariantStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultiplicitySpaceDefiniteContinuousInvariantEquiStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TensorProductDefiniteUnitaryLocalModelsIrreducibStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBilinearFischerPairingMatrixEntryPolynomia
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsColStableDisjoint
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsColumnHighestWeightPolynomialMap
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDegreeBoundOfRowUnitaryInvariantPairing
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteSmoothIrreducible
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMultTOfEquivariant
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultiplicitySpaceDefiniteContinuousInvariantEqui
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TensorProductDefiniteUnitaryLocalModelsIrreducib
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainStepsLevelCharacterConditionsHold
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteDimensionalModel
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsFockVacAtOfIsThetaAt
@@ -136,10 +137,10 @@ theorem mem_of_intertwiner (hnm : n ≤ m) {π : ι → Matrix.unitaryGroup (Fin
   have hW : ∀ Ψ ∈ W, ∀ τ g, colSub m τ g ∘ₗ Ψ ∈ W := fun Ψ h τ g ρ u x => by
     simp only [LinearMap.comp_apply, h ρ u x, colSub_rowSub]
   by_contra hn
-  obtain ⟨U', h0, hle, hd, hst'⟩ := GlobalTheory.T.exists_colStable_complement_of_lt ι m n X U W hst hW (lt_of_le_of_ne hU fun e => hn (e ▸ hΦ))
-  obtain ⟨Φ₁, h1, h1', a1, μ, b1⟩ := GlobalTheory.T.exists_column_highest_weight_polynomial_map ι m n X U' h0 hst'
-  obtain ⟨Φ₂, h2, h2', a2, μ', b2⟩ := GlobalTheory.T.exists_column_highest_weight_polynomial_map ι m n X U hU0 hst
-  obtain ⟨r, hr⟩ := GlobalTheory.T.columnHighest_rowIntertwiners_proportional ι m n hnm X π hπ Φ₁ Φ₂ μ μ' h1' (fun τ u x => ⟨hle h1 τ u x, hU _ h2 τ u x⟩)
+  obtain ⟨U', h0, hle, hd, hst'⟩ := _root_.GlobalTheory.DefLift.exists_colStable_disjoint ι m n X U W hst hW (lt_of_le_of_ne hU fun e => hn (e ▸ hΦ))
+  obtain ⟨Φ₁, h1, h1', a1, μ, b1⟩ := _root_.GlobalTheory.DefLift.exists_colHighest ι m n X U' h0 hst'
+  obtain ⟨Φ₂, h2, h2', a2, μ', b2⟩ := _root_.GlobalTheory.DefLift.exists_colHighest ι m n X U hU0 hst
+  obtain ⟨r, hr⟩ := _root_.GlobalTheory.DefLift.colHighest_intertwiner_proportional ι m n hnm X π hπ Φ₁ Φ₂ μ μ' h1' (fun τ u x => ⟨hle h1 τ u x, hU _ h2 τ u x⟩)
     (fun τ k l h => ⟨a1 τ k l h, a2 τ k l h⟩) fun τ k => ⟨b1 τ k, b2 τ k⟩
   have : Φ₂ ∈ U ⊓ U' := ⟨h2, hr ▸ U'.smul_mem r h1⟩
   rw [hd] at this
@@ -149,7 +150,7 @@ theorem mem_of_invariant (hnm : n ≤ m) {π : ι → Matrix.unitaryGroup (Fin m
     (U : Submodule ℂ (Pol ι m n →ₗ[ℂ] X →ₗ[ℂ] ℂ)) (hU0 : U ≠ ⊥)
     (hU : ∀ β ∈ U, ∀ τ u P x, β (rowSub n τ u P) (π τ u x) = β P x) (hst : ∀ β ∈ U, ∀ τ g, β ∘ₗ colSub m τ g ∈ U)
     (β : Pol ι m n →ₗ[ℂ] X →ₗ[ℂ] ℂ) (hβ : ∀ τ u P x, β (rowSub n τ u P) (π τ u x) = β P x) : β ∈ U := by
-  obtain ⟨B, hB0, hBt, hBr⟩ := GlobalTheory.T.exists_bilinearFischerPairing_matrixEntryPolynomialRing ι m n
+  obtain ⟨B, hB0, hBt, hBr⟩ := _root_.GlobalTheory.DefLift.BilFischer.exists_pair ι m n
   have hinj : Function.Injective B.flip := (injective_iff_map_eq_zero _).2 fun Q h => hB0 Q fun P => LinearMap.congr_fun h P
   let Θ : (X →ₗ[ℂ] Pol ι m n) →ₗ[ℂ] (Pol ι m n →ₗ[ℂ] X →ₗ[ℂ] ℂ) :=
     { toFun := fun Φ => B.compl₂ Φ
@@ -169,7 +170,7 @@ theorem mem_of_invariant (hnm : n ≤ m) {π : ι → Matrix.unitaryGroup (Fin m
     · exact Matrix.transpose_one
   have hrep : ∀ γ : Pol ι m n →ₗ[ℂ] X →ₗ[ℂ] ℂ, (∀ τ u P x, γ (rowSub n τ u P) (π τ u x) = γ P x) → ∃ Φ, Θ Φ = γ := by
     intro γ hγ
-    obtain ⟨d, hd⟩ := GlobalTheory.T.exists_degree_bound_of_rowUnitary_invariant_pairing ι m n X π γ hγ
+    obtain ⟨d, hd⟩ := _root_.GlobalTheory.RowSupport.exists_degree_bound ι m n X π γ hγ
     have hx : ∀ x, γ.flip x ∈ LinearMap.range B.flip := fun x => by
       obtain ⟨Q, hQ⟩ := hBr (γ.flip x) d fun α hα => by rw [LinearMap.flip_apply, hd α hα]; rfl
       exact ⟨Q, LinearMap.ext hQ⟩
@@ -299,15 +300,15 @@ theorem ioExists_definite {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSM
   have hf : IsThetaFunO ψ V W f := by
     have := hpt 1
     rwa [ptOf, GlobalTheory.FiniteFock.pureTensorO_one] at this
-  have m1 := GlobalTheory.T.finiteDimensional_smooth_irreducible_of_allPlus D V S M hM
-  have m2 := GlobalTheory.T.finiteDimensional_smooth_irreducible_of_allPlus D W S' M' hM'
-  obtain ⟨fd, inj, π, hπ, irr⟩ := GlobalTheory.T.tensorProduct_definiteUnitary_localModels_irreducible D V S M m1 hM
-  obtain ⟨fd', inj', π', hπ', irr'⟩ := GlobalTheory.T.tensorProduct_definiteUnitary_localModels_irreducible D W S' M' m2 hM'
-  have hfock := GlobalTheory.T.definiteUnitary_realPoints_act_fock_substitution D ψ V W χS χT ω θ S S' M M' f hω hθ hV hW hM hM' hf hvac
+  have m1 := _root_.GlobalTheory.DefLift.AllPlus.finite_smooth_irreducible D V S M hM
+  have m2 := _root_.GlobalTheory.DefLift.AllPlus.finite_smooth_irreducible D W S' M' hM'
+  obtain ⟨fd, inj, π, hπ, irr⟩ := _root_.GlobalTheory.DefLift.tensor_irreducible D V S M m1 hM
+  obtain ⟨fd', inj', π', hπ', irr'⟩ := _root_.GlobalTheory.DefLift.tensor_irreducible D W S' M' m2 hM'
+  have hfock := _root_.GlobalTheory.DefLift.FockAct.fock_act D ψ V W χS χT ω θ S S' M M' f hω hθ hV hW hM hM' hf hvac
   choose cV hcV0 hcV using fun τ => (hfock τ).1
   choose cW hcW0 hcW using fun τ => (hfock τ).2
-  have hF := fun F : C => GlobalTheory.T.multiplicitySpace_definite_continuous_invariant_equivariant D θ W S' M' π' J' χ' hM' (fun τ => (m2 τ).2.1) inj' hπ' F (hC F.2)
-  have hL := fun (F : C) φ v => GlobalTheory.T.definiteThetaIntegral_integrable_continuous D ψ V W χS χT ω ν 𝓕 _ _ hω hM'.posDef hν h𝓕 (hpt φ) (hF F v).1 (hF F v).2.1
+  have hF := fun F : C => _root_.GlobalTheory.multT_cont_left_equiv D θ W S' M' π' J' χ' hM' (fun τ => (m2 τ).2.1) inj' hπ' F (hC F.2)
+  have hL := fun (F : C) φ v => _root_.GlobalTheory.DefLiftCont.theta_integral_integrable_continuous D ψ V W χS χT ω ν 𝓕 _ _ hω hM'.posDef hν h𝓕 (hpt φ) (hF F v).1 (hF F v).2.1
   let pt : PolF D W.rank V.rank →ₗ[ℂ] (WO V W → ℂ) := pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f
   have hpe : ∀ P, ptOf ψ θ M M' f P = pt P := fun _ => rfl
   obtain ⟨B, hB⟩ := exists_trilinear ν 𝓕 (fun g h => LinearMap.proj 0 ∘ₗ ω (g, h)) pt C fun F φ v => (hL F φ v).1
@@ -322,7 +323,7 @@ theorem ioExists_definite {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSM
   have hBrow : ∀ τ u P x, B (cW τ u • rowSub V.rank τ u P) (π' τ u x) = B P x := fun τ u P x =>
     LinearMap.ext fun F => by
       rw [hB, hB, (hF F x).2.2, hpe, map_smul, ← hpe, ← hcW]
-      exact GlobalTheory.T.definiteThetaIntegral_invariant_real_translate D ψ V W χS χT ω ν 𝓕 _ _ hω hM'.posDef hν h𝓕 (hpt P) (hF F x).1 (hF F x).2.1 _
+      exact _root_.GlobalTheory.LiftShift.liftInt_shift D ψ V W χS χT ω ν 𝓕 _ _ hω hM'.posDef hν h𝓕 (hpt P) (hF F x).1 (hF F x).2.1 _
         (GlobalTheory.PointAtPlaceHom.atTau_spec hθ W τ (hM'.unfr_mem τ u)).1
   have irr'' : IrrFam fun τ u => cW τ u • π' τ u := fun U h => irr' U fun τ u x hx =>
     (U.smul_mem_iff (hcW0 τ u)).1 (h τ u x hx)
@@ -361,7 +362,7 @@ theorem ioExists_definite {V W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSM
           (hJ k hk).2 P
       have e2 : B (χ k • P) x F g = χ k * B P x F g := by rw [map_smul]; rfl
       rw [LinearMap.flip_apply, hLB, ← e2, hB, hB, hshift, hpe, hpe, e, pt.map_smul]
-    refine GlobalTheory.T.mem_multT_of_equivariant' D θ V S M π J χ _ hθ hV hM (fun τ => ⟨(m1 τ).1, (m1 τ).2.1⟩) fd inj hπ (fun x => ⟨?_, ?_, ?_⟩) hlev
+    refine _root_.GlobalTheory.DefLiftMult.mem_multT_of_equivariant D θ V S M π J χ _ hθ hV hM (fun τ => ⟨(m1 τ).1, (m1 τ).2.1⟩) fd inj hπ (fun x => ⟨?_, ?_, ?_⟩) hlev
       fun τ g => ?_
     · revert x
       refine hind _ (fun P x γ hγ g => ?_) (fun γ _ g => by simp) fun x y a b γ hγ g => by

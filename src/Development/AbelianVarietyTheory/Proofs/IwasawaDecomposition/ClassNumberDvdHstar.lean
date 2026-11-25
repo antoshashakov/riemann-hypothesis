@@ -3,21 +3,26 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FixedCoefficientFieldInComplex
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjugateEmbApply
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntValuationEqOfMem
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsNormModEqOneOfPrincipalRayClassStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicHeckeCharacterValueMemKummerFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClassNumberDvdFinrankStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClosureFrobeniusElementsEqTopStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EllipticTorsionPointCoordinatesFiniteStatement
+public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.SmulCommClassGalIntegers
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsNormModEqOneOfPrincipalRayClass
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraicHeckeCharacterValueMemKummerField
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClassNumberDvdFinrank
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ClosureFrobeniusElementsEqTop
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EllipticTorsionPointCoordinatesFinite
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGaloisSubfieldConjStable
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGeneratorPowPrimeOneModModulusStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTwoPrimesSameNormOfTrivialFrobeniusStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalKummerFieldOfPowerIdealRootsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGeneratorPowPrimeOneModModulus
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTwoPrimesSameNormOfTrivialFrobenius
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalKummerFieldOfPowerIdealRoots
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HostCmEmbeddingProperties
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAlgebraicOfEllipticTorsionCoordinatesFiniteStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotInjectiveTwoPrimesEqualNormCofiniteStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassFieldFinrankPowPrincipalStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootsOfUnityMemRayClassFieldOfMultipleStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameHeckeCharacterValueViaPowerGeneratorStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAlgebraicOfEllipticTorsionCoordinatesFinite
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotInjectiveTwoPrimesEqualNormCofinite
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassFieldFinrankPowPrincipal
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootsOfUnityMemRayClassFieldOfMultiple
+public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameHeckeCharacterValueViaPowerGenerator
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypeNormOfKummer
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -100,7 +105,7 @@ variable {E : Type} [Field E] [NumberField E]
 theorem aut_eq_one (S : Set (HeightOneSpectrum (𝓞 E))) (hS : S.Finite) (F : Type) [Field F] [NumberField F]
     [Algebra E F] (h : ∀ v : HeightOneSpectrum (𝓞 E), v ∉ S → IsFrob F v 1) (σ : F ≃ₐ[E] F) : σ = 1 := by
   by_contra hσ
-  obtain ⟨T, hT, H⟩ := GlobalTheory.T.exists_two_primes_same_norm_of_trivial_frobenius E F σ hσ
+  obtain ⟨T, hT, H⟩ := _root_.GlobalTheory.Mem.Fld.exists_two_primes_of_isFrob_one E F σ hσ
   choose P Q hne hP hQ nP nQ using fun v : {v : HeightOneSpectrum (𝓞 E) // v ∉ S ∪ T} =>
     H v.1 (fun hv => v.2 (Or.inr hv)) (h v.1 fun hv => v.2 (Or.inl hv))
   let f : {v : HeightOneSpectrum (𝓞 E) // v ∉ S ∪ T} × Bool → HeightOneSpectrum (𝓞 F) :=
@@ -108,7 +113,7 @@ theorem aut_eq_one (S : Set (HeightOneSpectrum (𝓞 E))) (hS : S.Finite) (F : T
   have ho : ∀ x, (f x).asIdeal.under (𝓞 E) = x.1.1.asIdeal := by
     rintro ⟨v, _ | _⟩
     exacts [(hQ v).over.symm, (hP v).over.symm]
-  refine GlobalTheory.T.not_injective_two_primes_equal_norm_cofinite E F _ (hS.union hT) f ?_ ?_
+  refine _root_.GlobalTheory.Mem.ZetaPole.not_injective_double_primes E F _ (hS.union hT) f ?_ ?_
   · rintro ⟨v, b⟩ ⟨w, c⟩ e
     obtain rfl : v = w := Subtype.ext (HeightOneSpectrum.ext ((ho (v, b)).symm.trans (by rw [e]; exact ho (w, c))))
     rcases b with _ | _ <;> rcases c with _ | _
@@ -138,13 +143,13 @@ theorem rootOne_mem_ray [_root_.NumberField.IsTotallyComplex E] (φ : E →+* �
     Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast hp)
   let S : Set (HeightOneSpectrum (𝓞 E)) := {v | v.asIdeal ∣ natIdeal E n}
   have hfin : S.Finite := Ideal.finite_factors (natIdeal_ne_bot hn)
-  have hFrob := GlobalTheory.T.closure_frobeniusElements_eq_top E L S hfin
+  have hFrob := _root_.GlobalTheory.Mem.FieldsEx.closure_frob_eq_top E L S hfin
     (fun F _ _ _ => aut_eq_one S hfin F)
-  have hNorm := GlobalTheory.T.absNorm_modEq_one_of_principal_rayClass E (natIdeal E n) p hq
+  have hNorm := _root_.GlobalTheory.Mem.RayNorm.absNorm_modEq_one E (natIdeal E n) p hq
   let ζ : L := ⟨rootOne p, hS _ (Finset.mem_insert_self _ _)⟩
   have hζ : ζ ^ p = 1 := Subtype.ext (Complex.isPrimitiveRoot_exp p hp0).pow_eq_one
   have hRange : ζ ∈ Set.range (algebraMap M L) :=
-    GlobalTheory.T.rootsOfUnity_mem_rayClassField_of_multiple E M L
+    _root_.GlobalTheory.Mem.RayZeta.root_mem_rayField E M L
       (natIdeal E n) p hp0 hq hM.isRayField hFrob hNorm ζ hζ
   obtain ⟨x, hx⟩ := hRange
   have e : (x : ℂ) = rootOne p := congrArg (fun y : L => (y : ℂ)) hx
@@ -159,10 +164,10 @@ theorem valueField_le [IsGalois ℚ E] [_root_.NumberField.IsTotallyComplex E] (
   rw [valueField, IntermediateField.adjoin_le_iff]
   rintro _ ⟨v, hv, rfl⟩
   let := algOf φ₀ M hM.emb_mem
-  obtain ⟨k, hk, hk1⟩ := GlobalTheory.T.exists_generator_pow_prime_one_mod_modulus E 𝔮 _ h𝔮 (GlobalTheory.T.rayClassField_finrank_pow_principal E M 𝔮 hM.isRayField) v
+  obtain ⟨k, hk, hk1⟩ := _root_.GlobalTheory.Mem.FieldsEx.exists_gen_pow_prime_one_mod E 𝔮 _ h𝔮 (_root_.GlobalTheory.Mem.Fld.RayExp.pow_finrank_principal E M 𝔮 hM.isRayField) v
   have hfin := Ideal.finite_factors h𝔮
-  refine GlobalTheory.T.algebraicHeckeCharacter_value_mem_kummerField E φ₀ I φ hφ χ n r hi he v _ k hk
-    (GlobalTheory.T.tameHeckeCharacter_value_via_power_generator E χ (hfin.toFinset.erase v) (fun w hw => ?_) (fun w _ => ht w) v (Finset.notMem_erase _ _) _ k hk
+  refine _root_.GlobalTheory.Mem.FieldsEx.valTw_mem_kummerField E φ₀ I φ hφ χ n r hi he v _ k hk
+    (_root_.GlobalTheory.Mem.ValPow.inf_mul_val_pow E χ (hfin.toFinset.erase v) (fun w hw => ?_) (fun w _ => ht w) v (Finset.notMem_erase _ _) _ k hk
       fun w hw => ?_)
   · by_cases e : w = v
     · exact e ▸ hv
@@ -184,7 +189,7 @@ theorem host_cplx (P : Pre) : IsTotallyComplex P.host.E := by
 
 theorem classNumber_dvd_hstar : classNumber P.host.E ∣ D.hstar := by
   let := algOf P.host.φ₀ D.ray D.isRay.emb_mem
-  exact GlobalTheory.T.classNumber_dvd_finrank_alt P.host.E D.ray _ (natIdeal_ne_bot (modulus_ne_zero P)) D.isRay.isRayField
+  exact _root_.GlobalTheory.Mem.ClassDvd.classNumber_dvd_finrank P.host.E D.ray _ (natIdeal_ne_bot (modulus_ne_zero P)) D.isRay.isRayField
 
 theorem kummer_le_V : kummerField P.host.φ₀ (classNumber P.host.E) ≤ D.V :=
   kummerField_mono _ D.hstar_pos.ne' (classNumber_dvd_hstar D)
@@ -205,13 +210,13 @@ theorem finite_M' : FiniteDimensional ℚ D.M' := by
   have := D.good.numberField
   have := D.good.isElliptic
   have : (D.curve.baseChange ℂ).IsElliptic := inferInstanceAs (D.curve.map (algebraMap D.jField ℂ)).IsElliptic
-  have hfin := GlobalTheory.T.ellipticTorsionPointCoordinates_finite (D.curve.baseChange ℂ) 12 (by norm_num)
+  have hfin := _root_.GlobalTheory.finite_torsionCoords (D.curve.baseChange ℂ) 12 (by norm_num)
   have h1 : FiniteDimensional ℚ ℚ⟮sqrtNegNat P.host.d⟯ := IntermediateField.adjoin.finiteDimensional
     (IsIntegral.of_pow two_pos (by rw [sqrtNegNat_sq]; exact (isIntegral_natCast _).neg))
   have h2 : FiniteDimensional ℚ (IntermediateField.adjoin ℚ (torsionCoords (D.curve.baseChange ℂ) 12)) := by
     have := hfin.to_subtype
     exact IntermediateField.finiteDimensional_adjoin fun z hz =>
-      (GlobalTheory.T.isAlgebraic_of_ellipticTorsionCoordinates_finite D.jField D.curve 12 hfin z hz).isIntegral
+      (_root_.GlobalTheory.Mem.FieldsEx.isAlgebraic_of_torsionCoords_finite D.jField D.curve 12 hfin z hz).isIntegral
   have h3 := finite_adjoin_roots (n := 12) (a := (D.curve.Δ : ℂ)) (by norm_num)
     ((Algebra.IsIntegral.isIntegral (R := ℚ) D.curve.Δ).map D.jField.val)
   unfold FieldDat.M' discField torsionField hilbertField
@@ -220,7 +225,7 @@ theorem finite_M' : FiniteDimensional ℚ D.M' := by
 theorem finite_Om : FiniteDimensional ℚ D.Om := by
   have h1 := finite_M' D
   have h2 := finite_cycField (rootOrder P)
-  have h3 : FiniteDimensional ℚ D.V := GlobalTheory.T.finiteDimensional_kummerFieldOfPowerIdealRoots _ _ _ D.hstar_pos.ne'
+  have h3 : FiniteDimensional ℚ D.V := _root_.GlobalTheory.Mem.FieldsEx.finiteDimensional_kummerField _ _ _ D.hstar_pos.ne'
   unfold FieldDat.Om
   infer_instance
 

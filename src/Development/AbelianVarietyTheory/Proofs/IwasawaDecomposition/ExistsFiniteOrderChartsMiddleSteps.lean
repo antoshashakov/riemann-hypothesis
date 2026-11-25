@@ -7,22 +7,26 @@ public import Formalism.LocalToGlobal.Columns.TwQExact
 public import Formalism.LocalToGlobal.Columns.TwQLev
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdmissibleBasePointUnitaryNormalisesLevelStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLaws
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartCharacterFramesOnPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartClassStabiliserRationalPartsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartClassesBijectiveOrbitsFramedLatticesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartLevelIffFramesOnPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetMovesWithFrameChangeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetTwistPrimeEmptyOrCosetStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartCharacterFramesOnPoints
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartClassStabiliserRationalParts
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartClassesBijectiveOrbitsFramedLattices
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartLevelIffFramesOnPoints
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetMovesWithFrameChange
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetTwistPrimeEmptyOrCoset
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetsInFramesEqIffReductionsStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAdelicPointDecoratedLatticeAllTwistsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugatedChartDataLocalLevelAtQStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStepPointGivenReductionsCosetsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FramesExactOfIsAdelicPointOfFramedLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelAtTwistPrimesIsOpenStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugatedChartDataLocalLevelAtQ
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStepPointGivenReductionsCosets
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtLattice
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FramesExactOfIsAdelicPointOfFramedLattice
+public import Formalism.LocalToGlobal.Columns.TwQThetaOpen
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelAtTwistPrimesIsOpen
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalLevelCharacterFiniteOrderStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemberLevelPrimeNotUnderTwistPrimeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OpenLevelCutByCosetStabiliserStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepPointDeterminedByLatticeInvariantsStatement
+public import Formalism.LocalToGlobal.Columns.TwQDefs
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemberLevelPrimeNotUnderTwistPrime
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OpenLevelCutByCosetStabiliser
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepPointDeterminedByLatticeInvariants
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoordsStatement
 import Formalism.LocalToGlobal.Columns.RecLevelLocP
 import Formalism.LocalToGlobal.Columns.RecLevelStep
@@ -101,7 +105,7 @@ theorem qb_chr_root {K : Type} [Field K] (Θ : LevQFam E K n Q) (hQ : ∀ P : Q,
 
 theorem thetaOpen_cutQ {K : Type} [Field K] (Θ : LevQFam E K n Q) (hΘ : ThetaOpen Θ) (C : ∀ P : Q, Set (Sp E n))
     (hC : ∀ P : Q, C P = ∅ ∨ ∃ (z : Sp E n) (c : E), c ≠ 0 ∧ C P = {x | c⁻¹ • (x - z) ∈ stdAt E n P.1}) : ThetaOpen (cutQ Θ C) :=
-  GlobalTheory.T.openLevel_cutByCosetStabiliser Θ hΘ C hC
+  _root_.GlobalTheory.Mem.Col2.ChEx.thetaOpen_cutQ Θ hΘ C hC
 
 theorem chartQ_exists {K : Type} [Field K] (Hw : ∀ w : SG, Subgroup (GL (Fin n) (𝓞 E ⧸ w.1.asIdeal))) {π : 𝓞 E} {T f : ℕ}
     (hB : BasePi ST π) (hTπ : π * cO E π = (T : 𝓞 E)) (hST : ∀ P : Pl E, P ∈ ST ↔ π ∈ P.asIdeal)
@@ -143,11 +147,11 @@ theorem chartQ_exists {K : Type} [Field K] (Hw : ∀ w : SG, Subgroup (GL (Fin n
       (∀ (x : lev.U) (z : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q), x.1 = b * z.1 * b⁻¹ →
         lev.chi x = ((levTyp lam).comp (Subgroup.inclusion (levUQ_le q _)) * (chiQ q _ σ₀)⁻¹ : levUQ hc n ST SG Q (Subgroup.pi Set.univ Hw) q →* ℂˣ) z) ∧
       (∃ m : ℕ, 0 < m ∧ ∀ κ, lev.chi κ ^ m = 1) ∧ (∀ c, (Y c).1 = y c * b⁻¹) ∧ ∀ c a, (SI c a).1 = st c a :=
-  GlobalTheory.T.exists_conjugated_chartData_localLevel_at_Q hc n Hw hB hTπ hST hcard hSG hidx lam q hO hQT σ₀ b hbU hbV hbL hbT hbO J hJ bad hb stab lat s y hy hd hs hlat st hinj hr hchr
+  _root_.GlobalTheory.Mem.Col2.ChEx.chartQ_exists hc n Hw hB hTπ hST hcard hSG hidx lam q hO hQT σ₀ b hbU hbV hbL hbT hbO J hJ bad hb stab lat s y hy hd hs hlat st hinj hr hchr
 
 theorem frExact_of_isPtOf {K : Type} [Field K] {Θ : LevQFam E K n Q} (q : QLoc hc n Q Θ) (hQ : ∀ P : Q, conjPrime₂ P.1 ≠ P.1)
     {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) : g ∈ UAd hc n ∧ FrExact q g p :=
-  GlobalTheory.T.framesExact_of_isAdelicPointOfFramedLattice hc n q hQ h
+  _root_.GlobalTheory.Mem.Col2.ChEx.frExact_of_isPtOf hc n q hQ h
 
 end Gen
 
@@ -174,7 +178,7 @@ theorem lev_iffQ (cq : PtY ST SG Q y → ∀ P : Q, Set (Sp X.E n)) (hact : InvA
     (e : FrExact q g r.1.1) (e' : FrExact q (g * s) p) :
     s ∈ levUQ hc n ST SG Q (chG Λ C) q ↔
       ∃ κ : FrmG Λ Θ, ufGL X.E n κ.1 = 1 ∧ (ya Λ Θ κ r).1.1 = p ∧ bar (ya Λ Θ κ r) = bar r ∧ cq (ya Λ Θ κ r) = cq r :=
-  GlobalTheory.T.chartLevel_iff_frames_onPoints hc cq hact Λ Θ r C hC D hD q hg hx p e e'
+  _root_.GlobalTheory.Mem.Col2.ChEx.lev_iff_frames hc cq hact Λ Θ r C hC D hD q hg hx p e e'
 
 theorem chr_eqQ (σ : X.K →+* ℂ) (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (r : PtY ST SG Q y)
     (C : ∀ w : SG, Set (Fin n → 𝓞 X.E ⧸ w.1.asIdeal)) (D : ∀ P : Q, Set (Sp X.E n)) (q : QLoc hc n Q (cutQ Θ D))
@@ -182,7 +186,7 @@ theorem chr_eqQ (σ : X.K →+* ℂ) (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.
     (e : FrExact q g r.1.1) (e' : FrExact q (g * z.1) (ya Λ Θ κ r).1.1) :
     ((((levTyp (chLam σ Λ C)).comp (Subgroup.inclusion (levUQ_le q _)) * (chiQ q _ σ)⁻¹ : levUQ hc n ST SG Q (chG Λ C) q →* ℂˣ) z : ℂˣ) : ℂ) =
       σ ((Λ.chr κ.2.1 * Θ.chr κ.2.2 : X.Kˣ) : X.K) :=
-  GlobalTheory.T.chartCharacter_frames_onPoints hc σ Λ Θ r C D q z hg κ h1 e e'
+  _root_.GlobalTheory.Mem.Col2.ChEx.chr_frames hc σ Λ Θ r C D q z hg κ h1 e e'
 
 end Mid
 
@@ -202,14 +206,14 @@ theorem cls_bijQ [NeZero n] (hact : InvActs cq) (hinj : PtDet cq)
     Function.Bijective fun c : {c // p c} =>
       (Quotient.mk'' (rp Λ Θ p₀ pref c.1).1.1 : DecoFCl (K := X.K) n ST SG Q (chG (Λ c₀.1) (bar (rp Λ Θ p₀ pref c₀)))
         (cutQ (Θ c₀.1) (cq (rp Λ Θ p₀ pref c₀)))) :=
-  GlobalTheory.T.chartClasses_bijective_orbits_framedLattices Λ Θ p₀ pref cq hact hinj hsur hnorm c₀ p hp
+  _root_.GlobalTheory.Mem.Col2.ChEx.clsF_bij Λ Θ p₀ pref cq hact hinj hsur hnorm c₀ p hp
 
 theorem stM_rangeQ (hact : InvActs cq) (hinj : PtDet cq) (c : (stR Λ Θ p₀ pref).Cl) (b : β) (hb : c.1 = b)
     (C : ∀ w : SG, Set (Fin n → 𝓞 X.E ⧸ w.1.asIdeal)) (hC : bar (rp Λ Θ p₀ pref c) = C)
     (D : ∀ P : Q, Set (Sp X.E n)) (hD : cq (rp Λ Θ p₀ pref c) = D) (γ : GL (Fin n) X.E) :
     γ ∈ (stM Λ Θ p₀ pref c).range ↔ ∃ g : UF X.E n × ↥(chG (Λ b) C) × ↥(cutQ (Θ b) D).grp, ufGL X.E n g.1 = γ ∧
       g • (rp Λ Θ p₀ pref c).1.1 = (rp Λ Θ p₀ pref c).1.1 :=
-  GlobalTheory.T.chartClassStabiliser_rationalParts Λ Θ p₀ pref cq hact hinj c b hb C hC D hD γ
+  _root_.GlobalTheory.Mem.Col2.ChEx.stM_range_tw Λ Θ p₀ pref cq hact hinj c b hb C hC D hD γ
 
 end Orb
 
@@ -220,12 +224,12 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞
 
 theorem cqOf_acts (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) :
     InvActs (cqOf (R := R) (cst := cst) (u := u) (j := j) : PtAt R sel mu cst u j → _) :=
-  GlobalTheory.T.couplingCoset_moves_with_frameChange hd
+  _root_.GlobalTheory.Mem.Col2.ChEx.invActs_cqOf hd
 
 theorem cqOf_det (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs)
     (hq : ∀ w ∈ Pr.vGs, ((Formalism.L2.Col.qOf w : ℕ) : 𝓞 X.E) ∉ w.asIdeal ^ 2) :
     PtDet (cqOf (R := R) (cst := cst) (u := u) (j := j) : PtAt R sel mu cst u j → _) :=
-  GlobalTheory.T.stepPoint_determined_by_latticeInvariants hd hq
+  _root_.GlobalTheory.Mem.Col2.ChEx.ptDet_cqOf hd hq
 
 theorem cosetIn_iff (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs)
     (hq : ∀ w ∈ Pr.vGs, ((Formalism.L2.Col.qOf w : ℕ) : 𝓞 X.E) ∉ w.asIdeal ^ 2) (r r' : PtAt R sel mu cst u j) :
@@ -234,11 +238,11 @@ theorem cosetIn_iff (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs)
 
 theorem exists_pt_inv (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (r : PtAt R sel mu cst u j)
     (p : ChPt (R := R) sel mu u j) : ∃ r' : PtAt R sel mu cst u j, r'.1.1 = p ∧ bar r' = bar r ∧ cqOf r' = cqOf r :=
-  GlobalTheory.T.exists_stepPoint_given_reductions_cosets hd r p
+  _root_.GlobalTheory.Mem.Col2.ChEx.TwLift.exists_ptAt_bar_cq_eq hd r p
 
 theorem cqOf_form (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (r : PtAt R sel mu cst u j) (P : QE sel (mu : Chr X.F X.E X.K)) :
     cqOf r P = ∅ ∨ ∃ (z : Sp X.E (R.N j)) (c : X.E), c ≠ 0 ∧ cqOf r P = {x | c⁻¹ • (x - z) ∈ stdAt X.E (R.N j) P.1} :=
-  GlobalTheory.T.couplingCoset_twistPrime_empty_or_coset hd r P
+  _root_.GlobalTheory.Mem.Col2.ChEx.cqOf_empty_or_coset hd r P
 
 end PtL
 
@@ -250,7 +254,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
 
 theorem thetaOpen_levQ (hL : L.Ok Ch sel mu cst G m2) (hd : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (j : ℕ) (b : L.β j) :
     ThetaOpen (L.levQ j b) :=
-  GlobalTheory.T.levelAtTwistPrimes_isOpen hL hd j b
+  _root_.GlobalTheory.Mem.Col2.ChEx.thetaOpen_levQ hL hd j b
 
 end Open
 
@@ -272,7 +276,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 theorem trace_not_mem_twistPrime_under (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) : ∀ P : I.Q a, (B.T u : 𝓞 B.host.F) ∉ (qv B.host.F P.1).asIdeal :=
-  GlobalTheory.T.memberLevelPrime_not_under_twistPrime I hI hPr u a
+  _root_.GlobalTheory.Mem.Col2.ChEx.T_notMem_qv I hI hPr u a
 
 theorem lvQ_open (hI : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) (hm : i < B.R.m) (b : (I.stp u a i).β) : ThetaOpen (lvQ I a i b) := by
   obtain ⟨al, hal⟩ := Option.isSome_iff_exists.1 (b.2.2 hm)
