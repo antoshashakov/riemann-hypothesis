@@ -3,18 +3,26 @@ module
 public import Mathlib.Analysis.Complex.Circle
 public import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 public import Mathlib.NumberTheory.LocalField.Basic
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AnnihilatorCompactWithinNhdsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComapMulVecCompactOpenStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetSumTranslateInvariantStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactOpenSubgroupMemStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteCosetRepresentativesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGLVecMulEqLastBasisStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianSemidefiniteNullRadicalStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCompactSupAddSubgroupStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenAdditiveCharacterKernelStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenCharacterAnnihilatorStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelIndexOpenCompactNeZeroStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SesquilinearEqZeroOfDiagZeroStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AnnihilatorCompactWithinNhds
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComapMulVecCompactOpen
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Algebra.Group.Subgroup.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetSumTranslateInvariant
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCompactOpenSubgroupMem
+public import Mathlib.Topology.Algebra.Group.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteCosetRepresentatives
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGLVecMulEqLastBasis
+public import Mathlib.Algebra.Algebra.Basic
+public import Mathlib.Algebra.Module.LinearMap.Star
+public import Mathlib.Basic.Complex.Basic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianSemidefiniteNullRadical
+public import Mathlib.Algebra.Group.Subgroup.Lattice
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCompactSupAddSubgroup
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenAdditiveCharacterKernel
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenCharacterAnnihilator
+public import Mathlib.GroupTheory.Index
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RelIndexOpenCompactNeZero
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SesquilinearEqZeroOfDiagZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,7 +80,7 @@ theorem sum_transversal_add {M : Type} [AddCommMonoid M] {A H : AddSubgroup X} (
     (hT : ∀ t ∈ T, t ∈ A) (hTr : ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ H) (F : X → M)
     (hF : ∀ a, ∀ h ∈ H, F (a + h) = F a) {a : X} (ha : a ∈ A) :
     ∑ t ∈ T, F (t + a) = ∑ t ∈ T, F t :=
-  GlobalTheory.T.coset_sum_translate_invariant hHA hT hTr F hF ha
+  _root_.GlobalTheory.CompanionTheory.Transversal.sum_add_eq_sum_of_transversal hHA hT hTr F hF ha
 
 theorem card_smul_sum_eq {M : Type} [AddCommGroup M] [Module ℂ M] {A H H' : AddSubgroup X} (hH : H ≤ A) (hH' : H' ≤ A)
     {T T' : Finset X} (hT : ∀ t ∈ T, t ∈ A) (hTr : ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ H)
@@ -113,15 +121,15 @@ variable [TopologicalSpace X] [IsTopologicalAddGroup X]
 
 theorem exists_transversal (A H : AddSubgroup X) (hA : IsCompact (A : Set X)) (hH : IsOpen (H : Set X)) (hHA : H ≤ A) :
     ∃ T : Finset X, (∀ t ∈ T, t ∈ A) ∧ ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ H :=
-  GlobalTheory.T.exists_finite_coset_representatives A H hA hH hHA
+  _root_.GlobalTheory.CompanionTheory.OpenSubgroupTransversal.main A H hA hH hHA
 
 theorem isCompact_sup (A B : AddSubgroup X) (hA : IsCompact (A : Set X)) (hB : IsCompact (B : Set X)) :
     IsCompact ((A ⊔ B : AddSubgroup X) : Set X) :=
-  GlobalTheory.T.isCompact_sup_addSubgroup A B hA hB
+  _root_.GlobalTheory.CompanionTheory.Topology.isCompact_addSubgroup_sup A B hA hB
 
 theorem relIndex_ne_zero' (A H : AddSubgroup X) (hA : IsCompact (A : Set X)) (hH : IsOpen (H : Set X)) (hHA : H ≤ A) :
     H.relIndex A ≠ 0 :=
-  GlobalTheory.T.relIndex_open_compact_ne_zero A H hA hH hHA
+  _root_.GlobalTheory.CompanionTheory.RelIndex.relIndex_ne_zero_of_isCompact_of_isOpen A H hA hH hHA
 
 end Transversal
 
@@ -131,10 +139,10 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 theorem apply_eq_zero_of_isotropic (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hB : ∀ v w, B w v = starRingEnd ℂ (B v w))
     (hB' : ∀ v, 0 ≤ (B v v).re) (x : V) (hx : (B x x).re = 0) (w : V) : B x w = 0 :=
-  GlobalTheory.T.hermitian_semidefinite_null_radical B hB hB' x hx w
+  _root_.GlobalTheory.CompanionTheory.Herm.apply_eq_zero_of_isotropic B hB hB' x hx w
 
 theorem eq_zero_of_diag (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hB : ∀ v, B v v = 0) : B = 0 :=
-  GlobalTheory.T.sesquilinear_eq_zero_of_diag_zero B hB
+  _root_.GlobalTheory.CompanionTheory.Sesquilinear.eq_zero_of_diag_eq_zero B hB
 
 end Forms
 
@@ -143,31 +151,31 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 theorem isOpen_ker_char (ψ : AddChar k Circle) (hψ : Continuous ψ) : IsOpen {x : k | ψ x = 1} :=
-  GlobalTheory.T.isOpen_additive_character_kernel ψ hψ
+  _root_.GlobalTheory.CompanionTheory.LocalFieldChar.isOpen_addChar_ker ψ hψ
 
 theorem exists_lat_mem (n : ℕ) (x : Fin n → k) :
     ∃ A : AddSubgroup (Fin n → k), IsCompact (A : Set (Fin n → k)) ∧ IsOpen (A : Set (Fin n → k)) ∧ x ∈ A :=
-  GlobalTheory.T.exists_compact_open_subgroup_mem n x
+  _root_.GlobalTheory.CompanionTheory.LatticePoint.exists_compact_open_addSubgroup_mem n x
 
 theorem isOpen_ann (ψ : AddChar k Circle) (hψ : Continuous ψ) (n : ℕ) (A : AddSubgroup (Fin n → k))
     (hA : IsCompact (A : Set (Fin n → k))) : IsOpen {ξ : Fin n → k | ∀ a ∈ A, ψ (ξ ⬝ᵥ a) = 1} :=
-  GlobalTheory.T.isOpen_character_annihilator ψ hψ n A hA
+  _root_.GlobalTheory.CompanionTheory.AnnihOpen.isOpen_annihilator_of_isCompact ψ hψ n A hA
 
 theorem exists_small_ann (ψ : AddChar k Circle) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (n : ℕ) (S : Set (Fin n → k))
     (hS : S ∈ nhds (0 : Fin n → k)) : ∃ Ξ : AddSubgroup (Fin n → k), IsCompact (Ξ : Set (Fin n → k)) ∧
       ∀ t : Fin n → k, (∀ ξ ∈ Ξ, ψ (ξ ⬝ᵥ t) = 1) → t ∈ S :=
-  GlobalTheory.T.annihilator_compact_within_nhds ψ hψ hψ1 n S hS
+  _root_.GlobalTheory.CompanionTheory.CharDual.exists_compact_annihilator_subset ψ hψ hψ1 n S hS
 
 theorem comap_lat (n : ℕ) (g : Matrix (Fin n) (Fin n) k) (hg : IsUnit g) (A : AddSubgroup (Fin n → k))
     (hA : IsCompact (A : Set (Fin n → k))) (hA' : IsOpen (A : Set (Fin n → k))) :
     IsCompact ((A.comap (Matrix.mulVecLin g).toAddMonoidHom : AddSubgroup (Fin n → k)) : Set (Fin n → k)) ∧
       IsOpen ((A.comap (Matrix.mulVecLin g).toAddMonoidHom : AddSubgroup (Fin n → k)) : Set (Fin n → k)) :=
-  GlobalTheory.T.isCompact_isOpen_comap_mulVecLin n g hg A hA hA'
+  _root_.GlobalTheory.CompanionTheory.Dblock.ComapLat.comap_mulVec_compact_open n g hg A hA hA'
 
 end Local
 
 theorem exists_GL_vecMul {k : Type} [Field k] (n : ℕ) (ξ : Fin (n + 1) → k) (hξ : ξ ≠ 0) :
     ∃ g : GL (Fin (n + 1)) k, Matrix.vecMul ξ (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = Pi.single (Fin.last n) 1 :=
-  GlobalTheory.T.exists_GL_vecMul_eq_last_basis n ξ hξ
+  _root_.GlobalTheory.CompanionTheory.Matrixlemmas.exists_GL_vecMul_eq_single_last n ξ hξ
 
 end PositivityTheory.RgUd.Form.U.Atom
