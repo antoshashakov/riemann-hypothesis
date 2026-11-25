@@ -65,10 +65,7 @@ private theorem res_id {F : Shv R} {X : Scheme.{0}} (a : Sec F X) : Sec.res (�
 
 private theorem map_res {F G : Shv R} (φ : F ⟶ G) {X Y : Scheme.{0}} (f : X ⟶ Y) (a : Sec F Y) :
     Sec.map φ (Sec.res f a) = Sec.res f (Sec.map φ a) := by
-  have h := φ.hom.naturality f.op
-  have h2 := congr($(h).hom a)
-  simp only [ModuleCat.hom_comp, LinearMap.comp_apply] at h2
-  exact h2
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 private theorem res_zero {F : Shv R} {X Y : Scheme.{0}} (f : X ⟶ Y) : Sec.res f (0 : Sec F Y) = 0 :=
   map_zero (F.obj.map f.op).hom

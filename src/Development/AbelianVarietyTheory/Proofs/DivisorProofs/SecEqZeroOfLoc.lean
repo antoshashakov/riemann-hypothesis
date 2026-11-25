@@ -115,8 +115,7 @@ theorem sec_eq_zero_of_loc {R : Type} [CommRing R] (F : Shv R) {U : Scheme.{0}} 
 
 theorem sec_res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
-  change ((φ.hom.app (op U)) ≫ G.obj.map g.op).hom x = (F.obj.map g.op ≫ φ.hom.app (op V)).hom x
-  rw [φ.hom.naturality]
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem sec_map_comp {R : Type} [CommRing R] {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl

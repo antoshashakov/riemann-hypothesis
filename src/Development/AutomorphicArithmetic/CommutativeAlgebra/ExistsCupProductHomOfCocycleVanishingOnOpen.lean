@@ -64,8 +64,7 @@ private theorem map_usmul {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {
 
 private theorem res_comp {R : Type} [CommRing R] {F : Shv R} {V W X : Scheme.{0}} (g : V ⟶ W)
     (f : W ⟶ X) (x : Sec F X) : Sec.res (g ≫ f) x = Sec.res g (Sec.res f x) := by
-  simp only [Sec.res, op_comp, Functor.map_comp]
-  rfl
+  simp [Sec.res]
 
 private theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V W : Scheme.{0}}
     (g : V ⟶ W) (x : Sec F W) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) :=

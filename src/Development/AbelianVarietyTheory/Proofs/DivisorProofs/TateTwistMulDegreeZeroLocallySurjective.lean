@@ -81,8 +81,7 @@ theorem map_id_apply {F : Shv R} {U : Scheme.{0}} (x : Sec F U) : Sec.map (𝟙 
 
 theorem res_map {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map f x) = Sec.map f (Sec.res g x) := by
-  have := congrArg (fun m => m.hom x) (f.hom.naturality g.op)
-  simpa using this.symm
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by

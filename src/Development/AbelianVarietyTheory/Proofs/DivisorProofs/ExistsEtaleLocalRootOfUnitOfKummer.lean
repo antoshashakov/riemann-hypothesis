@@ -85,8 +85,7 @@ namespace GlobalTheory.EtC.KumRoots
 
 theorem res_comp {V W U : Scheme.{0}} (g : V ⟶ U) (k : W ⟶ V) (x : Sec Gm U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
-  change (Gm.obj.map (k ≫ g).op).hom x = (Gm.obj.map k.op).hom ((Gm.obj.map g.op).hom x)
-  rw [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
+  simp [Sec.res]
 
 theorem units_map_comp {X W U : Scheme.{0}} (k : X ⟶ W) (f : W ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Units.map (k ≫ f).appTop.hom.toMonoidHom u =

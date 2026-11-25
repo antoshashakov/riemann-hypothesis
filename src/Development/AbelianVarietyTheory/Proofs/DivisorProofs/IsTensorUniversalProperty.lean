@@ -90,8 +90,7 @@ theorem map_comp' {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}}
 
 theorem res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec F U) :
     Sec.res g (Sec.map φ y) = Sec.map φ (Sec.res g y) := by
-  have := φ.hom.naturality g.op
-  exact (congrArg (fun k => k.hom y) this).symm
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem shv_ext {F G : Shv R} (φ ψ : F ⟶ G) (h : ∀ U (a : Sec F U), Sec.map φ a = Sec.map ψ a) : φ = ψ := by
   apply Sheaf.hom_ext

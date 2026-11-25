@@ -79,9 +79,7 @@ theorem sec_map_zero {R : Type} [CommRing R] {F G : Shv R} {U : Scheme.{0}} (x :
 
 theorem sec_nat {R : Type} [CommRing R] {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map f x) = Sec.map f (Sec.res g x) := by
-  have e := congrArg (fun φ => φ.hom x) (f.hom.naturality g.op)
-  simp only [ModuleCat.hom_comp, LinearMap.comp_apply] at e
-  exact e.symm
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem sec_res_comp {R : Type} [CommRing R] (F : Shv R) {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res h (Sec.res g x) = Sec.res (h ≫ g) x := by

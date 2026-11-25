@@ -85,9 +85,7 @@ theorem map_res (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
 
 theorem res_res {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res k (Sec.res g x) = Sec.res (k ≫ g) x := by
-  unfold Sec.res
-  rw [op_comp, F.obj.map_comp]
-  rfl
+  simp [Sec.res]
 
 theorem res_id {U : Scheme.{0}} (x : Sec F U) : Sec.res (𝟙 U) x = x := congrArg (fun h => h.hom x) (F.obj.map_id (op U))
 

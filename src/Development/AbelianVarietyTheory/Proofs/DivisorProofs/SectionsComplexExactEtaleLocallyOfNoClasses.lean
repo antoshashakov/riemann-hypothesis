@@ -55,8 +55,7 @@ variable {R : Type} [CommRing R]
 
 theorem map_res {F G : Shv R} (ψ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map ψ (Sec.res g x) = Sec.res g (Sec.map ψ x) := by
-  simp only [Sec.map, Sec.res]
-  exact congrArg (fun f => f.hom x) (ψ.hom.naturality g.op)
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem map_comp {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := by

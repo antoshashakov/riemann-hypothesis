@@ -51,8 +51,7 @@ variable {R : Type} [CommRing R] (Z : Scheme.{0} → Prop) (hZ : ∀ (V U : Sche
 
 theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res (f ≫ g) a = Sec.res f (Sec.res g a) := by
-  change (F.obj.map (f ≫ g).op).hom a = _
-  rw [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
+  simp [Sec.res]
 
 def sv {F : Shv R} {U : Scheme.{0}} (a : Sec F U) : Sieve U where
   arrows V g := Z V ∨ Sec.res g a = 0
@@ -140,8 +139,7 @@ theorem sectionsWithSupport_isSheaf (F : Shv R) : Presheaf.IsSheaf Scheme.etaleT
 
 theorem res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.res g (Sec.map φ a) = Sec.map φ (Sec.res g a) := by
-  change (φ.hom.app (op U) ≫ G.obj.map g.op).hom a = (F.obj.map g.op ≫ φ.hom.app (op V)).hom a
-  rw [φ.hom.naturality]
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem supp_map {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} {a : Sec F U} (ha : a ∈ supp Z hZ F U) :
     Sec.map φ a ∈ supp Z hZ G U := by

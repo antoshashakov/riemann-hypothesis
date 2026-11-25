@@ -72,8 +72,7 @@ theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W
 
 theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.map φ (Sec.res g a) = Sec.res g (Sec.map φ a) := by
-  have := congrArg (fun h => ModuleCat.Hom.hom h a) (φ.hom.naturality g.op)
-  simpa [Sec.map, Sec.res] using this
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 abbrev gsum (R : Type) [CommRing R] (P : PSh) (V : Scheme.{0}) (c : P.obj (op V) →₀ ULift.{1} R) : Sec ((free R).obj P) V :=
   c.sum fun x r => r • freeGen R P V x

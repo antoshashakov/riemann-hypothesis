@@ -60,8 +60,7 @@ namespace GlobalTheory.EtC.RedUnit
 
 theorem res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec F U) :
     Sec.res g (Sec.map φ y) = Sec.map φ (Sec.res g y) := by
-  have := congrArg (fun f => f.hom y) (φ.hom.naturality g.op)
-  exact this.symm
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem res_resGen {q : ℕ} [NeZero q] (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (resGen i ζ) = resGen i (ζ.map g.appTop.hom) := by

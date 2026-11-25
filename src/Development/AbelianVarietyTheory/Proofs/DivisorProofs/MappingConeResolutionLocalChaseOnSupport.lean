@@ -77,13 +77,11 @@ theorem res_zero {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) :
 
 theorem res_map {F G : Shv R} (a : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map a x) = Sec.map a (Sec.res g x) := by
-  have := congrArg (fun t => t.hom x) (a.hom.naturality g.op)
-  exact this.symm
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
-  have := congrArg (fun t => t.hom x) (F.obj.map_comp g.op k.op)
-  exact this
+  simp [Sec.res]
 
 theorem comm' {I J : Cx R} (f : I ⟶ J) (i j : ℤ) {U : Scheme.{0}} (x : Sec (I.X i) U) :
     Sec.map (J.d i j) (Sec.map (f.f i) x) = Sec.map (f.f j) (Sec.map (I.d i j) x) :=

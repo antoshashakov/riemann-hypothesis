@@ -58,8 +58,7 @@ theorem res_comp {G : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x
 
 theorem map_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
-  have h := φ.hom.naturality g.op
-  exact congrArg (fun m => m.hom x) h
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 end Sections
 

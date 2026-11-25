@@ -65,16 +65,11 @@ namespace UpperTheory.KumRoot
 
 private lemma map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
-  show (ModuleCat.Hom.hom (φ.hom.app (op V))) ((ModuleCat.Hom.hom (F.obj.map g.op)) x) =
-    (ModuleCat.Hom.hom (G.obj.map g.op)) ((ModuleCat.Hom.hom (φ.hom.app (op U))) x)
-  rw [← ModuleCat.comp_apply, ← ModuleCat.comp_apply, φ.hom.naturality]
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 private lemma res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U)
     (x : Sec F U) : Sec.res k (Sec.res g x) = Sec.res (k ≫ g) x := by
-  show (ModuleCat.Hom.hom (F.obj.map k.op)) ((ModuleCat.Hom.hom (F.obj.map g.op)) x) =
-    (ModuleCat.Hom.hom (F.obj.map (k ≫ g).op)) x
-  rw [← ModuleCat.comp_apply, ← F.obj.map_comp]
-  rfl
+  simp [Sec.res]
 
 private lemma sec_map_add {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := by

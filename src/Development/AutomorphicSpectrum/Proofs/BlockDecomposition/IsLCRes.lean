@@ -54,9 +54,7 @@ variable {R : Type} [CommRing R]
 
 theorem res_comp {G : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec G U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
-  delta GlobalTheory.EtC.Sec.res
-  rw [op_comp, Functor.map_comp]
-  rfl
+  simp [Sec.res]
 
 theorem primRes_comp {q : ℕ} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     primRes (k ≫ g) ζ = primRes k (primRes g ζ) := by

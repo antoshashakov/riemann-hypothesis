@@ -54,8 +54,7 @@ namespace GlobalTheory.EtC.SemiTens
 
 theorem res_map {R : Type} [CommRing R] {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (z : Sec F U) :
     Sec.res g (Sec.map f z) = Sec.map f (Sec.res g z) := by
-  have := congrArg (fun k => k.hom z) (f.hom.naturality g.op)
-  simpa using this.symm
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem map_zero' {R : Type} [CommRing R] {F G : Shv R} {U : Scheme.{0}} (z : Sec F U) :
     Sec.map (0 : F ⟶ G) z = 0 := by

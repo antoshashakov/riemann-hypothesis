@@ -53,8 +53,7 @@ namespace GlobalTheory.EtC.RedChern
 
 private theorem sec_res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
-  simp only [Sec.res, Sec.map]
-  rw [← ModuleCat.comp_apply, ← ModuleCat.comp_apply, φ.hom.naturality]
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 private theorem sec_res_sub {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) :
     Sec.res g (x - y) = Sec.res g x - Sec.res g y := map_sub _ x y

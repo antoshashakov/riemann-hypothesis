@@ -168,12 +168,10 @@ private theorem sx_res_id {A : Spc} {p : ℕ} {X : Scheme.{0}} (x : Sx A p X) : 
 
 private theorem res_res {F : Shv R} {X Y Z : Scheme.{0}} (a : X ⟶ Y) (b : Y ⟶ Z) (x : Sec F Z) :
     Sec.res a (Sec.res b x) = Sec.res (a ≫ b) x := by
-  rw [Sec.res, Sec.res, Sec.res, op_comp, F.obj.map_comp]
-  rfl
+  simp [Sec.res]
 
 private theorem res_id {F : Shv R} {X : Scheme.{0}} (x : Sec F X) : Sec.res (𝟙 X) x = x := by
-  rw [Sec.res, op_id, F.obj.map_id]
-  rfl
+  simp [Sec.res]
 
 private theorem map_sec_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.map φ (Sec.res g a) = Sec.res g (Sec.map φ a) := by

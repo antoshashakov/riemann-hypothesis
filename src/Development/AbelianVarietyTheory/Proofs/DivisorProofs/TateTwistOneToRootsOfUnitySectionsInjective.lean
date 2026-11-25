@@ -157,8 +157,7 @@ namespace GlobalTheory.EtC.MuTw.Inj
 
 theorem res_comp {q : ℕ} {V W U : Scheme.{0}} (g : V ⟶ U) (k : W ⟶ V) (x : Sec (tw q 1) U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
-  change ((tw q 1).obj.map (k ≫ g).op).hom x = ((tw q 1).obj.map k.op).hom (((tw q 1).obj.map g.op).hom x)
-  rw [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
+  simp [Sec.res]
 
 theorem etaS_injective : ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) →
     Function.Injective ((etaS q).hom.app (op U)).hom := by

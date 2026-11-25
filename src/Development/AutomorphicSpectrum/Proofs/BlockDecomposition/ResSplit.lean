@@ -49,8 +49,7 @@ namespace GlobalTheory.CompanionTheory.ResSplitProof
 
 theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
-  have h := φ.hom.naturality g.op
-  exact congrArg (fun k => ModuleCat.Hom.hom k x) h
+  simp only [Sec.res, Sec.map, ← ModuleCat.comp_apply, CategoryTheory.NatTrans.naturality]
 
 theorem resSplit : CrystallineSemistableComparison.E.ResLoc → CrystallineSemistableComparison.E.LocSplit → CrystallineSemistableComparison.E.LcCover → CrystallineSemistableComparison.E.ResSplit := by
   intro hRL hLS hLC R _ F U hU s x

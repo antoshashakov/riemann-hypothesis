@@ -66,9 +66,7 @@ theorem res_smul {V U : Scheme.{0}} (g : V ⟶ U) (c : ULift.{1} R) (a : Sec F U
 
 theorem res_res {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res k (Sec.res g a) = Sec.res (k ≫ g) a := by
-  show (F.obj.map k.op).hom ((F.obj.map g.op).hom a) = (F.obj.map (k ≫ g).op).hom a
-  rw [op_comp, F.obj.map_comp]
-  rfl
+  simp [Sec.res]
 
 end Res
 

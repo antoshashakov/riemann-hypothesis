@@ -86,15 +86,11 @@ namespace UpperTheory.Kun
 variable {R : Type} [CommRing R]
 
 theorem res_id {F : Shv R} {X : Scheme.{0}} (b : Sec F X) : Sec.res (𝟙 X) b = b := by
-  change (F.obj.map (𝟙 (op X))).hom b = b
-  rw [F.obj.map_id]
-  rfl
+  simp [Sec.res]
 
 theorem res_res {F : Shv R} {X Y Z : Scheme.{0}} (f : Y ⟶ X) (g : Z ⟶ Y) (b : Sec F X) :
     Sec.res g (Sec.res f b) = Sec.res (g ≫ f) b := by
-  change _ = (F.obj.map (f.op ≫ g.op)).hom b
-  rw [F.obj.map_comp]
-  rfl
+  simp [Sec.res]
 
 theorem map_map {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map ψ (Sec.map φ x) = Sec.map (φ ≫ ψ) x := rfl
