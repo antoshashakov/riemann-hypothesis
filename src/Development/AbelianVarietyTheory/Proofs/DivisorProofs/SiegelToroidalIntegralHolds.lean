@@ -1,8 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelIntegralToroidalOfPolarisedChartsForFanStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelToroidalCompactificationPolarisedChartsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantSmoothProjFanNoSelfIntersectionsStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -40,15 +39,10 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
-open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj IsLocalRing
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.SiegJoin
-open scoped CategoryTheory.Obj
-attribute [local instance] Over.cartesianMonoidalCategory
-
 namespace GlobalTheory
 
 theorem siegelToroidalIntegral_holds : GlobalTheory.Published.SiegelToroidalIntegral :=
-  GlobalTheory.T.siegelIntegralToroidal_of_polarisedChartsForFan GlobalTheory.T.siegelToroidalCompactification_polarisedCharts
+  fun g _ =>
+    (GlobalTheory.T.exists_invariant_smoothProjFan_noSelfIntersections g).imp fun _ h => h.1
 
 end GlobalTheory
