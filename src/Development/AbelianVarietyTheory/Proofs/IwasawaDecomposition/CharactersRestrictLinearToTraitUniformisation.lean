@@ -15,7 +15,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Exist
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtendSplitTorusHomOverDvrStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaFixesAbelianPartOfTorsionPointStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameInertiaFixedDvdValuationOrderStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionUniformisationEqRestrictCharactersStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionUniformisationEqRestrictCharacters
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionCommutesRingActionStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionTraitSurjectiveStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniformisationTorusMonoAndFactorStatement
@@ -292,7 +292,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
       (k : ℤ) ∣ (ord_vw W).toFun (Units.map gK.toMonoidHom x) - (ord_vw W).toFun x' := fun k hk => by
     obtain ⟨O, φ, σ, π, h₁, h₂, h₃, h₄, h₅⟩ := GlobalTheory.T.exists_inertia_moves_tame_root W F ϖ hϖ k (by simpa using hk.map g)
     exact dvd_ord_sub P hR P' hW m ρ gK hgK (fun _ => rfl) hk hϖ O φ σ π h₁ h₂ h₃ h₄ h₅
-      (GlobalTheory.T.toricTorsion_uniformisation_eq_restrictCharacters E H R t P W t' P' hR hW g m V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ eα
+      (_root_.GlobalTheory.ToricTorsionCompare.toric_torsion_eq_restrict E H R t P W t' P' hR hW g m V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ eα
         (en'.symm.trans en) F O φ h₁ h₂ (fun r => congrArg (algebraMap (FractionRing W) F) (hgK r)) k hk) hx hx'
   rw [← sub_eq_zero]
   refine Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (key (l ^ Int.natAbs

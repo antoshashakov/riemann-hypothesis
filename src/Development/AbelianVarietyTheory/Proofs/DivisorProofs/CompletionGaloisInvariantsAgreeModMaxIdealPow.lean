@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicCompletionEquivariantEquivOfLevelIsosStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FactorPowCompAdicCompletionMapToQuotientPow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicCompletionEquivariantEquivOfLevelIsos
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicCompletionMapInvariantsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicCompletionRingInjectiveInvariantsOfModuleStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatTensorGaloisInjectiveInvariantsStatement
@@ -110,7 +111,7 @@ theorem completion_invariants_agree : ∀ (R : Type) [CommRing R] [IsDomain R] [
   have hIC : IC = (maximalIdeal R).map (algebraMap R C') := by
     simp only [IC, JC, Ideal.map_map]; rw [← IsScalarTower.algebraMap_eq]
   have hCσ : ∀ σ, IC.map (act σ).toRingEquiv.toRingHom ≤ IC := fun σ => map_algebraMap_le (gC σ) JC
-  obtain ⟨Ψ, hΨσ, hΨi⟩ := GlobalTheory.T.adicCompletion_equivariant_equiv_of_level_isos R (maximalIdeal R) R' C' act hact O i h1 h2 h3 IT IC hIT hIC
+  obtain ⟨Ψ, hΨσ, hΨi⟩ := _root_.GlobalTheory.InvAlg.Levels.levels_equiv R (maximalIdeal R) R' C' act hact O i h1 h2 h3 IT IC hIT hIC
     (fun σ => map_algebraMap_le (galTensor O σ) JO) hCσ
   let κC := cmap (algebraMap C C') JC IC le_rfl
   let κO1 := cmap (algebraMap O T) JO IT le_rfl

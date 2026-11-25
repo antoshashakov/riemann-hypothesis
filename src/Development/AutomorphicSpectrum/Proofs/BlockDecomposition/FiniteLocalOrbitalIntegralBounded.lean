@@ -14,7 +14,8 @@ public import Mathlib.MeasureTheory.Integral.Bochner.Basic
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumQuadraticCharacterBound
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelOpenCompactStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelsNeighbourhoodBasisStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingBiadditiveStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatTuple
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingBiadditive
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingOnRationalTupleFormulaStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseCocycleBimultiplicativeStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseContinuousUnitaryStatement
@@ -115,7 +116,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   set t : F := t₁ * (s₂ : F) with ht
   set bc := hermIn (Af F) σ n c with hbc
   obtain ⟨hp1, hp2, hp3⟩ := GlobalTheory.T.phase_continuous_unitary F E σ hCM M J n ψ hψ bc
-  obtain ⟨hq1, hq2⟩ := GlobalTheory.T.pairing_biadditive F E σ M J n ψ bc
+  obtain ⟨hq1, hq2⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairAdd.pairB_add F E σ M J n ψ bc
   set q := phaseB σ J (psiFin F ψ) bc with hq
   set B := pairB σ J (psiFin F ψ) bc with hB
   set S : Set (Fin n → Fin M → Af F ⊗[F] E) := {y | y ∈ L ∧ ∀ l ∈ L, B l y = 1} with hS

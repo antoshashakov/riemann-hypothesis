@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CanonicalOfAbelianDeRham
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianHomReductionDescendsFinitelyGeneratedStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianHomReductionDescendsFinitelyGenerated
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushMemLiftFilOfInjective
 import Mathlib.Algebra.Order.Floor.Extended
@@ -64,7 +66,7 @@ theorem liftHom_exists_of_noetherian : AbelianDeRham → (∀ (R : Type) [CommRi
     ∃ f : A ⟶ B, i ≫ f.left = f₀.left ≫ j := by
   intro P H R _ I h R₀ _ π hπ hker g A₀ _ A _ i hA abA smA g' B₀ _ B _ j hB abB smB f₀ _ hfil
   obtain ⟨S, ι₀, AS₀, _, AS, _, iS, BS₀, _, BS, _, jS, fS₀, φA, φB, ψA, ψB, hfg, hι, _, hAS, hBS, abAS, smAS,
-    abBS, smBS, pA, pB, qA, qB, cA, cB, cf⟩ := GlobalTheory.T.abelian_hom_reduction_descends_finitely_generated R I R₀ π hπ hker g A₀ A i hA abA smA g' B₀ B j hB abB smB f₀
+    abBS, smBS, pA, pB, qA, qB, cA, cB, cf⟩ := _root_.GlobalTheory.AbHomDesc.abelian_hom_reduction_descends R I R₀ π hπ hker g A₀ A i hA abA smA g' B₀ B j hB abB smB f₀
   have hS : (I.comap S.subtype) ^ 2 = 0 := by
     rw [Ideal.zero_eq_bot, eq_bot_iff]
     refine (Ideal.le_comap_pow _ 2).trans ?_

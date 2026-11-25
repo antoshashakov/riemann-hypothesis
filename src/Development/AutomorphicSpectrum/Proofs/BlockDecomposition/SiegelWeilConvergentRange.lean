@@ -6,7 +6,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicHa
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermInf
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanSiegelWeilIntegralIdentity
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ModerateGrowthSchwartz
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterTracePairingEqInnerPsiStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterTracePairingEqInnerPsi
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicSiegelWeilIntegralIdentityStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianHaarSplitsArchTimesFiniteStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedSchwartzFunctionIntegrableStatement
@@ -91,7 +91,7 @@ theorem integrable_starN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
       unfold starN
       refine integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)
       show _ * _ = G _
-      rw [GlobalTheory.T.character_trace_pairing_eq_inner_psi F E σ hCM M J n ψ b X]
+      rw [_root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Phase.adelic_phase_split F E σ hCM M J n ψ b X]
       simp only [G, A, B]
       ring
     have e2 := hme.integral_map (μ := dx) G

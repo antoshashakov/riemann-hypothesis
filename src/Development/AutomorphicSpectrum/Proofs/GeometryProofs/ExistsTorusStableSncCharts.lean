@@ -11,7 +11,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartIdealLo
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteTorusTranslatesCoverStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerDifferentialsSpanLocalStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RationalRelationInChartIdealStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularLocalChartCoordsStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularLocalChartCoords
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncResolutionCoverAndCone
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncResolutionRegularLocalRingStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -441,7 +441,7 @@ theorem exists_sncCharts : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, F
       exact (ReciprocityTheory.AnForm.R.mem_conePts_iff_chartIdeal hPh c w hc).1 ((mem_mcPts_iff_conePts_pC _ _).1 hw)
     obtain ⟨hl, hn⟩ := ReciprocityTheory.AnForm.R.locRing_isLocalRing_isNoetherian _ _ hzero
     obtain ⟨a, r, h, ha, hr, hr0, hh, hb⟩ := snc_params K J Ω y n bd hPh hS c w hw hc
-    exact GlobalTheory.T.regular_local_chart_coords K J _ hPh n _ c w hw hc a r h hdim ha hr hr0 hh hb
+    exact _root_.GlobalTheory.CompanionTheory.Ar.ChartParams.sncChart_of_regular_parameters K J _ hPh n _ c w hw hc a r h hdim ha hr hr0 hh hb
   choose χ O hO hwO hcov using key
   obtain ⟨m, e, he⟩ := GlobalTheory.T.finite_torus_translates_cover K J _ hPh _ O hO (fun z hz => ⟨⟨z, hz⟩, hwO ⟨z, hz⟩⟩)
   refine ⟨m, fun a => χ (e a), fun z hz => ?_⟩
