@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HalfIntegralGeneratorTraceEqOne
 
 @[expose] public section
 
@@ -87,15 +88,7 @@ theorem unimodLattice_bar_rt {E : Type} [Field E] [NumberField E] [IsCMField E] 
   simpa using key
 
 theorem unimodLattice_w0_add {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
-    H.w0 + H.bar H.w0 = 1 := by
-  have h1 := H.two_weight_eq_one_add_root
-  have h2 : 2 * H.bar H.w0 = 1 - H.rt := by
-    have := congrArg H.bar h1
-    rw [map_mul, map_add (f := _), map_one, unimodLattice_bar_rt, map_ofNat] at this
-    rw [this]; ring
-  have h3 : (2 : 𝓞 E) * (H.w0 + H.bar H.w0) = 2 * 1 := by
-    rw [mul_add, h1, h2]; ring
-  exact mul_left_cancel₀ two_ne_zero h3
+    H.w0 + H.bar H.w0 = 1 := GlobalTheory.AnVal.halfIntegralGenerator_trace_eq_one H
 
 theorem unimodLattice :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), ∃ (r : ℕ) (W : Matrix (Fin r) (Fin r) ℤ) (ρ : 𝓞 E →+* Matrix (Fin r) (Fin r) ℤ), 1 ≤ r ∧ ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef ∧ IsUnit (W + W.transpose).det ∧ (∀ a, (ρ a).transpose * (W + W.transpose) = (W + W.transpose) * ρ (H.bar a)) ∧ W = (W + W.transpose) * ρ H.w0 := by

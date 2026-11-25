@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeWithDensityUnfoldSubgroup
 
 @[expose] public section
 
@@ -52,27 +53,8 @@ namespace GlobalTheory.CompanionTheory.RgHeA
 theorem isInvInvariant_of_right_haar {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
-    [μ.IsHaarMeasure] [μ.IsMulRightInvariant] : μ.IsInvInvariant := by
-  haveI : IsFiniteMeasureOnCompacts μ.inv :=
-    ⟨fun K hK => by rw [Measure.inv_apply]; exact hK.inv.measure_lt_top⟩
-  obtain ⟨c, hc⟩ : ∃ c : NNReal, μ.inv = c • μ := ⟨_, Measure.isMulLeftInvariant_eq_smul μ.inv μ⟩
-  have hsq : μ = (c * c) • μ := by
-    calc μ = μ.inv.inv := (Measure.inv_inv μ).symm
-      _ = (c • μ).inv := by rw [hc]
-      _ = c • μ.inv := by rw [Measure.inv_def, Measure.inv_def, Measure.map_smul c measurable_inv.aemeasurable]
-      _ = (c * c) • μ := by rw [hc, smul_smul]
-  let K := Classical.arbitrary (TopologicalSpace.PositiveCompacts G)
-  have hpos : μ K ≠ 0 := (Measure.measure_pos_of_nonempty_interior μ K.interior_nonempty).ne'
-  have hfin : μ K ≠ ⊤ := K.isCompact.measure_lt_top.ne
-  have hK : μ K = ((c * c) • μ) K := by rw [← hsq]
-  rw [Measure.smul_apply, Measure.nnreal_smul_coe_apply] at hK
-  have h1 : ((c * c : NNReal) : ENNReal) = 1 :=
-    ((ENNReal.mul_left_inj hpos hfin).1 (by rw [one_mul]; exact hK.symm))
-  have hcc : (c : ℝ) * c = 1 := by exact_mod_cast ENNReal.coe_eq_one.1 h1
-  have hc1 : c = 1 := by
-    have : (c : ℝ) = 1 := by nlinarith [c.coe_nonneg]
-    exact_mod_cast this
-  exact ⟨by rw [hc, hc1, one_smul]⟩
+    [μ.IsHaarMeasure] [μ.IsMulRightInvariant] : μ.IsInvInvariant :=
+  GlobalTheory.GenUnfold.isInvInvariant μ
 
 theorem isSelfAdjoint_coefOp : ∀ {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [LocallyCompactSpace Γ]
     [SecondCountableTopology Γ] [MeasurableSpace Γ] [BorelSpace Γ] (ν : Measure Γ) [ν.IsHaarMeasure] [ν.IsMulRightInvariant] {A B : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] [CompleteSpace A] [NormedAddCommGroup B]

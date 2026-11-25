@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelMulPowOfInvariantModPow
 
 @[expose] public section
 
@@ -62,18 +63,8 @@ theorem mdiff_comp_sl (f : ℍ → ℂ) (hf : MDifferentiable 𝓘(ℂ) 𝓘(ℂ
   have hg : 0 < ((γ : GL (Fin 2) ℝ)).det.val := by simp
   exact hf.comp (UpperHalfPlane.mdifferentiable_smul hg)
 
-theorem gamma_le {K L : ℕ} (hd : K ∣ L) : CongruenceSubgroup.Gamma L ≤ CongruenceSubgroup.Gamma K := by
-  intro γ hγ
-  have c : ∀ x y : ℤ, ((x : ZMod L) = y) → ((x : ZMod K) = y) := fun x y h => by
-    have := congrArg (ZMod.castHom hd (ZMod K)) h
-    simpa using this
-  rw [CongruenceSubgroup.Gamma_mem] at hγ ⊢
-  obtain ⟨h1, h2, h3, h4⟩ := hγ
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · simpa using c _ 1 (by simpa using h1)
-  · simpa using c _ 0 (by simpa using h2)
-  · simpa using c _ 0 (by simpa using h3)
-  · simpa using c _ 1 (by simpa using h4)
+theorem gamma_le {K L : ℕ} (hd : K ∣ L) : CongruenceSubgroup.Gamma L ≤ CongruenceSubgroup.Gamma K :=
+  GlobalTheory.KZ.ES.CongruenceDescent.Gamma_le_of_dvd hd
 
 theorem alg (m : ℕ) (P : ℕ → ℂ) (x y : ℂ)
     (h : ∑ i ∈ Finset.range (m + 1 + 1), P i * x ^ i * y ^ (m + 1 - i) = 0) :

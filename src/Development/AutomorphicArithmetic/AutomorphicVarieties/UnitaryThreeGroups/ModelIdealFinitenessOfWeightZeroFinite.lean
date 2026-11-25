@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Compactness.CountablyCompact
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemIntegersOfNormLeOne
 
 @[expose] public section
 
@@ -97,39 +98,7 @@ private theorem mem_range_of_approx {l : ℕ} [Fact l.Prime] {R : Type} [CommRin
   exact (sub_eq_zero.mp h0).symm
 
 private theorem norm_coe_coefO_le_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) :
-    ‖(x : PadicAlgCl l)‖ ≤ 1 := by
-  haveI := c.fin
-  have hint : IsIntegral ℤ_[l] (x : PadicAlgCl l) := by
-    have hx : IsIntegral ℤ_[l] x := Algebra.IsIntegral.isIntegral x
-    exact hx.map c.O.val
-  obtain ⟨p, hmon, hp⟩ := hint
-  by_contra hgt
-  push_neg at hgt
-  rw [hmon.as_sum, Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finsetSum] at hp
-  have hcoef : ∀ i ∈ Finset.range p.natDegree,
-      ‖Polynomial.eval₂ (algebraMap ℤ_[l] (PadicAlgCl l)) (x : PadicAlgCl l)
-        (Polynomial.C (p.coeff i) * Polynomial.X ^ i)‖ ≤ ‖(x : PadicAlgCl l)‖ ^ i := by
-    intro i _
-    rw [Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, norm_mul, norm_pow]
-    have hc : ‖algebraMap ℤ_[l] (PadicAlgCl l) (p.coeff i)‖ ≤ 1 := by
-      rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]
-      exact PadicInt.norm_le_one _
-    calc _ ≤ 1 * ‖(x : PadicAlgCl l)‖ ^ i := by gcongr
-      _ = _ := one_mul _
-  have hlt : ‖∑ i ∈ Finset.range p.natDegree, Polynomial.eval₂ (algebraMap ℤ_[l] (PadicAlgCl l))
-      (x : PadicAlgCl l) (Polynomial.C (p.coeff i) * Polynomial.X ^ i)‖ <
-      ‖(x : PadicAlgCl l)‖ ^ p.natDegree := by
-    rcases Nat.eq_zero_or_pos p.natDegree with hn | hn
-    · rw [hn]
-      simp
-    · obtain ⟨i, hi, hle⟩ := IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty
-        (Finset.nonempty_range_iff.mpr hn.ne') (fun i => Polynomial.eval₂
-          (algebraMap ℤ_[l] (PadicAlgCl l)) (x : PadicAlgCl l) (Polynomial.C (p.coeff i) * Polynomial.X ^ i))
-      exact lt_of_le_of_lt (hle.trans (hcoef i hi)) (pow_lt_pow_right₀ hgt (Finset.mem_range.mp hi))
-  have heq := eq_neg_of_add_eq_zero_left hp
-  have hn := congrArg norm heq
-  rw [norm_neg, norm_pow] at hn
-  linarith
+    ‖(x : PadicAlgCl l)‖ ≤ 1 := GlobalTheory.Ord2.norm_le_one_of_mem_coefO c x
 
 private theorem natCast_not_isUnit {l : ℕ} [Fact l.Prime] (c : Coef l) : ¬ IsUnit (l : c.O) := by
   rintro ⟨u, hu⟩

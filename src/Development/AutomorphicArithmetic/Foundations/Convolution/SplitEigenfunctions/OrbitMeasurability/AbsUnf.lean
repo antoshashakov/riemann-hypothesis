@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeWithDensityUnfoldSubgroup
 
 @[expose] public section
 
@@ -49,34 +50,7 @@ namespace UpperTheory.ConvolutionTheory.RankTwoDescent.Cp
 
 private theorem invInvariant {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H]
     [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] (ν : Measure H) [ν.IsHaarMeasure]
-    [ν.IsMulRightInvariant] : ν.IsInvInvariant := by
-  constructor
-  obtain ⟨c, hc⟩ : ∃ c : ℝ≥0∞, ν.inv = c • ν :=
-    ⟨haarScalarFactor ν.inv ν, by
-      have := isMulLeftInvariant_eq_smul ν.inv ν
-      rwa [ENNReal.smul_def] at this⟩
-  obtain ⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts H) := inferInstance
-  have hpos : ν K ≠ 0 := (measure_pos_of_nonempty_interior _ K.interior_nonempty).ne'
-  have hfin : ν K ≠ ⊤ := K.isCompact.measure_lt_top.ne
-  have hsq : ν = (c * c) • ν := by
-    conv_lhs => rw [← Measure.inv_inv ν, hc]
-    rw [Measure.inv_def (c • ν), Measure.map_smul _ measurable_inv.aemeasurable, ← Measure.inv_def, hc, smul_smul]
-  have h1 : c * c = 1 := by
-    have : (c * c) * ν K = 1 * ν K := by
-      rw [one_mul]; conv_rhs => rw [hsq]
-      simp
-    exact (ENNReal.mul_left_inj hpos hfin).1 this
-  have h2 : c = 1 := by
-    rcases lt_trichotomy c 1 with h | h | h
-    · exact absurd h1 (ne_of_lt (by
-        calc c * c ≤ c * 1 := by gcongr
-          _ < 1 := by simpa using h))
-    · exact h
-    · exact absurd h1 (ne_of_gt (by
-        calc 1 < c := h
-          _ = 1 * c := by simp
-          _ ≤ c * c := by gcongr))
-  rw [hc, h2, one_smul]
+    [ν.IsMulRightInvariant] : ν.IsInvInvariant := GlobalTheory.GenUnfold.isInvInvariant ν
 
 private theorem unf {G H ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H] [TopologicalSpace H]

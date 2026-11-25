@@ -53,6 +53,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.TwistedBundlesMatchModels
 
 @[expose] public section
 
@@ -201,98 +202,8 @@ theorem patch_comap_equiv (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
     (σ : CMType H ⊕ CMType H → (𝓞 E →+* Ω)) (s : CMType H ⊕ CMType H) :
     (Lat.patch S (M.eigLat ρ' (σ s)) (fun p => htLabel M L (n p) ρ' σ s)).comap φ.toLinearMap =
       Lat.patch S ((Flat.lieModelOfEquiv M φ).eigLat ρ (σ s))
-        (fun p => htLabel (Flat.lieModelOfEquiv M φ) L (n p) ρ σ s) := by
-  set M₂ := Flat.lieModelOfEquiv M φ with hM₂
-  have hext : ∀ p e v, M₂.Extends p e v ↔ M.Extends p (φ e) v := fun _ _ _ => Iff.rfl
-  have hlat : ∀ p, M₂.lat p = (M.lat p).comap (φ.toLinearMap.restrictScalars (regAt ξ p)) := by
-    intro p
-    simp only [LieModel.lat]
-    rw [comap_span_equiv]
-    rfl
-  have hlatm : ∀ p e, e ∈ M₂.lat p ↔ φ e ∈ M.lat p := fun p e => by rw [hlat]; rfl
-  have heig : ∀ (σ₀ : 𝓞 E →+* Ω) e, e ∈ eigSp ρ σ₀ ↔ φ e ∈ eigSp ρ' σ₀ := by
-    intro σ₀ e
-    simp only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
-      LinearMap.id_apply, sub_eq_zero]
-    refine forall_congr' fun a => ?_
-    rw [← hρ, ← map_smul, φ.injective.eq_iff]
-  let ψ : Module.Dual Ω F' ≃ₗ[Ω] Module.Dual Ω F := φ.symm.dualMap
-  have hψ : ∀ w e, ψ w e = w (φ.symm e) := fun _ _ => rfl
-  have hom_dual : ∀ p w, w ∈ M₂.omLat p ↔ ψ w ∈ M.omLat p := by
-    intro p w
-    show (∀ e ∈ M₂.lat p, w e ∈ regAt ξ p) ↔ (∀ e ∈ M.lat p, (ψ w) e ∈ regAt ξ p)
-    constructor
-    · intro h e he
-      rw [hψ]
-      exact h (φ.symm e) ((hlatm p _).2 (by simpa using he))
-    · intro h e he
-      have := h (φ e) ((hlatm p e).1 he)
-      rwa [hψ, LinearEquiv.symm_apply_apply] at this
-  have hHT : ∀ N x p w, M₂.IsHTAt L N x p w ↔ M.IsHTAt L N x p (ψ w) := by
-    intro N x p w
-    unfold LieModel.IsHTAt
-    rw [hom_dual]
-    refine and_congr Iff.rfl (exists_congr fun W => exists_congr fun f =>
-      and_congr Iff.rfl (and_congr Iff.rfl ?_))
-    constructor
-    · intro h e v he hW
-      obtain ⟨r, hr, hr'⟩ := h (φ.symm e) v ((hext p _ v).2 (by simpa using he)) hW
-      exact ⟨r, hr, by rw [hψ]; exact hr'⟩
-    · intro h e v he hW
-      obtain ⟨r, hr, hr'⟩ := h (φ e) v ((hext p e v).1 he) hW
-      refine ⟨r, hr, ?_⟩
-      rw [hψ, LinearEquiv.symm_apply_apply] at hr'
-      exact hr'
-  have hhtOm : ∀ N p w, w ∈ M₂.htOm L N p ↔ ψ w ∈ M.htOm L N p := by
-    intro N p w
-    have h : M₂.htOm L N p = (M.htOm L N p).comap (ψ.toLinearMap.restrictScalars (regAt ξ p)) := by
-      simp only [LieModel.htOm]
-      rw [comap_span_equiv]
-      congr 1
-      ext w'
-      simp only [Set.mem_setOf_eq, Set.mem_preimage, hHT]
-    rw [h]; rfl
-  have hdual : ∀ N (σ₀ : 𝓞 E →+* Ω) p e, e ∈ M₂.htDual L N ρ σ₀ p ↔ φ e ∈ M.htDual L N ρ' σ₀ p := by
-    intro N σ₀ p e
-    rw [LieModel.mem_htDual_iff, LieModel.mem_htDual_iff, heig]
-    refine and_congr Iff.rfl ⟨fun h w hw => ?_, fun h w hw => ?_⟩
-    · have := h (ψ.symm w) ((hhtOm N p _).2 (by simpa using hw))
-      have e1 : ψ.symm w e = w (φ e) := by
-        have := hψ (ψ.symm w) (φ e)
-        rw [LinearEquiv.apply_symm_apply, LinearEquiv.symm_apply_apply] at this
-        exact this.symm
-      rwa [e1] at this
-    · have := h (ψ w) ((hhtOm N p w).1 hw)
-      rwa [hψ, LinearEquiv.symm_apply_apply] at this
-  have hW : ∀ N (σ₀ : 𝓞 E →+* Ω) (𝔡 : Ideal (𝓞 E)) p,
-      M₂.htW L N ρ σ₀ 𝔡 p = (M.htW L N ρ' σ₀ 𝔡 p).comap (φ.toLinearMap.restrictScalars (regAt ξ p)) := by
-    intro N σ₀ 𝔡 p
-    simp only [LieModel.htW]
-    rw [comap_span_equiv]
-    congr 1
-    ext e
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, heig, hdual, map_smul]
-  have hD : ∀ N (σ₀ : 𝓞 E →+* Ω) p,
-      M₂.htDual L N ρ σ₀ p = (M.htDual L N ρ' σ₀ p).comap (φ.toLinearMap.restrictScalars (regAt ξ p)) := by
-    intro N σ₀ p
-    ext e
-    exact hdual N σ₀ p e
-  have hE : ∀ (σ₀ : 𝓞 E →+* Ω) p,
-      M₂.eigLat ρ σ₀ p = (M.eigLat ρ' σ₀ p).comap (φ.toLinearMap.restrictScalars (regAt ξ p)) := by
-    intro σ₀ p
-    ext e
-    simp only [LieModel.eigLat, Lat.inter, Submodule.mem_inf, Submodule.mem_comap, Submodule.restrictScalars_mem]
-    rw [hlatm, heig]
-    rfl
-  funext p
-  simp only [Lat.comap, Lat.patch]
-  split_ifs with hF
-  · simp only [Submodule.comap_iInf]
-    refine iInf_congr fun q => iInf_congr fun _ => iInf_congr fun _ => ?_
-    rcases s with τ | τ
-    · exact (hW _ _ _ p).symm
-    · exact (hD _ _ p).symm
-  · exact (hE _ p).symm
+        (fun p => htLabel (Flat.lieModelOfEquiv M φ) L (n p) ρ σ s) :=
+  GlobalTheory.CompanionTheory.Ar.CmpBundK.patch_comap_equiv E H X Ω ξ G F F' M φ L S n ρ ρ' hρ σ s
 
 theorem sabMap_congr_base {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f f' : S' ⟶ S} (h : f = f') (m : SABMap t' t f) :

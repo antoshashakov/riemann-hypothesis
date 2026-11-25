@@ -50,6 +50,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExistsRosatiGen
 import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.RatTors
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OverExtOfPoints
 
 @[expose] public section
 
@@ -62,23 +63,8 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Ex.Trait
 namespace GlobalTheory.Ex.Trait
 
 theorem eq_of_comp_schemeDominant {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s] (h : f ≫ s = g ≫ s)
-    (d : W ⟶ X) [IsSchemeTheoreticallyDominant d] (hU : d ≫ f = d ≫ g) : f = g := by
-  let f' : Over.mk (f ≫ s) ⟶ Over.mk s := Over.homMk f
-  let g' : Over.mk (f ≫ s) ⟶ Over.mk s := Over.homMk g h.symm
-  haveI : IsSeparated (Over.mk s).hom := ‹IsSeparated s›
-  let d' : Over.mk (d ≫ f ≫ s) ⟶ Over.mk (f ≫ s) := Over.homMk d
-  have e : d' ≫ f' = d' ≫ g' := Over.OverMorphism.ext hU
-  let l := equalizer.lift d' e
-  have hd : d = l.left ≫ (equalizer.ι f' g').left := by
-    rw [← Over.comp_left, equalizer.lift_ι]; rfl
-  have hker : (equalizer.ι f' g').left.ker = ⊥ := by
-    apply le_bot_iff.1
-    calc _ ≤ (l.left ≫ (equalizer.ι f' g').left).ker := Scheme.Hom.le_ker_comp _ _
-      _ = ⊥ := by rw [← hd]; exact d.ker_eq_bot
-  haveI : IsIso (equalizer.ι f' g').left := IsClosedImmersion.isIso_iff_ker_eq_bot.2 hker
-  have h0 : IsIso ((Over.forget Z).map (equalizer.ι f' g')) := (inferInstance : IsIso (equalizer.ι f' g').left)
-  have : IsIso (equalizer.ι f' g') := isIso_of_reflects_iso _ (Over.forget Z)
-  exact congrArg CommaMorphism.left ((cancel_epi (equalizer.ι f' g')).1 (equalizer.condition f' g'))
+    (d : W ⟶ X) [IsSchemeTheoreticallyDominant d] (hU : d ≫ f = d ≫ g) : f = g :=
+  ReciprocityTheory.ChartRestriction.G.Geo.Tor.ext_of_schDom s h d hU
 
 theorem schemeDominant_spec_of_injective {A B : Type} [CommRing A] [CommRing B] [_root_.IsReduced A] (φ : A →+* B)
     (hφ : Function.Injective φ) : IsSchemeTheoreticallyDominant (Spec.map (CommRingCat.ofHom φ)) := by

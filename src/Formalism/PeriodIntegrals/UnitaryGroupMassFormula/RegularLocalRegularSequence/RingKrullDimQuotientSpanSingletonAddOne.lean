@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.CommutativeAlgebra.MaximalIdealSquares.RingKrullDimQuotientSpanSingletonAddOne
 
 @[expose] public section
 
@@ -318,57 +319,8 @@ theorem isDomain_of_forall_spanFinrank_lt (R : Type u) [CommRing R]
     (IH : ∀ (S : Type u) [CommRing S] [IsRegularLocalRing S],
       Submodule.spanFinrank (maximalIdeal S) < Submodule.spanFinrank (maximalIdeal R) →
         IsDomain S) :
-    IsDomain R := by
-  classical
-  by_cases hsq : maximalIdeal R ≤ maximalIdeal R ^ 2
-  · exact isDomain_of_maximalIdeal_eq_bot R (maximalIdeal_eq_bot_of_le_sq R hsq)
-  obtain ⟨y, hy, hy2⟩ := SetLike.not_le_iff_exists.mp hsq
-  have hdimR : ∃ d : ℕ, ((d + 1 : ℕ) : WithBot ℕ∞) = ringKrullDim R := by
-    have := isLocalRing_quotient_span_singleton hy
-    have h7 := spanFinrank_quotient_eq_and_ringKrullDim_add_one R hy hy2
-    exact ⟨_, by rw [← h7.2, ← h7.1]; exact Nat.cast_succ _⟩
-  by_cases hmin : ∃ p ∈ minimalPrimes R, maximalIdeal R ≤ p
-  · exfalso
-    obtain ⟨p, hp, hle⟩ := hmin
-    have hpm : p = maximalIdeal R :=
-      le_antisymm (IsLocalRing.le_maximalIdeal (isPrime_of_mem_minimalPrimes hp).ne_top) hle
-    subst hpm
-    have h0 := ringKrullDim_le_zero_of_maximalIdeal_minimal hp
-    obtain ⟨d, hd⟩ := hdimR
-    rw [← hd, ← Nat.cast_zero] at h0
-    have := natCast_withBot_enat_le_iff.mp h0
-    omega
-  obtain ⟨x, hx, hx2, hxp⟩ := exists_mem_maximalIdeal_notMem_sq_notMem_minimalPrimes R hsq hmin
-  have := isLocalRing_quotient_span_singleton hx
-  have h7 := spanFinrank_quotient_eq_and_ringKrullDim_add_one R hx hx2
-  have := quotient_span_singleton hx hx2
-  have hlt : Submodule.spanFinrank (maximalIdeal (R ⧸ Ideal.span ({x} : Set R))) <
-      Submodule.spanFinrank (maximalIdeal R) := by
-    have e := h7.2
-    rw [← h7.1, ← spanFinrank_maximalIdeal_eq_ringKrullDim R, ← Nat.cast_succ] at e
-    have := natCast_withBot_enat_eq_iff.mp e
-    omega
-  have hQ : IsDomain (R ⧸ Ideal.span ({x} : Set R)) := IH _ hlt
-  have hprime : (Ideal.span ({x} : Set R)).IsPrime := (Ideal.Quotient.isDomain_iff_prime _).mp hQ
-  obtain ⟨p, hp, hpx⟩ := Ideal.exists_minimalPrimes_le
-    (show (⊥ : Ideal R) ≤ Ideal.span ({x} : Set R) from bot_le)
-  have hpP := isPrime_of_mem_minimalPrimes hp
-  have hxp' : x ∉ p := hxp p hp
-  have hle : p ≤ Ideal.span ({x} : Set R) • p := by
-    intro z hz
-    obtain ⟨a, rfl⟩ := Ideal.mem_span_singleton'.mp (hpx hz)
-    have ha : a ∈ p := (hpP.mem_or_mem hz).resolve_right hxp'
-    have hs : x * a ∈ Ideal.span ({x} : Set R) • p :=
-      Submodule.smul_mem_smul (Ideal.mem_span_singleton_self x) ha
-    rw [mul_comm a x]
-    exact hs
-  have hjac : Ideal.span ({x} : Set R) ≤ Ideal.jacobson ⊥ := by
-    rw [IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]
-    exact Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hx)
-  have hbot : p = ⊥ :=
-    Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ (IsNoetherian.noetherian p) hle hjac
-  rw [hbot] at hpP
-  exact isDomain_of_isPrime_bot hpP
+    IsDomain R :=
+  ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain_of_forall_spanFinrank_lt R IH
 
 theorem isDomain_of_spanFinrank_le :
     ∀ (n : ℕ) (R : Type u) [CommRing R] [IsRegularLocalRing R],

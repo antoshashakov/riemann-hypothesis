@@ -53,6 +53,7 @@ import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowsRestWordColumnUnitBaseTupleAlt
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StrictHenselianAcyclic
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TypePrimeFiniteGroupInductionFactor
 
 @[expose] public section
 
@@ -192,106 +193,8 @@ theorem typeVec_rows {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     (cp : GlobalTheory.GoodTypes.Comp D) (hcp : IsComp I (fun σ => principalLevelFrame.rowRepR R.θ (Y.eFT σ)) cp) (σ : D.what₂.FT) :
     ∃ (V : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (G0g D.nd) V) (W : Submodule ℂ V) (x : V),
       (∀ k v, GlobalTheory.GoodTypes.ConjIn ρ W (GlobalTheory.GoodTypes.facHom D k v) (cp σ k v).ρ) ∧ x ≠ 0 ∧
-        (∀ a, ρ.asAlgebraHom a x ∈ W) ∧ ρ.asAlgebraHom D.ntypes.e0 x = x := by
-  classical
-  set π := principalLevelFrame.rowRepR R.θ (Y.eFT σ) with hπ
-  have hloc := hcp σ
-  choose s hs τ hτ hcpe using hloc
-  have hj := fun k v => loc_piece π (s k v) (hs k v) (τ k v) (hτ k v) (I.i k v) (I.cont k v)
-  choose j hjc hjP using hj
-  have hinj := GlobalTheory.PlaceInj.splitPlace_v_injective D s hs
-  obtain ⟨c, hA, hKc⟩ := GlobalTheory.T.rowsAtLevels_fixed_principalCongruence_typePlaces R F cG Y hP s j hs hjc
-  obtain ⟨ρM, hρM⟩ := GlobalTheory.TypeAct.exists_rep D s j hinj _ ((principalLevelFrame.actM Y.PY (R.MY 0)).comp (MulAut.conj c).toMonoidHom)
-  obtain ⟨ρV, hρV⟩ := GlobalTheory.TypeAct.exists_rep D s j hinj _ (rtHom D.host.E D.R.r)
-  obtain ⟨b, hb⟩ := principalLevelFrame.rowRepR_occ R.θ (Y.eFT σ)
-  obtain ⟨Tm, hTm, hT0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hb
-
-  have hTm' : Tm ∈ Mult.goodPart R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b)))
-      (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b))) R.toRealDat.e0 ⊓
-      principalLevelFrame.isotIn (principalLevelFrame.actM Y.PY (R.MY 0)) (principalLevelFrame.Minf R.θ Y.PY (R.MY 0)) (principalLevelFrame.FinTyp.conjT π) := hTm
-  obtain ⟨hG, hN⟩ := Submodule.mem_inf.1 hTm'
-  have hMult : Tm ∈ Mult.Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b)))
-      (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b))) := (Submodule.mem_inf.1 hG).1
-  have hK := hKc b Tm hMult
-  have he := GlobalTheory.T.goodProjector_eq_goodIdempotent_typePlaces R F cG Y hP s j hs hjc c hA ρM hρM b Tm hK hG
-  obtain ⟨q, hq0, hq⟩ := detect_conj (principalLevelFrame.actM Y.PY (R.MY 0)) (principalLevelFrame.Minf R.θ Y.PY (R.MY 0))
-    (principalLevelFrame.FinTyp.conjT π) c Tm hN hT0
-
-  set N := principalLevelFrame.isotIn (principalLevelFrame.actM Y.PY (R.MY 0)) (principalLevelFrame.Minf R.θ Y.PY (R.MY 0)) (principalLevelFrame.FinTyp.conjT π) with hNdef
-  have hstep : ∀ (k : Fin 2) (v : D.nd.PlG k) (m : GL (Fin D.R.r) (ZMod (D.host.g k))) (z : KFix D s j ((principalLevelFrame.actM Y.PY (R.MY 0)).comp (MulAut.conj c).toMonoidHom)),
-      (z : Mult.MMap (R.MY 0)) ∈ N →
-      ((ρM (GlobalTheory.GoodTypes.facHom D k v m) z : KFix D s j ((principalLevelFrame.actM Y.PY (R.MY 0)).comp (MulAut.conj c).toMonoidHom)) : Mult.MMap (R.MY 0)) ∈ N ∧
-      ∀ z' : KFix D s j (rtHom D.host.E D.R.r), (z' : GAf D.host.E D.R.r → ℂ) = q z →
-        ((ρV (GlobalTheory.GoodTypes.facHom D k v m) z' : KFix D s j (rtHom D.host.E D.R.r)) : GAf D.host.E D.R.r → ℂ) =
-          q (ρM (GlobalTheory.GoodTypes.facHom D k v m) z) := by
-    intro k v m z hz
-    obtain ⟨y, rfl⟩ := GlobalTheory.GLp.reduction_GL_surjective (D.host.g k) D.R.r m
-    obtain ⟨x, hx1, hx2⟩ := GlobalTheory.SplitSec.exists_trivOutside_loc D.host.E D.R.r (s k v)
-      (Matrix.GeneralLinearGroup.map (j k v).toRingHom (GlobalTheory.GLp.inc _ _ y))
-    have hl : IsLiftAt (s k v) (j k v) y x := ⟨hx1, hx2⟩
-    have eM := hρM k v y x hl z
-    refine ⟨eM ▸ isotIn_stable _ _ _ (c * x * c⁻¹) _ hz, fun z' hz' => ?_⟩
-    have eV := hρV k v y x hl z'
-    rw [eV, eM, hz']
-    exact ((hq _ hz).2 x).symm
-  have hall := intertwine ρM ρV N q hstep
-
-  have hqK : q Tm ∈ KFix D s j (rtHom D.host.E D.R.r) := by
-    rw [mem_KFix] at hK ⊢
-    intro k v y x hl
-    show NG.rt D.host.E D.R.r x (q Tm) = q Tm
-    rw [← (hq _ hN).2 x, hK k v y x hl]
-  refine ⟨KFix D s j (rtHom D.host.E D.R.r), inferInstance, inferInstance, ρV,
-    (principalLevelFrame.FinTyp.conjT π).S.comap (KFix D s j (rtHom D.host.E D.R.r)).subtype, ⟨q Tm, hqK⟩, ?_, ?_, ?_, ?_⟩
-  · intro k v
-    rw [hcpe k v]
-    intro yv hyv hyv0
-    have hf : conjL (yv : GAf D.host.E D.R.r → ℂ) ∈ π.S := hyv
-    have hf0 : conjL (yv : GAf D.host.E D.R.r → ℂ) ≠ 0 := by
-      intro h0
-      apply hyv0
-      apply Subtype.ext
-      funext g
-      have := congrFun h0 g
-      simpa [conjL] using this
-    obtain ⟨p, hp0, hpe⟩ := hjP k v _ hf hf0
-    refine ⟨p.comp (conjL.comp (KFix D s j (rtHom D.host.E D.R.r)).subtype), hp0, fun z hz => ⟨?_, fun h => ?_⟩⟩
-    · have hzf : conjL (z : GAf D.host.E D.R.r → ℂ) ∈ π.S := hz
-      simp only [GlobalTheory.GLp.fixK1, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
-        sub_eq_zero]
-      intro k1
-      obtain ⟨x, hx1, hx2⟩ := GlobalTheory.SplitSec.exists_trivOutside_loc D.host.E D.R.r (s k v)
-        (Matrix.GeneralLinearGroup.map (j k v).toRingHom (GlobalTheory.GLp.inc _ _ (k1 : GL (Fin D.R.r) ℤ_[D.host.g k])))
-      have hl : IsLiftAt (s k v) (j k v) (k1 : GL (Fin D.R.r) ℤ_[D.host.g k]) x := ⟨hx1, hx2⟩
-      have hzK : NG.rt D.host.E D.R.r x (z : GAf D.host.E D.R.r → ℂ) = z := (mem_KFix.1 z.2) k v k1 x hl
-      have e1 := hpe (k1 : GL (Fin D.R.r) ℤ_[D.host.g k]) x hl _ hzf
-      have e2 : NG.rt D.host.E D.R.r x (conjL (z : GAf D.host.E D.R.r → ℂ)) = conjL (z : GAf D.host.E D.R.r → ℂ) := by
-        have e3 : NG.rt D.host.E D.R.r x (conjL (z : GAf D.host.E D.R.r → ℂ)) =
-            conjL (NG.rt D.host.E D.R.r x (z : GAf D.host.E D.R.r → ℂ)) := rfl
-        rw [e3, hzK]
-      rw [e2] at e1
-      exact e1.symm
-    · have hzf : conjL (z : GAf D.host.E D.R.r → ℂ) ∈ π.S := hz
-      have hy0 : GlobalTheory.GLp.red (D.host.g k) D.R.r (Function.invFun (GlobalTheory.GLp.red (D.host.g k) D.R.r) h) = h :=
-        Function.invFun_eq (GlobalTheory.GLp.reduction_GL_surjective (D.host.g k) D.R.r h)
-      obtain ⟨x, hl⟩ : ∃ x, IsLiftAt (s k v) (j k v) (Function.invFun (GlobalTheory.GLp.red (D.host.g k) D.R.r) h) x :=
-        GlobalTheory.SplitSec.exists_trivOutside_loc D.host.E D.R.r (s k v) _
-      have eV := hρV k v _ x hl z
-      rw [hy0] at eV
-      have e1 := hpe _ x hl _ hzf
-      exact (congrArg (fun f => p (conjL f)) eV).trans e1
-  · intro h0
-    apply hq0
-    exact congrArg Subtype.val h0
-  · intro a
-    obtain ⟨h1, h2⟩ := hall a ⟨Tm, hK⟩ ⟨q Tm, hqK⟩ hN rfl
-    show ((ρV.asAlgebraHom a ⟨q Tm, hqK⟩ : KFix D s j (rtHom D.host.E D.R.r)) : GAf D.host.E D.R.r → ℂ) ∈
-      (principalLevelFrame.FinTyp.conjT π).S
-    rw [h2]
-    exact (hq _ h1).1
-  · apply Subtype.ext
-    obtain ⟨-, h2⟩ := hall D.ntypes.e0 ⟨Tm, hK⟩ ⟨q Tm, hqK⟩ hN rfl
-    rw [h2, he]
+        (∀ a, ρ.asAlgebraHom a x ∈ W) ∧ ρ.asAlgebraHom D.ntypes.e0 x = x :=
+  GlobalTheory.TypeVecConj.typeVec_rows R F cG Y hP I cp hcp σ
 
 section Target
 

@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelMulPowOfInvariantModPow
 
 @[expose] public section
 
@@ -50,17 +51,8 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 theorem gamma_le_of_dvd {N N' : ℕ} (hd : N ∣ N') :
-    CongruenceSubgroup.Gamma N' ≤ CongruenceSubgroup.Gamma N := by
-  intro γ hγ
-  rw [CongruenceSubgroup.Gamma_mem] at hγ ⊢
-  have key : ∀ x : ℤ, (x : ZMod N) = ZMod.castHom hd (ZMod N) (x : ZMod N') := fun x => by
-    rw [map_intCast]
-  obtain ⟨h1, h2, h3, h4⟩ := hγ
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · rw [key, h1, map_one]
-  · rw [key, h2, map_zero]
-  · rw [key, h3, map_zero]
-  · rw [key, h4, map_one]
+    CongruenceSubgroup.Gamma N' ≤ CongruenceSubgroup.Gamma N :=
+  GlobalTheory.KZ.ES.CongruenceDescent.Gamma_le_of_dvd hd
 
 theorem lv_mono : ∀ (E : Subring ℂ) (N N' w w' : ℕ) (f : ℍ → ℂ), 0 < N' → N ∣ N' → w ≤ w' →
     Lv E N w f → Lv E N' w' f := by

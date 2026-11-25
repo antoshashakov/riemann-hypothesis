@@ -53,6 +53,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OverExtOfPoints
 
 @[expose] public section
 
@@ -85,29 +86,8 @@ theorem dense (X T : Scheme.{0}) (p : X ⟶ T) [Smooth p] (W : X.Opens)
   exact alg Γ(T, V) Γ(X, U) b (GlobalTheory.T.mem_closure_annihilator_primes_inter_fibre X T p W U V hU hV e hW b hb)
 
 theorem ext_of_dominant {W X Y Z : Scheme.{0}} {f g : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s] (h : f ≫ s = g ≫ s)
-    (d : W ⟶ X) [IsSchemeTheoreticallyDominant d] (hU : d ≫ f = d ≫ g) : f = g := by
-  let X' : Over Z := Over.mk (f ≫ s)
-  let Y' : Over Z := Over.mk s
-  let f' : X' ⟶ Y' := Over.homMk f
-  let g' : X' ⟶ Y' := Over.homMk g h.symm
-  haveI : IsSeparated Y'.hom := ‹IsSeparated s›
-  let U' : Over Z := Over.mk (d ≫ f ≫ s)
-  let d' : U' ⟶ X' := Over.homMk d
-  have e : d' ≫ f' = d' ≫ g' := by
-    ext1
-    exact hU
-  let l := equalizer.lift d' e
-  have hd : d = l.left ≫ (equalizer.ι f' g').left := by
-    rw [← Over.comp_left, equalizer.lift_ι]; rfl
-  have hker : (equalizer.ι f' g').left.ker = ⊥ := by
-    apply le_bot_iff.1
-    calc _ ≤ (l.left ≫ (equalizer.ι f' g').left).ker := Scheme.Hom.le_ker_comp _ _
-      _ = ⊥ := by rw [← hd]; exact d.ker_eq_bot
-  haveI : IsIso (equalizer.ι f' g').left := IsClosedImmersion.isIso_iff_ker_eq_bot.2 hker
-  have h0 : IsIso ((Over.forget Z).map (equalizer.ι f' g')) := (inferInstance : IsIso (equalizer.ι f' g').left)
-  have : IsIso (equalizer.ι f' g') := isIso_of_reflects_iso _ (Over.forget Z)
-  have hfg : f' = g' := (cancel_epi (equalizer.ι f' g')).1 (equalizer.condition f' g')
-  exact congrArg CommaMorphism.left hfg
+    (d : W ⟶ X) [IsSchemeTheoreticallyDominant d] (hU : d ≫ f = d ≫ g) : f = g :=
+  ReciprocityTheory.ChartRestriction.G.Geo.Tor.ext_of_schDom s h d hU
 
 theorem main : ∀ (X T Y : Scheme.{0}) (p : X ⟶ T) [Smooth p] (q : Y ⟶ T) [IsSeparated q] (W : X.Opens),
     (∀ x : X, x ∈ closure ((W : Set X) ∩ p ⁻¹' {p x})) →

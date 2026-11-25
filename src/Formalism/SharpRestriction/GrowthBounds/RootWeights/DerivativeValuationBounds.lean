@@ -47,6 +47,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Bool
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharpRestriction.GrowthBounds.TwistedSubstitution.TwistedMonomialFiltration.SumCCMulSumOfMulEqOne
 
 @[expose] public section
 
@@ -480,105 +481,8 @@ def flt_g (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ) : MvPolyn
 open Classical in
 theorem flt_g_pascal (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ) (a : σ) :
     flt_g R (m + Finsupp.single a 1) be =
-      flt_g R m be * X a + (if a ∈ be.support then flt_g R m (be - Finsupp.single a 1) else 0) := by
-  classical
-  simp only [flt_g]
-  have hX : ∀ (s : σ →₀ ℕ) (c : R), monomial s c * X a = monomial (s + Finsupp.single a 1) c := fun s c => by
-    rw [← pow_one (X a), MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, mul_one]
-  rw [hX]
-  by_cases h : a ∈ be.support
-  · rw [if_pos h]
-    have hba : be a ≠ 0 := Finsupp.mem_support_iff.1 h
-    obtain ⟨b, hb⟩ : ∃ b, be a = b + 1 := ⟨be a - 1, by omega⟩
-    obtain ⟨Q, hQ⟩ : ∃ Q, Q = ∏ k ∈ be.support.erase a, (m k).choose (be k) := ⟨_, rfl⟩
-    have hP0 : (be.prod fun k j => ((m + Finsupp.single a 1 : σ →₀ ℕ) k).choose j) = (m a + 1).choose (be a) * Q := by
-      rw [hQ]
-      simp only [Finsupp.prod]
-      rw [← Finset.mul_prod_erase _ _ h]
-      congr 1
-      · simp
-      · exact Finset.prod_congr rfl fun k hk => by
-          have hka : a ≠ k := Ne.symm (Finset.ne_of_mem_erase hk)
-          simp [Finsupp.single_apply, hka]
-    have hP1 : (be.prod fun k j => (m k).choose j) = (m a).choose (be a) * Q := by
-      rw [hQ]
-      simp only [Finsupp.prod]
-      rw [← Finset.mul_prod_erase _ _ h]
-    have hsub : (be - Finsupp.single a 1).support ⊆ be.support := fun k hk =>
-      Finsupp.mem_support_iff.2 fun h0 => (Finsupp.mem_support_iff.1 hk) (by simp [h0])
-    have hP2 : ((be - Finsupp.single a 1).prod fun k j => (m k).choose j) = (m a).choose (be a - 1) * Q := by
-      rw [hQ, Finsupp.prod_of_support_subset _ hsub _ (fun _ _ => Nat.choose_zero_right _),
-        ← Finset.mul_prod_erase _ _ h]
-      congr 1
-      · simp
-      · exact Finset.prod_congr rfl fun k hk => by
-          have hka : a ≠ k := Ne.symm (Finset.ne_of_mem_erase hk)
-          simp [Finsupp.single_apply, hka]
-    have hle : Q ≠ 0 → ∀ k, k ≠ a → be k ≤ m k := by
-      intro hQ0 k hk
-      rw [hQ] at hQ0
-      by_cases hks : k ∈ be.support
-      · have h1 := (Finset.prod_ne_zero_iff.1 hQ0) k (Finset.mem_erase.2 ⟨hk, hks⟩)
-        by_contra hlt
-        push_neg at hlt
-        exact h1 (Nat.choose_eq_zero_of_lt hlt)
-      · have h0 : be k = 0 := by
-          by_contra h0
-          exact hks (Finsupp.mem_support_iff.2 h0)
-        omega
-    rw [hP0, hP1, hP2, hb, Nat.choose_succ_succ, Nat.add_sub_cancel]
-    by_cases h1 : (m a).choose (b + 1) * Q = 0
-    · rw [h1, Nat.cast_zero, MvPolynomial.monomial_zero, zero_add]
-      by_cases h2 : (m a).choose b * Q = 0
-      · rw [add_mul, h1, h2]
-        simp
-      · have hx : m + Finsupp.single a 1 - be = m - (be - Finsupp.single a 1) := Finsupp.ext fun k => by
-          simp only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]
-          split_ifs with hka
-          · subst hka
-            omega
-          · omega
-        have hc : ((m a).choose b + (m a).choose (b + 1)) * Q = (m a).choose b * Q := by
-          rw [add_mul, h1, add_zero]
-        rw [hx, hc]
-    · have hQ0 : Q ≠ 0 := right_ne_zero_of_mul h1
-      have hab : b + 1 ≤ m a := by
-        by_contra hlt
-        push_neg at hlt
-        exact h1 (by rw [Nat.choose_eq_zero_of_lt hlt, zero_mul])
-      have hx1 : m + Finsupp.single a 1 - be = m - be + Finsupp.single a 1 := Finsupp.ext fun k => by
-        simp only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]
-        split_ifs with hka
-        · subst hka
-          omega
-        · have h3 := hle hQ0 k (Ne.symm hka)
-          omega
-      have hx2 : m - (be - Finsupp.single a 1) = m - be + Finsupp.single a 1 := Finsupp.ext fun k => by
-        simp only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]
-        split_ifs with hka
-        · subst hka
-          omega
-        · have h3 := hle hQ0 k (Ne.symm hka)
-          omega
-      rw [hx1, hx2, ← _root_.map_add (monomial (m - be + Finsupp.single a 1)), ← Nat.cast_add]
-      congr 2
-      ring
-  · rw [if_neg h, add_zero]
-    have hba : be a = 0 := by
-      by_contra h0
-      exact h (Finsupp.mem_support_iff.2 h0)
-    have hx : m + Finsupp.single a 1 - be = m - be + Finsupp.single a 1 := Finsupp.ext fun k => by
-      simp only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]
-      split_ifs with hka
-      · subst hka
-        omega
-      · omega
-    have hp : (be.prod fun k j => ((m + Finsupp.single a 1 : σ →₀ ℕ) k).choose j) = be.prod fun k j => (m k).choose j := by
-      simp only [Finsupp.prod]
-      exact Finset.prod_congr rfl fun k hk => by
-        have hka : a ≠ k := fun h' => h (by rw [h']; exact hk)
-        simp [Finsupp.single_apply, hka]
-    rw [hx, hp]
+      flt_g R m be * X a + (if a ∈ be.support then flt_g R m (be - Finsupp.single a 1) else 0) :=
+  Formalism.MainNotions.TestSideWords.TwistedFiltration.G1.flt_g_pascal R m be a
 
 theorem flt_tay_monomial (R : Type*) [CommRing R] {σ : Type*} (m : σ →₀ ℕ) :
     ∀ be, AddMonoidAlgebra.coeff (flt_tay R σ (monomial m 1)) be = flt_g R m be := by
