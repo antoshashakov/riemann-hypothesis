@@ -205,13 +205,19 @@ theorem exists_chart_of_cm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (tau : Infi
     rw [← hp, hb, hf]
     simp [pairE]
 
+theorem exists_chartF_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
+    (B : Base F E), IsCMExt F E σ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),
+      IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∃ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι := by
+  intro F E _ _ _ _ _ σ B hB_cm θ hθ
+  refine exists_chart_of_cm hB_cm (fun w => (B.emb w).1) (fun w => ?_) θ hθ
+  show InfinitePlace.mk ((B.emb w).1.comp (algebraMap F E)) = w
+  rw [(B.emb w).2, InfinitePlace.mk_embedding]
+
 theorem exists_chartF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∃ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι := by
-  intro F E _ _ _ _ _ σ B hB θ hθ
-  refine exists_chart_of_cm hB.cm (fun w => (B.emb w).1) (fun w => ?_) θ hθ
-  show InfinitePlace.mk ((B.emb w).1.comp (algebraMap F E)) = w
-  rw [(B.emb w).2, InfinitePlace.mk_embedding]
+  intro F E _ _ _ _ _ σ B hB
+  exact exists_chartF_c F E σ B hB.cm
 
 end GlobalTheory.RealWeilF.CMChart
 

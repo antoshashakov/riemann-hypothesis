@@ -128,12 +128,12 @@ theorem exists_isEtaF {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
 
 
 open Classical in
-theorem resEtaF_of_resEtaPow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+theorem resEtaF_of_resEtaPow_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (χ : (AF F ⊗[F] E)ˣ →* Circle) (n : ℕ),
+    IsCMExt F E σ → ∀ (χ : (AF F ⊗[F] E)ˣ →* Circle) (n : ℕ),
       ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ n → Formalism.IndefR.DatumF.ResEtaF χ n := by
-  intro F E _ _ _ _ _ σ B hB χ n hχ
-  have hcm : IsCMExt F E σ := hB.cm
+  intro F E _ _ _ _ _ σ B hB_cm χ n hχ
+  have hcm : IsCMExt F E σ := hB_cm
   refine ⟨exists_isEtaF hcm, fun η hη a => ?_⟩
   obtain ⟨-, h1, h2, h3⟩ := hη
   have hS : ∀ x ∈ normGrp F E, η x = 1 := by
@@ -165,5 +165,12 @@ theorem resEtaF_of_resEtaPow : ∀ (F E : Type) [Field F] [NumberField F] [Field
   rw [hηb] at e2
   have hηa : (η a : ℂ) = -1 := by linear_combination -e2
   rw [hηa]
+
+theorem resEtaF_of_resEtaPow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ (χ : (AF F ⊗[F] E)ˣ →* Circle) (n : ℕ),
+      ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ n → Formalism.IndefR.DatumF.ResEtaF χ n := by
+  intro F E _ _ _ _ _ σ B hB
+  exact resEtaF_of_resEtaPow_c F E σ B hB.cm
 
 end GlobalTheory.ResEtaFOfPow

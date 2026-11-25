@@ -202,19 +202,19 @@ theorem key (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (M : ℕ) (hM : 0 < M)
   have : a = fU * (fU⁻¹ * a) := by group
   rw [this, map_mul, hfU, hb, mul_one]
 
-theorem exists_extend_hecke : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+theorem exists_extend_hecke_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ lam : (AF F)ˣ →* Circle, Continuous lam →
+    IsCMExt F E σ → ∀ lam : (AF F)ˣ →* Circle, Continuous lam →
       (∀ a : Fˣ, lam (Units.map (algebraMap F (AF F)).toMonoidHom a) = 1) →
       (∀ a : (AF F)ˣ, At (evI F) ((a : AF F) - 1) → lam a = 1) →
       ∃ lam' : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF lam' ∧
         (∀ z : (AF F ⊗[F] E)ˣ, At (evI F) ((z : AF F ⊗[F] E) - 1) → lam' z = 1) ∧
         ∀ a, lam' (idFF F E a) = lam a := by
-  intro F E _ _ _ _ _ σ B hB lam hc h1 hinf
+  intro F E _ _ _ _ _ σ B hB_cm lam hc h1 hinf
   haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _
   obtain ⟨M, hM, hMk⟩ := GlobalTheory.T.exists_congruence_kernel_ideleCharacter_trivialAtInfinity F lam hc hinf
   let V : Subgroup (AF F ⊗[F] E)ˣ := (Units.map (incAF F E).toMonoidHom).range ⊔ WE F E (8 * M)
-  have hkey : ∀ a : (AF F)ˣ, idFF F E a ∈ V → lam a = 1 := key σ hB.cm M hM lam h1 hMk
+  have hkey : ∀ a : (AF F)ˣ, idFF F E a ∈ V → lam a = 1 := key σ hB_cm M hM lam h1 hMk
   have hN : 0 < 8 * M := by positivity
   have hWo : IsOpen (WE F E (8 * M) : Set (AF F ⊗[F] E)ˣ) := by
     have ho := GlobalTheory.T.isOpen_integralTensorAdeleMultiples F E (8 * M) hN
@@ -256,6 +256,17 @@ theorem exists_extend_hecke : ∀ (F E : Type) [Field F] [NumberField F] [Field 
     have e : ((z⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1 = -(((z⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) * ((z : AF F ⊗[F] E) - 1)) := by
       rw [mul_sub, Units.inv_mul, mul_one, neg_sub]
     rw [e, smul_neg, ← mul_smul_comm, hz u hu, mul_zero, neg_zero]
+
+theorem exists_extend_hecke : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ lam : (AF F)ˣ →* Circle, Continuous lam →
+      (∀ a : Fˣ, lam (Units.map (algebraMap F (AF F)).toMonoidHom a) = 1) →
+      (∀ a : (AF F)ˣ, At (evI F) ((a : AF F) - 1) → lam a = 1) →
+      ∃ lam' : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF lam' ∧
+        (∀ z : (AF F ⊗[F] E)ˣ, At (evI F) ((z : AF F ⊗[F] E) - 1) → lam' z = 1) ∧
+        ∀ a, lam' (idFF F E a) = lam a := by
+  intro F E _ _ _ _ _ σ B hB
+  exact exists_extend_hecke_c F E σ B hB.cm
 
 end GlobalTheory.HeckeExtend
 

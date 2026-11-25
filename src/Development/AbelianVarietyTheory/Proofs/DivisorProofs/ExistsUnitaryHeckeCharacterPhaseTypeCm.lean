@@ -107,10 +107,10 @@ theorem norm_chiInf (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver
     ‖((chiInf emb z : ℂˣ) : ℂ)‖ = 1 := by
   simp [chiInf, norm_prod, norm_phase]
 
-theorem exists_weil_char : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∃ ξ : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF ξ ∧ HasExp B.emb ξ (fun _ => 1) := by
-  intro F E _ _ _ _ _ σ B hB
-  haveI : IsCMField E := isCMField_of_cmExt hB.cm
+theorem exists_weil_char_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    IsCMExt F E σ → ∃ ξ : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF ξ ∧ HasExp B.emb ξ (fun _ => 1) := by
+  intro F E _ _ _ _ _ σ B hB_cm
+  haveI : IsCMField E := isCMField_of_cmExt hB_cm
   haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _
   obtain ⟨q, hq1, hq⟩ := Nat.exists_infinite_primes (max 3 (Nat.card (Units.torsion E) + 1))
   have hq2 : 2 < q := by omega
@@ -128,7 +128,7 @@ theorem exists_weil_char : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
         rw [hu]
         exact GlobalTheory.ThK.EvAt0.ZPartArc.piInf_inclR' (B.emb w) (k : E)
       simp only [e]
-      exact (GlobalTheory.T.cmType_unit_phase_prod_eq_one_of_congruent_one F E σ hB.cm B.emb q hq hq2 ht u hu1).symm)
+      exact (GlobalTheory.T.cmType_unit_phase_prod_eq_one_of_congruent_one F E σ hB_cm B.emb q hq hq2 ht u hu1).symm)
   refine ⟨GlobalTheory.unitaryCharToCircle χ hχ1, ⟨?_, fun k => ?_⟩, fun z hz => ?_⟩
   · exact Continuous.subtype_mk (Units.continuous_val.comp hχc) _
   · apply Circle.ext
@@ -137,5 +137,10 @@ theorem exists_weil_char : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
   · show ((χ z : ℂˣ) : ℂ) = _
     rw [hχU z (hUinf z hz), chiInf_apply]
     simp
+
+theorem exists_weil_char : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∃ ξ : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF ξ ∧ HasExp B.emb ξ (fun _ => 1) := by
+  intro F E _ _ _ _ _ σ B hB
+  exact exists_weil_char_c F E σ B hB.cm
 
 end GlobalTheory.WeilTypeChar

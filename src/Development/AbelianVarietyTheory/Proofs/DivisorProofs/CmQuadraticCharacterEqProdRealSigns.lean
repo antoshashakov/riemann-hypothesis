@@ -157,13 +157,13 @@ theorem piInf_idFF {w : InfinitePlace F} (hw : w.IsReal) (τ : EmbOver E w) (a :
   rw [infEmb_tmul, map_one, mul_one]
   rfl
 
-theorem eta_eq_prod_sign : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+theorem eta_eq_prod_sign_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ η : (AF F)ˣ →* Circle, IsEtaF E η → ∀ a : (AF F)ˣ, At (evI F) ((a : AF F) - 1) →
+    IsCMExt F E σ → ∀ η : (AF F)ˣ →* Circle, IsEtaF E η → ∀ a : (AF F)ˣ, At (evI F) ((a : AF F) - 1) →
       (η a : ℂ) = ∏ w, piInf (B.emb w) ((idFF F E a : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) /
         ((‖piInf (B.emb w) ((idFF F E a : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E)‖ : ℝ) : ℂ) := by
-  intro F E _ _ _ _ _ σ B hB η hη a ha
-  have hcm := hB.cm
+  intro F E _ _ _ _ _ σ B hB_cm η hη a ha
+  have hcm := hB_cm
   haveI : Algebra.IsQuadraticExtension F E := ⟨hcm.2.2.1⟩
   haveI := hcm.1
   rw [eq_signToCircle η hη, MonoidHom.comp_apply, normSign_eq_prod (finComp_eq_one ha), map_prod]
@@ -186,5 +186,13 @@ theorem eta_eq_prod_sign : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
     rw [if_neg (by decide)]
     push_cast
     rw [div_neg, div_self (by exact_mod_cast hr0)]
+
+theorem eta_eq_prod_sign : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ η : (AF F)ˣ →* Circle, IsEtaF E η → ∀ a : (AF F)ˣ, At (evI F) ((a : AF F) - 1) →
+      (η a : ℂ) = ∏ w, piInf (B.emb w) ((idFF F E a : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) /
+        ((‖piInf (B.emb w) ((idFF F E a : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E)‖ : ℝ) : ℂ) := by
+  intro F E _ _ _ _ _ σ B hB
+  exact eta_eq_prod_sign_c F E σ B hB.cm
 
 end GlobalTheory.EtaSignReal

@@ -138,21 +138,21 @@ theorem exists_detect {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
       sub_neg_eq_add, ← add_mul, h2, one_mul, symplOF, hh, ← mul_assoc]
     exact hz
 
-theorem exists_finset_ann_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+theorem exists_finset_ann_le_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    IsCMExt F E σ → IsStd B.ψ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
       ∀ e, IsSplitIdemF σ e → ∀ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) →
         ∃ G : Finset (WOF F E nS nT), (∀ g ∈ G, ∀ i j, e * g i j = g i j) ∧
           ∀ y : WOF F E nS nT, (∀ i j, cAF σ e * y i j = y i j) →
             (∀ g ∈ G, B.ψ (symplOHF σ JS JT ξ₀ g y - symplOHF σ JS JT ξ₀ y g) = 1) → y ∈ U := by
-  intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he U hU
+  intro F E _ _ _ _ _ σ B hB_cm hB_std nS nT JS JT hS hT ξ₀ hξ hσξ e he U hU
   classical
   haveI := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
   obtain ⟨eh⟩ := GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)
   haveI : T2Space (AEF F E) := eh.isEmbedding.t2Space
-  have hψ : Continuous B.ψ := hB.std.1
+  have hψ : Continuous B.ψ := hB_std.1
   obtain ⟨he1, he2, v, ε, hpl, hsum⟩ := id he
   obtain ⟨N, Φ, hΦc, hΦi, hΦr⟩ := GlobalTheory.PlaceCoordsF.coords_at_place F E v ε hpl nS nT
   have hV : (Φ ⁻¹' (U : Set (WOF F E nS nT))) ∈ nhds (0 : Fin N → v.adicCompletion F) :=
@@ -193,7 +193,7 @@ theorem exists_finset_ann_le : ∀ (F E : Type) [Field F] [NumberField F] [Field
   have hSc : IsCompact S := (hK.image hΦc).inter_right hYc
   have hSdet : ∀ s ∈ S, ∃ g : WOF F E nS nT, (∀ i j, e * g i j = g i j) ∧ χ g s ≠ 1 := by
     rintro s ⟨⟨k, hk, rfl⟩, hsY⟩
-    refine exists_detect (GlobalTheory.SplitDetCharF.sig_invol hB.cm) hB.std hS hT hξ hσξ he _ hsY ?_
+    refine exists_detect (GlobalTheory.SplitDetCharF.sig_invol hB_cm) hB_std hS hT hξ hσξ he _ hsY ?_
     intro h0
     apply hK0
     rw [← map_zero Φ] at h0
@@ -217,6 +217,16 @@ theorem exists_finset_ann_le : ∀ (F E : Type) [Field F] [NumberField F] [Field
     have := hG (gs s.1) (Finset.mem_image_of_mem (fun s : S => gs s.1) hs)
     simp only [χ] at this ⊢
     rw [this, one_pow]
+
+theorem exists_finset_ann_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
+      ∀ e, IsSplitIdemF σ e → ∀ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) →
+        ∃ G : Finset (WOF F E nS nT), (∀ g ∈ G, ∀ i j, e * g i j = g i j) ∧
+          ∀ y : WOF F E nS nT, (∀ i j, cAF σ e * y i j = y i j) →
+            (∀ g ∈ G, B.ψ (symplOHF σ JS JT ξ₀ g y - symplOHF σ JS JT ξ₀ y g) = 1) → y ∈ U := by
+  intro F E _ _ _ _ _ σ B hB
+  exact exists_finset_ann_le_c F E σ B hB.cm hB.std
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {ξ₀ : E}

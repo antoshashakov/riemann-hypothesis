@@ -45,10 +45,10 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory.CMTraceZero
 
-theorem exists_ne_zero_conj_neg : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∃ ξ₀ : E, ξ₀ ≠ 0 ∧ σ ξ₀ = -ξ₀ := by
-  intro F E _ _ _ _ _ σ B hB
-  obtain ⟨_, hc, _, hτ⟩ := hB.cm
+theorem exists_ne_zero_conj_neg_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    IsCMExt F E σ → ∃ ξ₀ : E, ξ₀ ≠ 0 ∧ σ ξ₀ = -ξ₀ := by
+  intro F E _ _ _ _ _ σ B hB_cm
+  obtain ⟨_, hc, _, hτ⟩ := hB_cm
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   have hinv : ∀ x, σ (σ x) = x := fun x => τ.injective (by rw [hτ, hτ, star_star])
   have hne : ∃ x, σ x ≠ x := by
@@ -66,5 +66,10 @@ theorem exists_ne_zero_conj_neg : ∀ (F E : Type) [Field F] [NumberField F] [Fi
   obtain ⟨x, hx⟩ := hne
   refine ⟨x - σ x, sub_ne_zero.mpr (Ne.symm hx), ?_⟩
   rw [map_sub, hinv, neg_sub]
+
+theorem exists_ne_zero_conj_neg : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∃ ξ₀ : E, ξ₀ ≠ 0 ∧ σ ξ₀ = -ξ₀ := by
+  intro F E _ _ _ _ _ σ B hB
+  exact exists_ne_zero_conj_neg_c F E σ B hB.cm
 
 end GlobalTheory.CMTraceZero

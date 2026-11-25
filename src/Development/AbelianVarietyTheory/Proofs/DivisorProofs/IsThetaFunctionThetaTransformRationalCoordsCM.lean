@@ -241,8 +241,8 @@ end Main
 
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
-theorem isThetaFunOF_thV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+theorem isThetaFunOF_thV_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    IsCMExt F E σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
       Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
       ∀ (N : ℕ) (e : Formalism.IndefR.DatumF.WOF F E nS nT ≃ₗ[AF F] GlobalTheory.ThetaTransform.VA F N),
@@ -251,8 +251,8 @@ theorem isThetaFunOF_thV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
           e (Formalism.IndefR.DatumF.ratWF x) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z)) →
         ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N),
           Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ (GlobalTheory.ThetaTransform.thV B.ψ Φ ∘ e) := by
-  intro F E _ _ _ _ _ σ B hB nS nT JS JT _ _ ξ₀ _ _ hstd N e he hrat Φ hΦ
-  have hR : IsTotallyReal F := hB.cm.1
+  intro F E _ _ _ _ _ σ B hB_cm nS nT JS JT _ _ ξ₀ _ _ hstd N e he hrat Φ hΦ
+  have hR : IsTotallyReal F := hB_cm.1
   have hψ : IsCharAF F B.ψ := hstd.1
   obtain ⟨hc, -, hfin, hinf⟩ := coordF nT nS N e
   have hcont : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), Continuous (thV B.ψ Φ) := fun Φ hΦ =>
@@ -273,6 +273,19 @@ theorem isThetaFunOF_thV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
         exact ⟨_, ⟨Φ', hΦ', rfl⟩, hd⟩)
       _ ⟨Φ, hΦ, rfl⟩ k (e.toLinearMap.toAddMonoidHom.comp L) (hc.comp hL) (fun t => (hfin _).1 (hL0 t)) (e w)
     simpa [Function.comp_def] using h
+
+theorem isThetaFunOF_thV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
+      Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
+      ∀ (N : ℕ) (e : Formalism.IndefR.DatumF.WOF F E nS nT ≃ₗ[AF F] GlobalTheory.ThetaTransform.VA F N),
+        (∀ w w', Formalism.IndefR.DatumF.symplOF σ JS JT ξ₀ w w' = GlobalTheory.ThetaTransform.symV (e w) (e w')) →
+        (∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : Fin N → F,
+          e (Formalism.IndefR.DatumF.ratWF x) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z)) →
+        ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N),
+          Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ (GlobalTheory.ThetaTransform.thV B.ψ Φ ∘ e) := by
+  intro F E _ _ _ _ _ σ B hB
+  exact isThetaFunOF_thV_c F E σ B hB.cm
 
 end GlobalTheory.ThetaTransformF
 

@@ -55,10 +55,8 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 theorem exists_chartF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∃ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι := by
-  intro F E _ _ _ _ _ σ B hB θ hθ
-  refine exists_chart_of_cm hB.cm (fun w => (B.emb w).1) (fun w => ?_) θ hθ
-  show InfinitePlace.mk ((B.emb w).1.comp (algebraMap F E)) = w
-  rw [(B.emb w).2, InfinitePlace.mk_embedding]
+  intro F E _ _ _ _ _ σ B hB
+  exact _root_.GlobalTheory.RealWeilF.CMChart.exists_chartF_c F E σ B hB.cm
 end GlobalTheory.RealWeilF.CMChart
 end
 end

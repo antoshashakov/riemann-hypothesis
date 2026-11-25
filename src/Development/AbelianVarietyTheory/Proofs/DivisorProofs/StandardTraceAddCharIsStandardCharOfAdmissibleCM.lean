@@ -156,20 +156,26 @@ theorem sum_infFam [IsTotallyReal F] (B : Base F E) (θ : InfinitePlace F → (A
     Complex.ofReal_re]
   simp
 
-theorem isStdCharF_of_isGood : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+theorem isStdCharF_of_isGood_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) := by
-  intro F E _ _ _ _ _ σ B hB
-  haveI : IsTotallyReal F := hB.cm.1
-  refine ⟨isCharAF hB.std, ⟨?_, fun θ hθ x => ?_⟩⟩
+    IsCMExt F E σ → IsStd B.ψ → Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) := by
+  intro F E _ _ _ _ _ σ B hB_cm hB_std
+  haveI : IsTotallyReal F := hB_cm.1
+  refine ⟨isCharAF hB_std, ⟨?_, fun θ hθ x => ?_⟩⟩
   · choose θ hθ using fun w : InfinitePlace F =>
       GlobalTheory.DualPairCompare.gen_inf_exists (B.emb w).1 w (B.emb w).2.symm
     exact ⟨θ, hθ⟩
   · show B.ψ (pairA F x 0) = _
-    rw [psi_pairA hB.std, sum_infFam B θ hθ x]
+    rw [psi_pairA hB_std, sum_infFam B θ hθ x]
     congr 1
     push_cast
     ring
+
+theorem isStdCharF_of_isGood : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) := by
+  intro F E _ _ _ _ _ σ B hB
+  exact isStdCharF_of_isGood_c F E σ B hB.cm hB.std
 
 end GlobalTheory.StdCharWeilDatum
 
