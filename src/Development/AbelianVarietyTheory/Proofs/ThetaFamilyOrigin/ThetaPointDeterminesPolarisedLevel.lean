@@ -8,16 +8,22 @@ public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsH
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.HilbEqFinrankQuotPiece
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.VanishingIdealConePrimeHomogeneous
 public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.DegreeFormsDimensionAbelianConeLe
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsIsoOfEqualCoordinateConesStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsLevelThetaPtOfPolarisedIsoStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.HomogeneousCoordsOfIsValueAtFrameStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsClosedImmersionOfSpanLinePowerSectionsStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsIsoOfEqualCoordinateCones
+public import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsLevelThetaPtOfPolarisedIso
+public import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsIndepSections
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.HomogeneousCoordsOfIsValueAtFrame
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsClosedImmersionOfSpanLinePowerSections
 public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsIntegralOfIsAbelianSchemeField
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.LbIsoPullOfHomPreservingCoordinatesStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.LevelBasisEqOfSameThetaPtStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.MemVanishingIdealOfFormVanishingTorsionStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ThetaFamilyOriginGermOfMultiplicationStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ThetaPtSupportMeetsEveryCosetStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.LbIsoPullOfHomPreservingCoordinates
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.LevelBasisEqOfSameThetaPt
+public import Mathlib.RingTheory.Nullstellensatz
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.MemVanishingIdealOfFormVanishingTorsion
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ThetaFamilyOriginGermOfMultiplication
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ThetaPtSupportMeetsEveryCoset
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -104,7 +110,7 @@ theorem cone_subset (h : Out.Laws) {K : Type} [Field K] [IsAlgClosed K] (P P' : 
     rwa [hg] at this
   · intro d F hd hF hFI
     have hFI' : F ∈ MvPolynomial.vanishingIdeal K (cone P'.A.hom (lbPow P'.L N) s') := by
-      refine T.mem_vanishingIdeal_of_form_vanishing_torsion h K P' N d k J s' F hN hk ?_ hF ?_
+      refine _root_.GlobalTheory.TorsionForm.mem_vanishingIdeal_of_vanish_on_torsion h K P' N d k J s' F hN hk ?_ hF ?_
       · rw [hg']
         calc N ^ g * g.factorial * d ≤ N ^ g * g.factorial * (N ^ g * g.factorial) := Nat.mul_le_mul_left _ hd
           _ < k * k := Nat.mul_self_lt_mul_self hb
@@ -147,14 +153,14 @@ theorem exists_embedding (h : Out.Laws) {g m r N N' : ℕ} (hN : N = m ^ 2) (hN'
   obtain ⟨ρ, e⟩ : ∃ ρ : P.A.left ⟶ (Out.baseOver (Sp K) ⊗ P.A).left,
       ρ ≫ (snd (Out.baseOver (Sp K)) P.A).left = 𝟙 P.A.left :=
     ⟨(lift (Over.homMk P.A.hom (by simp [Out.baseOver])) (𝟙 P.A)).left, by rw [← Over.comp_left, lift_snd]; rfl⟩
-  obtain ⟨hθ, hassoc⟩ := T.thetaFamily_origin_germ_of_multiplication h K P N m _ (fun a => levelPoint lev hg a ^ r ^ 2) th t ρ e 0 hth htf
+  obtain ⟨hθ, hassoc⟩ := _root_.GlobalTheory.ThetaGerm.germ_origin h K P N m _ (fun a => levelPoint lev hg a ^ r ^ 2) th t ρ e 0 hth htf
     (by rw [levelPoint_zero, one_pow])
   refine ⟨fun a => PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e (N : ℤ) (t a),
     PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e ((1 : ℕ) : ℤ) th,
-    T.isClosedImmersion_of_span_linePowerSections h K P N _ t ρ e h4 hspan, ?_, hθ, hassoc⟩
+    _root_.GlobalTheory.PowSec.immBy_down_of_span h K P N _ t ρ e h4 hspan, ?_, hθ, hassoc⟩
   intro c
   obtain ⟨u, hu⟩ := hcoord c _ (DVR.exists_gen_of_local (V := K) P.L P.isLB _ _).choose_spec
-  have hc := T.homogeneousCoords_of_isValueAt_frame K P N _ t ρ e (levelPoint lev hg c ^ N') _ _ hu
+  have hc := _root_.GlobalTheory.ZH.CrdDown.crd_down_of_isValueAt K P N _ t ρ e (levelPoint lev hg c ^ N') _ _ hu
   set φ := CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of K)).hom with hφ
   have hu1 : φ ((u⁻¹ : Γ((Out.baseOver (Sp K)).left, ⊤)ˣ) : Γ((Out.baseOver (Sp K)).left, ⊤)) * φ (u : Γ((Out.baseOver (Sp K)).left, ⊤)) = 1 := by
     rw [← map_mul, Units.inv_mul, map_one]
@@ -212,7 +218,7 @@ theorem thetaPt_determines : Out.Laws → ThetaPtDeterminesSt := by
     obtain ⟨c, rfl⟩ := ((theta_coordinates h g (n ^ k) (n ^ j * n ^ k) N N' hN hN'').2 K hoddN' hK P hg ze
       lev).2.1 x |>.1 hx
     exact ⟨_, hcrd c, _, Over.w _, hcrd' c⟩
-  obtain ⟨φ, hφ⟩ := T.exists_iso_of_equal_coordinateCones K P.A P'.A (lbPow P.L N) (lbPow P'.L N) _ s s' (isLB_lbPow P.isLB N)
+  obtain ⟨φ, hφ⟩ := _root_.GlobalTheory.ZH.IsoCone.exists_iso K P.A P'.A (lbPow P.L N) (lbPow P'.L N) _ s s' (isLB_lbPow P.isLB N)
     (isLB_lbPow P'.isLB N) hs hs' (Set.Subset.antisymm hcone2 hcone1)
   have heq : ∀ c, (levelPoint lev hg c ^ N') ≫ φ.hom = levelPoint lev' hg' c ^ N' := by
     intro c
@@ -228,12 +234,12 @@ theorem thetaPt_determines : Out.Laws → ThetaPtDeterminesSt := by
     rw [e1, e2] at h0
     exact h0
   haveI hmon : IsMonHom φ.hom := h.rigidity (Sp K) P.A P'.A P.isAb P'.isAb φ.hom hη
-  have hLBiso := T.lbIso_pull_of_hom_preserving_coordinates h K P P' N (n ^ k) _ s s' 0 θ θ' φ.hom
+  have hLBiso := _root_.GlobalTheory.ZH.PolAgree.lbIso_pull h K P P' N (n ^ k) _ s s' 0 θ θ' φ.hom
     (Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ (by omega))) hmon
     (by simpa only [Set.mem_univ, iSup_pos] using hs.1) (fun F _ y w hw => hφ F y w hw) hθ hass hass'
   have hpol : IsPolIso P P' φ := ⟨hmon, hLBiso⟩
-  obtain ⟨lev'', hb'', hv''⟩ := T.exists_level_thetaPt_of_polarisedIso h g N' K P P' hg hg' φ hpol ze lev' v hv'
-  have hnv := T.thetaPt_support_meets_every_coset h g n N' hn.two_le (by rw [hN'']; exact Dvd.dvd.mul_left (pow_dvd_pow n hk) _) K P hg ze
+  obtain ⟨lev'', hb'', hv''⟩ := _root_.GlobalTheory.exists_level_thetaPt_of_polIso h g N' K P P' hg hg' φ hpol ze lev' v hv'
+  have hnv := _root_.GlobalTheory.ThetaSupport.exists_ne_zero_in_coset h g n N' hn.two_le (by rw [hN'']; exact Dvd.dvd.mul_left (pow_dvd_pow n hk) _) K P hg ze
     lev v hv
   have hpowN : N' = n ^ (j + 2 * k) := by rw [hN'']; ring
   have hpw : ∀ i, levelBasis lev hg i ^ N' = levelBasis lev'' hg i ^ N' := by
@@ -242,6 +248,6 @@ theorem thetaPt_determines : Out.Laws → ThetaPtDeterminesSt := by
     rw [pow_comp, pow_comp, hb'' i, ← pow_comp, ← ThetaDet.levelPoint_single lev hg i, heq,
       ThetaDet.levelPoint_single]
   refine ⟨φ, hpol, fun i => ?_⟩
-  rw [T.levelBasis_eq_of_same_thetaPt h g n (j + 2 * k) N' hodd hpowN K P hg ze lev lev'' v hv hv'' hpw hnv i, hb'' i]
+  rw [_root_.GlobalTheory.levelBasis_eq_of_isThetaPt h g n (j + 2 * k) N' hodd hpowN K P hg ze lev lev'' v hv hv'' hpw hnv i, hb'' i]
 
 end GlobalTheory

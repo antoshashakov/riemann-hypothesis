@@ -7,7 +7,7 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDesc
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsChartUnit
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsIntegralOfIsAbelianSchemeField
-public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.LbIsoOfAssociatedGermsFlatStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.LbIsoOfAssociatedGermsFlat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -104,7 +104,7 @@ theorem lbIso_pull : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P P'
   have hw := CrdIso.exists_chart_unit (H := lbPow P.L N) (H' := (lbPow P'.L N).pull φ.left) (s := s)
     (s' := fun j => secPull _ φ.left (s' j)) hs (fun F _ y v hv => crd_pull _ _ _ _ _ (hcrd F y v hv))
   have key : LBIso (lbPow P.L 1) ((lbPow P'.L 1).pull φ.left) := by
-    refine GlobalTheory.T.lbIso_of_associated_germs_flat _ _ (Out.mulA P.A m).left _ _ θ (secPull _ φ.left θ') h1 (LB.isLB_pull h1' _) hθ fun y => ?_
+    refine _root_.GlobalTheory.AssocDescent.lbIso_of_associated _ _ (Out.mulA P.A m).left _ _ θ (secPull _ φ.left θ') h1 (LB.isLB_pull h1' _) hθ fun y => ?_
     obtain ⟨k, hk⟩ := exists_chart hN y
     obtain ⟨k', hk'⟩ := exists_chart hN' (φ.left y)
     obtain ⟨l, hl⟩ := exists_chart h1 ((Out.mulA P.A m).left y)

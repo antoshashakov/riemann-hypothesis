@@ -1,27 +1,31 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConstruction
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlockDecompositionBaseChangeStatement
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.LinearAlgebra.DFinsupp
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlockDecompositionBaseChange
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlockDetMemHeckeAlgebraOfHeckeSpanStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffDetGenericSumMemHeckeAlgebraStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffDetPencilMemHeckeAlgebraStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffDetPencilMemHeckeAlgebra
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBlockActionStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDvrExtensionForMonicFamilyStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHeckeSpanCorrectionDistinctEigenvaluesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInjectiveRootsOfNcardRootSetStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDvrExtensionForMonicFamily
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsHeckeSpanCorrectionDistinctEigenvalues
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInjectiveRootsOfNcardRootSet
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMonomialsSpan
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOrthogonalIdempotentsHeckeSpanRepStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentBlockCharPolyEqCharpolyImageStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentBlockRootFactorsRankOneDomainStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentRankConstOfCharpolyInLocalFunctionsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjOnCharValuesAndLengthQuotientStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixRankMapFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentRankConstOfCharpolyInLocalFunctions
+public import Formalism.SharpRestriction.LevelLetterCocycles.DataN
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjOnCharValuesAndLengthQuotient
+public import Mathlib.LinearAlgebra.Matrix.Rank
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixRankMapField
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemSpanRingCornerIdealModuleIff
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ProdOtherRootFactorsActionFirstCoordinateStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankEqOfActsThroughFirstBlockStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RankIdempotentBlockCharPolyOfProjectionStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanMapRepEqTop
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanRepMatrixEqTopOfAbsIrreducibleStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanRepMatrixEqTopOfAbsIrreducible
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanRepMatrixEqTopOfResidueSpanEqTopStatement
 public import Development.AutomorphicArithmetic.CyclotomicBounds.FactorizationConductorLeLocalLevel
 import Mathlib.Algebra.Order.Floor.Extended
@@ -107,7 +111,7 @@ theorem overK_apply {k : ℕ} (σ : Γ →* GL (Fin k) A) (g : Γ) (u : Fin k �
 theorem blockPol_coeff_mem {T : Subalgebra A (X → A)} {rep : X → (Γ →* GL (Fin n) A)}
     (hT : CharPolyIn T rep) {e M : X → Matrix (Fin n) (Fin n) A} (he : InRing T rep e)
     (hM : InRing T rep M) (j : ℕ) : (fun x => (blockPol (e x) (M x)).coeff j) ∈ T := by
-  have := GlobalTheory.T.coeff_det_pencil_mem_heckeAlgebra T rep hT e (1 - e - M) he (inRing_sub (inRing_sub inRing_one he) hM) j
+  have := _root_.GlobalTheory.SpanRing.coeff_det_pencil_mem T rep hT e (1 - e - M) he (inRing_sub (inRing_sub inRing_one he) hM) j
   convert this using 1
   funext x
   unfold blockPol
@@ -120,7 +124,7 @@ theorem rank_const [IsDomain A] [IsLocalRing A] {T : Subalgebra A (X → A)}
     {rep : X → (Γ →* GL (Fin n) A)} (hl : IsLocalRing T)
     (hT : CharPolyIn T rep) {e : X → Matrix (Fin n) (Fin n) A} (he : InRing T rep e) (hee : e * e = e)
     (x y : X) : ((e x).map (toFr A)).rank = ((e y).map (toFr A)).rank := by
-  refine GlobalTheory.T.idempotent_rank_const_of_charpoly_in_local_functions T e hl hee (fun j => ?_) x y
+  refine _root_.GlobalTheory.IdemConstRank.rank_const T e hl hee (fun j => ?_) x y
   have := blockPol_coeff_mem hT inRing_one he j
   convert this using 1
   funext x
@@ -172,7 +176,7 @@ theorem choice_facts [IsDomain A] [IsLocalRing A] {T : Subalgebra A (X → A)}
 theorem span_top [IsLocalRing A] {ρ : Γ →* GL (Fin r) A}
     (h : AbsIrrSub (mapRep (IsLocalRing.residue A) ρ) ⊤) :
     Submodule.span A (Set.range (mat ρ)) = ⊤ :=
-  GlobalTheory.T.span_repMatrix_eq_top_of_residue_span_eq_top ρ (GlobalTheory.T.span_repMatrix_eq_top_of_absIrreducible _ h)
+  GlobalTheory.T.span_repMatrix_eq_top_of_residue_span_eq_top ρ (_root_.GlobalTheory.BurnsideField.span_mat_eq_top_of_absIrrSub _ h)
 
 theorem exists_choice (l : ℕ) [Fact l.Prime] [Finite X] [IsDomain A] [IsDiscreteValuationRing A]
     [Algebra ℤ_[l] A] [Module.Finite ℤ_[l] A] {T : Subalgebra A (X → A)} {Z : Finset X}
@@ -186,7 +190,7 @@ theorem exists_choice (l : ℕ) [Fact l.Prime] [Finite X] [IsDomain A] [IsDiscre
   obtain ⟨eB, e1, hid, heB, he1⟩ := GlobalTheory.T.exists_orthogonal_idempotents_heckeSpan_rep l T rep (ρ π) χ π e hr (span_top (habs π hπ)) hd
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible A
   have hat := GlobalTheory.T.rank_idempotentBlockCharPoly_of_projection e _ _ _ heB (corner_act e heB (hd g0))
-  obtain ⟨s, hs, hroots⟩ := GlobalTheory.T.exists_heckeSpan_correction_distinct_eigenvalues (t := t) T rep π g0 eB (ϖ ^ L) (pow_ne_zero _ hϖ.ne_zero) hsep hirr
+  obtain ⟨s, hs, hroots⟩ := _root_.GlobalTheory.SpanRing.exists_correction_distinct_eigenvalues (t := t) T rep π g0 eB (ϖ ^ L) (pow_ne_zero _ hϖ.ne_zero) hsep hirr
     hid.1 hid.2.2.1 (fun x => by rw [rank_const hl hT hid.1 hid.2.2.1 x π]; exact hat.1) (by
       rw [blockPol_map, Matrix.map_mul, Matrix.map_mul]
       refine hat.2 ▸ Polynomial.separable_prod_X_sub_C_iff.2 ?_
@@ -251,7 +255,7 @@ theorem character_values_injective_length {g0 : GE N} (hg : IsInertiaCyclotomicG
       (((N.chi i 1 g0 : (N.O i)ˣ) : N.O i) - ((N.chi i c g0 : (N.O i)ˣ) : N.O i))}) = N.vdel i := by
   haveI := charZero_of_finite (N.l i) (N.O i)
   obtain ⟨-, v, hv⟩ := hg
-  refine GlobalTheory.T.injOn_charValues_and_length_quotient (N.l i) (N.s0 i) R.t (cycZ (F := H.E) (Ω := N.Om) (N.l i) g0) v
+  refine _root_.GlobalTheory.CharValueLength.injOn_and_lenUnit (N.l i) (N.s0 i) R.t (cycZ (F := H.E) (Ω := N.Om) (N.l i) g0) v
     (fun c => N.chi i c g0) ?_ ?_ hv ?_
   · exact UpperTheory.KStar.S0.one_le_localLevel N i
   · exact UpperTheory.KStar.S0.two_le_localLevel_of_eq_two N i
@@ -387,7 +391,7 @@ theorem consExist : ConsExist N i := by
       rw [hχ _ (by omega) (by omega), hχ _ (by omega) (by omega)]
       exact congrArg _ hab)
     exact Fin.ext (by omega)
-  · obtain ⟨B, i1, i2, i3, i4, h1, h2, h3⟩ := GlobalTheory.T.exists_dvr_extension_for_monic_family (N.l i) (ι := N.Z i × N.X i) R.t
+  · obtain ⟨B, i1, i2, i3, i4, h1, h2, h3⟩ := _root_.GlobalTheory.exists_finite_dvr_splitting (N.l i) (ι := N.Z i × N.X i) R.t
       (fun p => blockPol (eB p.1 p.2) (X0 p.1 p.2)) (fun p => by
         have hc := (h p.1 p.1.2).2
         obtain ⟨hr, -, -, hX1, hX2, -⟩ := choice_facts hS.1 hS.2.2.2.1 hc
@@ -404,7 +408,7 @@ theorem consExist : ConsExist N i := by
       intro k M
       ext a b
       exact (hφ _).symm
-    obtain ⟨e', he'⟩ := GlobalTheory.T.block_mulVec_decomposition_map_of_decomposition φ e
+    obtain ⟨e', he'⟩ := _root_.GlobalTheory.blockDecomposition_baseChange φ e
     have hTT : ∀ f ∈ TA, (fun x => algebraMap A (N.O i) (f x)) ∈ N.T i := by
       intro f hf
       rw [← Subalgebra.mem_toSubmodule, hTO]
@@ -422,7 +426,7 @@ theorem consExist : ConsExist N i := by
       (by rw [hρ π hπ]; exact span_top_map (span_top (hS.2.2.2.2.2.2.2 π hπ)))
       ⟨inRing_map hTT hB, inRing_map hTT h1, hmul hBB, hmul h11,
         (hmul hB1).trans (by funext x; simp), (hmul h1B).trans (by funext x; simp),
-        fun x => by rw [hφM, GlobalTheory.T.rank_map_ringHom, hrB], fun x => by rw [hφM, GlobalTheory.T.rank_map_ringHom, hr1]⟩
+        fun x => by rw [hφM, _root_.GlobalTheory.matrix_rank_map_field, hrB], fun x => by rw [hφM, _root_.GlobalTheory.matrix_rank_map_field, hr1]⟩
       e' (by
         intro g u
         rw [hρ π hπ, overK_apply, overK_apply]
@@ -449,7 +453,7 @@ theorem consExist : ConsExist N i := by
           rw [hφ, hχ _ (by omega) (by omega)])
       (fun x => by
         obtain ⟨α, hα⟩ := hroot x
-        obtain ⟨β, hβ, hP⟩ := GlobalTheory.T.exists_injective_roots_of_ncard_rootSet' R.t _ α hinj (hdist x) hα
+        obtain ⟨β, hβ, hP⟩ := _root_.GlobalTheory.exists_injective_roots_of_ncard_rootSet R.t _ α hinj (hdist x) hα
         exact ⟨β, hβ, by rw [← blockPol_map, hP]⟩)
     exact ⟨S, s0, congrFun s1, congrFun s2, congrFun s3, hG⟩
 
