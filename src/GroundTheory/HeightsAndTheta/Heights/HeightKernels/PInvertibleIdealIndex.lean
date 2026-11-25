@@ -89,39 +89,24 @@ theorem genIndex_eq {X J M : AddSubgroup L} {β δ : L} (hβ : β ≠ 0) (hδ : 
       exact ⟨y, hy, h.symm⟩
     · rintro ⟨y, hy, rfl⟩
       refine ⟨δ * y / β, (hM _).2 ⟨y, hy, by field_simp⟩, by field_simp⟩
-  set C := (J.map (mulBy β)).map (mulBy δ) with hC
-  have hC' : C = (J.map (mulBy δ)).map (mulBy β) := by
-    rw [hC, AddSubgroup.map_map, AddSubgroup.map_map]
-    congr 1
-    ext x
-    simp [mul_left_comm]
-  have hCA : C ≤ J.map (mulBy δ) := AddSubgroup.map_mono hβJ
-  have hCB : C ≤ X.map (mulBy β) := by
-    rw [hC']
-    exact AddSubgroup.map_mono (le_trans (AddSubgroup.map_mono hJX) hδX)
-  have e1 : C.relIndex (J.map (mulBy δ)) = (J.map (mulBy β)).relIndex J :=
-    AddSubgroup.relIndex_map_map_of_injective _ _ (mulBy_injective hδ)
-  have e2 : C.relIndex (X.map (mulBy β)) = (J.map (mulBy δ)).relIndex X := by
-    rw [hC']
-    exact AddSubgroup.relIndex_map_map_of_injective _ _ (mulBy_injective hβ)
-  have e3 : (J.map (mulBy β)).relIndex J * J.relIndex X =
-      (X.map (mulBy β)).relIndex X * J.relIndex X := by
-    rw [AddSubgroup.relIndex_mul_relIndex _ _ _ hβJ hJX,
-      ← AddSubgroup.relIndex_mul_relIndex _ _ _ (AddSubgroup.map_mono hJX) hβX,
-      AddSubgroup.relIndex_map_map_of_injective (f := mulBy β) _ _ (mulBy_injective hβ)]
-    exact Nat.mul_comm _ _
-  have e4 : (J.map (mulBy δ)).relIndex X = J.relIndex X * (X.map (mulBy δ)).relIndex X := by
+  let A := J.map (mulBy δ)
+  let B := X.map (mulBy β)
+  have hAX : A ≤ X := (AddSubgroup.map_mono hJX).trans hδX
+  have hAidx : A.relIndex X = J.relIndex X * (X.map (mulBy δ)).relIndex X := by
     rw [← AddSubgroup.relIndex_mul_relIndex _ _ _ (AddSubgroup.map_mono hJX) hδX,
       AddSubgroup.relIndex_map_map_of_injective (f := mulBy δ) _ _ (mulBy_injective hδ)]
-  have e3' : (J.map (mulBy β)).relIndex J = (X.map (mulBy β)).relIndex X :=
-    Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hJ) e3
-  have hCne : C.relIndex (X.map (mulBy β)) ≠ 0 := by
-    rw [e2, e4]
-    exact mul_ne_zero hJ hδ'
-  rw [← KLinesLineDegree.genIndex_map_of_injective (mulBy β) (mulBy_injective hβ), hMβ,
-    IndefiniteRowSideFullHecke.Kernels.genIndex_eq_div_of_le hCA hCB hCne, e1, e2, e3', e4]
-  push_cast
-  ring
+  have hAn : A.relIndex X ≠ 0 := hAidx.symm ▸ mul_ne_zero hJ hδ'
+  have hABn : A.relIndex B ≠ 0 := mt (AddSubgroup.relIndex_eq_zero_of_le_right hβX) hAn
+  have hrel : B.relIndex A * A.relIndex X = A.relIndex B * B.relIndex X := by
+    rw [← AddSubgroup.inf_relIndex_left A B, ← AddSubgroup.inf_relIndex_right A B,
+      AddSubgroup.relIndex_mul_relIndex _ _ _ inf_le_left hAX,
+      AddSubgroup.relIndex_mul_relIndex _ _ _ inf_le_right hβX]
+  rw [← KLinesLineDegree.genIndex_map_of_injective (mulBy β) (mulBy_injective hβ), hMβ]
+  change (B.relIndex A : ℝ) / (A.relIndex B : ℝ) =
+    (B.relIndex X : ℝ) / ((X.map (mulBy δ)).relIndex X * (J.relIndex X : ℝ))
+  rw [mul_comm, ← Nat.cast_mul, ← hAidx]
+  apply (div_eq_div_iff (Nat.cast_ne_zero.mpr hABn) (Nat.cast_ne_zero.mpr hAn)).2
+  exact_mod_cast hrel.trans (Nat.mul_comm _ _)
 
 theorem isIntegral_of_mem {B : Subring L} [Module.Finite ℤ B] {b : L} (hb : b ∈ B) :
     IsIntegral ℤ b :=
@@ -140,33 +125,21 @@ theorem mem_span_of_local [NumberField L] {B : Subring L} [Module.Finite ℤ B] 
     {a : ι → L}
     (hloc : ∀ m : Ideal B, m.IsMaximal → ∃ i, ∀ z ∈ M, ∃ b c : B, b ∉ m ∧ (b : L) * z = c * a i)
     {z : L} (hz : z ∈ M) : z ∈ Submodule.span (𝓞 L) (Set.range a) := by
-  set S := Submodule.span (𝓞 L) (Set.range a)
-  let J : Ideal B :=
-    { carrier := {b | (b : L) * z ∈ S}
-      add_mem' := fun {x y} hx hy => by
-        show ((x : L) + y) * z ∈ S
-        rw [add_mul]
-        exact S.add_mem hx hy
-      zero_mem' := by
-        show ((0 : B) : L) * z ∈ S
-        simp
-      smul_mem' := fun c x hx => by
-        show ((c : L) * x) * z ∈ S
-        rw [mul_assoc]
-        exact mul_mem_of_mem c.2 hx }
+  let f : B →+* 𝓞 L := B.subtype.codRestrict (integralClosure ℤ L).toSubring
+    (fun b => isIntegral_of_mem b.2)
+  let _ : Algebra B (𝓞 L) := f.toAlgebra
+  let _ : IsScalarTower B (𝓞 L) L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)
+  let S := Submodule.span (𝓞 L) (Set.range a)
+  let J : Ideal B := (S.restrictScalars B).comap (LinearMap.toSpanSingleton B L z)
   by_contra hzS
-  have hJ : J ≠ ⊤ := by
-    intro h
+  have hJ : J ≠ ⊤ := fun h => hzS (by
     have h1 : (1 : B) ∈ J := h ▸ Submodule.mem_top
-    have h2 : ((1 : B) : L) * z ∈ S := h1
-    apply hzS
-    simpa using h2
-  obtain ⟨m, hm, hJm⟩ := Ideal.exists_le_maximal J hJ
+    simpa [J, LinearMap.toSpanSingleton_apply_one] using h1)
+  obtain ⟨m, hm, hJm⟩ := J.exists_le_maximal hJ
   obtain ⟨i, hi⟩ := hloc m hm
   obtain ⟨b, c, hbm, hbc⟩ := hi z hz
-  apply hbm
-  apply hJm
-  show (b : L) * z ∈ S
+  apply hbm (hJm ?_)
+  change (b : L) * z ∈ S
   rw [hbc]
   exact mul_mem_of_mem c.2 (Submodule.subset_span ⟨i, rfl⟩)
 
@@ -194,25 +167,18 @@ theorem map_mul_eq (B : Subring L) (β : B) :
 theorem map_mul_eq_span [NumberField L] {B : Subring L} [Module.Finite ℤ B] (β : B) :
     (1 : Submodule (𝓞 L) L).toAddSubgroup.map (mulBy (β : L)) =
       (Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' ((Ideal.span {β} : Ideal B) : Set B))).toAddSubgroup := by
-  have hspan : Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' ((Ideal.span {β} : Ideal B) : Set B)) =
-      Submodule.span (𝓞 L) {(β : L)} := by
-    apply le_antisymm
-    · rw [Submodule.span_le]
-      rintro _ ⟨y, hy, rfl⟩
-      obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 hy
-      show (c : L) * (β : L) ∈ _
-      exact mul_mem_of_mem c.2 (Submodule.subset_span rfl)
-    · rw [Submodule.span_le, Set.singleton_subset_iff]
-      exact Submodule.subset_span ⟨β, Ideal.mem_span_singleton_self β, rfl⟩
-  rw [hspan]
-  ext x
-  simp only [AddSubgroup.mem_map, mulBy_apply, Submodule.mem_toAddSubgroup, Submodule.mem_one,
-    Submodule.mem_span_singleton, Algebra.smul_def]
-  constructor
-  · rintro ⟨_, ⟨c, rfl⟩, rfl⟩
-    exact ⟨c, mul_comm _ _⟩
-  · rintro ⟨c, rfl⟩
-    exact ⟨_, ⟨c, rfl⟩, mul_comm _ _⟩
+  let f : B →+* 𝓞 L := B.subtype.codRestrict (integralClosure ℤ L).toSubring
+    (fun b => isIntegral_of_mem b.2)
+  let incl := Algebra.linearMap (𝓞 L) L
+  change ((1 : Submodule (𝓞 L) L).map (LinearMap.mulLeft (𝓞 L) (β : L))).toAddSubgroup =
+    (Submodule.span (𝓞 L) ((fun b => incl (f b)) '' ((Ideal.span {β} : Ideal B) : Set B))).toAddSubgroup
+  rw [Submodule.one_eq_span, Submodule.map_span, Set.image_singleton, ← Set.image_image incl f]
+  rw [← Submodule.map_span]
+  change (Submodule.span (𝓞 L) {_}).toAddSubgroup =
+    (Submodule.map incl (Ideal.map f (Ideal.span {β}))).toAddSubgroup
+  rw [Ideal.map_span, Set.image_singleton, Submodule.map_span, Set.image_singleton]
+  simp only [LinearMap.mulLeft_apply, mul_one]
+  rfl
 
 theorem card_one_eq_zero [NumberField L] : Nat.card (1 : Submodule (𝓞 L) L).toAddSubgroup = 0 := by
   have : Infinite (1 : Submodule (𝓞 L) L).toAddSubgroup :=
@@ -284,17 +250,15 @@ theorem InvertibleIdealIndex.proof (h1 : OrderIdealIndexExtension.Statement)
       (Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' (I : Set B))).map
         (LinearMap.mulLeft (𝓞 L) (δ : L)) := by
     apply le_antisymm
-    · rw [Submodule.map_le_iff_le_comap, Submodule.span_le]
+    · rw [Submodule.map_span_le]
       rintro _ ⟨i, rfl⟩
       obtain ⟨y, hy, h⟩ := (hMI (a i)).1 (haM i)
-      show (LinearMap.mulLeft (𝓞 L) (β : L)) (a i) ∈ Submodule.map _ _
-      rw [LinearMap.mulLeft_apply, h]
-      exact ⟨y, Submodule.subset_span ⟨y, hy, rfl⟩, rfl⟩
-    · rw [Submodule.map_le_iff_le_comap, Submodule.span_le]
+      exact ⟨y, Submodule.subset_span ⟨y, hy, rfl⟩, h.symm⟩
+    · rw [Submodule.map_span_le]
       rintro _ ⟨y, hy, rfl⟩
       have hx : (δ : L) * y / β ∈ M := (hMI _).2 ⟨y, hy, by field_simp⟩
-      show (LinearMap.mulLeft (𝓞 L) (δ : L)) (y : L) ∈ Submodule.map _ _
-      exact ⟨_, mem_span_of_local hloc hx, by simp only [LinearMap.mulLeft_apply]; field_simp⟩
+      exact ⟨_, mem_span_of_local hloc hx,
+        show (β : L) * ((δ : L) * y / β) = (δ : L) * y by field_simp⟩
   have g2 := genIndex_eq (X := (1 : Submodule (𝓞 L) L).toAddSubgroup)
     (J := (Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' (I : Set B))).toAddSubgroup)
     (M := (Submodule.span (𝓞 L) (Set.range a)).toAddSubgroup) hβL hδL
@@ -304,20 +268,10 @@ theorem InvertibleIdealIndex.proof (h1 : OrderIdealIndexExtension.Statement)
     (by rintro _ ⟨y, hy, rfl⟩; exact mul_mem_of_mem β.2 hy)
     (by
       intro x
+      have hinj : Function.Injective (LinearMap.mulLeft (𝓞 L) (β : L)) := mulBy_injective hβL
       simp only [Submodule.mem_toAddSubgroup]
-      constructor
-      · intro hx
-        have hm := Submodule.mem_map_of_mem (f := LinearMap.mulLeft (𝓞 L) (β : L)) hx
-        rw [hTJ] at hm
-        obtain ⟨y, hy, h⟩ := hm
-        exact ⟨y, hy, by simpa using h.symm⟩
-      · rintro ⟨y, hy, h⟩
-        have hm := Submodule.mem_map_of_mem (f := LinearMap.mulLeft (𝓞 L) (δ : L)) hy
-        rw [← hTJ] at hm
-        obtain ⟨x', hx', h'⟩ := hm
-        simp only [LinearMap.mulLeft_apply] at h'
-        have hxx : x' = x := mul_left_cancel₀ hβL (h'.trans h.symm)
-        exact hxx ▸ hx')
+      rw [← Submodule.comap_map_eq_of_injective hinj (Submodule.span (𝓞 L) (Set.range a)), hTJ]
+      simp only [Submodule.mem_comap, Submodule.mem_map, LinearMap.mulLeft_apply, eq_comm])
     (by rw [hidx I hI0 (Or.inr hIs)]; exact pow_ne_zero _ (hfin I hI0))
     (by
       rw [map_mul_eq_span δ, hidx _ hspanδ (Or.inl ⟨⟨δ, rfl⟩⟩)]
