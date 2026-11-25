@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountedVectorIsCuspForm
 
 @[expose] public section
 
@@ -65,35 +66,7 @@ private theorem one_mem_Kg_flag_measures (I : AutInst) (g : ℕ) : (1 : I.Gf) �
   · simp only [AutInst.fmat, OneMemClass.coe_one, Units.val_one, sub_self, Matrix.zero_mulVec, smul_zero]
 
 theorem level_comp_Re (B : RowsAut) (k : B.I.Gf) (hk : k ∈ B.I.Kg B.g) (hg : 1 ≤ B.g) :
-    (B.R (1, k)).comp B.Re = B.Re := by
-  obtain ⟨h1, hm, hn, -⟩ := GlobalTheory.RightRegFund.rightReg_unitary_continuous B
-  set π : B.I.Gf → (B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund) := fun g => B.R (1, g) with hπ
-  have p1 : π 1 = 1 := h1
-  have pm : ∀ a b, π (a * b) = π a * π b := by
-    intro a b
-    have : ((1 : B.I.Ginf), a * b) = ((1 : B.I.Ginf), a) * (1, b) := by simp
-    simp only [hπ, this, hm]
-  have pn : ∀ g v, ‖π g v‖ = ‖v‖ := fun g v => hn _ v
-  have he : ∀ g, B.e (k * g) = B.e g := by
-    intro g
-    have := B.e_adm.2.2.2.2.2.1 g k hk 1 (one_mem_Kg_flag_measures B.I B.g)
-    simpa using this
-  ext1 y
-  refine ext_inner_left ℂ fun x => ?_
-  rw [ContinuousLinearMap.comp_apply]
-  change inner ℂ x (π k (B.Re y)) = _
-  rw [GlobalTheory.IdemProj.inner_rep π p1 pm pn, B.Re_spec.2, B.Re_spec.2]
-  have key : ∀ g, B.e g * inner ℂ (π k⁻¹ x) (B.R (1, g) y)
-      = (fun g' => B.e g' * inner ℂ x (B.R (1, g') y)) (k * g) := by
-    intro g
-    have e1 : inner ℂ (π k⁻¹ x) (B.R (1, g) y) = inner ℂ x (π k (π g y)) := by
-      rw [GlobalTheory.IdemProj.inner_rep π p1 pm pn k x]
-    have e2 : π k (π g y) = B.R (1, k * g) y := by
-      show π k (π g y) = π (k * g) y
-      rw [pm]; rfl
-    simp only [e1, e2, he]
-  simp_rw [key]
-  exact MeasureTheory.integral_mul_left_eq_self (fun g' => B.e g' * inner ℂ x (B.R (1, g') y)) k
+    (B.R (1, k)).comp B.Re = B.Re := GlobalTheory.RowCusp.level_comp_Re B k hk hg
 
 theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hd : IsDSData B d) (hn : 1 ≤ B.I.n)
     (hh : ∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) (hl : LocDec B h) :
