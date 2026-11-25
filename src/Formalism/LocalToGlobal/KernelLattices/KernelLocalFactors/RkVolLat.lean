@@ -184,19 +184,7 @@ theorem isom_flat (A : ℝ) (a b : ℕ) :
 
 theorem matH_hSc (sc : ℝ) (a b : ℕ) (x y : DVar X.Tau a b → ℂ) :
     matH (hSc X.Tau a b sc) x y = (sc : ℂ) * ∑ k, x k * conj (y k) := by
-  show (∑ i, ∑ j, x i * hSc X.Tau a b sc i j * conj (y j)) = _
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [Finset.sum_eq_single i]
-  · unfold hSc
-    rw [Matrix.diagonal_apply_eq]
-    ring
-  · intro j _ hj
-    unfold hSc
-    rw [Matrix.diagonal_apply_ne _ (Ne.symm hj)]
-    simp
-  · intro hi
-    exact absurd (Finset.mem_univ i) hi
+  exact _root_.Formalism.L2.Ker.KS.Lat.matH_hSc sc a b x y
 
 theorem herm_hSc (sc : ℝ) (a b : ℕ) : IsHerm (matH (hSc X.Tau a b sc)) := by
   intro x y
@@ -207,18 +195,7 @@ theorem herm_hSc (sc : ℝ) (a b : ℕ) : IsHerm (matH (hSc X.Tau a b sc)) := by
   rw [map_mul, Complex.conj_conj, mul_comm]
 
 theorem posDef_hSc {sc : ℝ} (hsc : 0 < sc) (a b : ℕ) : IsPosDef (matH (hSc X.Tau a b sc)) := by
-  intro x hx
-  rw [matH_hSc]
-  have h1 : (∑ k, x k * conj (x k)) = ((∑ k, Complex.normSq (x k) : ℝ) : ℂ) := by
-    push_cast
-    exact Finset.sum_congr rfl fun k _ => Complex.mul_conj (x k)
-  rw [h1, ← Complex.ofReal_mul, Complex.ofReal_re]
-  apply mul_pos hsc
-  obtain ⟨k, hk⟩ : ∃ k, x k ≠ 0 := by
-    by_contra hcon
-    push Not at hcon
-    exact hx (funext hcon)
-  exact Finset.sum_pos' (fun i _ => Complex.normSq_nonneg _) ⟨k, Finset.mem_univ k, Complex.normSq_pos.2 hk⟩
+  exact _root_.Formalism.L2.Ker.KS.Lat.posDef_hSc hsc a b
 
 end Form
 

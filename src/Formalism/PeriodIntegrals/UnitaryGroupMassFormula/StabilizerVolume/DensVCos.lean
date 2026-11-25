@@ -98,16 +98,7 @@ def IsCOBasis (B : AddSubgroup V → Prop) : Prop :=
 omit [MeasurableSpace V] [OpensMeasurableSpace V] in
 theorem isCompact_cos (Λ : AddSubgroup V) (hΛc : IsCompact (Λ : Set V)) (y : V) :
     IsCompact {z | z - y ∈ Λ} := by
-  have : {z | z - y ∈ Λ} = (fun w => w + y) '' (Λ : Set V) := by
-    ext z
-    constructor
-    · intro hz
-      exact ⟨z - y, hz, sub_add_cancel z y⟩
-    · rintro ⟨w, hw, rfl⟩
-      show w + y - y ∈ Λ
-      rwa [add_sub_cancel_right]
-  rw [this]
-  exact hΛc.image (continuous_id.add continuous_const)
+  exact _root_.PI.VolStabSW.isCompact_cos Λ hΛc y
 
 theorem integrable_cos [IsFiniteMeasureOnCompacts μ] (Λ : AddSubgroup V)
     (hΛo : IsOpen (Λ : Set V)) (hΛc : IsCompact (Λ : Set V)) (y : V) :

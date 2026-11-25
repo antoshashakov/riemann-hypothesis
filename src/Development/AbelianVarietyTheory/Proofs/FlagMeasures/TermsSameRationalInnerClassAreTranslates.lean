@@ -82,18 +82,7 @@ theorem gmap_inv_of {a : GV D} {M N : LV D} (h : Formalism.HermitianLatticesTheo
 
 theorem adapt_mul {T : D.host.E} {F G H : LFlag (D.sp.Y 0) D.R.rS T} {g g' : GV D} (hg : Adapt g F G)
     (hg' : Adapt g' G H) : Adapt (g' * g) F H := by
-  refine ⟨mul_mem hg'.1 hg.1, fun a => ?_⟩
-  have hmap := (GlobalTheory.T.frameAdaptedIsometry_map_flagSpaces D T G H g' hg').1 a.val
-  have h1 : g' (g (frame F a) - frame G a) ∈ Xflag H a.val := by
-    rw [← hmap]
-    exact Submodule.mem_map_of_mem (hg.2 a)
-  have h2 := hg'.2 a
-  have e : (g' * g) (frame F a) - frame H a =
-      g' (g (frame F a) - frame G a) + (g' (frame G a) - frame H a) := by
-    rw [map_sub, LinearEquiv.mul_apply]
-    abel
-  rw [e]
-  exact add_mem h1 h2
+  exact _root_.GlobalTheory.Unfold.SideEq.adapt_mul hg hg'
 
 theorem adapt_fix {T : D.host.E} {F : LFlag (D.sp.Y 0) D.R.rS T} {h : GV D} (hi : h ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hf : ∀ a, h (frame F a) = frame F a) : Adapt h F F := by

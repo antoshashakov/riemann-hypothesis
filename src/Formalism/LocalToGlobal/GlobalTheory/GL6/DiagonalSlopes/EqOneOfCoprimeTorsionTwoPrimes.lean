@@ -429,21 +429,7 @@ theorem level_prime_ne_type_prime' (A : AtTTied u) (j : Fin 2) : (D.mem u).A.T �
   apply Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.level_prime_ne_type_prime <;> assumption
 
 theorem level_places_prime_to_type (A : AtTTied u) (v : (D.mem u).A.vT) : (A.eV v).1 ∉ badG D := by
-  have hT := (A.eV v).2
-  have hTp := (D.mem u).A.T_prime
-  have key : ∀ j : Fin 2, (D.host.g j : 𝓞 D.host.F) ∉ (A.eV v).1.asIdeal := by
-    intro j hj
-    have hcop : Nat.Coprime (D.mem u).A.T (D.host.g j) :=
-      (Nat.coprime_primes hTp (D.host.g_prime j)).2 (level_prime_ne_type_prime' A j)
-    obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 hcop
-    have h1 : ((a * (D.mem u).A.T + b * D.host.g j : ℤ) : 𝓞 D.host.F) ∈ (A.eV v).1.asIdeal := by
-      push_cast
-      exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hT) (Ideal.mul_mem_left _ _ hj)
-    rw [hab, Int.cast_one] at h1
-    exact (A.eV v).1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
-  rintro (h | h)
-  · exact key 0 h
-  · exact key 1 h
+  exact _root_.Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.level_places_not_bad A v
 
 theorem rank_zero_le_type_level : D.R.N 0 ≤ aOf D.R 0 := by
   have := D.R.two_le_m

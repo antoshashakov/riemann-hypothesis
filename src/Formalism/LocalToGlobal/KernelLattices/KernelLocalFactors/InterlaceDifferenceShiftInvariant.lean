@@ -2556,20 +2556,7 @@ theorem hwD_sum_apply {ι' A : Type} [CommRing A] [Algebra K A] (s : Finset ι')
 
 theorem hwD_rE_eq (a a' : Fin r) (f : MvPolynomial (Fin r × Fin n) K) :
     rE K r n a a' f = ∑ s, X (a, s) * pderiv (a', s) f := by
-  classical
-  have h : rE K r n a a' = ∑ s : Fin n, (X (a, s) : MvPolynomial (Fin r × Fin n) K) • pderiv (a', s) := by
-    apply derivation_ext
-    rintro ⟨v1, v2⟩
-    rw [rE, mkDerivation_X, hwD_sum_apply]
-    simp only [Derivation.smul_apply, smul_eq_mul, pderiv_X, Pi.single_apply, Prod.mk.injEq]
-    rw [Finset.sum_eq_single v2]
-    · by_cases h2 : v1 = a' <;> simp [h2]
-    · intro b _ hb
-      simp [Ne.symm hb]
-    · intro hb
-      exact absurd (Finset.mem_univ _) hb
-  rw [h, hwD_sum_apply]
-  simp only [Derivation.smul_apply, smul_eq_mul]
+  exact _root_.Formalism.L2.Ker.hwA_rE_sum a a' f
 
 theorem hwD_fockB_rE (a a' : Fin r) (f g : MvPolynomial (Fin r × Fin n) K) :
     fockB (rE K r n a a' f) g = fockB f (rE K r n a' a g) := by

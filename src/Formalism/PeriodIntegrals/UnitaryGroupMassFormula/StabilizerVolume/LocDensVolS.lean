@@ -97,24 +97,7 @@ theorem singleV_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (t : Fv F v)
 
 theorem ev_pow_mul_sub (v : HeightOneSpectrum (𝓞 F)) {W : Set (Fv F v)} (hW : W ∈ 𝓝 (0 : Fv F v)) :
     ∃ n : ℕ, ∀ s ∈ v.adicCompletionIntegers F, unifV v ^ n * s ∈ W := by
-  obtain ⟨γ, hγ⟩ := (Valued.is_topological_valuation W).mp hW
-  obtain ⟨n, hn⟩ := ((unifV_spec v).2.1.eventually
-    ((Valued.is_topological_valuation _).mpr ⟨γ, subset_rfl⟩)).exists
-  refine ⟨n, fun s hs => hγ ?_⟩
-  have hs' : Valued.v s ≤ 1 := hs
-  have hs'' : Valued.v.restrict s ≤ 1 := by
-    first
-      | simpa using hs'
-      | exact_mod_cast hs'
-      | (rw [← map_one Valued.v.restrict]; simpa [Valuation.restrict_le_iff] using hs')
-  show Valued.v.restrict (unifV v ^ n * s) < _
-  rw [map_mul]
-  have h1 : Valued.v.restrict (unifV v ^ n) * Valued.v.restrict s ≤ Valued.v.restrict (unifV v ^ n) := by
-    first
-      | exact mul_le_of_le_one_right' hs''
-      | exact (mul_le_mul' le_rfl hs'').trans (mul_one _).le
-      | exact mul_le_of_le_one_right (zero_le _) hs''
-  exact lt_of_le_of_lt h1 hn
+  exact _root_.PI.VolStabSW.VolAAW.ev_pow_mul_sub v hW
 
 def U0 (I : Finset (HeightOneSpectrum (𝓞 F))) (n : HeightOneSpectrum (𝓞 F) → ℕ) :
     AddSubgroup (Af F) where

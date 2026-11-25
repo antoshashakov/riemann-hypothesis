@@ -115,16 +115,7 @@ theorem tens_top_heis {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ}
     (N : Submodule ℂ (⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S))
     (h1 : PiTensorProduct.tprod ℂ (fun _ => (1 : Formalism.BasicNotions.TH.Pol P Q R S)) ∈ N)
     (hN : ∀ w c, ∀ T ∈ N, atPl w (heisOp (P := P) (Q := Q) (R := R) (S := S) c) T ∈ N) : N = ⊤ := by
-  refine tens_top N h1 fun w l T hT => ?_
-  let K : Submodule ℂ (Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S)) :=
-    { carrier := {L | ∀ T ∈ N, atPl w L T ∈ N}
-      add_mem' := fun {a b} ha hb T hT => by
-        rw [atPl_add', LinearMap.add_apply]; exact N.add_mem (ha T hT) (hb T hT)
-      zero_mem' := fun T _ => by rw [atPl_zero']; exact N.zero_mem
-      smul_mem' := fun c a ha T hT => by rw [atPl_smul', LinearMap.smul_apply]; exact N.smul_mem c (ha T hT) }
-  have hK : Submodule.span ℂ (Set.range (heisOp (P := P) (Q := Q) (R := R) (S := S))) ≤ K :=
-    Submodule.span_le.2 (by rintro _ ⟨c, rfl⟩; exact hN w c)
-  exact hK (mulX_mem_span l) T hT
+  exact _root_.GlobalTheory.RealLift.PolRangePf.tens_top_heis N h1 hN
 
 theorem heisOp_twist_one {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) :
     heisOp (Complex.I • (Jm P Q * c * Jm R S)) 1 = Complex.I • heisOp c 1 := GlobalTheory.RealLift.heisOp_twist_one c

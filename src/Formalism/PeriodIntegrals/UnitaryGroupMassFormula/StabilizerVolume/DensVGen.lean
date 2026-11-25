@@ -85,24 +85,7 @@ theorem HasDens.const_mul (c : ℝ) {φ : V → ℝ} {g : X → ℝ} (h : HasDen
 theorem nonneg_of_setIntegral [LocallyCompactSpace X] [IsFiniteMeasureOnCompacts ν]
     [ν.IsOpenPosMeasure] (D : X → ℝ) (hD : Continuous D)
     (h0 : ∀ S, IsCompact S → 0 ≤ ∫ b in S, D b ∂ν) (b0 : X) : 0 ≤ D b0 := by
-  by_contra hneg
-  rw [not_le] at hneg
-  have hev : ∀ᶠ b in 𝓝 b0, D b < D b0 / 2 :=
-    hD.continuousAt.eventually (gt_mem_nhds (by linarith))
-  obtain ⟨S, hSn, hSsub, hSc⟩ := local_compact_nhds hev
-  have hSm : MeasurableSet S := hSc.isClosed.measurableSet
-  have hlt : ν S ≠ ⊤ := hSc.measure_lt_top.ne
-  have hpos' : 0 < ν.real S := by
-    rw [measureReal_def]
-    exact ENNReal.toReal_pos (ν.measure_pos_of_mem_nhds hSn).ne' hlt
-  have hge := setIntegral_ge_of_const_le_real (c := -(D b0 / 2)) (f := fun b => -D b) hSm hlt
-    (fun b hb => by
-      have : D b < D b0 / 2 := hSsub hb
-      linarith)
-    (hD.neg.continuousOn.integrableOn_compact hSc)
-  rw [integral_neg] at hge
-  have := h0 S hSc
-  nlinarith
+  exact _root_.PI.VolStabSW.nonneg_of_setIntegral D hD h0 b0
 
 theorem HasDens.le [LocallyCompactSpace X] [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure]
     {φ₁ φ₂ : V → ℝ} {g₁ g₂ : X → ℝ}

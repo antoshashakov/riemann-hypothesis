@@ -97,19 +97,7 @@ end HermMod
 theorem exists_unif_Fv {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ π : Fv F v, π ≠ 0 ∧ Tendsto (fun k : ℕ => π ^ k) atTop (𝓝 0) ∧
       π ∈ v.adicCompletionIntegers F := by
-  obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer F
-  have hv : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1 : ℤ) := by
-    rw [v.valuedAdicCompletion_eq_valuation' π, hπ]
-  have h1 : Valued.v (π : v.adicCompletion F) < 1 := by
-    rw [hv]
-    decide
-  refine ⟨π, fun h => ?_, ?_, ?_⟩
-  · rw [h, map_zero] at hv
-    exact WithZero.exp_ne_zero hv.symm
-  · have hlt : ‖(π : v.adicCompletion F)‖ < 1 := Valued.toNormedField.norm_lt_one_iff.2 h1
-    exact tendsto_pow_atTop_nhds_zero_of_norm_lt_one hlt
-  · rw [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]
-    exact h1.le
+  exact _root_.PI.VolStabSW.exists_unif_Fv v
 
 theorem gramFilt_of (hDx : DxOpen) : GramFilt := by
   intro F E _ _ _ _ σ hσ M J hJ hdet a ha1 _ v d b x hx

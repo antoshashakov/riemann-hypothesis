@@ -177,19 +177,7 @@ end GenTh
 
 theorem not_dvd_relIdx {V : Type*} [AddCommGroup V] (Λ₁ Λ₂ : AddSubgroup V) (p s : ℕ) [Fact p.Prime] (hs : Nat.Coprime s p)
     (h0 : relIdx Λ₁ Λ₂ ≠ 0) (hk : ∀ x ∈ Λ₂, s • x ∈ Λ₁) : ¬ p ∣ relIdx Λ₁ Λ₂ := by
-  intro hd
-  have h0' : Nat.card (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) ≠ 0 := h0
-  have hd' : p ∣ Nat.card (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) := hd
-  have : Finite (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) := Nat.finite_of_card_ne_zero h0'
-  obtain ⟨q, hq⟩ := exists_prime_addOrderOf_dvd_card' p hd'
-  have hsq : s • q = 0 := by
-    induction q using QuotientAddGroup.induction_on with | H a => ?_
-    rw [← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_nsmul]
-    exact hk _ a.2
-  have h1 : p ∣ s := hq ▸ addOrderOf_dvd_of_nsmul_eq_zero hsq
-  have h2 : p ∣ Nat.gcd s p := Nat.dvd_gcd h1 dvd_rfl
-  rw [hs] at h2
-  exact (Fact.out : p.Prime).one_lt.ne' (Nat.dvd_one.1 h2)
+  exact _root_.Formalism.L2.Ker.KS.not_dvd_relIdx Λ₁ Λ₂ p s hs h0 hk
 
 section LaS
 
@@ -276,16 +264,7 @@ theorem alpha_flat (c A : ℝ) (x : DVar X.Tau a b → ℂ) :
 
 theorem hPow_hOne (L : PeriodPair) :
     hPow (Fin b × Fin a) (hOne L X.Tau) = hSc X.Tau a b (Formalism.L2.Th1.F.area L)⁻¹ := by
-  ext w w'
-  simp only [hPow, hOne, hSc, Matrix.smul_apply, Matrix.one_apply, Matrix.diagonal_apply, smul_eq_mul]
-  by_cases h1 : w = w'
-  · subst h1
-    simp
-  · rw [if_neg h1]
-    by_cases h2 : w.2 = w'.2
-    · have h3 : w.1 ≠ w'.1 := fun h => h1 (Prod.ext h h2)
-      simp [h2, h3]
-    · simp [h2]
+  exact _root_.Formalism.L2.Ker.KS.hPow_hOne L
 
 variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 

@@ -62,16 +62,7 @@ variable {k G : Type} [Field k] [Group G]
 theorem exists_ker (A B : Ob k G) (p : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (hp : IsHom A B p) :
     ∃ (K : Ob k G) (f : (Fin K.m → k) →ₗ[k] (Fin A.m → k)),
       IsHom K A f ∧ Function.Injective f ∧ Function.Exact f p := by
-  obtain ⟨K, e, he⟩ := exists_ob (A.ρ.subrepresentation (LinearMap.ker p) (fun g x hx => by
-    rw [Submodule.mem_comap, LinearMap.mem_ker, hp g x, LinearMap.mem_ker.mp hx, map_zero]))
-  refine ⟨K, (LinearMap.ker p).subtype ∘ₗ e.symm.toLinearMap, fun g x => ?_,
-    (LinearMap.ker p).subtype_injective.comp e.symm.injective, fun y => ⟨fun hy => ?_, ?_⟩⟩
-  · obtain ⟨x, rfl⟩ := e.surjective x
-    rw [← he]
-    simp
-  · exact ⟨e ⟨y, hy⟩, by simp⟩
-  · rintro ⟨x, rfl⟩
-    exact (e.symm x).2
+  exact _root_.GlobalTheory.Models.SubModel.exists_ker A B p hp
 
 theorem exists_coker (A B : Ob k G) (j : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (hj : IsHom A B j) :
     ∃ (Q : Ob k G) (q : (Fin B.m → k) →ₗ[k] (Fin Q.m → k)),

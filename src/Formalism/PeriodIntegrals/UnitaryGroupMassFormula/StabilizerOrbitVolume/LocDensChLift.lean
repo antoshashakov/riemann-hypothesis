@@ -68,19 +68,7 @@ theorem lift_homeo {X W : Type*} [AddCommGroup X] [TopologicalSpace X] [NormedAd
     [NormedSpace ℝ W] (e : X ≃ₜ W) (he : ∀ x y, e (x + y) = e x + e y) (χ : X → ℂ)
     (hc : Continuous χ) (hadd : ∀ x y, χ (x + y) = χ x * χ y) (h0 : χ 0 = 1) :
     ∃ ℓ : X →+ ℂ, Continuous ℓ ∧ ∀ x, χ x = exp (ℓ x) := by
-  have he0 : e 0 = 0 := by simpa using he 0 0
-  have hs0 : e.symm 0 = 0 := by rw [← he0, Homeomorph.symm_apply_apply]
-  have hsadd : ∀ w w' : W, e.symm (w + w') = e.symm w + e.symm w' := by
-    intro w w'
-    apply e.injective
-    rw [he, Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]
-  obtain ⟨ℓ', hℓc, hℓ⟩ := lift_normed (fun w => χ (e.symm w)) (hc.comp e.symm.continuous)
-    (fun w w' => by simp only [hsadd, hadd]) (by simp only [hs0, h0])
-  refine ⟨AddMonoidHom.mk' (fun x => ℓ' (e x)) (fun x y => by simp only [he, map_add (f := _)]),
-    hℓc.comp e.continuous, fun x => ?_⟩
-  have h1 := hℓ (e x)
-  simp only [Homeomorph.symm_apply_apply] at h1
-  exact h1
+  exact _root_.PI.VolStabS.ChLiftW.lift_homeo e he χ hc hadd h0
 
 theorem lift_place {F : Type} [Field F] (v : InfinitePlace F) (χ : v.Completion → ℂ)
     (hc : Continuous χ) (hadd : ∀ x y, χ (x + y) = χ x * χ y) (h0 : χ 0 = 1) :

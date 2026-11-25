@@ -82,33 +82,7 @@ theorem lip_field (K : Type) [Field K] : LIP K := by
 
 theorem lip_pi {ι : Type} [Fintype ι] [DecidableEq ι] (K : ι → Type) [∀ i, CommRing (K i)]
     (h : ∀ i, LIP (K i)) : LIP (∀ i, K i) := by
-  intro m n _ _ _ _ W hW
-  have hv : ∀ v, ∃ P : Matrix n m (K v), P * W.map (fun x => x v) = 1 := by
-    intro v
-    refine h v m n _ ?_
-    intro c hc
-    have key : W *ᵥ (fun j => Pi.single v (c j)) = 0 := by
-      funext i v'
-      simp only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.mul_apply, Pi.zero_apply]
-      by_cases hv' : v' = v
-      · subst hv'
-        have := congrFun hc i
-        simpa [Matrix.mulVec, dotProduct, Matrix.map_apply] using this
-      · simp [hv']
-    have h0 := hW _ key
-    funext j
-    have := congrFun (congrFun h0 j) v
-    simpa using this
-  choose P hP using hv
-  let Q : Matrix n m (∀ v, K v) := fun i j v => P v i j
-  refine ⟨Q, ?_⟩
-  funext i j v
-  have := congrFun (congrFun (hP v) i) j
-  simp only [Matrix.mul_apply, Matrix.map_apply] at this
-  rw [Matrix.mul_apply, Finset.sum_apply]
-  show ∑ k, P v i k * W k j v = _
-  rw [this]
-  by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+  exact _root_.PI.AprimeInfW.lip_pi K h
 
 theorem inj_of_isUnit {R : Type} [CommRing R] {m n : Type} [Fintype m] [Fintype n]
     [DecidableEq n] (W : Matrix m n R) (P : Matrix n m R) (hP : IsUnit (P * W).det)

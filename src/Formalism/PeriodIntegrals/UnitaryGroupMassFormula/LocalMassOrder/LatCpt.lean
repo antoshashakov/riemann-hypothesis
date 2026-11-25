@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalJacobianType.ContinuousTrESymm
 
 @[expose] public section
 
@@ -81,18 +82,7 @@ def Osub : AddSubgroup (Fv F v ⊗[F] E) where
 
 theorem exists_intBasis : ∃ b : Module.Basis (Fin (Module.finrank F E)) F E,
     ∀ i, IsIntegral ℤ (b i) := by
-  classical
-  let b0 := Module.finBasis F E
-  obtain ⟨y, hy0, hy⟩ := exists_integral_multiples ℤ ℚ (L := E) (Finset.univ.image b0)
-  have hu : ∀ i : Fin (Module.finrank F E), IsUnit ((y : F)) := fun _ =>
-    isUnit_iff_ne_zero.2 (by exact_mod_cast hy0)
-  refine ⟨b0.isUnitSMul hu, fun i => ?_⟩
-  have h := hy (b0 i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))
-  rw [Module.Basis.isUnitSMul_apply]
-  have e : ((y : F)) • b0 i = y • b0 i := by
-    rw [← Int.cast_smul_eq_zsmul F y (b0 i)]
-  rw [e]
-  exact h
+  exact _root_.PI.UnitaryGroupMassFormula.LocJacTyp.Sd.exists_intBasis
 
 def ib : Module.Basis (Fin (Module.finrank F E)) F E := (exists_intBasis (F := F) (E := E)).choose
 

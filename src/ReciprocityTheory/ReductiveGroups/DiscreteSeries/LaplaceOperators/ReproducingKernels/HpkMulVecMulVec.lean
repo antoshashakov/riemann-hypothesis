@@ -79,17 +79,7 @@ theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
   apply ReciprocityTheory.ChartRestriction.DS.Mult1.TopH.hpk_mulVec <;> assumption
 
 theorem hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk k r *ᵥ v) = v := by
-  funext i
-  have hi := i.isLt
-  by_cases h : i.val < r ∨ r + k < i.val
-  · have h' : (2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val) := by omega
-    rw [hpk_mulVec, if_pos h, hpk_mulVec, if_pos h']
-    congr 1
-    ext
-    simp only
-    omega
-  · rw [hpk_mulVec, if_neg h, hpk_mulVec, if_neg h]
-    split_ifs <;> simp
+  exact _root_.ReciprocityTheory.ChartRestriction.DS.Mult1.TopH.hpk_mulVec_mulVec v
 
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   apply Matrix.ext_of_mulVec_single

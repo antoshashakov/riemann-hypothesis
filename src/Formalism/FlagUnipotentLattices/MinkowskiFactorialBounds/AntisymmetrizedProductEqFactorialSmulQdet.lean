@@ -104,27 +104,7 @@ theorem antisymmetrizedProduct_adjacent_swap {A : Type} [Ring A] [Algebra ℂ A]
 
 theorem antisymmetrizedProduct_perm_invariant {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (π : Equiv.Perm (Fin n))
     (arg : Fin n → ℂ) : doublyAntisymmetrizedProduct E (arg ∘ π) = doublyAntisymmetrizedProduct E arg := by
-  cases n with
-  | zero =>
-    have h : arg ∘ π = arg := funext fun k => k.elim0
-    rw [h]
-  | succ m =>
-    have hπ : π ∈ Submonoid.closure (Set.range fun i : Fin m => Equiv.swap i.castSucc i.succ) := by
-      rw [Equiv.Perm.mclosure_swap_castSucc_succ]
-      trivial
-    revert arg
-    induction hπ using Submonoid.closure_induction with
-    | mem x hx =>
-      obtain ⟨i, rfl⟩ := hx
-      intro arg
-      exact antisymmetrizedProduct_adjacent_swap E i arg
-    | one =>
-      intro arg
-      rfl
-    | mul x y _ _ hx hy =>
-      intro arg
-      show doublyAntisymmetrizedProduct E ((arg ∘ x) ∘ y) = _
-      rw [hy (arg ∘ x), hx arg]
+  exact _root_.LocalQuantumDet.antisymmetrizedProduct_perm_invariant E π arg
 
 theorem antisymmetrizedProduct_eq_factorial_smul_qdet {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (u : ℂ) :
     doublyAntisymmetrizedProduct E (fun k => u - (k : ℂ)) = (n.factorial : ℂ) • qdet E u := by

@@ -71,18 +71,7 @@ theorem tN_zero (Δ : Segment k) : tN Δ 0 = Δ.first := by
 
 theorem vWord_eq (Δ : Segment k) (S : Finset (Fin Δ.len)) :
     vWord Δ S = (AltC.wN Δ.len (S.map Fin.valEmbedding)).map (tN Δ) := by
-  have key : ∀ (p : Fin Δ.len → Bool) (q : ℕ → Bool), (∀ a : Fin Δ.len, p a = q a) →
-      ((List.finRange Δ.len).filter p).map Fin.val = (List.range Δ.len).filter q := by
-    intro p q hpq
-    rw [← List.map_coe_finRange_eq_range, List.filter_map]
-    congr 1
-    exact List.filter_congr fun a _ => hpq a
-  have hmemS : ∀ a : Fin Δ.len, (a : ℕ) ∈ S.map Fin.valEmbedding ↔ a ∈ S := fun a => Finset.mem_map' Fin.valEmbedding
-  unfold vWord AltC.wN
-  rw [← key (fun a => decide (a ∈ S)) (fun n => decide (n ∈ S.map Fin.valEmbedding)) (by intro a; simp only [hmemS]),
-    ← key (fun a => decide (a ∉ S)) (fun n => decide (n ∉ S.map Fin.valEmbedding)) (by intro a; simp only [hmemS]),
-    ← List.map_reverse, ← List.map_append, List.map_map]
-  rfl
+  exact _root_.CompanionTheory.Groth.AltS.vWord_eq Δ S
 
 theorem decWord_eq (Δ Γ : Segment k) (b : ℕ) (hb : Γ.first = tN Δ b) :
     decWord Γ = ((List.range' b Γ.len).reverse).map (tN Δ) := by

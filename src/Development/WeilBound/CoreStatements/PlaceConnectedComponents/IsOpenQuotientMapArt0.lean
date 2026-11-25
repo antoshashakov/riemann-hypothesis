@@ -136,38 +136,12 @@ variable {v : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 theorem ine_le_ker_iff (L : IntermediateField E Ω) [FiniteDimensional E L] [IsAbelianGalois E L]
     {w : HeightOneSpectrum (𝓞 L)} (hw : IsPlaceOver A w) :
     (Ine (F := E) A).map (toAb E Ω) ≤ (res L).ker ↔ w.asIdeal.inertia (L ≃ₐ[E] L) = ⊥ := by
-  have := isAlgClosure_top L
-  constructor
-  · intro h
-    rw [eq_bot_iff]
-    intro τ hτ
-    obtain ⟨σ, hσ, rfl⟩ := exists_lift_ine hw hτ
-    rw [← res_toAb]
-    exact h ⟨σ, hσ, rfl⟩
-  · rintro h _ ⟨σ, hσ, rfl⟩
-    rw [MonoidHom.mem_ker, res_toAb, ← Subgroup.mem_bot, ← h]
-    exact res_mem_inertia hw hσ
+  exact _root_.CompanionTheory.FamInh.ine_le_ker_iff L hw
 
 theorem map_units_eq (hA : IsPlaceOver A v) :
     (unitFiltrationUnits (v.adicCompletion E) 0).map ((art0 E Ω).comp (localIdele E v)) =
       (Ine (F := E) A).map (toAb E Ω) := by
-  refine eq_of_forall_res ?_ (isClosed_map_toAb (isClosed_Ine A)) fun L _ _ => ?_
-  · exact ((isCompact_unitFiltrationUnits 0).image ((isOpenQuotientMap_art0 E Ω).continuous.comp
-      (IdeleGroup.continuous_finiteEmbedding v))).isClosed
-  · have := isAlgClosure_top L
-    obtain ⟨w, hw, hwv⟩ := exists_place_between (L := L) hA
-    rw [ine_le_ker_iff L hw, inertia_eq_bot_iff v w]
-    constructor
-    · intro h
-      refine ramificationIdx_eq_one_of_units_le_ker_localSymbol (v := v) (fun x hx => ?_) w
-      rw [MonoidHom.mem_ker, ← res_art0]
-      exact h ⟨x, hx, rfl⟩
-    · rintro h _ ⟨x, hx, rfl⟩
-      rw [MonoidHom.mem_ker, MonoidHom.comp_apply, res_art0]
-      refine units_le_ker_localSymbol L v ⟨w, hwv⟩ h ?_
-      have h1 := mem_unitFiltrationUnits_zero_iff_valued.1 hx
-      have h2 := mem_unitFiltrationUnits_zero_iff_valued.1 (Subgroup.inv_mem _ hx)
-      exact (Submonoid.mem_units_iff _ _).2 ⟨h1.le, h2.le⟩
+  exact _root_.CompanionTheory.FamInh.map_units_eq hA
 
 theorem unif_frob (hA : IsPlaceOver A v) {π : (v.adicCompletion E)ˣ} (hπ : ord (π : v.adicCompletion E) = 1)
     {σ : G E Ω} (hσ : IsFrob (F := E) A (normV v) σ) :
@@ -184,22 +158,7 @@ theorem unif_frob (hA : IsPlaceOver A v) {π : (v.adicCompletion E)ˣ} (hπ : or
 
 theorem closure_range_eq (hA : IsPlaceOver A v) :
     ((art0 E Ω).comp (localIdele E v)).range.topologicalClosure = (Dec (F := E) A).map (toAb E Ω) := by
-  refine eq_of_forall_res (Subgroup.isClosed_topologicalClosure _) (isClosed_map_toAb (isClosed_Dec A))
-    fun L _ _ => ?_
-  have := isAlgClosure_top L
-  obtain ⟨w, hw, hwv⟩ := exists_place_between (L := L) hA
-  constructor
-  · rintro h _ ⟨σ, hσ, rfl⟩
-    obtain ⟨x, hx⟩ := exists_localSymbol_eq (v := v) ⟨w, hwv⟩ (res_mem_stabilizer hw hσ)
-    rw [MonoidHom.mem_ker, res_toAb, ← hx, ← res_art0]
-    exact h (Subgroup.le_topologicalClosure _ ⟨x, rfl⟩)
-  · intro h
-    have : T2Space (L ≃ₐ[E] L) := krullTopology_t2
-    refine Subgroup.topologicalClosure_minimal _ ?_ (isClosed_singleton.preimage (continuous_res L))
-    rintro _ ⟨x, rfl⟩
-    obtain ⟨σ, hσ, e⟩ := exists_lift_dec hw (localSymbol_mem_stabilizer L v ⟨w, hwv⟩ x)
-    rw [MonoidHom.mem_ker, MonoidHom.comp_apply, res_art0, ← e, ← res_toAb]
-    exact h ⟨σ, hσ, rfl⟩
+  exact _root_.CompanionTheory.FamInh.closure_range_eq hA
 
 theorem art0_unit_iff (hA : IsPlaceOver A v) (g : Gab E Ω) :
     (∃ x, IsUnitAt v x ∧ art0 E Ω (localIdele E v x) = g) ↔ g ∈ (Ine (F := E) A).map (toAb E Ω) := by
@@ -230,27 +189,7 @@ theorem art0_unif_iff (hA : IsPlaceOver A v) (g : Gab E Ω) :
       group
 
 theorem isGlobalArtin_inv : IsGlobalArtin (art0 E Ω)⁻¹ := by
-  refine ⟨(Homeomorph.inv (Gab E Ω)).isOpenQuotientMap.comp (isOpenQuotientMap_art0 E Ω),
-    ?_, ?_, ?_, ?_⟩
-  · rw [← ker_art0 E Ω]
-    ext x
-    simp only [MonoidHom.mem_ker, MonoidHom.inv_apply, inv_eq_one]
-  · intro v A hA g
-    simp only [MonoidHom.inv_apply, inv_eq_iff_eq_inv]
-    rw [art0_unit_iff hA, Subgroup.inv_mem_iff]
-    rfl
-  · intro v A hA g
-    simp only [MonoidHom.inv_apply, map_inv, inv_eq_iff_eq_inv]
-    exact art0_unif_iff hA _
-  · intro v A hA
-    rw [← closure_range_eq hA]
-    congr 1
-    ext g
-    constructor
-    · rintro ⟨x, rfl⟩
-      exact ⟨x⁻¹, by simp⟩
-    · rintro ⟨x, rfl⟩
-      exact ⟨x⁻¹, by simp⟩
+  exact _root_.CompanionTheory.FamInh.isGlobalArtin_inv
 
 end PositivityTheory.FamInh
 

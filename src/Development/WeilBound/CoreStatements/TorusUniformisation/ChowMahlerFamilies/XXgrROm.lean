@@ -105,20 +105,7 @@ theorem pow_mem_aug (AA : HopfOrder (C := C) R F) {g : F → C} (hg : g ∈ augI
 theorem pow_mem_sq (AA : HopfOrder (C := C) R F) (χ : MulChar F R) {c : R}
     (hc : c ∈ xIdeal AA.carrier χ) {k : ℕ} (hk : 2 ≤ k) :
     (fun a => algebraMap R C (c ^ k * (χ ^ k) a)) ∈ sqIdeal (augIdeal AA.carrier) := by
-  obtain ⟨j, rfl⟩ : ∃ j, k = j + 2 := ⟨k - 2, by omega⟩
-  have hg : (fun a => algebraMap R C (c * χ a)) ∈ augIdeal AA.carrier := by
-    rw [mem_aug]
-    refine ⟨(mem_x_ideal_iff _ χ c).mp hc, ?_⟩
-    simp [MulChar.map_nonunit χ not_isUnit_zero]
-  have he : (fun a => algebraMap R C (c ^ (j + 2) * (χ ^ (j + 2)) a)) =
-      (fun a => algebraMap R C (c * χ a)) * (fun a => algebraMap R C (c * χ a)) ^ (j + 1) := by
-    funext a
-    simp only [Pi.mul_apply, Pi.pow_apply, MulChar.pow_apply' χ (by omega : j + 2 ≠ 0), map_pow,
-      map_mul]
-    ring
-  rw [he]
-  unfold sqIdeal
-  exact Submodule.subset_span ⟨_, hg, _, pow_mem_aug AA hg j, rfl⟩
+  exact _root_.GlobalTheory.CompanionTheory.Ar.GR.ROm.pow_mem_sq AA χ hc hk
 
 theorem sq_le (AA : HopfOrder (C := C) R F) : sqIdeal (augIdeal AA.carrier) ≤ AA.carrier := by
   unfold sqIdeal

@@ -60,19 +60,7 @@ variable {F : Type} [Field F] [NumberField F]
 
 theorem psiV_nsmul (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) (y : Fv F v) :
     psiV F ψ v (n • y) = psiV F ψ v y ^ n := by
-  induction n with
-  | zero =>
-    simp only [zero_smul, pow_zero, psiV]
-    have : pairA F 0 (singleV F v 0) = 0 := by
-      have h := singleV_add (F := F) v 0 0
-      rw [add_zero] at h
-      have h0 : singleV F v 0 = 0 := by
-        have := congrArg (fun x => x - singleV F v 0) h
-        exact (by simpa using this : (0 : Af F) = singleV F v 0).symm
-      rw [h0]
-      rfl
-    rw [this, AddChar.map_zero_eq_one]
-  | succ n ih => rw [succ_nsmul, psiV_add, ih, pow_succ]
+  exact _root_.PI.VolStabSW.VolAAW.psiV_nsmul ψ v n y
 
 theorem ev_triv (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) :
     ∀ᶠ v in cofinite, ∀ y ∈ v.adicCompletionIntegers F, psiV F ψ v y = 1 := by

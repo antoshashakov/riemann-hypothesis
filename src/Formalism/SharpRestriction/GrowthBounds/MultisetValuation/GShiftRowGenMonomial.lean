@@ -319,49 +319,7 @@ theorem weyl_diag (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O 
     (algebraMap O Kf w) ^ (∑ t : Fin k with t.val < r, ν t) •
         rowAct Kf (lb_D k r (algebraMap O Kf w)) (map (algebraMap O Kf) f) ∈
       Submodule.map (mapAlgHom (Algebra.ofId O Kf)).toLinearMap (weyl O k k le_rfl ν) := by
-  classical
-  set c : Kf := algebraMap O Kf w with hc
-  set N : ℕ := ∑ t : Fin k with t.val < r, ν t with hN
-  have hmap : ∀ f : MvPolynomial (Fin k × Fin k) O,
-      (mapAlgHom (Algebra.ofId O Kf)).toLinearMap f = map (algebraMap O Kf) f := fun f => rfl
-  let T : MvPolynomial (Fin k × Fin k) O →ₗ[O] MvPolynomial (Fin k × Fin k) Kf :=
-    ((LinearMap.lsmul Kf _ (c ^ N)).restrictScalars O) ∘ₗ
-      ((rowAct Kf (n := k) (lb_D k r c)).toLinearMap.restrictScalars O) ∘ₗ
-      (mapAlgHom (Algebra.ofId O Kf)).toLinearMap
-  have key : weyl O k k le_rfl ν ≤
-      (Submodule.map (mapAlgHom (Algebra.ofId O Kf)).toLinearMap (weyl O k k le_rfl ν)).comap T := by
-    unfold weyl
-    rw [Submodule.span_le]
-    rintro _ ⟨wd, rfl⟩
-    set Wd := applyWord O wd (Formalism.GradedWeylDivisibility.hw O (le_refl k) ν) with hWd
-    have hWmem : Wd ∈ weyl O k k le_rfl ν := Submodule.subset_span ⟨wd, rfl⟩
-    show c ^ N • rowAct Kf (lb_D k r c) (map (algebraMap O Kf) Wd) ∈
-      Submodule.map (mapAlgHom (Algebra.ofId O Kf)).toLinearMap (weyl O k k le_rfl ν)
-    by_cases h0 : Wd = 0
-    · rw [h0, map_zero, map_zero, smul_zero]
-      exact Submodule.zero_mem _
-    · obtain ⟨d, hd⟩ := ne_zero_iff.mp h0
-      obtain ⟨z, hz⟩ := g_applyWord (ht := fun a : Fin k => if a.val < r then (1 : ℤ) else 0) O (le_refl k) ν hν wd
-      have hπ : ∀ d' ∈ (map (algebraMap O Kf) Wd).support, piR r d' = piR r d := by
-        intro d' hd'
-        have h1 : AddMonoidAlgebra.coeff Wd d' ≠ 0 := by
-          intro h
-          rw [mem_support_iff, coeff_map, h, map_zero] at hd'
-          exact hd' rfl
-        have e1 := hz h1
-        have e2 := hz hd
-        rw [weight_ind] at e1 e2
-        exact_mod_cast e1.trans e2.symm
-      have hle : piR r d ≤ N :=
-        dom_dualWeyl O k k ν Wd (weylLeDual O k k le_rfl ν hν hWmem) r d (mem_support_iff.2 hd)
-      rw [diag_const r c _ _ hπ, smul_smul]
-      refine ⟨w ^ (N - piR r d) • Wd, Submodule.smul_mem _ _ hWmem, ?_⟩
-      rw [map_smul, hmap, ← algebraMap_smul Kf (w ^ (N - piR r d)), map_pow, ← hc]
-      congr 1
-      have h4 : c ^ N = c ^ (N - piR r d) * c ^ (piR r d) := by
-        rw [← pow_add, Nat.sub_add_cancel hle]
-      rw [h4, inv_pow, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hw), mul_one]
-  exact key hf
+  exact _root_.Formalism.L2.G.Model.weyl_scale O Kf k r ν hν w hw f hf
 
 end Diag
 

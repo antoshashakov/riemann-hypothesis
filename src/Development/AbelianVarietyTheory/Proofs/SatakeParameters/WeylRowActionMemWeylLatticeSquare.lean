@@ -109,18 +109,7 @@ theorem coeffMap_mem_weyl {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S
 theorem map_mem_weyl {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ} (hn : n ≤ r)
     (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) R) (hf : f ∈ Formalism.GradedWeylDivisibility.weyl R r n hn ν) :
     map φ f ∈ Formalism.GradedWeylDivisibility.weyl S r n hn ν := by
-  unfold Formalism.GradedWeylDivisibility.weyl at hf
-  induction hf using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨w, rfl⟩ := hx
-    show map φ (Formalism.GradedWeylDivisibility.applyWord R w (Formalism.GradedWeylDivisibility.hw R hn ν)) ∈ _
-    rw [← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]
-    exact Submodule.subset_span ⟨w, rfl⟩
-  | zero => simp
-  | add x y _ _ hx hy => rw [map_add (f := _)]; exact Submodule.add_mem _ hx hy
-  | smul a x _ hx =>
-    rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]
-    exact Submodule.smul_mem _ _ hx
+  exact _root_.Formalism.UG.P.wlocal_map_weyl φ hn ν f hf
 
 theorem map_rowAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (g : Matrix (Fin r) (Fin r) R) (f : MvPolynomial (Fin r × Fin n) R) :

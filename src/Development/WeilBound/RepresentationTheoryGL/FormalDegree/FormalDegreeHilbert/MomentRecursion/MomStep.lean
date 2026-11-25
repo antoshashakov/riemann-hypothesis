@@ -67,19 +67,7 @@ theorem mom_step {Ω Ω' : Type} [MeasurableSpace Ω] [MeasurableSpace Ω'] {ν 
 
 theorem mom_sum {A : Type} [MeasurableSpace A] (m : Measure A) {W : A → ℝ} (hW : Measurable W) (h : ∀ x, 0 ≤ W x ∧ W x ≤ 1) :
     m {x | 0 < W x} = ∑' M : ℕ, ∫⁻ x, ENNReal.ofReal (W x ^ 1 * (1 - W x) ^ M) ∂m := by
-  rw [← lintegral_tsum fun M => (by fun_prop : Measurable fun x => ENNReal.ofReal (W x ^ 1 * (1 - W x) ^ M)).aemeasurable,
-    ← lintegral_indicator_one (measurableSet_lt measurable_const hW)]
-  refine lintegral_congr fun x => ?_
-  have a := (h x).1
-  have b := sub_nonneg.2 (h x).2
-  by_cases hx : 0 < W x
-  · have hs : HasSum (fun M : ℕ => W x ^ 1 * (1 - W x) ^ M) (W x ^ 1 * (1 - (1 - W x))⁻¹) :=
-      (hasSum_geometric_of_lt_one b (by linarith)).mul_left _
-    rw [← ENNReal.ofReal_tsum_of_nonneg (fun M => by positivity) hs.summable, hs.tsum_eq,
-      indicator_of_mem (show x ∈ {x | 0 < W x} from hx)]
-    simp [mul_inv_cancel₀ hx.ne']
-  · rw [indicator_of_notMem (show x ∉ {x | 0 < W x} from hx), show W x = 0 from le_antisymm (not_lt.1 hx) a]
-    simp
+  exact _root_.CompanionTheory.RgFd.mom_sum m hW h
 
 theorem momA : MomA := by
   exact CompanionTheory.RgFd.momA

@@ -161,16 +161,7 @@ lemma s5b7_quot_ge (p : Ideal O) [hp : p.IsMaximal] [Finite (O ⧸ p)] (Y : Type
 
 lemma s5b7_smul_top_pi {R : Type} [CommRing R] (I : Ideal R) (n : ℕ) (x : Fin n → R) :
     x ∈ I • (⊤ : Submodule R (Fin n → R)) ↔ ∀ i, x i ∈ I := by
-  constructor
-  · intro hx
-    refine Submodule.smul_induction_on (p := fun x => ∀ i, x i ∈ I) hx (fun r hr z _ i => ?_)
-      (fun a b ha hb i => ?_)
-    · exact I.mul_mem_right _ hr
-    · exact I.add_mem (ha i) (hb i)
-  · intro hx
-    rw [pi_eq_sum_univ x]
-    refine Submodule.sum_mem _ fun i _ => ?_
-    exact Submodule.smul_mem_smul (hx i) trivial
+  exact _root_.Formalism.HermitianLatticeCounting.P.mem_ideal_smul_top_pi_iff I n x
 
 lemma s5b7_smul_top_prod {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] (I : Ideal R) :

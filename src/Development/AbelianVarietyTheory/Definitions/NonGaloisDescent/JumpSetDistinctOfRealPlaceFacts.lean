@@ -832,16 +832,7 @@ lemma jumpCount_t_add_one_lt_size (F : JFacts L j ρ) : (D.R.t : ℚ) + 1 < sz D
   exact_mod_cast this
 
 lemma jd_b (F : JFacts L j ρ) (a : Fin D.R.m) : 0 < (D.hc ρ).b a := by
-  have h1 := F.s_gt
-  have h2 := F.low_le a
-  have h3 := F.Sc_pos
-  have h5 : ((sz D j ρ - (D.hc ρ).b a : ℚ) : ℝ) ≤ ((|sz D j ρ - (D.hc ρ).b a| : ℚ) : ℝ) :=
-    Rat.cast_le.mpr (le_abs_self _)
-  have h6 : ((sz D j ρ - (D.hc ρ).b a : ℚ) : ℝ) = ((sz D j ρ : ℚ) : ℝ) - (((D.hc ρ).b a : ℚ) : ℝ) := by
-    push_cast; ring
-  have h4 : (0 : ℝ) ≤ D.R.t := by positivity
-  have : (0 : ℝ) < (((D.hc ρ).b a : ℚ) : ℝ) := by linarith
-  exact_mod_cast this
+  exact _root_.GlobalTheory.JumpSets.jp_b_pos F a
 
 lemma jd_lneg (F : JFacts L j ρ) (a : Fin D.R.m) (h : j ≤ a.1) :
     sz D j ρ - (D.hc ρ).b a + c0 D ≤ -2 := by

@@ -121,16 +121,7 @@ theorem sg_sg (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   rw [h.2.2.2, h.2.2.2, star_star]
 
 theorem sg_ne (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
-  have := h.2.1
-  by_contra hn
-  push Not at hn
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  refine IsTotallyComplex.complexEmbedding_not_isReal τ ?_
-  rw [ComplexEmbedding.isReal_iff]
-  ext y
-  have := h.2.2.2 τ y
-  rw [hn y] at this
-  simpa using this.symm
+  exact _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
 
 theorem inertQ_of_fix (h : IsCMExt F E σ) [IsGalois ℚ E] {P : Ideal (𝓞 E)} (hP : P.IsMaximal) {q : ℕ}
     (hq : q.Prime) (hqP : (q : 𝓞 E) ∈ P) (hfix : ∀ r ∈ P, sgOF σ r ∈ P) : InertQF σ q := by

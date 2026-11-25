@@ -50,16 +50,7 @@ open AlgebraicGeometry CategoryTheory MvPolynomial
 variable {W : Scheme.{0}} {s : W ⟶ Spec (.of ℂ)}
 
 theorem secHom_surjective (P : AffPres s) : Function.Surjective P.secHom := by
-  unfold AffPres.secHom
-  rw [RingHom.coe_comp, RingHom.coe_comp, RingHom.coe_comp]
-  have i1 : IsIso P.iso.hom.appTop := by
-    have : IsIso (Scheme.Γ.map P.iso.hom.op) := inferInstance
-    simpa using this
-  refine (ConcreteCategory.bijective_of_isIso P.V.topIso.hom).2.comp ?_
-  refine (ConcreteCategory.bijective_of_isIso P.iso.hom.appTop).2.comp ?_
-  refine (ConcreteCategory.bijective_of_isIso
-    (Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv).2.comp ?_
-  exact Ideal.Quotient.mk_surjective
+  exact _root_.ReciprocityTheory.AnForm.R.IrreducibleComponentPreimages.secHom_surjective P
 
 theorem isUnit_algebraMap_of_eval_ne_zero {n : ℕ} (K : Ideal (MvPolynomial (Fin n) ℂ))
     (p : Fin n → ℂ) {g : MvPolynomial (Fin n) ℂ} (hg : eval p g ≠ 0) :

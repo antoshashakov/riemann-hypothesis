@@ -55,30 +55,7 @@ open _root_.Neutral.B1 ValuativeRel Function
 theorem continuous_gal_of_fix {k F k' F' : Type*} [Field k] [Field F] [Algebra k F] [Field k'] [Field F']
     [Algebra k' F'] [Algebra.IsIntegral k F] (φ : (F ≃ₐ[k] F) →* (F' ≃ₐ[k'] F'))
     (h : ∀ y : F', ∃ x : F, ∀ σ : F ≃ₐ[k] F, σ x = x → φ σ y = y) : Continuous φ := by
-  apply continuous_of_continuousAt_one
-  rw [ContinuousAt, map_one]
-  refine Filter.tendsto_def.2 fun s hs => ?_
-  rw [krullTopology_mem_nhds_one_iff] at hs
-  obtain ⟨E, hE, hEs⟩ := hs
-  let b := Module.finBasis k' E
-  choose c hc using h
-  have hopen : IsOpen (⋂ i, {σ : F ≃ₐ[k] F | σ (c (b i : F')) = c (b i : F')}) :=
-    isOpen_iInter_of_finite fun i => stabilizer_isOpen_of_isIntegral (K := k) (c (b i : F'))
-  refine Filter.mem_of_superset (hopen.mem_nhds (Set.mem_iInter.2 fun i => rfl)) fun σ hσ => hEs ?_
-  rw [SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]
-  intro x hx
-  have hx' : x = ∑ i, b.repr ⟨x, hx⟩ i • (b i : F') := by
-    have := congrArg E.val (b.sum_repr ⟨x, hx⟩)
-
-    rw [map_sum] at this
-    exact this.symm
-  rw [hx']
-  show φ σ _ = _
-
-  rw [map_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [Algebra.smul_def, map_mul, AlgEquiv.commutes]
-  exact congrArg _ (hc _ σ (Set.mem_iInter.1 hσ i))
+  exact _root_.GlobalTheory.HeckeGal.continuous_galHom_of_fix φ h
 
 theorem exists_topAb_iso {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (φ : G ≃* H) (hφ : IsHomeomorph φ) :

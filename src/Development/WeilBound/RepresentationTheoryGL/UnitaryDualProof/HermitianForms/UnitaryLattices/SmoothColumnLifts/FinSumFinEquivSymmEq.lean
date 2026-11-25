@@ -455,19 +455,7 @@ theorem continuous_unip (n : ℕ) : Continuous fun x : Fin n → k => unip k n (
   exact hval.comp continuous_neg
 
 theorem continuous_blkAt (n N : ℕ) (h : n ≤ N) : Continuous (blkAt k n N h) := by
-  have key : ∀ F : GL (Fin n) k → GL (Fin n) k, Continuous (fun g => ((F g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) →
-      Continuous fun g => ((blkAt k n N h (F g) : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) := by
-    intro F hF
-    refine continuous_matrix fun i j => ?_
-    simp only [blkAt_val]
-    by_cases hi : (i : ℕ) < n
-    · by_cases hj : (j : ℕ) < n
-      · simpa [hi, hj] using hF.matrix_elem _ _
-      · simpa [hi, hj] using continuous_const
-    · simpa [hi] using continuous_const
-  refine Units.continuous_iff.2 ⟨key id Units.continuous_val, ?_⟩
-  convert key (fun g => g⁻¹) Units.continuous_coe_inv using 2 with g
-  simp [map_inv]
+  exact _root_.PositivityTheory.RgUd.Form.ColumnElementGluing.continuous_blkAt n N h
 
 theorem continuous_colEl (m N : ℕ) (h : m + 2 ≤ N) : Continuous (colEl k m N h) :=
   (continuous_blkAt (m + 2) N h).comp (continuous_unip (m + 1))

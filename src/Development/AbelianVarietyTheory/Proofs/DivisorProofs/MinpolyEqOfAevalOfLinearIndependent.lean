@@ -52,6 +52,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffMinpolyMemAdicCompletionIntegers
 
 @[expose] public section
 
@@ -83,17 +84,7 @@ theorem minpoly_eq_of_aeval_of_linearIndependent {L A : Type} [Field L] [Ring A]
 theorem minpoly_one_tmul {F B : Type} [Field F] [Ring B] [Algebra F B] [FiniteDimensional F B]
     (K : Type) [Field K] [Algebra F K] (y : B) :
     minpoly K ((1 : K) ⊗ₜ[F] y) = (minpoly F y).map (algebraMap F K) := by
-  set z : K ⊗[F] B := (1 : K) ⊗ₜ[F] y with hz
-  have hzi : IsIntegral K z := IsIntegral.of_finite K z
-  have hyi : IsIntegral F y := IsIntegral.of_finite F y
-  have hzr : z = Algebra.TensorProduct.includeRight y := rfl
-  have hdvd : minpoly K z ∣ (minpoly F y).map (algebraMap F K) := by
-    apply minpoly.dvd
-    rw [aeval_map_algebraMap, hzr, aeval_algHom_apply, minpoly.aeval, map_zero]
-  have hge := GlobalTheory.CentSep.natDegree_minpoly_le_baseChange K y hzi
-  have := eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le (minpoly.monic hzi) hdvd
-    (by rw [natDegree_map]; exact hge)
-  rw [this, ((minpoly.monic hyi).map _).leadingCoeff, C_1, one_mul]
+  exact _root_.GlobalTheory.DescCoeff.minpoly_one_tmul_eq K y
 
 theorem exists_unit_conj_baseChange : ∀ (S F B : Type) [Field S] [CharZero S] [Field F] [Algebra ℚ F]
     [FiniteDimensional ℚ F] [Ring B]

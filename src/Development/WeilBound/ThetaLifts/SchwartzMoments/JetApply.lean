@@ -157,41 +157,7 @@ theorem exists_int : ∃ f : SchwartzMap V ℂ, ∀ k j, J k j f = ∫ a, J k j 
 omit hG hI in
 theorem factor (T : SchwartzMap V ℂ →L[ℂ] ℂ) : ∃ (s : Finset (ℕ × ℕ))
     (T' : (∀ i : s, V →ᵇ (V [×i.1.2]→L[ℝ] ℂ)) →L[ℂ] ℂ), ∀ f, T f = T' fun i => J i.1.1 i.1.2 f := by
-  obtain ⟨s, C, -, hC⟩ := Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ)
-    ((normSeminorm ℂ ℂ).comp T.toLinearMap) (continuous_norm.comp T.continuous)
-  let Φ : SchwartzMap V ℂ →ₗ[ℂ] (∀ i : s, V →ᵇ (V [×i.1.2]→L[ℝ] ℂ)) :=
-    LinearMap.pi fun i => (J i.1.1 i.1.2 : SchwartzMap V ℂ →L[ℂ] _).toLinearMap
-  have hbound : ∀ f, ‖T f‖ ≤ C * ‖Φ f‖ := by
-    intro f
-    have h1 : ‖T f‖ ≤ (C : ℝ) * (s.sup (schwartzSeminormFamily ℂ V ℂ)) f := hC f
-    refine h1.trans (mul_le_mul_of_nonneg_left ?_ C.2)
-    refine Seminorm.finset_sup_apply_le (norm_nonneg _) fun i hi => ?_
-    have h2 : ‖J i.1 i.2 f‖ ≤ ‖Φ f‖ := norm_le_pi_norm (Φ f) ⟨i, hi⟩
-    rw [J_apply, norm_jet] at h2
-    exact h2
-  have hker : LinearMap.ker Φ ≤ LinearMap.ker T.toLinearMap := by
-    intro f hf
-    rw [LinearMap.mem_ker] at hf ⊢
-    have h := hbound f
-    rw [hf, norm_zero, mul_zero] at h
-    exact norm_le_zero_iff.1 h
-  let g₀ : LinearMap.range Φ →ₗ[ℂ] ℂ :=
-    (LinearMap.ker Φ).liftQ T.toLinearMap hker ∘ₗ Φ.quotKerEquivRange.symm.toLinearMap
-  have hg₀ : ∀ f, g₀ ⟨Φ f, LinearMap.mem_range_self Φ f⟩ = T f := by
-    intro f
-    simp only [g₀, LinearMap.comp_apply, LinearEquiv.coe_coe]
-    rw [LinearMap.quotKerEquivRange_symm_apply_image]
-    rfl
-  have hg₀b : ∀ v, ‖g₀ v‖ ≤ C * ‖v‖ := by
-    rintro ⟨_, f, rfl⟩
-    show ‖g₀ ⟨Φ f, LinearMap.mem_range_self Φ f⟩‖ ≤ C * ‖Φ f‖
-    rw [hg₀]
-    exact hbound f
-  obtain ⟨T', hT', -⟩ := exists_extension_norm_eq (LinearMap.range Φ) (g₀.mkContinuous C hg₀b)
-  refine ⟨s, T', fun f => ?_⟩
-  have h := hT' ⟨Φ f, LinearMap.mem_range_self Φ f⟩
-  rw [LinearMap.mkContinuous_apply, hg₀] at h
-  exact h.symm
+  exact _root_.PositivityTheory.ThKCT.SchI.factor T
 
 end SchI
 

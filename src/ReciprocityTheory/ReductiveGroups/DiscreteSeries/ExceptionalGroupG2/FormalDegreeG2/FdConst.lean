@@ -66,22 +66,7 @@ variable {n : ℕ}
 theorem fdc_ncProd (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
     ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ¬ ε a = ε b), f a b =
       ∏ ab : PCoord ε, f ab.1.2 ab.1.1 := by
-  have e1 : ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ¬ ε a = ε b), f a b =
-      ∏ x ∈ univ.filter (fun x : Fin n × Fin n => x.1 < x.2 ∧ ¬ ε x.1 = ε x.2), f x.1 x.2 := by
-    rw [Finset.prod_filter, Fintype.prod_prod_type]
-    simp_rw [Finset.prod_filter]
-  rw [e1, ← Finset.prod_subtype (univ.filter (fun x : Fin n × Fin n => x.2 < x.1 ∧ ε x.1 ≠ ε x.2))
-    (fun x => by simp) (fun x : Fin n × Fin n => f x.2 x.1)]
-  apply Finset.prod_nbij' Prod.swap Prod.swap
-  · rintro ⟨a, b⟩ h
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.swap_prod_mk] at h ⊢
-    exact ⟨h.1, fun e => h.2 e.symm⟩
-  · rintro ⟨a, b⟩ h
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.swap_prod_mk] at h ⊢
-    exact ⟨h.1, fun e => h.2 e.symm⟩
-  · intro x _; rfl
-  · intro x _; rfl
-  · intro x _; rfl
+  exact _root_.ReciprocityTheory.ChartRestriction.DS.fdc_ncProd ε f
 
 theorem fdc_vand_split (ε : Fin n → Bool) (μ : Fin n → ℝ) :
     Vand μ = (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), (μ a - μ b)) *
@@ -117,17 +102,7 @@ theorem fdc_tend1 (α k m : ℝ) (hm : 0 < m) :
 
 theorem fdc_tend2 (α m : ℝ) (hm : 0 < m) :
     Tendsto (fun t : ℕ => (t : ℝ) / (α + (t : ℝ) * m)) atTop (𝓝 (1 / m)) := by
-  have h : Tendsto (fun t : ℕ => α + (t : ℝ) * m) atTop atTop :=
-    tendsto_atTop_add_const_left _ α (tendsto_natCast_atTop_atTop.atTop_mul_const hm)
-  have h3 : Tendsto (fun t : ℕ => α / (t : ℝ)) atTop (𝓝 0) :=
-    tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop
-  have h4 := (tendsto_const_nhds (x := (1 : ℝ))).div (h3.add_const m) (by rw [zero_add]; exact hm.ne')
-  rw [zero_add] at h4
-  refine h4.congr' ?_
-  filter_upwards [h.eventually_gt_atTop 0, eventually_gt_atTop 0] with t ht ht0
-  have : (0 : ℝ) < t := by exact_mod_cast ht0
-  show (1:ℝ) / (α / (t:ℝ) + m) = (t:ℝ) / (α + (t:ℝ) * m)
-  rw [div_add' _ _ _ this.ne', one_div_div, mul_comm m]
+  exact _root_.ReciprocityTheory.ChartRestriction.DS.fdc_tend2 α m hm
 
 theorem formal_degree_constant_eq {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : IsHCParam lam) (d : ℕ → ℝ)
     (T : ∀ t : ℕ, KType ε (lowK ε (lamT lam t)))

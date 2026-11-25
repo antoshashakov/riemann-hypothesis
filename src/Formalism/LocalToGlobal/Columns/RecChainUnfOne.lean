@@ -81,17 +81,7 @@ theorem map_jetLin (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K) (Q : Mv
 
 theorem map_subD (σ : K →+* L) (P : Pol K ι a) :
     MvPolynomial.map σ (subD K ι a b P) = subD L ι a b (MvPolynomial.map σ P) := by
-  have h : (MvPolynomial.map σ).comp (subD K ι a b).toRingHom =
-      (subD L ι a b).toRingHom.comp (MvPolynomial.map σ) := by
-    apply MvPolynomial.ringHom_ext
-    · intro r
-      simp [subD]
-    · intro v
-      simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, subD, aeval_X, map_X]
-      split_ifs with hv
-      · simp
-      · simp
-  exact RingHom.congr_fun h P
+  exact _root_.Formalism.L2.Ker.map_subD σ P
 
 theorem map_frDet (σ : K →+* L) (τ : ι) : MvPolynomial.map σ (frDet K a τ) = frDet L a τ := by
   unfold frDet

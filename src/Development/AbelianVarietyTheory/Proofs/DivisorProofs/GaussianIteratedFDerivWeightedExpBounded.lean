@@ -69,16 +69,7 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 theorem norm_iteratedFDeriv_id_le_one_add' (j : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ j (id : E → E) x‖ ≤ 1 + ‖x‖ := by
-  rcases j with _ | n
-  · rw [norm_iteratedFDeriv_zero]; simp
-  · rw [← norm_iteratedFDeriv_fderiv,
-      show fderiv ℝ (id : E → E) = fun _ => ContinuousLinearMap.id ℝ E from funext fun _ => fderiv_id]
-    rcases n with _ | n
-    · rw [norm_iteratedFDeriv_zero]
-      exact (ContinuousLinearMap.norm_id_le).trans (by linarith [norm_nonneg x])
-    · rw [iteratedFDeriv_const_of_ne (Nat.succ_ne_zero n)]
-      simp only [Pi.zero_apply, norm_zero]
-      positivity
+  exact _root_.PositivityTheory.ThKF0.Lib.norm_iteratedFDeriv_id_le_one_add j x
 
 theorem norm_iteratedFDeriv_diag_le' (B : E →L[ℝ] E →L[ℝ] ℝ) (n : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ n (fun y => B y y) x‖ ≤ ‖B‖ * (2 ^ n * (1 + ‖x‖) ^ 2) := by
