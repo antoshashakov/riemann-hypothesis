@@ -19,9 +19,9 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.LineOpposite
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumQuotientTransportStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumUnramifiedZetaSumUnitaryInertStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SatakeParameterGLStarEqInvOfUnitarisableStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalZetaKernelGLRightInvariantIntegralStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalZetaKernelGLRightInvariantIntegral
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitarySatakeTransformStarParameterEqOfUnitarisaStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedQuadraticCharSignSplitEqOneInertEqNegStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedQuadraticCharSignSplitEqOneInertEqNeg
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedZetaSumGLCosetsStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -86,7 +86,7 @@ theorem hasSum_quot_of_equiv {G H : Type} [Group G] [Group H] (e : G ≃* H) {K 
 theorem kerGL_mul_right {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {r N : ℕ} {z : ℂˣ}
     {φ : GL (Fin r) (w.adicCompletion E) → ℂ} (hφ : KerGL w N z φ) (g k : GL (Fin r) (w.adicCompletion E))
     (hk : k ∈ KGL w (n := r)) : φ (g * k) = φ g :=
-  GlobalTheory.T.sphericalZetaKernelGL_right_invariant_integral E w r N z φ hφ g k hk
+  _root_.GlobalTheory.ZetaGL.kerGL_mul_right_KGL E w r N z φ hφ g k hk
 
 theorem kerU_mul_right {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
     {σ : w.adicCompletion E →+* w.adicCompletion E} {ϖ : w.adicCompletion E} {q r N : ℕ} (hU : IsUnramInv ϖ σ q)
@@ -121,7 +121,7 @@ theorem quadSign_eq (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     (∀ w w' : HeightOneSpectrum (𝓞 D.host.E), w ≠ w' → (∀ u, u.under (𝓞 D.host.F) = v ↔ u = w ∨ u = w') →
       quadSign D v = 1) ∧
     (∀ w : HeightOneSpectrum (𝓞 D.host.E), (∀ u, u.under (𝓞 D.host.F) = v ↔ u = w) → quadSign D v = -1) :=
-  GlobalTheory.T.unramifiedQuadraticCharSign_split_eq_one_inert_eq_neg D v
+  _root_.GlobalTheory.QuadSignLocal.quadSign_split_inert D v
 
 theorem value_split (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.host.E) → ℂˣ)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (w w' : HeightOneSpectrum (𝓞 D.host.E)) (hne : w ≠ w')

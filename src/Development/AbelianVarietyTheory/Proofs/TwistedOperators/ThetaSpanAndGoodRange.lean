@@ -11,20 +11,27 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilF
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsCtxBase
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaKernelOrthonormalFrameInDomainPeriodLinear
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeakWeilRepCarriesDerivativesVacuaFockVectors
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactTorusActsFockVectorRowHighestStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsContinuousRealScalarCharacterWeakWeilStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFrameChangeWeakWeilRepresentationStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExtremalVectorValuesLoweringAndTorusStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockPolynomialVectorsReframeSourceStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HolomorphicUpToFactorOfLoweringKilledTorusWeightStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompactTorusActsFockVectorRowHighest
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsContinuousRealScalarCharacterWeakWeil
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFrameChangeWeakWeilRepresentation
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExtremalVectorValuesLoweringAndTorus
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockPolynomialVectorsReframeSource
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HolomorphicUpToFactorOfLoweringKilledTorusWeight
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrame
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelCharacterPlacesOddAndPrincipalLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemSpanThetaSeriesOfBoundedHolomorphicStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPointsUnitaryCharacterEqDetPowerStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ReframeVacuumAndLiftVectorStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StableFockSpanContainsRowHighestPolynomialsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftFiniteVectorEqTranslateLevelDatumStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaSeriesEqThetaLiftDefiniteGroupFormStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelCharacterPlacesOddAndPrincipalLevel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
+public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemSpanThetaSeriesOfBoundedHolomorphic
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPointsUnitaryCharacterEqDetPower
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ReframeVacuumAndLiftVector
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StableFockSpanContainsRowHighestPolynomials
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum
+public import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaLiftFiniteVectorEqTranslateLevelDatum
+public import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaSeriesEqThetaLiftDefiniteGroupForm
 import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -123,7 +130,7 @@ theorem span_std {S T : HSp D} (C : Ctx S T) (om : GA D S × GA D T →* Module.
     φ ∈ Submodule.span ℂ {ψ : GA D T → ℂ | ∃ (h : GA D S) (P : MvPolynomial (FVar D T.rank S.rank) ℂ), P ∈ U ∧
       ψ = fun g => om (h, g) (pt P) 0} := by
   obtain ⟨Lv, M, f', k₀, hw2, hM, hMm, hbase, hk₀, hfu, hu1, hu2, hu3, hK⟩ :=
-    GlobalTheory.T.thetaLiftFiniteVector_eq_translate_levelDatum D S T C om hom hn B₀ hB₀ ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg hodd f₀ f hf
+    _root_.GlobalTheory.LiftLevel.thP_vec_eq_translate D S T C om hom hn B₀ hB₀ ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg hodd f₀ f hf
   set u := C.uVec Lv hn f' with hu
   have hinv : ∀ x, om (k₀⁻¹, 1) (om (k₀, 1) x) = x := fun x => by
     rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, mul_one]
@@ -132,23 +139,23 @@ theorem span_std {S T : HSp D} (C : Ctx S T) (om : GA D S × GA D T →* Module.
   have hf2 : C.IsFock B₀ f := hfu ▸ (fvec_om_fin C hom hB₀ hk₀ hu1).1 hu2
   have hf3 : f ≠ 0 := fun h0 => hu3 (by rw [← hinv u, ← hfu, h0, map_zero])
   obtain ⟨hB, hs, c, c', Q₀, hQ₀, hQ₀', hne, hall⟩ :=
-    GlobalTheory.T.stableFockSpan_contains_rowHighestPolynomials D S T C om hom hn B₀ hB₀ BS hBS f hf1 hf2 hf3 p q ap am hp hq pt U hpt hΔ hU
+    _root_.GlobalTheory.AdSpan.StableFock.fockSpan_rowHighest D S T C om hom hn B₀ hB₀ BS hBS f hf1 hf2 hf3 p q ap am hp hq pt U hpt hΔ hU
   set B : C.Bas := revB C.X.p0 B₀ with hBdef
   have hfock : ∀ x, C.IsFock B₀ x → C.IsFock B x := fun x hx τ => by rw [hs]; exact hx τ
-  obtain ⟨z, z1, z2, z3, z4⟩ := GlobalTheory.T.exists_continuous_realScalar_character_weakWeil D S T C om hom hc
-  obtain ⟨m, hm⟩ := GlobalTheory.T.realPoints_unitaryCharacter_eq_detPower D C.θ T C.inf hsig z z1 z2 z3
+  obtain ⟨z, z1, z2, z3, z4⟩ := _root_.GlobalTheory.AdSpan.RealChar.realScal_character D S T C om hom hc
+  obtain ⟨m, hm⟩ := _root_.GlobalTheory.AdSpan.char_eq_detPow D C.θ T C.inf hsig z z1 z2 z3
   have hsc : ∀ a ∈ GinfC T, RealScal C om B a (detPow C.θ T m a) := fun a ha => hm a ha ▸ z4 B hB a ha
   have htor : ∀ ρ s, torAt C.θ T B ρ s ∈ GinfC T := fun ρ s => by
     unfold torAt atTau
     split_ifs with h
     exacts [h.choose_spec.1, (GinfC T).one_mem]
   have hhol : HolUpTo C B (ThFr.wtOf C.X C.hr c c' S.rank) (detPow C.θ T m) φ := by
-    refine GlobalTheory.T.holomorphicUpToFactor_of_loweringKilled_torusWeight D S T C B hB _ m φ hk fun ρ s g => ?_
+    refine _root_.GlobalTheory.AdSpan.ConjHol.holUpTo_of_lowKilled D S T C B hB _ m φ hk fun ρ s g => ?_
     obtain ⟨l, h1, h2⟩ := hw ρ s
-    have h3 := (GlobalTheory.T.compactTorus_acts_fockVector_rowHighest D S T C om hom B hB f hf1 (hfock f hf2) c c' Q₀ hQ₀ ρ s m (hsc _ (htor ρ s))).2
+    have h3 := (_root_.GlobalTheory.AdSpan.TorWt.torAt_fvec D S T C om hom B hB f hf1 (hfock f hf2) c c' Q₀ hQ₀ ρ s m (hsc _ (htor ρ s))).2
     rw [hQ₀', h1] at h3
     rw [h2, smul_left_injective ℂ hne h3]
-  have hcore := GlobalTheory.T.mem_span_thetaSeries_of_boundedHolomorphic D S T C om hom hsz Lv hn M hw2 hM hMm B hB f' ⟨hbase.th, hbase.ne, hfock _ hbase.fock, hbase.lat⟩ c c' _ φ
+  have hcore := _root_.GlobalTheory.AdSpan.mem_span_thetaSet_of_holUpTo D S T C om hom hsz Lv hn M hw2 hM hMm B hB f' ⟨hbase.th, hbase.ne, hfock _ hbase.fock, hbase.lat⟩ c c' _ φ
     hsc hhol hl (fun k κ hkκ => by
       obtain ⟨h1, h2⟩ := hlev k hkκ.1 (hK k κ hkκ).1 (hK k κ hkκ).2
       refine ⟨?_, h2⟩
@@ -231,10 +238,10 @@ theorem span_any {S T : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar
   subst hp0
   let C : Ctx (reS S b) T := { C₀ with ψ := ψ, std := hψ, θ := θ, inf := hθ }
   obtain ⟨hB, hs⟩ := isB_onb C M hε
-  obtain ⟨e, he, hom'⟩ := GlobalTheory.T.exists_frameChange_weakWeilRepresentation D S T b
+  obtain ⟨e, he, hom'⟩ := _root_.GlobalTheory.AdSpan.reframe_weil D S T b
   obtain ⟨om', hw', hc', hre⟩ := hom' ψ om hom hc
-  obtain ⟨BS', hBS', hpt'⟩ := GlobalTheory.T.fockPolynomialVectors_reframeSource D S T b ψ θ hθ BS
-  obtain ⟨βS', hβS', hvec⟩ := GlobalTheory.T.reframe_vacuum_and_liftVector D S T b hb ψ θ _ ΛS _ βS βT Pg Q ξ _ _ hΛS hβS hf
+  obtain ⟨BS', hBS', hpt'⟩ := _root_.GlobalTheory.AdSpan.pureTensorO_reF D S T b ψ θ hθ BS
+  obtain ⟨βS', hβS', hvec⟩ := _root_.GlobalTheory.AdSpan.ReVec.reframe_thPVecOf D S T b hb ψ θ _ ΛS _ βS βT Pg Q ξ _ _ hΛS hβS hf
   have hg : ∀ τ, gramAt D (reS S b) τ = 1 := fun τ => by
     unfold gramAt
     rw [hb.gram_eq, Matrix.map_one _ (map_zero _) (map_one _)]
@@ -316,9 +323,9 @@ theorem value_mem_span (hP : GlobalTheory.Published.CuspRapidDecay) (hsz : Globa
       _ ≤ _ := hsz
   have hn : (Wc D i).rank ≤ (Vc D i).rank := hrW.le.trans (r_le_V i)
   have hsd := GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)
-  obtain ⟨hPg, hodd, hlev⟩ := GlobalTheory.T.levelCharacter_places_odd_and_principal_level D T0 R.toLevCh A.μ0 hL
+  obtain ⟨hPg, hodd, hlev⟩ := _root_.GlobalTheory.SpanPlaces.places_level D T0 R.toLevCh A.μ0 hL
   have hmult := (GlobalTheory.MultMem.mem_mult_iff D _ _ _ _ _ _ _).1 hTm
-  obtain ⟨hk, hwt⟩ := GlobalTheory.T.extremalVector_values_lowering_and_torus D G Pl0 T0 A Ks R hM hT i t u w₀ (D.R.sigW ((i : ℕ) + 1)).1 (fun τ => congrArg Prod.fst (hsigW τ))
+  obtain ⟨hk, hwt⟩ := _root_.GlobalTheory.ExtFock.ext_values D G Pl0 T0 A Ks R hM hT i t u w₀ (D.R.sigW ((i : ℕ) + 1)).1 (fun τ => congrArg Prod.fst (hsigW τ))
     (le_of_le_of_eq (Nat.le_add_right _ _) hpq) hu T hTm
   have hth : ∀ i t, IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t) := fun i t =>
     (pureTensorO_one R.ψ R.θ _ _ _ _ (R.vP i t)) ▸ hT.pt_theta i t 1
@@ -366,7 +373,7 @@ theorem range_thF (hP : GlobalTheory.Published.CuspRapidDecay) (hsz : GlobalTheo
     (fun y hy => eq_zero_of_value _ _ _ _ _ (hM.HW i (sg0 D A)).2.2 _ (fun τ => (hv τ).1) y hy) _ ?_ T hTm
     (value_mem_span R hP hsz hL hM hT i t u w₀ hv hΔ T hTm)
   rintro _ ⟨h, _, ⟨w, rfl⟩, rfl⟩
-  obtain ⟨x, hx⟩ := GlobalTheory.T.thetaSeries_eq_thetaLift_definiteGroup_form D G Pl0 T0 A Ks R hL hM hT i t h w
+  obtain ⟨x, hx⟩ := _root_.GlobalTheory.TraceLift.exists_thF_eq_thetaKO D G Pl0 T0 A Ks R hL hM hT i t h w
   exact ⟨x, funext (hx u)⟩
 
 theorem span_translates {X H Y Γ : Type} [Group Γ] [AddCommGroup X] [Module ℂ X] [AddCommGroup H] [Module ℂ H] [AddCommGroup Y]

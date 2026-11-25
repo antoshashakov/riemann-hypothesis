@@ -3,19 +3,21 @@ module
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EpsVEqOne
 import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ArrowLocalModelMovedFramesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselFrameOfGridLatticeLargeDepthStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DictionaryPointsLocalMatricesLargeDepthStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCompletionPlaceDataStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatDictionaryDoubleStepAtPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatDictionaryLastTwoStepsAtPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatDictionaryScalarLargeDepthStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatTensorPureTensorEqProdLocalFactorsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrameLatticePointsEqIntegralMatricesLargeDepthStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JacobiFrameOfGridLatticeLargeDepthStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeVacuumCombinationLocalModelStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalCharacterComponentsLargeDepthStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdEqSumOfFactorwiseLinearExpansionStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ArrowLocalModelMovedFrames
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BesselFrameOfGridLatticeLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DictionaryPointsLocalMatricesLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCompletionPlaceData
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatDictionaryDoubleStepAtPlace
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatDictionaryLastTwoStepsAtPlace
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatDictionaryScalarLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlatTensorPureTensorEqProdLocalFactors
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrameLatticePointsEqIntegralMatricesLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JacobiFrameOfGridLatticeLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeVacuumCombinationLocalModel
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalCharacterComponentsLargeDepth
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Basic.Complex.Basic
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdEqSumOfFactorwiseLinearExpansion
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealLineOfPeriodsOnLine
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -160,7 +162,7 @@ theorem placeAt_of (hc : ChrP ch) (ha : ArrP ch) (hl : LocP ch) (hd : DblP ch) (
   obtain ⟨κ, z, h1, h2, h3⟩ := hs
   refine ⟨κ, z, h1, h2, fun t w hw β => ⟨_, h3 t w hw β, ?_⟩⟩
   intro e he M hM r r₀ h hr hr₀ hh φ hφ v f hv hf I S x d c hdc hx u
-  obtain ⟨p, hp, rfl⟩ := GlobalTheory.T.exists_completionPlaceData D w e he
+  obtain ⟨p, hp, rfl⟩ := _root_.GlobalTheory.PlcAtW.exists_plc D w e he
   have hm := D.R.two_le_m
   have hev : Even D.R.m := D.R.m_even
   have hP : IsPts ch t w β p.e r r₀ h := ⟨hr, hr₀, hh⟩
@@ -193,7 +195,7 @@ theorem placeAt_of (hc : ChrP ch) (ha : ArrP ch) (hl : LocP ch) (hd : DblP ch) (
         Φ.1 ∘ fun z => zᵀ := funext fun z => (hΦ zᵀ).symm
     rw [e]
     exact ⟨Φ.2.1.comp_continuous key.continuous, Φ.2.2.comp_isClosedEmbedding key⟩
-  have key := GlobalTheory.T.prod_eq_sum_of_factorwise_linear_expansion (Fin (D.R.m / 2)) _ I S
+  have key := _root_.GlobalTheory.prod_eq_sum_of_factorwise_expansion (Fin (D.R.m / 2)) _ I S
     (fun i => zetaLoc (locGrid ch.G t w) (keepAt ch.G w) (epsV ch.G t w) ((repsAt ch.G t w).elt β) * x i)
     (fun l i q => (Ξ i ⟨2 * l, by have := hlt l; omega⟩).1 q.1 * (Ξ i ⟨2 * l + 1, hlt l⟩).1 q.2)
     (fun l i => combC ch.W (c i) (conAt ch.W hM v (h * r₀)) (2 * l) (u (2 * l)) (u (2 * l + 1)))
@@ -213,7 +215,7 @@ theorem placeAt_of (hc : ChrP ch) (ha : ArrP ch) (hl : LocP ch) (hd : DblP ch) (
         (Fin (topRank (locGrid ch.G t w) j)) (Kw w)) q
       have e1 := hx (fun j => p.up (frTop ch.S.toGridChoice t w j j.2.le) (frTop ch.S.toGridChoice t w (j + 1) j.2) (y j))
         fun j => Witness.up_half p _ _ _
-      have e2 := GlobalTheory.T.flatTensor_pureTensor_eq_prod_localFactors (Kw w) (locGrid ch.G t w) one_le_sLen hm hev (psiAt ch.W w) (unitVol w) hcond.continuous hcond.ne_one
+      have e2 := _root_.GlobalTheory.FlatPlace.flatTensor_pureTensor_eq_prod_locA (Kw w) (locGrid ch.G t w) one_le_sLen hm hev (psiAt ch.W w) (unitVol w) hcond.continuous hcond.ne_one
         (isUnitVol_unitVol w).1 _ hSB (ch.S.toGridChoice.colAt t w fun j => p.up (frTop ch.S.toGridChoice t w j j.2.le)
           (frTop ch.S.toGridChoice t w (j + 1) j.2) (y j)) 0
       replace e2 := ((flatTensor_phiM (locGrid ch.G t w) one_le_sLen (psiAt ch.W w) (unitVol w) (keepAt ch.G w) (epsV ch.G t w)
@@ -240,8 +242,8 @@ theorem placeAt_of (hc : ChrP ch) (ha : ArrP ch) (hl : LocP ch) (hd : DblP ch) (
 theorem big_placeAt : Big fun ch => ∃ s, PlaceAt ch s :=
   big_mono (fun ch ⟨⟨⟨⟨⟨⟨⟨⟨⟨lat, chr⟩, loc⟩, bes⟩, jac⟩, scal⟩, arr⟩, comb⟩, dbl⟩, last⟩ =>
     ⟨-1, placeAt_of ch chr (arr lat chr) loc (dbl chr (arr lat chr) loc bes jac) (last chr (arr lat chr) loc bes jac) (comb lat) scal⟩)
-  (((((((((GlobalTheory.T.frameLattice_points_eq_integralMatrices_largeDepth.and GlobalTheory.T.localCharacterComponents_largeDepth).and GlobalTheory.T.dictionaryPoints_localMatrices_largeDepth).and GlobalTheory.T.besselFrameOfGridLattice_largeDepth).and GlobalTheory.T.jacobiFrameOfGridLattice_largeDepth).and GlobalTheory.T.flatDictionaryScalar_largeDepth).and
-    GlobalTheory.T.arrowLocalModel_movedFrames).and GlobalTheory.T.latticeVacuumCombination_localModel).and GlobalTheory.T.flatDictionary_doubleStep_at_place).and GlobalTheory.T.flatDictionary_lastTwoSteps_at_place)
+  (((((((((_root_.GlobalTheory.FlatPlace.big_latP.and _root_.GlobalTheory.FlatPlace.chrP_big).and _root_.GlobalTheory.FlatPlaceLoc.localization₂).and _root_.GlobalTheory.FlatPlace.Big₂).and _root_.GlobalTheory.FlatPlace.big_jacP).and _root_.GlobalTheory.FlatScal.scal).and
+    _root_.GlobalTheory.ArrowModel.arrow_model).and _root_.GlobalTheory.FlatPlace.eventually_combination_of_lattice).and _root_.GlobalTheory.FlatPlace.dblP_big).and _root_.GlobalTheory.FlatPlace.lastStep_eventually)
 
 end GlobalTheory.FlatPlace
 
