@@ -5,19 +5,21 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesU
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PairBdNonneg
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormNormsMinorsEqLabelProofStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BaseLatticeConstructionHoldsStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DefiniteQuotientModelExistsStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DefiniteQuotientModelExists
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsAdaptedNormalFormRelevantTermProofStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GenusMeanEmbeddedPairsLeMassMulPairBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsometricEmbeddedDatumPairsEncardIsometrySmulStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ParameterSizeConstraintsStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelevantTermNormsGeOneAndBoundedStatement
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GenusMeanEmbeddedPairsLeMassMulPairBound
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDualOrthogonalLast
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsometricEmbeddedDatumPairsEncardIsometrySmul
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ParameterSizeConstraints
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelevantTermNormsGeOneAndBounded
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowLatticeTermAdaptedNormalFormStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowsMeanBoundOfGenusMeanStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowsMeanBoundOfGenusMean
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumPairBdMulDatBdLe
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermPairsRowLatticeCountedViaEmbeddingsStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermPairsRowLatticeCountedViaEmbeddings
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermsOverRowCompatibleStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHostFieldArithmeticConditionsProofStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeightedTermPairsSumLeViaRowsGenusMeansStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WeightedTermPairsSumLeViaRowsGenusMeans
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -127,7 +129,7 @@ theorem pair_count_bound_of_siegel_mass : GlobalTheory.Mass.MaxMass → Formalis
   have hCl1 : 1 ≤ Cl := le_trans (le_max_left _ _) hCl
   have hClCl : Cl' ≤ Cl := le_trans (le_max_right _ _) hCl
   obtain ⟨hrk, hm, hClm, hm4, hm5, hClk, hlog, hb2, hv1, hvb, hg, hTu⟩ :=
-    GlobalTheory.T.parameter_size_constraints Ca Cg cb Cw cT CT C0 C' Cl D large₂ hHost hK2 hC' hCl1 hCaT
+    _root_.GlobalTheory.TypeAsm.pairsPar Ca Cg cb Cw cT CT C0 C' Cl D large₂ hHost hK2 hC' hCl1 hCaT
   have hlb : 0 ≤ (D.R.m : ℝ) ^ 2 * Real.log large₂.sc.b := mul_nonneg (by positivity) (Real.log_nonneg (by linarith))
   have hClm' : Cl' ≤ (D.R.m : ℝ) := le_trans hClCl hClm
   have hClk' : Cl' * ((D.R.m : ℝ) ^ 2 * Real.log large₂.sc.b) ≤ D.R.k :=
@@ -158,7 +160,7 @@ theorem pair_count_bound_of_siegel_mass : GlobalTheory.Mass.MaxMass → Formalis
     exact mul_nonneg (massC_nonneg Y u) (mul_nonneg (termPairBoundFactor_nonneg large₂ CH Ch 16 j' δ') (termPairBoundFactor_nonneg large₂ CH Ch 16 j'' δ''))
   obtain ⟨hpp, hj1, hj2, hl1, hl2⟩ := hS p hp
   obtain ⟨hr1, hr2, -⟩ := hpp
-  have hF := GlobalTheory.T.relevantTerm_norms_ge_one_and_bounded Cg cb Cw cT CT C0 CH C' Cl hCH D large₂ X Y u hHost GlobalTheory.T.exists_adaptedNormalForm_relevantTerm GlobalTheory.T.adaptedNormalForm_normsMinors_eq_label GlobalTheory.T.rowLattice_term_adaptedNormalForm hK2
+  have hF := _root_.GlobalTheory.TypeAsm.PairsLab.norms_of_relevant Cg cb Cw cT CT C0 CH C' Cl hCH D large₂ X Y u hHost GlobalTheory.T.exists_adaptedNormalForm_relevantTerm GlobalTheory.T.adaptedNormalForm_normsMinors_eq_label GlobalTheory.T.rowLattice_term_adaptedNormalForm hK2
   obtain ⟨hD1, hDb1, hDle, hDble⟩ := hF p.1 hr1
   obtain ⟨hD1', hDb1', hDle', hDble'⟩ := hF p.2 hr2
   rw [hj1, hl1] at hD1 hDb1 hDle hDble
@@ -180,12 +182,12 @@ theorem pair_count_bound_of_siegel_mass : GlobalTheory.Mass.MaxMass → Formalis
     (DbL D j' δ') (DbL D j'' δ'') (k2S D (H1C large₂ CH) j' δ') (k2S D (H1C large₂ CH) j'' δ'') hrk hm hClm' hm4 hm5 hClk'
     hlog hb2 hv1 hvb hg (hTu u).1 (hTu u).2 hS1 hS1' hD1 hD1' hDb1 hDb1' hDA hDA' hDbA hDbA'
 
-  obtain ⟨W, HW, hemb, hrkW, hPD⟩ := GlobalTheory.T.definite_quotient_model_exists D large₂ X u hStd
-  have hI := GlobalTheory.T.weightedTermPairs_sum_le_via_rows_genusMeans D large₂ X Y u hStd GlobalTheory.T.termsOverRow_compatible GlobalTheory.T.termPairs_rowLattice_counted_via_embeddings GlobalTheory.T.rowsMeanC_holds W HW hemb
-    (fun s M x x' => GlobalTheory.T.isometricEmbeddedDatumPairs_encard_isometry_smul _ _ HW (gS D) D.R.rS x x' s M)
+  obtain ⟨W, HW, hemb, hrkW, hPD⟩ := _root_.GlobalTheory.TypeAsm.embC D large₂ X u hStd
+  have hI := _root_.GlobalTheory.TypeAsm.PairsSum.pairs_sum_le D large₂ X Y u hStd GlobalTheory.T.termsOverRow_compatible _root_.GlobalTheory.TypeAsm.perRowC _root_.GlobalTheory.TypeAsm.rowsMean W HW hemb
+    (fun s M x x' => _root_.GlobalTheory.TripInv.trip_encard_smul _ _ HW (gS D) D.R.rS x x' s M)
     (fun x x' => GlobalTheory.DegAsm.pairBd D.host.E D.R.k (gS D) D.R.rS (Tu D u) x x')
     (fun x x' => GlobalTheory.DegAsm.pairBd_nonneg _ _ _ _ _ _ _)
-    (fun Λ hΛ x x' hx hx' => GlobalTheory.T.genusMean_embeddedPairs_le_mass_mul_pairBound hMM hSR hHost GlobalTheory.T.base_lattice_construction_holds D large₂ X Y u hStd W HW hemb hrkW hPD Λ hΛ x x' hx hx')
+    (fun Λ hΛ x x' hx hx' => _root_.GlobalTheory.PairsRow.main hMM hSR hHost GlobalTheory.T.base_lattice_construction_holds D large₂ X Y u hStd W HW hemb hrkW hPD Λ hΛ x x' hx hx')
     j' j'' δ' δ'' S hS
   rw [hNT] at hI
   have hstep := le_mul_sum_sum_of_ofReal_le_ennreal_sum _ _

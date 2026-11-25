@@ -3,16 +3,19 @@ module
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RatCoordCont
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.Vanish
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.TermTieOf
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameGramMulEqConjTransposeMulFrameMatricesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameMatrixMemUnipotentStabilizerFrameGramStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StabUMapEqOfRoots
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.RealObj
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameGramMulEqConjTransposeMulFrameMatrices
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FrameMatrixMemUnipotentStabilizerFrameGram
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramUnipotentStabilizerBruhatCellConjRoot
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurePreservingAffine
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalBesselFrameRealPlaceLinearIndependentStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalFrameGramEmbedEqRealFrameGramStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalLinkConjugateMemIntegralRealPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalRootCoordinatesEqFrameMatrixStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealBesselSubgroupActsFrameUpperUnitriangularStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealPointRationalIsometryActsFrameMatrixStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalBesselFrameRealPlaceLinearIndependent
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalFrameGramEmbedEqRealFrameGram
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalLinkConjugateMemIntegralRealPoints
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalRootCoordinatesEqFrameMatrix
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealBesselSubgroupActsFrameUpperUnitriangular
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.ParametersTermRelations
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealPointRationalIsometryActsFrameMatrix
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IsUpUniMul
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LoopBPin
 import Mathlib.Algebra.Order.Floor.Extended
@@ -179,8 +182,8 @@ theorem cover_action : ∀ Cg cb Cu cT CT C0 A : ℝ, ∀ (D : D7) (X : HidaSett
     exact hq.2.1
   have hs'i : s'⁻¹ ∈ X.SinfU u' := Formalism.L2.SG.Pf.Sinf.sinf_inv' X u' hs'
   have hsfi : sf⁻¹ ∈ X.SinfU u := Formalism.L2.SG.Pf.Sinf.sinf_inv' X u hsf
-  choose B hBu hBm using fun τ : D.what₂.Tau => GlobalTheory.T.realBesselSubgroup_acts_frame_upperUnitriangular D X u' s'⁻¹ hs'i (X.pl.symm τ)
-  choose Cm hCu hCm using fun τ : D.what₂.Tau => GlobalTheory.T.realBesselSubgroup_acts_frame_upperUnitriangular D X u sf⁻¹ hsfi (X.pl.symm τ)
+  choose B hBu hBm using fun τ : D.what₂.Tau => _root_.GlobalTheory.LoopAct.sinfU_frame_upUni D X u' s'⁻¹ hs'i (X.pl.symm τ)
+  choose Cm hCu hCm using fun τ : D.what₂.Tau => _root_.GlobalTheory.LoopAct.sinfU_frame_upUni D X u sf⁻¹ hsfi (X.pl.symm τ)
   have hUi := Formalism.L2.SG.Pf.ZsVolGrp.isUpUni_inv hU
   set sg := actSgn D.R.rS with hsg
   have hss : sg * sg = 1 := actSgn_mul_self _
@@ -232,9 +235,9 @@ theorem cover_action : ∀ Cg cb Cu cT CT C0 A : ℝ, ∀ (D : D7) (X : HidaSett
   · intro r hr
     have hstr := Formalism.L2.SG.LoopTerm.stInf_conj_inv hsf hs' hdec hr
     have hyr : γw⁻¹ * (sf⁻¹ * r * sf) * γw ∈ X.SinfU u' := fun v => (hstr.2 v).1
-    choose Mr hMru hMrm using fun τ : D.what₂.Tau => GlobalTheory.T.realBesselSubgroup_acts_frame_upperUnitriangular D X u' _ hyr (X.pl.symm τ)
+    choose Mr hMru hMrm using fun τ : D.what₂.Tau => _root_.GlobalTheory.LoopAct.sinfU_frame_upUni D X u' _ hyr (X.pl.symm τ)
     obtain ⟨n, hn, a, ha, hΩ⟩ := hcov (T (GlobalTheory.LoopVol.ratCoord X u' w γw sf r))
-    obtain ⟨x, hx, hq⟩ := GlobalTheory.T.rationalLink_conjugate_mem_integralRealPoints D X Y W u u' s n hn
+    obtain ⟨x, hx, hq⟩ := _root_.GlobalTheory.CoverAct.ratLink_mem_ROinf D X Y W u u' s n hn
     refine ⟨x.1, hq, ?_⟩
     have hqR := Formalism.L2.SG.Pf.LoopBPin.roinf_sub_rset s hq
     have hstq := Formalism.L2.SG.LoopTerm.stInf_conj_inv hsf hs' hdec hqR
@@ -280,13 +283,13 @@ theorem cover_action : ∀ Cg cb Cu cT CT C0 A : ℝ, ∀ (D : D7) (X : HidaSett
         exact h2
       rw [Matrix.det_mul] at h1
       exact isUnit_of_mul_isUnit_left h1
-    have hMrs : Mr τ ∈ GlobalTheory.LoopV.stabU Zv := GlobalTheory.T.frameMatrix_mem_unipotentStabilizer_frameGram D X u u' γw _ v (Mr τ) hstr (hMru τ) (hMrm τ) hZu
-    obtain ⟨Mq, hMqu, hMqm⟩ := GlobalTheory.T.realBesselSubgroup_acts_frame_upperUnitriangular D X u' _ hyq v
-    have hMqs : Mq ∈ GlobalTheory.LoopV.stabU Zv := GlobalTheory.T.frameMatrix_mem_unipotentStabilizer_frameGram D X u u' γw _ v Mq hstq hMqu hMqm hZu
+    have hMrs : Mr τ ∈ GlobalTheory.LoopV.stabU Zv := _root_.GlobalTheory.FrameStab.frameMat_mem_stabU D X u u' γw _ v (Mr τ) hstr (hMru τ) (hMrm τ) hZu
+    obtain ⟨Mq, hMqu, hMqm⟩ := _root_.GlobalTheory.LoopAct.sinfU_frame_upUni D X u' _ hyq v
+    have hMqs : Mq ∈ GlobalTheory.LoopV.stabU Zv := _root_.GlobalTheory.FrameStab.frameMat_mem_stabU D X u u' γw _ v Mq hstq hMqu hMqm hZu
 
     have hrc : GlobalTheory.LoopV.ofRoots R (GlobalTheory.LoopVol.ratCoord X u' w γw sf r τ) = Mr τ := by
       have e : GlobalTheory.LoopVol.ratCoord X u' w γw sf r τ = fun q' : R => Mr τ q'.1.1 q'.1.2 :=
-        funext (GlobalTheory.T.rationalRootCoordinates_eq_frameMatrix D X u' w γw sf r τ (Mr τ) (hMrm τ))
+        funext (_root_.GlobalTheory.LoopVol.ratCoord_eq_matOn D X u' w γw sf r τ (Mr τ) (hMrm τ))
       rw [e]
       exact (act_eq_ofRoots (embS D τ) w hZu hZs hMrs).symm
     have hyqr : γw⁻¹ * (sf⁻¹ * (x.1 * r) * sf) * γw =
@@ -297,11 +300,11 @@ theorem cover_action : ∀ Cg cb Cu cT CT C0 A : ℝ, ∀ (D : D7) (X : HidaSett
       exact isMatOn_mul hMqm (hMrm τ)
     have hqrc : GlobalTheory.LoopV.ofRoots R (GlobalTheory.LoopVol.ratCoord X u' w γw sf (x.1 * r) τ) = Mq * Mr τ := by
       have e : GlobalTheory.LoopVol.ratCoord X u' w γw sf (x.1 * r) τ = fun q' : R => (Mq * Mr τ) q'.1.1 q'.1.2 :=
-        funext (GlobalTheory.T.rationalRootCoordinates_eq_frameMatrix D X u' w γw sf (x.1 * r) τ (Mq * Mr τ) hMqrm)
+        funext (_root_.GlobalTheory.LoopVol.ratCoord_eq_matOn D X u' w γw sf (x.1 * r) τ (Mq * Mr τ) hMqrm)
       rw [e]
       exact (act_eq_ofRoots (embS D τ) w hZu hZs (stabU_mul hZu hMqs hMrs)).symm
 
-    have hAq := GlobalTheory.T.realPoint_rationalIsometry_acts_frame_matrix D X Y u u' s _ x Ar hx hnA v
+    have hAq := _root_.GlobalTheory.realPoint_ratIsom_isMatOn D X Y u u' s _ x Ar hx hnA v
     rw [hplv] at hAq
     have hc1 := isMatOn_conj hAq (huinv s.pt.1 v)
     have e1 : uMat (s.pt.1⁻¹ v) * uMat (x.1 v) * uMat (s.pt.1 v) =
@@ -317,7 +320,7 @@ theorem cover_action : ∀ Cg cb Cu cT CT C0 A : ℝ, ∀ (D : D7) (X : HidaSett
     have e2 : s'⁻¹ * (s' * (γw⁻¹ * (sf⁻¹ * x.1 * sf) * γw) * s'⁻¹) = (γw⁻¹ * (sf⁻¹ * x.1 * sf) * γw) * s'⁻¹ := by
       group
     rw [e2] at hc2
-    have heq := isMatOn_unique (GlobalTheory.T.rationalBesselFrame_realPlace_linearIndependent D X u' v) hc3 hc2
+    have heq := isMatOn_unique (_root_.GlobalTheory.RationalFrame.frame_linearIndependent D X u' v) hc3 hc2
     have hA' : Ar.map (embS D τ) = sg * a.map (embS D τ) * sg := by
       ext i j
       rw [hsg, actSgn_conj_apply]
@@ -327,8 +330,8 @@ theorem cover_action : ∀ Cg cb Cu cT CT C0 A : ℝ, ∀ (D : D7) (X : HidaSett
     have hMq : Mq = B τ * (sg * a.map (embS D τ) * sg) * (B τ)⁻¹ := by
       rw [← hA', ← heq, Matrix.mul_assoc, (hBi τ).2, Matrix.mul_one]
 
-    have hzr := GlobalTheory.T.rationalFrameGram_embed_eq_realFrameGram D X Y W u u' s τ
-    have hzm := GlobalTheory.T.frameGram_mul_eq_conjTranspose_mul_frameMatrices D X u u' sf γw s'⁻¹ v (Cm τ) (B τ) (hCm τ) (hBm τ)
+    have hzr := _root_.GlobalTheory.zhatRat_embed D X Y W u u' s τ
+    have hzm := _root_.GlobalTheory.ZxMul.zx_mul D X u u' sf γw s'⁻¹ v (Cm τ) (B τ) (hCm τ) (hBm τ)
     have hkey : (Cm τ)ᴴ * Zv * B τ * sg = L.map (embS D τ) * (Zv * sg) * Uc τ := by
       have h : Matrix.map (ZhatOM (ZhatL (lf D (FlagOfWord W u)) (Formalism.L2.SG.Saturated.mapL (W.δ u) (W.isom u) s.frame)))
           (embS D τ) = Matrix.map (L * ptMat w * U) (embS D τ) := congrArg (fun M => Matrix.map M (embS D τ)) hZ

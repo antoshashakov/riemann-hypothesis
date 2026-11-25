@@ -8,18 +8,21 @@ public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsNilpote
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RiemannianHaarGaugeWholeGroupStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsRiemannianHaarUnitaryJSubgroupOfAlgebraStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaugeMeasureMatrixAlgebraSubgroupLocalAsymptoticStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeUnitaryMaximalCompactEqProdStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeMaximalCompactInterIsotropicFlagLeviStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaLieAlgebrasRelativePositionStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaGaugeDefiniteAndUnitBodyVolumeStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagDimensionCountStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaLintegralUnfoldCompactLeviStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightInvariantEqSmulLeftInvariantProbabilityStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeviFactorInverseModulusPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoProdGaugeMeasuresGaugeBodyStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaProductGaugeSandwichNearOneStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeUnitaryMaximalCompactEqProd
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumeMaximalCompactInterIsotropicFlagLevi
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaLieAlgebrasRelativePosition
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaGaugeDefiniteAndUnitBodyVolume
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagDimensionCount
+public import Mathlib.MeasureTheory.Integral.Lebesgue.Basic
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaLintegralUnfoldCompactLevi
+public import Mathlib.MeasureTheory.Group.Arithmetic
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightInvariantEqSmulLeftInvariantProbability
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeviFactorInverseModulusProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoProdGaugeMeasuresGaugeBody
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaProductGaugeSandwichNearOne
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TendstoSmallBallDensityOfSqueeze
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsNearestPointCosetOrthogonalLieAlgebraStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsNearestPointCosetOrthogonalLieAlgebra
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CutOutSubgroupTangentSecondOrderHilbertSchmidtStatement
 
 public section
@@ -161,10 +164,10 @@ private theorem localised_iwasawa_lower_asymptotics (n : ℕ) (ε : Fin n → Bo
   have := hN.lower_sigmaFinite hμN
   have := hM.lower_sigmaFinite hμM
   have := hK.lower_sigmaFinite hμK
-  obtain ⟨_, _, hCη⟩ := GlobalTheory.T.iwasawa_product_gauge_sandwich_near_one n ε _ _ _ dN dM dK dL EN EM EK EL hN hM hK hL hgau
+  obtain ⟨_, _, hCη⟩ := _root_.GlobalTheory.IwSand.gau_sandwich n ε _ _ _ dN dM dK dL EN EM EK EL hN hM hK hL hgau
   obtain ⟨t₀, ht₀, hasym⟩ :=
-    GlobalTheory.T.tendsto_prod_gaugeMeasures_gaugeBody n ε _ _ _ dN dM dK dL EN EM EK EL hN hM hK hgau μN μM μK hμN hμM hμK
-  obtain ⟨hdltm, -, hdlt⟩ := GlobalTheory.T.leviFactorInverseModulus_properties n ε a j W
+    _root_.GlobalTheory.IwConstBox.prod_gauge_body n ε _ _ _ dN dM dK dL EN EM EK EL hN hM hK hgau μN μM μK hμN hμM hμK
+  obtain ⟨hdltm, -, hdlt⟩ := _root_.GlobalTheory.IwDelta.dlt_props n ε a j W
 
   have hae : ∀ᵐ x ∂(μN.prod (μM.prod μK)), x.1 ∈ flagN ε W ∧ x.2.1 ∈ flagM ε W ∧ x.2.2 ∈ maxK ε := by
     have h1 : (μN.prod (μM.prod μK)) ((flagN ε W)ᶜ ×ˢ Set.univ) = 0 := by
@@ -327,7 +330,7 @@ private theorem slab_fibre_measure_le {n d : ℕ} {ε : Fin n → Bool}
   by_cases h : ∃ l ∈ S, l * k ∈ slab ε E ρ r
   · obtain ⟨l0, hl0, hslab0⟩ := h
     obtain ⟨l1, hl1, h0, hminimal⟩ :=
-      GlobalTheory.T.exists_nearest_point_coset_orthogonal_lieAlgebra n ε S d E hS hSK hskew k hk
+      _root_.GlobalTheory.IwConstMin.exists_nearest n ε S d E hS hSK hskew k hk
     have hclose := (hminimal l0 hl0).trans_lt hslab0.1
     calc
       ν {l | l * k ∈ slab ε E ρ r} =
@@ -495,7 +498,7 @@ private theorem cancel_mul_right_le {x y t : ENNReal} (h0 : t ≠ 0) (ht : t ≠
 
 theorem iwasawa_constant_le : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (univ.filter fun a => ε a = true).card = p → (univ.filter fun a => ε a = false).card = q → ∀ (a : ℕ) (j : Fin a → ℕ), (∀ i, 1 ≤ j i) → ∀ (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ (μN μM μK : Measure (Formalism.REAL.UJ ε)), IsGaugeSub (flagN ε W) (dimN n j) μN → IsGaugeSub (flagM ε W) ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) μM → μK (maxK ε)ᶜ = 0 → μK Set.univ = 1 → (∀ k ∈ maxK ε, μK.map (fun g => k * g) = μK) → ∀ (c : ℝ) (κ : ENNReal), IsGauge ε c → (∀ φ : Formalism.REAL.UJ ε → ENNReal, Measurable φ → ∫⁻ g, φ g ∂(Formalism.REAL.muG ε) = κ * ∫⁻ u, ∫⁻ m, ENNReal.ofReal (layerProd n 1 j (locSize j W (uMat m)) id) * ∫⁻ k, φ (u * m * k) ∂μK ∂μM ∂μN) → ENNReal.ofReal c * κ ≤ ENNReal.ofReal (cIw p q j) := by
   intro n ε p q hp hq a j hj W hW μN μM μK hN hM hK0 hK1 hKinv c κ hc hform
-  obtain ⟨hpq, hn2, hdK⟩ := GlobalTheory.T.isotropicFlag_dimension_count n ε a j W hW p q hp hq
+  obtain ⟨hpq, hn2, hdK⟩ := _root_.GlobalTheory.IwConst.flag_dims n ε a j W hW p q hp hq
   obtain ⟨AN, EN, hAN, hEN, hAEN, hNset⟩ := GlobalTheory.T.exists_nilpotentAlgebra_isotropicFlagUnipotentRadical n ε a j W hW
   obtain ⟨AM, EM, hAM, hEM, hAEM, hMset⟩ := GlobalTheory.T.exists_algebra_isotropicFlagSelfAdjointLevi n ε a j W hW
   obtain ⟨⟨AK, EK, hAK, hEK, hAEK, hKset⟩, ⟨AL, EL, hAL, hEL, hAEL, hLset⟩⟩ :=
@@ -504,8 +507,8 @@ theorem iwasawa_constant_le : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (
   have cM : IsCut ε (flagM ε W) EM := ⟨AM, hAM, hEM, hAEM, hMset⟩
   have cK : IsCut ε (maxK ε) EK := ⟨AK, hAK, hEK, hAEK, hKset⟩
   have cL : IsCut ε (maxK ε ∩ flagM ε W) EL := ⟨AL, hAL, hEL, hAEL, hLset⟩
-  have hrel := GlobalTheory.T.iwasawa_lieAlgebras_relative_position n ε a j W hW _ _ _ _ EN EM EK EL cN cM cK cL
-  obtain ⟨hnd, hvol⟩ := GlobalTheory.T.iwasawaGauge_definite_and_unitBody_volume n _ _ _ _ EN EM EK EL cN.isON cM.isON cK.isON cL.isON hrel hdK
+  have hrel := _root_.GlobalTheory.IwConst.LiePos.lieRel n ε a j W hW _ _ _ _ EN EM EK EL cN cM cK cL
+  obtain ⟨hnd, hvol⟩ := _root_.GlobalTheory.IwConst.gau_definite_and_volume n _ _ _ _ EN EM EK EL cN.isON cM.isON cK.isON cL.isON hrel hdK
 
   have hN' : IsGaugeSub {g | uMat g - 1 ∈ AN} (dimN n j) μN := by rw [← hNset]; exact hN
   have hM' : IsGaugeSub {g | uMat g - 1 ∈ AM} ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) μM := by
@@ -520,8 +523,8 @@ theorem iwasawa_constant_le : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (
   obtain ⟨μ0, hμ0σ, hμ0⟩ := GlobalTheory.T.exists_riemannianHaar_unitaryJSubgroupOfAlgebra n ε AK _ EK hAK hEK hAEK
   have := hμ0σ
   have hμ0' : IsGaugeSub (maxK ε) (p ^ 2 + q ^ 2) μ0 := by rw [hKset]; exact hμ0
-  have hVK := GlobalTheory.T.volume_unitaryMaximalCompact_eq_prod n ε p q hp hq μ0 hμ0'
-  have hVL := GlobalTheory.T.volume_maximalCompact_inter_isotropicFlagLevi n ε p q hp hq a j W hW νL hνL'
+  have hVK := _root_.GlobalTheory.VolMaxK.volume_maxK n ε p q hp hq μ0 hμ0'
+  have hVL := _root_.GlobalTheory.FlagMeas.LeviCompact.volume_maxK_inter_flagM n ε p q hp hq a j W hW νL hνL'
 
   have rK : ∀ l ∈ maxK ε, μ0.map (fun g => g * l) = μ0 := fun l hl =>
     map_mul_right_eq_of_isGaugeSub AK EK hAK hEK hAEK μ0 hμ0 l (by
@@ -536,12 +539,12 @@ theorem iwasawa_constant_le : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (
       have h : l ∈ {g : Formalism.REAL.UJ ε | uMat g - 1 ∈ AL} := by rw [← hLset]; exact hl
       exact h) hl.1
   have : IsProbabilityMeasure μK := ⟨hK1⟩
-  have hμ0eq := GlobalTheory.T.right_invariant_eq_smul_left_invariant_probability (Formalism.REAL.UJ ε) (maxK ε) μK μ0 hK0 hμ0'.1 hK1 hKinv rK
+  have hμ0eq := _root_.GlobalTheory.IwConst.right_inv_eq_smul_left_inv (Formalism.REAL.UJ ε) (maxK ε) μK μ0 hK0 hμ0'.1 hK1 hKinv rK
   rw [hVK] at hμ0eq
 
   have hvpos : ∀ i, 0 < volU i := coefficient_volU_pos'
   have hVtop : ENNReal.ofReal (volU p * volU q) ≠ ⊤ := ENNReal.ofReal_ne_top
-  have hδ := GlobalTheory.T.leviFactorInverseModulus_properties n ε a j W
+  have hδ := _root_.GlobalTheory.IwDelta.dlt_props n ε a j W
   have hΓtop : volume {v | gau EN EM EK EL v ≤ 1} ≠ ⊤ := by
     rw [hvol]
     exact ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (coefficient_ballVol_ne_top _)) (coefficient_ballVol_ne_top _)
@@ -573,7 +576,7 @@ theorem iwasawa_constant_le : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (
     have hev : ∀ᶠ r in 𝓝[>] (0 : ℝ), r < ρ η :=
       nhdsWithin_le_nhds (Iio_mem_nhds (hρpos η hη))
     filter_upwards [hev] with r hr
-    have hswap := GlobalTheory.T.iwasawa_lintegral_unfold_compact_levi
+    have hswap := _root_.GlobalTheory.IwConst.iwasawa_unfold_lintegral
       (Formalism.REAL.UJ ε) (flagM ε W) (maxK ε ∩ flagM ε W) μN μM μ0 νL (dlt j W)
       ((hsBall ε r).indicator 1) ((slab ε EL (ρ η) r).indicator 1) hδ.1
       (measurable_one.indicator (measurableSet_hsBall ε r))

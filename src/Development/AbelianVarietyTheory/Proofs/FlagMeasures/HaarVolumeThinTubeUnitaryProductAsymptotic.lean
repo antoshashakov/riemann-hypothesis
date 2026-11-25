@@ -3,13 +3,15 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.UpperOff
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BlkExt
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DensityInChartStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsProductChartTangentEquivBallVolumeStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsProductChartTangentEquivBallVolume
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.KapMulLast
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableSetImageBall
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemLieEUnitaryGroupIffOfInvolutiveStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RotationInvariantMeasureUnitCircleArcStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ThinUnitaryTubeVolumeLimitArithStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryTubeProductChartHasStrictFDerivAtEntryStatement
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Complex
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RotationInvariantMeasureUnitCircleArc
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ThinUnitaryTubeVolumeLimitArith
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryTubeProductChartHasStrictFDerivAtEntry
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChainRuleSmooth.ExpIntertwine
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -81,7 +83,7 @@ theorem thin_tube : ∀ (k : ℕ) (η : ℝ), 1 ≤ k → (η = 1 ∨ η = -1) �
   have hexp : ∀ X : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ)),
       NormedSpace.exp (unrealify (X : EuclideanSpace ℝ _)) ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ) := fun X =>
     CCRuleCW.exp_mem_UH _ _ ((GlobalTheory.T.mem_lieE_unitaryGroup_iff_of_involutive k 1 X.1 (Matrix.one_mul _)).1 X.2)
-  obtain ⟨L, hL, hvol⟩ := GlobalTheory.T.exists_productChart_tangentEquiv_ballVolume k η hk hη
+  obtain ⟨L, hL, hvol⟩ := _root_.GlobalTheory.TubeLie.exists_tang_equiv k η hk hη
   have hmem : ∀ᶠ x in 𝓝 (0 : Par k), chart η x ∈ UH (Hd k η) := by
     filter_upwards [Metric.ball_mem_nhds (0 : Par k) one_pos] with x hx
     have hw : ‖x.2.2‖ < 1 := ((norm_snd_le x.2).trans (norm_snd_le x)).trans_lt (mem_ball_zero_iff.1 hx)
@@ -89,9 +91,9 @@ theorem thin_tube : ∀ (k : ℕ) (η : ℝ), 1 ≤ k → (η = 1 ∨ η = -1) �
     rw [nsq_hv]; have := norm_nonneg x.2.2; nlinarith
   have hch := GlobalTheory.T.tendsto_measure_image_ball_div_volume (k + 1) (UH (Hd k η)) μ _ (GlobalTheory.GramExp.isMatGroup_UH _ (Hd_sq k hη)) hμ hd (Par k)
     (chart η) L (chart_zero k η) hmem (fun i j => by
-      obtain ⟨D, h, h'⟩ := GlobalTheory.T.unitaryTubeProductChart_hasStrictFDerivAt_entry k η i j
+      obtain ⟨D, h, h'⟩ := _root_.GlobalTheory.TubeDeriv.chart_hasStrictFDerivAt k η i j
       exact ⟨D, h, fun v => by rw [h', hL]⟩)
-  refine GlobalTheory.T.thinUnitaryTube_volume_limit_arith k c c₀ (fun t => μ (tubeO k η t)) _
+  refine _root_.GlobalTheory.Tube.thin_tube_limit_arith k c c₀ (fun t => μ (tubeO k η t)) _
     (fun ρ => μ₀ (expSet (UH (1 : Matrix (Fin k) (Fin k) ℂ)) (Metric.ball 0 ρ)))
     (fun ρ => volume (Metric.ball (0 : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ))) ρ)) hc hc₀ (fun t s ht hs => ⟨?_, ?_⟩)
     (fun ρ hρ => ⟨Metric.measure_ball_pos _ _ hρ, measure_ball_lt_top⟩) hd₀ (hch.congr' ?_)
@@ -112,7 +114,7 @@ theorem thin_tube : ∀ (k : ℕ) (η : ℝ), 1 ≤ k → (η = 1 ∨ η = -1) �
       GlobalTheory.GramExp.measurableSet_image_ball (by fun_prop) _ _
     obtain ⟨τ, t1, t2, t3, t4⟩ := phase_law hη hμ hρ'
     rw [hvol ρ hρ.1, chart_image hη hexp hρ.1 hρ.2, prod_top hη hμ hμ₀ h1 hρ' hA hB, ← t1 _ hB,
-      GlobalTheory.T.rotationInvariant_measure_unitCircle_arc τ ρ t2 t3 t4 hρ.1 (by linarith [hρ.2, Real.pi_gt_three]), t1 _ MeasurableSet.univ]
+      _root_.GlobalTheory.CircleArc.measure_arc τ ρ t2 t3 t4 hρ.1 (by linarith [hρ.2, Real.pi_gt_three]), t1 _ MeasurableSet.univ]
     simp
 
 end GlobalTheory.Tube
