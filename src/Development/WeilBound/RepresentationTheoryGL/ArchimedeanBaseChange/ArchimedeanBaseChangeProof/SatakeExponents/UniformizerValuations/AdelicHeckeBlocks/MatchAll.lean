@@ -1,8 +1,9 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LeviMatchingWords.SplitPlaceGeneratorPowers
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermMultiplicativeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchingSplitOfStatement
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.MatchT
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermMultiplicative
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchingSplitOf
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.MultiplicityOneBase.ArchimedeanBaseChangeFirst
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.TwistedConjugationNorms.ArchimedeanBaseChangeFourth
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.AdelicHeckeBlocks.Imports
@@ -55,7 +56,7 @@ namespace PositivityTheory.Rg.BcB.F.MatchAll
 
 open PositivityTheory.Rg.Bc.ArchbcB.B PositivityTheory.Rg.BcN.F2.LocOpPf
 
-theorem ctMul : MT.CtMul := GlobalTheory.T.constant_term_multiplicative
+theorem ctMul : MT.CtMul := _root_.GlobalTheory.CompanionTheory.CtMulSplit.ctMul
 
 theorem hM4 : M4 := archimedean_base_change_fourth
 
@@ -65,7 +66,7 @@ theorem matchT_of (h4 : M4) : MT.MatchT := TorusMatching.match_torus_of_twisted_
 
 theorem matchUnitI_of (h1 : M1) : MB.MatchUnitI := MB.matchUnitIOf h1
 
-theorem matchSplit (h3 : M3) : MT.MatchSplit := GlobalTheory.T.matching_split_of h3 ctMul
+theorem matchSplit (h3 : M3) : MT.MatchSplit := _root_.GlobalTheory.CompanionTheory.MatchPowers.matchSplitOf h3 ctMul
 
 theorem matchLMId : MLM.MatchLMId := MLM.matchLMIdOf idemAlg BlockFiniteConvolution.locOk₀
 

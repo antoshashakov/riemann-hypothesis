@@ -1,12 +1,14 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameBoundSpaces.FrameBound
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactLevelExistsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LevelExistsBisStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MuCharacterExistsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionExistsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitPlaceExistsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerExistsStatement
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.IsPairLevel
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactLevelExists
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.SetupEig
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LevelExistsBis
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MuCharacterExists
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionExistsAlt
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitPlaceExists
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerExists
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.CongruenceInertMatching
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.SplitMuMatching
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.SatakeRigidity.FullThetaHolds
@@ -60,8 +62,8 @@ namespace PositivityTheory.Rg.BcB.F.Ex0
 open PositivityTheory.Rg.BcB.F
 
 theorem frameEx0_plug (h2 : PositivityTheory.Rg.Bc.ArchbcB.B.M2) (h3 : PositivityTheory.Rg.Bc.ArchbcB.B.M3) : FrameEx0 :=
-  frameEx0_of Rig.weightEx Rig.unrAE_holds (GlobalTheory.T.mu_character_exists Fok.Mu3.muExists) GlobalTheory.T.sec_ex GlobalTheory.T.uniformizer_exists GlobalTheory.T.level_exists_bis
-    GlobalTheory.T.split_place_exists (badEx2_of h2 h3) GlobalTheory.T.compact_level_exists PositivityTheory.Rg.BcB.G8.translation_existence_holds F0.chainEx_holds F0.archEx_holds F0.wEx_holds
+  frameEx0_of Rig.weightEx Rig.unrAE_holds (_root_.GlobalTheory.CompanionTheory.MuOpen.muEx_of_exists Fok.Mu3.muExists) _root_.GlobalTheory.CompanionTheory.SecThrough.secEx _root_.GlobalTheory.CompanionTheory.UnifFix.unifEx _root_.GlobalTheory.CompanionTheory.LevelU.levelEx
+    _root_.GlobalTheory.CompanionTheory.SplitLevel.splitEx (badEx2_of h2 h3) _root_.GlobalTheory.CompanionTheory.KExLevel.kEx PositivityTheory.Rg.BcB.G8.translation_existence_holds F0.chainEx_holds F0.archEx_holds F0.wEx_holds
 
 theorem frameEx0 : FrameEx0 := frameEx0_plug PositivityTheory.HtPt.Bc.CongruenceInertMatching.matchCongInert PositivityTheory.HtPt.Bc.SplitMuMatching.matchCtMuSplit
 
