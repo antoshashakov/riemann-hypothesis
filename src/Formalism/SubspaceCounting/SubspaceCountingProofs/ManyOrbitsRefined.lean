@@ -53,6 +53,7 @@ import Mathlib.Topology.Sheaves.Init
 import Formalism.SubspaceCounting.SubspaceCountingProofs.ManyOrbits
 public import Mathlib.LinearAlgebra.Dimension.Constructions
 public import Mathlib.LinearAlgebra.FreeModule.PID
+import Formalism.SubspaceCounting.SubspaceCountingProofs.LengthLayers
 
 @[expose] public section
 
@@ -71,119 +72,33 @@ private theorem length_eq_length_add_length_quot {R Z : Type} [CommRing R] [AddC
   Module.length_eq_add_of_exact W.subtype W.mkQ Subtype.val_injective W.mkQ_surjective
     (LinearMap.exact_subtype_mkQ W)
 
-private theorem length_le_one_of_cyclic_smul_eq_zero {R Q : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
-    [AddCommGroup Q] [Module R Q] (π : R) (hπ : Irreducible π) (x : Q)
-    (hx : Submodule.span R {x} = ⊤) (h0 : π • x = 0) : Module.length R Q ≤ 1 := by
-  have hm : IsLocalRing.maximalIdeal R ≤ LinearMap.ker (LinearMap.toSpanSingleton R Q x) := by
-    rw [(IsDiscreteValuationRing.irreducible_iff_uniformizer π).mp hπ,
-      Ideal.span_singleton_le_iff_mem, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]
-    exact h0
-  have hsurj : Function.Surjective
-      ((IsLocalRing.maximalIdeal R).liftQ (LinearMap.toSpanSingleton R Q x) hm) := by
-    rw [← LinearMap.range_eq_top, Submodule.range_liftQ, ← LinearMap.span_singleton_eq_range, hx]
-  have hs : IsSimpleModule R (R ⧸ IsLocalRing.maximalIdeal R) :=
-    isSimpleModule_iff_isCoatom.mpr (IsLocalRing.maximalIdeal.isMaximal R).out
-  calc Module.length R Q ≤ Module.length R (R ⧸ IsLocalRing.maximalIdeal R) :=
-        Module.length_le_of_surjective _ hsurj
-    _ = 1 := Module.length_eq_one_iff.mpr hs
-
 private theorem span_range_map_eq_univ_of_surjective {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] {n : ℕ} (F : A →ₗ[R] B) (hF : Function.Surjective F)
     (g : Fin n → A) (hg : Submodule.span R (Set.range g) = ⊤) :
     Submodule.span R (Set.range (fun i => F (g i))) = ⊤ := by
-  have e : (Set.range fun i => F (g i)) = F '' Set.range g := by
-    rw [← Set.range_comp]
-    rfl
-  rw [e, ← Submodule.map_span, hg, Submodule.map_top, LinearMap.range_eq_top.mpr hF]
-
-private theorem span_singleton_self_subtype_eq_univ {R Q : Type} [CommRing R] [AddCommGroup Q] [Module R Q] (y : Q) :
-    Submodule.span R {(⟨y, Submodule.mem_span_singleton_self y⟩ : Submodule.span R {y})} = ⊤ := by
-  apply Submodule.map_injective_of_injective (f := (Submodule.span R {y}).subtype)
-    Subtype.val_injective
-  rw [Submodule.map_span, Set.image_singleton, Submodule.map_subtype_top]
-  rfl
-
-private theorem length_le_of_cyclic_pow_smul_eq_zero {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
-    (π : R) (hπ : Irreducible π) (k : ℕ) : ∀ (Q : Type) [AddCommGroup Q] [Module R Q] (x : Q),
-    Submodule.span R {x} = ⊤ → π ^ k • x = 0 → Module.length R Q ≤ k := by
-  induction k with
-  | zero =>
-    intro Q _ _ x hx h0
-    rw [pow_zero, one_smul] at h0
-    subst h0
-    rw [Submodule.span_singleton_eq_bot.mpr rfl] at hx
-    have h0 : ∀ z : Q, z = 0 := by
-      intro z
-      have hz : z ∈ (⊥ : Submodule R Q) := by
-        rw [hx]
-        exact Submodule.mem_top
-      exact (Submodule.mem_bot R).mp hz
-    have : Subsingleton Q := ⟨fun a b => (h0 a).trans (h0 b).symm⟩
-    rw [Module.length_eq_zero_iff.mpr this]
-    simp
-  | succ k ih =>
-    intro Q _ _ x hx h0
-    have hW : Module.length R (Submodule.span R {π • x}) ≤ k := by
-      refine ih (Submodule.span R {π • x}) ⟨π • x, Submodule.mem_span_singleton_self _⟩
-        (span_singleton_self_subtype_eq_univ _) ?_
-      apply Subtype.ext
-      show π ^ k • π • x = 0
-      rw [smul_smul, ← pow_succ]
-      exact h0
-    have hq : Module.length R (Q ⧸ Submodule.span R {π • x}) ≤ 1 := by
-      refine length_le_one_of_cyclic_smul_eq_zero π hπ (Submodule.mkQ _ x) ?_ ?_
-      · have e : ({(Submodule.span R {π • x}).mkQ x} : Set (Q ⧸ Submodule.span R {π • x})) =
-            (Submodule.span R {π • x}).mkQ '' {x} := Set.image_singleton.symm
-        rw [e, ← Submodule.map_span, hx, Submodule.map_top, Submodule.range_mkQ]
-      · rw [← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
-        exact Submodule.mem_span_singleton_self _
-    rw [length_eq_length_add_length_quot (Submodule.span R {π • x})]
-    calc _ ≤ (k : ℕ∞) + 1 := add_le_add hW hq
-      _ = ((k + 1 : ℕ) : ℕ∞) := (Nat.cast_succ k).symm
+  change Submodule.span R (Set.range (F ∘ g)) = ⊤
+  rw [Set.range_comp, ← Submodule.map_span, hg, Submodule.map_top, LinearMap.range_eq_top.mpr hF]
 
 private theorem length_le_mul_of_span_fin_pow_smul_eq_zero {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     (π : R) (hπ : Irreducible π) (k : ℕ) : ∀ (n : ℕ) (Q : Type) [AddCommGroup Q] [Module R Q]
     (g : Fin n → Q), Submodule.span R (Set.range g) = ⊤ → (∀ q : Q, π ^ k • q = 0) →
     Module.length R Q ≤ ((k * n : ℕ) : ℕ∞) := by
-  intro n
-  induction n with
-  | zero =>
-    intro Q _ _ g hg _
-    rw [Set.range_eq_empty g, Submodule.span_empty] at hg
-    have h0 : ∀ z : Q, z = 0 := by
-      intro z
-      have hz : z ∈ (⊥ : Submodule R Q) := by
-        rw [hg]
-        exact Submodule.mem_top
-      exact (Submodule.mem_bot R).mp hz
-    have : Subsingleton Q := ⟨fun a b => (h0 a).trans (h0 b).symm⟩
-    rw [Module.length_eq_zero_iff.mpr this]
-    simp
-  | succ n ih =>
-    intro Q _ _ g hg hk
-    have hW : Module.length R (Submodule.span R {g 0}) ≤ k :=
-      length_le_of_cyclic_pow_smul_eq_zero π hπ k (Submodule.span R {g 0}) ⟨g 0, Submodule.mem_span_singleton_self _⟩
-        (span_singleton_self_subtype_eq_univ _) (Subtype.ext (hk (g 0)))
-    have hq : Module.length R (Q ⧸ Submodule.span R {g 0}) ≤ ((k * n : ℕ) : ℕ∞) := by
-      refine ih (Q ⧸ Submodule.span R {g 0}) (fun i => (Submodule.span R {g 0}).mkQ (g i.succ))
-        ?_ ?_
-      · have htop := span_range_map_eq_univ_of_surjective (Submodule.span R {g 0}).mkQ
-          (Submodule.span R {g 0}).mkQ_surjective g hg
-        rw [eq_top_iff, ← htop, Submodule.span_le]
-        rintro _ ⟨i, rfl⟩
-        induction i using Fin.cases with
-        | zero =>
-          show (Submodule.span R {g 0}).mkQ (g 0) ∈ _
-          rw [Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).mpr
-            (Submodule.mem_span_singleton_self _)]
-          exact Submodule.zero_mem _
-        | succ j => exact Submodule.subset_span ⟨j, rfl⟩
-      · intro q
-        obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-        rw [← Submodule.Quotient.mk_smul, hk z, Submodule.Quotient.mk_zero]
-    rw [length_eq_length_add_length_quot (Submodule.span R {g 0})]
-    calc _ ≤ (k : ℕ∞) + ((k * n : ℕ) : ℕ∞) := add_le_add hW hq
-      _ = ((k * (n + 1) : ℕ) : ℕ∞) := by push_cast; ring
+  intro n Q _ _ g hg hk
+  classical
+  let L (i : Fin n) := Submodule.span R {g i}
+  let f := LinearMap.lsum R (fun i => ↥(L i)) R (fun i => (L i).subtype)
+  have hf : Function.Surjective f := by
+    apply LinearMap.range_eq_top.mp
+    rw [← top_le_iff, ← hg, Submodule.span_le]
+    rintro _ ⟨i, rfl⟩
+    exact ⟨Pi.single i ⟨g i, Submodule.mem_span_singleton_self _⟩,
+      LinearMap.lsum_piSingle R _ R _ _ _⟩
+  calc
+    Module.length R Q ≤ Module.length R (∀ i, L i) := Module.length_le_of_surjective f hf
+    _ = ∑ i, Module.length R (L i) := Module.length_pi_of_fintype R _
+    _ ≤ ∑ _ : Fin n, (k : ℕ∞) :=
+      Finset.sum_le_sum fun i _ => LengthLayersP.length_span_singleton_le π hπ k (g i) (hk (g i))
+    _ = ((k * n : ℕ) : ℕ∞) := by simp [nsmul_eq_mul, mul_comm]
 
 private theorem length_le_sum_of_antitone_chain_quot_le {R Z : Type} [CommRing R] [AddCommGroup Z] [Module R Z] :
     ∀ (V : ℕ) (E : ℕ → Submodule R Z) (b : ℕ → ℕ), E V = ⊥ → (∀ j, E (j + 1) ≤ E j) →
@@ -193,61 +108,41 @@ private theorem length_le_sum_of_antitone_chain_quot_le {R Z : Type} [CommRing R
   induction V with
   | zero =>
     intro E b hV _ _
-    have h0 : ∀ z ∈ E 0, z = 0 := by
-      rw [hV]
-      intro z hz
-      exact (Submodule.mem_bot R).mp hz
-    have : Subsingleton (E 0) := ⟨fun a c => Subtype.ext ((h0 _ a.2).trans (h0 _ c.2).symm)⟩
-    rw [Module.length_eq_zero_iff.mpr this]
+    rw [hV, Module.length_bot]
     simp
   | succ V ih =>
     intro E b hV hE hb
-    have h1 := ih (fun j => E (j + 1)) (fun j => b (j + 1)) hV (fun j => hE (j + 1))
+    have h := ih (fun j => E (j + 1)) (fun j => b (j + 1)) hV (fun j => hE (j + 1))
       (fun j hj => hb (j + 1) (by omega))
-    have h2 : Module.length R ((E 1).comap (E 0).subtype) ≤ Module.length R (E 1) :=
-      Module.length_le_of_injective (Submodule.comapSubtypeEquivOfLe (hE 0)).toLinearMap
-        (Submodule.comapSubtypeEquivOfLe (hE 0)).injective
-    have h3 := hb 0 (by omega)
-    rw [length_eq_length_add_length_quot ((E 1).comap (E 0).subtype), Finset.sum_range_succ', Nat.cast_add]
-    exact add_le_add (h2.trans h1) h3
+    rw [LengthLayersP.length_eq_add_of_le (hE 0), Finset.sum_range_succ', Nat.cast_add]
+    exact add_le_add h (hb 0 (by omega))
 
 private theorem length_quot_comap_le_mul_of_pow_smul_mem {R Z : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [AddCommGroup Z] [Module R Z] (π : R) (hπ : Irreducible π) (S n : ℕ) (E E' : Submodule R Z)
     (hEE : ∀ z ∈ E, π ^ S • z ∈ E') (g : Fin n → Z) (hg : E ≤ Submodule.span R (Set.range g)) :
     Module.length R (E ⧸ E'.comap E.subtype) ≤ ((S * n : ℕ) : ℕ∞) := by
-  set ψ : (Fin n → R) →ₗ[R] Z :=
-    ∑ i, (LinearMap.proj i : (Fin n → R) →ₗ[R] R).smulRight (g i) with hψdef
-  have hψ : ∀ i, ψ (Pi.single i 1) = g i := by
-    intro i
-    simp [hψdef, Pi.single_apply]
+  let B := Pi.basisFun R (Fin n)
+  let ψ := B.constr R g
   have hrange : E ≤ LinearMap.range ψ := by
-    refine hg.trans (Submodule.span_le.mpr ?_)
-    rintro _ ⟨i, rfl⟩
-    exact ⟨Pi.single i 1, hψ i⟩
-  obtain ⟨m, b⟩ := Submodule.basisOfPid (Pi.basisFun R (Fin n)) (E.comap ψ)
+    simpa only [ψ, Module.Basis.constr_range] using hg
+  obtain ⟨m, b⟩ := Submodule.basisOfPid B (E.comap ψ)
   have hm : m ≤ n := by
-    have h1 := Submodule.finrank_le (E.comap ψ)
-    rw [Module.finrank_eq_card_basis b, Fintype.card_fin, Module.finrank_fin_fun] at h1
-    exact h1
-  set Ψ : (E.comap ψ) →ₗ[R] E := LinearMap.codRestrict E (ψ ∘ₗ (E.comap ψ).subtype)
-    (fun p => p.2) with hΨdef
+    have h := Submodule.finrank_le (E.comap ψ)
+    simpa only [Module.finrank_eq_card_basis b, Fintype.card_fin, Module.finrank_fin_fun] using h
+  let Ψ : (E.comap ψ) →ₗ[R] E := (ψ.domRestrict (E.comap ψ)).codRestrict E (fun p => p.2)
   have hΨ : Function.Surjective Ψ := by
     intro e
     obtain ⟨r, hr⟩ := hrange e.2
-    refine ⟨⟨r, ?_⟩, Subtype.ext hr⟩
-    show ψ r ∈ E
-    rw [hr]
-    exact e.2
-  have hF : Function.Surjective ((E'.comap E.subtype).mkQ ∘ₗ Ψ) :=
-    (Submodule.mkQ_surjective _).comp hΨ
+    exact ⟨⟨r, by simp [hr]⟩, Subtype.ext hr⟩
+  have hF := (Submodule.mkQ_surjective (E'.comap E.subtype)).comp hΨ
   have hsp := span_range_map_eq_univ_of_surjective ((E'.comap E.subtype).mkQ ∘ₗ Ψ) hF b b.span_eq
-  have hkill : ∀ q : (E ⧸ E'.comap E.subtype), π ^ S • q = 0 := by
-    intro q
+  have hkill (q : E ⧸ E'.comap E.subtype) : π ^ S • q = 0 := by
     obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ q
     rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
     exact hEE z.1 z.2
-  calc Module.length R (E ⧸ E'.comap E.subtype) ≤ ((S * m : ℕ) : ℕ∞) :=
-        length_le_mul_of_span_fin_pow_smul_eq_zero π hπ S m _ _ hsp hkill
+  calc
+    Module.length R (E ⧸ E'.comap E.subtype) ≤ ((S * m : ℕ) : ℕ∞) :=
+      length_le_mul_of_span_fin_pow_smul_eq_zero π hπ S m _ _ hsp hkill
     _ ≤ ((S * n : ℕ) : ℕ∞) := by exact_mod_cast Nat.mul_le_mul_left S hm
 
 theorem lengthPart2 {R X : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
