@@ -12,11 +12,18 @@ public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsN
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ThetaConstantTermRepresentativeDependenceStatement
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TorusTorsionPointsCorrespondValues
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TxCosetCriterionStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGeometricValuesIsoOfIdentificationDvrStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsoPolarisedAbelianSchemesDvrOfFieldExtensStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPullbackDegenerationOfValuesIsoDvrStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueDescentAutomorphismInvariantMorphismStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolarisedIsoCommutesFieldAutomorphismOfTorsionStatement
+public import Development.AbelianVarietyTheory.BlockTheory.CMModuli.ThetaTowerRecognition
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGeometricValuesIsoOfIdentificationDvr
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsoPolarisedAbelianSchemesDvrOfFieldExtens
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsFib
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPullbackDegenerationOfValuesIsoDvr
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueDescentAutomorphismInvariantMorphism
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PolarisedIsoCommutesFieldAutomorphismOfTorsion
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RelationsAreFunctions
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Mathlib.Algebra.Order.Floor.Extended
@@ -219,7 +226,7 @@ theorem exists_pullDeg {C : Type} [Field C] [IsAlgClosed C] [CharZero C] [Algebr
       exact inferInstanceAs (IsIso (Spec.map σ.toRingEquiv.toCommRingCatIso.hom))
     haveI : IsIso ((Over.forget _).map s) := this
     haveI : IsIso s := isIso_of_reflects_iso s (Over.forget _)
-    refine GlobalTheory.T.polarisedIso_commutes_fieldAutomorphism_of_torsion hL _ D.P D'.P C _ φ g₁ h1 ⟨w, g₂⟩ k hk (Nat.cast_ne_zero.2 hk0) (asIso s) fun x hx => ?_
+    refine _root_.GlobalTheory.SerreTwist.whisker_comp_eq hL _ D.P D'.P C _ φ g₁ h1 ⟨w, g₂⟩ k hk (Nat.cast_ne_zero.2 hk0) (asIso s) fun x hx => ?_
     obtain ⟨b, rfl⟩ := ν.eA.surjective x
     obtain ⟨g, rfl, hg⟩ := QStr.root_over N hk0 1 b (ν.eA.injective (by rw [map_pow, hx]; exact (map_one _).symm))
     let q : N.QT k := ⟨(1, g), hg.trans N.io_zero.symm⟩
@@ -244,10 +251,10 @@ theorem exists_pullDeg {C : Type} [Field C] [IsAlgClosed C] [CharZero C] [Algebr
     have b₂ : s ≫ ν'.eA (J.φ g.b) = ν'.eA qσ'.1.2.b :=
       Over.OverMorphism.ext (by rw [hqσ'.2.1, hpσ'.2.1, ← hp'.2.1, Over.comp_left, hs, rb])
     rw [asIso_hom, b₁, pt, pt, b₂, hz', rb]
-  obtain ⟨g, hg, -⟩ := GlobalTheory.T.existsUnique_descent_automorphism_invariant_morphism (FractionRing V) C _ (jK V) D.P.A D'.P.A
+  obtain ⟨g, hg, -⟩ := _root_.GlobalTheory.InvariantMorDescent.existsUnique_desc (FractionRing V) C _ (jK V) D.P.A D'.P.A
     (haveI := D'.P.isAb.proper; inferInstance) (Over.homMk (jFK (R := V) C) rfl) rfl (φ.hom ≫ snd _ _) inv
-  obtain ⟨Ψ, a₁, a₂, a₃⟩ := GlobalTheory.T.exists_iso_polarisedAbelianSchemes_dvr_of_fieldExtension hL hL2 V D.P D'.P C φ g₁ h1 ⟨w, g₂⟩ _ g hg
-  obtain ⟨e, hc⟩ := GlobalTheory.T.exists_pullbackDegeneration_of_values_iso_dvr hL V D D' C N N' ν ν' J Ψ a₁ a₃ φ w g₁ a₂ g₂ g₃
+  obtain ⟨Ψ, a₁, a₂, a₃⟩ := _root_.GlobalTheory.IsoOverField.exists_iso_over_dvr hL hL2 V D.P D'.P C φ g₁ h1 ⟨w, g₂⟩ _ g hg
+  obtain ⟨e, hc⟩ := _root_.GlobalTheory.ValuesIdent.exists_isPullDeg_of_values hL V D D' C N N' ν ν' J Ψ a₁ a₃ φ w g₁ a₂ g₂ g₃
     (fun x => (congrArg _ (g₄ 1).symm).trans ((g₅ x).trans (g₄ x)))
   exact ⟨e, fun k p p' q hq hq' => hc k p p' q _ hq hq' rfl ((qMap_iff (TateInh.homOfIso J)).2 rfl).2⟩
 
@@ -294,7 +301,7 @@ theorem onQ_of_inducedBy (hn : n ≠ 0) (h : SameMatch mt w)
     ∃ J : NumD.Iso N N', mt.OnQ J ∧ GeoIso ν ν' J.toIso := by
   haveI := hV.1
   obtain ⟨e, he⟩ := H
-  obtain ⟨J, hJ, hc⟩ := GlobalTheory.T.exists_geometric_values_iso_of_identification_dvr firstFiveLaws.1 V D D' e C N N' ν ν'
+  obtain ⟨J, hJ, hc⟩ := _root_.GlobalTheory.IdentifiedValues.exists_geoIso_rel firstFiveLaws.1 V D D' e C N N' ν ν'
   refine ⟨J, fun j p p' h₁ h₂ => ?_, hJ⟩
   refine (r_incl mt (sq (n ^ j)) (pow_ne_zero _ hn) p p' (up (sq _) p) (up (sq _) p') rfl rfl rfl rfl).2 ((h j _ _).2 ?_)
   obtain ⟨r, r', q', a₁, a₂, a₃, a₄⟩ := he j (up (sq (n ^ j)) p)

@@ -3,12 +3,12 @@ module
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSymm
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DerivationEqZeroOfKodairaSpencerZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGoodUniformisationKodairaSpencerStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.DerivationEqZeroOfKodairaSpencerZero
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGoodUniformisationKodairaSpencer
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemePullbackStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KodairaSpencerClassIsSymmOfLiftStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KodairaSpencerCommutesWithEndomorphismStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KodairaSpencerMatrixLinearInDerivationStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KodairaSpencerClassIsSymmOfLift
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KodairaSpencerCommutesWithEndomorphism
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.KodairaSpencerMatrixLinearInDerivation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,20 +63,20 @@ theorem tangent_injects_symm_antilinear : Out.Laws → Out.Laws2 → ThetaUnifAV
     rw [IsScalarTower.algebraMap_eq o R ℂ]
     exact (Spec.map_comp (CommRingCat.ofHom (algebraMap o R)) (CommRingCat.ofHom (algebraMap R ℂ))).symm
   obtain ⟨t₀, m, hm⟩ := GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g k J b _ _ _ _ (spMap (algebraMap R ℂ)) t hcomp
-  obtain ⟨u, Hm, χ, hG, -⟩ := GlobalTheory.T.exists_goodUniformisation_kodairaSpencer hU t₀.pol
+  obtain ⟨u, Hm, χ, hG, -⟩ := _root_.GlobalTheory.KSInh.exists_goodU_ksRel hU t₀.pol
   have hsm : Smooth t.A.hom := by
     haveI := t.dim
     exact SmoothOfRelativeDimension.smooth g _
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.kodairaSpencer_matrix_linear_in_derivation t₀.pol u Hm χ hG o R t.A.left t.A.hom m hsm hm.1.1
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.KS.Lin.ks_linear t₀.pol u Hm χ hG o R t.A.left t.A.hom m hsm hm.1.1
   refine ⟨t₀, m, u, Hm, χ, κ, hG, hm, ?_, fun D => ?_⟩
   · rw [injective_iff_map_eq_zero]
     intro D hD
     obtain ⟨s, hs⟩ := hκ D
     rw [hD] at hs
-    exact GlobalTheory.T.derivation_eq_zero_of_kodairaSpencer_zero h1 h2 hU o g k J b R t _ t₀ m u Hm χ hG hm hun D s hs
+    exact _root_.GlobalTheory.KS.KerZero.derivation_eq_zero_of_ks_zero h1 h2 hU o g k J b R t _ t₀ m u Hm χ hG hm hun D s hs
   · obtain ⟨s, hs⟩ := hκ D
-    refine ⟨GlobalTheory.T.kodairaSpencer_class_isSymm_of_lift t₀.pol u Hm χ hG R _ t.A.left t.A.hom m hsm hm.1.1 _ _ s hs t.L t.isLB hm.2.1, ?_⟩
+    refine ⟨_root_.GlobalTheory.KS.isSymm_of_lift t₀.pol u Hm χ hG R _ t.A.left t.A.hom m hsm hm.1.1 _ _ s hs t.L t.isLB hm.2.1, ?_⟩
     intro f f₀ F hf hF
-    exact GlobalTheory.T.kodairaSpencer_commutes_with_endomorphism t₀.pol u Hm χ hG R _ t.A.left t.A.hom m hsm hm.1.1 _ _ s hs f.left f₀ F (Over.w f) hf hF
+    exact _root_.GlobalTheory.KS.Endo.comm_of_endo t₀.pol u Hm χ hG R _ t.A.left t.A.hom m hsm hm.1.1 _ _ s hs f.left f₀ F (Over.w f) hf hF
 
 end GlobalTheory.KS
