@@ -4,14 +4,15 @@ public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.EffCartierIffF
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocPrincipalSpan
 public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CartierAtOfLocallyPrincipalStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalFiniteProjectiveOfSmoothStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CartierAtOfLocallyPrincipal
+public import Mathlib.RingTheory.RingHom.Smooth
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalFiniteProjectiveOfSmooth
 public import Mathlib.RingTheory.Ideal.Cotangent
 public import Mathlib.RingTheory.Spectrum.Prime.FreeLocus
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalRankOneOfLocallyPrincipal
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsSmoothAffinePresentationPairStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfCartierAtStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfConormalRankOneStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsSmoothAffinePresentationPair
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfCartierAt
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfConormalRankOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,7 +67,7 @@ theorem locPrincipal_locally_const {k A : Type} [Field k] [CommRing A] [IsDomain
     (hp : I ≤ p.asIdeal) :
     ∃ s, s ∉ p.asIdeal ∧ ∀ q : PrimeSpectrum A, s ∉ q.asIdeal → I ≤ q.asIdeal →
       (LocPrincipal I q.asIdeal ↔ LocPrincipal I p.asIdeal) := by
-  obtain ⟨hfin, hproj⟩ := GlobalTheory.T.conormal_finite_projective_of_smooth φ I hφ hI
+  obtain ⟨hfin, hproj⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Conormal.finite_projective_cotangent φ I hφ hI
   have hnoeth : IsNoetherianRing A := by
     algebraize [φ]
     have : Algebra.FiniteType k A := inferInstance
@@ -99,7 +100,7 @@ theorem locPrincipal_locally_const {k A : Type} [Field k] [CommRing A] [IsDomain
     rw [hWO] at this
     exact this
   have e : ∀ R : PrimeSpectrum (A ⧸ I), LocPrincipal I (PrimeSpectrum.comap (Ideal.Quotient.mk I) R).asIdeal ↔ Module.rankAtStalk (R := A ⧸ I) I.Cotangent R = 1 :=
-    fun R => ⟨_root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.rankAtStalk_cotangent_eq_one I R, GlobalTheory.T.locally_principal_of_conormal_rank_one I R⟩
+    fun R => ⟨_root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.rankAtStalk_cotangent_eq_one I R, _root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.locPrincipal_of_rankAtStalk_eq_one I R⟩
   rw [← hQ, ← hP0, e, e, hQO]
 
 theorem fromSpec_mem_basicOpen_iff {X : Scheme.{0}} (U : X.affineOpens) (q : PrimeSpectrum Γ(X, U.1))
@@ -128,7 +129,7 @@ theorem isClosed_cartAt : ∀ {k : Type} [Field k] {X : Scheme.{0}} (g : X ⟶ S
     let U' : X.affineOpens := ⟨U, hU⟩
     have hne : Nonempty U := ⟨⟨x, hxU⟩⟩
     have hdom : IsDomain Γ(X, U'.1) := inferInstanceAs (IsDomain Γ(X, U))
-    obtain ⟨φ, hφ, hI⟩ := GlobalTheory.T.exists_smooth_affine_presentation_pair g Z U' hg hZ
+    obtain ⟨φ, hφ, hI⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Charts.smooth_affine_chart g Z U' hg hZ
     have hrange : ∀ y ∈ U, ∃ q, U'.2.fromSpec q = y := by
       intro y hy
       have : y ∈ Set.range U'.2.fromSpec := by rw [U'.2.range_fromSpec]; exact hy
@@ -148,8 +149,8 @@ theorem isClosed_cartAt : ∀ {k : Type} [Field k] {X : Scheme.{0}} (g : X ⟶ S
     intro y hy hyZ
     obtain ⟨q, rfl⟩ := hrange y (X.basicOpen_le s hy)
     have := h q ((fromSpec_mem_basicOpen_iff U' q s).1 hy) (hIq q hyZ)
-    exact ⟨fun hc => GlobalTheory.T.cartier_at_of_locally_principal Z U' q0 (this.1 (GlobalTheory.T.locally_principal_of_cartier_at Z U' q hc)),
-      fun hc => GlobalTheory.T.cartier_at_of_locally_principal Z U' q (this.2 (GlobalTheory.T.locally_principal_of_cartier_at Z U' q0 hc))⟩
+    exact ⟨fun hc => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.cartAt_of_locPrincipal Z U' q0 (this.1 (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.locPrincipal_of_cartAt Z U' q hc)),
+      fun hc => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.cartAt_of_locPrincipal Z U' q (this.2 (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.locPrincipal_of_cartAt Z U' q0 hc))⟩
   have hC : IsClosed (Z.support : Set X) := Z.support.isClosed
   refine ⟨isClosed_of_locally_iff hC _ key, isClosed_of_locally_iff hC _ fun x hx => ?_⟩
   obtain ⟨V, hV, hxV, hy⟩ := key x hx

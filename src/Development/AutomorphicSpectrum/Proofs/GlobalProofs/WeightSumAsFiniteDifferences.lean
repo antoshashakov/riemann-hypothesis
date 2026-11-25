@@ -2,11 +2,13 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDifferenceConeTermEqStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HighDifferenceVanishesNegativeIntegerStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDifferenceConeTermEq
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HighDifferenceVanishesNegativeInteger
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniValuesNegativeIntegersRational
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SizePowerLeInverseSquareProductStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummableInverseSquareProductStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SizePowerLeInverseSquareProduct
+public import Mathlib.Topology.Algebra.InfiniteSum.Defs
+public import Mathlib.Topology.MetricSpace.Pseudo.Defs
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummableInverseSquareProduct
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,9 +71,9 @@ theorem differentiableOn_tsum_weighted_DL_halfplane : ∀ (ι : Type) [Fintype �
     obtain ⟨C, hC0, hC⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DiffDecay.diff_bound ι r a b ha hb B R cs 0
     refine Complex.differentiableOn_tsum_of_summable_norm
       (u := fun m : Fin r → ℕ => Cu * C * ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹)
-      ((GlobalTheory.T.summable_inverse_square_product r).mul_left _) ?_ (hopen R) ?_
+      ((_root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.summable_prod_inv_one_add_sq r).mul_left _) ?_ (hopen R) ?_
     · intro m
-      exact ((GlobalTheory.T.finite_difference_cone_term_differentiable ι r a b ha hb cs m).const_mul _).differentiableOn
+      exact ((_root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DL_coneTerm_differentiable ι r a b ha hb cs m).const_mul _).differentiableOn
     · intro m s hs
       have hprod : 0 ≤ ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹ :=
         Finset.prod_nonneg fun i _ => by positivity
@@ -85,9 +87,9 @@ theorem differentiableOn_tsum_weighted_DL_halfplane : ∀ (ι : Type) [Fintype �
           · exact Or.inr (by_contra fun hne => hum (h m hne))
         have hbound := hC s hs.1.le hs.2.le (fun i => (m i : ℝ)) (fun i => Nat.cast_nonneg _)
         simp only [Pi.zero_apply, Nat.cast_zero, Finset.sum_const_zero, sub_zero] at hbound
-        have hsize := GlobalTheory.T.size_power_le_inverse_square_product r (Fintype.card ι) B N cs m hN hcount
+        have hsize := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.sizeE_zpow_le_prod_inv_sq r (Fintype.card ι) B N cs m hN hcount
         have hDL : ‖DL cs (coneTerm a b s) m‖ ≤ C * ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹ := by
-          rw [GlobalTheory.T.finite_difference_cone_term_eq ι r a b s cs m]
+          rw [_root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DL_coneTerm_eq_DLR ι r a b s cs m]
           exact hbound.trans (mul_le_mul_of_nonneg_left hsize hC0)
         rw [norm_mul, Complex.norm_ratCast, mul_assoc]
         exact mul_le_mul (hCu m) hDL (norm_nonneg _) hCu0

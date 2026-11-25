@@ -7,16 +7,19 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.Complet
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnipotentInvariantCompactlySupportedWeight
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.SelfDualMap
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicAnnihilatorBoxProductStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicCharacterTrivialAlmostEverywhereStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicIntegrableProductIndicatorStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ArchimedeanFourierApproximateIdentityStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsRealApproximateIdentityStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteAdeleBoxMeasureProductStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GaloisUnramifiedOutsideDescendsFiniteStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicAnnihilatorBoxProduct
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicCharacterTrivialAlmostEverywhere
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicIntegrableProductIndicator
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CoefS
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ArchimedeanFourierApproximateIdentity
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsRealApproximateIdentity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.NonarchimedeanSelfdualMeasurePi
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteAdeleBoxMeasureProduct
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GaloisUnramifiedOutsideDescendsFinite
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocalAnnihilatorSelfDualVolumeStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.MemAnnihilatorSmallBallEventuallyStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NormalisedFourierBumpLimitStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.MemAnnihilatorSmallBallEventually
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NormalisedFourierBumpLimit
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.MeasureTheory.Integral.Bochner.Basic
 public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
@@ -121,7 +124,7 @@ theorem condS_of : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F)
     ext x
     change Valued.v x ≤ WithZero.exp 0 ↔ Valued.v x ≤ 1
     simp
-  obtain ⟨-, -, -, hm⟩ := GlobalTheory.T.local_annihilator_self_dual_volume F ψ hψ v (lam v) (c v) (hlam v) (hsd v) (GlobalTheory.CompanionTheory.SW.PiV.ball v 0)
+  obtain ⟨-, -, -, hm⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.localDual F ψ hψ v (lam v) (c v) (hlam v) (hsd v) (GlobalTheory.CompanionTheory.SW.PiV.ball v 0)
     (GlobalTheory.CompanionTheory.SW.PiV.ball_isCompact 0) (GlobalTheory.CompanionTheory.SW.PiV.ball_isOpen 0)
   rw [hO, hcv, (hlam v).2] at hm
   simp only [NNReal.coe_one, one_pow, ENNReal.toReal_one, mul_one, one_mul] at hm
@@ -233,7 +236,7 @@ theorem inf_inversion {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) 
 theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberField.IsTotallyReal F → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ db : Measure (AF F), IsCovolOne db → ∀ (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdInf laminf → (∀ v, GlobalTheory.CompanionTheory.SW.IsStdV v (lam v)) → ∃ S₁ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₁ ⊆ S → ∃ (ρ : ℕ → Ainf F → ℝ) (U : ℕ → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)), (∀ k, Continuous (ρ k) ∧ HasCompactSupport (ρ k) ∧ (∀ y, 0 ≤ ρ k y) ∧ 0 < ∫ y, ρ k y ∂laminf) ∧ Filter.Tendsto (fun k => tsupport (ρ k)) Filter.atTop (nhds (0 : Ainf F)).smallSets ∧ (∀ k v, IsCompact (U k v) ∧ IsOpen (U k v) ∧ (0 : Fv F v) ∈ U k v) ∧ (∀ v, Filter.Tendsto (fun k => U k v) Filter.atTop (nhds (0 : Fv F v)).smallSets) ∧ (∀ k, Integrable (Coef.fouA ψ db (Coef.testT (ρ k) S (U k))) db ∧ ∀ z, ∫ b, Coef.fouA ψ db (Coef.testT (ρ k) S (U k)) b * ψ (b * z) ∂db = Coef.testT (ρ k) S (U k) (-z)) ∧ (∀ k, ∫ y, Coef.testT (ρ k) S (U k) y ∂db = ((∫ y, ρ k y ∂laminf : ℝ) : ℂ) * ∏ v ∈ S, (((lam v) (U k v)).toReal : ℂ)) ∧ (∀ k b, ‖Coef.fouA ψ db (Coef.testT (ρ k) S (U k)) b‖ ≤ ‖∫ y, Coef.testT (ρ k) S (U k) y ∂db‖) ∧ ∀ b, Filter.Tendsto (fun k => Coef.fouA ψ db (Coef.testT (ρ k) S (U k)) b / ∫ y, Coef.testT (ρ k) S (U k) y ∂db) Filter.atTop (nhds ((Coef.intF S).indicator (fun _ => (1 : ℂ)) (sndA F b))) := by
   intro F _ _ hF ψ hψ db hdb laminf lam hinf hlam
   classical
-  obtain ⟨lf, hlfH, hlf1, e, he, hep⟩ := GlobalTheory.T.adelic_haar_finite_infinite_product F db hdb laminf hinf
+  obtain ⟨lf, hlfH, hlf1, e, he, hep⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.ProdM.prodM F db hdb laminf hinf
   obtain ⟨cinf, c, hU, hsdI, hsdV⟩ := sdConst F hF laminf lam hinf hlam ψ hψ
   have hfin2 : {v | c v ≠ 1}.Finite := hU.1
   have hfin1 := condS_of F ψ hψ lam c hlam hsdV hfin2
@@ -245,7 +248,7 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
   have hSc1 : ∀ v, v ∉ S → c v = 1 := fun v hv => by
     by_contra h
     exact hv (hS (Finset.mem_union_right _ (hfin2.mem_toFinset.2 h)))
-  obtain ⟨ρ, hρ, hρt, hρI⟩ := GlobalTheory.T.number_field_approximate_identity _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.InfReal.exists_bumps F hF ψ hψ laminf hinf.1
+  obtain ⟨ρ, hρ, hρt, hρI⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.InfEx.exists_bumps_inf _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.InfReal.exists_bumps F hF ψ hψ laminf hinf.1
   haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun v => ⟨rfl⟩
   haveI : ∀ v : HeightOneSpectrum (𝓞 F), (lam v).IsAddHaarMeasure := fun v => (hlam v).1
   have hloc := fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
@@ -254,7 +257,7 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
     fun k v => GlobalTheory.CompanionTheory.SW.PiV.ball v (-(k : ℤ))
   have hUc : ∀ k v, IsCompact (Ub k v : Set (Fv F v)) := fun k v => GlobalTheory.CompanionTheory.SW.PiV.ball_isCompact _
   have hUo : ∀ k v, IsOpen (Ub k v : Set (Fv F v)) := fun k v => GlobalTheory.CompanionTheory.SW.PiV.ball_isOpen _
-  have hdual := fun k v => GlobalTheory.T.local_annihilator_self_dual_volume F ψ hψ v (lam v) (c v) (hlam v) (hsdV v) (Ub k v) (hUc k v) (hUo k v)
+  have hdual := fun k v => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.localDual F ψ hψ v (lam v) (c v) (hlam v) (hsdV v) (Ub k v) (hUc k v) (hUo k v)
   let Ua : ℕ → ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (Fv F v) :=
     fun k v => annS ψ v (Ub k v)
   have hUac : ∀ k v, IsCompact (Ua k v : Set (Fv F v)) := fun k v => (hdual k v).2.1
@@ -264,7 +267,7 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
       MeasurableSet (boxS S W : Set (Af F)) ∧ lf (boxS S W : Set (Af F)) ≠ ⊤ ∧
         (lf (boxS S W : Set (Af F))).toReal = ∏ v ∈ S, (lam v (W v : Set (Fv F v))).toReal := by
     intro W hc ho
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.finite_adele_box_measure_product F lam hlam lf hlfH hlf1 S (fun v => (W v : Set (Fv F v)))
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.BoxMass.boxMass F lam hlam lf hlfH hlf1 S (fun v => (W v : Set (Fv F v)))
       (fun v => (ho v).measurableSet)
     have hne : ∀ v, lam v (W v : Set (Fv F v)) ≠ ⊤ := fun v => (hc v).measure_lt_top.ne
     refine ⟨h1, ?_, ?_⟩
@@ -276,9 +279,9 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
   let B : ℕ → AddSubgroup (Af F) := fun k => boxS S (Ub k)
   let B' : ℕ → AddSubgroup (Af F) := fun k => boxS S (Ua k)
   have hB : ∀ k, annF ψ (B k : Set (Af F)) = (B' k : Set (Af F)) := fun k =>
-    GlobalTheory.T.adelic_annihilator_box_product F ψ hψ S hSc (fun v => (Ub k v : Set (Fv F v))) (fun v => (Ub k v).zero_mem)
+    _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.annF_boxA F ψ hψ S hSc (fun v => (Ub k v : Set (Fv F v))) (fun v => (Ub k v).zero_mem)
   have hB' : ∀ k, annF ψ (B' k : Set (Af F)) = (B k : Set (Af F)) := fun k => by
-    refine (GlobalTheory.T.adelic_annihilator_box_product F ψ hψ S hSc (fun v => (Ua k v : Set (Fv F v))) (fun v => (Ua k v).zero_mem)).trans ?_
+    refine (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.annF_boxA F ψ hψ S hSc (fun v => (Ua k v : Set (Fv F v))) (fun v => (Ua k v).zero_mem)).trans ?_
     change Coef.boxA S (fun v => annV ψ v (annV ψ v (Ub k v))) = _
     simp only [fun v => (hdual k v).1]
     rfl
@@ -288,7 +291,7 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
       fouInf ψ laminf (ρ k) (fstA F b) * (((lf (B k : Set (Af F))).toReal : ℝ) : ℂ) *
         (B' k : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F b) := by
     intro k b
-    have h := GlobalTheory.T.adelic_integral_product_subgroup F ψ hψ db laminf lf hinf.1 hlfH e he hep (fun x => (ρ k x : ℂ)) (B k)
+    have h := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.integral_pure_indicator_char F ψ hψ db laminf lf hinf.1 hlfH e he hep (fun x => (ρ k x : ℂ)) (B k)
       (hBm k).1 (hBm k).2.1 b
     rw [hB k] at h
     exact h
@@ -347,7 +350,7 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
       rw [hfou]
       ring
     rw [this]
-    exact (GlobalTheory.T.adelic_integrable_product_indicator F db laminf lf hinf.1 hlfH e he hep _ _ (hρI k) (hBm' k).1 (hBm' k).2.1).const_mul _
+    exact (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.integrable_inf_mul_indicator_finiteMass F db laminf lf hinf.1 hlfH e he hep _ _ (hρI k) (hBm' k).1 (hBm' k).2.1).const_mul _
   · have h1 : ∀ b, Coef.fouA ψ db (Coef.testT (ρ k) S (fun v => (Ub k v : Set (Fv F v)))) b * ψ (b * z) =
         (((lf (B k : Set (Af F))).toReal : ℝ) : ℂ) * ((fouInf ψ laminf (ρ k) (fstA F b) *
           (B' k : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F b)) * ψ (b * z)) := by
@@ -355,7 +358,7 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
       rw [hfou]
       ring
     simp only [h1]
-    rw [integral_const_mul, GlobalTheory.T.adelic_integral_product_subgroup F ψ hψ db laminf lf hinf.1 hlfH e he hep _ (B' k) (hBm' k).1 (hBm' k).2.1 z,
+    rw [integral_const_mul, _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.integral_pure_indicator_char F ψ hψ db laminf lf hinf.1 hlfH e he hep _ (B' k) (hBm' k).1 (hBm' k).2.1 z,
       hB' k]
     have hinv := inf_inversion ψ laminf cinf hsdI (ρ k) (hρ k).1 (hρ k).2.1 (hρI k) (fstA F z)
     have hz : (sndA F (-z) ∈ (B k : Set (Af F))) ↔ sndA F z ∈ (B k : Set (Af F)) := by
@@ -388,12 +391,12 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
       rw [hfou, hint]
       field_simp
     simp only [hr]
-    have hlim := GlobalTheory.T.archimedean_fourier_approximate_identity F ψ hψ laminf hinf.1 ρ hρ hρt (fstA F b)
+    have hlim := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.InfLim.tendsto_fouInf_div_integral F ψ hψ laminf hinf.1 ρ hρ hρt (fstA F b)
     by_cases hb : sndA F b ∈ Coef.intF S
     · rw [Set.indicator_of_mem hb]
       refine hlim.congr' ?_
       have hev : ∀ᶠ k : ℕ in Filter.atTop, ∀ v ∈ S, (sndA F b) v ∈ annV ψ v (Ub k v : Set (Fv F v)) :=
-        (Filter.eventually_all_finset S).2 fun v _ => GlobalTheory.T.mem_annihilator_small_ball_eventually F ψ hψ v _
+        (Filter.eventually_all_finset S).2 fun v _ => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.eventually_mem_annV_ball F ψ hψ v _
       filter_upwards [hev] with k hk
       have hm : sndA F b ∈ (B' k : Set (Af F)) := ⟨hk, hb⟩
       rw [Set.indicator_of_mem hm, mul_one]

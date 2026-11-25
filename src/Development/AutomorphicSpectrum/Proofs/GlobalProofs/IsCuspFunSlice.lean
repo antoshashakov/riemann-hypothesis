@@ -12,16 +12,18 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeasurePreservin
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmDataIsCMExtAndGramIsHermND
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousAdelicUnitaryEmbedding
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ContinuousConjBlockEmbeddingStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HermitianFormChangeOfBasisLieStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsotropicFrameRankLeWittIndexStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HermitianFormChangeOfBasisLie
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CTFrameMatMulGram
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsotropicFrameRankLeWittIndex
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsotropicFrameWittBound
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LeviInfUnipotentLeHermitianPartStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LeviInfUnipotentLeHermitianPart
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LeviNormalizesUnipotentVariant
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RationalUnipotentLeParabolic
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RestrictedAutomorphicInvarianceStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RestrictedConstantTermCompatibleStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RestrictedCuspConstantTermVanishStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RestrictedAutomorphicInvariance
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RestrictedConstantTermCompatible
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsConstAlongSingleton
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RestrictedCuspConstantTermVanish
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -117,8 +119,8 @@ theorem isCuspFun_slice : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F �
       GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.uPart_le_levi D V m X Y T (hup γ)⟩
     change ψ (s (γ * g) * y) = ψ (s g * y)
     rw [map_mul, mul_assoc, hψl _ h1]
-  obtain ⟨m', e, X', Y', hsl, hW'⟩ := GlobalTheory.T.orthogonal_subspace_witt_frame_extension D V m X Y hW T V' ι hι hr
-  refine GlobalTheory.T.cusp_function_of_constant_terms_vanish D V' m' X' Y' hW' (_root_.GlobalTheory.CompanionTheory.IsoFrameBound.isoFrame_le_wittFrame D V' m' X' Y' hW') _ hfl fun k => ?_
+  obtain ⟨m', e, X', Y', hsl, hW'⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.exists_sliceFrame D V m X Y hW T V' ι hι hr
+  refine _root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.CuspOfFrame.isCuspFun_of_isConstAlong D V' m' X' Y' hW' (_root_.GlobalTheory.CompanionTheory.IsoFrameBound.isoFrame_le_wittFrame D V' m' X' Y' hW') _ hfl fun k => ?_
   have hκ : e k ∉ upTo T := (hsl.2.1 _).2 ⟨k, rfl⟩
   have hκT : e k ∉ T := fun h => hκ ⟨_, h, le_rfl⟩
   have hTT' : T ⊂ insert (e k) T := Finset.ssubset_insert hκT
@@ -126,19 +128,19 @@ theorem isCuspFun_slice : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F �
   haveI := locallyCompact_unip hcm hJ' hW' {k}
   haveI := locallyCompact_unip hcm hJ hW (insert (e k) T)
   have hle := GlobalTheory.StdPar.unip_mono_of_subset _ _ D.sp.cm.sig hcm _ V.gram hJ m X Y hW (insert (e k) T) T hTT'.1
-  have hs1 := GlobalTheory.T.restricted_cusp_constant_term_vanish D V m X Y hW T V' ι hι hr m' e X' Y' hsl hW' s hs k
-  have hdown := GlobalTheory.T.restricted_constant_term_compatible D V m X Y hW T V' ι hι hr m' e X' Y' hsl hW' s hs k
+  have hs1 := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.unip_embed D V m X Y hW T V' ι hι hr m' e X' Y' hsl hW' s hs k
+  have hdown := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.Down.mem_unip_of_image D V m X Y hW T V' ι hι hr m' e X' Y' hsl hW' s hs k
   have hdec : ∀ v ∈ unip D.sp.cm.sig V.gram X (insert (e k) T), ∃ u ∈ unip D.sp.cm.sig V'.gram X' {k},
       v * (s u)⁻¹ ∈ unip D.sp.cm.sig V.gram X T := fun v hv => by
     obtain ⟨u, hu, l, hl, rfl⟩ := unip_split D V m X Y hW T _ hTT'.1 v hv
     have hl' : l ∈ unip D.sp.cm.sig V.gram X (insert (e k) T) := by
       simpa using mul_mem (inv_mem (hle hu)) hv
-    obtain ⟨b, rfl⟩ := hsurj l (GlobalTheory.T.levi_inf_unipotent_le_hermitian_part D V m X Y hW T _ hκ ⟨hl, hl'⟩)
+    obtain ⟨b, rfl⟩ := hsurj l (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.LeviU.levi_inf_unip_le_uPart D V m X Y hW T _ hκ ⟨hl, hl'⟩)
     exact ⟨b, hdown b hl', by simpa using hu⟩
   have hnorm : ∀ p ∈ unip D.sp.cm.sig V.gram X (insert (e k) T), ∀ a ∈ unip D.sp.cm.sig V.gram X T,
       p * a * p⁻¹ ∈ unip D.sp.cm.sig V.gram X T := fun p hp a ha =>
     conj_mem_unip_of_subset hcm hJ hW hTT'.1 hp ha
-  obtain ⟨π, hπc, hπ, hπQ⟩ := GlobalTheory.T.restricted_automorphic_invariance D V m X Y hW T V' ι hι hr s hs _ _ hnorm hdec
+  obtain ⟨π, hπc, hπ, hπQ⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.Proj.exists_proj D V m X Y hW T V' ι hι hr s hs _ _ hnorm hdec
   let s₁ : unip D.sp.cm.sig V'.gram X' {k} →* unip D.sp.cm.sig V.gram X (insert (e k) T) :=
     (s.comp (unip D.sp.cm.sig V'.gram X' {k}).subtype).codRestrict _ fun u => hs1 _ u.2
   have hs₁c : Continuous s₁ := (hsc.comp continuous_subtype_val).subtype_mk _

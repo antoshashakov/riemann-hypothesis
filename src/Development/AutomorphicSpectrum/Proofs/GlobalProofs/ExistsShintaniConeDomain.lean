@@ -1,12 +1,12 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsTotallyPositiveBasisPositiveCoordsStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteUnitsBoundedEmbeddingRatioStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PlaceApplyStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniConeDecompositionStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SimplicialConeTilingStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TotallyPositiveBasisRatioBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsTotallyPositiveBasisPositiveCoords
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteUnitsBoundedEmbeddingRatio
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PlaceApply
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniConeDecomposition
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SimplicialConeTiling
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TotallyPositiveBasisRatioBound
 public import Mathlib.Basic.Finite.Defs
 public import Mathlib.Basic.Real.Basic
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UniqueReducedOrbitRepresentative
@@ -62,9 +62,9 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     ∃ (ι : Type) (_ : Fintype ι) (r : ι → ℕ) (v : ∀ c, Fin (r c) → F), IsConeDomain 𝔣 r v := by
   intro F _ _ _ 𝔣 h𝔣
   classical
-  obtain ⟨M, hM⟩ := GlobalTheory.T.exists_congruence_unit_balancing_embeddings F 𝔣 h𝔣
-  obtain ⟨κ, _, b, hbpos, hbcov⟩ := GlobalTheory.T.exists_totally_positive_basis_positive_coords F M
-  obtain ⟨R, hR0, hR⟩ := GlobalTheory.T.totally_positive_basis_ratio_bound F b hbpos
+  obtain ⟨M, hM⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Balance.balance F 𝔣 h𝔣
+  obtain ⟨κ, _, b, hbpos, hbcov⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Gens.exists_totPos_basis F M
+  obtain ⟨R, hR0, hR⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones.bounded_ratio_on_basis_cone F b hbpos
 
   obtain ⟨σ₁⟩ : Nonempty (F →+* ℝ) := by
     have w : InfinitePlace F := Classical.choice inferInstance
@@ -94,7 +94,7 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     rw [Rat.smul_def, map_mul, map_ratCast]
     exact mul_pos (by exact_mod_cast hx i) (hbpos i σ)
   have hfin : {g : G | ∃ x ∈ D, φ g * x ∈ D}.Finite := by
-    have hfin0 := GlobalTheory.T.finite_units_bounded_embedding_ratio F (R * R)
+    have hfin0 := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.finite_totPos_units_bounded_ratio F (R * R)
     refine Set.Finite.of_finite_image (f := fun g : G => (g : (𝓞 F)ˣ)) (hfin0.subset ?_) (Subtype.val_injective.injOn)
     rintro _ ⟨g, ⟨x, hx, hgx⟩, rfl⟩
     refine ⟨hgpos g, fun σ τ => ?_⟩
@@ -117,7 +117,7 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     rw [sign_pos hp] at h
     exact sign_eq_one_iff.mp h.symm
   have htile : Tile ((posCone F : ConvexCone ℚ F) : Set F) (fun _ => True) E := by
-    refine GlobalTheory.T.cone_tiling_by_sign_regions (posCone F) b hbpos Λ hΛ E (fun x hx => hx.1) ?_
+    refine _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones.SignTiles.tile_of_signs (posCone F) b hbpos Λ hΛ E (fun x hx => hx.1) ?_
     intro x y hx hy hs hxE
     refine ⟨hy, fun g' hg' hyD => ?_⟩
     refine hxE.2 g' hg' ?_
@@ -130,7 +130,7 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     intro h
     have := hDpos 0 h.1 σ₁
     simp at this
-  obtain ⟨ι, hι, r, v, hr, hli, hvP, hsub, hun⟩ := GlobalTheory.T.shintani_cone_decomposition _ _ E htile h0
+  obtain ⟨ι, hι, r, v, hr, hli, hvP, hsub, hun⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones.tile_family_closed _ _ E htile h0
   refine ⟨ι, hι, r, v, hr, hli, hvP, ?_⟩
   intro x hx
 

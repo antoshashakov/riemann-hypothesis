@@ -2,12 +2,12 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesSummableRightHalfPlaneStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PeriodicWeightBoundedStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PeriodicWeightBounded
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.Calculus.FDeriv.Defs
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RealDifferenceConeBound
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummationDecompositionFiniteDifferencesStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TendstoTailInfiniteProductOneStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummationDecompositionFiniteDifferences
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TendstoTailInfiniteProductOne
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.WeightSumAsFiniteDifferencesStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -61,7 +61,7 @@ theorem stage (ι : Type) [Fintype ι] (r l : ℕ) (a : ι → Fin r → ℝ) (b
       ∀ p : ℕ, p < k → (∀ m : Fin r → ℕ, ∃ q : ℚ, ∏ j, (b j + ∑ i, a j i * (m i : ℝ)) ^ p = (q : ℝ)) →
         ∃ q : ℚ, G (-(p : ℂ)) = (q : ℂ) := by
   classical
-  obtain ⟨Q, x, cs, u, hu, hcs, hsum⟩ := GlobalTheory.T.weight_sum_as_finite_differences r l (Fintype.card ι * k + 2) w hl hw
+  obtain ⟨Q, x, cs, u, hu, hcs, hsum⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.expansion_all_variables r l (Fintype.card ι * k + 2) w hl hw
   refine ⟨fun s => ∑ q, ∑' m, (u q m : ℂ) * DL (cs q) (coneTerm a b s) m, ?_, ?_, ?_⟩
   · have h : ∀ q ∈ (Finset.univ : Finset Q), DifferentiableOn ℂ
         (fun s => ∑' m, (u q m : ℂ) * DL (cs q) (coneTerm a b s) m) {s : ℂ | -(k : ℝ) < s.re} :=
@@ -79,7 +79,7 @@ theorem stage (ι : Type) [Fintype ι] (r l : ℕ) (a : ι → Fin r → ℝ) (b
     have hN : Fintype.card ι * p < Fintype.card ι * k + 2 := by
       have := Nat.mul_le_mul_left (Fintype.card ι) hp.le
       omega
-    choose q hq using fun t => GlobalTheory.T.shintani_values_negative_integers_rational ι r a b (u t) (cs t) (Fintype.card ι * k + 2) p hN (hcs t) hrat
+    choose q hq using fun t => _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.series_value_rational ι r a b (u t) (cs t) (Fintype.card ι * k + 2) p hN (hcs t) hrat
     refine ⟨∑ t, q t, ?_⟩
     simp only [Rat.cast_sum]
     exact Finset.sum_congr rfl fun t _ => hq t
@@ -97,7 +97,7 @@ theorem abelContinuation : AbelContinuation := by
     have hper : ∀ (i : Fin r) (m : Fin r → ℕ), w (m + Pi.single i l) = w m := by
       obtain ⟨h1, -⟩ := hw
       exact fun i m => h1 m i
-    obtain ⟨C, hC⟩ := GlobalTheory.T.periodic_weight_bounded r l w hl hper
+    obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.bddW_of_periodic r l w hl hper
     have hcone := GlobalTheory.T.cone_series_summable_right_half_plane ι r a b hr ha hb s hs
     refine Summable.hasSum (Summable.of_norm ?_)
     refine Summable.of_nonneg_of_le (fun m => norm_nonneg _) (fun m => ?_) (hcone.norm.mul_left C)

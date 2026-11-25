@@ -3,13 +3,16 @@ module
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSmoothVec
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAdmOnOfFiniteDimensional
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionAdditiveStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionCommutatorStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionCommutator
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerivedActionOfSmoothVectorStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HermitianFormLieWordGrowthStatement
+public import Mathlib.Analysis.Real.Sqrt
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HermitianFormLieWordGrowth
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LieAlgebraOfLinearGroupClosedStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LieBasisCoordinateGrowthBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LinearIndependentCoefficientNormBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothVectorHermitianFormGrowthStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LieBasisCoordinateGrowthBound
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LinearIndependentCoefficientNormBound
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothVectorHermitianFormGrowth
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothVectorsInvariantSubspaceStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -118,7 +121,7 @@ theorem word_bound_of_delta : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ
   have hcomm : ∀ i j, Xf i * Xf j - Xf j * Xf i = ∑ l, ((r (i, j) l : ℝ) : ℂ) • Xf l := by
     intro i j
     ext u
-    have h1 := GlobalTheory.T.derived_action_commutator hG hrep u.2 (hb i) (hb j)
+    have h1 := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Bracket.smooth_bracket hG hrep u.2 (hb i) (hb j)
     rw [show b i * b j - b j * b i = _ from hr (i, j), dRep_sum hG hrep b hb _ u.2] at h1
     simp only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.sum_apply, LinearMap.smul_apply,
       Submodule.coe_sub, Submodule.coe_sum, Submodule.coe_smul, hXc]
@@ -131,7 +134,7 @@ theorem word_bound_of_delta : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ
   have hA : 0 ≤ A := mul_nonneg ha (Finset.sum_nonneg fun i _ => hmn _)
   have hs : ∀ i (x : S), |2 * (Q (Xf i x) x).re| ≤ A * (Q x x).re := by
     intro i x
-    refine (GlobalTheory.T.smooth_vector_hermitian_form_growth hG hrep Q Mb a hadd hsmul hconj hbd hgrow (hb i) x.2).trans ?_
+    refine (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.HCA.abs_two_re_form_dRep_le hG hrep Q Mb a hadd hsmul hconj hbd hgrow (hb i) x.2).trans ?_
     refine mul_le_mul_of_nonneg_right ?_ (hQnn x)
     exact mul_le_mul_of_nonneg_left
       (Finset.single_le_sum (f := fun i => mnorm (b i)) (fun i _ => hmn _) (Finset.mem_univ i)) ha
@@ -149,7 +152,7 @@ theorem word_bound_of_delta : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ
     have h1 := hYd (u : H) hu
     change (((∑ i, Xf i * Xf i) u : S) : H) ∈ Y
     simpa only [LinearMap.sum_apply, Module.End.mul_apply, Submodule.coe_sum, hXc] using h1
-  obtain ⟨C, hC, hN⟩ := GlobalTheory.T.hermitian_form_lie_word_growth (fun x y : S => Q x y)
+  obtain ⟨C, hC, hN⟩ := _root_.GlobalTheory.CompanionTheory.HCForm.nelson_form (fun x y : S => Q x y)
     (fun x y z => hadd x y z) (fun c x y => hsmul c x y) (fun x y => hconj x y)
     (fun x hx => lt_of_lt_of_le (by
       have : (x : H) ≠ 0 := fun h => hx (Subtype.ext h)
@@ -167,7 +170,7 @@ theorem word_bound_of_delta : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ
   let K : ℝ := Real.sqrt (Q v v).re / Real.sqrt m
   have hK : 0 ≤ K := by positivity
   have hsm : 0 < Real.sqrt m := Real.sqrt_pos.2 hm
-  refine GlobalTheory.T.lie_basis_coordinate_growth_bound hG hrep b hb hsp _ (GlobalTheory.T.linearIndependent_coefficient_norm_bound b hli).choose_spec.1 (GlobalTheory.T.linearIndependent_coefficient_norm_bound b hli).choose_spec.2
+  refine _root_.GlobalTheory.CompanionTheory.Hypotheses₂.HCA.WordExpand.wordBound_of_basis hG hrep b hb hsp _ (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Coord.sum_abs_coord_le_mnorm b hli).choose_spec.1 (_root_.GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Coord.sum_abs_coord_le_mnorm b hli).choose_spec.2
     (fun r w hw => dRep_sum hG hrep b hb r hw) hvs (C * (K + 1)) (by positivity) ?_
   intro l
   have h1 := hN l vS hvV
