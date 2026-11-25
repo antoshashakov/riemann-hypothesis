@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplitting
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRatPairIff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffThetaTransformAdelicSchwartzRealDirection
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousThetaTransformAdelicSchwartz
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLintegralSqEqMulSetLIntegralThetaTransformStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLintegralSqEqMulSetLIntegralThetaTransform
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalDarbouxTransfersHaarFundamentalDomain
@@ -135,7 +135,7 @@ theorem theta_isometry_coord : ∀ (F : Type) [Field F] [NumberField F] (ψ : Ad
       @IsAddFundamentalDomain (GlobalTheory.WeilUnitaryTransport.ratPair F κ) _ _ _ (borel _) 𝓕 ν →
       ∃ c : ENNReal, ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,
         ∫⁻ x, ‖Φ x‖ₑ ^ 2 ∂μ = c * ∫⁻ w in 𝓕, ‖GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ w Φ)‖ₑ ^ 2 ∂ν :=
-  GlobalTheory.T.exists_lintegral_sq_eq_mul_setLIntegral_thetaTransform
+  _root_.GlobalTheory.ThetaParseval.exists_lintegral_sq_eq_mul_setLIntegral_theta
 
 theorem theta_transfer : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)

@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergAct
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicTraceSupportedAtSplitPlace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSmulOfCommuteHeisenbergLinearModelSchwartzBruhStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceAdelicMatrixGivenComponentsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceAdelicMatrixGivenComponents
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianSelfDualLatticeSpaceFormHermitianNondeg
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
@@ -146,7 +146,7 @@ theorem shape_right : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Fie
     refine IsUnit.mul (Matrix.isUnits_det_units c) ?_
     rw [e]
     exact isUnit_iff_ne_zero.2 fun h => hdW (RingHom.injective ((t.comp σ : E →ₐ[F] Fv F v) : E →+* Fv F v) (by rw [map_zero]; exact h))
-  choose U hUat hU0 hU1 using fun (P₀ P₁ : Matrix (Fin n) (Fin d) (Fv F v)) => GlobalTheory.T.exists_splitPlace_adelicMatrix_given_components hcm v t P₀ P₁
+  choose U hUat hU0 hU1 using fun (P₀ P₁ : Matrix (Fin n) (Fin d) (Fv F v)) => _root_.GlobalTheory.SplitComps.exists_mat_comps hcm v t P₀ P₁
   let coF : Matrix (Fin n) (Fin d) (AE F E) → Matrix (Fin n) (Fin d) (Fv F v) :=
     fun u => (b⁻¹).1 * u.map (piW t) * (c⁻¹).1ᵀ
   have hcc : c.1ᵀ * (c⁻¹).1ᵀ = 1 := by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]

@@ -6,7 +6,8 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Exi
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLcCutPointOfNotLcOtherStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonKltCentreOfNotKltAfterAddingStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallAmpleThroughOffStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTopologicalKrullDimClosurePointLeStatement
+public import Mathlib.AlgebraicGeometry.Scheme
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTopologicalKrullDimClosurePointLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogEqnAddSmulIffOfOff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LcCutTwoClosedPointsOneCentreStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MultNsmulOfQadd
@@ -136,7 +137,7 @@ theorem twoPoint_step : GlobalTheory.Published.Principalisation → GlobalTheory
   have hwne : w ≠ x := by
     rintro rfl
     exact hzne (eq_of_closedPt_specializes hx hwz)
-  obtain ⟨e, -, hdw, he1⟩ := GlobalTheory.T.exists_topologicalKrullDim_closure_point_le X n w hn
+  obtain ⟨e, -, hdw, he1⟩ := _root_.GlobalTheory.closure_point_topologicalKrullDim X n w hn
   have he1' : 1 ≤ e := he1 x hwx hwne.symm
   have hkw : ¬ KltAt p n (Δ + D) w :=
     not_kltAt_of_isNkltCentre X p n hp hn (Δ + D) w w hw (specializes_refl w)
@@ -153,7 +154,7 @@ theorem twoPoint_step : GlobalTheory.Published.Principalisation → GlobalTheory
     ·
       have hkw' : ¬ KltAt p n (Δ + D) w' :=
         not_kltAt_of_isNkltCentre X p n hp hn (Δ + D) w' w' hw' (specializes_refl w')
-      obtain ⟨e', -, hdw', he1''⟩ := GlobalTheory.T.exists_topologicalKrullDim_closure_point_le X n w' hn
+      obtain ⟨e', -, hdw', he1''⟩ := _root_.GlobalTheory.closure_point_topologicalKrullDim X n w' hn
       have h1e' : 1 ≤ e' := by
         by_cases hxw : x = w'
         · refine he1'' x' hw'x' ?_

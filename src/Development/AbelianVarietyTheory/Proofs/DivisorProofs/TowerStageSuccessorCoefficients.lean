@@ -5,7 +5,10 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DownRight
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartanInvolutionExtendSwappingHyperbolicPaStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartanInvolutionHyperbolicSwapExtensionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFractionalIdealSmulMemLatticeStatement
+public import Mathlib.Algebra.Module.Lattice.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.FractionalIdeal.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFractionalIdealSmulMemLattice
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHyperbolicPlaneSplitHermitianLatticeSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRescalePrimitiveInLatticeAtSplitPrimesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitPlaceLocalLatticeBasisHyperbolicPlaneStatement
@@ -130,7 +133,7 @@ theorem IsSum.exists_bases (hCM : IsCMExt F E σ) (B : Base F E) {n₁ : ℕ} {Y
     have e1 : (s' / c) • x = s' • x₀ := by rw [hxdef, smul_smul, div_mul_cancel₀ _ hc]
     have e2 : (t * σ c) • y = t • y₀ := by rw [hydef, smul_smul, mul_assoc, mul_inv_cancel₀ hσc, mul_one]
     exact ⟨s' / c, t * σ c, u, e1 ▸ h1, e2 ▸ h2, h3, by rw [e1, e2]⟩
-  obtain ⟨𝔟, h𝔟⟩ := GlobalTheory.T.exists_fractionalIdeal_mem_iff_smul_mem_lattice E (n₁ + 2) Y.L hL.toIsLattice x (smul_ne_zero hc hx₀)
+  obtain ⟨𝔟, h𝔟⟩ := _root_.GlobalTheory.exists_fractionalIdeal_smul_mem_lattice E (n₁ + 2) Y.L hL.toIsLattice x (smul_ne_zero hc hx₀)
   have eL : lowLat ι Y.L = Y₁.L := Submodule.ext fun u => (hlow u).symm
   choose βY hβY using fun v : B.P => GlobalTheory.T.exists_splitPlace_localLatticeBasis_hyperbolicPlane F E σ hCM v.1 (B.τ v) n₁ Y.L x y ι (Y₁.bas v) i₀ i₁ h01 h1n
     (fun z hz => by

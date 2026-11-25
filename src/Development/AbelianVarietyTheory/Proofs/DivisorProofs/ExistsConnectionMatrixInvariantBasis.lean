@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferenceInvariantLiftsIsWeightZeroCechCocycleStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSymmetricKodairaSpencerInvariantLiftsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantDerivationLiftsRaynaudCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeightZeroCocycleEqLogDerivativeCombAddCobStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeightZeroCocycleEqLogDerivativeCombAddCob
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantLiftAddInvariantCombinationStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -114,7 +114,7 @@ theorem exists_invLift_symmKS : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoca
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hdd D
   obtain ⟨J, V, j, d₀, hc, hle, hl₀, hw₀⟩ := GlobalTheory.T.exists_torusInvariant_derivationLifts_raynaudCover R Dd O oa Y D
   obtain ⟨z, hzc, hzw, hz⟩ := GlobalTheory.T.difference_invariantLifts_isWeightZeroCechCocycle R Dd O oa Y n v dd hdd D J V d₀ hl₀ hw₀
-  have H := fun a => GlobalTheory.T.exists_weightZeroCocycle_eq_logDerivative_comb_add_coboundary R Dd O oa Y n v dd hdd J V j hc hle (z a) (hzc a) (hzw a)
+  have H := fun a => _root_.GlobalTheory.PullbackWeightZero.exists_comb_dlg_add_cob R Dd O oa Y n v dd hdd J V j hc hle (z a) (hzc a) (hzw a)
   choose c y hyw hy using H
   have hA := fun i => GlobalTheory.T.torusInvariantLift_add_invariantCombination R Dd O oa Y n v dd hdd D (V i) (d₀ i) (fun a => y a i) (hl₀ i) (hw₀ i) (fun a => hyw a i)
   have hrel : ∀ i i' (W : Y.H.left.Opens), W ≤ Y.q.left ⁻¹ᵁ V i ⊓ Y.q.left ⁻¹ᵁ V i' → ∀ f,

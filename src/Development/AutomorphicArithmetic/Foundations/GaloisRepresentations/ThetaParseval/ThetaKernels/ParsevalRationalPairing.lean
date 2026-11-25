@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoMulInvOf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicRapidDecayOfMemAdelicSchwartzSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicRapidDecayOfMemAdelicSchwartzSpaceStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzMemL2
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFundDomainRationalPointsAdeleTupleFinitePoStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFundDomainRationalPointsAdeleTupleFinitePo
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumTransportAdelicSchwartzThetaTrans
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralAdelicThetaSumSqParsevalSecondVariableStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralRationalPairFundDomainEqIteratedStatement
@@ -90,7 +90,7 @@ theorem parseval_rational_pairing : ∀ {F E : Type} [Field F] [NumberField F] [
   have hψ : IsCharAF F B.ψ := (_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B hB).1
   let μ : Measure (Fin N → AF F) := Measure.addHaar
   have hμ : μ.IsAddHaarMeasure := inferInstance
-  obtain ⟨𝓕₁, h𝓕₁, h0, htop⟩ := GlobalTheory.T.exists_fundDomain_rationalPointsAdeleTuple_finite_pos F (Fin N) μ hμ
+  obtain ⟨𝓕₁, h𝓕₁, h0, htop⟩ := _root_.GlobalTheory.RatVecDomain.exists_fundamentalDomain F (Fin N) μ hμ
   obtain ⟨c₁, hc0, hctop, hc⟩ := GlobalTheory.T.lintegral_rationalPair_fundDomain_eq_iterated F (Fin N) μ hμ ν hν 𝓕 h𝓕 𝓕₁ h𝓕₁
   set K : ENNReal := c₁ * μ 𝓕₁ with hK
   have hK0 : K ≠ 0 := mul_ne_zero hc0 h0

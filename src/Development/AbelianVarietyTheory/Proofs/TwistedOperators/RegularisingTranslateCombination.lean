@@ -9,7 +9,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodPl
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomSuppSplit
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegralOfIsCompact
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRouteDatumFinitePureTensorsVacuumStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitCompletelyAuxiliaryPlaceOutsideFinsetStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitCompletelyAuxiliaryPlaceOutsideFinset
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodSplitPlaceTranslationActsThroughWeil
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalWeilOperatorIsometrySchwartzBruhatStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzBruhat
@@ -261,7 +263,7 @@ theorem squareTriple_avoid {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G 
       (∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ≠ Bs.v₁) ∧ Bs.v₁ ∉ P := by
   classical
   obtain ⟨e, Bs, Γ, X, om, om', h, hTr, -⟩ := GlobalTheory.T.squareThetaTripleHypotheses_of_standing hL W t i j hst M hM
-  obtain ⟨v, hvP, hvs, hvl, ⟨τ⟩⟩ := GlobalTheory.T.exists_splitCompletely_auxiliary_place_outside_finset (G := G) hL t (X.T ∪ P)
+  obtain ⟨v, hvP, hvs, hvl, ⟨τ⟩⟩ := _root_.GlobalTheory.GoodPlace.exists_good_place (G := G) hL t (X.T ∪ P)
   let Bs' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E := { Bs with v₁ := v, τ₁ := τ }
   refine ⟨e, Bs', Γ, X, om, om', ?_, ?_, hvl, fun h' => hvP (Finset.mem_union_right _ h')⟩
   · exact ⟨h.ψ, h.JW, h.JW₁, h.JWW, h.cart, h.α, h.β, h.μW, h.μW₁⟩

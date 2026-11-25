@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmCon
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 public import Development.AbelianVarietyTheory.Definitions.Divisors.WedgeNrmLeOfWedgeNormLe
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormRankLeBergmanBoundGoodCoverStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormRankLeBergmanBoundGoodCover
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeepLevelCoverPrincipalLevelLawsGaloisStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelGeometryWeightBoundStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupConstantLogBoundStatement
@@ -163,7 +163,7 @@ theorem berg_sup_rank : GlobalTheory.CovTop.Hypotheses2 → ∃ C : ℝ, 0 ≤ C
     intro σ hσ g
     obtain ⟨th, hr, -, hd⟩ := hY.dictU σ hσ
     exact Formalism.L2.Pj.dict_dom_of hd g
-  · have hrk := GlobalTheory.T.cuspFormRank_le_bergmanBound_goodCover D T.toCore j Y e o hY la Z β (by linarith) hB
+  · have hrk := _root_.GlobalTheory.RankBergman.rkC_le_of_bergLe D T.toCore j Y e o hY la Z β (by linarith) hB
     have hpos : 0 ≤ 4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3 := by positivity
     rcases (show (0 : ℝ) ≤ Y.rkC la Z by unfold Deep.rkC; positivity).eq_or_lt with h0 | h0
     · rw [← h0, Real.log_zero]; exact hpos

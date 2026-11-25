@@ -3,7 +3,9 @@ module
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.HalfIndexLattices.SplitStab
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHaarFundamentalDomainRationalMatricesTowerStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLintegralSqEqMulSetLIntegralThetaTransformStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRatPairIff
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLintegralSqEqMulSetLIntegralThetaTransform
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.DoubledLagrangianContinuous
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.DoubledLagrangianEquivariant
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.DoubledLagrangianIntertwiner
@@ -78,7 +80,7 @@ theorem isUnitaryOn_transportF_k : ∀ (F E : Type) [Field F] [NumberField F] [F
   obtain ⟨ν, 𝓕, hν, h𝓕⟩ := GlobalTheory.T.exists_haar_fundamentalDomain_rationalMatrices_tower F E nS nT
   obtain ⟨ν', 𝓕', hν', h𝓕', heq⟩ :=
     _root_.GlobalTheory.T.doubled_lagrangian_theta_compatible F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat ν 𝓕 hν h𝓕
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_lintegral_sq_eq_mul_setLIntegral_thetaTransform F B.ψ hψ.1 κ μ hμ ν' hν' 𝓕' h𝓕'
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.ThetaParseval.exists_lintegral_sq_eq_mul_setLIntegral_theta F B.ψ hψ.1 κ μ hμ ν' hν' 𝓕' h𝓕'
   have hiso : ∀ Ψ ∈ schA F κ, ∫⁻ x, ‖Ψ x‖ₑ ^ 2 ∂μ =
       c * ∫⁻ w in 𝓕, ‖GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Ψ w‖ₑ ^ 2 ∂ν := by
     intro Ψ hΨ

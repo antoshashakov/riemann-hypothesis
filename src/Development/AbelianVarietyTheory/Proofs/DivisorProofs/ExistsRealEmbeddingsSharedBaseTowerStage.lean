@@ -11,7 +11,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiGridVerte
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjTauEOverRealPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EpsMulOfCondExp
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEmbeddingSplitPrimeGridLocalTensorPlaces
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitCompletelyAuxiliaryPlaceOutsideFinsetStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSplitCompletelyAuxiliaryPlaceOutsideFinset
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasArchimedeanCharExponentsConjOfHasInfExpStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleCMBaseDataOfSquareTupleStandingStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadratiStatement
@@ -268,7 +270,7 @@ theorem _root_.GlobalTheory.T.exists_realEmbeddings_sharedBase_towerStage : GBig
   have hτ := fun v : ((GlobalTheory.SqStep.chs G i j t).T : Finset (HeightOneSpectrum (𝓞 D.host.F))) =>
     GlobalTheory.LocPlTau.exists_splitPrime_locPl hL t v.1 (hloc v.1 v.2)
   choose τP hτP using hτ
-  obtain ⟨v₁, hv₁P, hv₁s, -, ⟨τ₁⟩⟩ := GlobalTheory.T.exists_splitCompletely_auxiliary_place_outside_finset (G := G) hL t (GlobalTheory.SqStep.chs G i j t).T
+  obtain ⟨v₁, hv₁P, hv₁s, -, ⟨τ₁⟩⟩ := _root_.GlobalTheory.GoodPlace.exists_good_place (G := G) hL t (GlobalTheory.SqStep.chs G i j t).T
   let B : Base D.host.F D.host.E := ⟨W.ψ, fun w => ⟨_, hτf w⟩, mα, mβ, (GlobalTheory.SqStep.chs G i j t).T, τP, v₁, τ₁⟩
   have hB : B.IsGood D.sp.cm.sig := GlobalTheory.T.isAdmissibleCMBaseData_of_squareTupleStanding hL W t hst B rfl hloc
   have hsub₀ : (GlobalTheory.SqStep.chs G i j μ₀).T ⊆ (GlobalTheory.SqStep.chs G i j t).T := by

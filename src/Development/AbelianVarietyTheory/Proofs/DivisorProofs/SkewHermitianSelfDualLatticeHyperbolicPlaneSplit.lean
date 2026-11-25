@@ -3,7 +3,10 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartanInvolutionHermitianSignatureStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartanInvolutionHyperbolicSwapExtensionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFractionalIdealSmulMemLatticeStatement
+public import Mathlib.Algebra.Module.Lattice.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.FractionalIdeal.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFractionalIdealSmulMemLattice
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegerAddConjEqOneUnramifiedCm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsotropicIndefiniteSkewHermitianCmStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRescalePrimitiveInLatticeAtSplitPrimesStatement
@@ -196,7 +199,7 @@ theorem plane_skew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   have hinjι : Function.Injective ι.mulVec := fun u u' h => by
     have := hind₀ 0 0 (u - u') (by simp [Matrix.mulVec_sub, h])
     exact sub_eq_zero.1 this.2.2
-  obtain ⟨𝔟, h𝔟⟩ := GlobalTheory.T.exists_fractionalIdeal_mem_iff_smul_mem_lattice E (n₁ + 2) Y.L hY.lat.toIsLattice x (smul_ne_zero hc hx₀)
+  obtain ⟨𝔟, h𝔟⟩ := _root_.GlobalTheory.exists_fractionalIdeal_smul_mem_lattice E (n₁ + 2) Y.L hY.lat.toIsLattice x (smul_ne_zero hc hx₀)
   haveI hlat1 : (lowLat ι Y.L).IsLattice E := GlobalTheory.T.isLattice_sublatticePullbackAlongEmbedding E (n₁ + 2) n₁ Y.L ι hY.lat.toIsLattice hinjι
 
   haveI hfull : (lowLat ι Y.L).IsFullLattice E := by

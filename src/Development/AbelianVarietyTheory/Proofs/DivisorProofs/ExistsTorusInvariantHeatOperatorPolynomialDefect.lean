@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToro
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConnectionMatrixInvariantBasisStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPolynomialDefectHeatOperatorMonomialStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorusInvariantHeatOperatorOfSymmetricRelat
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeightZeroCocycleEqLogDerivativeCombAddCobStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeightZeroCocycleEqLogDerivativeCombAddCob
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,7 +63,7 @@ theorem exists_basic_heat_polyDefect : ∀ (R : Type) [CommRing R] [IsDomain R] 
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hdd m t gam hmon ht D hD
   obtain ⟨Θ, J, V, j, d, hs, hc, hle, hl, hw, hks⟩ := GlobalTheory.T.exists_connection_matrix_invariant_basis R Dd O oa Y n v dd hdd D
   obtain ⟨h, hb⟩ := _root_.GlobalTheory.HeatGlue.exists_basic_heat R Dd O oa Y n v dd hdd D Θ J V j d hs hc hle hl hw hks
-    (GlobalTheory.T.exists_weightZeroCocycle_eq_logDerivative_comb_add_coboundary R Dd O oa Y n v dd hdd J V j hc hle)
+    (_root_.GlobalTheory.PullbackWeightZero.exists_comb_dlg_add_cob R Dd O oa Y n v dd hdd J V j hc hle)
   obtain ⟨w, π, π', hdef⟩ := GlobalTheory.T.exists_polynomial_defect_heatOperator_monomial R Dd O oa Y n v dd hdd m t gam hmon ht D hD h hb
   exact ⟨h, w, π, π', hb, hdef⟩
 

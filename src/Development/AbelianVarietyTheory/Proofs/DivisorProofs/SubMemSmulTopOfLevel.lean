@@ -2,8 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EigLatLe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOneOfFiniteOrderUnipotentModTwoPrimes
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteOrderFibreAutAtLevelMoveFixedPointStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFixedComplexPointOfFixedFieldPointStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.IsLevMove
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThickTransComp
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteOrderFibreAutAtLevelMoveFixedPoint
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFixedComplexPointOfFixedFieldPoint
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeActionFramedPointsOfUnipotentModTwoPrimes
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodLatticeActionOfFiniteOrderAutomorphismStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubMemSmulTopOfNeatLevel
@@ -308,9 +311,9 @@ theorem free_of_unip_one (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
   intro g k _ _ y y' hR hx
   obtain ⟨ρ, ν, -, hlev, hmove⟩ := hR
   have hfix : y.x ≫ ρ = y.x := hmove.1.symm.trans hx
-  obtain ⟨x', hx'⟩ := GlobalTheory.T.exists_fixed_complexPoint_of_fixed_fieldPoint E H Dw l Xo k y.x ρ hfix
+  obtain ⟨x', hx'⟩ := _root_.GlobalTheory.FixedCx.exists_fixed_complex_point E H Dw l Xo k y.x ρ hfix
   obtain ⟨P, act, θ, N, ev, hθ, hN, hθN, hcomm, hadd, hlin, hker, honto, hrel⟩ :=
-    GlobalTheory.T.exists_finiteOrder_fibreAut_at_levelMove_fixedPoint E H Dw l Xo x' ρ ν (h g) LinearMap.id hlev hx'
+    _root_.GlobalTheory.LevMoveFibre.exists_fibreAut E H Dw l Xo x' ρ ν (h g) LinearMap.id hlev hx'
   have hM0 : 0 < l.M := by have := l.three_le; omega
   obtain ⟨Λ, _, _, F, ψ, hfin, htf, hFN, hψadd, hψlin, hψker, hψonto, hψF⟩ :=
     GlobalTheory.T.periodLattice_action_of_finiteOrder_automorphism E P act θ N l.M hθ hN hθN hcomm hM0

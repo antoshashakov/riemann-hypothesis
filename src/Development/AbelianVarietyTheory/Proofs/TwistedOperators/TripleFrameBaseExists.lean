@@ -13,7 +13,10 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledSchro
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryPartnerDiagStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallySelfDualLatticeIndicatorIsVacuum
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDoubledSchrodingerModelTransposedSiegelRulStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinitePlaceVacuumAnyDarbouxCoordinatesStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinitePlaceVacuumAnyDarbouxCoordinates
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNegConjMemberHermitianLatticeSpaceData
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalDarbouxCoordinatesTensorHermitian
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumTransportAdelicSchwartzThetaTransStatement
@@ -266,7 +269,7 @@ theorem exists_model {D : D7} (B : Base D.host.F D.host.E) (hB : B.IsGood D.sp.c
   obtain ⟨hH', hfd'⟩ := GlobalTheory.ConjUTransport.map_isHaar_isFundamentalDomain M c hc eY _ _ hH hfd
   obtain ⟨co, hrat⟩ := GlobalTheory.RatDarboux.exists_rational_darboux_of_isGood B hB Y Z r s r' s' hY hZ
   have hind := GlobalTheory.VacIndic.eventually_isVac_indicator B hB Y Z r s r' s' hY hZ co hrat
-  have hany := GlobalTheory.T.exists_finitePlace_vacuum_any_darboux_coordinates B hB Y Z r s r' s' hY hZ co
+  have hany := _root_.GlobalTheory.VacAny.exists_isVac_any_darboux B hB Y Z r s r' s' hY hZ co
   let ind : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl (F := D.host.F), (Fin M.rank × Fin k → Fv D.host.F v) → ℂ :=
     fun v => Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers D.host.F} 1
   let vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl (F := D.host.F), (Fin M.rank × Fin k → Fv D.host.F v) → ℂ :=
