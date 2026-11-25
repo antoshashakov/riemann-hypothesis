@@ -8,7 +8,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGen
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsSymmetricPositionLevelStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsParabolicDoubleCosetFunctionEqOneStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteQuotientCosetsScaledStandardLatticeBoxStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FirstVertexIteratedLevelChainInFrameStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FirstVertexIteratedLevelChainInFrame
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FirstVertexParahoricLevelChainTwistStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GenericLevelOfFrameBlockAndCharacterStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HaarCompactOpenRatioEqZpowOfTopNilpotentStatement
@@ -456,7 +456,7 @@ theorem firstVertexChains (hψ : HasConductor ψ 1) : FirstVertexChains ψ ν :=
   refine ⟨fun κ ϖ hϖ => ⟨GlobalTheory.T.exists_genericLevelOfFrame k ψ hψ ϖ hϖ _ _, fun ρ _ => GlobalTheory.T.exists_isSymmetricPositionLevel k ψ hψ ϖ hϖ ρ _ _, fun P hP μ hμ => ?_⟩,
     fun κ _ _ δ hδ η hη => ?_⟩
   · refine firstVertex (Chain.ofType_regular _ _ _ _ _) (Chain.ofType_laws _ _ _ _ _)
-      (GlobalTheory.T.firstVertex_iteratedLevelChain_in_frame k ψ ϖ s t κ P ?_ μ hμ)
+      (_root_.GlobalTheory.FirstVertexFrame.firstVertex_typeChain k ψ ϖ s t κ P ?_ μ hμ)
     rcases hP with hP | ⟨ρ, -, hP⟩
     exacts [GlobalTheory.T.genericLevelOfFrame_block_and_character k ψ ϖ _ _ P hP, GlobalTheory.T.symmetricPositionLevel_shape_on_parabolic k ψ ϖ ρ _ _ P hP]
   · exact firstVertex (Chain.ofTwist_regular _ _ _ _ _) (Chain.ofTwist_laws _ _ _ hη _ _)

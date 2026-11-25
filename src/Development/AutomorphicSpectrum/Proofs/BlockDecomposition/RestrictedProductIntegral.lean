@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteRestrictedProductQuotientStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinsumOutOfLe
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LevelFamInf
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictedProductHeckeSumStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictedProductHeckeSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -165,7 +165,7 @@ theorem hint_prod_eq_foldr : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [�
   have hfold : T.foldr (fun i g' x => hint (KH i) fun m => f i m * g' (x * e i m)) g =
       l.foldr (fun i g' x => hint (KH i) fun m => f i m * g' (x * e i m)) g := by
     rw [← hT, List.foldr_append, hfoldE extra hextra]
-  have hsum := GlobalTheory.T.restricted_product_hecke_sum p e KH V f hpe hpe' hsep hev hVK hVi hVe1 hfV hfs T hnd g hg 1
+  have hsum := _root_.GlobalTheory.CompanionTheory.FinActSum.sum_formula p e KH V f hpe hpe' hsep hev hVK hVi hVe1 hfV hfs T hnd g hg 1
   rw [hLdef] at hsum
   simp only [one_mul] at hsum
   have hF : ∀ x, (∏ᶠ j, if j ∈ T then f j (p j x)
@@ -200,7 +200,7 @@ theorem hint_prod_eq_foldr : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [�
     refine (hfinKH i).subset fun q hq => ?_
     by_contra hn
     exact hq (Set.indicator_of_notMem (s := (KH i : Set (Hl i))) (show q.out ∉ (KH i : Set (Hl i)) from hn) _)
-  have hsum2 := GlobalTheory.T.restricted_product_hecke_sum p e KH V (fun i => (KH i : Set (Hl i)).indicator (1 : Hl i → ℂ))
+  have hsum2 := _root_.GlobalTheory.CompanionTheory.FinActSum.sum_formula p e KH V (fun i => (KH i : Set (Hl i)).indicator (1 : Hl i → ℂ))
     hpe hpe' hsep hev hVK hVi hVe1 hfVI hfsI T hnd (fun _ => 1) (fun _ _ _ => rfl) 1
   rw [hLdef] at hsum2
   have hfold2 : ∀ m : List ι, m.foldr (fun i g' x => hint (KH i) fun m =>

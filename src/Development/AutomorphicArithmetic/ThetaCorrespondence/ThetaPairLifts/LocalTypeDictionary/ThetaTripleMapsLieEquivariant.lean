@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRte
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlkGLMem
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchimedeanOneParamLineTransposeGramUnitarStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealLieOperatorThetaQuotientLineStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRealLieOperatorThetaQuotientLine
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockAlgebraicThetaVectorsStableFiniteAdelesLieStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.FirstFactorMapThetaSumPureTensor
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.TripleProductAlgebraWeilRepRangeEqTop
@@ -78,7 +79,7 @@ theorem GlobalTheory.TripleAssembly.theta_triple_maps_lie_equivariant : GlobalTh
         GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ' = T (GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ)) := by
     intro τ Y hY
     obtain ⟨γ, hγ, hγt⟩ := GlobalTheory.T.exists_archimedean_one_param_line_transposeGramUnitary D θ hθ X e Γ.W h.JX τ Y hY
-    obtain ⟨Ti, hTi, hTi'⟩ := GlobalTheory.T.exists_real_lie_operator_theta_quotient_line Bs Γ Xc om om' R Rf hM γ hγ
+    obtain ⟨Ti, hTi, hTi'⟩ := _root_.GlobalTheory.RealLieOp.exists_realOp Bs Γ Xc om om' R Rf hM γ hγ
     refine ⟨LinearMap.rTensor _ Ti, ?_, ?_⟩
     · intro Φ hΦ Φ' hΦ' hD
       obtain ⟨m, f, f₁, φ, hf, hsum, rfl, rfl⟩ := _root_.GlobalTheory.T.tripleProduct_lieDeriv_left_pure_tensor hHD hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hWA hWB e Bs Γ Xc om om' h hTA hTB R Rf hM τ Y hY γ hγ hγt Φ hΦ Φ' hΦ' hD

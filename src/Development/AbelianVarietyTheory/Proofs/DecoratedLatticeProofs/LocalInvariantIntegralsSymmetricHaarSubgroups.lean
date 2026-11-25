@@ -10,7 +10,7 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EqS
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiProductMapHaarFiniteOnCompacts
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ProdRFJCoe
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsMulLeftInvariantMapLevyProductMapToFourierJaco
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapHaarFiniteOnCompactsStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapHaarFiniteOnCompacts
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapHaarIsMulLeftInvariantStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapPreimageIntegralGLStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapToFourierJacobiPreimageIntegralGLStatement
@@ -115,7 +115,7 @@ theorem quot_int_haar : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     haveI := hR
     haveI := hm
     haveI := GlobalTheory.T.levyProductMap_haar_isMulLeftInvariant k n c ρ h1 h2 ν hν.1 m hm
-    haveI := GlobalTheory.T.levyProductMap_haar_finiteOnCompacts k n c ρ h1 h2 ν hν.1 m hm
+    haveI := _root_.GlobalTheory.HaarR.finite_r k n c ρ h1 h2 ν hν.1 m hm
     have hmeas : Measurable (prodR (k := k) (n := n) (c := c) ρ) :=
       (Continuous.subtype_mk ((GlobalTheory.RootEx.QuotStep.continuous_embX.comp continuous_fst).mul
         (continuous_subtype_val.comp continuous_snd)) _).measurable

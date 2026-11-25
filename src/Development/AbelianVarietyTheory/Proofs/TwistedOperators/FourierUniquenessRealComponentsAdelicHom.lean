@@ -5,7 +5,10 @@ public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.StdCha
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CmTypeRestrictRealSubfieldInfinitePlaceBijective
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsArchAdeleTensorEquivComplexCmType
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MixedModelHeisenbergPhaseEqCexpRealPoints
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SetIntegralPreimageEqZeroStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SetIntegralPreimageEqZero
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsAdeleRingTensorEquivInfiniteProdFinite
 import Formalism.SharpRestriction.GlobalSchurBounds.LocalCountingBounds
 import Mathlib.Algebra.Order.Floor.Extended
@@ -157,7 +160,7 @@ theorem GlobalTheory.FourierRealPart.integral_preimage_eq_zero : ∀ (D : D7) (�
     ext y
     exact hmem (x y)
   rw [hpre]
-  refine GlobalTheory.T.setIntegral_preimage_eq_zero_of_fourier_eq_zero Y m F hF _ (P ∘ x) (hP.measurable.comp hx) ?_ _ (hsec.measurable hS)
+  refine _root_.GlobalTheory.FourierPush.setIntegral_preimage_eq_zero Y m F hF _ (P ∘ x) (hP.measurable.comp hx) ?_ _ (hsec.measurable hS)
   intro l
   let B : Fin W.rank × Fin ρ × D.what₂.Tau → ℂ := fun k =>
     ((-(1 / (4 * Real.pi)) : ℝ) : ℂ) * ((l (Pi.single k 1) : ℂ) - (l (Pi.single k Complex.I) : ℂ) * Complex.I)

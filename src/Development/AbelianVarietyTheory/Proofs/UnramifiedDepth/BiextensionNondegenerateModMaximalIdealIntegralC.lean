@@ -21,7 +21,14 @@ public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsAlgC
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFiniteExtensionSplitSpecialFibrePointStatement
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFormalChartPointNilpotentCoordinatesStatement
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIsTorusExtensionOnPointsModIdealStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPthRootTorusPointNilpotentAugmentedExtStatement
+public import Mathlib.Algebra.CharP.Defs
+public import Mathlib.LinearAlgebra.FreeModule.Basic
+public import Mathlib.RingTheory.Finiteness.Defs
+public import Mathlib.RingTheory.Ideal.Maps
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPthRootTorusPointNilpotentAugmentedExt
+public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+public import ReciprocityTheory.DualLattices.FormalChartAtZero
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsRingHomValuationRingOfEmbOKStatement
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsTorusExtensionPointsPullbackFieldPointStatement
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FramePartialLawsNilpotentCoordinatesStatement
@@ -134,7 +141,7 @@ theorem Orth.map [Module.Free ℤ X] [Module.Finite ℤ X] (h : IsTorExt s s' G 
   obtain ⟨χ, hχ⟩ := (h.2.2.2.1 A (x ^ p)).1 (by rw [map_pow, hyp])
   have h1 : (Units.map (π : A →* Ω)).comp χ = 1 :=
     h.2.2.1 Ω (by rw [h.2.1, hχ, MonObj.comp_pow, hx, one_pow, map_one])
-  obtain ⟨A', _, _, f, π', χ', hf, hc, hn, h2, h3⟩ := GlobalTheory.T.exists_pth_root_torus_point_nilpotent_augmented_ext Ω p X A π hπ χ fun a =>
+  obtain ⟨A', _, _, f, π', χ', hf, hc, hn, h2, h3⟩ := _root_.GlobalTheory.TorusRoot.exists_root_character Ω p X A π hπ χ fun a =>
     congrArg Units.val (DFunLike.congr_fun h1 a)
   have h4 : (Units.map (π' : A' →* Ω)).comp χ' = 1 := MonoidHom.ext fun a => Units.ext (h2 a)
   have k := ht A' _ _ (ho A' π' hn (f e) (by rw [← map_pow, he, map_zero]) ((homAt s f ≫ x) * (io A' χ')⁻¹)

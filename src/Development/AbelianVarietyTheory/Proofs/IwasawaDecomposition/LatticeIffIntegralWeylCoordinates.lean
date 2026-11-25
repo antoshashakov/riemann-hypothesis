@@ -9,7 +9,8 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetPo
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralSpanIffPadicWeylDualLatticeStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalBasisChangeIntegralUnitDetStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedEmbeddingMatrixSubstitutionMemRatSpanStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedSourceValueReadInChangedBasesStatement
+public import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.TiedRec
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedSourceValueReadInChangedBases
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeylLatticeDualInvariantUnitStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -81,7 +82,7 @@ theorem lattice_iff_weyl : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok 
   choose g hg1 hg2 hg3 using fun τ => GlobalTheory.T.localBasis_change_integral_unit_det _ (Pl.lam w) τ _ Bm _ (hL τ) hBm
   obtain ⟨k, hk1, hk⟩ := GlobalTheory.T.chainStep_weight_arithmetic I hOk hPins l Z u μ i hi
   obtain ⟨R0, hR0⟩ := lift_ratSpan _ _ P0 hP0
-  have hsrc := GlobalTheory.T.twistedSourceValue_read_in_changed_bases I hOk hPins l Z Y O Pl Bs hQp hStd hBas hEnt u μ w hLev i hi eY hIdY c f P0 hf R0 hR0 k hk1 Bm g hg3 v hv
+  have hsrc := _root_.GlobalTheory.Mem.SrcFunRead.srcFun_secC_read I hOk hPins l Z Y O Pl Bs hQp hStd hBas hEnt u μ w hLev i hi eY hIdY c f P0 hf R0 hR0 k hk1 Bm g hg3 v hv
   set R := twSubK (Formalism.L2.G.Cmp.tEL (I.rec7 l Z)) Bm (shiftOf (lamTG (I.fm l u μ) i)) R0 with hRdef
   have hR : MvPolynomial.map (I.rec7 l Z).what₂.embLL R = twSub (embT (I.rec7 l Z)) Bm (shiftOf (lamTG (I.fm l u μ) i)) P0 := by
     have h := map_twSubK (Formalism.L2.G.Cmp.tEL (I.rec7 l Z)) Bm (shiftOf (lamTG (I.fm l u μ) i)) R0 (I.rec7 l Z).what₂.embLL

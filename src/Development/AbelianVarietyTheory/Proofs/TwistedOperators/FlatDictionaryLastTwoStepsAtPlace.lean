@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Int
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.T2SpaceMatrixOfIsNonarchimedeanLocalField
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastBiExpand
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastTwoStepsLocalModelExtendByZeroTopStepStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastTwoStepsLocalModelFlatMapFourierJacobiStepStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastTwoStepsLocalModelFlatMapFourierJacobiStep
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LastTwoStepsTopVertexFrameAtPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TopOrthAtEmb
 import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
@@ -133,7 +133,7 @@ theorem GlobalTheory.FlatPlace.lastStep_eventually : Big fun ch => ChrP ch → A
     rw [show j + 1 + 1 = D.R.m by omega]
   have h₄ : (locGrid ch.G t w).rank (D.R.m, j + 1) = topRank (locGrid ch.G t w) (j + 1) := by omega
   obtain ⟨hchar, hcond, -⟩ := hChr t w hw p hp
-  obtain ⟨F₀, T₁, hcore, hT₁, hT₁O, Φ₁, hΦ₁, hT₁Φ⟩ := GlobalTheory.T.lastTwoSteps_localModel_flatMap_fourierJacobiStep ch hChr hArr hLoc hBes hJac t w hw p hp β r r₀ h hpts M hM φ v f
+  obtain ⟨F₀, T₁, hcore, hT₁, hT₁O, Φ₁, hΦ₁, hT₁Φ⟩ := _root_.GlobalTheory.LastStepOne.first_step_flat ch hChr hArr hLoc hBes hJac t w hw p hp β r r₀ h hpts M hM φ v f
     hvf j hj0 (GlobalTheory.Unf.Inhab.nonempty_volN _).some h₁ h₂
   obtain ⟨T₂, hT₂, hT₂O, Φ₂, hΦ₂, hT₂Φ⟩ := GlobalTheory.T.lastTwoSteps_localModel_extendByZero_topStep ch hChr hArr hJac t w hw p hp β M hM φ v f hvf j hj0 h₃ h₄
   obtain ⟨e, he1, he2, FX, hFX, hFXe⟩ := GlobalTheory.T.lastTwoSteps_topVertex_frame_at_place ch t w hw p hp j hj
