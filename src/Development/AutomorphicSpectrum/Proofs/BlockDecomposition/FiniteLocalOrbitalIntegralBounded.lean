@@ -19,7 +19,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingB
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingOnRationalTupleFormula
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseCocycleBimultiplicativeStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseContinuousUnitaryStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalCharacterKernelScalingStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalCharacterKernelScaling
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalTupleInLatticeLevelStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceDualDenominatorBoundedStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SchwartzBruhatEqSumPure
@@ -109,7 +109,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   set L := latN b n M N with hL
   obtain ⟨s, hs⟩ := eq_sum_cosets hQ.2 L hLo (fun x l hl => hNU hl x)
   obtain ⟨D, hD, hDc⟩ := GlobalTheory.T.trace_dual_denominator_bounded F
-  obtain ⟨t₁, ht₁, htest⟩ := GlobalTheory.T.rational_character_kernel_scaling F E σ hCM d b ψ hψ N hN D hD hDc
+  obtain ⟨t₁, ht₁, htest⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.RatTest.rat_test F E σ hCM d b ψ hψ N hN D hD hDc
   obtain ⟨s₂, hs₂, hrat⟩ := GlobalTheory.T.rational_tuple_in_lattice_level F E d b M J n N hN
   have hs₂F : ((s₂ : ℕ) : F) ≠ 0 := Nat.cast_ne_zero.2 hs₂.ne'
   refine ⟨(∑ a ∈ s, ‖Q a‖) * (μ (L : Set _)).toReal, t₁ * (s₂ : F), mul_ne_zero ht₁ hs₂F, fun c => ?_⟩

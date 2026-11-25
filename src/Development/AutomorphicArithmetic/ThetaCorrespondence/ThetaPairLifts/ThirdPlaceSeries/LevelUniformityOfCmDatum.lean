@@ -15,7 +15,8 @@ public import Mathlib.Algebra.Field.ZMod
 public import Mathlib.Basic.Complex.Basic
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAddCharCompletionOfResidueAddChar
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAddCharZmodEqOfNeOneStatement
+public import Mathlib.Algebra.Group.AddChar
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAddCharZmodEqOfNeOne
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeneratorNotMemTwistPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelCharacterEqLocalFactorAtTypePlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemLevelIffUnipotentAtTypePlaceStatement
@@ -113,7 +114,7 @@ theorem level_uniformity_transfer_alt : _root_.GlobalTheory.HeightCounting.Up.Pu
     apply hne
     simp only [φ, AddChar.coe_mk, AddChar.one_apply, mul_one] at e1
     exact Units.ext ((embLL0 (Dof x)).injective (by rw [e1, Units.val_one, map_one]))
-  have hex := GlobalTheory.T.exists_nontrivial_addChar_zmod_eq_of_ne_one ((Dof x).host.g kv0.1) (2 ≤ (Dof x).R.r) φ hφ
+  have hex := _root_.GlobalTheory.exists_nontrivial_addChar_eq_of_ne ((Dof x).host.g kv0.1) (2 ≤ (Dof x).R.r) φ hφ
   let ψ' := hex.choose
   have hψ'1 : ψ' ≠ 1 := hex.choose_spec.1
   have hψ'φ : 2 ≤ (Dof x).R.r → ψ' = φ := hex.choose_spec.2

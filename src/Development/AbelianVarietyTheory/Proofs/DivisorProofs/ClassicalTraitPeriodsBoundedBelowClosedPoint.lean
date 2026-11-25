@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinite
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPadicTraitLiftFiniteThroughPointStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowNormValLeUnitaryThetaFiniteModelsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSetupRegularOverModuliPointStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedSingletonOfIsFiniteOfIsClosedImageStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Finite
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedSingletonOfIsFiniteOfIsClosedImage
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryClassicalTraitPeriodsBoundedBelowStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -119,7 +121,7 @@ theorem GlobalTheory.UPoinc.lam_of_closed : ∀ (E : Type) [Field E] [NumberFiel
     have := congrArg (fun f => f (cPt p)) hy'π
     simp only [Scheme.Hom.comp_apply] at this
     rw [this, t.cen]
-  have hz'c := GlobalTheory.T.isClosed_singleton_of_isFinite_of_isClosed_image _ _ _ (X' k).fin (y' (cPt p)) (hz'π ▸ hzc)
+  have hz'c := _root_.GlobalTheory.isClosed_singleton_of_isFinite _ _ _ (X' k).fin (y' (cPt p)) (hz'π ▸ hzc)
   let t' : UCTrait (X' k) p (y' (cPt p)) :=
     { y := y', cen := rfl, T := t.T, ι := t.ι, int := t.int, comm := by rw [hy'π]; exact t.comm }
   have hreg : (X' k).S.R ≤ (X' k).M.O ((gPt p ≫ t'.y) (IsLocalRing.closedPoint (PadicAlgCl p))) := by

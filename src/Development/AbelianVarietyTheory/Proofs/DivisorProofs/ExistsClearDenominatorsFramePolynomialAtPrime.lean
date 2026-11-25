@@ -10,7 +10,9 @@ public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsU
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLetterIntegralInIntegralEigenbasisStatement
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LocalLowerBoundCmPointFramePolynomialEveryPrime
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramePolynomialCoeffBoundedByDeterminantsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramePolynomialIntegerExponentDegreeEqStatement
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+public import Formalism.LocalToGlobal.CMDeterminantIdeals.StatementG
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramePolynomialIntegerExponentDegreeEq
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMap
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueFrameChangeByMatrices
 import Mathlib.Algebra.Order.Floor.Extended
@@ -156,7 +158,7 @@ theorem exists_clear_coeff_at_prime : ∀ (E : Type) [Field E] [NumberField E] [
       (∀ b, (Y b).det ≠ 0) → GlobalTheory.Frames.FrChg (fun b => (Y b).transpose) 1 z.y y' →
       (∏ b, (Y b).det ^ k b) * evR Xo c F y' = Formalism.L2.LamCM.evalFr G Y := fun y'' Y hY hc =>
     hG y'' Y 1 hY (by rw [Units.val_one]; exact hc)
-  have hdeg := GlobalTheory.T.framePolynomial_integerExponent_degree_eq E H Dw l Xo c z.K z.y e k he F hF G hG1 μ hμ
+  have hdeg := _root_.GlobalTheory.FrameHom.frPoly_secZ_degree_eq E H Dw l Xo c z.K z.y e k he F hF G hG1 μ hμ
   have hμS : μ ∈ S := by
     simp only [S, Set.Finite.mem_toFinset, Set.mem_setOf_eq]
     omega

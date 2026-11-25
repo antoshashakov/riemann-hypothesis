@@ -19,7 +19,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveFra
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfDualLocalSubgroupFirstProjEqAnnihilator
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceHalvesEqLinearModelLagrangiansStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStandingTripleThetaFirst
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairMemSchwartzBruhatOfConductorExponentStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocPart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairMemSchwartzBruhatOfConductorExponent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnderMemAndPlaceAboveEqOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaIntegralStandardPairFirstEqSecondStatement
@@ -294,7 +296,7 @@ theorem zeta_std (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) {i j : Fin D.R.m}
   choose x hx using H
   refine ⟨x, fun t w hw => ?_⟩
   have hS := (Good.isGood_of_notMem hL W hw (notMem_of_standing (hst t) hw)).square i i.2 j j.2
-  obtain ⟨s1, s2⟩ := GlobalTheory.T.standardPair_mem_schwartzBruhat_of_conductorExponentLE (Kw w) ((locGrid G t w).nu i j) (unifAt w) _ (X.c t w) ((locGrid G t w).rank (i + 1, j + 1)) ((locGrid G t w).rank (i, j))
+  obtain ⟨s1, s2⟩ := _root_.GlobalTheory.StdPairSBDepth.stdPair_mem_SB (Kw w) ((locGrid G t w).nu i j) (unifAt w) _ (X.c t w) ((locGrid G t w).rank (i + 1, j + 1)) ((locGrid G t w).rank (i, j))
     hS.unif (by rw [← Grid.alpha_div_beta]; exact hS.condν)
   obtain ⟨ΘA, hΘA⟩ := exists_homeo (RingEquiv.refl (Kw w)) (Equiv.refl _) (ordX G t i j w) (chA B t X w) (invT (chX B t X w))
     continuous_id continuous_id

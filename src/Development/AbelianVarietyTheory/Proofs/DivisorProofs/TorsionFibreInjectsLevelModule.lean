@@ -11,7 +11,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelSection
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointClassAtStalkSmulActionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaEqOfMkEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointClassImageEqLevelAction
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointClassMulEqAddStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointClassMulEqAdd
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -140,7 +140,7 @@ theorem torsLevel_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       haveI := (pullAct TF Z φ).hom a
       rw [MonObj.mul_comp, hP a ha, hQ a ha, _root_.mul_one]
     simp only [dif_pos hP, dif_pos hQ, dif_pos hPQ]
-    exact GlobalTheory.T.torsionPoint_class_mul_eq_add (pullG TF Z φ) l.M hn ℓ (etaSecL TF Z φ ℓ hℓ) (etaSecL_w TF Z φ ℓ hℓ) hun
+    exact _root_.GlobalTheory.TorsSpec.valAt_mul (pullG TF Z φ) l.M hn ℓ (etaSecL TF Z φ ℓ hℓ) (etaSecL_w TF Z φ ℓ hℓ) hun
       (GlobalTheory.T.levelSection_add_at_geometricPoint TF Z φ ℓ hℓ) K t P Q _ _ _ (hPT P hP) (hPT Q hQ) (hPT _ hPQ) _ _ _ _ (hcl P hP) (hcl Q hQ)
       (hcl _ hPQ)
   · intro P a hP
