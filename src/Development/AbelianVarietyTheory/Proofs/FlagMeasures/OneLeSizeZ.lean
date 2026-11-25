@@ -2,26 +2,28 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowMinor
 public import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CntPrimLatticeImageIsometryStatement
+public import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CntPrimLatticeImageIsometry
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountTermsGramClassOverSublatticeStatement
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardBiUnionLe
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardSublatticesBoundedDetLeSumStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsCommonSublatticeSmallDetStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardSublatticesBoundedDetLeSum
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsCommonSublatticeSmallDet
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniquePlace
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianGenusMassEqOrbitStabilizerMass
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPairMoveByIntegralUnipotentStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeSeenInDefiniteSpaceDetRankIndexStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LiftedFlagLatticeChainSpansStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPairMoveByIntegralUnipotent
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeSeenInDefiniteSpaceDetRankIndex
+public import Formalism.SharpRestriction.CuspSpanNormBounds.IsPrimitiveSub
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LiftedFlagLatticeChainSpans
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LoopCountExponentBound
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemOfPerpPerp
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthTransversalFlagsInfIsotropicEqBotStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairIsometryUniqueOnOrthModIsotropicStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairLatticeLeLiftedPairLatticeSupIsotropicStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowLatticesMeanEqGenusMeanStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthTransversalFlagsInfIsotropicEqBot
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairIsometryUniqueOnOrthModIsotropic
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PairLatticeLeLiftedPairLatticeSupIsotropic
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RowLatticesMeanEqGenusMean
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardBaseFlagComplementIntegralLattice
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardBaseFlagComplementIntegralLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TraceFormPosOnOrthLiftedFlagStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.XLamLeSmulSupXLamAdmissibleFlagStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TraceFormPosOnOrthLiftedFlag
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.XLamLeSmulSupXLamAdmissibleFlag
 import Formalism.HermitianLattices.FinalMass
 import Formalism.SharpRestriction.CuspSpanNormBounds.AbsoluteAmplitudeSecondOfSource
 import Mathlib.Algebra.Order.Floor.Extended
@@ -134,11 +136,11 @@ theorem term_seen (D : D7) {T T' : D.host.E} (F : Fg D T) (F' : Fg D T') (Λ : L
     seen D F (La Λ (gS D) F F') ≤ L0X D Λ F ∧ seen D F (Thp Λ F F') ≤ seen D F (La Λ (gS D) F F') ∧
     rkW D (seen D F (Thp Λ F F')) = rkW D (seen D F (La Λ (gS D) F F')) ∧
     idxW D (seen D F (La Λ (gS D) F F')) (seen D F (Thp Λ F F')) = iIdx Λ (gS D) F F' := by
-  obtain ⟨a1, -, a3⟩ := GlobalTheory.T.orth_transversal_flags_inf_isotropic_eq_bot _ _ _ _ _ Λ F F' (by first | exact fixedHyp_full D F Λ hF | exact (fixedHyp_full D F Λ hF).toIsLattice) hF.2.2.1 h.1.1 h.1.2.2
-  obtain ⟨b1, b2, b3, -⟩ := GlobalTheory.T.liftedFlag_lattice_chain_spans _ _ _ _ _ Λ (gS D) F F' (fixedHyp_full D F Λ hF) hF.2.2.1 h.1.1
+  obtain ⟨a1, -, a3⟩ := _root_.GlobalTheory.LoopC.PerpFlags.main _ _ _ _ _ Λ F F' (by first | exact fixedHyp_full D F Λ hF | exact (fixedHyp_full D F Λ hF).toIsLattice) hF.2.2.1 h.1.1 h.1.2.2
+  obtain ⟨b1, b2, b3, -⟩ := _root_.GlobalTheory.LoopC.LatChain.lattice_chain_spans _ _ _ _ _ Λ (gS D) F F' (fixedHyp_full D F Λ hF) hF.2.2.1 h.1.1
   have b4 : La Λ (gS D) F F' ≤ toO (hS D) (Hp Λ F F') := b2.trans inf_le_right
-  obtain ⟨-, c2, c3⟩ := GlobalTheory.T.latticeSeenInDefiniteSpace_det_rank_index D T F _ hW a1 a3 _ _ b4 (b1.trans b4)
-  obtain ⟨-, d2, -⟩ := GlobalTheory.T.latticeSeenInDefiniteSpace_det_rank_index D T F _ hW a1 a3 _ _ (b1.trans b4) b4
+  obtain ⟨-, c2, c3⟩ := _root_.GlobalTheory.LoopC.SeenIso.main D T F _ hW a1 a3 _ _ b4 (b1.trans b4)
+  obtain ⟨-, d2, -⟩ := _root_.GlobalTheory.LoopC.SeenIso.main D T F _ hW a1 a3 _ _ (b1.trans b4) b4
   refine ⟨Submodule.comap_mono (sup_le (b2.trans inf_le_left) (X_le_L0sub Λ F)),
     seen_mono D F (b1.trans le_sup_left), ?_, c3⟩
   have : spanE (hS D) (La Λ (gS D) F F') = Hp Λ F F' :=
@@ -154,14 +156,14 @@ theorem pair_sub (D : D7) {T T' : D.host.E} (F : Fg D T) (Λ : LatV D) (hF : Fix
   obtain ⟨t1, t2, hpr, z1, z2, hs0, hd⟩ := hp
   obtain ⟨a1, a2, a3, a4⟩ := term_seen D F p.1 Λ hF hW t1
   obtain ⟨b1, b2, b3, b4⟩ := term_seen D F p.2.1 Λ hF hW t2
-  obtain ⟨c1, -, c3⟩ := GlobalTheory.T.orth_transversal_flags_inf_isotropic_eq_bot _ _ _ _ _ Λ F p.1 (by first | exact fixedHyp_full D F Λ hF | exact (fixedHyp_full D F Λ hF).toIsLattice) hF.2.2.1 t1.1.1 t1.1.2.2
-  obtain ⟨-, d2, -, d4⟩ := GlobalTheory.T.liftedFlag_lattice_chain_spans _ _ _ _ _ Λ (gS D) F p.1 (fixedHyp_full D F Λ hF) hF.2.2.1 t1.1.1
+  obtain ⟨c1, -, c3⟩ := _root_.GlobalTheory.LoopC.PerpFlags.main _ _ _ _ _ Λ F p.1 (by first | exact fixedHyp_full D F Λ hF | exact (fixedHyp_full D F Λ hF).toIsLattice) hF.2.2.1 t1.1.1 t1.1.2.2
+  obtain ⟨-, d2, -, d4⟩ := _root_.GlobalTheory.LoopC.LatChain.lattice_chain_spans _ _ _ _ _ Λ (gS D) F p.1 (fixedHyp_full D F Λ hF) hF.2.2.1 t1.1.1
   have hM : Mlat Λ F p.1 p.2.1 p.2.2 (gS D) ≤ La Λ (gS D) F p.1 := inf_le_left
   have hMH := hM.trans (d2.trans inf_le_right)
-  obtain ⟨e1, e2, -⟩ := GlobalTheory.T.latticeSeenInDefiniteSpace_det_rank_index D T F _ hW c1 c3 _ _ hMH hMH
+  obtain ⟨e1, e2, -⟩ := _root_.GlobalTheory.LoopC.SeenIso.main D T F _ hW c1 c3 _ _ hMH hMH
   have m1 := seen_mono D F (hM.trans le_sup_left)
-  have m2 := seen_mono D F (GlobalTheory.T.pairLattice_le_liftedPairLattice_sup_isotropic _ _ _ _ _ Λ (gS D) F p.1 p.2.1 p.2.2 hpr)
-  obtain ⟨P, q1, q2, q3, q4, q5⟩ := GlobalTheory.T.exists_common_sublattice_small_det D _ _ _ _ _ _ hpos hfg hint m1 m2 a1 b1 a2 b2 a3 b3
+  have m2 := seen_mono D F (_root_.GlobalTheory.LoopC.PairLat.Mlat_le_La_sup _ _ _ _ _ Λ (gS D) F p.1 p.2.1 p.2.2 hpr)
+  obtain ⟨P, q1, q2, q3, q4, q5⟩ := _root_.GlobalTheory.LoopC.CommonSub.main D _ _ _ _ _ _ hpos hfg hint m1 m2 a1 b1 a2 b2 a3 b3
   refine ⟨P, ⟨q1.trans (m1.trans a1), ?_, ?_⟩, ⟨t1, z1, q2⟩, ⟨t2, z2, q3⟩⟩
   · rw [q4, e2, d4]
     unfold s0 at hs0
@@ -180,13 +182,13 @@ theorem pEqv_iff (D : D7) {T : D.host.E} {T' : ℕ} (hT' : 0 < T') (hg : 3 ≤ g
   · rintro ⟨⟨n', h', a⟩, ⟨n'', h'', b⟩⟩
     refine ⟨n', h', n'', h'', a, b, ?_⟩
     obtain ⟨t1, t2, hpr, -⟩ := hq
-    obtain ⟨c1, c2, c3, c4⟩ := GlobalTheory.T.isPair_move_by_integralUnipotent D _ _ Λ (gS D) F p.1 p.2.1 q.1 q.2.1 p.2.2 n' n'' hp.2.2.1 h' h'' a b
+    obtain ⟨c1, c2, c3, c4⟩ := _root_.GlobalTheory.LoopC.PairMove.pair_move D _ _ Λ (gS D) F p.1 p.2.1 q.1 q.2.1 p.2.2 n' n'' hp.2.2.1 h' h'' a b
     have hX := hpr.2.1 D.R.rS
     rw [Xflag_top, Xflag_top] at hX
-    exact GlobalTheory.T.pair_isometry_unique_on_orth_mod_isotropic _ _ _ _ _ Λ (gS D) F q.1 q.2.1 q.2.2 _ hF.1 hF.2.1 hg (Nat.cast_ne_zero.2 hT'.ne')
-      (GlobalTheory.T.trace_form_pos_on_orth_liftedFlag D T' q.1 hT')
-      (GlobalTheory.T.xLam_le_smul_sup_xLam_admissible_flag _ _ _ _ _ Λ (gS D) F q.1 hF.2.2.2 t1.2.1 t1.1.2.1)
-      (GlobalTheory.T.xLam_le_smul_sup_xLam_admissible_flag _ _ _ _ _ Λ (gS D) F q.2.1 hF.2.2.2 t2.2.1 t2.1.2.1)
+    exact _root_.GlobalTheory.LoopC.BetaUniq.main _ _ _ _ _ Λ (gS D) F q.1 q.2.1 q.2.2 _ hF.1 hF.2.1 hg (Nat.cast_ne_zero.2 hT'.ne')
+      (_root_.GlobalTheory.LoopC.PerpPos.trace_pos_perp D T' q.1 hT')
+      (_root_.GlobalTheory.AdmFlagSub.xLam_le_smul_sup_xLam _ _ _ _ _ Λ (gS D) F q.1 hF.2.2.2 t1.2.1 t1.1.2.1)
+      (_root_.GlobalTheory.AdmFlagSub.xLam_le_smul_sup_xLam _ _ _ _ _ Λ (gS D) F q.2.1 hF.2.2.2 t2.2.1 t2.1.2.1)
       hpr.1 hX (by rw [hpr.2.2.1, sub_self]; exact Submodule.zero_mem _) hpr.2.2.2 c1 c2 c3 c4
 
 theorem mean_le {ι : Type} (what₂ : Finset ι) (w cnt : ι → ℝ≥0∞) (N : ℕ → ι → ℝ≥0∞) (I : Finset ℕ) (c B : ℕ → ℝ)
@@ -402,9 +404,9 @@ theorem main : ∀ Cg cb Cu cT CT C0 A Ad C₁ : ℝ, 0 ≤ C₁ → ∃ C₀ : 
       (pair_sub D _ Λ hR.2.1 hW hpos hlat.fg hint Z' Z'' s (by omega) De) (ENNReal.ofReal K)
       (ENNReal.ofReal_pos.2 k0).ne' (fun P hP => s23 Λ hR Z' r1 P hP.1 hP.2.1 hP.2.2 (q1.trans e1))
       (fun P hP => s23 Λ hR Z'' r2 P hP.1 hP.2.1 hP.2.2 (q2.trans e1))).trans (mul_le_mul' ?_ le_rfl)
-    exact GlobalTheory.T.encard_sublattices_bounded_det_le_sum D _ hpos (GlobalTheory.Mass.RowPerp.main D u F0 he hz).1.2 hlat.fg hint _ De d1
-  · have a1 := GlobalTheory.T.rowLattices_mean_eq_genus_mean D u p1 p3 p5 F0 he hz what₂ hrows Λ₀ (hrows.1 Λ₀ hΛ₀) reps hreps
-      (fun L => cntPrim (D.sp.X 0).hT L (D.R.k - s) d) (fun γ hγ L => GlobalTheory.T.cntPrim_latticeImage_isometry _ _ _ γ hγ L _ _)
+    exact _root_.GlobalTheory.LoopC.SubCount.main D _ hpos (GlobalTheory.Mass.RowPerp.main D u F0 he hz).1.2 hlat.fg hint _ De d1
+  · have a1 := _root_.GlobalTheory.MeanGenus.mean_rows_eq_mean_genus D u p1 p3 p5 F0 he hz what₂ hrows Λ₀ (hrows.1 Λ₀ hΛ₀) reps hreps
+      (fun L => cntPrim (D.sp.X 0).hT L (D.R.k - s) d) (fun γ hγ L => _root_.GlobalTheory.LoopC.cntPrim_gmap_isom _ _ _ γ hγ L _ _)
     have a2 := H1 hyp F0 he hz Λ₀ (hrows.1 Λ₀ hΛ₀) reps hreps s s2 sk d (Finset.mem_Icc.1 hd).1 HH (hHb.trans q1)
     rw [ENNReal.ofReal_mul hmass.le] at a2
     refine (ENNReal.mul_le_mul_iff_left (ENNReal.ofReal_pos.2 hmass).ne' ENNReal.ofReal_ne_top).1 ?_
