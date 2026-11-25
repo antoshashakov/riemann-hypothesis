@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.QuadraticCoefficientForms
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.VacuumMultiplierTrivialPrincipalCongruence
 
 @[expose] public section
 
@@ -64,47 +65,7 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict.VSetup
 
 theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
-    (H.w0 : E) + cc (H.w0 : E) = 1 := by
-  obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have hcc : ∀ x : E, φ (cc x) = conj (φ x) := fun x => by
-    simp [cc, IsCMField.complexEmbedding_complexConj]
-  have hrt : ((H.rt : E)) ^ 2 = -(H.d : E) := by
-    have := congrArg (fun t : 𝓞 E => (t : E)) H.rt_sq
-    simpa using this
-  have htw : 2 * (H.w0 : E) = 1 + H.rt := by
-    have := congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root
-    rw [map_mul, map_add (f := _), map_one, map_ofNat] at this
-    exact this
-  have hz : φ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
-    simpa using congrArg φ hrt
-  have hzc : conj (φ (H.rt : E)) = -φ (H.rt : E) := by
-    set z := φ (H.rt : E)
-    have hz' : conj z ^ 2 = -(H.d : ℂ) := by
-      rw [← map_pow, hz]; simp
-    have h1 : (conj z - z) * (conj z + z) = 0 := by
-      linear_combination hz' - hz
-    rcases mul_eq_zero.1 h1 with h | h
-    · exfalso
-      have him : z.im = 0 := by
-        have := congrArg Complex.im h
-        simp at this
-        linarith
-      have hre := congrArg Complex.re hz
-      simp [sq, him] at hre
-      have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-      nlinarith [mul_self_nonneg z.re]
-    · linear_combination h
-  have hw : 2 * φ (H.w0 : E) = 1 + φ (H.rt : E) := by
-    have := congrArg φ htw
-    rw [map_mul, map_add (f := _), map_one, map_ofNat] at this
-    exact this
-  have hwc : 2 * conj (φ (H.w0 : E)) = 1 + conj (φ (H.rt : E)) := by
-    have := congrArg conj hw
-    rw [map_mul, map_add (f := _), map_one, map_ofNat] at this
-    exact this
-  apply φ.injective
-  rw [map_add (f := _), map_one, hcc]
-  linear_combination (hw + hwc + hzc) / 2
+    (H.w0 : E) + cc (H.w0 : E) = 1 := GlobalTheory.VacMult.hostHalfRoot_add_conj_eq_one H
 
 theorem exists_setup : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → 1 ≤ r → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ k (x : (U.X k).dom), IsUnitFr (U.X k) x.1 → letI : Algebra c.F ℂ := σ.toAlgebra; ∃ (W : UW U) (Dc : Dic Dw c σ (U.X k) W.g Dw.p n a) (A : AnFib (U.X k) Dc.bas Dc.idx W.e x.1 (U.X k).Λ (unC U k x)) (θ : (Fin W.g → ℂ) → ℂ) (v : TF n W.g) (κ : ℂ), Dc.e = W.e ∧ W.g = fdeg E * r ∧ (H.w0 : E) + cc (H.w0 : E) = 1 ∧ SelfD (U.X k) (U.X k).Λ ∧ IsMark l (U.X k).Λ (W.mark k) ∧ A.Marked (W.mark k) ∧ A.Reads 1 (unC U k x).s θ ∧ IsTheta1 (U.X k) Dc.bas Dc.idx (H.w0 : E) x.1 (U.X k).Λ θ ∧ MeanOne (U.X k) Dc.bas Dc.idx x.1 (U.X k).Λ θ ∧ IsVac (U.X k) Dc.bas (H.w0 : E) (tens (stdL E n) (U.X k).Λ) v ∧ ∀ z : Fin n → Fin W.g → ℂ, ∏ b, θ (z b) = κ * thA (U.X k) Dc.bas Dc.idx v x.1 z := by
   intro E _ _ _ H Dw l Xo c σ r U hG hU hr a n hD k x hx

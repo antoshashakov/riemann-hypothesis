@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ComponentAttainedAtBaseFrame
 
 @[expose] public section
 
@@ -56,16 +57,7 @@ namespace GlobalTheory.MarkCoset
 
 open scoped Matrix nonZeroDivisors
 
-theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
-  refine mul_ne_zero ?_ (inv_ne_zero ?_)
-  · rw [FractionalIdeal.coeIdeal_ne_zero]
-    intro h
-    exact D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)
-  · rw [FractionalIdeal.coeIdeal_ne_zero]
-    intro h
-    have h1 := D.host.𝔟_spec.1
-    rw [h, Ideal.bot_mul] at h1
-    exact differentIdeal_ne_bot h1
+theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := GlobalTheory.RecDict.comp_AA_ne_zero D
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 

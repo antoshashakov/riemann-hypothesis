@@ -48,6 +48,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.LocalRingCardinality.Params
+import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LDrowLemmas
 
 @[expose] public section
 
@@ -112,17 +113,8 @@ theorem coeff_sqAct_diag {r : ℕ} (lam : DomWeight r) (t : Fin r → ℂˣ) (f 
     prod_rowDeg (fun a => (t a : ℂ)) m]
 
 theorem weight_rowW_apply {r c : ℕ} (m : Fin r × Fin c →₀ ℕ) (a : Fin r) :
-    Finsupp.weight (rowW r c) m a = rowDeg m a := by
-  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply,
-    Fintype.sum_prod_type]
-  unfold rowDeg
-  rw [Finset.sum_eq_single a]
-  · refine Finset.sum_congr rfl fun s _ => ?_
-    simp [rowW]
-  · intro b _ hb
-    refine Finset.sum_eq_zero fun s _ => ?_
-    simp [rowW, Pi.single_apply, Ne.symm hb]
-  · simp
+    Finsupp.weight (rowW r c) m a = rowDeg m a :=
+  Formalism.GradedWeylDivisibility.ldrow_weight_rowW m a
 
 theorem weight_colW_apply {r c : ℕ} (m : Fin r × Fin c →₀ ℕ) (j : Fin c) :
     Finsupp.weight (colW r c) m j = ∑ a, m (a, j) := by

@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CuspidalFrame
 
 @[expose] public section
 
@@ -64,38 +65,8 @@ theorem one_mem_Kg (I : AutInst) (g : ℕ) : (1 : I.Gf) ∈ I.Kg g := by
   · simp
   · simp [AutInst.fmat]
 
-theorem re_fixed (B : RowsAut) : ∀ k ∈ B.I.Kg B.g, (B.R (1, k)).comp B.Re = B.Re := by
-  intro k hk
-  obtain ⟨h1, hm, hn, -, -⟩ := GlobalTheory.RightRegFund.rightReg_unitary_continuous B
-  obtain ⟨-, -, -, -, -, hbi, -⟩ := B.e_adm
-
-  set π : B.I.Gf → (B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund) := fun a => B.R (1, a) with hπ
-  have hπ1 : π 1 = 1 := h1
-  have hπm : ∀ a b, π (a * b) = π a * π b := fun a b => by
-    simp only [hπ]
-    rw [← hm]
-    congr 1
-    ext <;> simp
-  have hπn : ∀ a v, ‖π a v‖ = ‖v‖ := fun a v => hn _ v
-
-  have hek : ∀ x, B.e (k * x) = B.e x := fun x => by
-    simpa using hbi x k hk 1 (one_mem_Kg B.I B.g)
-  refine ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_
-  rw [ContinuousLinearMap.comp_apply]
-  change ⟪x, π k (B.Re y)⟫_ℂ = _
-  rw [GlobalTheory.IdemProj.inner_rep π hπ1 hπm hπn k x (B.Re y), B.Re_spec.2 (π k⁻¹ x) y, B.Re_spec.2 x y]
-  have hinner : ∀ a, ⟪π k⁻¹ x, B.R (1, a) y⟫_ℂ = ⟪x, B.R (1, k * a) y⟫_ℂ := fun a => by
-    have := (GlobalTheory.IdemProj.inner_rep π hπ1 hπm hπn k x (π a y)).symm
-    change ⟪π k⁻¹ x, π a y⟫_ℂ = ⟪x, π (k * a) y⟫_ℂ
-    rw [this, hπm, ContinuousLinearMap.mul_apply]
-  simp_rw [hinner]
-  calc ∫ a, B.e a * ⟪x, B.R (1, k * a) y⟫_ℂ ∂B.μf
-      = ∫ a, (fun b => B.e b * ⟪x, B.R (1, b) y⟫_ℂ) (k * a) ∂B.μf := by
-        congr 1
-        ext a
-        simp only [hek]
-    _ = ∫ a, B.e a * ⟪x, B.R (1, a) y⟫_ℂ ∂B.μf := by
-        exact integral_mul_left_eq_self (μ := B.μf) (fun b => B.e b * ⟪x, B.R (1, b) y⟫_ℂ) k
+theorem re_fixed (B : RowsAut) : ∀ k ∈ B.I.Kg B.g, (B.R (1, k)).comp B.Re = B.Re :=
+  GlobalTheory.Dec.CuspFrame.re_fixed B
 
 theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hd : IsDSData B d)
     (hl : LocDec B h) (hb : HBig B 40 h) : Integrable (ph B d) (muInf B.I) := by

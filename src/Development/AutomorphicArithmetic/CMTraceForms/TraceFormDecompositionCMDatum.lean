@@ -66,53 +66,8 @@ namespace UpperTheory.TraceSumEquivalence
 
 private theorem exists_equiv (E : Type) [Field E] [NumberField E] (C : Type) [Field C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) :
-    ∃ Φ : (E →ₐ[ℚ] C) ≃ (𝓞 E →+* O), ∀ σ (y : 𝓞 E), algebraMap O C (Φ σ y) = σ (y : E) := by
-  classical
-  have hinj : Function.Injective (algebraMap O C) := hv.hom_inj
-  have hmem : ∀ (σ : E →ₐ[ℚ] C) (y : 𝓞 E), σ (y : E) ∈ (algebraMap O C).range := by
-    intro σ y
-    have hi : IsIntegral ℤ (σ (y : E)) :=
-      (RingOfIntegers.isIntegral_coe y).map σ.toRingHom.toIntAlgHom
-    have hi' : IsIntegral O (σ (y : E)) := hi.tower_top
-    obtain ⟨z, hz⟩ := hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.mp hi')
-    exact ⟨z, hz⟩
-  let e : O ≃+* (algebraMap O C).range :=
-    RingEquiv.ofLeftInverse (Function.leftInverse_invFun hinj)
-  have he : ∀ z, algebraMap O C (e.symm z) = z := by
-    intro z
-    obtain ⟨a, ha⟩ := z.2
-    show algebraMap O C (Function.invFun (algebraMap O C) z) = z
-    exact Function.invFun_eq ⟨a, ha⟩
-  let F : (E →ₐ[ℚ] C) → (𝓞 E →+* O) := fun σ =>
-    e.symm.toRingHom.comp ((σ.toRingHom.comp (algebraMap (𝓞 E) E)).codRestrict _ (hmem σ))
-  have hF : ∀ σ (y : 𝓞 E), algebraMap O C (F σ y) = σ (y : E) := fun σ y => he _
-  have hFi : Function.Injective F := by
-    intro σ τ h
-    have h1 : σ.toRingHom.comp (algebraMap (𝓞 E) E) = τ.toRingHom.comp (algebraMap (𝓞 E) E) := by
-      ext y
-      have := congrArg (fun φ : 𝓞 E →+* O => algebraMap O C (φ y)) h
-      simp only [hF] at this
-      exact this
-    have h2 : σ.toRingHom = τ.toRingHom :=
-      IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h1
-    exact AlgHom.coe_ringHom_injective h2
-  have hFs : Function.Surjective F := by
-    intro τ
-    let g : 𝓞 E →+* C := (algebraMap O C).comp τ
-    have hg : Function.Injective g := by
-      rw [RingHom.injective_iff_ker_eq_bot]
-      apply Ideal.eq_bot_of_comap_eq_bot (R := ℤ)
-      change Ideal.comap (algebraMap ℤ (𝓞 E)) (RingHom.ker g) = ⊥
-      rw [RingHom.comap_ker]
-      have : g.comp (algebraMap ℤ (𝓞 E)) = Int.castRingHom C := RingHom.ext_int _ _
-      rw [this]
-      exact (RingHom.injective_iff_ker_eq_bot _).mp Int.cast_injective
-    refine ⟨(IsFractionRing.lift hg : E →+* C).toRatAlgHom, ?_⟩
-    ext y
-    apply hinj
-    rw [hF]
-    exact IsFractionRing.lift_algebraMap hg y
-  exact ⟨Equiv.ofBijective F ⟨hFi, hFs⟩, hF⟩
+    ∃ Φ : (E →ₐ[ℚ] C) ≃ (𝓞 E →+* O), ∀ σ (y : 𝓞 E), algebraMap O C (Φ σ y) = σ (y : E) :=
+  GlobalTheory.EmbCount.exists_equiv E C v O hv
 
 private theorem trace_eq_sum (E : Type) [Field E] [NumberField E] (p : ℕ) [Fact p.Prime] (C : Type)
     [Field C] [IsAlgClosed C] [CharZero C] (O : Type) [CommRing O] [Algebra O C]
