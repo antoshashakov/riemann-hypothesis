@@ -6,10 +6,10 @@ public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassifica
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.ScalarCharacters.ScalCharOfSimple
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.SimpleBackwardTransfer.FwdSimpleOfb
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.TensorReflections.PiIsoTensVd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeBackwardStableStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeBackwardStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeNonScalarStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OmegaScalarStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeBackwardStable
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeBackward
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeNonScalar
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OmegaScalar
 import Supplements.MathlibImports.AnalysisAndTactics
 
 @[expose] public section
@@ -19,15 +19,15 @@ namespace CompanionTheory.RgExh.Hk
 theorem unitarity : Unit := UnitB.unit_of_dualFacts dual_module_facts
 
 theorem reflection_symmetry : Reflect :=
-  reflect_of' GlobalTheory.T.QuantumDeterminantTensor GlobalTheory.T.OmegaScalar GlobalTheory.T.HeckeBackwardStable dual_module_facts unitarity
+  reflect_of' GlobalTheory.T.QuantumDeterminantTensor _root_.GlobalTheory.CompanionTheory.RgExhHecke.OmScalP.omScal _root_.GlobalTheory.CompanionTheory.RgHeckeBack.backStable dual_module_facts unitarity
 
 theorem forward_simple_module : FwdSimple :=
-  forward_simple_of_tensor_facts GlobalTheory.T.QuantumDeterminantTensor GlobalTheory.T.HeckeBackwardStable dual_module_facts unitarity
+  forward_simple_of_tensor_facts GlobalTheory.T.QuantumDeterminantTensor _root_.GlobalTheory.CompanionTheory.RgHeckeBack.backStable dual_module_facts unitarity
 
 theorem infinitesimal_character_shift : CompanionTheory.RgExh.StepChar := GlobalTheory.T.InfinitesimalCharacterStatement
 
 theorem hecke_algebra_exhaustion : CompanionTheory.RgExh.Hecke :=
-  hecke_of' GlobalTheory.T.QuantumDeterminantEquality GlobalTheory.T.InfinitesimalCharacterStatement GlobalTheory.T.CayleyHamiltonHk GlobalTheory.T.HeckeNonVanishing GlobalTheory.T.HeckeNonScalar GlobalTheory.T.HeckeBackward GlobalTheory.T.OmegaScalar
+  hecke_of' GlobalTheory.T.QuantumDeterminantEquality GlobalTheory.T.InfinitesimalCharacterStatement GlobalTheory.T.CayleyHamiltonHk GlobalTheory.T.HeckeNonVanishing _root_.GlobalTheory.CompanionTheory.RgExhHecke.NonScalProof.nonScal _root_.GlobalTheory.CompanionTheory.RgExhHecke.BackProof.back _root_.GlobalTheory.CompanionTheory.RgExhHecke.OmScalP.omScal
     forward_simple_module reflection_symmetry
 
 end CompanionTheory.RgExh.Hk

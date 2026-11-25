@@ -4,7 +4,7 @@ public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassifica
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.HeckeUnitTensors.ContOfFnProd
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HeckeRankOneStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OmegaMinorStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.PrincipalSumStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.PrincipalSum
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensor
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Mathlib.Algebra.Module.StablyFree.Basic
@@ -185,7 +185,7 @@ theorem ptr_Pr (hS : ScalChar X χ) (v : X.V) :
     · intro b _ hb; rw [Pi.single_eq_of_ne hb, map_zero, smul_zero]
     · intro h; exact absurd (mem_univ c) h
   simp only [e, ← Finset.smul_sum]
-  have hp := GlobalTheory.T.PrincipalSum m X.V X.E X.gl (omg χ s)
+  have hp := _root_.GlobalTheory.CompanionTheory.PrinSumP.prinSum m X.V X.E X.gl (omg χ s)
   rw [← LinearMap.sum_apply, hp, LinearMap.sub_apply, qdet_omg hS, LinearMap.zero_apply, zero_sub,
     qdet_scal hS, show omg χ s - 1 - cn (m + 1) = -χ s - 1 by rw [omg]; ring, LinearMap.smul_apply,
     Module.End.one_apply, smul_neg, smul_smul, ← neg_smul]
