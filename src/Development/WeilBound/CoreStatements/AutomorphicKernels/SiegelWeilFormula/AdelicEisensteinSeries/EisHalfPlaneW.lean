@@ -61,15 +61,15 @@ namespace PositivityTheory.SiegelWeilFormula.Aeis
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
-theorem eis_half_plane_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
+theorem eis_half_plane_w_c {B : Base F E} (hB_cm : IsCMExt F E σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
     {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (hH : IsHgt K a) (χ : Chr F E) (s₁ : ℂ)
     (f : G2 σ Y → ℂ) (hf : IsSec K χ s₁ f) :
     ∃ Ê : ℂ → G2 σ Y → ℂ, ∃ t : ℝ, (∀ s : ℂ, t < s.re → ∀ x, HasSum (eisTerm (flat a f s₁ s) x) (Ê s x)) ∧
       ∀ x, DifferentiableOn ℂ (Ê · x) {s | t < s.re} := by
-  have hKc : IsCompact (K : Set (G2 σ Y)) := isCompact_K_w hB hK
-  obtain ⟨-, hpos⟩ := height_pos_w hB hK hH
+  have hKc : IsCompact (K : Set (G2 σ Y)) := isCompact_K_w_c hB_cm hK
+  obtain ⟨-, hpos⟩ := height_pos_w_c hB_cm hK hH
   obtain ⟨C, hC⟩ := GlobalTheory.T.flat_section_growth_bound K a hKc hH hpos χ s₁ f hf
-  obtain ⟨σ₀, hσ⟩ := godement_sum_w hB hb hK hH
+  obtain ⟨σ₀, hσ⟩ := godement_sum_w_c hB_cm hb hK hH
   have hsum : ∀ σ' : ℝ, σ₀ < σ' → ∀ x : G2 σ Y,
       Summable (fun q : Cos σ Y => a ((Quotient.out q).1 * x) ^ σ') := by
     intro σ' h x
@@ -114,17 +114,25 @@ theorem eis_half_plane_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fi
       hopen.mem_nhds ⟨hc2, by rw [hd]; linarith⟩
     exact (hD.differentiableAt hmem).differentiableWithinAt
 
-theorem eis_half_mod_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
+theorem eis_half_plane_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
+    {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (hH : IsHgt K a) (χ : Chr F E) (s₁ : ℂ)
+    (f : G2 σ Y → ℂ) (hf : IsSec K χ s₁ f) :
+    ∃ Ê : ℂ → G2 σ Y → ℂ, ∃ t : ℝ, (∀ s : ℂ, t < s.re → ∀ x,
+        HasSum (eisTerm (flat a f s₁ s) x) (Ê s x)) ∧
+      ∀ x, DifferentiableOn ℂ (Ê · x) {s | t < s.re} :=
+  eis_half_plane_w_c hB.cm hb hK hH χ s₁ f hf
+
+theorem eis_half_mod_w_c {B : Base F E} (hB_cm : IsCMExt F E σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
     {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) (χ : Chr F E) (s₁ : ℂ)
     (f : G2 σ Y → ℂ) (hf : IsSec K χ s₁ f) :
     ∃ t₀ : ℝ, ∀ (t : ℝ) (Ê : ℂ → G2 σ Y → ℂ), t₀ ≤ t → (∀ s : ℂ, t < s.re → ∀ x, HasSum (eisTerm (flat a f s₁ s) x) (Ê s x)) →
       (∀ s : ℂ, t < s.re → (fun x => Ê s x) ∈ modFun σ Y) ∧ ContinuousOn (fun y : ℂ × G2 σ Y => Ê y.1 y.2) ({s : ℂ | t < s.re} ×ˢ Set.univ) ∧
       ∀ c c' : ℝ, t < c → ∃ (C : ℝ) (N : ℕ), ∀ s : ℂ, c ≤ s.re → s.re ≤ c' → ∀ x, ‖Ê s x‖ ≤ C * (ht2 x : ℝ) ^ N := by
   haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
-  obtain ⟨ac, a0⟩ := height_pos_w hB hK ha
-  have kc := isCompact_K_w hB hK
+  obtain ⟨ac, a0⟩ := height_pos_w_c hB_cm hK ha
+  have kc := isCompact_K_w_c hB_cm hK
   obtain ⟨C, hC⟩ := GlobalTheory.T.flat_section_growth_bound K a kc ha a0 χ s₁ f hf
-  obtain ⟨σ₀, hG⟩ := godement_sum_w hB hb hK ha
+  obtain ⟨σ₀, hG⟩ := godement_sum_w_c hB_cm hb hK ha
   obtain ⟨W, hW, h1W, hWa⟩ := exists_nhd_one kc ac ha a0
   refine ⟨σ₀ - n / 2, fun t Ê ht hE => ?_⟩
   have tb : ∀ (z : ℂ) (c c' : ℝ), c ≤ z.re → z.re ≤ c' → ∀ g,
@@ -200,6 +208,17 @@ theorem eis_half_mod_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin 
   have q0 : (0 : ℝ) ≤ (ht2 x : ℝ) ^ N := pow_nonneg (by linarith) _
   rw [Pi.smul_apply, norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg M0.le, inv_mul_le_iff₀ M0]
   exact (hD z le_rfl le_rfl x).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) q0)
+
+theorem eis_half_mod_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
+    {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) (χ : Chr F E) (s₁ : ℂ)
+    (f : G2 σ Y → ℂ) (hf : IsSec K χ s₁ f) :
+    ∃ t₀ : ℝ, ∀ (t : ℝ) (Ê : ℂ → G2 σ Y → ℂ), t₀ ≤ t → (∀ s : ℂ, t < s.re → ∀ x,
+        HasSum (eisTerm (flat a f s₁ s) x) (Ê s x)) →
+      (∀ s : ℂ, t < s.re → (fun x => Ê s x) ∈ modFun σ Y) ∧
+          ContinuousOn (fun y : ℂ × G2 σ Y => Ê y.1 y.2) ({s : ℂ | t < s.re} ×ˢ Set.univ) ∧
+      ∀ c c' : ℝ, t < c → ∃ (C : ℝ) (N : ℕ), ∀ s : ℂ, c ≤ s.re → s.re ≤ c' → ∀ x,
+          ‖Ê s x‖ ≤ C * (ht2 x : ℝ) ^ N :=
+  eis_half_mod_w_c hB.cm hb hK ha χ s₁ f hf
 
 theorem eisHalf_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
     {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) (χ : Chr F E) (s₁ : ℂ)
