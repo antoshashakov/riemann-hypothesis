@@ -76,11 +76,11 @@ theorem continuous_comp_infPartF {F E : Type} [Field F] [NumberField F] [Field E
   rw [this]
   exact continuous_finsetSum _ fun i _ => (hg.comp ((continuous_apply i).comp hrep)).mul continuous_const
 
-theorem continuous_mMF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
-    (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
+theorem continuous_mMF_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
+    (B : Base F E),  ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
       (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)),
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → Continuous (mMF σ JS JT θ) := by
-  intro F E _ _ _ _ _ σ B _ nS nT JS JT θ hθ
+  intro F E _ _ _ _ _ σ B nS nT JS JT θ hθ
   have hc : ∀ (w : InfinitePlace F) (m n : ℕ), Continuous fun x : Matrix (Fin m) (Fin n) (AEF F E) => compAtF θ w x :=
     fun w m n => continuous_id.matrix_map (continuous_comp_infPartF (hθ w))
   have h1 : Continuous fun p : GAF σ JS × GAF σ JT => mtF σ JT p.2 :=
@@ -95,6 +95,13 @@ theorem continuous_mMF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
       GlobalTheory.RealWeil.blk (fun w => compAtF θ w (mtF σ JT p.2)) fun w => compAtF θ w (mtF σ JS p.1⁻¹) := funext fun p => rfl
   rw [e]
   exact GlobalTheory.RealWeil.continuous_blk (fun w => (hc w _ _).comp h1) fun w => (hc w _ _).comp h2
+
+theorem continuous_mMF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
+    (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
+      (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)),
+      IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → Continuous (mMF σ JS JT θ) := by
+  intro F E _ _ _ _ _ σ B hB_anon_
+  exact continuous_mMF_c F E σ B
 
 end GlobalTheory.RealWeilF.MCont
 

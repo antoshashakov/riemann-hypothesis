@@ -49,15 +49,15 @@ open Formalism.IndefR.DatumF
 
 namespace GlobalTheory.WeilPairPartnerF
 
-theorem pair_partnerF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
+theorem pair_partnerF_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+     IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
     ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
       ∀ (JA : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E), JA = JTᵀ →
         ξ • incM F JB = incM F (ξ₀ • JS⁻¹) →
         ∀ (a : UG (cA σ) (incM F JA)) (b : UG (cA σ) (incM F JB)),
           ∃ (g : GAF σ JS) (h : GAF σ JT), mtF σ JT h = a.1.1 ∧ mtF σ JS g = (b⁻¹).1.1ᵀ := by
-  intro F E _ _ _ _ _ σ B _ _ nS nT JS JT hS _ ξ₀ hξ₀ _ JA JB ξ hA hB a b
+  intro F E _ _ _ _ _ σ B _ nS nT JS JT hS _ ξ₀ hξ₀ _ JA JB ξ hA hB a b
   have hmap : ∀ {m n : Type} (X : Matrix m n (AF F ⊗[F] E)),
       X.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) = X.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) :=
     fun X => Matrix.ext fun i j => rfl
@@ -107,5 +107,16 @@ theorem pair_partnerF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   refine ⟨⟨gU, hmemB⟩, ⟨a.1, hmemA⟩, rfl, ?_⟩
   show Biᵀ = ((b⁻¹).1.val)ᵀ
   rw [hBidef]
+
+theorem pair_partnerF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
+    ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
+      ∀ (JA : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E), JA = JTᵀ →
+        ξ • incM F JB = incM F (ξ₀ • JS⁻¹) →
+        ∀ (a : UG (cA σ) (incM F JA)) (b : UG (cA σ) (incM F JB)),
+          ∃ (g : GAF σ JS) (h : GAF σ JT), mtF σ JT h = a.1.1 ∧ mtF σ JS g = (b⁻¹).1.1ᵀ := by
+  intro F E _ _ _ _ _ σ B hB_anon_
+  exact pair_partnerF_c F E σ B
 
 end GlobalTheory.WeilPairPartnerF

@@ -61,14 +61,8 @@ theorem heisOF_dblG_deltaT_k : ∀ (F E : Type) [Field F] [NumberField F] [Field
         Formalism.IndefR.DatumF.heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ w (GlobalTheory.DblTargetDelta.deltaT f₁ f₂) =
           GlobalTheory.DblTargetDelta.deltaT (Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (GlobalTheory.DblTargetDelta.topR w) f₁)
             (Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (-GlobalTheory.DblTargetDelta.botR w) f₂) := by
-  intro F E _ _ _ _ _ σ B hB nS nT JS JT _ _ ξ₀ _ _ w f₁ f₂
-  have hn : ∀ x, ‖B.ψ x‖ = 1 := (_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B hB).1.2.1
-  funext x
-  have ht : topR (x + w) = topR x + topR w := rfl
-  have hb : -botR (x + w) = -botR x + -botR w := by
-    rw [← neg_add]; rfl
-  simp only [heisOF, deltaT_apply, ht, hb, symplOHF_dblG, map_mul, conj_psi hn, sub_eq_add_neg, AddChar.map_add_eq_mul]
-  ring
+  intro F E _ _ _ _ _ σ B hB
+  exact _root_.GlobalTheory.DblHeis.heisOF_dblG_deltaT_c F E σ B hB.cm hB.std
 end GlobalTheory.DblHeis
 end
 end
