@@ -2,23 +2,24 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreFunctionLocallyConstantCompactStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCompactCosetSet
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosureKernelMemJacquetKernelStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosureKernelMemJacquetKernel
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousLeviUnipotentProjStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetFunctionJacquetKernelStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetFunctionTranslateJacquetKernelStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsLatticePeriodicityStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreFunctionUnipotentActionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteFibreFunctionsCompactStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteJacquetKernelCommonLatticeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureCosetNeZeroStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedVanishingOnCompactStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralCosetIndicatorSumStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetFunctionJacquetKernel
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetFunctionTranslateJacquetKernel
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsLatticePeriodicity
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreFunctionUnipotentAction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUMOfMem
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteFibreFunctionsCompact
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteJacquetKernelCommonLattice
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureCosetNeZero
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedVanishingOnCompact
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralCosetIndicatorSum
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothSmInd
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetKernelLatticeConjCompactStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCosetIndicatorSumStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetKernelLatticeConjCompact
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCosetIndicatorSum
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemTwKerIffAverage
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothFibreActionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothTopRepresentationStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothFibreAction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothTopRepresentation
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumOverCompactCosetsJacquetKernelStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -121,7 +122,7 @@ theorem exists_sum_eq_zero_abs (n : ℕ) {X Y : Type} [AddCommGroup X] [Module �
     (x : X) (hx : ∀ κ ∈ S, F κ x ∈ twKer ρ ⊤ 1) (hfin : ((fun κ => F κ x) '' S).Finite) :
     ∃ T : Finset (Multiplicative (Fin n → k)), T.Nonempty ∧ ∑ y ∈ T, ρ' y x = 0 := by
   classical
-  obtain ⟨c, hc, hS'⟩ := GlobalTheory.T.finite_jacquet_kernel_common_lattice k n ρ _ hfin (by
+  obtain ⟨c, hc, hS'⟩ := _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.exists_Lc_finite_twKer k n ρ _ hfin (by
     rintro _ ⟨κ, hκ, rfl⟩
     exact hx κ hκ)
   have hcomp : IsCompact (Lc n c : Set (Multiplicative (Fin n → k))) := isCompact_Lc n hc
@@ -143,7 +144,7 @@ theorem exists_sum_eq_zero_abs (n : ℕ) {X Y : Type} [AddCommGroup X] [Module �
   have hsmooth : IsSmooth (MonoidHom.comp ρ (mulH κ)) := fun v =>
     (hρ v).preimage (continuous_mulH κ)
   have key := GlobalTheory.T.sum_over_compact_cosets_jacquet_kernel (MonoidHom.comp ρ (mulH κ)) hsmooth (Lc n c) hcomp (F κ x)
-    (GlobalTheory.T.jacquet_kernel_lattice_conj_compact k n ρ c κ (hS κ hκ) _ (hS' _ ⟨κ, hκ, rfl⟩)) K T hKo
+    (_root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.IntTwist.twKer_Lc_le_twist k n ρ c κ (hS κ hκ) _ (hS' _ ⟨κ, hκ, rfl⟩)) K T hKo
     (fun l hl => by
       have h1 : ρ' (l : Multiplicative (Fin n → k)) x = x := hl.1
       have h2 := hF κ hκ (l : Multiplicative (Fin n → k)) x
@@ -157,18 +158,18 @@ theorem mem_twKer_fibAct (i t : ℕ) {Z : Type} [AddCommGroup Z] [Module ℂ Z]
     [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure]
     (φ : fibM (Fin t → k) Z) (h : smInt μ φ.1 ∈ twKer ρ₀ ⊤ 1) : φ ∈ twKer (fibAct t ρ₀) ⊤ 1 := by
   classical
-  obtain ⟨c, hc, hinv⟩ := GlobalTheory.T.exists_lattice_periodicity k t φ.1 φ.2.1 φ.2.2
-  obtain ⟨A, hA⟩ := GlobalTheory.T.locally_constant_coset_indicator_sum k t φ.1 c hc φ.2.2 hinv
+  obtain ⟨c, hc, hinv⟩ := _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.LatInv.exists_Lc_invariant k t φ.1 φ.2.1 φ.2.2
+  obtain ⟨A, hA⟩ := _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_sum_coset_indicators k t φ.1 c hc φ.2.2 hinv
   have hφ : φ.1 = fun v => ∑ a ∈ A, (cosetSet t c a).indicator (fun _ => φ.1 a) v := funext hA
   have hsum : φ = ∑ a ∈ A, cosetFn t hc a (φ.1 a) := by
     apply Subtype.ext
     funext v
     rw [hA v, Submodule.coe_sum, Finset.sum_apply]
     rfl
-  have hI := GlobalTheory.T.integral_coset_indicator_sum k t μ c hc A φ.1
+  have hI := _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmSum.smInt_sum_coset k t μ c hc A φ.1
   rw [← hφ] at hI
   rw [hI] at h
-  have hz : ∑ a ∈ A, φ.1 a ∈ twKer ρ₀ ⊤ 1 := ((twKer ρ₀ ⊤ 1).smul_mem_iff (GlobalTheory.T.haar_measure_coset_ne_zero k t μ c hc)).1 h
+  have hz : ∑ a ∈ A, φ.1 a ∈ twKer ρ₀ ⊤ 1 := ((twKer ρ₀ ⊤ 1).smul_mem_iff (_root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.volume_cosetSet_ne_zero k t μ c hc)).1 h
   have h0 : cosetFn t hc 0 (∑ a ∈ A, φ.1 a) = ∑ a ∈ A, cosetFn t hc 0 (φ.1 a) := by
     apply Subtype.ext
     funext v
@@ -182,8 +183,8 @@ theorem mem_twKer_fibAct (i t : ℕ) {Z : Type} [AddCommGroup Z] [Module ℂ Z]
     have e : φ - cosetFn t hc 0 (∑ a ∈ A, φ.1 a) = ∑ a ∈ A, (cosetFn t hc a (φ.1 a) - cosetFn t hc 0 (φ.1 a)) := by
       rw [h0, Finset.sum_sub_distrib, ← hsum]
     rw [e]
-    exact Submodule.sum_mem _ fun a _ => GlobalTheory.T.coset_function_translate_jacquet_kernel k i t ρ₀ c hc a _
-  have := (twKer (fibAct t ρ₀) ⊤ 1).add_mem hd (GlobalTheory.T.coset_function_jacquet_kernel k i t ρ₀ c hc _ hz)
+    exact Submodule.sum_mem _ fun a _ => _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.cosetFn_sub_cosetFn_zero_mem_twKer k i t ρ₀ c hc a _
+  have := (twKer (fibAct t ρ₀) ⊤ 1).add_mem hd (_root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.CosetKer.cosetFn_mem_twKer k i t ρ₀ c hc _ hz)
   simpa using this
 
 end
@@ -210,26 +211,26 @@ end GlobalTheory.CompanionTheory.BZPsiPG.FibKer
 theorem GlobalTheory.CompanionTheory.BZPsiPG.FibKer.mem_twKer_of_fibInt_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W), IsSmooth τ → IsSmooth σ → ∀ [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure], ∀ f : cIndSpace (HPG k i t) (hRep τ σ), (∀ g, fibInt μ f g = 0) → f ∈ twKer (prodPG τ σ) (MirUin k (i + t)) 1 := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ f hf
   classical
-  have hsm₀ : IsSmooth (topRep τ W) := GlobalTheory.T.smooth_top_representation k i τ hτ
-  have hsm : IsSmooth (fibAct t (topRep τ W)) := GlobalTheory.T.smooth_fibre_action k i t (topRep τ W) hsm₀
+  have hsm₀ : IsSmooth (topRep τ W) := _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.isSmooth_topRep k i τ hτ
+  have hsm : IsSmooth (fibAct t (topRep τ W)) := _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmFib.isSmooth_fibAct k i t (topRep τ W) hsm₀
   have hsmP : IsSmooth (MonoidHom.comp (prodPG τ σ) (uMh k (i + t))) := fun v =>
     (GlobalTheory.CompanionTheory.BZFun.isSmooth_cInd _ _ v).preimage (continuous_uMh (i + t))
   have hker : ∀ κ, fibLin τ σ hτ hσ κ f ∈ twKer (fibAct t (topRep τ W)) ⊤ 1 := fun κ =>
-    mem_twKer_fibAct i t (topRep τ W) μ (fibLin τ σ hτ hσ κ f) (GlobalTheory.T.closure_kernel_mem_jacquet_kernel k i τ _ (hf κ))
+    mem_twKer_fibAct i t (topRep τ W) μ (fibLin τ σ hτ hσ κ f) (_root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.mem_twKer_topRep_of_clT_eq_zero k i τ _ (hf κ))
   have hfin : ((fun κ => fibLin τ σ hτ hσ κ f) '' (GlobalTheory.SplitWeil.KO k (Fin (i + t)) : Set (GL (Fin (i + t)) k))).Finite := by
     refine Set.Finite.of_finite_image (f := Subtype.val) ?_ Subtype.val_injective.injOn
     rw [Set.image_image]
-    exact GlobalTheory.T.finite_fibre_functions_compact k i t τ σ f
+    exact _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibFin.finite_fibV_image k i t τ σ f
   have hF : ∀ κ ∈ (GlobalTheory.SplitWeil.KO k (Fin (i + t)) : Set (GL (Fin (i + t)) k)), ∀ y x,
       fibLin τ σ hτ hσ κ (MonoidHom.comp (prodPG τ σ) (uMh k (i + t)) y x) =
         fibAct t (topRep τ W) (mulH κ y) (fibLin τ σ hτ hσ κ x) := by
     intro κ _ y x
     apply Subtype.ext
     funext v
-    exact GlobalTheory.T.fibre_function_unipotent_action k i t τ σ x y.toAdd κ v
+    exact _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.FibU.fibV_uM k i t τ σ x y.toAdd κ v
   have hinj : ∀ x, (∀ κ ∈ (GlobalTheory.SplitWeil.KO k (Fin (i + t)) : Set (GL (Fin (i + t)) k)), fibLin τ σ hτ hσ κ x = 0) → x = 0 := by
     intro x hx
-    exact GlobalTheory.T.induced_vanishing_on_compact k i t τ σ x fun κ hκ => congrArg Subtype.val (hx κ hκ)
+    exact _root_.GlobalTheory.CompanionTheory.BZPsiPG.FibKer.eq_zero_of_fibV_eq_zero k i t τ σ x fun κ hκ => congrArg Subtype.val (hx κ hκ)
   obtain ⟨T, hTn, hT⟩ := exists_sum_eq_zero_abs (i + t) (fibAct t (topRep τ W)) hsm
     (MonoidHom.comp (prodPG τ σ) (uMh k (i + t))) hsmP _ (fun _ h => h) (fibLin τ σ hτ hσ) hF hinj f
     (fun κ _ => hker κ) hfin
