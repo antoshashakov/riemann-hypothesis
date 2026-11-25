@@ -5,19 +5,22 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsTestZe
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ContinuousSetIntegralConstTermOn
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralNormRmulLe
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterCommutesOneParameterFlowStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterEnvelopingCommutesLieStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvolutionMaximalCompactEquivariantStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvolutionRightInvariantOpenCompactStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvolutionSmoothLieDerivativeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalConvolutionSplitCentreInvariantStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTestFunctionFixedSubspaceStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KFiniteIrreducibleFixedVectorsStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousConjFin
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterCommutesOneParameterFlow
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterEnvelopingCommutesLie
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvolutionMaximalCompactEquivariant
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvolutionRightInvariantOpenCompact
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvolutionSmoothLieDerivative
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalConvolutionSplitCentreInvariant
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTestFunctionFixedSubspace
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KFiniteIrreducibleFixedVectors
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightTranslationLieConjugate
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TestFunctionContinuousCompactSupportStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TestFunctionDerivativeIsTestStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryExponentialPathExistsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TestFunctionDerivativeIsTest
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryExponentialPathExists
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -77,34 +80,34 @@ theorem continuous_tst {U : Subgroup (GL (Fin a) (Af E))} (hUo : IsOpen (U : Set
 theorem cv_mem_Sm {U : Subgroup (GL (Fin a) (Af E))} (hUo : IsOpen (U : Set (GL (Fin a) (Af E))))
     (hUc : IsCompact (U : Set (GL (Fin a) (Af E)))) {β : Lie E a → ℂ} (hβ : IsTest β) {Fl : GA E a → ℂ}
     (hFl : LocallyIntegrable Fl μ) : convR μ (tst U β) Fl ∈ Sm E a :=
-  (GlobalTheory.T.convolution_smooth_lie_derivative E a μ U hUo hUc β hβ Fl hFl).1
+  (_root_.GlobalTheory.CompanionTheory.SmoothRep.convR_tst_mem_Sm E a μ U hUo hUc β hβ Fl hFl).1
 
 omit μ in
-theorem isTest_dTest {β : Lie E a → ℂ} (hβ : IsTest β) (X : Lie E a) : IsTest (dTest X β) := GlobalTheory.T.test_function_derivative_is_test E a β hβ X
+theorem isTest_dTest {β : Lie E a → ℂ} (hβ : IsTest β) (X : Lie E a) : IsTest (dTest X β) := _root_.GlobalTheory.CompanionTheory.SmoothRep.isTest_dTest E a β hβ X
 
 theorem lieD_cv {U : Subgroup (GL (Fin a) (Af E))} (hUo : IsOpen (U : Set (GL (Fin a) (Af E))))
     (hUc : IsCompact (U : Set (GL (Fin a) (Af E)))) {β : Lie E a → ℂ} (hβ : IsTest β) {Fl : GA E a → ℂ}
     (hFl : LocallyIntegrable Fl μ) (X : Lie E a) (g : GA E a) :
     lieD X (convR μ (tst U β) Fl) g = convR μ (tst U (dTest X β)) Fl g :=
-  (GlobalTheory.T.convolution_smooth_lie_derivative E a μ U hUo hUc β hβ Fl hFl).2 X g
+  (_root_.GlobalTheory.CompanionTheory.SmoothRep.convR_tst_mem_Sm E a μ U hUo hUc β hβ Fl hFl).2 X g
 
 theorem cv_fin (U : Subgroup (GL (Fin a) (Af E))) (β : Lie E a → ℂ) (Fl : GA E a → ℂ) {u : GL (Fin a) (Af E)} (hu : u ∈ U)
-    (x : GA E a) : convR μ (tst U β) Fl (x * finGL E a u) = convR μ (tst U β) Fl x := GlobalTheory.T.convolution_right_invariant_open_compact E a μ U β Fl u hu x
+    (x : GA E a) : convR μ (tst U β) Fl (x * finGL E a u) = convR μ (tst U β) Fl x := _root_.GlobalTheory.CompanionTheory.SmoothRep.convR_tst_right_invariant E a μ U β Fl u hu x
 
 theorem cv_cpt (U : Subgroup (GL (Fin a) (Af E))) {β : Lie E a → ℂ} (hβ : ConjInv β) (F : L2 (latticeGL E a) μ) (k : Kinf E a)
     (x : GA E a) :
     convR μ (tst U β) (lift (latticeGL E a) (R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) F)) x =
-      convR μ (tst U β) (lift (latticeGL E a) F) (x * infGL E a (Unitary.toUnits k)) := GlobalTheory.T.convolution_maximal_compact_equivariant E a μ U β hβ F k x
+      convR μ (tst U β) (lift (latticeGL E a) F) (x * infGL E a (Unitary.toUnits k)) := _root_.GlobalTheory.CompanionTheory.SmoothRep.convR_tst_cpt E a μ U β hβ F k x
 
 theorem cv_split (f : GA E a → ℂ) {F : L2 (latticeGL E a) μ} (hF : F ∈ L2cusp μ) (t : ℝ) (x : GA E a) :
     convR μ f (lift (latticeGL E a) F) (splitCentre E a t * x) = convR μ f (lift (latticeGL E a) F) x :=
-  GlobalTheory.T.cuspidal_convolution_split_centre_invariant E a μ f F hF t x
+  _root_.GlobalTheory.CompanionTheory.SmoothRep.convR_lift_splitCentre_mul E a μ f F hF t x
 
 theorem exists_injective (U : Subgroup (GL (Fin a) (Af E))) (hUo : IsOpen (U : Set (GL (Fin a) (Af E))))
     (hUc : IsCompact (U : Set (GL (Fin a) (Af E)))) (X : Submodule ℂ (L2 (latticeGL E a) μ)) [hX' : FiniteDimensional ℂ X]
     (hX : ∀ u ∈ U, ∀ v ∈ X, R (latticeGL E a) μ (finGL E a u) v = v) :
     ∃ β : Lie E a → ℂ, IsTest β ∧ ConjInv β ∧ ∀ v ∈ X, Rop (latticeGL E a) μ (tst U β) v = 0 → v = 0 :=
-  GlobalTheory.T.exists_test_function_fixed_subspace E a μ U hUo hUc X hX' hX
+  _root_.GlobalTheory.CompanionTheory.SmoothRep.Inj.exists_isTest_Rop_injective E a μ U hUo hUc X hX' hX
 
 theorem exists_typeSpace (H : Submodule ℂ (L2 (latticeGL E a) μ)) (hH : H ≤ L2cusp μ)
     (hI : IsIrredSubrep (R (latticeGL E a) μ) H) (F : L2 (latticeGL E a) μ) (hFH : F ∈ H) (hF : IsKFinL2 μ F) :
@@ -117,14 +120,14 @@ theorem exists_typeSpace (H : Submodule ℂ (L2 (latticeGL E a) μ)) (hH : H ≤
             R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (B v)) →
           (∀ v ∈ H, (∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) v = v) →
             B v ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) (B v) = B v) →
-          ∀ v ∈ X, B v ∈ X := GlobalTheory.T.k_finite_irreducible_fixed_vectors E a μ H hH hI F hFH hF
+          ∀ v ∈ X, B v ∈ X := _root_.GlobalTheory.CompanionTheory.TypeSpace.exists_typeSpace E a μ H hH hI F hFH hF
 
 
 omit μ in
 theorem Zalg_comm_cptRep {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (k : Kinf E a) :
     z * cptRep E a k = cptRep E a k * z := by
-  obtain ⟨c, Y, h0, h1, hd, hi⟩ := GlobalTheory.T.unitary_exponential_path_exists E a k
-  have h := GlobalTheory.T.center_commutes_one_parameter_flow E a (_root_.GlobalTheory.CompanionTheory.SmoothRep.rt_infGL_mul_lie E a) z hz (GlobalTheory.T.center_enveloping_commutes_lie E a z hz) c Y h0 hd hi
+  obtain ⟨c, Y, h0, h1, hd, hi⟩ := _root_.GlobalTheory.CompanionTheory.SmoothRep.KCurve.exists_curve E a k
+  have h := _root_.GlobalTheory.CompanionTheory.SmoothRep.Flow.zalg_comm_rt_curve E a (_root_.GlobalTheory.CompanionTheory.SmoothRep.rt_infGL_mul_lie E a) z hz (_root_.GlobalTheory.CompanionTheory.SmoothRep.Zalg_comm_lie E a z hz) c Y h0 hd hi
   rw [h1] at h
   exact h
 

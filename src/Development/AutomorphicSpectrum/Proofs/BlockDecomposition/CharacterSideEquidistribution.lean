@@ -2,15 +2,16 @@ module
 
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BaseOneSide.PsiSide
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.MeanVal
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanCutoffContinuousCompactSupportStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceCutoffContinuousCompactSupportStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurablePureAdelicFunctionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModuleRayEqPowDegreeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PureFunctionEnlargeFiniteSetStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PureFunctionThetaSeriesInvarianceStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PureFunctionTranslateRayUnitsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSeriesUniformBoundCompactStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSeriesVanishesLargeModuleStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanCutoffContinuousCompactSupport
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceCutoffContinuousCompactSupport
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurablePureAdelicFunction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModuleRayEqPowDegree
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PureFunctionEnlargeFiniteSet
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PureFunctionThetaSeriesInvariance
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThPr
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PureFunctionTranslateRayUnits
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSeriesUniformBoundCompact
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSeriesVanishesLargeModule
 public import GroundTheory.GlobalFields.IdeleGroups.NormOneCompact
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -85,10 +86,10 @@ theorem limit (hE : PositivityTheory.Rg.Mass.Equi) (hF : IsTotallyReal F) (θ : 
     Tendsto (fun δ : ℝ => ENNReal.ofReal (δ ^ Module.finrank ℚ F) * th (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) (a * r δ))
       (𝓝[>] 0) (𝓝 (ENNReal.ofReal ((md a)⁻¹ * ((∫ y, G y ∂li) * ∏ v ∈ S, ∫ s, g v s ∂(lam v))))) := by
   obtain ⟨T, hST, hT⟩ := exists_strictHenselian_absolutely_closed_local_ring a S
-  have hφ := GlobalTheory.T.archimedean_cutoff_continuous_compact_support F G a hG hGc
-  have hψ := GlobalTheory.T.finite_place_cutoff_continuous_compact_support F S g a hgS
+  have hφ := _root_.GlobalTheory.CompanionTheory.BasePsi.phiA_test F G a hG hGc
+  have hψ := _root_.GlobalTheory.CompanionTheory.BasePsi.Test.psiA_isTest F S g a hgS
   have h := hE F hF θ hθ li lam hli hlam Unit T (phiA G a) (fun v => psiA S g a v) hφ.1 hφ.2 (fun v _ => hψ v)
-  rw [GlobalTheory.T.pure_function_enlarge_finite_set F li lam hli hlam S T G g a hST hT] at h
+  rw [_root_.GlobalTheory.CompanionTheory.BasePsi.Integrals.integrals_translates F li lam hli hlam S T G g a hST hT] at h
   simp only [Fintype.card_unit, mul_one] at h
   set d := Module.finrank ℚ F with hd
   have hdpos : d ≠ 0 := (Module.finrank_pos (R := ℚ) (M := F)).ne'
@@ -144,7 +145,7 @@ theorem limit (hE : PositivityTheory.Rg.Mass.Equi) (hF : IsTotallyReal F) (θ : 
       ENNReal.ofReal (H 1 0) + th (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) (a * r δ) := by
     intro δ hδ
     have hfin : (Function.support (H δ)).Finite := by
-      refine (GlobalTheory.T.pure_function_theta_series_invariance F hF θ hθ S T G g a hG hGc hgS hST hT δ hδ).subset fun x hx => ?_
+      refine (_root_.GlobalTheory.CompanionTheory.BasePsi.finite_contributing F hF θ hθ S T G g a hG hGc hgS hST hT δ hδ).subset fun x hx => ?_
       simp only [Function.mem_support, H] at hx
       by_cases hP : P x
       · rw [ite_eq_left hP] at hx
@@ -165,7 +166,7 @@ theorem limit (hE : PositivityTheory.Rg.Mass.Equi) (hF : IsTotallyReal F) (θ : 
       by_cases hx : x = 0 <;> simp [hx, Set.indicator]
     rw [e3, ← e1]
     refine tsum_congr fun t => ?_
-    rw [GlobalTheory.T.pure_function_translate_ray_units F θ r hr S T G g a hST hT δ hδ t]
+    rw [_root_.GlobalTheory.CompanionTheory.BasePsi.pure_term F θ r hr S T G g a hST hT δ hδ t]
     simp only [H, P, q, unitsEquivNeZero_apply_coe]
     split_ifs <;> simp
   set z := ENNReal.ofReal (H 1 0) with hzdef
@@ -188,15 +189,15 @@ theorem limit (hE : PositivityTheory.Rg.Mass.Equi) (hF : IsTotallyReal F) (θ : 
 
 theorem psiSide_of_equi : PositivityTheory.Rg.Mass.Equi → PsiSide := by
   intro hE F _ _ hF θ hθ r hr li lam hli hlam S G g hG hGc hG0 hg0 hgS
-  refine ⟨GlobalTheory.T.measurable_pure_adelic_function F S G g hG fun v hv => (hgS v hv).1, ?_⟩
+  refine ⟨_root_.GlobalTheory.CompanionTheory.BasePsi.measurable_pure_rv_zero F S G g hG fun v hv => (hgS v hv).1, ?_⟩
   obtain ⟨D, hD, hD1, hDk⟩ := IdeleGroup.exists_isCompact_normOneSubgroup F
-  obtain ⟨C, hC⟩ := GlobalTheory.T.theta_series_uniform_bound_compact F hF θ hθ r hr S G g hG hGc hgS D hD
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.BasePsi.th_pure_rv_zero_bound F hF θ hθ r hr S G g hG hGc hgS D hD
   set d := Module.finrank ℚ F with hd
   have hdpos : d ≠ 0 := (Module.finrank_pos (R := ℚ) (M := F)).ne'
   have hmd : ∀ (a : (AF F)ˣ) (δ : ℝ), 0 < δ → ENNReal.ofReal (md (a * r δ)) = ENNReal.ofReal (md a) * ENNReal.ofReal (δ ^ d) := by
     intro a δ hδ
-    rw [md_mul, GlobalTheory.T.module_ray_eq_pow_degree F hF θ r hr δ hδ, ENNReal.ofReal_mul (md_pos a).le]
-  refine ⟨⟨C, fun a => ?_⟩, GlobalTheory.T.theta_series_vanishes_large_module F S G g hGc fun v hv => (hgS v hv).2, fun a ha => absurd (Subgroup.mem_top a) ha, fun a _ => ?_⟩
+    rw [md_mul, _root_.GlobalTheory.CompanionTheory.BasePsi.md_ray F hF θ r hr δ hδ, ENNReal.ofReal_mul (md_pos a).le]
+  refine ⟨⟨C, fun a => ?_⟩, _root_.GlobalTheory.CompanionTheory.BasePsi.th_pure_vanish F S G g hGc fun v hv => (hgS v hv).2, fun a ha => absurd (Subgroup.mem_top a) ha, fun a _ => ?_⟩
   · set δ : ℝ := md a ^ ((d : ℝ)⁻¹) with hδdef
     have hδ : 0 < δ := Real.rpow_pos_of_pos (md_pos a) _
     have hδd : δ ^ d = md a := Real.rpow_inv_natCast_pow (md_pos a).le hdpos
@@ -204,7 +205,7 @@ theorem psiSide_of_equi : PositivityTheory.Rg.Mass.Equi → PsiSide := by
     have hxr : x * r δ = a := by simp [hx]
     have hx1 : md x = 1 := by
       have h1 := md_mul x (r δ)
-      rw [hxr, GlobalTheory.T.module_ray_eq_pow_degree F hF θ r hr δ hδ, hδd] at h1
+      rw [hxr, _root_.GlobalTheory.CompanionTheory.BasePsi.md_ray F hF θ r hr δ hδ, hδd] at h1
       have := md_pos a
       field_simp at h1
       nlinarith [h1]

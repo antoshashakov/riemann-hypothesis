@@ -3,18 +3,19 @@ module
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoinvariantUnipotentCharacterTrivialStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralMulVecChangeModulusStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenRightInvarianceOrbitCoefficientStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoinvariantUnipotentCharacterTrivial
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralMulVecChangeModulus
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenRightInvarianceOrbitCoefficient
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSectionOpenCellAltBis
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCompactSupportUnipotent
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusCharactersProductOneStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellDoubleCosetUniquenessStatement
+public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.ProdGPn
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusCharactersProductOne
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellDoubleCosetUniqueness
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothIntegralLinear
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportCompactModParabolicOffClosedStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedCoinvariantLeviActionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentFactorizationCharacterTrivialStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeylConjParabolicProjStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportCompactModParabolicOffClosed
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedCoinvariantLeviAction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipotentFactorizationCharacterTrivial
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeylConjParabolicProj
 import GroundTheory.AutomorphicForms.GLnLocal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -139,7 +140,7 @@ variable {i t : ℕ}
 theorem eO_equiv (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ)
     (h : HPG k i (t + 1)) (m : Mir k (i + (t + 1))) :
     eO ψ f ((h : Mir k (i + (t + 1))) * m) = sigO τ σ ψ h (eO ψ f m) := by
-  obtain ⟨hη, hproj⟩ := GlobalTheory.T.weyl_conj_parabolic_proj k i t h
+  obtain ⟨hη, hproj⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.EtaConj.eta_mem_proj k i t h
   set a' := (pgProj k i (t + 1) h).1 with ha'
   set w' := (pgProj k i (t + 1) h).2 with hw'
   set y := wEl k i t * sEmb k ((i + 1) + t) (castM k (by omega) m) with hy
@@ -153,7 +154,7 @@ theorem eO_equiv (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t +
   let G : (Fin (t + 1) → k) → (phiN ψ τ).V ⊗[ℂ] σ.V := fun d => qO τ σ ψ (evX f (dEmb k i t d * y))
   have hpt : ∀ d, qO τ σ ψ (evX f (dEmb k i t d * (η * y))) = (sc • Tm) (G ((w'⁻¹ : GL (Fin (t + 1)) k).1.mulVec d)) := by
     intro d
-    obtain ⟨c, u, hc, hu, he⟩ := GlobalTheory.T.unipotent_factorization_character_trivial k ψ i t h d
+    obtain ⟨c, u, hc, hu, he⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Conj.dEmb_conj k ψ i t h d
     have e2 : dEmb k i t d * (η * y) =
         ((⟨η, hη⟩ : HPG k (i + 1) (t + 1)) : Mir k ((i + 1) + (t + 1))) * ((c : Mir k ((i + 1) + (t + 1))) *
           (dEmb k i t ((w'⁻¹ : GL (Fin (t + 1)) k).1.mulVec d) * y)) := by
@@ -167,7 +168,7 @@ theorem eO_equiv (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t +
     rw [e2, e3, e3]
     have e4 : ∀ (hh : HPG k (i + 1) (t + 1)) (v), sigX τ σ hh v =
         extTensor (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ (pgProj k (i + 1) (t + 1) hh) v := fun _ _ => rfl
-    rw [e4, hproj, GlobalTheory.T.twisted_coinvariant_levi_action, e4, hc, GlobalTheory.T.coinvariant_unipotent_character_trivial k i t ψ τ σ u hu]
+    rw [e4, hproj, _root_.GlobalTheory.CompanionTheory.BZPhiPG.Coinv.intertwine, e4, hc, _root_.GlobalTheory.CompanionTheory.BZPhiPG.qO_extTensor_unip k i t ψ τ σ u hu]
     rfl
   have hl := GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y
   have hl2 := GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f (η * y)
@@ -186,12 +187,12 @@ theorem eO_equiv (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t +
       unfold intO
       rw [← smInt_lin (qO τ σ ψ) hl.1 hl.2]
       rfl
-    rw [s1, GlobalTheory.T.integral_mulVec_change_modulus k (t + 1) _ w' ((sc • Tm) ∘ G) (hG.comp _) (hGc.comp_left (map_zero _)),
+    rw [s1, _root_.GlobalTheory.CompanionTheory.BZPhiPG.Scale.smInt_subst k (t + 1) _ w' ((sc • Tm) ∘ G) (hG.comp _) (hGc.comp_left (map_zero _)),
       smInt_lin (sc • Tm) hG hGc, s2]
   have e5 : sigO τ σ ψ h = Tm := rfl
   unfold eO
   rw [e1, ← hy, key, e5, map_smul, map_mul]
-  have h6 : ((dpowM (i + (t + 1)) (-1 / 2) (h : Mir k (i + (t + 1))) : ℂˣ) : ℂ) * ((dpow (t + 1) 1 w' : ℂˣ) : ℂ) * sc = 1 := GlobalTheory.T.modulus_characters_product_one k i t h
+  have h6 : ((dpowM (i + (t + 1)) (-1 / 2) (h : Mir k (i + (t + 1))) : ℂˣ) : ℂ) * ((dpow (t + 1) 1 w' : ℂˣ) : ℂ) * sc = 1 := _root_.GlobalTheory.CompanionTheory.BZPhiPG.DetPG.exponents_cancel k i t h
   rw [LinearMap.smul_apply, smul_smul, smul_smul, Units.val_mul]
   congr 1
   linear_combination ((dpowM (i + (t + 1)) (-1 / 2) m : ℂˣ) : ℂ) * h6
@@ -201,7 +202,7 @@ theorem eO_supp (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 
     ∃ C : Set (Mir k (i + (t + 1))), IsCompact C ∧
       ∀ g, eO ψ f g ≠ 0 → ∃ h ∈ HPG k i (t + 1), ∃ c ∈ C, g = h * c := by
   have ee : i + (t + 1) = (i + 1) + t := by omega
-  obtain ⟨C, hC, hCl, hsupp⟩ := GlobalTheory.T.support_compact_mod_parabolic_off_closed k i t τ σ f hf
+  obtain ⟨C, hC, hCl, hsupp⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.SuppOff.exists_compact_off_Cl k i t τ σ f hf
   obtain ⟨N, hN, hcell⟩ := exists_compact_cell i t C hC hCl
   refine ⟨(castM k ee).symm '' N, hN.image (castM_cont ee).2, fun g hg => ?_⟩
   set y := wEl k i t * sEmb k ((i + 1) + t) (castM k ee g) with hy
@@ -224,7 +225,7 @@ theorem eO_supp (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : GRep k (t + 
       rw [← e2, ← e1, hy, mul_assoc]
     rw [map_mul, map_inv, ← mul_assoc, e4]
     group
-  obtain ⟨h', hh', e5⟩ := GlobalTheory.T.open_cell_double_coset_uniqueness k i t _ d d2 (h1 * h2) (mul_mem hh1 hh2) e3
+  obtain ⟨h', hh', e5⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Stab.mem_of_double_coset k i t _ d d2 (h1 * h2) (mul_mem hh1 hh2) e3
   refine ⟨h', hh', (castM k ee).symm m2, ⟨m2, hm2, rfl⟩, ?_⟩
   apply (castM k ee).injective
   rw [map_mul, MulEquiv.apply_symm_apply, e5]
@@ -236,7 +237,7 @@ theorem memOAlt (i t : ℕ) (ψ : AddChar k Circle) (τ : MRep k (i + 1)) (σ : 
   let F : indSpace (HPG k i (t + 1)) (sigO τ σ ψ) := ⟨eO ψ f, fun h g => eO_equiv ψ τ σ f h g⟩
   have hF : F ∈ smoothPart (ind (HPG k i (t + 1)) (sigO τ σ ψ)) := by
     show IsOpen {g | ind (HPG k i (t + 1)) (sigO τ σ ψ) g F = F}
-    convert GlobalTheory.T.isOpen_right_invariance_orbit_coefficient k i t ψ τ σ f using 1
+    convert _root_.GlobalTheory.CompanionTheory.BZPhiPG.isOpen_eO_rightPeriods k i t ψ τ σ f using 1
     ext g
     simp only [Set.mem_setOf_eq]
     constructor
