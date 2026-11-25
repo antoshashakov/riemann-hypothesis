@@ -1,15 +1,21 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.StepJumpDirect
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DualLatticeRankBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMergedModulePushoutsContainBothStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTateDualLocalGaloisRepAtPlaceStatement
+public import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DualLatticeRankBound
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMergedModulePushoutsContainBoth
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+public import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTateDualLocalGaloisRepAtPlace
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodORingOfIntegers
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LenModMonoLeftStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LenModSpanSUnionLeOfDirectedStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftAllOfBlochKatoLiftingFamilyAtPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PushoutsMemSpanLocalSelmerPushoutsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorLocalFieldIsCrystallineOverFamilyFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LenModMonoLeft
+public import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoDuality
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LenModSpanSUnionLeOfDirected
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocMulVec
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftAllOfBlochKatoLiftingFamilyAtPlace
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PushoutsMemSpanLocalSelmerPushouts
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorLocalFieldIsCrystallineOverFamilyField
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedDualFamiliesContinuous
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -79,25 +85,25 @@ theorem main : StepLocDirect := by
     · rintro ⟨_, ⟨a, x, hx, E, Y, hY, hst, hE, rfl⟩, hc⟩
       exact ⟨a, x, hx, E, Y, hY, hst, hE, hc⟩
   rw [hcut]
-  apply GlobalTheory.T.lenMod_span_sUnion_le_of_directed'
+  apply _root_.GlobalTheory.Pass.LocDirect.lenMod_span_sUnion_le_of_directed
   · rintro _ ⟨a₁, x₁, hx₁, E₁, Y₁, hY₁, hst₁, hE₁, rfl⟩ _ ⟨a₂, x₂, hx₂, E₂, Y₂, hY₂, hst₂, hE₂, rfl⟩
     obtain ⟨a, x, hx, E, Y, hY, hst, hE, h1, h2⟩ :=
-      GlobalTheory.T.exists_merged_module_pushouts_contain_both D i w hw r Xs M a₁ x₁ hx₁ E₁ Y₁ hY₁ hst₁ hE₁ a₂ x₂ hx₂ E₂ Y₂ hY₂ hst₂ hE₂
+      _root_.GlobalTheory.Pass.LocDirect.pushSet_merge D i w hw r Xs M a₁ x₁ hx₁ E₁ Y₁ hY₁ hst₁ hE₁ a₂ x₂ hx₂ E₂ Y₂ hY₂ hst₂ hE₂
     exact ⟨_, ⟨a, x, hx, E, Y, hY, hst, hE, rfl⟩, h1, h2⟩
   · rintro _ ⟨a, x, hx, E, Y, hY, hst, hE, rfl⟩
     let U := LocDirect.ModuleGaloisRepresentation i w hw M hM
     let X := LocDirect.Xgrep i w hw r x (fun j => hc (x j)) Y hst
-    obtain ⟨K', hK', hcrys⟩ := GlobalTheory.T.tensorLocalField_isCrystalline_over_familyField D hFont i r hr Xs w hw n hPot M hSub hM
+    obtain ⟨K', hK', hcrys⟩ := _root_.GlobalTheory.Pass.LocCrysU.main D hFont i r hr Xs w hw n hPot M hSub hM
     have hUdR : IsDR (Br.PD D.loc D.nbr i w hw) U.ρ :=
       hPDR (D.nd.l i) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL hK' U hcrys
-    obtain ⟨U', LT', PU, hdual, hrank⟩ := GlobalTheory.T.crystalline_over_extension D hFont hBK hPDR i w hw hdeg M hM K' hK' hcrys
-    obtain ⟨X', PX, hX⟩ := GlobalTheory.T.exists_tateDual_localGaloisRep_atPlace D i w hw X
-    have hLA := GlobalTheory.T.liftAll_of_blochKatoLiftingFamilyAtPlace D i w hw r hr Xs e hLift M hSub hM a x hx (fun j => hc (x j)) Y hst
-    have hsub := GlobalTheory.T.pushouts_mem_span_localSelmerPushouts D hFont i r hr Xs w hw n hPot M hM a x hx (fun j => hc (x j)) E Y hY hst hE
+    obtain ⟨U', LT', PU, hdual, hrank⟩ := _root_.GlobalTheory.Pass.LocDirect.dualLat_rank D hFont hBK hPDR i w hw hdeg M hM K' hK' hcrys
+    obtain ⟨X', PX, hX⟩ := _root_.GlobalTheory.TateDualX.exists_tateDual D i w hw X
+    have hLA := _root_.GlobalTheory.Pass.LocDirect.liftAll_of_liftFamW D i w hw r hr Xs e hLift M hSub hM a x hx (fun j => hc (x j)) Y hst
+    have hsub := _root_.GlobalTheory.Pass.LocPush.main D hFont i r hr Xs w hw n hPot M hM a x hx (fun j => hc (x j)) E Y hY hst hE
     obtain ⟨m, k', hm, hk', hle⟩ := hLOC.2 (D.nd.l i) (D.nbr i w hw).Kw (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw)
       (goodO_ringOfIntegers _ _) X X U X' U' 1 PX PU (Br.locLat D.nbr i w hw M) LT' e
       ⟨⟨LinearEquiv.refl _ _, fun g v => by simp⟩, hUdR, hX, hdual, Or.inl hLA⟩
-    have hmono := GlobalTheory.T.lenMod_mono_left' _ _ (HfD (Br.PD D.loc D.nbr i w hw) (Br.locLat D.nbr i w hw M))
+    have hmono := _root_.GlobalTheory.lenMod_mono_left _ _ (HfD (Br.PD D.loc D.nbr i w hw) (Br.locLat D.nbr i w hw M))
       (Submodule.span_le.2 hsub)
     have hT : finrank (Br.OLL D.nbr i w hw) ↥(Br.locLat D.nbr i w hw M).T = k := by
       have hinj := stdG_inj (O := Br.OLL D.nbr i w hw) (LL := Br.LL D.nbr i w hw) Subtype.val_injective k

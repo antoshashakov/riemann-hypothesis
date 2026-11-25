@@ -3,16 +3,20 @@ module
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NotInSupportOfSubsingleton
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraMapIntertwiningMapBijectiveOfIsSmooth
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivExteriorTensorOfIrreducibleProdRepStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIrreducibleQuotientFinitelyGeneratedRepStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNonzeroIntertwiningMapFromUnitarySupercuspStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSmoothDualNeZeroAtVectorStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveTensorLiftEquivariantMapsOfIrreducibleStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCuspidalJacquetModuleSecondBlockOfVanishingStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnitarisableOfCharIff
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivExteriorTensorOfIrreducibleProdRep
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIrreducibleQuotientFinitelyGeneratedRep
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNonzeroIntertwiningMapFromUnitarySupercusp
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSmoothDualNeZeroAtVector
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RepresentationTheory.Irreducible
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InjectiveTensorLiftEquivariantMapsOfIrreducible
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCuspidalJacquetModuleSecondBlockOfVanishing
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSupercuspidalOfIsCuspidal
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitarisableComplexRepOfSupercuspidalUnitaryCeStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitarizableComplexRepOfSupercuspidalUnitaryCentralCharacter
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetNontrivial
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedJacquetTwoBlocksFinitelyGeneratedStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormalizedJacquetTwoBlocksFinitelyGenerated
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CentralExponentBoundOver
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InSupportOfIsSubquotient
 import Mathlib.Algebra.Order.Floor.Extended
@@ -98,7 +102,7 @@ theorem exists_irreducible_sub {b : ℕ} (hb : 0 < b) {X : Type} [AddCommGroup X
     exact hle hv⟩
   have hxS : x ∈ S.toSubmodule := Submodule.subset_span ⟨1, by simp⟩
   have hnt : Nontrivial S.toSubmodule := ⟨⟨⟨x, hxS⟩, 0, fun h => hx (congrArg Subtype.val h)⟩⟩
-  obtain ⟨Y, _, _, ρ, hρi, p, hp⟩ := GlobalTheory.T.exists_irreducible_quotient_finitelyGenerated_rep _ _ S.toRepresentation {⟨x, hxS⟩} hnt (by
+  obtain ⟨Y, _, _, ρ, hρi, p, hp⟩ := _root_.GlobalTheory.IrrQuot.main _ _ S.toRepresentation {⟨x, hxS⟩} hnt (by
     refine Submodule.map_injective_of_injective S.toSubmodule.injective_subtype ?_
     rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype]
     show _ = Submodule.span ℂ (Set.range fun g => τ g x)
@@ -119,17 +123,17 @@ theorem exists_irreducible_sub {b : ℕ} (hb : 0 < b) {X : Type} [AddCommGroup X
   have hsc := GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal k b Y _ hc'
   haveI : Nontrivial Y := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hρi
   obtain ⟨y, hy⟩ := exists_ne (0 : Y)
-  obtain ⟨l, hl, hly⟩ := GlobalTheory.T.exists_smoothDual_ne_zero_at_vector _ _ (twist ρ (detChar (Fin b) ψ)) (fun U hU => by
+  obtain ⟨l, hl, hly⟩ := _root_.GlobalTheory.SmoothForm.exists_smooth_form_ne_zero _ _ (twist ρ (detChar (Fin b) ψ)) (fun U hU => by
     obtain ⟨γ, hγ, h⟩ := GlobalTheory.CentralExponent.exists_cong_subset (n := Fin b) hU
     exact ⟨_, GlobalTheory.CentralExponent.isOpen_cong γ hγ, GlobalTheory.CentralExponent.isCompact_cong γ hγ, h⟩) hc'.1 y hy
-  have hu := GlobalTheory.T.isUnitarisableComplexRep_of_supercuspidal_unitary_center _ _ _ l hl (fun h => hly (by rw [h]; rfl)) (GlobalTheory.LocGL.isIrreducible_twist hρi _) hsc
+  have hu := _root_.GlobalTheory.isUnitarisable_of_isSupercuspidal _ _ _ l hl (fun h => hly (by rw [h]; rfl)) (GlobalTheory.LocGL.isIrreducible_twist hρi _) hsc
     (fun z hz => by
       rw [Matrix.GeneralLinearGroup.center_eq_range_scalar] at hz
       obtain ⟨z, rfl⟩ := hz
       have h := GlobalTheory.LocGL.hasCentralChar_twist hωc ψ z
       rw [Fintype.card_fin] at h
       exact ⟨_, hψ1 z, h⟩)
-  obtain ⟨ι, hι⟩ := GlobalTheory.T.exists_nonzero_intertwiningMap_from_unitary_supercuspidal _ _ _ (twist S.toRepresentation (detChar (Fin b) ψ)) _ (twistMap p _)
+  obtain ⟨ι, hι⟩ := _root_.GlobalTheory.CuspBack.exists_back _ _ _ (twist S.toRepresentation (detChar (Fin b) ψ)) _ (twistMap p _)
     (isSmooth_twist hSs hψ.detChar) hsc hu
     (fun z hz' => by
       obtain ⟨c, hc⟩ := hz z hz'
@@ -162,10 +166,10 @@ theorem exists_map_jac₂ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   obtain ⟨hb, a, h, hnt⟩ := Nat.find_spec hex
   have hmin := fun t (ht : t < Nat.find hex) => Nat.find_min hex ht
   generalize Nat.find hex = b at hb h hnt hmin
-  have hJc := GlobalTheory.T.isCuspidal_jacquetModule_second_block_of_vanishing k a b n h V π hs fun r t h' h0 ht =>
+  have hJc := _root_.GlobalTheory.JacMinCuspGL.isCuspidal_jac₂_inr k a b n h V π hs fun r t h' h0 ht =>
     not_nontrivial_iff_subsingleton.1 fun h1 => hmin t ht ⟨h0, r, h', h1⟩
-  obtain ⟨s, hspan⟩ := GlobalTheory.T.normalizedJacquetTwoBlocks_finitelyGenerated k a b n h V π hs hi
-  obtain ⟨X, _, _, τ, hτi, f, hf⟩ := GlobalTheory.T.exists_irreducible_quotient_finitelyGenerated_rep _ _ _ s hnt hspan
+  obtain ⟨s, hspan⟩ := _root_.GlobalTheory.JacquetFinGen.jacquet_fg k a b n h V π hs hi
+  obtain ⟨X, _, _, τ, hτi, f, hf⟩ := _root_.GlobalTheory.IrrQuot.main _ _ _ s hnt hspan
   have hτs : IsSmooth τ := (IsSubquotient.of_surjective f hf).isSmooth (isSmooth_jac₂ _ hs)
   have hτc : IsCuspidal (k := k) (n := Fin b) (τ.comp (MonoidHom.inr _ _)) :=
     isCuspidal_of_isSubquotient hJc (IsSubquotient.of_surjective (compMap f _) hf)
@@ -177,8 +181,8 @@ theorem exists_map_jac₂ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
       rw [← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, ← map_mul, ← map_mul]
       congr 1
       exact Prod.ext (by simp) (Subgroup.mem_center_iff.1 hz g.2).symm⟩
-  obtain ⟨W, _, _, σ, hσs, hσi, ⟨φ⟩⟩ := GlobalTheory.T.exists_equiv_exteriorTensor_of_irreducible_prod_rep _ _ X Y τ ρ hτs hτi hρi
-    (GlobalTheory.T.injective_tensor_lift_equivariant_maps_of_irreducible _ X Y (τ.comp (MonoidHom.inr _ _)) ρ hρi (GlobalTheory.LocGL.schur_GL hρc.1 hρi)) hι
+  obtain ⟨W, _, _, σ, hσs, hσi, ⟨φ⟩⟩ := _root_.GlobalTheory.TensorFactor.exists_equiv_extTensor _ _ X Y τ ρ hτs hτi hρi
+    (_root_.GlobalTheory.SmGL.EvalInj.lift_subtype_injective _ X Y (τ.comp (MonoidHom.inr _ _)) ρ hρi (GlobalTheory.LocGL.schur_GL hρc.1 hρi)) hι
   refine ⟨a, b, h, W, Y, _, _, _, _, σ, ρ, hb, hσs, hσi, hρc.1, hρi, hρc, φ.toIntertwiningMap.comp f, fun h0 => ?_⟩
   obtain ⟨x, hx⟩ := exists_ne (0 : X)
   obtain ⟨w, rfl⟩ := hf x
