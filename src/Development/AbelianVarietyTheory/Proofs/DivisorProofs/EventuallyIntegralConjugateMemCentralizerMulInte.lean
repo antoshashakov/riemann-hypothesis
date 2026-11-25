@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyIntegralLiftCoprimeDerivativeStatement
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyIntegralLiftCoprimeDerivative
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralConjSetLocalUnitaryEqDoubleCosetStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalConjugationInvolutiveValuationPreservingStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -81,7 +82,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E →
       algebraMap E (w.adicCompletion E) (((γ.1 : GL (Fin n) E)⁻¹).val i j) ∈ w.adicCompletionIntegers E :=
     eventually_all.2 fun i => eventually_all.2 fun j =>
       (eventually_mem_integers _).and (eventually_mem_integers _)
-  filter_upwards [hint, GlobalTheory.T.eventually_integral_lift_coprime_derivative E _ hsep] with w hw hP
+  filter_upwards [hint, _root_.GlobalTheory.IntCop.eventually_integral_coprime E _ hsep] with w hw hP
   obtain ⟨P₀, hP₀, hcop⟩ := hP
   intro g hg
   set y : GLw n w := Matrix.GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (γ.1 : GL (Fin n) E) with hy

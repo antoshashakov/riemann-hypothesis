@@ -4,7 +4,10 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfForallField
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsVectorFieldExtendingAffineDerivation
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionPowerValueChartChangeByTransitionPowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopLePreimageNonemptyOpenOfPointValueInjectiveStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasArcDataIff
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopLePreimageNonemptyOpenOfPointValueInjective
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLinearHomPull
+public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantHeatOperatorPreservesWeight
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusInvariantLiftAddInvariantCombination
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransitionUnitPointValueCocycleStatement
@@ -156,7 +159,7 @@ theorem ksRel_zero : ∀ (K : Type) [Field K] [CharZero K] (P₀ : Out.PolAV (Sp
     intro O hO
     have hb : O = ⊥ := by
       by_contra hne
-      refine hO (GlobalTheory.T.top_le_preimage_nonempty_open_of_pointValue_injective K P₀ F ψ ξ hξ hinj O ?_)
+      refine hO (_root_.GlobalTheory.GenPtOpen.top_le_preimage_of_valR_injective K P₀ F ψ ξ hξ hinj O ?_)
       rw [Set.nonempty_iff_ne_empty]
       intro he
       exact hne (TopologicalSpace.Opens.ext (by simpa using he))

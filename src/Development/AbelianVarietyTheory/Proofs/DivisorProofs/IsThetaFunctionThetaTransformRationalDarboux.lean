@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffThetaTransformAdelicSchwartzRealDirectioStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffThetaTransformAdelicSchwartzRealDirection
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousThetaTransformAdelicSchwartzStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformFixedBySmallFiniteHeisenbergStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTransformRationalTranslateQuasiInvariantStatement
@@ -69,7 +69,7 @@ theorem isThetaFunO_thetaTr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsS
     { quasi := fun γ w => GlobalTheory.T.thetaTransform_rational_translate_quasiInvariant D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ γ w
       level := GlobalTheory.T.thetaTransform_fixed_by_small_finiteHeisenberg D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ
       cont := GlobalTheory.T.continuous_thetaTransform_adelicSchwartz D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ
-      smooth := fun k L hL hfin w => GlobalTheory.T.contDiff_thetaTransform_adelicSchwartz_realDirections D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ k L hL hfin w }
+      smooth := fun k L hL hfin w => _root_.GlobalTheory.ThetaSmooth.contDiff_thetaTr_real D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ k L hL hfin w }
 
 end GlobalTheory.ThetaTransformTheta
 

@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
 public import GroundTheory.GlobalFields.TateThesis.GaussianSchwartz
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivedActionIntertwinesOfGroupStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivedActionIntertwinesOfGroup
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfOrthogonalSchrodingerGaussianStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzEqGaussianOfFderivAddEqZeroStatement
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
@@ -107,7 +108,7 @@ theorem exists_eq_smul_of_commute_rhoFun : ∀ (l : Type) [Fintype l] (S : Sch l
   have hbound : ∀ f, ∫⁻ x, ‖S f x‖ₑ ^ 2 ≤ 1 * ∫⁻ x, ‖f x‖ₑ ^ 2 := by
     intro f
     rw [one_mul, hl, hl, hiso]
-  have hd := GlobalTheory.T.derived_action_intertwines_of_group l LinearMap.id S 1 ENNReal.one_ne_top hbound (by simpa using hcomm)
+  have hd := _root_.GlobalTheory.RealWeil.DRhoTransfer.dRho_intertwine l LinearMap.id S 1 ENNReal.one_ne_top hbound (by simpa using hcomm)
   set G : Sch l := GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ l) with hG
   have hN : ∀ (j : l) (h : Sch l) x, (dRho (Pi.single (Sum.inl j) 1) h - I • dRho (Pi.single (Sum.inr j) 1) h) x =
       fderiv ℝ (⇑h) x (EuclideanSpace.single j 1) + 2 * Real.pi * (x j : ℂ) * h x := by

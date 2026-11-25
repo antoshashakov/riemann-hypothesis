@@ -3,7 +3,10 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.BarCompSubsetClosure
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.Hypotheses2
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BorelWeilFlagModelDetInverseIsAmpleLocalStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
+public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BorelWeilFlagModelDetInverseIsAmpleLocal
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommonRestrIsoTens
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalProjectiveModel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceComponentSmoothProjectiveConnected
@@ -100,7 +103,7 @@ theorem exists_weight_isAmple_lineBundle_comp : _root_.GlobalTheory.CovTop.Hypot
       simpa using this.symm
     exact hsum.symm.trans h4
   obtain ⟨n₀, hn⟩ := GlobalTheory.T.isAmple_pullbackPower_div_of_locally_ample TF.X.π A hAmp (TF.X.F.LL (AllWt.exOf Dw ρ 0)) (TF.X.F.LL e) hN hM hcls
-    (fun z => GlobalTheory.T.borelWeil_flagModel_detInverse_isAmple_local TF.flag z)
+    (fun z => _root_.GlobalTheory.FlagPlucker.isAmpleLB_LL_flagModel TF.flag z)
   have h := (hn n₀ le_rfl).pull_of_isOpenImmersion (inc₀ TF.X Z)
   have hAπ := LB.isLB_pull hA TF.X.π
   have hAg := LB.isLB_pull hA (inc₀ TF.X Z ≫ TF.X.π)

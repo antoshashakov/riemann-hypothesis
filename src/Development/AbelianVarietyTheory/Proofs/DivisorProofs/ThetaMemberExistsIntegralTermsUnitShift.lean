@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.HasTraitsOnO
 public import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.ExistsUniquePairIff
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicSumFractionFieldEqMulIntegralCongr
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeOneTermEqConstMulPsiMulThetaStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeOneTermEqConstMulPsiMulTheta
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointsFramesThetaSectionMemberStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorsionFrameEqConstMulIntegralGeneratorStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorsionTranslateThetaSectionUnitStatement
@@ -150,7 +150,7 @@ theorem exists_terms : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X�
     have e : xb c = y := Over.OverMorphism.ext ((hxb _ _ (hxp c)).trans (hxb _ _ ha).symm)
     exact ⟨c, (H (p c) (hp0 c) (e ▸ hq c)).symm.trans ((GlobalTheory.FieldRestrictionTest.isPullF_iff _ _ _).1 (hpull c)).1⟩
   obtain ⟨θ, hθ⟩ := exists_isTheta hV 𝔪.D.toPre
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.degree_one_term_eq_const_mul_psi_mul_theta V 𝔪.D.toPre θ hθ s
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.Poinc.IntTerm.term_eq_const_psi_theta V 𝔪.D.toPre θ hθ s
   choose υ hυ using 𝔪.psi
   choose a ha hau using fun mu c => hκ (gi c) (g' c) (w c) l (hg' c) (hw c) (hif c) (𝔪.e₈ mu) _ (hυ mu)
   have hunit : ∀ mu, ∃ c, IsUnit (a mu c) := fun mu =>

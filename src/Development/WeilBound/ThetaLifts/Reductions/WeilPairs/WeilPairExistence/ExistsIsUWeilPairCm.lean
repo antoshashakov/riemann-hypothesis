@@ -3,12 +3,12 @@ module
 public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.LatH
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTransportWeilDatumCmExtensionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTransportWeilDatumCmExtension
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilTransportAdelicSchwartzCmExtensionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitaryOnWeilDatumTransportAdelicSchwartzStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumCMPreservesSchwartzHeisenber
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumTransportCmPreservesAdmissibleFormsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumTransportCmPreservesAdmissibleForms
 public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.TargetDoubling
 public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairExistence.ExistsDblTarget
 import Mathlib.Algebra.Order.Floor.Extended
@@ -68,9 +68,9 @@ theorem PositivityTheory.ThKW.S.exists_isUWeilPair_cm : ∀ (F E : Type) [Field 
   intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ hLat χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ _ co hrat
   obtain ⟨om, hom⟩ := GlobalTheory.T.exists_weilTransport_adelicSchwartz_cmExtension F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat
   have h2 := _root_.GlobalTheory.TransportHeisF.pres_impl F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
-  have h3 := GlobalTheory.T.weilDatumTransport_cm_preserves_admissibleForms F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
+  have h3 := _root_.GlobalTheory.WeilAdmCM.transport_adm F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
   have h4 := GlobalTheory.T.isUnitaryOn_weilDatum_transport_adelicSchwartz F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
-  have h5 := GlobalTheory.T.continuous_transport_weil_datum_cm_extension F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
+  have h5 := _root_.GlobalTheory.WeilContF.continuous_transportF F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
   have h6 := PositivityTheory.ThKW.dblS_of_dblT PositivityTheory.ThKW.S.exists_dbl_target F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ hLat χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
   have h7 := PositivityTheory.ThKW.S.exists_dbl_target F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ hLat χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ co hrat om hom
   have hsp : IsUSplitting (adeleClass F) B.ψ co (actAB (cA σ)) om := ⟨⟨h2.1, h2.2, h3⟩, h4, h5⟩

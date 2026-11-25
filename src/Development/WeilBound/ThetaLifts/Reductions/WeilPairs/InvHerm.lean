@@ -3,7 +3,8 @@ module
 public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.Mfac
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrInt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTransportWeilDatumCmExtensionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTransportWeilDatumCmExtension
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmittedEqDiagonalLagrangianThetaIntegralStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHalfAbstract
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalDarbouxHermitianTensorAdeles
@@ -147,7 +148,7 @@ theorem cont : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   obtain ⟨Φ, hΦ, rfl⟩ := hon f hf
   obtain ⟨om, hom⟩ := GlobalTheory.TransportF.exists_isTransportF F E σ B hB _ _ JS _ hS hT' ξ₀ hξ hσ χS 1 hω.hecS hω.hecT hω.resS
     hω.resT ωd hω _ _ _ rfl eB _ co hrat
-  have hc := GlobalTheory.T.continuous_transport_weil_datum_cm_extension F E σ B hB _ _ JS _ hS hT' ξ₀ hξ hσ χS 1 hω.hecS hω.hecT hω.resS
+  have hc := _root_.GlobalTheory.WeilContF.continuous_transportF F E σ B hB _ _ JS _ hS hT' ξ₀ hξ hσ χS 1 hω.hecS hω.hecT hω.resS
     hω.resT ωd hω _ _ _ rfl eB _ co hrat om hom
   obtain ⟨l, hl, hl'⟩ := GlobalTheory.T.exists_admitted_eq_diagonalLagrangian_thetaIntegral F E σ B hB nS nT JT _ _ _ co hrat ν 𝓕 hν h𝓕
   let a : GAF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) →

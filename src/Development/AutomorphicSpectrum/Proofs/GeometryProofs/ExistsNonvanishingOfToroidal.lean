@@ -4,7 +4,10 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Tor
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsVanBdOfMemExtVanZ
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsFiniteSubsetNonzeroLocus
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BorelWeilFlagModelDetInverseIsAmpleLocalStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
+public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BorelWeilFlagModelDetInverseIsAmpleLocal
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommonRestrIsoTens
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonModification
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasFibrewiseNonvanishingThetaSectionOfSmoothMode
@@ -183,7 +186,7 @@ theorem exists_nonvanishing_of_toroidal : GlobalTheory.Published.SiegelToroidalI
     simp only [e₃]
   obtain ⟨n₀, hn⟩ := GlobalTheory.T.isAmple_pullbackPower_div_of_locally_ample TF.X.π _ hA (TF.X.F.LL (-e₀)) (TF.X.F.LL e₀) (TF.X.F.isLB_LL _) (TF.X.F.isLB_LL _)
     (by have := hneg e₀; show Lc e₀ = - Lc (-e₀); rw [this, neg_neg])
-    (fun z => GlobalTheory.T.borelWeil_flagModel_detInverse_isAmple_local fl z)
+    (fun z => _root_.GlobalTheory.FlagPlucker.isAmpleLB_LL_flagModel fl z)
   let m : ℕ := max n₀ 1
   have hm : 1 ≤ m := le_max_right _ _
   have hP := hn m (le_max_left _ _)

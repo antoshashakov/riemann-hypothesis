@@ -14,7 +14,9 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.IsCoprimeOfN
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
 public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentTransportEquivariantCartesianPreservesComStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrvEqSelf
+import Formalism.LocalToGlobal.ProjectiveLattices.IsChartIff
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentTransportEquivariantCartesianPreservesCom
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -268,7 +270,7 @@ theorem ratLin_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
         ((FK y).co f₀' τ).map (functionFieldMap (ρ' γ).asIso.hom) * (S γ).co (T γ) τ := by
       intro τ
       have hTP : TrK.co (T γ) τ = (FK x).co f₀' τ := EigFrame.co_eq fun i => by
-        have := GlobalTheory.T.tangentTransport_equivariant_cartesian_preserves_comb TF.Y.t (φ ≫ (barComp TF.Y Z).ι) G' ψ (ρ' γ).asIso.hom (m γ) hG (hm γ)
+        have := _root_.GlobalTheory.EqvTrans.trv_comb TF.Y.t (φ ≫ (barComp TF.Y Z).ι) G' ψ (ρ' γ).asIso.hom (m γ) hG (hm γ)
           (genericFieldPoint X') ((FK x).v τ) _ (f₀'.v τ i) ((FK x).tan τ) (f₀'.tan τ i) ((FK x).co_spec f₀' τ i)
         rw [funext (hTrK τ), hT γ τ i]
         exact this
@@ -320,7 +322,7 @@ theorem ratLin_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
         ((S γ).co (T γ) τ).map (functionFieldMap (ρ' δ).asIso.hom) * (S δ).co (T δ) τ := by
       intro τ
       have h34 : F4.co F3 τ = (S δ).co (T δ) τ := EigFrame.co_eq fun i => by
-        have := GlobalTheory.T.tangentTransport_equivariant_cartesian_preserves_comb TF.Y.t (φ ≫ (barComp TF.Y Z).ι) G' ψ (ρ' γ).asIso.hom (m γ) hG (hm γ)
+        have := _root_.GlobalTheory.EqvTrans.trv_comb TF.Y.t (φ ≫ (barComp TF.Y Z).ι) G' ψ (ρ' γ).asIso.hom (m γ) hG (hm γ)
           (genericFieldPoint X' ≫ (ρ' δ).asIso.hom) ((S δ).v τ) _ ((T δ).v τ i) ((S δ).tan τ) ((T δ).tan τ i)
           ((S δ).co_spec (T δ) τ i)
         rw [← hx3] at this

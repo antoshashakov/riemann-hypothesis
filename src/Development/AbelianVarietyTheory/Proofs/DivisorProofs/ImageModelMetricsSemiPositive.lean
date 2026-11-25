@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsModelOf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormSqSemilinearLeLatticeFrameNormSqStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValRImageModelSectionSemilinearStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValRImageModelSectionSemilinear
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NefFibOfIsGenerated
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -86,7 +86,7 @@ theorem semiPos_of_isModelOf : ∀ (K V Ω : Type) [Field K] [NumberField K] [Ad
       (hM.bpf.ge (TopologicalSpace.Opens.mem_top (y.1 (IsLocalRing.closedPoint ℂ))))
     have hne := (secVal_ne_zero_iff (s w) hy).2 (mem_ptsIn.2 hw)
     have hb := GlobalTheory.T.norm_sq_semilinear_le_latticeFrame_norm_sq K V Nm W N n b g A c gw σ (fun w => valR y.1 (L.B.U i) ((s w).f i)) hF hg hc
-      (fun m β u x hx => GlobalTheory.T.valR_imageModelSection_semilinear K V Ω Nm W ev D X p L ψ s hM hev _ i y hy m β u x hx) w
+      (fun m β u x hx => _root_.GlobalTheory.ImageModel.valR_section_sum K V Ω Nm W ev D X p L ψ s hM hev _ i y hy m β u x hx) w
     rw [hS, mul_zero] at hb
     exact hne (by
       have : ‖valR y.1 (L.B.U i) ((s w).f i)‖ = 0 := by nlinarith [norm_nonneg (valR y.1 (L.B.U i) ((s w).f i))]
