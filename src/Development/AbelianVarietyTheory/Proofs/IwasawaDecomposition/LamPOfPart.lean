@@ -47,7 +47,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Strict
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.SetUnipotentTranslate
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FunKilled
 import Development.AutomorphicArithmetic.PrimeDiscriminants.Scales
-import Formalism.SharpRestriction.InertJacobiLevels.ExtraGat
 
 @[expose] public section
 
