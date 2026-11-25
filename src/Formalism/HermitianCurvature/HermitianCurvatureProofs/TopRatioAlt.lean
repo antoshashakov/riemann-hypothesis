@@ -62,7 +62,7 @@ noncomputable section
 
 open Classical
 
-theorem topRatio : TopRatio := by
+theorem _root_.Formalism.FourierDecayAlt.P.top_ratio : TopRatio := by
   intro Cb Cc E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB hC v w y hcut hgr hlen hfar e ρ
   have hB' := hB
   obtain ⟨hg1, hg2, -, -, hOkp, hw, hw', hl1, hlk, hne, hGo, -, hLC, hCA, -, hv⟩ := hB'
@@ -303,5 +303,3 @@ theorem topRatio : TopRatio := by
 end
 
 end Formalism.FourierDecayAlt.P.PBL
-
-theorem Formalism.FourierDecayAlt.P.top_ratio : Formalism.FourierDecayAlt.P.PBL.TopRatio := Formalism.FourierDecayAlt.P.PBL.topRatio
