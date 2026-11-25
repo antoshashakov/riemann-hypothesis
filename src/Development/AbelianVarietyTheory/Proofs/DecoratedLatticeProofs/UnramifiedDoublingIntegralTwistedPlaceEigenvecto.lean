@@ -5,19 +5,18 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SupportPa
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasBoundedSumsOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCompactParahoric
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BiInvariantEigenfunctionEqMulZonalSphericalStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsUnramifiedHeightFunctionLowerBlockStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowerBlockCoefficientIsSphericalHeckeEigenStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ParahoricHeckeGenericEigenvalueMapMulStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedTwistSphericalFunctionReindexStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BiInvariantEigenfunctionEqMulZonalSpherical
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsUnramifiedHeightFunctionLowerBlock
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LowerBlockCoefficientIsSphericalHeckeEigen
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ParahoricHeckeGenericEigenvalueMapMul
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedTwistSphericalFunctionReindex
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChainStepIdentities
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralBiInvariantHasSumDoubleCoset
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalizedAbsCharacterization
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SupportParahoricBiTransformingDoubleCosetsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwistedPlaceDoubleCosetVolumeAndDisjointStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwistedPlaceDoubleCosetVolumeAndDisjoint
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedDoublingSumGLConvergentLValue
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepChainStepMatrixCoefficientTwistedStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepChainStepMatrixCoefficientTwisted
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasSumBilateral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -166,11 +165,11 @@ theorem zonalInt_one {N : ℕ} [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL 
 theorem hgt_lower : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ) (H : GL (A ⊕ D) k → ℝ),
     IsHgt ϖ H → IsHgt ϖ (fun m : GL D k => H (emb₂ k (Equiv.refl (A ⊕ D)) (1, m))) :=
-  GlobalTheory.T.isUnramifiedHeightFunction_lowerBlock
+  _root_.GlobalTheory.ParHecke.isHgt_lower
 
 theorem genVal_map_mul : ∀ (q r N n : ℕ) (B : Multiset ℂˣ) (c : ℂˣ),
     genVal q r N (B.map (· * c)) n = (c : ℂ) ^ n * genVal q r N B n :=
-  GlobalTheory.T.parahoricHeckeGenericEigenvalue_map_mul
+  _root_.GlobalTheory.ParHecke.genVal_map_mul
 
 theorem twist_transport : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (D : Type) [Fintype D] [DecidableEq D] (N : ℕ) (ε : Fin N ≃ D) (ϖ : kˣ),
@@ -183,7 +182,7 @@ theorem twist_transport : ∀ (k : Type) [Field k] [ValuativeRel k] [Topological
     (∀ κ ∈ KO k (Fin N), ∀ m, f₂ (κ * m) = f₂ m ∧ f₂ (m * κ) = f₂ m) ∧
     ∀ (s : Finset (Fin N)) R, IsRepsK (torusElt k (Fin N) ϖ (indic s)) R → ∀ m,
       ∑ g ∈ R, f₂ (m * g) = (((μ₀ ϖ)⁻¹ : ℂˣ) : ℂ) ^ s.card * genVal (resCard k) 0 N β s.card * f₂ m :=
-  GlobalTheory.T.unramifiedTwist_sphericalFunction_reindex
+  _root_.GlobalTheory.TwistRenumber.twist_renumber
 
 theorem lower_eigen : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k →
@@ -206,7 +205,7 @@ theorem lower_eigen : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   set f : GL (Blocks l t) k → ℂ := fun m => (((ξ (GeneralLinearGroup.det m))⁻¹ : ℂˣ) : ℂ) *
     ℓ (π (emb₂ k (Equiv.refl (Fin r ⊕ Blocks l t)) (1, m)) x) / ((Real.sqrt (H' m) : ℝ) : ℂ) ^ Fintype.card (Fin r)
     with hfdef
-  obtain ⟨hfK, hfH⟩ := GlobalTheory.T.lowerBlockCoefficient_isSphericalHeckeEigen k (Fin r) (Blocks l t) ϖ hϖ ξ hξt hξr V π B x ℓ hx hℓ H' hH' f (fun m => rfl)
+  obtain ⟨hfK, hfH⟩ := _root_.GlobalTheory.LowerHeckeEig.coeff_isEigen k (Fin r) (Blocks l t) ϖ hϖ ξ hξt hξr V π B x ℓ hx hℓ H' hH' f (fun m => rfl)
   set f₂ : GL (Fin (l * t)) k → ℂ := fun m => (((μ₀ (GeneralLinearGroup.det m))⁻¹ : ℂˣ) : ℂ) *
     f (GlobalTheory.ChainStepSupp.reGL k (blkEquiv l t) m) with hf₂def
   obtain ⟨hf₂K, hf₂H⟩ := twist_transport k (Blocks l t) (l * t) (blkEquiv l t) ϖ hϖ μ₀ hμ₀
@@ -268,11 +267,11 @@ theorem local_zeta_twisted : GlobalTheory.Published.UnramifiedDoublingGL → ∀
   haveI : BorelSpace (GL (Fin (l * t)) k) := ⟨rfl⟩
   obtain ⟨μK, hμKH, hμK⟩ := GlobalTheory.GLDoubling.Model.exists_haar (k := k) (l * t)
   haveI := hμKH
-  obtain ⟨ψ, hψB, hψ⟩ := GlobalTheory.T.biInvariant_eigenfunction_eq_mul_zonalSpherical k (l * t) μK hμK ϖ hϖ α
-  obtain ⟨hvol, hdisj⟩ := GlobalTheory.T.twistedPlace_doubleCoset_volume_and_disjoint k ϖ hϖ r l t m hm μK hμK
+  obtain ⟨ψ, hψB, hψ⟩ := _root_.GlobalTheory.ZonalUnique.eq_mul_zonalInt k (l * t) μK hμK ϖ hϖ α
+  obtain ⟨hvol, hdisj⟩ := _root_.GlobalTheory.ChainCells.vol_dcell_and_disjoint k ϖ hϖ r l t m hm μK hμK
   have hceq : c = fun g => ip ν (om (μ₀ * ξ) g (1 : GL (Fin r ⊕ Blocks (l + 1) t) k) (datum ξ)) (datum ξ) :=
     funext hc
-  obtain ⟨hcBi, hcSupp, hcVal⟩ := GlobalTheory.T.weilRep_chainStep_matrixCoefficient_twisted k ν hν ϖ hϖ r t l ξ μ₀ hξu hξt hμ₀ hμ₀u
+  obtain ⟨hcBi, hcSupp, hcVal⟩ := _root_.GlobalTheory.ChainStepCoef.coef k ν hν ϖ hϖ r t l ξ μ₀ hξu hξt hμ₀ hμ₀u
   rw [← hceq] at hcBi hcSupp
   beta_reduce at hcVal
   have hq : (0:ℝ) < resCard k := by exact_mod_cast (zero_lt_one.trans (one_lt_resCard k))
@@ -344,7 +343,7 @@ theorem local_zeta_twisted : GlobalTheory.Published.UnramifiedDoublingGL → ∀
     · simp only [not_exists] at hg
       have hc0 : c g = 0 := by
         by_contra hne
-        obtain ⟨e, he, hge⟩ := GlobalTheory.T.support_parahoricBiTransforming_doubleCosets k ϖ hϖ r l t ξ hξt hξr c hcBi hcSupp g hne
+        obtain ⟨e, he, hge⟩ := _root_.GlobalTheory.ChainStepSupp.support_dcell k ϖ hϖ r l t ξ hξt hξr c hcBi hcSupp g hne
         exact hg ⟨e, he⟩ hge
       rw [cellFun_of_notMem w hg, hc0]; simp
   · intro g hgJ
