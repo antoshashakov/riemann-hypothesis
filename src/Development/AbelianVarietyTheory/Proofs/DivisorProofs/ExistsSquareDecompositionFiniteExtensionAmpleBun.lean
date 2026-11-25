@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianAmpleSymmPreservedFieldBaseChangeStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarietyAmpleBundlesDescendFgSubfieldStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexSymmetricAmpleSquareDecompositionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtensionCompatibleEmbeddingStatement
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtensionCompatibleEmbedding
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyRingHomComplexOfFgStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareDecompositionDescendsToFiniteExtensionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportPowerDecompositionFieldExtensionStatement
@@ -69,7 +70,7 @@ theorem sqDec_of_finite_extension : ∀ (K : Type) [Field K] [CharZero K] (A : O
   obtain ⟨-, aMC, sMC⟩ := GlobalTheory.T.abelian_ample_symm_preserved_field_baseChange k₀ ℂ σ A₀ hA₀ M₀ hM₀ aM₀ sM₀
   have hsq := GlobalTheory.T.complex_symmetricAmple_square_decomposition ((Over.pullback (spMap σ)).obj A₀) hC _ _ (pull_isLB hL₀ _) (pull_isLB hM₀ _) aLC aMC sLC sMC
   obtain ⟨k₁, _, _, _, hsq₁⟩ := GlobalTheory.T.squareDecomposition_descends_to_finiteExtension k₀ ℂ σ A₀ hA₀ L₀ M₀ hL₀ hM₀ hsq
-  obtain ⟨K', _, _, _, e, he⟩ := GlobalTheory.T.exists_finite_extension_compatible_embedding k₀ K k₁
+  obtain ⟨K', _, _, _, e, he⟩ := _root_.GlobalTheory.exists_finite_ext_compat_of_finite k₀ K k₁
   exact ⟨K', inferInstance, inferInstance, inferInstance,
     GlobalTheory.T.transport_power_decomposition_field_extension k₀ K k₁ K' (algebraMap k₀ K) (algebraMap k₀ k₁) (algebraMap K K') e he.symm A₀ A π hπ L₀ M₀ L M hL₀ hM₀ hL hM eL eM hsq₁⟩
 

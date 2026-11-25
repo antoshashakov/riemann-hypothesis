@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharactersAg
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalIntegralHeisenbergTranslateIntegralIndicStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DistribHaarCharSupportedIdeleEqLocalAbsValueStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryElementActsLocalOperatorAtPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledWeilOperatorDiagonalIntegralHeisenbergPoiStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledWeilOperatorDiagonalIntegralHeisenbergPoi
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEqStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmittedDiagonalIntegralLinearFormStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplementaryAdelicSchwartzRestFunctionStatement
@@ -281,7 +281,7 @@ theorem char_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
     refine ⟨Φ₁, hΦ₁, hA, ?_⟩
     obtain ⟨hdt, hnt, s, hs, hns⟩ := GlobalTheory.T.siegelParabolic_leviInverse_quotient_det_norm F E σ hT.base.cm a' G.V'.J hJ.ne_zero v p t hp hpt
     obtain ⟨T, hTζ, hTd⟩ := hT' s
-    have hpt' := GlobalTheory.T.doubledWeilOperator_diagonalIntegral_heisenberg_point F E σ a' (a + a') G.V' G.W G.M' B.ψ hT.base.std.1 v m C hC d' hd' dd hdd omd hspl.toIsSplitting
+    have hpt' := _root_.GlobalTheory.InertLagChar.diagW_omd_point F E σ a' (a + a') G.V' G.W G.M' B.ψ hT.base.std.1 v m C hC d' hd' dd hdd omd hspl.toIsSplitting
       L hinv r₀ hr₀ c₀ hc₀ μ hLφ p _ (hsieg L hL hinv p t hpt) Φ hΦ Φ₁ hΦ₁ hA
     have hχ : (X.α / X.β) (Matrix.GeneralLinearGroup.det t) = 1 := by
       rw [MonoidHom.div_apply, GlobalTheory.InertChars.beta_eq_alpha_of_inert F E σ B a a' G X om om' hT v w hin hv

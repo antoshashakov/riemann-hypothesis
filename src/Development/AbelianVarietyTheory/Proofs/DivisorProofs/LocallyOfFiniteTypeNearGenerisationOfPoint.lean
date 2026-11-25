@@ -1,7 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SubsetSpanBy
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteTypeAwayOfAtPrimeStatement
+public import Mathlib.RingTheory.FiniteType
+public import Mathlib.RingTheory.Localization.AtPrime.Basic
+public import Mathlib.RingTheory.TensorProduct.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteTypeAwayOfAtPrime
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -156,7 +159,7 @@ theorem affine_case (R : Type) [CommRing R] [IsNoetherianRing R] (f : R) (P A : 
     (lft_of_pullback _ _ _ _ _ _ hpb)
   have h4 : Algebra.FiniteType (Localization.AtPrime x.asIdeal)
       (TensorProduct R (Localization.AtPrime x.asIdeal) C) := RingHom.finiteType_algebraMap.1 h3
-  obtain ⟨g, hg, hft⟩ := GlobalTheory.T.exists_finiteType_away_of_finiteType_atPrime R C f x.asIdeal h1 h2 h4
+  obtain ⟨g, hg, hft⟩ := _root_.GlobalTheory.Desc.exists_finiteType_away_of_atPrime R C f x.asIdeal h1 h2 h4
   let D := Localization.Away (algebraMap R C g)
   let k : Sp D ⟶ Sp C := Spec.map (CommRingCat.ofHom (algebraMap C D))
   haveI : IsOpenImmersion k := IsOpenImmersion.of_isLocalization (algebraMap R C g)

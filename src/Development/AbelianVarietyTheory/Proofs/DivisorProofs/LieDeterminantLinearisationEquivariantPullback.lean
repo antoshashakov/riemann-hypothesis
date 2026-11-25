@@ -4,7 +4,15 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExOfHodgeWt
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DualGramInterpGram
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenFrameTransportCartesianAutomorphismStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorDominantPullbackWithClassStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkMapIdentityModMaximalOfFixedPointStatement
+public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuationSubringDominatingSubring
+public import Mathlib.AlgebraicGeometry.Morphisms.Proper
+public import Mathlib.AlgebraicGeometry.Morphisms.SchemeTheoreticallyDominant
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStalkMapIdentityModMaximalOfFixedPoint
+public import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LevelCarrying
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsCoprimeOfNatCast
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentTransportEquivariantCartesianPreservesComStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -341,7 +349,7 @@ theorem ratLin_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
     rw [hsplit, hr, Units.val_mul, Units.val_mul, mul_left_comm, mul_div_cancel_left₀ _ (Units.ne_zero _)]
     exact (unitAt_ffMap (ρ' γ).asIso.hom x hu).mul ⟨_, Units.isUnit _, rfl⟩
   · intro γ x g hfx hg
-    obtain ⟨st, hst, hres, hstK⟩ := GlobalTheory.T.exists_stalk_map_identity_mod_maximal_of_fixed_point X' (ρ' γ).asIso x hfx
+    obtain ⟨st, hst, hres, hstK⟩ := _root_.GlobalTheory.FixStalk.fixes_stalk X' (ρ' γ).asIso x hfx
     obtain ⟨Fs, Ft, hFs, hFt, hr⟩ := ratio γ x x st hst hstK
 
     have hdet1 : ∀ τ, IsLocalRing.residue (X'.presheaf.stalk x) (Fs.co Ft τ).det = 1 := by

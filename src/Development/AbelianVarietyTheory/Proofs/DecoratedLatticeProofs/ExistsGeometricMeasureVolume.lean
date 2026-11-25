@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FrameTopAlt
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicUnitaryRealMulFiniteDecompositionStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBoxFinitePosProductHaarUnitaryGroupsStatement
+public import Formalism.LocalRingCardinality.DataCD
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBoxFinitePosProductHaarUnitaryGroups
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsHaarAdelicUnitaryProductRealFiniteStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsHaarFinitePointsFourierJacobiBesselStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MapWittEmbeddingZeroRankIsHaarMeasureStatement
@@ -68,7 +69,7 @@ theorem common_measure : ∀ (D : D7) (V : HSp D) (T : Type) (K : T → Subgroup
   obtain ⟨⟨θ, hθ⟩, hθall⟩ := (hν t₀).2
   obtain ⟨⟨A, hA⟩, hAall⟩ := hθall θ hθ
   obtain ⟨⟨m, hm⟩, -⟩ := hAall A hA
-  obtain ⟨B, hBm, hB0, hBT⟩ := GlobalTheory.T.exists_box_finite_pos_product_haar_unitaryGroups D.what₂.Tau (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) m
+  obtain ⟨B, hBm, hB0, hBT⟩ := _root_.GlobalTheory.haar_box_prod_finite_pos D.what₂.Tau (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) m
     (fun ρ => hgood ρ _ (hm ρ))
   haveI hνH : ∀ t, (ν t).IsHaarMeasure := fun t => (hν t).1
   let S : Set (GinfC V) := {a | ∀ ρ, ∃ b ∈ B ρ, UpqT.mat b * A ρ = A ρ * infMat D.sp.cm.sig V.gram (θ ρ) (a : GA D V)}

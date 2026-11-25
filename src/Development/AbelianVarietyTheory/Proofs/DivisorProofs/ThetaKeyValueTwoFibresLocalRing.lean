@@ -1,7 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsPolAVSectionInverseImage
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordinatesIntegralOfLinearlyIndependentReductioStatement
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.Algebra.Ring.Hom.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordinatesIntegralOfLinearlyIndependentReductio
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeyDatumFibreOfGrpPullbackStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeyDatumPolarisedAbelianLocalDomainStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsScalarMatrixBetweenKeyDataStatement
@@ -82,7 +85,7 @@ theorem frame_coords_lift {W K₀ K₁ : Type} [CommRing W] [IsDomain W] [Field 
     cases o with
     | none => exact h1
     | some j => exact congrFun h2 j
-  obtain ⟨z, hz, hϑz⟩ := GlobalTheory.T.coordinates_integral_of_linearly_independent_reduction W K₀ K₁ i₀ i₁ hi₀ hi₁ I (Option (Fin g)) u hind' ϑ
+  obtain ⟨z, hz, hϑz⟩ := _root_.GlobalTheory.MBLow.coords_integral_of_closed_indep W K₀ K₁ i₀ i₁ hi₀ hi₁ I (Option (Fin g)) u hind' ϑ
     (fun o => Option.elim o a₀ 0) (fun i => by simp [Fintype.sum_option, u, h0ϑ])
   have hz0 : ∀ j, z (some j) = 0 := fun j => hi₀ (by simpa using hz (some j))
   have ha₀ : i₀ (z none) = a₀ := by simpa using hz none
@@ -97,7 +100,7 @@ theorem frame_coords_lift {W K₀ K₁ : Type} [CommRing W] [IsDomain W] [Field 
   have hN : ∀ j, ∃ N : Option (Fin g) → W, (∀ o, i₀ (N o) = Option.elim o (c₀ j) (fun l => a₀ * M₀ j l)) ∧
       ∀ i, J i j = ∑ o, N o * u i o := by
     intro j
-    exact GlobalTheory.T.coordinates_integral_of_linearly_independent_reduction W K₀ K₁ i₀ i₁ hi₀ hi₁ I (Option (Fin g)) u hind' (fun i => J i j) _ (fun i => by
+    exact _root_.GlobalTheory.MBLow.coords_integral_of_closed_indep W K₀ K₁ i₀ i₁ hi₀ hi₁ I (Option (Fin g)) u hind' (fun i => J i j) _ (fun i => by
       simp [Fintype.sum_option, u, h0J, Finset.mul_sum, _root_.mul_assoc]; ring)
   choose N hN0 hNJ using hN
   have hN1 : ∀ j l, i₁ (N j (some l)) = a₁ * M₁ j l := by
