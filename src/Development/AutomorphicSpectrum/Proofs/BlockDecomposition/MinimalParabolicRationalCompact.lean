@@ -1,16 +1,18 @@
 module
 
 public import Development.WeilBound.ThetaLifts.Reductions.SiegelCore
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutantClosedSubgroupCompactQuotientStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianFamilyAnisotropicJointStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleBoundOfJointAnisotropicStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviMinimalCommutesProjectionFamilyStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviMinimalIdeleHermitianBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviNormalizesUnipotentTerStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviParabolicIntersectionClosedStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatVInjective
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutantClosedSubgroupCompactQuotient
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnipMinSubsetMinParOne
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianFamilyAnisotropicJoint
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdeleBoundOfJointAnisotropic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviMinimalCommutesProjectionFamily
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviMinimalIdeleHermitianBound
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviNormalizesUnipotentTer
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviParabolicIntersectionClosed
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearIndependentOfIsWittFrame
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemLeviMinimalOfCommutesProjectionsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicLeviDecompositionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemLeviMinimalOfCommutesProjections
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicLeviDecomposition
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,15 +63,15 @@ namespace GlobalTheory.CompanionTheory.ParCocompact
 
 theorem levi_cocompact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∃ C : Set (GAd σ J), IsCompact C ∧ C ⊆ leviMin σ J X Y ∩ minParOne σ J X ∧ ∀ m ∈ leviMin σ J X Y, m ∈ minParOne σ J X → ∃ δ ∈ ratPts σ J, δ ∈ leviMin σ J X Y ∧ ∃ c ∈ C, m = δ * c := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW
-  obtain ⟨L, hL, hLc⟩ := GlobalTheory.T.levi_parabolic_intersection_closed F E σ h n J hJ r X Y hW
+  obtain ⟨L, hL, hLc⟩ := _root_.GlobalTheory.CompanionTheory.ParCocompact.exists_leviOne_subgroup F E σ h n J hJ r X Y hW
   have hmem : ∀ g, g ∈ L ↔ g ∈ leviMin σ J X Y ∧ g ∈ minParOne σ J X := fun g => by
     rw [← SetLike.mem_coe, hL]; rfl
-  obtain ⟨ε, hε, hh⟩ := GlobalTheory.T.idele_bound_of_joint_anisotropic F E σ h n J hJ _ (hermFam σ J X Y) (L : Set (GAd σ J))
-    (GlobalTheory.T.hermitian_family_anisotropic_joint F E σ h n J hJ r X Y hW)
-    (fun g hg j => GlobalTheory.T.levi_minimal_idele_hermitian_bound F E σ h n J hJ r X Y hW g ((hmem g).1 hg).1 ((hmem g).1 hg).2 j)
-  obtain ⟨Ω, hΩ, hsub, hred⟩ := GlobalTheory.T.commutant_closed_subgroup_compact_quotient F E σ h n J hJ _ (projFam σ J X Y) L hLc
-    (fun g hg k => GlobalTheory.T.levi_minimal_commutes_projection_family F E σ h n J hJ r X Y hW g ((hmem g).1 hg).1 k) ⟨ε, hε, hh⟩
-    (fun γ hγ hc => (hmem γ).2 (GlobalTheory.T.mem_levi_minimal_of_commutes_projections F E σ h n J hJ r X Y hW γ hγ hc))
+  obtain ⟨ε, hε, hh⟩ := _root_.GlobalTheory.CompanionTheory.ParCocompact.FormHeight.exists_pos_le_hgt_of_forms F E σ h n J hJ _ (hermFam σ J X Y) (L : Set (GAd σ J))
+    (_root_.GlobalTheory.CompanionTheory.ParCocompact.hermFam_nondeg F E σ h n J hJ r X Y hW)
+    (fun g hg j => _root_.GlobalTheory.CompanionTheory.ParCocompact.hermFam_levi_scale F E σ h n J hJ r X Y hW g ((hmem g).1 hg).1 ((hmem g).1 hg).2 j)
+  obtain ⟨Ω, hΩ, hsub, hred⟩ := _root_.GlobalTheory.CompanionTheory.ParCocompact.exists_isCompact_of_centralizer_height F E σ h n J hJ _ (projFam σ J X Y) L hLc
+    (fun g hg k => _root_.GlobalTheory.CompanionTheory.ParCocompact.LeviComm.leviMin_comm_projFam F E σ h n J hJ r X Y hW g ((hmem g).1 hg).1 k) ⟨ε, hε, hh⟩
+    (fun γ hγ hc => (hmem γ).2 (_root_.GlobalTheory.CompanionTheory.ParCocompact.mem_leviMin_of_comm F E σ h n J hJ r X Y hW γ hγ hc))
   refine ⟨Ω, hΩ, fun c hc => (hmem c).1 (hsub hc), fun m hm hm1 => ?_⟩
   obtain ⟨δ, hδ, hδL, hd⟩ := hred m ((hmem m).2 ⟨hm, hm1⟩)
   exact ⟨δ, hδ, ((hmem δ).1 hδL).1, _, hd, by group⟩
@@ -82,9 +84,9 @@ theorem minParOne_cocompact : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   refine ⟨(C ∩ minParOne σ J X) * C', (hC.inter_right hcl).mul hC', ?_, fun p hp => ?_⟩
   · rintro _ ⟨c, hc, c', hc', rfl⟩
     exact hmul _ hc.2 _ (hsub hc').2
-  · obtain ⟨u, hu, m, hm, hm1, rfl⟩ := GlobalTheory.T.minimal_parabolic_levi_decomposition F E σ h n J hJ r X Y hW p hp
+  · obtain ⟨u, hu, m, hm, hm1, rfl⟩ := _root_.GlobalTheory.CompanionTheory.LeviDecomp.levi_decomp F E σ h n J hJ r X Y hW p hp
     obtain ⟨δ, hδ, hδL, c', hc', rfl⟩ := hM m hm hm1
-    have hu' := GlobalTheory.T.levi_normalizes_unipotent_ter F E σ h n J hJ r X Y hW δ hδL u hu
+    have hu' := _root_.GlobalTheory.CompanionTheory.ParCocompact.UnipNormal.leviMin_normalises_unipMin F E σ h n J hJ r X Y hW δ hδL u hu
     obtain ⟨δ', hδ', hδU, c, hc, hcU, e⟩ := hU _ hu'
     refine ⟨δ * δ', mul_mem hδ hδ', mul_mem_minPar (leviMin_subset X Y hδL)
       (minParOne_subset (unipMin_subset_minParOne X hδU)), c * c',
