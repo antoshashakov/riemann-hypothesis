@@ -10,7 +10,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockEmbNorm
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlacesStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmDataIsCMExtAndGramIsHermND
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliConstantTermVanishing
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdaptedBasisBlockEntriesStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdaptedBasisBlockEntries
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdaptedBasisConjugateZeroEntriesStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AutomorphicFunctionRestrictBlockStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BlockEmbeddingAdaptedBasisStatement
@@ -93,8 +93,8 @@ theorem resX (hW : IsWittFrame D.sp.cm.sig V.gram X Y) {l d : ℕ} (h : l + d �
   let q' : Fin V.rank := ⟨V.rank - 1 - (l + i.val), by omega⟩
   have hp' : p'.val + l + j.val + 1 = V.rank := by simp only [p']; omega
   have hq' : q'.val + l + i.val + 1 = V.rank := by simp only [q']; omega
-  have e1 := GlobalTheory.T.block_embedding_adapted_basis D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' 1 x
-  have e2 := GlobalTheory.T.block_embedding_adapted_basis D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' Complex.I x
+  have e1 := _root_.GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' 1 x
+  have e2 := _root_.GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' hp hq hp' hq' Complex.I x
   set Ex := C.1.map (tauE D τ) * Matrix.single p q 1 * (C.1.map (tauE D τ))⁻¹
   set Ey := C.1.map (tauE D τ) * Matrix.single p' q' 1 * (C.1.map (tauE D τ))⁻¹
   have v : ∀ (a b : ℂ), (derEnd hθ τ (a • Ex - b • Ey) F).1 (ι x) =
@@ -122,8 +122,8 @@ theorem resY (hW : IsWittFrame D.sp.cm.sig V.gram X Y) {l d : ℕ} (h : l + d �
   have hi := i.isLt
   let p : Fin V.rank := ⟨l + i.val, by omega⟩
   let q : Fin V.rank := ⟨l + j.val, by omega⟩
-  have e1 := GlobalTheory.T.block_embedding_adapted_basis D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' rfl rfl hp' hq' 1 x
-  have e2 := GlobalTheory.T.block_embedding_adapted_basis D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' rfl rfl hp' hq' (-Complex.I) x
+  have e1 := _root_.GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' rfl rfl hp' hq' 1 x
+  have e2 := _root_.GlobalTheory.CompanionTheory.BlockEntry.lieS_eq_derEnd D θ hθ V m X Y hW l d h ι hι C hC τ F f hf i j p q p' q' rfl rfl hp' hq' (-Complex.I) x
   set Ex := C.1.map (tauE D τ) * Matrix.single p q 1 * (C.1.map (tauE D τ))⁻¹
   set Ey := C.1.map (tauE D τ) * Matrix.single p' q' 1 * (C.1.map (tauE D τ))⁻¹
   have v : ∀ (a b : ℂ), (derEnd hθ τ (a • Ex - b • Ey) F).1 (ι x) =

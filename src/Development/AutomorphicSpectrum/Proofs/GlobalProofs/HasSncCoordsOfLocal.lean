@@ -4,7 +4,10 @@ public import Mathlib
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.DimSplitPf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCoordinatesExtendingRegularParameters
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.KaehlerBasisSpreadsToNeighbourhoodStatement
+public import Mathlib.RingTheory.Kaehler.Basic
+public import Mathlib.RingTheory.Localization.AtPrime.Basic
+public import Mathlib.RingTheory.Localization.Away.Basic
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.KaehlerBasisSpreadsToNeighbourhood
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothLocalRingFreeDifferentialsStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RegularSequenceGermsRegularLocalStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.KaehlerBasisOnLocalizationAwayStatement
@@ -49,7 +52,7 @@ theorem basis_spread (K A : Type) [Field K] [CommRing A] [Algebra K A] [Algebra.
     ∃ s ∉ P, ∀ (B : Type) [CommRing B] [Algebra A B] [Algebra K B] [IsScalarTower K A B]
       [IsLocalization.Away s B],
       LinearIndependent B (fun i => KaehlerDifferential.D K B (algebraMap A B (x i))) ∧
-        Submodule.span B (Set.range fun i => KaehlerDifferential.D K B (algebraMap A B (x i))) = ⊤ := GlobalTheory.T.kaehler_basis_spreads_to_neighbourhood K A P x hx
+        Submodule.span B (Set.range fun i => KaehlerDifferential.D K B (algebraMap A B (x i))) = ⊤ := _root_.GlobalTheory.CompanionTheory.KaehlerSpread.spread K A P x hx
 
 theorem omega_free (K : Type) [Field K] (D : ℕ) (Y : Scheme.{0}) (g : Y ⟶ Sp K)
     (hD : SmoothOfRelativeDimension D g) (U : Y.affineOpens) (P : Ideal Γ(Y, U.1)) [P.IsPrime] :

@@ -7,7 +7,9 @@ public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PlaceApplyStat
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniConeDecompositionStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SimplicialConeTilingStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TotallyPositiveBasisRatioBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UniqueReducedOrbitRepresentativeStatement
+public import Mathlib.Basic.Finite.Defs
+public import Mathlib.Basic.Real.Basic
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UniqueReducedOrbitRepresentative
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -138,7 +140,7 @@ theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyR
     intro σ
     rw [map_mul]
     exact mul_pos (hu.2 σ) (hx σ)
-  obtain ⟨g, hg, hguniq⟩ := GlobalTheory.T.unique_reduced_orbit_representative φ f hfpos hfinj D hfin x hxD
+  obtain ⟨g, hg, hguniq⟩ := _root_.GlobalTheory.CompanionTheory.SiegelKlingen.exists_unique_minimal_translate φ f hfpos hfinj D hfin x hxD
   obtain ⟨c, hc, hcuniq⟩ := hun _ hg
   refine ⟨(⟨g.1, g.2⟩, c), hc, ?_⟩
   rintro ⟨⟨u', hu'⟩, c'⟩ hp

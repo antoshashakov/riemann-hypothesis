@@ -4,7 +4,7 @@ public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuati
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialSum
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteDifferenceConeTermEqStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HighDifferenceVanishesNegativeIntegerStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniValuesNegativeIntegersRationalStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ShintaniValuesNegativeIntegersRational
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SizePowerLeInverseSquareProductStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummableInverseSquareProductStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -66,7 +66,7 @@ theorem differentiableOn_tsum_weighted_DL_halfplane : ∀ (ι : Type) [Fintype �
   have key : ∀ R : ℕ, DifferentiableOn ℂ (fun s => ∑' m, (u m : ℂ) * DL cs (coneTerm a b s) m)
       {s : ℂ | ‖s‖ < (R : ℝ) ∧ -(B : ℝ) < s.re} := by
     intro R
-    obtain ⟨C, hC0, hC⟩ := GlobalTheory.T.real_difference_cone_bound ι r a b ha hb B R cs 0
+    obtain ⟨C, hC0, hC⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.DiffDecay.diff_bound ι r a b ha hb B R cs 0
     refine Complex.differentiableOn_tsum_of_summable_norm
       (u := fun m : Fin r → ℕ => Cu * C * ∏ i, ((1 + (m i : ℝ)) ^ 2)⁻¹)
       ((GlobalTheory.T.summable_inverse_square_product r).mul_left _) ?_ (hopen R) ?_

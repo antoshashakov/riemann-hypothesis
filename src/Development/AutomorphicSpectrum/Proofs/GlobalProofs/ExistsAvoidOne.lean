@@ -5,7 +5,10 @@ public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuati
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuationBis
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsPrimeDegreeOneAvoidingStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsShintaniConeDomainStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaMeromorphicFromTwistsStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Mathlib.Analysis.SpecialFunctions.Pow.Complex
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaMeromorphicFromTwists
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaPrimeTwistSummableStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaRayClassSummableStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaTwistedEntireDifferenceStatement
@@ -134,7 +137,7 @@ theorem exists_classZeta (𝔣 : Ideal (𝓞 F)) (h𝔣 : 𝔣 ≠ ⊥) (S : Fin
     exact GlobalTheory.T.partial_zeta_prime_twist_summable F 𝔣 𝔠 (τ c).1 c.1 hl e he s _ hs (hsum _ s hs) (hsum _ s hs) (hTs c s hs)
   obtain ⟨𝔠, hl, -, τ, T, hTd, hTr, hTq⟩ := key 0
   obtain ⟨𝔠', hl', hB', τ', T', hTd', hTr', -⟩ := key (Ideal.absNorm 𝔠)
-  obtain ⟨Z, hZd, hZD, hZq⟩ := GlobalTheory.T.partial_zeta_meromorphic_from_twists S (fun c => classSeries 𝔣 c.1) T T' _ _ τ τ' hl hl' hB'.ne hTd hTd' hTr hTr'
+  obtain ⟨Z, hZd, hZD, hZq⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.TwoRelations.continuation_of_two_relations S (fun c => classSeries 𝔣 c.1) T T' _ _ τ τ' hl hl' hB'.ne hTd hTd' hTr hTr'
   refine ⟨Z, fun c => ⟨⟨hZd c, fun s hs => ?_⟩, fun k hk => hZq k hk (fun c => hTq c k hk) c⟩⟩
   rw [hZD c s hs]
   exact (hsum c s hs).hasSum

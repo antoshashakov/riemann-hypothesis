@@ -14,7 +14,8 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Exist
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ContinuousConjBlockEmbeddingStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HermitianFormChangeOfBasisLieStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsotropicFrameRankLeWittIndexStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsotropicFrameWittBoundStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsSmoothModerateOfIsAutFunSm
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsotropicFrameWittBound
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LeviInfUnipotentLeHermitianPartStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LeviNormalizesUnipotentVariant
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RationalUnipotentLeParabolic
@@ -117,7 +118,7 @@ theorem isCuspFun_slice : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F �
     change ψ (s (γ * g) * y) = ψ (s g * y)
     rw [map_mul, mul_assoc, hψl _ h1]
   obtain ⟨m', e, X', Y', hsl, hW'⟩ := GlobalTheory.T.orthogonal_subspace_witt_frame_extension D V m X Y hW T V' ι hι hr
-  refine GlobalTheory.T.cusp_function_of_constant_terms_vanish D V' m' X' Y' hW' (GlobalTheory.T.isotropic_frame_rank_le_witt_index D V' m' X' Y' hW') _ hfl fun k => ?_
+  refine GlobalTheory.T.cusp_function_of_constant_terms_vanish D V' m' X' Y' hW' (_root_.GlobalTheory.CompanionTheory.IsoFrameBound.isoFrame_le_wittFrame D V' m' X' Y' hW') _ hfl fun k => ?_
   have hκ : e k ∉ upTo T := (hsl.2.1 _).2 ⟨k, rfl⟩
   have hκT : e k ∉ T := fun h => hκ ⟨_, h, le_rfl⟩
   have hTT' : T ⊂ insert (e k) T := Finset.ssubset_insert hκT

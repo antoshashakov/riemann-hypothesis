@@ -7,7 +7,9 @@ public import GroundTheory.AutomorphicForms.GL2.GodementSectionFactor
 public import GroundTheory.GlobalFields.TateThesis.HeckeTheoremFE
 public import GroundTheory.LocalFields.LocalZetaEpsilon
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsCMTypeEmbedding
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CmHeckeCharacterInfinityTypeStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsFinSetSplitPlacesCoprimeConductor
+public import GroundTheory.GlobalFields.TateThesis.EulerFactorsArch
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CmHeckeCharacterInfinityType
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CmHeckeCharacterNotNormPowerStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.FiniteEpsilonFactorDependenceOnSStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HaarIntegralIntegersFiniteSumStatement
@@ -79,7 +81,7 @@ theorem L_inf {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ : IsCMType φ
     (n : I → ℤ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (i : I) :
     (toHecke χ hu).infiniteTau (InfinitePlace.mk (φ i)) = 0 ∧
       ((toHecke χ hu).infiniteWeight (InfinitePlace.mk (φ i))).natAbs = (n i).natAbs :=
-  GlobalTheory.T.cm_hecke_character_infinity_type E I φ hφ χ hu n hi i
+  _root_.GlobalTheory.CompanionTheory.HeckeArch.infiniteParams_of_hasInf E I φ hφ χ hu n hi i
 
 theorem L_notPow {I : Type} [Fintype I] (φ : I → E →+* ℂ) (hφ : IsCMType φ) [_root_.NumberField.IsTotallyComplex E] (χ : HChar E) (hu : IsUnitary χ)
     (n : I → ℤ) (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (hn : ∃ i, n i ≠ 0) :

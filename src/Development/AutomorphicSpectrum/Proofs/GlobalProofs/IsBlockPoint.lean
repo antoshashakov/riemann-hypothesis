@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBlockEmb
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsConstAlongSingleton
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMajorantFrameCompactSubgroupLeStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsSquareIntegrableIffMemL2
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMajorantFrameCompactSubgroupLe
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsConjMemMajCptFrame
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -81,7 +82,7 @@ theorem goodPos : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
     have : (K1 : Set (GAd σ J)) = (fun x => g * x * g⁻¹) '' (K : Set (GAd σ J)) := by
       ext x; simp [hK1, MulAut.conj_apply]
     rw [this]; exact hK.1.2.image (hconj g)
-  obtain ⟨c, hc, hle⟩ := GlobalTheory.T.exists_majorantFrame_compact_subgroup_le F E σ hCM n J hJ K1 hK1le hK1c
+  obtain ⟨c, hc, hle⟩ := _root_.GlobalTheory.CptMajorant.exists_frame_le_majCpt F E σ hCM n J hJ K1 hK1le hK1c
   set K2 : Subgroup (GAd σ J) := (majCpt σ J c).map (MulAut.conj g⁻¹).toMonoidHom with hK2
   have hmc := (isMaxCpt_majCpt hCM hc).1
   have hK2le : K2 ≤ infPts σ J := by

@@ -17,7 +17,10 @@ public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GaloisUnramifi
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocalAnnihilatorSelfDualVolumeStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.MemAnnihilatorSmallBallEventuallyStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NormalisedFourierBumpLimitStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NumberFieldApproximateIdentityStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.NumberFieldApproximateIdentity
 import GroundTheory.GlobalFields.LocalFieldAtPlace
 import GroundTheory.LocalFields.LocalFourierHaar
 import Mathlib.Algebra.Order.Floor.Extended
@@ -242,7 +245,7 @@ theorem exists_test_approx : ∀ (F : Type) [Field F] [NumberField F], NumberFie
   have hSc1 : ∀ v, v ∉ S → c v = 1 := fun v hv => by
     by_contra h
     exact hv (hS (Finset.mem_union_right _ (hfin2.mem_toFinset.2 h)))
-  obtain ⟨ρ, hρ, hρt, hρI⟩ := GlobalTheory.T.number_field_approximate_identity GlobalTheory.T.exists_real_approximate_identity F hF ψ hψ laminf hinf.1
+  obtain ⟨ρ, hρ, hρt, hρI⟩ := GlobalTheory.T.number_field_approximate_identity _root_.GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test.InfReal.exists_bumps F hF ψ hψ laminf hinf.1
   haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun v => ⟨rfl⟩
   haveI : ∀ v : HeightOneSpectrum (𝓞 F), (lam v).IsAddHaarMeasure := fun v => (hlam v).1
   have hloc := fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v

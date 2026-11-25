@@ -3,7 +3,9 @@ module
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConeSeriesSummableRightHalfPlaneStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PeriodicWeightBoundedStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RealDifferenceConeBoundStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.RealDifferenceConeBound
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SummationDecompositionFiniteDifferencesStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TendstoTailInfiniteProductOneStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.WeightSumAsFiniteDifferencesStatement
@@ -85,7 +87,7 @@ theorem stage (ι : Type) [Fintype ι] (r l : ℕ) (a : ι → Fin r → ℝ) (b
 theorem abelContinuation : AbelContinuation := by
   intro ι _ r l a b w hr hl ha hb hw
   choose G hG hGeq hGrat using fun k : ℕ => stage ι r l a b w hr hl ha hb hw k
-  obtain ⟨T, hT, hTG⟩ := GlobalTheory.T.analytic_continuation_from_strips (fun s => ∑' m, (w m : ℂ) * coneTerm a b s m) G hG hGeq
+  obtain ⟨T, hT, hTG⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.Glue.entire_of_halfPlane_continuations (fun s => ∑' m, (w m : ℂ) * coneTerm a b s m) G hG hGeq
   refine ⟨T, hT, ?_, ?_⟩
   · intro s hs
     have hs0 : -((0 : ℕ) : ℝ) < s.re := by

@@ -2,7 +2,11 @@ module
 
 public import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.GagaSections
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HolomorphicLocalSectionsCompatibleStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothSchemeDecomposeRelativeDimensionStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Order.CompletePartialOrder
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothSchemeDecomposeRelativeDimension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -146,7 +150,7 @@ theorem exists_factor {X : Scheme.{0}} (W : ℕ → X.Opens) (hc : ⨆ D, W D = 
 
 theorem gagaSections : GlobalTheory.CompanionTheory.Ar.Flat.GagaSections := by
   intro X s hp hs L hL h hhol hcomp
-  obtain ⟨W, hcl, hdim, hc, hd⟩ := GlobalTheory.T.smooth_scheme_decompose_relative_dimension X s hs
+  obtain ⟨W, hcl, hdim, hc, hd⟩ := _root_.GlobalTheory.CompanionTheory.Gaga.exists_clopen_smoothOfRelativeDimension X s hs
   have hprop : ∀ D, IsProper ((W D).ι ≫ s) := fun D => by
     haveI : IsClosedImmersion (W D).ι :=
       IsClosedImmersion.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hcl D)

@@ -9,7 +9,10 @@ public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.EffCartierRest
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsClosedCartierLocusSupportStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsIntegralBlowupOfSmoothStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsIsoRestrictOfBlowupCompStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.VanishingIdealSmoothAgreesOffStatement
+public import Mathlib.AlgebraicGeometry.IdealSheaf.Functorial
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.VanishingIdealSmoothAgreesOff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -73,7 +76,7 @@ theorem exists_centre_off {k : Type} [Field k] {X₁ X₂ : Scheme.{0}} (g : X�
     ext x
     change ¬ (x ∈ Z.support ∧ CartAt Z x) ↔ ¬ (x ∈ Z.support ∧ ¬ (x ∈ Z.support ∧ ¬ CartAt Z x))
     tauto
-  obtain ⟨c₁, c₂⟩ := GlobalTheory.T.vanishing_ideal_smooth_agrees_off g Z A O₁ h₂ (fun x hx => hx.1) hO₁
+  obtain ⟨c₁, c₂⟩ := _root_.GlobalTheory.CompanionTheory.SmoothPart.smooth_and_comap_eq g Z A O₁ h₂ (fun x hx => hx.1) hO₁
   have hV : FinalTheorems.EffCartier (Z.comap V.ι) := GlobalTheory.effCartier_comap_of_isIso_restrict π Z V h₄ h₃.1
   have hsupp : ((Scheme.IdealSheafData.vanishingIdeal A).support : Set X₁) = A :=
     Scheme.IdealSheafData.coe_support_vanishingIdeal A

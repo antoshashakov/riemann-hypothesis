@@ -6,7 +6,9 @@ public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CartierAtOfLocallyPrincipalStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalFiniteProjectiveOfSmoothStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalRankOneOfLocallyPrincipalStatement
+public import Mathlib.RingTheory.Ideal.Cotangent
+public import Mathlib.RingTheory.Spectrum.Prime.FreeLocus
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConormalRankOneOfLocallyPrincipal
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsSmoothAffinePresentationPairStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfCartierAtStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LocallyPrincipalOfConormalRankOneStatement
@@ -97,7 +99,7 @@ theorem locPrincipal_locally_const {k A : Type} [Field k] [CommRing A] [IsDomain
     rw [hWO] at this
     exact this
   have e : ∀ R : PrimeSpectrum (A ⧸ I), LocPrincipal I (PrimeSpectrum.comap (Ideal.Quotient.mk I) R).asIdeal ↔ Module.rankAtStalk (R := A ⧸ I) I.Cotangent R = 1 :=
-    fun R => ⟨GlobalTheory.T.conormal_rank_one_of_locally_principal I R, GlobalTheory.T.locally_principal_of_conormal_rank_one I R⟩
+    fun R => ⟨_root_.GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.rankAtStalk_cotangent_eq_one I R, GlobalTheory.T.locally_principal_of_conormal_rank_one I R⟩
   rw [← hQ, ← hP0, e, e, hQO]
 
 theorem fromSpec_mem_basicOpen_iff {X : Scheme.{0}} (U : X.affineOpens) (q : PrimeSpectrum Γ(X, U.1))

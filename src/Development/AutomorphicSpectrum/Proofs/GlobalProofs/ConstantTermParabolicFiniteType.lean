@@ -24,7 +24,10 @@ public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdaptedFrameOr
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AdelicCharacterLocalNontrivialStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ArchimedeanIwasawaMinimalParabolic
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AutomorphicFunctionRestrictBlockStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BlockBasisChangeEntriesStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Normed.Algebra.Exponential
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.BlockBasisChangeEntries
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ConjugatedMatrixUnitEntriesStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ContinuousConjBlockEmbeddingStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.GelfandEigenvalueCasimirScalarStatement
@@ -306,7 +309,7 @@ theorem s_oneP (hθ : IsInfFam θ) {V V' : HSp D} {ι : V'.V →ₗ[D.host.E] V.
     {A : Matrix (Fin V'.rank) (Fin V'.rank) ℂ} (hA : A ∈ lieAt V' τ) (t : ℝ) :
     s (oneP θ V' τ A t) = oneP θ V τ ((frameMat V V' ι).map (tauE D τ) * A *
       ((gramAt D V' τ)⁻¹ * ((frameMat V V' ι).map (tauE D τ))ᴴ * gramAt D V τ)) t := by
-  obtain ⟨-, -, f3, f4, f5⟩ := GlobalTheory.T.hermitian_form_change_of_basis_lie (gramAt D V τ) (gramAt D V' τ) ((frameMat V V' ι).map (tauE D τ)) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V' τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V' τ) (frame_isom hι τ)
+  obtain ⟨-, -, f3, f4, f5⟩ := _root_.GlobalTheory.CompanionTheory.IsometricMatrix.main (gramAt D V τ) (gramAt D V' τ) ((frameMat V V' ι).map (tauE D τ)) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V' τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V' τ) (frame_isom hι τ)
   have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
   have R' := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V'
   obtain ⟨s₀, -, hs₀, -⟩ := GlobalTheory.Mem.UnitaryEmb.exists_embHom D V V' ι hι
@@ -337,7 +340,7 @@ theorem rderC_slice : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.
         RderC θ V τ ((frameMat V V' ι).map (tauE D τ) * Z *
           ((gramAt D V' τ)⁻¹ * ((frameMat V V' ι).map (tauE D τ))ᴴ * gramAt D V τ)) F (s h * y) := by
   intro D θ hθ V V' ι hι s hs τ Z y hy F
-  obtain ⟨-, f2, -, -, -⟩ := GlobalTheory.T.hermitian_form_change_of_basis_lie (gramAt D V τ) (gramAt D V' τ) ((frameMat V V' ι).map (tauE D τ)) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V' τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V' τ) (frame_isom hι τ)
+  obtain ⟨-, f2, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.IsometricMatrix.main (gramAt D V τ) (gramAt D V' τ) ((frameMat V V' ι).map (tauE D τ)) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V' τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V' τ) (frame_isom hι τ)
   obtain ⟨h1, h2⟩ := GlobalTheory.SmoothAutCheck.parts_mem V' τ Z
   have e : ∀ Z, conjAt V τ ((frameMat V V' ι).map (tauE D τ) * Z *
       ((gramAt D V' τ)⁻¹ * ((frameMat V V' ι).map (tauE D τ))ᴴ * gramAt D V τ)) = (frameMat V V' ι).map (tauE D τ) * conjAt V' τ Z *
@@ -362,7 +365,7 @@ theorem mid_frame : ∀ (D : D7) (V V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V)
   obtain ⟨hdim, B, Bi, hBB, hB, hperp⟩ := GlobalTheory.T.adapted_frame_orthogonal_subspace D V V' ι hι m X Y hW T hr C hC a ham hup
   refine ⟨hdim, fun τ => ⟨B.map (tauE D τ), Bi.map (tauE D τ), ?_, ?_⟩⟩
   · rw [← Matrix.map_mul, hBB, Matrix.map_one _ (map_zero _) (map_one _)]
-  · obtain ⟨f1, -, -, -, -⟩ := GlobalTheory.T.hermitian_form_change_of_basis_lie (gramAt D V τ) (gramAt D V' τ) ((frameMat V V' ι).map (tauE D τ)) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V' τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V' τ) (frame_isom hι τ)
+  · obtain ⟨f1, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.IsometricMatrix.main (gramAt D V τ) (gramAt D V' τ) ((frameMat V V' ι).map (tauE D τ)) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_herm V' τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V' τ) (frame_isom hι τ)
     have hPu : IsUnit (C.1.map (tauE D τ)).det := by
       have h1 : C.1.map (tauE D τ) * ((C⁻¹).1.map (tauE D τ)) = 1 := by
         rw [← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]

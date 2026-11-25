@@ -9,7 +9,8 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateDua
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.CupFlip
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TateDualityH2FiniteCoefficients
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.DualQOfTopInj
-public import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.ExistsPerfectCharacterQuotientStatement
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.ExistsPerfectCharacterQuotient
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GoodOAdicCompleteCompactBasisStatement
 import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.GrowthGaloisInvariantsModPrimePowerLattice
 public import Development.AutomorphicSpectrum.Proofs.NonGaloisProofs.MemOfMkMemRange
@@ -168,7 +169,7 @@ theorem eulerQuot : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.G
     exact Ideal.mul_mem_right _ _ h1
   obtain ⟨hW, hcW⟩ := cardQ l K LL O hO A LA ϖ hϖ r
   obtain ⟨hW', -⟩ := cardQ l K LL O hO A' LA' ϖ hϖ r
-  obtain ⟨ψ₀, hψ, -⟩ := GlobalTheory.T.exists_perfect_character_quotient O ϖ hϖ r (l ^ (r + 1)) hpos hfinO hN
+  obtain ⟨ψ₀, hψ, -⟩ := _root_.GlobalTheory.CompanionTheory.LocDual.GenChar.exists_generating_character O ϖ hϖ r (l ^ (r + 1)) hpos hfinO hN
   obtain ⟨B, hB, hBl, hBr⟩ := pairOL l Lp K LL O hO A A' LA LA' P hd ϖ hϖ r
   obtain ⟨Pb, hPb, hL, hR⟩ := exists_pair _ _ B ψ₀ hψ hBl hBr
   have hlc := actLoc l Lp K LL O hO A LA ϖ hϖ r hI
