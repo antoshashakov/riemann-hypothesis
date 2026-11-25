@@ -8,7 +8,8 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLev
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSplitPlaceEqFixedTypePrimePlace
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjDualOfLabels
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceLocalComponentConjEqInverseTransposeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneDualTransportMonodromyDimWildStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MonodromyZeroOfWeilDeligneRepClassIff
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneDualTransportMonodromyDimWild
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TeichmullerInertiaLabelCondition
 public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 public import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
@@ -132,7 +133,7 @@ theorem depthZero_tame_alt : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → �
     (_root_.UpperTheory.One.M.good_cls_of_isLocS_av P i PI s σ hσ)
   rw [← hA] at hb
   rw [← hA'] at hb'
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.weilDeligneDualTransport_monodromy_dim_wild D _ _ c hc1 hc2 _ _ D.R.nV b b' hb hb' hN hρ
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.WeilDeligne.ConjDual.mono_dim_wild D _ _ c hc1 hc2 _ _ D.R.nV b b' hb hb' hN hρ
   have h4 := _root_.GlobalTheory.WeilDeligne.LabTransport.main D k _ _ c hc1 hc2 _ _ D.R.nV b b' hb hb' hN hρ _ _ hc3'
   refine ⟨fun hm => (P.T.mono0 _ _).2 (h1 ((P.T.mono0 _ _).1 hm)), fun ht σ₁ hσ₁ hw₁ => ?_, h4⟩
   rw [P.T.inePol _ _ σ₁ hσ₁, ← P.T.dim]

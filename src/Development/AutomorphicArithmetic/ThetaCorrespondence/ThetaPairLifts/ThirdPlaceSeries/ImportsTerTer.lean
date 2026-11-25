@@ -11,7 +11,10 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Conjugate
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjugateSplitPlaceUnitaryLocEqTransposeInvStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DiagUniformiserConjTransposeInvMemUpperParahoricStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitPlaceCompletionIsoPreservesValuationStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitPlaceUnitsCharacterEqOfAgreeOnFieldStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnitarisableOfCharIff
+public import ReciprocityTheory.Automorphisms.SplitCoeAlgebraMap
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitPlaceUnitsCharacterEqOfAgreeOnField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -83,7 +86,7 @@ theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7
     rwa [GlobalTheory.DimPartsCompare.cPl_cPl, ← hs] at this
   have hμ := hS.mu i s.w hw j hj
   have hrel : ∀ u, ξ⁻¹ u = (S i s.w hw).mu (Units.map c.toMonoidHom u) := by
-    refine GlobalTheory.T.splitPlace_unitsCharacter_eq_of_agree_on_field s c hc hcs _ _ hμ.1 ?_ ?_
+    refine _root_.GlobalTheory.ConjDense.eq_of_agree s c hc hcs _ _ hμ.1 ?_ ?_
     · obtain ⟨N, hN⟩ := hξ.1
       exact ⟨N, fun u hu => by rw [MonoidHom.inv_apply, hN u hu, inv_one]⟩
     · intro x

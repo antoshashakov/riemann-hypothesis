@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AnchoredWeightIndefiniteLiftGapsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunSizesQuotientGapsLargeStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.TupleReadBaseTupleEqFamily
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunSizesQuotientGapsLarge
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,7 +52,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Forma
 namespace GlobalTheory.HSApp
 theorem wtBig_run_alt : _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i PP _ => (i : ℕ) + 1 < (Fm.D x ι).R.m →
     WtBig (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)) := by
-  obtain ⟨ε1, hε1, H⟩ := GlobalTheory.T.runSizes_quotientGaps_large
+  obtain ⟨ε1, hε1, H⟩ := _root_.GlobalTheory.RunSizes.gaps_large
   refine ⟨ε1, hε1, fun eps he hle => ?_⟩
   obtain ⟨K, hK⟩ := H eps he hle
   refine ⟨K, fun Fm CH hc hL => ?_⟩

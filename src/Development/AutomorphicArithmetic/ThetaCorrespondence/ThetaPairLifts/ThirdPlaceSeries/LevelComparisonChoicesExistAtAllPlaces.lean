@@ -11,7 +11,11 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleTwistOfTwistingCharacter
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsComplexEmbeddingReadingFractionRingOverCoeStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGaloisCharacterOfFiniteOrderHeckeCharacterStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalUnitCharacterNontrivialStatement
+public import Formalism.LocalToGlobal.GaloisLevelStructure.TiedLevel
+public import Formalism.LocalToGlobal.UnitaryNorms.CharTied
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalUnitCharacterNontrivial
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsReadsAtOfCover
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRingClassGroupDescentOfCoeffFieldTwistStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StatementCOfCasselmanWallach
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TupTiedOfMuIs
@@ -165,7 +169,7 @@ theorem stageCExists_of_harishChandra_serN : GlobalTheory.Published.DiscreteSeri
     (fun v v' h => (P.coh.same v v' h).2) T.conj fun v b ψ hA j hv hl' hok e he hr => by
       have hg := TupTie.good_set f T (w.xi_range ▸ Set.mem_range_self ((Dof x).what₂.muTw v))
       exact ⟨levEq _ _ b hA j e he (a1 P x l.toLA)
-        (fun s' ξ => GlobalTheory.T.exists_local_unit_character_nontrivial (Dof x) (cfOf x) j _ s' ξ hg.2.1 hg.2.2) (l.mt.mt.prod v j) (l.mt.mt.para v j) (l.mt.mt.uni v j)
+        (fun s' ξ => _root_.GlobalTheory.CompRamified.exists_unit_ne_one (Dof x) (cfOf x) j _ s' ξ hg.2.1 hg.2.2) (l.mt.mt.prod v j) (l.mt.mt.para v j) (l.mt.mt.uni v j)
         (l.mt.mt.hyp v j) (a3 P x l v _ b ψ hA j hv hl' hok) (a4 P x l v _ b ψ hA j hv hl' hok e he hr)
         (a5 P x l v _ b ψ hA j hv hl' hok) (a6 P x l v _ b ψ hA j hv hl' hok), a7 P x l v _ b ψ hA j hv hl' hok e he⟩
   obtain ⟨c, hc⟩ := a0 P x l C tp b1 b2 b3 (fun v _ => congrFun b4 v) b5 fun v _ => b6 v

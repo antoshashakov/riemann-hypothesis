@@ -6,7 +6,12 @@ public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLif
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EightDvdNCol
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LiftLambdaBound
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionDvrFlagLift
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionTruncatedFrameChartResidueCharZerStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NonnegOfMemCStarSet
+public import Formalism.LocalToGlobal.ProjectiveLattices.ChartDirectionsIntegral
+public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsExtensionTruncatedFrameChartResidueCharZer
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsIsNabUncond
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.StarRingExtOfStar
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExistsThetaRuleValueLeCoverCharZero
@@ -89,7 +94,7 @@ theorem exists_cusp_with_theta_jet_value_le_alt : _root_.GlobalTheory.CovTop.Pub
     (Spec.map (CommRingCat.ofHom g) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z ≫ TF.X.π ≫ TF.Y.s)
   obtain ⟨st, nab, hnab⟩ := GlobalTheory.CanonConn.exists_isNab_uncond _ _ _ _ Y.d.Xo₂ Y.d.c₂
   obtain rfl := GlobalTheory.PowGerm.starSt _ _ st hnab.1
-  obtain ⟨T', io', y'', r, C, P, hch', hr, hC0, hP, hφ', hsc⟩ := GlobalTheory.T.exists_extension_truncatedFrame_chart_residue_charZero _ _ _ _ Y.d.Xo₂ Y.d.c₂ T io y' hch φT hφ
+  obtain ⟨T', io', y'', r, C, P, hch', hr, hC0, hP, hφ', hsc⟩ := _root_.GlobalTheory.ExtScaleZero.exists_ext_chart_scale_charZero _ _ _ _ Y.d.Xo₂ Y.d.c₂ T io y' hch φT hφ
   obtain ⟨f, hf, hne, hle⟩ := hA' la hla cst hJ nab hnab T' io' y'' C P (r * φT) hch' hC0 hP hφ'
   have hs := hsc nab hnab _ _ 1 1 f hf
   simp only [map_one, one_mul, mul_one] at hs

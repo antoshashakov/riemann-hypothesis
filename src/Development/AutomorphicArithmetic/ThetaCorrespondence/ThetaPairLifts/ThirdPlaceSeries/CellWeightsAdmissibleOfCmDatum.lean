@@ -9,7 +9,7 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Algebra
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IrreducibleWeightDescendsToPolynomialModuleStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgWeightContragredientExistsUnique
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellWeightOfAdmissibleTwist
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MatchingMatricesOfBaseChangeRepresentationStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MatchingMatricesOfBaseChangeRepresentation
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SideMultiplicityFamily
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightMatricesMatchOfCoeffSpaceIsoStatement
 import Formalism.LocalToGlobal.Columns.MtAdWtIrr
@@ -164,7 +164,7 @@ theorem cellWt_of_sideRead_of_admTw : _root_.GlobalTheory.HeightCounting.Up.Publ
   unfold CellWt
   letI := (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).acg
   letI := (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).mod
-  exact GlobalTheory.T.matchingMatrices_of_baseChange_representation (NX.toKk (Dof x) i (T.k v)) e (l.b.Bs.exp.rhoW i (j.1 + 1) b) (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).ρ
+  exact _root_.GlobalTheory.BcMatch.bcmatch_main (NX.toKk (Dof x) i (T.k v)) e (l.b.Bs.exp.rhoW i (j.1 + 1) b) (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).ρ
     (mtAt l.mt.M v j).wt.ρ (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).bc h1
 end GlobalTheory.LevCmp
 end

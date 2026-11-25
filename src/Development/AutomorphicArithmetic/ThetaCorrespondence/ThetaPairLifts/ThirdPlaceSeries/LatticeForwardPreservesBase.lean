@@ -2,7 +2,9 @@ module
 
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.FamilyConstants
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCompactOpenLatticeStabilizerAtPlaces
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalComponentIntegralOfFiniteMatrixIntegralStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.HermitianSpaceBaseLatticeEqFrameLattice
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.MidChart
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalComponentIntegralOfFiniteMatrixIntegral
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TrueGeometryLatticeForward
 public import Formalism.SatakeDualWeyl.StatementC
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitFormUnitaryIntegralEntriesOfLevelLattice
@@ -91,8 +93,8 @@ theorem lattice_forward_preserves_base_alt : ∀ {B : GlobalTheory.Mem.Base} {X 
   rw [Subgroup.mem_comap, hL]
   have e2 : ∀ i j, (Formalism.UG.bc (Formalism.UG.prV (E := (I.rec7 l Z).host.E) v) (y.1)⁻¹).1 i j ∈ Formalism.UG.tensInt (F := (I.rec7 l Z).host.F) (v.adicCompletion (I.rec7 l Z).host.F) (Formalism.UG.intOE (I.rec7 l Z).host.E) (v.adicCompletionIntegers (I.rec7 l Z).host.F).toSubring := by
     rw [map_inv]; exact hloc v _ (inv_mem (hyv v))
-  exact proj_mem_stabLoc_std _ κ v (GlobalTheory.T.localComponent_integral_of_finiteMatrix_integral _ _ _ _ κ y.1 hy v (hloc v _ (hyv v)))
-    (GlobalTheory.T.localComponent_integral_of_finiteMatrix_integral _ _ _ _ κ⁻¹ (y.1)⁻¹ hyinv v e2)
+  exact proj_mem_stabLoc_std _ κ v (_root_.GlobalTheory.FinIntBridge.mem_intLoc_of_finM _ _ _ _ κ y.1 hy v (hloc v _ (hyv v)))
+    (_root_.GlobalTheory.FinIntBridge.mem_intLoc_of_finM _ _ _ _ κ⁻¹ (y.1)⁻¹ hyinv v e2)
 end GlobalTheory.FamTrace.LatFwd
 end
 end

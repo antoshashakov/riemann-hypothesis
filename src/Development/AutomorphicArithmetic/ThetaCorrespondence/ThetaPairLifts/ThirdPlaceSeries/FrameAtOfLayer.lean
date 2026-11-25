@@ -2,7 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CenterEqSum
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ThetaDataExists
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjParahoricBlockLiftStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsComp
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCompOfOne
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBlockDiagonalWithIdentity
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjParahoricBlockLift
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtMemStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AtMemberImp
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.BlockTriAtStatement
@@ -59,7 +62,7 @@ theorem frameAt_of_layer_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, 
   obtain ⟨L, hL1, hU, hLc⟩ := hC s
   obtain ⟨hSt, hFR⟩ := hA ad k s
   refine ⟨L, hL1, fun hN => ?_⟩
-  refine GlobalTheory.T.exists_conj_parahoric_block_lift t.r.z.R t.r.z.cG k s (ad.PV k) L hU hSt (fun PP hPP => ?_) hLc
+  refine _root_.GlobalTheory.ParahLift.exists_conj_parahoric_lift t.r.z.R t.r.z.cG k s (ad.PV k) L hU hSt (fun PP hPP => ?_) hLc
   obtain ⟨s', φ, b, hw, hres, hfr⟩ := hFR PP hPP
   exact ⟨s', φ, b, hw, hres, hfr, fun hP => hB ad i s k hs hN s' φ b (hw ▸ hP) hres hfr⟩
 end GlobalTheory.CenLocAt

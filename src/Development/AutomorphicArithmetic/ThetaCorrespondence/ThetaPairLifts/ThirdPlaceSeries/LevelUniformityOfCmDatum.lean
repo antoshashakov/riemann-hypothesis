@@ -19,7 +19,9 @@ public import Mathlib.Algebra.Group.AddChar
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAddCharZmodEqOfNeOne
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeneratorNotMemTwistPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelCharacterEqLocalFactorAtTypePlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemLevelIffUnipotentAtTypePlaceStatement
+public import Formalism.LocalToGlobal.NormalizedHeckeFactors.RingHomOfBaseOrderToFraction
+public import Formalism.SharpRestriction.Divisibility.LiftErrorLocal
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemLevelIffUnipotentAtTypePlace
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalDatumCharactersNeOneAtFixedElementResiduStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceEqOfCmFieldPlaceEqStatement
 public import ReciprocityTheory.Automorphisms.SplitCoeAlgebraMap
@@ -137,10 +139,10 @@ theorem level_uniformity_transfer_alt : _root_.GlobalTheory.HeightCounting.Up.Pu
   let ξ := hexξ.choose
   have hξc := hexξ.choose_spec.1
   have hξv := hexξ.choose_spec.2
-  refine ⟨ψ₀, ξ, ⟨hψ₀m, hψ₀n⟩, hξc, fun e he => ⟨fun κ hκ => GlobalTheory.T.mem_level_iff_unipotent_at_typePlace _ _ _ _ _ _ _ _ _ _ _ _ kv0 hoffkv hoffQ hoffD κ hκ, ?_⟩⟩
+  refine ⟨ψ₀, ξ, ⟨hψ₀m, hψ₀n⟩, hξc, fun e he => ⟨fun κ hκ => _root_.GlobalTheory.LevUniLoc.mem_iff_uniRT _ _ _ _ _ _ _ _ _ _ _ _ kv0 hoffkv hoffQ hoffD κ hκ, ?_⟩⟩
   intro κ h hκ uu huu
   have hc := GlobalTheory.T.levelCharacter_eq_localFactor_at_typePlace _ _ _ _ _ _ _ _ _ _ _ (cell (D := Dof x) l.b.Bs.exp b hA j) kv0 hoffkv hoffQ hoffD κ h hκ
-  have hU := (GlobalTheory.T.mem_level_iff_unipotent_at_typePlace _ _ _ _ _ _ _ _ _ _ _ (cell (D := Dof x) l.b.Bs.exp b hA j) kv0 hoffkv hoffQ hoffD κ hκ).1 h
+  have hU := (_root_.GlobalTheory.LevUniLoc.mem_iff_uniRT _ _ _ _ _ _ _ _ _ _ _ (cell (D := Dof x) l.b.Bs.exp b hA j) kv0 hoffkv hoffQ hoffD κ hκ).1 h
   have hr := GlobalTheory.T.complex_typePlaceCharacter_eq_superdiag_addChar_mul_lowerDet _ l.b.Bs.exp i _ b kv0 _ _ l.rat.In.θ (fun u hu hu' => l.b.Bs.psiU i b u hu hu') _ (τ' (j.1 + 1) kv0)
     (fun y => hτ' i (j.1 + 1) b kv0 y (Nat.le_add_left 1 j.1) j.2) e he ψ₀ (fun hr y => (hψ₀r y).trans (congrArg (fun χ : AddChar (ZMod ((Dof x).host.g kv0.1)) ℂ => χ ((cell (D := Dof x) l.b.Bs.exp b hA j).redG kv0 y)) (hψ'φ hr))) ξ hξv _ hU uu huu
   exact (cx_apply e _ ⟨κ, h⟩).trans ((congrArg e hc).trans hr)

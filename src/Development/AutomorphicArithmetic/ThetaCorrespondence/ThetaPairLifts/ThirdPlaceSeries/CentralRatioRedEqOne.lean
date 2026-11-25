@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.PlacedP
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CenterAdelicUnitaryGroupFinitePartScalarStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CenterAdelicUnitaryGroupFinitePartScalar
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlacedBesselPairIdentity
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AdelicEmbeddingInverseVectorStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ResSEqOfFlagStatement
@@ -65,7 +66,7 @@ theorem centralRatio_red_eq_one_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : Gat
     rw [dite_eq_right hS]
   rcases Nat.eq_zero_or_pos (Yc D 0).rank with h0 | hpos
   · apply Units.ext; ext i; exact absurd i.2 (by omega)
-  obtain ⟨c, hc⟩ := GlobalTheory.T.center_adelicUnitaryGroup_finitePart_scalar (Yc D 0) (show GA D (Yc D 0) from z) hzc hzf
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CentreScalar.finE_center_scalar (Yc D 0) (show GA D (Yc D 0) from z) hzc hzf
   obtain ⟨hci, hfin⟩ := redFn_scalar_eq_one (W.Q.Rl.βY 0) PP _ c hS hc ⟨0, hpos⟩
   apply hfin
   obtain ⟨-, hconj⟩ := hA'.2.2.2

@@ -10,7 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivO
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteHeckeDoubleCosetCosetsAtSplitPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SphericalVectorFixedLocal
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceFixedVectorSumSphericalImagesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceHeckeOperatorEigenvalueConjSphericalStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceHeckeOperatorEigenvalueConjSpherical
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceLocalComponentExistsUniqueClassStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.EventuallyUnr
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ExistsHasSatakeOfUnr
@@ -101,7 +103,7 @@ theorem heckeSide_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {L : Type} [
     conv_lhs => rw [hsum]
     rw [tN_sum J s ϖ k hfin, Finset.smul_sum, hsum, Finset.smul_sum]
     exact Finset.sum_congr rfl fun j _ =>
-      GlobalTheory.T.split_place_hecke_operator_eigenvalue_conj_spherical L n s ϖ hu J hJ σ α hα i hic hcomp (Tj j) (hTj j) (ej j) (hej j) k hk1 hk2
+      _root_.GlobalTheory.HeckeEigConj.tN_eig L n s ϖ hu J hJ σ α hα i hic hcomp (Tj j) (hTj j) (ej j) (hej j) k hk1 hk2
   rw [hc k hk1 hk2, smul_smul] at key
   exact smul_left_injective ℂ hf0 key
 theorem locPol_eq_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E)

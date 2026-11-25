@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Gener
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasTameBlockCharacterTypePlaceNotOverLStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeComparisonUnitAtFrobeniusEqDeltaStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCentralGroupAlgebraIdempotentUniversalStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistLiftFormsEqBaseChangeRationalDatumFormsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistLiftFormsEqBaseChangeRationalDatumForms
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedLatticeFinitelyGeneratedSpanningStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniversalCharacterAdmissibleConductorInertiaSurjStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HkBCharpolySplitsStatement
@@ -199,12 +199,12 @@ theorem second_step_alt : GlobalTheory.Published.GlobalArtinReciprocity → ∀ 
       rho := In.rho
       chiL := In.chi
       hs := In.hs
-      eF := fun i j b h1 h2 => (GlobalTheory.T.twistLiftForms_eq_baseChange_rationalDatumForms D S In T A.bare hfg' hst sd rho hrho he Pq wt i j b h1 h2).choose
-      bsup := fun i j b h1 h2 => (GlobalTheory.T.twistLiftForms_eq_baseChange_rationalDatumForms D S In T A.bare hfg' hst sd rho hrho he Pq wt i j b h1 h2).choose_spec.1
-      act := fun i j b h1 h2 => (GlobalTheory.T.twistLiftForms_eq_baseChange_rationalDatumForms D S In T A.bare hfg' hst sd rho hrho he Pq wt i j b h1 h2).choose_spec.2.1
+      eF := fun i j b h1 h2 => (_root_.GlobalTheory.HeightCounting.FormsStep.formsExport_eq D S In T A.bare hfg' hst sd rho hrho he Pq wt i j b h1 h2).choose
+      bsup := fun i j b h1 h2 => (_root_.GlobalTheory.HeightCounting.FormsStep.formsExport_eq D S In T A.bare hfg' hst sd rho hrho he Pq wt i j b h1 h2).choose_spec.1
+      act := fun i j b h1 h2 => (_root_.GlobalTheory.HeightCounting.FormsStep.formsExport_eq D S In T A.bare hfg' hst sd rho hrho he Pq wt i j b h1 h2).choose_spec.2.1
       cHk := fun (i : T.Tw) b P => cHkT D T i b P
       hkEq := fun i j b h1 h2 k P x _ _ _ =>
-        (GlobalTheory.T.twistLiftForms_eq_baseChange_rationalDatumForms D S In T A.bare hfg' hst sd rho hrho he Pq wt i j b h1 h2).choose_spec.2.2 k P x
+        (_root_.GlobalTheory.HeightCounting.FormsStep.formsExport_eq D S In T A.bare hfg' hst sd rho hrho he Pq wt i j b h1 h2).choose_spec.2.2 k P x
       cHk_del := fun i b P hP σ hσ => GlobalTheory.T.heckeComparisonUnitAtFrobenius_eq_delta D T i b P hP σ hσ
       hk_emb := fun (i : T.Tw) j b k P x h1 h2 hP hs hk => by
         rcases Nat.eq_zero_or_pos k with rfl | hk0

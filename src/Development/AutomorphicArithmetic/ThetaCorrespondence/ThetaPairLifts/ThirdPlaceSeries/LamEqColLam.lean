@@ -5,7 +5,8 @@ public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLif
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ReductionYZero
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemSum
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.BaseMatrixGlApply
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricLevelCharacterEqAddCharSuperdiagSumStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.OnesRepresent
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricLevelCharacterEqAddCharSuperdiagSum
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.ColLamEqPsiSuperSumStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.FrameCloseStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -62,7 +63,7 @@ theorem lam_eq_colLam_alt : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Me
     ⟨coordHom _ (a.G i).q.pr _ _ ((a.G i).FX 0 (Nat.zero_le _)).βγ ((a.G i).FX 0 (Nat.zero_le _)).γβ κ,
       (eq_coordHom_iff _ _ _ _ _ _ κ _).2 rfl⟩
   obtain ⟨h1, h2⟩ := _root_.GlobalTheory.T.true_geometry_final_vector_alt W hW u a ha hat row col hc κ hκ y hy hyU i x hx g hg
-  rw [GlobalTheory.T.symmetricLevelCharacter_eq_addChar_superdiagSum (a.G i).S x _ h1 h2, _root_.GlobalTheory.T.true_geometry_final_volume_alt W hW u a ha hat row col hc κ hκ y hy hyU i g hg]
+  rw [_root_.GlobalTheory.SymChain.SymData.lam_eq_psi_superSum_of_near (a.G i).S x _ h1 h2, _root_.GlobalTheory.T.true_geometry_final_volume_alt W hW u a ha hat row col hc κ hκ y hy hyU i g hg]
 end GlobalTheory.FamTraceChiCol
 end
 end

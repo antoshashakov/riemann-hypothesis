@@ -2,7 +2,9 @@ module
 
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.AutSt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisOfRegularForms
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSatakeSphericalVectorDefiniteUnitaryStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+public import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSatakeSphericalVectorDefiniteUnitary
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CofiniteLabelsAtStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LabelsOkStatement
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.NormSqBlockValueStatement
@@ -172,6 +174,6 @@ theorem autSt_of_alt (hLab : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {
   exact ⟨x0, fun x hx hxx i p hr hm j P W hd hn w hw hwr =>
     _root_.GlobalTheory.FrameAut.autAt_of_alt hLab hCof hBl hSat hAut p hr hm j P W hd hn w hw hwr (hx0 x hx hxx i p hr hm j P W hd hn w hw hwr)⟩
 theorem autSt_of_smallSt' : _root_.GlobalTheory.ExpTie.SmallnessCondition → _root_.GlobalTheory.FrameAut.AutStAlt :=
-  _root_.GlobalTheory.FrameAut.autSt_of_alt _root_.GlobalTheory.T.small_place_block_decomposition_alt _root_.GlobalTheory.T.small_place_finite_set_alt _root_.GlobalTheory.T.norm_sq_emb_block_eq_q_pow_of_small_at GlobalTheory.T.exists_satake_sphericalVector_definiteUnitary _root_.GlobalTheory.T.small_place_prime_local_alt
+  _root_.GlobalTheory.FrameAut.autSt_of_alt _root_.GlobalTheory.T.small_place_block_decomposition_alt _root_.GlobalTheory.T.small_place_finite_set_alt _root_.GlobalTheory.T.norm_sq_emb_block_eq_q_pow_of_small_at _root_.GlobalTheory.FrameAut.exists_locComp_hasSatGL_heckeVec _root_.GlobalTheory.T.small_place_prime_local_alt
 end GlobalTheory.FrameAut
 end
