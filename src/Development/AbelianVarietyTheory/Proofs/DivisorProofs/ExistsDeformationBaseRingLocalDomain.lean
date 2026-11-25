@@ -8,7 +8,7 @@ public import Mathlib.Analysis.Normed.Field.Basic
 public import Mathlib.Topology.Algebra.InfiniteSum.Defs
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedPowerSeriesEvaluationDivisibility
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNoetherianLocalOfOrderFunctionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPuncturedDiscInjectiveEvalAtPointStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPuncturedDiscInjectiveEvalAtPoint
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -112,7 +112,7 @@ theorem ring_of_deformation : ∀ (C : Type) [NontriviallyNormedField C] [IsUltr
     rintro _ ⟨g, (⟨x, rfl⟩ | ⟨a, rfl⟩), rfl⟩ u hu0 hu
     · rw [PowerSeries.map_C]; exact summable_coeff_C_mul_pow _ _
     · simpa [PowerSeries.coeff_map] using hsum u hu0 hu a
-  obtain ⟨u, ig, hu0, hu, hig, hige⟩ := GlobalTheory.T.exists_puncturedDisc_injective_evalAtPoint ε S hε hSc hSs
+  obtain ⟨u, ig, hu0, hu, hig, hige⟩ := _root_.GlobalTheory.exists_injective_evalAt_closure ε S hε hSc hSs
   have hmapA : ∀ x ∈ A, PowerSeries.map e x ∈ Subring.closure S := by
     intro x hx
     rw [hS, ← RingHom.map_closure]

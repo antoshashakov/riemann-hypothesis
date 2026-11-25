@@ -9,7 +9,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.IsCoprimeOfN
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
 public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierSectionGeneratesAtVanishesAtFinsetStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierSectionGeneratesAtVanishesAtFinset
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -194,7 +194,7 @@ theorem exists_invariant_isEqn : ∀ (F : Type) [Field F] [CharZero F] (X W : Sc
     rw [e]; exact hxV
   let T : Finset X := Finset.univ.image fun γ : Γ => (ρ γ).asIso.hom x
   have hT (y : X) : y ∈ T ↔ ∃ γ, (ρ γ).asIso.hom x = y := by simp [T]
-  obtain ⟨e₀, he₀, hv⟩ := GlobalTheory.T.exists_cartierSection_generatesAt_vanishesAt_finset X (q ⁻¹ᵁ V) hU D x hxU T
+  obtain ⟨e₀, he₀, hv⟩ := _root_.GlobalTheory.Cartier.CommonEqnOpen.exists_generatesAt_vanishesAt X (q ⁻¹ᵁ V) hU D x hxU T
     (fun y hy => by obtain ⟨γ, rfl⟩ := (hT y).1 hy; exact horb γ)
     (fun y hy hne hc => by
       obtain ⟨γ, rfl⟩ := (hT y).1 hy

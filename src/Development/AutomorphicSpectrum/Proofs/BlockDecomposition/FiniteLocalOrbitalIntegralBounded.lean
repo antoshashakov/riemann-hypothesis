@@ -6,7 +6,8 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaConjInvariantStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaPosIndexStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisjointTranslatesVolumeBoundStatement
+public import Mathlib.MeasureTheory.Group.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisjointTranslatesVolumeBound
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumFiniteAverageBound
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.InnerProductSpace.Basic
@@ -151,7 +152,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   haveI := Fintype.ofFinite ((Fin n → 𝓞 E) ⧸ Kc c')
 
   have hcount : ((delta c' ^ M : ℕ) : ℝ≥0∞) * μ S ≤ μ (L : Set _) := by
-    have h := GlobalTheory.T.disjoint_translates_volume_bound _ μ L S hSm hSL (Fin M → (Fin n → 𝓞 E) ⧸ Kc c')
+    have h := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Count.card_mul_measure_le_of_disjoint_translates _ μ L S hSm hSL (Fin M → (Fin n → 𝓞 E) ⧸ Kc c')
       (fun φ => ratTuple J s₂ fun i => (φ i).out) (fun φ => hrat _) ?_
     · have hc : Fintype.card (Fin M → (Fin n → 𝓞 E) ⧸ Kc c') = delta c' ^ M := by
         rw [Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card]

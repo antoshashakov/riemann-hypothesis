@@ -5,7 +5,7 @@ public import Formalism.DoubleCosetMeasures.StatementZ
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlipAtEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLagrModelOfIsLin
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DatumPhiASplitPlaceTransportEqStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DatumPhiASplitPlaceTransportEq
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 public import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
@@ -98,7 +98,7 @@ theorem GlobalTheory.PureMatch.pure_match : ∀ {D : D7} {T : Type} {L : LevCh D
   obtain ⟨m, hm⟩ := _root_.GlobalTheory.PureMatch.exists_depth_bigP_eq_smallP (Fv D.host.F v) (spW G i j).rank (Fin (spW₁ G i j).rank) (Fin ((spW G i j).rank + (spW₁ G i j).rank))
     (haarVol (KO _ (Fin (spW₁ G i j).rank))) finSumFinEquiv (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.chrW X.ν (Bs.τ ⟨v, hP⟩))
     (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.chrW X.β (Bs.τ ⟨v, hP⟩)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v) (blockV e) g₀ c₀ Ψ hΨ hϖv
-  obtain ⟨μ, hμ, σ', hphi, hdep⟩ := GlobalTheory.T.datumPhiA_splitPlace_transport_eq hL t i j e w hw v hv (Bs.τ ⟨v, hP⟩) hτ (max (2 * m) (depthAt G w))
+  obtain ⟨μ, hμ, σ', hphi, hdep⟩ := _root_.GlobalTheory.PureMatch.phiA_transport_split_place hL t i j e w hw v hv (Bs.τ ⟨v, hP⟩) hτ (max (2 * m) (depthAt G w))
   let K₁ : GL (Fin (spV G i j).rank) (Fv D.host.F v) := diagGL fun _ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v ^ m
   let K₂ : GL (Fin (spV₁ G i j).rank) (Fv D.host.F v) := diagGL fun _ => (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v ^ m)⁻¹
   obtain ⟨Ξ, hΞ, heq⟩ := hm _ (le_max_left _ _) μ σ' (s K₁ K₂) (hs K₁ K₂)
