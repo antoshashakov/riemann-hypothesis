@@ -3,25 +3,27 @@ module
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CharEqOneOfOpENeZero
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAdaptedExponentSchwartzBruhatLastColumnStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGenericLevelOfFrameStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAdaptedExponentSchwartzBruhatLastColumn
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGenericLevelOfFrame
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsSymmetricPositionLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsParabolicDoubleCosetFunctionEqOneStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteQuotientCosetsScaledStandardLatticeBoxStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsParabolicDoubleCosetFunctionEqOne
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.StandardOrderExtendedBasisApplyLowBlock
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteQuotientCosetsScaledStandardLatticeBox
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FirstVertexIteratedLevelChainInFrame
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FirstVertexParahoricLevelChainTwistStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FirstVertexParahoricLevelChainTwist
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GenericLevelOfFrameBlockAndCharacterStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HaarCompactOpenRatioEqZpowOfTopNilpotentStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HaarCompactOpenRatioEqZpowOfTopNilpotent
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCompBlocks
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralTranslateIndicatorStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsCOPrXCgrpStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralTranslateIndicator
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsCOPrXCgrp
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClosedEmbeddingAffPtUncurry
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulLeftInvariantVolGL
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsQuotIntCosetFnStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsQuotIntCosetFn
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpEOmTargetUnipotent
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParabolicHaarVolumeConjIntersectionEqMulStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParabolicHaarVolumeConjIntersectionEqMul
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QuotientIntegralParabolicUnfolding
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentExistsResidueCardPowMemNhdsStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSum
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentExistsResidueCardPowMemNhds
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentHaarAndModulus
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatMatrixExistsOpenAddSubgroupInvaria
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SecondCountableLocal
@@ -199,7 +201,7 @@ theorem stepWellDefined (hψ : HasConductor ψ 1) : StepWellDefined ψ ν := by
 
 theorem nabs_det_of_mem {J : Subgroup (GL (n ⊕ Fin c) k)} (hJ : IsCO J) {h u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c 1)
     {g : GL n k} (hm : h⁻¹ * (u * embX c g) * h ∈ J) : nabs k (Matrix.GeneralLinearGroup.det g) = 1 :=
-  nabs_eq_one_of_valuation_eq_one (((T.isCO_prX_Cgrp_and_det_valuation_deltaR_eq_one k n c J hJ h).2 g ⟨u, hu, mem_Cgrp.2
+  nabs_eq_one_of_valuation_eq_one (((_root_.GlobalTheory.PrCompactOpen.isCO_prX_Cgrp k n c J hJ h).2 g ⟨u, hu, mem_Cgrp.2
     ⟨mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨g, rfl⟩), hm⟩⟩).1)
 
 theorem target_law (hc : 1 ≤ c) (hJ : IsCO P.J) (H : HasTypes μ P' P Φ) (h' : GL (n' ⊕ Fin (c + 1)) k)
@@ -351,10 +353,10 @@ theorem reps_image {T : Chain k s X Z} (hL : T.Laws) {A A' : RepFam k s X}
 theorem chainFinite (hψ : HasConductor ψ 1) : ChainFinite ψ ν := by
   intro s X _ _ Z _ _ T hT hL
   refine ⟨fun j c h g g' => ?_, fun A hA => ⟨reps_finite hψ hT hA, fun A' hA' => reps_image hL hA hA',
-    fun ϖ hϖ => ?_, fun c₁ c₂ => (GlobalTheory.T.finite_quotient_cosets_scaledStandardLatticeBox k _ c₁ c₂).subset fun yb ⟨y, hy, e, _⟩ => ⟨y, hy, e⟩⟩⟩
+    fun ϖ hϖ => ?_, fun c₁ c₂ => (_root_.GlobalTheory.BoxCosets.finite_cosets k _ c₁ c₂).subset fun yb ⟨y, hy, e, _⟩ => ⟨y, hy, e⟩⟩⟩
   · exact (stepWellDefined hψ _ _ (c + 1) (by omega) _ _ _ _ (hT.1 _ _ _) (isCO_lev hT _ _ _) (isCO_lev hT _ _ _)
       (hL.1 j (c + 1) (by omega))).2.2.2.2.2.2 _ g g'
-  · obtain ⟨e, he, H⟩ := GlobalTheory.T.exists_adapted_exponent_schwartzBruhat_lastColumn k _ _ _ ((reps_finite hψ hT hA s 0 rfl).image
+  · obtain ⟨e, he, H⟩ := _root_.GlobalTheory.AdaptedExp.exists_adapted_exponent k _ _ _ ((reps_finite hψ hT hA s 0 rfl).image
       fun g => om (T.mu (s + 1)) g 1 (T.Phi s 0 rfl)) (by
         rintro _ ⟨g, -, rfl⟩; exact om_mem_SB _ _ _ (hT.1 _ _ _)) ϖ hϖ
     exact ⟨e, he, fun g hg => H _ ⟨g, hg, rfl⟩⟩
@@ -378,18 +380,18 @@ theorem volNat_zpow (hq : (resCard k).Prime) {J : Subgroup (GL (n ⊕ Fin c) k)}
     exact ⟨fun H => H.2, fun H => ⟨(le_sup_right : N k n c 1 ≤ R k n c 1) u.2, H⟩⟩
   unfold volNat
   rw [e]
-  refine GlobalTheory.T.haar_compactOpen_ratio_eq_zpow_of_topNilpotent (N k n c 1) (volN ν n c 1) _ hq (fun u U hU => ?_) _ _
+  refine _root_.GlobalTheory.VolPow.vol_div_eq_zpow (N k n c 1) (volN ν n c 1) _ hq (fun u U hU => ?_) _ _
     (isCO_subgroupOf (isOpen_isCompact_conj h hJ.1 hJ.2))
     (isCO_subgroupOf (isOpen_isCompact_conj b SplitFlip.isOpen_KO SplitFlip.isCompact_KO))
   obtain ⟨V, hV, hVU⟩ := (mem_nhds_subtype _ _ _).1 hU
-  obtain ⟨m, hm⟩ := GlobalTheory.T.rootExchangeUnipotent_exists_residueCardPow_mem_nhds k n c 1 hq u u.2 V hV
+  obtain ⟨m, hm⟩ := _root_.GlobalTheory.RootEx.UnipPow.exists_pow_mem_nhds k n c 1 hq u u.2 V hV
   exact ⟨m, hVU hm⟩
 
 theorem cosetMeasure : CosetMeasure ν := by
   intro n _ _ c hc J hJ h
-  obtain ⟨hC, hd⟩ := GlobalTheory.T.isCO_prX_Cgrp_and_det_valuation_deltaR_eq_one k n c J hJ h
-  refine ⟨hC, hd, GlobalTheory.T.exists_parabolicDoubleCosetFunction_eq_one k n c J h fun g hg => (hd g hg).2, fun hq => volNat_zpow hq hJ h, fun m hm => ?_⟩
-  have hv := GlobalTheory.T.parabolicHaarVolume_conjIntersection_eq_mul k ν n c J h hC.1
+  obtain ⟨hC, hd⟩ := _root_.GlobalTheory.PrCompactOpen.isCO_prX_Cgrp k n c J hJ h
+  refine ⟨hC, hd, _root_.GlobalTheory.CosetFn.exists_isCosetFn k n c J h fun g hg => (hd g hg).2, fun hq => volNat_zpow hq hJ h, fun m hm => ?_⟩
+  have hv := _root_.GlobalTheory.CosetVolProd.volR_Cgrp k ν n c J h hC.1
   obtain ⟨h0, h1⟩ := volN_Cgrp ν hJ.1 hJ.2 h
   have m0 : m (prX (Cgrp J h)) ≠ 0 := hC.1.measure_ne_zero m ⟨1, one_mem _⟩
   have m1 : m (prX (Cgrp J h)) ≠ ⊤ := hC.2.measure_lt_top.ne
@@ -399,8 +401,8 @@ theorem cosetMeasure : CosetMeasure ν := by
   · rw [hv, rescale, volNat, Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_mul,
       ENNReal.toReal_inv]
     ring
-  · have key := GlobalTheory.T.isQuotInt_cosetFn_alt k ν n c J hJ h m (volR ν m (Cgrp J h)).toReal (ENNReal.toReal_pos v0 v1).ne'
-      (fun u hu g => by rw [GlobalTheory.T.integral_indicator_Cgrp_translate_eq_deltaR_mul k ν n c hc J hJ h hC m u hu g, hv, ENNReal.toReal_mul]) μG f hf
+  · have key := _root_.GlobalTheory.CosetQuotInt.isQuotInt_cosetFn k ν n c J hJ h m (volR ν m (Cgrp J h)).toReal (ENNReal.toReal_pos v0 v1).ne'
+      (fun u hu g => by rw [_root_.GlobalTheory.StepAvg.integral_translate_indicator k ν n c hc J hJ h hC m u hu g, hv, ENNReal.toReal_mul]) μG f hf
     exact ⟨fun hz => (QuotInt.quotInt_unique_exists k n c 1 le_rfl hc ν m μG f).1 _ _ hz key, fun e => e ▸ key⟩
 
 theorem volumeCancels : VolumeCancels ν := by
@@ -453,14 +455,14 @@ theorem firstVertex {s : ℕ} {X : ℕ → Type} [∀ j, Fintype (X j)] [∀ j, 
 
 theorem firstVertexChains (hψ : HasConductor ψ 1) : FirstVertexChains ψ ν := by
   intro s t _ _
-  refine ⟨fun κ ϖ hϖ => ⟨GlobalTheory.T.exists_genericLevelOfFrame k ψ hψ ϖ hϖ _ _, fun ρ _ => GlobalTheory.T.exists_isSymmetricPositionLevel k ψ hψ ϖ hϖ ρ _ _, fun P hP μ hμ => ?_⟩,
+  refine ⟨fun κ ϖ hϖ => ⟨_root_.GlobalTheory.GenericLevel.exists_isGenericLevel k ψ hψ ϖ hϖ _ _, fun ρ _ => GlobalTheory.T.exists_isSymmetricPositionLevel k ψ hψ ϖ hϖ ρ _ _, fun P hP μ hμ => ?_⟩,
     fun κ _ _ δ hδ η hη => ?_⟩
   · refine firstVertex (Chain.ofType_regular _ _ _ _ _) (Chain.ofType_laws _ _ _ _ _)
       (_root_.GlobalTheory.FirstVertexFrame.firstVertex_typeChain k ψ ϖ s t κ P ?_ μ hμ)
     rcases hP with hP | ⟨ρ, -, hP⟩
     exacts [GlobalTheory.T.genericLevelOfFrame_block_and_character k ψ ϖ _ _ P hP, GlobalTheory.T.symmetricPositionLevel_shape_on_parabolic k ψ ϖ ρ _ _ P hP]
   · exact firstVertex (Chain.ofTwist_regular _ _ _ _ _) (Chain.ofTwist_laws _ _ _ hη _ _)
-      (GlobalTheory.T.firstVertex_parahoricLevelChain_twist k ψ hψ s t κ δ hδ η)
+      (_root_.GlobalTheory.TwistVertex.firstVertex_twist k ψ hψ s t κ δ hδ η)
 
 end First
 
