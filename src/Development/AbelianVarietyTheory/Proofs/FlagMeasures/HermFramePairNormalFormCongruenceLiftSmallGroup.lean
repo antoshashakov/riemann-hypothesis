@@ -127,12 +127,6 @@ theorem levi_isom (H : HermSpace K V) (p q : V →ₗ[K] V) (s : V ≃ₗ[K] V)
   have hqa : ∀ v w, H.B (q v) w = H.B v (p w) := by
     intro v w
     rw [← H.herm w (q v), ← adj w v, H.herm]
-  have hpp0 : ∀ v w, H.B (p v) (p w) = 0 := by
-    intro v w
-    rw [adj, qp, map_zero]
-  have hqq0 : ∀ v w, H.B (q v) (q w) = 0 := by
-    intro v w
-    rw [hqa, pq, map_zero]
   have hsq : ∀ w, q w = 0 → q (s w) = 0 := by
     intro w hw
     apply H.nondeg
@@ -140,68 +134,32 @@ theorem levi_isom (H : HermSpace K V) (p q : V →ₗ[K] V) (s : V ≃ₗ[K] V)
     rw [hqa]
     have e : p t = s (p (s.symm (p t))) := by rw [h2 t, LinearEquiv.apply_symm_apply]
     rw [e, hs, ← hqa, hw, map_zero, LinearMap.zero_apply]
-  have hpv : ∀ v w, p v = v → H.B v (q w) = H.B v w := by
-    intro v w hv
-    have e : H.B v (w - q w) = 0 := by
-      rw [← hv, adj, map_sub, qq, sub_self, map_zero]
-    rw [map_sub, sub_eq_zero] at e
-    exact e.symm
-  have hpv' : ∀ v w, p v = v → H.B (q w) v = H.B w v := by
-    intro v w hv
-    have e : H.B (w - q w) v = 0 := by
-      rw [← hv, ← hqa, map_sub, qq, sub_self, map_zero, LinearMap.zero_apply]
-    rw [map_sub, LinearMap.sub_apply, sub_eq_zero] at e
-    exact e.symm
-  obtain ⟨u, hu⟩ : ∃ u, x - p x - q x = u := ⟨_, rfl⟩
-  obtain ⟨u', hu'⟩ : ∃ u', y - p y - q y = u' := ⟨_, rfl⟩
-  have pu : p u = 0 := by rw [← hu]; simp [pp, pq]
-  have qu : q u = 0 := by rw [← hu]; simp [qp, qq]
-  have pu' : p u' = 0 := by rw [← hu']; simp [pp, pq]
-  have qu' : q u' = 0 := by rw [← hu']; simp [qp, qq]
-  have hx : x = p x + u + q x := by rw [← hu]; abel
-  have hy : y = p y + u' + q y := by rw [← hu']; abel
-  have hxy : H.B x y = H.B (p x) (q y) + H.B u u' + H.B (q x) (p y) := by
-    have f1 := hpp0 x y
-    have f2 : H.B (p x) u' = 0 := by rw [adj, qu', map_zero]
-    have f3 : H.B u (p y) = 0 := by rw [← hqa, qu, map_zero, LinearMap.zero_apply]
-    have f4 : H.B u (q y) = 0 := by rw [← adj, pu, map_zero, LinearMap.zero_apply]
-    have f5 : H.B (q x) u' = 0 := by rw [hqa, pu', map_zero]
-    have f6 := hqq0 x y
-    have hexp : H.B (p x + u + q x) (p y + u' + q y) = H.B (p x) (p y) + H.B (p x) u' + H.B (p x) (q y) +
-        H.B u (p y) + H.B u u' + H.B u (q y) + H.B (q x) (p y) + H.B (q x) u' + H.B (q x) (q y) := by
-      simp only [map_add (f := _), LinearMap.add_apply]
-      ring
-    calc H.B x y = H.B (p x + u + q x) (p y + u' + q y) := by rw [← hx, ← hy]
-      _ = _ := by rw [hexp, f1, f2, f3, f4, f5, f6]; ring
-  rw [levi_apply, levi_apply]
-  simp only [LinearEquiv.coe_coe]
-  rw [hu, hu', hsq u qu, hsq u' qu', sub_zero, sub_zero]
-  have e1 : H.B (s (p x)) (s (p y)) = 0 := by rw [hs]; exact hpp0 x y
-  have e2 : H.B (s (p x)) (s u') = 0 := by rw [hs, adj, qu', map_zero]
-  have e3 : H.B (s (p x)) (p (s u')) = 0 := by rw [← h1 x]; exact hpp0 _ _
-  have e4 : H.B (s (p x)) (q (s (q y))) = H.B (p x) (q y) := by rw [hpv _ _ (h1 x), hs]
-  have e5 : H.B (s u) (s (p y)) = 0 := by rw [hs, ← hqa, qu, map_zero, LinearMap.zero_apply]
-  have e6 : H.B (s u) (s u') = H.B u u' := hs u u'
-  have e7 : H.B (s u) (p (s u')) = 0 := by rw [← hqa, hsq u qu, map_zero, LinearMap.zero_apply]
-  have e8 : H.B (s u) (q (s (q y))) = H.B (p (s u)) (s (q y)) := (adj (s u) (s (q y))).symm
-  have e9 : H.B (p (s u)) (s (p y)) = 0 := by rw [← h1 y]; exact hpp0 _ _
-  have e10 : H.B (p (s u)) (s u') = 0 := by rw [adj, hsq u' qu', map_zero]
-  have e11 : H.B (p (s u)) (p (s u')) = 0 := hpp0 _ _
-  have e12 : H.B (p (s u)) (q (s (q y))) = H.B (p (s u)) (s (q y)) := by
-    rw [adj (s u) (q (s (q y))), qq, ← adj (s u) (s (q y))]
-  have e13 : H.B (q (s (q x))) (s (p y)) = H.B (q x) (p y) := by rw [hpv' _ _ (h1 y), hs]
-  have e14 : H.B (q (s (q x))) (s u') = H.B (s (q x)) (p (s u')) := hqa _ _
-  have e15 : H.B (q (s (q x))) (p (s u')) = H.B (s (q x)) (p (s u')) := by rw [hqa, pp]
-  have e16 : H.B (q (s (q x))) (q (s (q y))) = 0 := hqq0 _ _
-  have hexp : H.B (s (p x) + (s u - p (s u)) + q (s (q x))) (s (p y) + (s u' - p (s u')) + q (s (q y))) =
-      H.B (s (p x)) (s (p y)) + H.B (s (p x)) (s u') - H.B (s (p x)) (p (s u')) + H.B (s (p x)) (q (s (q y))) +
-      H.B (s u) (s (p y)) + H.B (s u) (s u') - H.B (s u) (p (s u')) + H.B (s u) (q (s (q y))) -
-      H.B (p (s u)) (s (p y)) - H.B (p (s u)) (s u') + H.B (p (s u)) (p (s u')) - H.B (p (s u)) (q (s (q y))) +
-      H.B (q (s (q x))) (s (p y)) + H.B (q (s (q x))) (s u') - H.B (q (s (q x))) (p (s u')) +
-      H.B (q (s (q x))) (q (s (q y))) := by
-    simp only [map_add (f := _), map_sub, LinearMap.add_apply, LinearMap.sub_apply]
-    ring
-  linear_combination hexp + e1 + e2 - e3 + e4 + e5 + e6 - e7 + e8 - e9 - e10 + e11 - e12 + e13 + e14 - e15 + e16 - hxy
+  let m : V →ₗ[K] V := 1 - p - q
+  have hm (w : V) : m w = w - p w - q w := rfl
+  have hpm (w : V) : p (m w) = 0 := by simp [hm, pp, pq]
+  have hqm (w : V) : q (m w) = 0 := by simp [hm, qp, qq]
+  have hmm (w : V) : m (m w) = m w := by simp [hm (m w), hpm, hqm]
+  have hmq (w : V) : m (q w) = 0 := by simp [hm, pq, qq]
+  have hqsp (w : V) : q (s (p w)) = 0 := hsq _ (qp w)
+  have hmsp (w : V) : m (s (p w)) = 0 := by simp [hm, h1, hqsp]
+  have adjm (v w : V) : H.B (m v) w = H.B v (m w) := by
+    simp only [hm, map_sub, LinearMap.sub_apply, adj, hqa]
+    exact sub_right_comm ..
+  have hmSplit (w : V) : q w + m w + p w = w := by
+    rw [hm]
+    abel
+  have hsplit (v w : V) : H.B v w = H.B (p v) (q w) + H.B (m v) (m w) + H.B (q v) (p w) := by
+    conv_lhs => rw [← hmSplit w]
+    simp only [map_add, ← adj, ← adjm, ← hqa, pp, hmm, qq]
+  have hsm (w : V) : q (s (m w)) = 0 := hsq _ (hqm w)
+  have hmid (v w : V) : H.B (m (s (m v))) (m (s (m w))) = H.B (m v) (m w) := by
+    rw [adjm, hmm]
+    simp only [hm (s (m w)), map_sub, ← hqa, hsm, map_zero, LinearMap.zero_apply, sub_zero, hs]
+  have hL (w : V) : levi p q s w = s (p w) + m (s (m w)) + q (s (q w)) := rfl
+  rw [hsplit (levi p q s x) (levi p q s y), hsplit x y]
+  simp only [hL, map_add, h1, hpm, pq, hqsp, hqm, qq, hmsp, hmm, hmq, add_zero, zero_add, hmid]
+  rw [← adj (s (p x)) (s (q y)), h1 x, hs, hqa (s (q x)) (s (p y)), h1 y, hs]
+
 
 def trans (H : HermSpace K V) (h z : V) (T τ : K) : V →ₗ[K] V :=
   LinearMap.id - T⁻¹ • (H.B.flip z).smulRight h + T⁻¹ • (H.B.flip h).smulRight z
