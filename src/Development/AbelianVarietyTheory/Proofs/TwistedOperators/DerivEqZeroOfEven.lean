@@ -7,33 +7,34 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisThetaLaw
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralMulConjSelf
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AeZeroOfSmall
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CmAdeleIdempotentOfPlacePropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousMeanSquareNormWeilRepSubStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DefiniteThetaLiftLocalVectorStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousMeanSquareNormWeilRepSub
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DefiniteThetaLiftLocalVector
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUniquePureTensorRestrictedFamilyStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilDatumOneParameterGeneratorCommutatorsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockOperatorActsByNoncompactQuadraticOpsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilDatumOneParameterGeneratorCommutators
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockOperatorActsByNoncompactQuadraticOps
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVacuaLocalFactorsStableHeisenbergAwayStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVacuumMatrixCoefficientEvenStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVacuumMaximalCompactCharacterRealPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsInnerEqFockInnerProductMulNormStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsPureTensorsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVacuumMatrixCoefficientEven
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVacuumMaximalCompactCharacterRealPlace
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsInnerEqFockInnerProductMulNorm
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsPureTensors
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorPureTensorPlaceByPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslatesSpanDenseThetaFunctionsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InertPlaceStabilizersFixWeilLatticeVacuumStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslatesSpanDenseThetaFunctions
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InertPlaceStabilizersFixWeilLatticeVacuum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsPureTensorBaseVectorAndLocalFactorStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalFactorStableUnitaryGroupsAtPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MaximalCompactActsOnFockVectorsBySubstitutionStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MaximalCompactActsOnFockVectorsBySubstitution
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PureTensorInnerProductEqFinprodLocalInnerProductStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchrodingerModelCoordinatesBijOnAndWeilLinearStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorBasePointNormSq
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchrodingerModelCoordinatesBijOnAndWeilLinear
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchrodingerModelIsometryHalfLatticeVolumeOneStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitIdempotentBaseFunctionIdentityStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceAdjointMatrixIsCoordinateEquivariantStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceLatticeStabilisersFixWeilVacuumStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceAdjointMatrixIsCoordinateEquivariant
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceLatticeStabilisersFixWeilVacuum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceMatrixCoordinateOnHalfStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceThetaLatticeHalvesSelfDualFramesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaChainStepVectorLocalPureTensorStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceThetaLatticeHalvesSelfDualFrames
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaChainStepVectorLocalPureTensor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitianStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepActsOnPureTensorsPlacewiseStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepActsOnPureTensorsPlacewise
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,7 +90,7 @@ theorem unitary (D : D7) : Unitary D := by
   have L := GlobalTheory.T.theta_inner_product_hermitian D ψ S T q.1 q.2 hstd hq f₁ f₂ hf₁ hf₂
   refine ⟨fun c => GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul c hf₁) hf₂, L.1, L.2.2.2.2.2.1,
     L.2.2.2.2.2.2.2, fun w => ⟨?_, (L.2.2.2.2.2.2.1 w).1⟩, fun p => ⟨hW.om_pres p f₁ hf₁, ?_⟩,
-    GlobalTheory.T.continuous_nrm2_om_sub D ψ S T χS χT om q.1 q.2 hW hq f₁ f₂ hf₁ hf₂⟩
+    _root_.GlobalTheory.WeilNormCont.continuous_meanSquareNorm_weilRep_sub D ψ S T χS χT om q.1 q.2 hW hq f₁ f₂ hf₁ hf₂⟩
   · exact (GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hstd S T).1 w f₁ hf₁
   · exact GlobalTheory.WeilInner.om_inner D ψ S T χS χT om hW q.1 q.2 hq p f₁ f₂ hf₁ hf₂
 
@@ -101,8 +102,8 @@ theorem restrictedTensor (D : D7) : RestrictedTensor D := by
       GlobalTheory.T.localFactor_stable_unitaryGroupsAtPlace D ψ θ S T χS χT om sS sT ΛS ΛT hW hinf p f hf⟩,
     fun x hx => GlobalTheory.T.existsUnique_pureTensor_restrictedFamily D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ x hx, fun f hf ε hε => ?_,
     fun x f hx => ⟨fun w => GlobalTheory.T.heisenberg_operator_pure_tensor_place_by_place D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ x f hx w,
-      fun g h => GlobalTheory.T.weilRep_acts_on_pureTensors_placewise D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ x f hx g h⟩⟩
-  obtain ⟨f', hf', hlt⟩ := GlobalTheory.T.heisenberg_translates_span_dense_thetaFunctions D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ f hf ε hε
+      fun g h => _root_.GlobalTheory.PlaceTensor.PureOm.isPure_om D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ x f hx g h⟩⟩
+  obtain ⟨f', hf', hlt⟩ := _root_.GlobalTheory.HeisDense.span_translates_dense D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ f hf ε hε
   refine ⟨f', Submodule.span_mono ?_ hf', hlt⟩
   rintro _ ⟨w, rfl⟩
   exact ⟨_, GlobalTheory.T.heisenberg_operator_pure_tensor_place_by_place D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ (fun _ => f₀) f₀
@@ -111,7 +112,7 @@ theorem restrictedTensor (D : D7) : RestrictedTensor D := by
 theorem coeffProduct (D : D7) : CoeffProduct D := by
   intro ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ x₁ f₁ x₂ f₂ h₁ h₂ g h
   exact GlobalTheory.T.pureTensor_innerProduct_eq_finprod_localInnerProducts D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ _ x₂ _ f₂
-    (GlobalTheory.T.weilRep_acts_on_pureTensors_placewise D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ x₁ f₁ h₁ g h) h₂
+    (_root_.GlobalTheory.PlaceTensor.PureOm.isPure_om D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ x₁ f₁ h₁ g h) h₂
 
 theorem cA_cA {D : D7} {e : AE D} {p : Place D} (h : e + cA D e = idem D p) : cA D (cA D e) = e := by
   have hp : cA D (idem D p) = idem D p := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.2.1 p
@@ -131,7 +132,7 @@ theorem splitModel (D : D7) : SplitModel D := by
   intro ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ v φ e he BS BT
   have hC := GlobalTheory.T.splitPlace_matrix_coordinate_on_half D S T ΛS ΛT hB.2.2.1 hB.2.2.2.1 v φ e he BS BT
   refine ⟨(GlobalTheory.T.split_idempotent_base_function_identity D ψ θ S T sS sT ΛS ΛT f₀ hB v e he.1 he.2.1).1, fun Tm hTm => ?_⟩
-  have M := GlobalTheory.T.schrodingerModel_coordinates_bijOn_and_weil_linear D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ v e e he.1 he.2.1 (Or.inl rfl)
+  have M := _root_.GlobalTheory.SplitCoordModel.bijOn_and_om_linear D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ v e e he.1 he.2.1 (Or.inl rfl)
     T.rank S.rank (mapCo φ S T BS BT) hC.1 Tm hTm
   rw [onHalf_eq_pull]
   exact ⟨M.1, fun ν hν => GlobalTheory.T.schrodingerModel_halfLatticeVolume_mul_inner_eq_inner D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ v e he.1 T.rank S.rank
@@ -140,13 +141,13 @@ theorem splitModel (D : D7) : SplitModel D := by
 
 theorem splitModelAdj (D : D7) : SplitModelAdj D := by
   intro ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ v φ e he BS BT
-  have hC := GlobalTheory.T.splitPlaceAdjointMatrix_isCoordinate_equivariant D S T ΛS ΛT hB.2.2.1 hB.2.2.2.1 v φ e he BS BT
+  have hC := _root_.GlobalTheory.PlaceTensor.adjCo_isCoord D S T ΛS ΛT hB.2.2.1 hB.2.2.2.1 v φ e he BS BT
   have hs : IsSplitIdem D (cA D e) := isSplitIdem_cA he.1 he.2.1
   have hsum : cA D e + cA D (cA D e) = idem D (.inl v) := by
     rw [cA_cA he.2.1, add_comm]
     exact he.2.1
   refine ⟨(GlobalTheory.T.split_idempotent_base_function_identity D ψ θ S T sS sT ΛS ΛT f₀ hB v (cA D e) hs hsum).1, fun Tm hTm => ?_⟩
-  have M := GlobalTheory.T.schrodingerModel_coordinates_bijOn_and_weil_linear D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ v e (cA D e) he.1 he.2.1 (Or.inr rfl)
+  have M := _root_.GlobalTheory.SplitCoordModel.bijOn_and_om_linear D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hμ v e (cA D e) he.1 he.2.1 (Or.inr rfl)
     S.rank T.rank (adjCo φ S T BS BT) hC.1 Tm hTm
   rw [onHalfAdj_eq_pull]
   exact ⟨M.1, fun ν hν => GlobalTheory.T.schrodingerModel_halfLatticeVolume_mul_inner_eq_inner D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ v (cA D e) hs S.rank T.rank
@@ -172,7 +173,7 @@ private theorem exists_conj_mul_eq_mul {ι : Type*} {n : ℕ} (C C' : ι → Mat
 
 theorem fockModel (D : D7) : FockModel D := by
   intro ψ θ S T χS χT om hW hθ τ
-  obtain ⟨mS, mT, hm⟩ := GlobalTheory.T.fockVacuum_maximalCompact_character_realPlace D ψ θ S T χS χT om hW hθ τ
+  obtain ⟨mS, mT, hm⟩ := _root_.GlobalTheory.VacCharAtPlace.vacuum_char_at_place D ψ θ S T χS χT om hW hθ τ
   refine ⟨mS, mT, ?_⟩
   intro sS BS sT BT pS pT hpS hpT hsS hsT hBS hBT f hf hvac P
   have hstd := hW.std
@@ -185,16 +186,16 @@ theorem fockModel (D : D7) : FockModel D := by
     exact (GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T χS χT om hW hθ sS sS' BS BS' sT sT' BT BT' 1 1
       hS' hT' hBS' hBT' f hf Q).1
   obtain ⟨μ₀, 𝓕₀, h₀⟩ := GlobalTheory.ThetaAllChar.covolOneExists (D := D) S T
-  refine ⟨hPT P, fun μ 𝓕 hμ Q => GlobalTheory.T.fockVectors_inner_eq_fockInnerProduct_mul_norm D ψ θ S T hstd hθ sS BS sT BT pS pT hpS hpT hsS hsT hBS hBT
+  refine ⟨hPT P, fun μ 𝓕 hμ Q => _root_.GlobalTheory.FockIsometry.ipO_pureTensorO D ψ θ S T hstd hθ sS BS sT BT pS pT hpS hpT hsS hsT hBS hBT
       f hf hvac μ 𝓕 hμ P Q,
-    fun κS κT hκS hκT g h hg hh => GlobalTheory.T.maximalCompact_acts_on_fockVectors_by_substitution D ψ θ S T χS χT om hW hθ sS BS sT BT pS pT hpS hpT hsS hsT
+    fun κS κT hκS hκT g h hg hh => _root_.GlobalTheory.FockCompact.om_pureTensorO_compact D ψ θ S T χS χT om hW hθ sS BS sT BT pS pT hpS hpT hsS hsT
       hBS hBT f hf τ κS κT hκS hκT g h hg hh _
       (hm sS BS sT BT pS pT hpS hpT hsS hsT hBS hBT f hf hvac κS κT hκS hκT g h hg hh) P,
     fun YS YT hYS hYT w => ?_⟩
-  have hL := GlobalTheory.T.fockVacuum_matrixCoefficient_even D ψ θ S T χS χT om hW hθ sS BS sT BT pS pT hpS hpT hsS hsT hBS hBT τ YS YT hYS hYT
-  obtain ⟨Gn, hGn⟩ := GlobalTheory.T.exists_weilDatum_oneParameter_generator_commutators D ψ θ S T χS χT om hW hθ τ _ hL.1 _ hL.2.1
+  have hL := _root_.GlobalTheory.VacuumEven.coeff_even D ψ θ S T χS χT om hW hθ sS BS sT BT pS pT hpS hpT hsS hsT hBS hBT τ YS YT hYS hYT
+  obtain ⟨Gn, hGn⟩ := _root_.GlobalTheory.PlaceTensor.GenPair.exists_generator D ψ θ S T χS χT om hW hθ τ _ hL.1 _ hL.2.1
 
-  have key := GlobalTheory.T.fock_operator_acts_by_noncompact_quadratic_ops D ψ θ S T hstd hθ sS BS sT BT pS pT hpS hpT hsS hsT hBS hBT τ YS YT hYS hYT μ₀ 𝓕₀ h₀ Gn
+  have key := _root_.GlobalTheory.FockLieQuad.acts_by_fockP D ψ θ S T hstd hθ sS BS sT BT pS pT hpS hpT hsS hsT hBS hBT τ YS YT hYS hYT μ₀ 𝓕₀ h₀ Gn
     (fun f' hf' => ⟨(hGn f' hf').1, (hGn f' hf').2.1, (hGn f' hf').2.2.1⟩) f hf hvac
     (fun g hg hgv => deriv_eq_zero_of_even ((hGn f hf).2.2.2.2 μ₀ 𝓕₀ h₀ g hg)
       (fun t => hL.2.2 f g hf hvac hg hgv μ₀ 𝓕₀ h₀ t)) P
@@ -202,7 +203,7 @@ theorem fockModel (D : D7) : FockModel D := by
   exact (hGn _ (hPT P)).2.2.2.1 w
 
 theorem placeModels : ∀ D : D7, PlaceModels D := fun D =>
-  ⟨unitary D, restrictedTensor D, coeffProduct D, splitModel D, splitModelAdj D, GlobalTheory.T.splitPlace_thetaLattice_halves_selfDual_frames D, GlobalTheory.T.inert_place_stabilizers_fix_weil_lattice_vacuum D,
-    GlobalTheory.T.splitPlace_latticeStabilisers_fix_weilVacuum D, fockModel D, GlobalTheory.T.fockVectors_pureTensors D, GlobalTheory.T.definiteThetaLift_localVector D, GlobalTheory.T.thetaChainStepVector_localPureTensor D⟩
+  ⟨unitary D, restrictedTensor D, coeffProduct D, splitModel D, splitModelAdj D, _root_.GlobalTheory.SplitLatticeHalves.splitLattice D, _root_.GlobalTheory.PlaceTensor.inertVacuumFixed D,
+    _root_.GlobalTheory.PlaceTensor.splitVacuumFixed D, fockModel D, _root_.GlobalTheory.FockPureTensor.fockPure D, _root_.GlobalTheory.AdjVecLocal.thetaVecLocal D, _root_.GlobalTheory.StepVec.stepVecLocal D⟩
 
 end GlobalTheory.PlaceTensor

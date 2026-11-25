@@ -3,13 +3,18 @@ module
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairInfApply
 public import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffContinuousOneParameterFiniteDimensionalLStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffOfContinuousQuasiMultiplicativeSmoothDefStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSchwartzHeisenbergOperatorDerivativeStatement
+public import Mathlib.Topology.Algebra.Module.FiniteDimension
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffContinuousOneParameterFiniteDimensionalL
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContDiffOfContinuousQuasiMultiplicativeSmoothDef
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSchwartzHeisenbergOperatorDerivative
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVacuaSmoothFamilyComplexGaussiansStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GaussianPairingIntegralContDiffNeZeroDiagStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergEquivariantIsometryStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzIsometryInnerProductEqStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.ContDiff.Defs
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GaussianPairingIntegralContDiffNeZeroDiag
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergEquivariantIsometry
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzIsometryInnerProductEq
 public import Formalism.LocalRingCardinality.DataHost
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -107,7 +112,7 @@ theorem GlobalTheory.WeilVacuum.smooth_flow : ∀ {V : Type} [NormedAddCommGroup
     · simp only [hT0, SchwartzMap.zero_apply]; exact contDiff_const
     · simp only [hT0, SchwartzMap.zero_apply, Finset.univ_eq_empty, Finset.sum_empty, zero_mul, add_zero]
       exact hasDerivAt_const _ _
-  have hAsm := GlobalTheory.T.contDiff_continuous_oneParameter_finiteDimensional_linear A hAc hAadd hA0
+  have hAsm := _root_.GlobalTheory.contDiff_toCLM_of_continuous_oneParameter A hAc hAadd hA0
   have hinv : ∀ t w, A t (A (-t) w) = w := by
     intro t w
     have := congrArg (fun L => L w) (hAadd t (-t))
@@ -134,8 +139,8 @@ theorem GlobalTheory.WeilVacuum.smooth_flow : ∀ {V : Type} [NormedAddCommGroup
       Complex.I * GlobalTheory.GaussLine.dHeis β w ⇑(T t f₀) x := by
     intro t w x
     set u := A (-t) w
-    obtain ⟨g1, hg1⟩ := GlobalTheory.T.exists_schwartz_heisenbergOperatorDerivative β (J₀ u) f₀
-    obtain ⟨g2, hg2⟩ := GlobalTheory.T.exists_schwartz_heisenbergOperatorDerivative β u f₀
+    obtain ⟨g1, hg1⟩ := _root_.GlobalTheory.dHeis_schwartz β (J₀ u) f₀
+    obtain ⟨g2, hg2⟩ := _root_.GlobalTheory.dHeis_schwartz β u f₀
     have hg12 : g1 = Complex.I • g2 := by
       ext y; rw [SchwartzMap.smul_apply, hg1, hg2, hf₀, smul_eq_mul]
     have hI : ∀ w₁ : V × V, ∀ (s : ℝ) (f g : SchwartzMap V ℂ),
@@ -144,8 +149,8 @@ theorem GlobalTheory.WeilVacuum.smooth_flow : ∀ {V : Type} [NormedAddCommGroup
       intro w₁ s f g h
       have := hint t (s • w₁).1 (s • w₁).2 f g h
       rwa [Prod.mk.eta, map_smul] at this
-    have h1 := GlobalTheory.T.heisenberg_equivariant_isometry μ β (T t) (hunit t) (J₀ u) (A t (J₀ u)) (hI _) f₀ g1 hg1 x
-    have h2 := GlobalTheory.T.heisenberg_equivariant_isometry μ β (T t) (hunit t) u (A t u) (hI _) f₀ g2 hg2 x
+    have h1 := _root_.GlobalTheory.HeisenbergL2.map_dHeis_of_isometry μ β (T t) (hunit t) (J₀ u) (A t (J₀ u)) (hI _) f₀ g1 hg1 x
+    have h2 := _root_.GlobalTheory.HeisenbergL2.map_dHeis_of_isometry μ β (T t) (hunit t) u (A t u) (hI _) f₀ g2 hg2 x
     have hu : A t u = w := hinv t w
     rw [hu] at h2
     rw [hJapp, ← h1, ← h2, hg12, map_smul, SchwartzMap.smul_apply, smul_eq_mul]
@@ -159,14 +164,14 @@ theorem GlobalTheory.WeilVacuum.smooth_flow : ∀ {V : Type} [NormedAddCommGroup
     GlobalTheory.T.fockVacua_smooth_family_complexGaussians β hβ J hJsm hJsq (fun t => ⟨T t f₀, hne t, hFock t⟩)
   set cc : ℝ → ℂ := fun t => T t f₀ 0 with hccdef
   have hrep : ∀ t x, T t f₀ x = cc t * Complex.exp (M t x x) := fun t x => hMuniq t (T t f₀) (hFock t) x
-  obtain ⟨hK, hKne⟩ := GlobalTheory.T.gaussianPairingIntegral_contDiff_ne_zero_diag μ M hMs hMdec
+  obtain ⟨hK, hKne⟩ := _root_.GlobalTheory.GaussPairing.gauss_pairing_smooth_ne_zero μ M hMs hMdec
   set K : ℝ → ℝ → ℂ := fun u v => ∫ x, Complex.exp (M u x x) * starRingEnd ℂ (Complex.exp (M v x x)) ∂μ with hKdef
   have hexp : ∀ u v, ∫ x, T u f₀ x * starRingEnd ℂ (T v f₀ x) ∂μ = cc u * starRingEnd ℂ (cc v) * K u v := by
     intro u v
     simp_rw [hrep, map_mul]
     rw [hKdef, ← integral_const_mul]
     congr 1; funext x; ring
-  have hpol := fun s => GlobalTheory.T.schwartz_isometry_inner_product_eq μ (T s) (hunit s)
+  have hpol := fun s => _root_.GlobalTheory.schwartz_L2_isometry_preserves_inner μ (T s) (hunit s)
   have eq1 : ∀ s t, cc (s + t) * starRingEnd ℂ (cc s) * K (s + t) s = cc t * starRingEnd ℂ (cc 0) * K t 0 := by
     intro s t
     have := hpol s (T t f₀) (T 0 f₀)
@@ -209,7 +214,7 @@ theorem GlobalTheory.WeilVacuum.smooth_flow : ∀ {V : Type} [NormedAddCommGroup
   have hccc : Continuous cc := by
     have := hcont f₀ 0
     exact this
-  have hcsm := GlobalTheory.T.contDiff_of_continuous_quasiMultiplicative_smoothDefect cc E U hccc hc0 hUo hU0 hEsm hfe
+  have hcsm := _root_.GlobalTheory.FuncEqSmooth.contDiff_of_func_eq cc E U hccc hc0 hUo hU0 hEsm hfe
   have hfun : (fun p : ℝ × V => T p.1 f₀ p.2) = fun p => cc p.1 * Complex.exp (M p.1 p.2 p.2) := by
     funext p; exact hrep p.1 p.2
   refine ⟨?_, n, qs, qs', cs, deriv cc 0 / cc 0, fun x => ?_⟩
