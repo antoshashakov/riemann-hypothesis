@@ -2,9 +2,9 @@ module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.CechDefs
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.InclStd
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineGradedQuotientVanishAboveDimStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupPowerSmulStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitClassNeZeroOfNonemptyStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineGradedQuotientVanishAboveDim
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupPowerSmul
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitClassNeZeroOfNonempty
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,13 +55,13 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris
 namespace CrystallineSemistableComparison.Pb
 
 theorem oneK_ne_zero : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)), Nonempty X →
-    oneK q ≠ 0 := GlobalTheory.T.unit_class_ne_zero_of_nonempty
+    oneK q ≠ 0 := _root_.GlobalTheory.CompanionTheory.ConeOne.oneK_ne_zero
 
 theorem gr_top_van : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (d : ℕ)
     [SmoothOfRelativeDimension d q] (V : X.Opens), IsAffineOpen V → ∀ (s : ℕ) (r : ℤ) (j : ℕ), (d : ℤ) < r →
-    Subsingleton (HQ (KS q s {V}) r (r + 1) j) := GlobalTheory.T.affine_graded_quotient_vanish_above_dim
+    Subsingleton (HQ (KS q s {V}) r (r + 1) j) := _root_.GlobalTheory.CompanionTheory.GrTop.grTop_main
 
 theorem cupPowC_smul : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (A : C ⥤ CommAlgCat.{0} R)
-    (z : CH.Cn (CH.modF A) 2) (a : R) (k : ℕ), cupPowC A (a • z) k = a ^ k • cupPowC A z k := GlobalTheory.T.cup_power_smul
+    (z : CH.Cn (CH.modF A) 2) (a : R) (k : ℕ), cupPowC A (a • z) k = a ^ k • cupPowC A z k := _root_.GlobalTheory.CompanionTheory.ConePow.cupPowC_smul
 
 end CrystallineSemistableComparison.Pb
