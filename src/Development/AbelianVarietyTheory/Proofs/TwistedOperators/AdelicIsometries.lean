@@ -2,24 +2,24 @@ module
 
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FlatSpaceComponents
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdelicIsometryTransportUniqueModStabilizerStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjStableInverseDifferentAndNormIdealStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CorrectionOfTransportStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConjStableInverseDifferentAndNormIdeal
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CorrectionOfTransport
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGLOfIsVecBasisAt
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsAdelicGlueVectorOfGlueBaseDataStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHatIffOfSelfDual
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsAdelicGlueVectorOfGlueBaseData
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluedHermitianLatticeUnique
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluedHermitianLatticeUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluedLatticePrescribedLocalComponentsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluedLatticePrescribedLocalComponents
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluedLatticeSelfDualPrimitiveMeetStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianSpacesIsometricOfRankSignatureStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianStdIsometryOfRationalIsometryStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianSpacesIsometricOfRankSignature
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianStdIsometryOfRationalIsometry
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsAdelicGlueVectorOfSelfDualPrimitiveStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsGlueBaseDataOfIsAdelicGlueVectorStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCHyperbolicExtensionLatticeConjStableStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalLatticeEqIffIdempotentComponentsOverStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsGlueBaseDataOfIsAdelicGlueVector
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCHyperbolicExtensionLatticeConjStable
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LocalLatticeEqIffIdempotentComponentsOver
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHatGlueLatIffDual
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormLineDecompositionsOfBaseSpaceProofStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PrimitiveLatticeGluedFromIntersectionStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SelfDualLatticeImageAdelicUnitaryStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SelfDualLatticeImageAdelicUnitary
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -115,19 +115,19 @@ private theorem fullLattice_of_glueVec {X : HSp D} {u : D.what₂.Word} {L₀ : 
 
 theorem gluedSt (D : D7) : GluedSt D := by
   intro u π hπ Y X ι z hz L₀ f₀ hb
-  obtain ⟨f, hf, hff⟩ := GlobalTheory.T.exists_isAdelicGlueVector_of_glueBaseData D u π hπ X L₀ f₀ hb
+  obtain ⟨f, hf, hff⟩ := _root_.GlobalTheory.AdIsom.BaseVec.exists_isGlueVec D u π hπ X L₀ f₀ hb
   have hL₀ := fullLattice_of_glueVec hb.1.fg hf
   obtain ⟨x, hx⟩ := exists_sub_inc_mem_hat (D := D) (Λ := L₀) hL₀.span_eq_top f
   obtain ⟨x₀, hx₀⟩ := vA_surj X x
   rw [← hx₀] at hx
   have hg : IsGlueVec X u L₀ (vA X x₀) := hf.congr hx
   have hgl : IsGlued Y X ι z u π L₀ f₀ (glueLat Y X ι z u L₀ x₀) := by
-    refine GlobalTheory.T.gluedLattice_prescribed_localComponents D u π Y X ι z hz L₀ x₀ f₀ hL₀.toIsLattice hg (fun w hw => ⟨?_, ?_⟩)
+    refine _root_.GlobalTheory.GluedCmp.isGlued_glueLat D u π Y X ι z hz L₀ x₀ f₀ hL₀.toIsLattice hg (fun w hw => ⟨?_, ?_⟩)
     · rw [← hff w hw, smul_smul, idem_mul_self]
     · rw [← hff w hw, ← smul_sub]
       exact smul_mem_hat (idem_mem w) hx
   have huniq : ∀ L, IsGlued Y X ι z u π L₀ f₀ L → L = glueLat Y X ι z u L₀ x₀ :=
-    fun L hL => GlobalTheory.T.gluedHermitianLattice_unique D u π hπ Y X ι z L₀ f₀ L _ hL hgl
+    fun L hL => _root_.GlobalTheory.GlueUnique.glued_unique D u π hπ Y X ι z L₀ f₀ L _ hL hgl
   refine ⟨⟨_, hgl, huniq⟩, fun L hL => ?_⟩
   rw [huniq L hL]
   exact GlobalTheory.T.gluedLattice_selfDual_primitive_meet D u Y X ι z hz L₀ x₀ hL₀ hg
@@ -142,19 +142,19 @@ theorem ungluedSt (D : D7) : UngluedSt D := by
     exact key hSD hP
   have := hlat
   refine ⟨fun w => idem w • vA X x₀,
-    GlobalTheory.T.isGlueBaseData_of_isAdelicGlueVector D u π hπ X _ _ (by infer_instance) hg, ?_⟩
-  have key := GlobalTheory.T.gluedLattice_prescribed_localComponents D u π Y X ι z hz (capX Y X ι L) x₀ (fun w => idem w • vA X x₀) hlat.toIsLattice hg
+    _root_.GlobalTheory.AdIsom.GlueBase.isBasePair_of_isGlueVec D u π hπ X _ _ (by infer_instance) hg, ?_⟩
+  have key := _root_.GlobalTheory.GluedCmp.isGlued_glueLat D u π Y X ι z hz (capX Y X ι L) x₀ (fun w => idem w • vA X x₀) hlat.toIsLattice hg
     (fun w _ => ⟨by simp only [smul_smul, idem_mul_self], by simp only [sub_self]; exact zero_mem_hat⟩)
   rwa [← hL] at key
 
 theorem adelicIsometries (D : D7) : AdelicIsometries D := by
   unfold AdelicIsometries LamNSt
-  exact ⟨plIdemSt D, transportSt D, GlobalTheory.T.correctionSt_of_transportSt D (transportSt D),
-    splitGlueSt_of D (fun n Λ Λ' hΛ hΛ' v => GlobalTheory.T.localLattice_eq_iff_idempotent_components_over D n Λ Λ' hΛ hΛ' v),
-    GlobalTheory.T.selfDualLattice_image_adelicUnitary D, GlobalTheory.T.hermitianSpaces_isometric_of_rank_signature D, GlobalTheory.T.hermitianStdIsometry_of_rationalIsometry D (GlobalTheory.T.hermitianSpaces_isometric_of_rank_signature D), GlobalTheory.T.normLineDecompositionsOfBaseSpace_proof D,
+  exact ⟨plIdemSt D, transportSt D, _root_.GlobalTheory.AdIsomCorrection.correction_of_transport D (transportSt D),
+    splitGlueSt_of D (fun n Λ Λ' hΛ hΛ' v => _root_.GlobalTheory.LocHat.locL_eq_iff_idem D n Λ Λ' hΛ hΛ' v),
+    _root_.GlobalTheory.AdIsomImage.imageSt D, _root_.GlobalTheory.RationalIsometry.rationalSt D, _root_.GlobalTheory.StdIsom.stdIsomSt_of_rationalSt D (_root_.GlobalTheory.RationalIsometry.rationalSt D), GlobalTheory.T.normLineDecompositionsOfBaseSpace_proof D,
     gluedSt D, ungluedSt D,
-    ⟨fun u Y X ι z ρ e f h L hL nn hn => GlobalTheory.T.isSelfDualC_hyperbolicExtensionLattice_conjStable D u Y X ι z ρ e f h L hL nn hn,
-      (GlobalTheory.T.conjStable_inverseDifferent_and_normIdeal D).1, (GlobalTheory.T.conjStable_inverseDifferent_and_normIdeal D).2⟩,
+    ⟨fun u Y X ι z ρ e f h L hL nn hn => _root_.GlobalTheory.HypLattice.isSelfDualC_lamN D u Y X ι z ρ e f h L hL nn hn,
+      (_root_.GlobalTheory.Twist.isCStable_inv_different_and_norm_ideal D).1, (_root_.GlobalTheory.Twist.isCStable_inv_different_and_norm_ideal D).2⟩,
     frameSt D⟩
 
 end GlobalTheory.AdIsom
