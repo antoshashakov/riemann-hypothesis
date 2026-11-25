@@ -24,7 +24,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemInte
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RealRationalPointActsHarmonicSubstitutionStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReferenceTupleSecondSplittingCharacterStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitSupportedClassScalarMemValuationRingStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistDeterminantMulIntegralFormsRayClassCoverStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistDeterminantMulIntegralFormsRayClassCover
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UniformisedCoverIsDictionaryFrameCompatibleStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VacuumIdentityConstantsCoverOfDominantPinsStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VacuumPairUniformLevelBoundStatement
@@ -412,7 +414,7 @@ theorem serIntAt_record : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 
       exact Submodule.span_mono (C.intForms_subset _ _ _)
         (key la _ hla (valRing_range _ _) fun x => let ⟨a, ha, _⟩ := hΦ x; ⟨a, ha⟩)
     · exact key la _ (hS la hla) (valRing_locRing _ _) fun x => let ⟨a, ha, hb⟩ := hΦ x; ⟨a, hb la hla, ha⟩
-  refine ⟨_, GlobalTheory.T.twistDeterminant_mul_integralForms_rayClassCover D T hL _ hj C hU hray xi hxi _ _ S Fn hint, fun g => ?_⟩
+  refine ⟨_, _root_.GlobalTheory.TwistInt.mul_twist_mem_intForms D T hL _ hj C hU hray xi hxi _ _ S Fn hint, fun g => ?_⟩
   rw [castDict_twist, castDict_symm]
   ring
 

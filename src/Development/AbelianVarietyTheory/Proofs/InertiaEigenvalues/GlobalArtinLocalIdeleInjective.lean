@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqOneOfApproxByCongruentGlobalUnitsStatement
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqOneOfApproxByCongruentGlobalUnits
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGlobalApproxOfArtinTrivialStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationEqOneOfCongruentGlobalApproxStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -73,7 +74,7 @@ theorem artin_localIdele_injective : ChevalleyUnits → ∀ (E Ω : Type) [Field
         have h3 := GlobalTheory.T.valuation_eq_one_of_congruent_global_approx E w _ (x⁻¹).ne_zero h2 (GlobalTheory.T.exists_global_approx_of_artin_trivial E Ω art ha w x⁻¹ hx')
         rw [Units.val_inv_eq_inv_val, map_inv₀, inv_eq_one] at h3
         exact h3
-    exact Units.ext (GlobalTheory.T.eq_one_of_approx_by_congruent_global_units hC E w x hv (GlobalTheory.T.exists_global_approx_of_artin_trivial E Ω art ha w x hx))
+    exact Units.ext (_root_.GlobalTheory.eq_one_of_approx_by_congruent_units hC E w x hv (GlobalTheory.T.exists_global_approx_of_artin_trivial E Ω art ha w x hx))
   intro x y hxy
   have : art (Neutral.B1.localIdele E w (x * y⁻¹)) = 1 := by
     simp only at hxy

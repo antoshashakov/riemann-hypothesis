@@ -10,7 +10,8 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsNorm
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsHalfSplitPlaceNormPowStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsModHalfLatticeFinsetSumStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceModelIndicatorEqMean
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsModHalfLatticeFinsetSum
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipIdxNeZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOrEqOfPlaceIdem
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdemSumMulOfSubset
@@ -77,7 +78,7 @@ theorem flip_reps : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D
   set Λ := latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True) with hΛ
   have hcard : Nat.card (GlobalTheory.DivPtFourier.DQ Λ (cA D eT) m) = flipIdx V W T m := by
     have hc' : cA D eT = ∑ PP ∈ T, cA D (es PP) := by rw [hsum, map_sum]
-    rw [hc', GlobalTheory.T.card_divisionPointsModHalfLattice_finset_sum Λ (fun c hc u hu => GlobalTheory.PlaceModelSum.idem_smul_latO hc hu) T (fun PP => cA D (es PP)) ?_ ?_ m]
+    rw [hc', _root_.GlobalTheory.DivPtFourier.card_DQ_sum Λ (fun c hc u hu => GlobalTheory.PlaceModelSum.idem_smul_latO hc hu) T (fun PP => cA D (es PP)) ?_ ?_ m]
     · unfold flipIdx
       refine Finset.prod_congr rfl fun PP hPP => ?_
       have hi : Formalism.L2.NTheta.IsIdemAt (cA D (es PP)) (Formalism.L2.DIV.conjPl PP) :=

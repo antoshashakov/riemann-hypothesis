@@ -16,7 +16,8 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Equivar
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivStableLatticeIntegralCharacterStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNumericalGaloisDataLocalSituationStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteModuleKilledByPowOfNotIsUnitStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodDataDualExactStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodDataDualExact
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedActionEqTwistedCoefficientsCocycleIffStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -228,7 +229,7 @@ theorem topCore_of_typings : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI :
     have hA' := ((hSA K LL _ r (H.W K 1 LL hA.2.2).emb D S.Γ hHyp.1 hHyp.2.1 hHyp.2.2.1 hHyp.2.2.2.1
       hHyp.2.2.2.2).2.2.2.2 X).2
     have hmem := mk_mem_class_congr π cocycle hA'
-    have hdual := GlobalTheory.T.period_data_dual_exact (P.PD K) T₀ ρ' T₀' X (χ 1) hρ' hTT z hz'
+    have hdual := _root_.GlobalTheory.AdmLoc.mk_mem_H1fX_iff_inHfX (P.PD K) T₀ ρ' T₀' X (χ 1) hρ' hTT z hz'
     exact (hadmCoc T T₀ z hz').trans (hclass.trans (hmem.trans hdual))
   · intro c hc Lc z hz
     have hc' := Finset.mem_Icc.1 hc

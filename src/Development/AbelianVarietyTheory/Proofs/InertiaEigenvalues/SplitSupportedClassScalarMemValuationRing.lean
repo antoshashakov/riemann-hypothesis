@@ -5,7 +5,11 @@ public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Admi
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInertTop
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesThird
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdentityClassLatticeEqSelfDualFrameLattice
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsElemStdLatticeSandwichSplitSupportStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
+public import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsElemStdLatticeSandwichSplitSupport
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNumerator
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharLocPowEqOneOnLocalUnitsStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharOnIdMulSqrtAbsNormInvMemSubringStatement
@@ -365,7 +369,7 @@ theorem GlobalTheory.LevelSeries.clsScal_mem_valRing : ∀ (D : D7) (ψ : AddCha
   let H := Formalism.L2.Pj.hostOfRecord D
   have hbar : (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E) :=
     RingHom.ext fun a => RingOfIntegers.ext (H.bar_eq a)
-  obtain ⟨m, m0, m1, m2, m3⟩ := GlobalTheory.T.exists_elem_stdLattice_sandwich_splitSupport D V hg hL h e' Ps bad he hPs hsupp
+  obtain ⟨m, m0, m1, m2, m3⟩ := _root_.GlobalTheory.SuppLatStd.lat_std_of_suppAt D V hg hL h e' Ps bad he hPs hsupp
   have hS : GenLat.SplitSupp H (⟨L⟩ : GenLat D.host.E V.rank) :=
     ⟨m, m0, m1, m2, fun P hP hm => by rw [hbar]; exact (m3 P hP hm).1⟩
   have hU := GlobalTheory.ClassScalarIn.unimod_hLat V hg (GlobalTheory.ExportSeries.finPt V h)

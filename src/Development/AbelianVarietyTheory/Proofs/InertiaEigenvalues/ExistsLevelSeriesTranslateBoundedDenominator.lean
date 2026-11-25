@@ -4,7 +4,11 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValRing
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInertTop
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdentityClassLatticeEqSelfDualFrameLattice
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenSubgroupFixVacuumTranslatesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenSubgroupHermitianLatticeEqStandardStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.BridgeTie
+public import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenSubgroupHermitianLatticeEqStandard
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsThetaFunctionOfMemSpanVacuumTranslatesStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalPartDenominatorBoundedByPrimePowerStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PtYAndItYOfPair
@@ -76,7 +80,7 @@ theorem exists_move_denomAt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ 
     rw [GlobalTheory.Equiv.StdSpace.identityClassLattice_eq_selfDualFrameLattice, ← hP.2.2.1, hP.2.2.2.2.2.2.1]
   obtain ⟨c, hc⟩ := GlobalTheory.T.rationalPart_denominator_bounded_by_prime_power D V hstd l hl s
   refine ⟨c, fun z hz hOne M bad hM hbad hlb => ?_⟩
-  obtain ⟨J₁, hJ₁o, hJ₁⟩ := GlobalTheory.T.exists_open_subgroup_hermitianLattice_eq_standard D V hstd
+  obtain ⟨J₁, hJ₁o, hJ₁⟩ := _root_.GlobalTheory.LatOpen.exists_open_hLat_std D V hstd
   obtain ⟨J₂, hJ₂o, hJ₂⟩ := GlobalTheory.T.exists_open_subgroup_fix_vacuum_translates D ψ θ V W χV χW om ΛV ΛW sW f₀ hP M hM
   have hJo : IsOpen ((J₁ ⊓ J₂ : Subgroup (Bridge.Gf V)) : Set (Bridge.Gf V)) := hJ₁o.inter hJ₂o
   obtain ⟨γ, h, kJ, hsp, e⟩ := GlobalTheory.SplitRepsOpen.exists_rep_splitOffBad D V (J₁ ⊓ J₂) bad hbad hJo (fin V (s * z))

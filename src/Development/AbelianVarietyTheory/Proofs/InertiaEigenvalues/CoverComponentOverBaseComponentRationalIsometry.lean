@@ -6,7 +6,8 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseCov
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoverComponentEqImpliesBaseComponentEqStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoverReadingEqPowMulMovedFrameReadingStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCoverDictionaryAdelicElementComponentStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalIsometryMapsFlagDomainFramesStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalIsometryMapsFlagDomainFrames
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,7 +59,7 @@ theorem comp_over_comp : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalis
   have hU := hT.unf j hj σ hσ
   have hU₂ := hC.2.2.2.1
   have hx' : x' ∈ ((T.U j σ).X (T.dict j σ h₀).1).dom :=
-    GlobalTheory.T.rationalIsometry_maps_flagDomain_frames _ _ _ _ γ ((hU.2.1 _).1.trans (hU₂.2.1 _).1.symm)
+    _root_.GlobalTheory.FrameDom.mem_dom_of_isometry _ _ _ _ γ ((hU.2.1 _).1.trans (hU₂.2.1 _).1.symm)
       (fun τ => ((hU.2.1 _).2 τ).trans ((hU₂.2.1 _).2 τ).symm) hiso x x' hx hxx'
   exact ⟨hx', GlobalTheory.T.coverReading_eq_pow_mul_movedFrameReading D T hT j hj σ hσ C hC h₀ γ hΛ hiso hfr x x' hx hx' hxx'⟩
 

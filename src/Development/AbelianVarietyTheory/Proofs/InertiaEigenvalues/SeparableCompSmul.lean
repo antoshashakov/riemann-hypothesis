@@ -5,7 +5,7 @@ public import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NHkRow
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.HeckeSplitOne
 public import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseChangePolynomialAnnihilatesDescentStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCommutationRealExpansionStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCommutationRealExpansion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -106,7 +106,7 @@ theorem hkF_separable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type
         ∀ x ∈ V0 D.nexp i j b, Polynomial.aeval (D.nexp.hkF i j b k P) p x = 0 := by
   intro hG hC hX hR hU hI hS0c hS02 hS0b i hi j hj b k P hk
   obtain ⟨h1, h2⟩ := Finset.mem_Icc.1 hj
-  obtain ⟨q, hqs, hq⟩ := GlobalTheory.T.hecke_commutation_real_expansion Rl F cG S Y H hG hC hX hR hU hI hS0c hS02 hS0b i hi j h1 h2 b k P hk
+  obtain ⟨q, hqs, hq⟩ := _root_.GlobalTheory.GoodSS.Heart.hL_separable_good Rl F cG S Y H hG hC hX hR hU hI hS0c hS02 hS0b i hi j h1 h2 b k P hk
 
   set rd : ↥D.LL0 →+* KB S i b := readLL0 S i b with hrd
   set hst := Y.rho j h1 h2

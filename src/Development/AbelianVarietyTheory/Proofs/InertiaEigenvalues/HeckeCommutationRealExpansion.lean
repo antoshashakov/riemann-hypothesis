@@ -10,7 +10,8 @@ public import Formalism.LocalToGlobal.IndefiniteReal.ZeroPartEigenvalueConventio
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexHeckeConjugatePlacePeterssonAdjoint
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsConjugateSplitPlaceOffStableSetStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodProjectorFormsIdempotentStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeOperatorsRationalFormsCommuteStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.RatDatOfReal
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeOperatorsRationalFormsCommute
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsKsFormOfAlgebraicFormsIsoStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LinearIndependentFormsIntermediateFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MinpolySeparableOfComplexNormalReadingStatement
@@ -184,8 +185,8 @@ theorem hL_separable_good : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I
     _root_.GlobalTheory.CxHeckeAdj.hecke_adjoint Rl F hR i0 k P P' hPs hPP' hoffP hoffP' h2P h2P' hk1 hk2
   have hkP : HkIdx i k P := ⟨hk1, hk2, hPs, hP0⟩
   have hkP' : HkIdx i k P' := ⟨hk1, hk2, hP's, hP'0⟩
-  obtain ⟨hPQ, hPg⟩ := GlobalTheory.T.heckeOperatorsRationalForms_commute Rl cG S Y H hG hC i hi ((i0 : ℕ) + 1) h1 h2 b k P k P' hkP hkP'
-  obtain ⟨-, hQg⟩ := GlobalTheory.T.heckeOperatorsRationalForms_commute Rl cG S Y H hG hC i hi ((i0 : ℕ) + 1) h1 h2 b k P' k P hkP' hkP
+  obtain ⟨hPQ, hPg⟩ := _root_.GlobalTheory.HkKs.opK_comm Rl cG S Y H hG hC i hi ((i0 : ℕ) + 1) h1 h2 b k P k P' hkP hkP'
+  obtain ⟨-, hQg⟩ := _root_.GlobalTheory.HkKs.opK_comm Rl cG S Y H hG hC i hi ((i0 : ℕ) + 1) h1 h2 b k P' k P hkP' hkP
 
   set s := (D.nexp.eAlg i b).coeff.support with hs
   have hsupp : ∀ g, g ∉ s → D.nexp.eLL0 g = 0 := fun g hg => by

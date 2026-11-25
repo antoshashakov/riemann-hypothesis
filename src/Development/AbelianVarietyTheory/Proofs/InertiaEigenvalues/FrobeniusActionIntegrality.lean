@@ -9,7 +9,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Adjoint
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralScalarInverseUniformisersIdempotentSumStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsConjugateHalfPrescribedAdjointFrameMatrixStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegralLiftResiduesIdempotentSumStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniformiserFamilyHostFieldIntegersStatement
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+public import Formalism.LocalToGlobal.Divisibility.DefGroup
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniformiserFamilyHostFieldIntegers
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlatVecExistsUnique
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameMatrixReductionEqOfHalfIdempotentSubset
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentSumIntegralDivUniformisersIffReductionStatement
@@ -214,7 +216,7 @@ theorem GlobalTheory.ZRep.central_reps : ∀ (D : D7) (G : Type) [Group G] [Fint
   have sW : IsSelfDualC (Wc D i) (R.ΛW i) :=
     GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hR.lev.βW i))
   have hP := hQ.2 t
-  refine ⟨?_, GlobalTheory.T.exists_uniformiser_family_hostField_integers D, ?_⟩
+  refine ⟨?_, _root_.GlobalTheory.exists_uniformiser_family_host D, ?_⟩
   · obtain ⟨f, eg, eQ, fg, -, hq, -⟩ := (GlobalTheory.FlatVecExist.flatVec_existsUnique D G Pl0 T0 A Ks R F hR hQ i t).1
     exact ⟨eQ, hq⟩
   intro eQ es ϖ hq hes hϖ heQ

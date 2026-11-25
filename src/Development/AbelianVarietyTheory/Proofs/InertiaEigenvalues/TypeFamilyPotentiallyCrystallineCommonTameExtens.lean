@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AevalEq
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixOfStabilizerTrivial
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxUnramifiedSubfieldStableOfNormal
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonodromyZeroOfDeRhamCharacter
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedFamilyPotentiallyCrystallineFrobStableStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CentralIdemCoeff
+public import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedFamilyPotentiallyCrystallineFrobStable
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,7 +66,7 @@ theorem main : StepPotDirect := by
     (fun x => r x) 1 (chiGL i) (fun x => (hr x).1) hχc (fun x => (hX x x.2).1) hχ
   obtain ⟨ch, hch⟩ := GlobalTheory.InertiaChars.main D P hTP hIE i k hl w hw Y hY K' h hN hF' hS hker
   have hdeg := (GlobalTheory.TypeDegOne.degree_one D i k hl).2 w hw
-  refine GlobalTheory.T.twistedFamily_potentiallyCrystalline_frobStable D hTen i w hw hdeg r Xs K' h hN hF' hS (Y.image ch) (ch u) (D.R.nV + 1)
+  refine _root_.GlobalTheory.PotTwist.main D hTen i w hw hdeg r Xs K' h hN hF' hS (Y.image ch) (ch u) (D.R.nV + 1)
     (Finset.mem_image_of_mem _ hu) (Finset.card_image_le.trans hYc) (fun x _ => (hr x).1) ?_ hpc0 ?_
   · intro x hx
     obtain ⟨M, hM, hσ⟩ := (hX x hx).2

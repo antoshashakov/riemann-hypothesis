@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsKHwMap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueJointTop
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsJointHighestWeightHarmonicSliceOuterVariablesStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsJointHighestWeightHarmonicSliceOuterVariables
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointHighestWeightHarmonicMultiplicityOneCoverinStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointHighestWeightHarmonicOfFockLowestKTypeStatement
 import Mathlib.Algebra.AffineMonoid.UniqueSums
@@ -126,7 +126,7 @@ theorem joint_line : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.ExportSeries.Wei
         (Prod.mk τ ∘ GlobalTheory.HarmLine.yR m n (w.p τ)) (κ τ) α β P →
       ∃ R : PolF D m n, P = Q τ * R ∧ ∀ v ∈ R.vars, v.1 ≠ τ := by
     intro τ P α β h
-    obtain ⟨s, f, g, hPs, hf, hg⟩ := GlobalTheory.T.isJointHighestWeightHarmonic_slice_outer_variables (Prod.mk τ) (fun a b h => (Prod.mk.inj h).2) _ _ _ _ _ P h
+    obtain ⟨s, f, g, hPs, hf, hg⟩ := _root_.GlobalTheory.jointTop_slice (Prod.mk τ) (fun a b h => (Prod.mk.inj h).2) _ _ _ _ _ P h
     choose! r hr using fun i (hi : i ∈ s) => hQ₀ τ α β (f i) (hf i hi)
     refine ⟨∑ i ∈ s, r i • g i, ?_, ?_⟩
     · rw [hPs, Finset.mul_sum]

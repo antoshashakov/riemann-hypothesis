@@ -5,7 +5,8 @@ public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamFilteredComparisonCoordinatesStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamFiltrationBoundsInvariantCoordinatesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiltrationAdaptedBasisOfSubspaceStatement
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiltrationAdaptedBasisOfSubspace
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInvariantBasisOfIsDeRhamLatticeStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HodgeStructureOfAdaptedInvariantFamilyStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -111,7 +112,7 @@ theorem exists_hodge : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime
   have hsep : ∀ v ∈ D, (∀ a, v ∈ F a) → v = 0 := fun v _ hv =>
     funext fun i => (P.PD K).Fil_sep (v i) fun a => (hmemF a v).1 (hv a) i
   set_option synthInstance.maxHeartbeats 200000 in
-  obtain ⟨b0, h0, hbF0, hbrep0⟩ := GlobalTheory.T.exists_filtration_adapted_basis_of_subspace D F hF hex hsep
+  obtain ⟨b0, h0, hbF0, hbrep0⟩ := _root_.GlobalTheory.AdaptedBasis.exists_adapted_basis D F hF hex hsep
   set e := finCongr hfr
   set b := b0.reindex e with hb
   set h : Fin d → ℤ := fun j => h0 (e.symm j) with hh

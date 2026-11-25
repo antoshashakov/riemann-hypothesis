@@ -14,7 +14,8 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatti
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CmPlaceOperatorPreservesTypeAveragesShapeStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CongruenceInvariantConstOnFrameTranslateStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSeparatingCharacterConjugateHalfSplitStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSupportedAtSplitPlaceUnitaryMatrixEqStatement
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HalfLinearCocycle
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSupportedAtSplitPlaceUnitaryMatrixEq
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteClassesModUniformizerPowMatricesStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteFourierExpansionConjugateHalfSplitPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameTranslateLatticeCosetSubsetStatement
@@ -241,7 +242,7 @@ theorem actAt (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hω : R.thP_ωP) (
       ∃ h : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ a ∈ v.adicCompletionIntegers D.host.F,
         red ⟨GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ a, h⟩ = resS D.host.F PP ⟨a, ha⟩) : ActAt R i t PP φ e red := by
   intro h
-  obtain ⟨κ, hs, hκ⟩ := GlobalTheory.T.exists_supportedAtSplitPlace_unitary_matrix_eq D (Vc D i) v φ e he (frCo φ (R.βV i))
+  obtain ⟨κ, hs, hκ⟩ := _root_.GlobalTheory.DownLift.GenSplit.exists_suppAt_grpCo_eq D (Vc D i) v φ e he (frCo φ (R.βV i))
     (Matrix.GeneralLinearGroup.map (algebraMap (OI v) (Fv D.host.F v)) h)
   obtain ⟨h1, h2, h3, h4⟩ := GlobalTheory.T.splitPlaceUnitary_integralMatrix_keeps_lattice D (Vc D i) (R.βV i) (R.ΛV i) _ (hL.βV i).choose_spec PP v φ e hφ he red hred h κ hs hκ
   refine ⟨κ, hs, h1, h2, hκ, h3, fun PP' a b => h4 PP' b (not_conj hL t hP a), fun ℓ hℓ f hf => ?_⟩
@@ -484,7 +485,7 @@ theorem piece (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hω : R.thP_ωP) (
       IsThetaFunO R.ψ (Vc D i) (Wc D i) (heisO R.ψ (Vc D i) (Wc D i) x q) := fun hx hq =>
     GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 (half_fin he' hx) hq
   obtain ⟨σ, hσ⟩ := exists_section R hL i he
-  obtain ⟨h, hh, hg⟩ := GlobalTheory.T.exists_supportedAtSplitPlace_unitary_matrix_eq D (Wc D i) v φ e he (frCo φ (R.βW i)) (reGL (rank_weight_component_eq i) g)
+  obtain ⟨h, hh, hg⟩ := _root_.GlobalTheory.DownLift.GenSplit.exists_suppAt_grpCo_eq D (Wc D i) v φ e he (frCo φ (R.βW i)) (reGL (rank_weight_component_eq i) g)
   have hh' : Formalism.L2.Theta.SuppAt e (Wc D i) h⁻¹ := fun a b => by
     have := congrFun (congrFun (off_smul_mt_inv hh) a) b
     simp only [Matrix.smul_apply, smul_eq_mul] at this

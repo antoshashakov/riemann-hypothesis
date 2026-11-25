@@ -20,7 +20,10 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfIsSe
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsHodgeTateIffDiagonalAdaptedBasisStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSemistableLatticeInMatrixAlgebraLayerStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LayerDdRBoundsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MultisetEqOfPowerSumsZpowEqStatement
+public import Mathlib.Algebra.BigOperators.Group.Multiset.Defs
+public import Mathlib.Algebra.CharZero.Defs
+public import Mathlib.Algebra.Field.Defs
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MultisetEqOfPowerSumsZpowEq
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyBreuilKisinDatum
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingCoreCrystallineDeRhamInvariants
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaConjBoundedCompatibleBreuilKisinFramesStatement
@@ -331,7 +334,7 @@ theorem closed_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : 
     intro n
     rw [← sum_pow_eq]
     exact (htr n).symm.trans ((congrArg Matrix.trace (hnat n)).trans (hcov n))
-  have hms := GlobalTheory.T.multiset_eq_of_power_sums_zpow_eq ℂ_[l] z hz0 hzr _ _ hpow
+  have hms := _root_.GlobalTheory.multiset_eq_of_powerSums_zpow_eq ℂ_[l] z hz0 hzr _ _ hpow
   intro n
   rw [← hcard n, ← hms, Multiset.count_map]
   have h1 : (Multiset.filter (fun i => n = (HR.p i : ℤ) - HR.q) Finset.univ.val).card =

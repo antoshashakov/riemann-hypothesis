@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipIdxNeZero
 public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralConjugateFlipScalarFiniteAdelicStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilOperatorInvCentralFlipInvariantFormEqStatement
+public import Formalism.LocalToGlobal.HeckeThetaElements.IsHeckeElt
+public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilOperatorInvCentralFlipInvariantFormEq
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdemSumMulOfSubset
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -171,7 +173,7 @@ theorem centralFlip_phase : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W :
       exact cflip_unit_split hx0
     have hxaD : IsFlipDet V (es P) m xa := hxa
     have hxbD : IsFlipDet V (∑ Q ∈ T', es Q) m xb := hxb
-    obtain ⟨rP, hrP, hPstep⟩ := GlobalTheory.T.weilOperator_inv_centralFlip_invariantForm_eq D ψ V W χV χW om hW P (es P) m zP xa ℓ hesP hm hzP hxaD
+    obtain ⟨rP, hrP, hPstep⟩ := _root_.GlobalTheory.LevelSeries.FlipScalStep.om_inv_flip_eq D ψ V W χV χW om hW P (es P) m zP xa ℓ hesP hm hzP hxaD
       (fun y hy φ hφ => hℓ y (cflip_isHalf_mono heA hy) φ hφ)
     obtain ⟨r', hr', hrest⟩ := ih (∑ Q ∈ T', es Q) m (z * zP⁻¹) xb ℓ hSb hm hz' hxbD
       (fun y hy φ hφ => hℓ y (cflip_isHalf_mono heB hy) φ hφ)

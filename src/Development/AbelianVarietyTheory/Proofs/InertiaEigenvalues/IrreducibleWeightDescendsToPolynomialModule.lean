@@ -7,7 +7,10 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Contrag
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisConjDefiniteFormsSemilinearEquiv
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIrreducibleAlgebraicWeightSubrepStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAlgWeightOfContragredientHighestWeightStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonzeroMatrixIntertwinerDescendsToSubfieldStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Data.Matrix.Mul
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonzeroMatrixIntertwinerDescendsToSubfield
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrameEquivApply
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsotypicFactorOfIsIrreduciblePiFiniteGroups
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -145,7 +148,7 @@ theorem weight_descends : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L]
       ← LinearMap.toMatrix_eq_toMatrix', ← LinearMap.toMatrix_comp, ← LinearMap.toMatrix_comp]
     congr 1
     exact LinearMap.ext fun y => hM γ y
-  obtain ⟨XK, hXK0, hXK⟩ := GlobalTheory.T.nonzero_matrix_intertwiner_descends_to_subfield K e (ReciprocityTheory.Aut.GQ L n) (VVIdx lam) (Fin N) B A ⟨X, hX0, hXrel⟩
+  obtain ⟨XK, hXK0, hXK⟩ := _root_.GlobalTheory.matrix_intertwiner_descends K e (ReciprocityTheory.Aut.GQ L n) (VVIdx lam) (Fin N) B A ⟨X, hX0, hXrel⟩
   let Φ : VV K lam →ₗ[K] W := Matrix.toLin bK b XK
   have hΦ : ∀ γ x, Φ (rhoVr emb lam (mtwRat (L := L) (n := n) γ) x) = ρ γ (Φ x) := by
     intro γ x

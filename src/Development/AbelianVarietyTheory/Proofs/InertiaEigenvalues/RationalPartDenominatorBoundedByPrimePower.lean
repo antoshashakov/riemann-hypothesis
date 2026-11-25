@@ -10,7 +10,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicM
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicMatrixExistsPrimePowClearsDenominatorsOverStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BoundedDenomRationalMatrixOfFinitePartStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteMatrixEqOneOfEqOneAtPlacesOverStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentAddConjSupportFinitePrimeToPStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IdempotentAddConjSupportFinitePrimeToP
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsBoundedPrimeToDenomGLAndInvOfEqOneOffFinite
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BndMul
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdmissibleEmptyOfGood
@@ -105,7 +107,7 @@ theorem denomAt_of_move : ∀ (D : D7) (V : HSp D), Bridge.hLat V 1 = Formalism.
     intro PP hPP hpP
     obtain ⟨c, rfl⟩ := hlb
     exact hb' PP hPP (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ hpP)
-  obtain ⟨S, hSf, hSp, hS0⟩ := GlobalTheory.T.idempotent_add_conj_support_finite_prime_to_p D ι hid hcj l e' P' he' hp'
+  obtain ⟨S, hSf, hSp, hS0⟩ := _root_.GlobalTheory.idemSum_add_conj_support_finite D ι hid hcj l e' P' he' hp'
   obtain ⟨bh, bh'⟩ := _root_.GlobalTheory.StdAtPrime.bnd_and_bnd_inv_of_eq_one_off_finite l hl _ (M (fin V h).1) S hSf hSp fun Q hQ i j =>
     GlobalTheory.T.supported_adelic_point_eq_one_where_idempotent_vanishes D ι V e' h hs' Q (hS0 Q hQ) i j
   have eγ : fin V γ = fin V s * fin V z * k⁻¹ * (fin V h)⁻¹ := by

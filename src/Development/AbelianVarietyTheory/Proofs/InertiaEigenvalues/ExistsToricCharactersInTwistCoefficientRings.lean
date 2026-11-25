@@ -8,7 +8,10 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomolog
 public import Formalism.SharpRestriction.Divisibility.LiftErrorLocal
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTwLFullTeich
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SideBKeep
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistCharacterEqGaloisOfLadicUnitaryHeckeStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TwistBaseCoefficientRingResidueFieldFinite
+public import Formalism.LocalToGlobal.NormalizedHeckeFactors.RingSpecSidedEmbeddingFixedField
+public import Formalism.LocalToGlobal.UnitaryNorms.CharTied
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistCharacterEqGaloisOfLadicUnitaryHecke
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistCharacterIsLadicOfFiniteOrderHeckeStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPadicAlgClRingEquivComplexCompEqOfCountabl
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertialOrderFifteenCharAuxiliaryPrimeSpec
@@ -123,7 +126,7 @@ theorem read_of_isGal {D : D7} {N : NData D.R D.host D.what₂} {T : TwR D.LL0 N
     (H : NC.HC D.host.E) (hH : ∀ x, H.χ x = χ.1 x) {n : (D.host.E →+* ℂ) → ℤ} {r : G D.host.E N.Om →* (T.O0 i)ˣ}
     (hr : IsGal art κ (sideIso ι b) χ n r) :
     NC.Read N.plOm.1 ((Units.map (algebraMap (T.O0 i) (T.O i)).toMonoidHom).comp r) (algebraMap (T.O i) (FractionRing (T.O i)))
-      embO (NC.complexEmbeddingRestrictedToSubfield D) H 0 := GlobalTheory.T.twistCharacter_eq_galois_of_ladic_unitaryHecke ha κ ι hι b embO hO χ hu S hv H hH hr
+      embO (NC.complexEmbeddingRestrictedToSubfield D) H 0 := _root_.GlobalTheory.HeckeRead.read_of_isGal_side ha κ ι hι b embO hO χ hu S hv H hH hr
 
 
 

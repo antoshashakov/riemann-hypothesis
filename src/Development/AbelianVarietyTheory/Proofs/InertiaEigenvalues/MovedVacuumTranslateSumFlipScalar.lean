@@ -6,7 +6,10 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInert
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipSplitPlacesInvariantFormPhaseStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsConjHalfInvariantFormIdemSumVacuumNeZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VacuumTranslatesConjHalfSqNormEqCardStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilRepresentationPreservesNormStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilRepresentationPreservesNorm
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -87,7 +90,7 @@ theorem moved_vacuum_factor : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ 
   rw [hom, map_smul, hsum, smul_eq_mul] at h1
   have h2 : lam * Y.card = r * ((χW x : Circle) : ℂ)⁻¹ := mul_right_cancel₀ hℓ0 (by rw [← h1]; ring)
   obtain ⟨p, hp⟩ := hf.2.norm.1
-  have hn := GlobalTheory.T.weil_representation_preserves_norm D ψ V W χV χW om hW p.1 p.2 hp (z⁻¹, 1) f₀ hth (hf.2.norm.2 p hp)
+  have hn := _root_.GlobalTheory.WeilUnitNorm.weil_norm_one_of_unit_norm D ψ V W χV χW om hW p.1 p.2 hp (z⁻¹, 1) f₀ hth (hf.2.norm.2 p hp)
   rw [hom, nrm2_const_smul, GlobalTheory.T.vacuumTranslates_conjHalf_sq_norm_eq_card D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T eT hT Y (fun y hy => (hY y hy).1) hYu p.1 p.2
     hp] at hn
   have hχ : ‖((χW x : Circle) : ℂ)⁻¹‖ = 1 := by rw [norm_inv, Circle.norm_coe, inv_one]

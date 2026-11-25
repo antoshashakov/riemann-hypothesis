@@ -15,7 +15,8 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ScaledFiniteM
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDualStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.SpanRealProjectionRationalPointsEqTop
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConjugateHalfVacuumTranslateSumIsThetaFockVacuumStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLevelPointRepsConjugateHalfModLatticeStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsFlipDet
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLevelPointRepsConjugateHalfModLattice
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNeZeroOfIsVacO
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VacuumTranslateSumConjugateHalfNeZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VacuumTranslateSumFixedByFlippedLatticeStatement
@@ -161,7 +162,7 @@ namespace GlobalTheory.LevelSeries
 
 theorem moved_vacuum_eq_mean : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (m : ℕ) (eT : AE D) (z : GA D V), IsIdemSum eT T → Odd m → Nat.Coprime m (GlobalTheory.Tow.badN D) → (∀ PP ∈ T, ((m : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → z ∈ GfC V → Formalism.L2.Theta.mt V z = flipElt eT m • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) → ∃ (lam : ℂ) (Y : Finset (WO V W)), (∀ y ∈ Y, IsHalf (cA D eT) y ∧ m • y ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True)) ∧ (∀ y ∈ Y, ∀ y' ∈ Y, y - y' ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True) → y = y') ∧ Y.card = flipIdx V W T m ∧ om (z⁻¹, 1) f₀ = lam • ∑ y ∈ Y, heisO ψ V W y f₀ := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT z hT hm hcop hmT hz hmt
-  obtain ⟨Y, hY1, hY2, hY3, hYc⟩ := GlobalTheory.T.exists_levelPoint_reps_conjugate_half_mod_lattice D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT hm hcop hmT
+  obtain ⟨Y, hY1, hY2, hY3, hYc⟩ := _root_.GlobalTheory.FlipReps.flip_reps D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT hm hcop hmT
   set G := ∑ y ∈ Y, heisO ψ V W y f₀ with hG
   obtain ⟨hGth, hGf⟩ := GlobalTheory.T.conjugateHalf_vacuum_translate_sum_isThetaFockVacuum D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT hm hcop hmT Y fun y hy => (hY1 y hy).1
   obtain ⟨hfix2, hfixh⟩ := GlobalTheory.T.vacuum_translate_sum_fixed_by_flipped_lattice D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT hm hcop hmT Y hY1 hY2 hY3

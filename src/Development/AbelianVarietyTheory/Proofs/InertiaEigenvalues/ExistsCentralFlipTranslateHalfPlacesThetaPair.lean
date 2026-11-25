@@ -8,7 +8,10 @@ public import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipMapsHalfTranslatesSpanStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipVacuumEqMultipleOfTranslateMeanStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralConjugateFlipScalarFiniteAdelicStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIdemSumConjugatePlacesSubsetEqFlipStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIdemSumConjugatePlacesSubsetEqFlip
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MovedVacuumTranslateSumFlipScalarStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdemSumMulOfSubset
 import Mathlib.Algebra.Order.Floor.Extended
@@ -95,7 +98,7 @@ theorem exists_central_flip_step : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
       exact Nat.cast_pos.2 (Nat.pos_of_ne_zero (flipIdx_ne_zero V W T hm0))
     intro M u e e' P O hM hu he hTP he' hz
     exact GlobalTheory.T.centralFlip_maps_halfTranslates_span D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z _ Y heT hodd hcop hmT hzmt hs hY hom M u e e' P O hM hu he hTP
-      (GlobalTheory.T.isIdemSum_conjugatePlaces_subset_eq_flip D e eT e' P T he heT hTP he') hz
+      (_root_.GlobalTheory.FlipIdemSum.idemSum_flip_subset D e eT e' P T he heT hTP he') hz
   · refine ⟨1, (GfC V).one_mem, fun l _ => oneAt_one V l, ?_⟩
     intro eT heT hodd
     exact absurd ⟨eT, heT, (Nat.pos_of_ne_zero (by rintro rfl; exact (Nat.not_odd_zero hodd))).ne'⟩ h

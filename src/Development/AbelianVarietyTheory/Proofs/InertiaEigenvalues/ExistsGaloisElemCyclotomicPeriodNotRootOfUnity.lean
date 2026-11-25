@@ -7,7 +7,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BezoutE
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPrimeUniformizerClass
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBreuilKisinFrobeniusPeriod
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisMovesFlatByUnitRootStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOneAddPrimePowMulNotRootOfUnityStatement
+public import Mathlib.Analysis.Normed.Field.Instances
+public import Mathlib.NumberTheory.Padics.Complex
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOneAddPrimePowMulNotRootOfUnity
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RootOfUnityPadicComplexMemRangeAlgClosureStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaAinfPeriodPowNeZeroStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
@@ -167,7 +169,7 @@ theorem GlobalTheory.BKLim.exists_isZ_not_root : ∀ (l : ℕ) [Fact l.Prime] (K
     · rw [Θ_apply]; intro h
       apply theta_deriv_ne bk
       exact Subtype.ext h
-  obtain ⟨k, hk0, hk⟩ := GlobalTheory.T.exists_one_add_primePow_mul_not_rootOfUnity l a ha
+  obtain ⟨k, hk0, hk⟩ := _root_.GlobalTheory.SmallRootCl.exists_one_add_pow_mul_not_root l a ha
   obtain ⟨g, hg⟩ := GlobalTheory.T.exists_galois_moves_flat_by_unit_root l (GlobalTheory.T.rootOfUnity_padicComplex_mem_range_algClosure l) K bk (ε ^ (l ^ k)) (by rw [map_pow, hε.1, one_pow])
   set μ : Ainf l := WittVector.teichmuller l ε - 1 with hμ_def
   set E : Ainf l := bk.ev bk.E with hE_def

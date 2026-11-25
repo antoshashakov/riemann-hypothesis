@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalLanglandsExists
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BrauerDegreeZero
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChevalleyUnits
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompletionBaseChangePlacesStatement
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompletionBaseChangePlaces
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousRingEquivLocalFieldPreservesValuation
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EpsilonUniqueOfInductiveStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLocalExtensionOfFiniteIndexWeilSubgroupStatement
@@ -248,7 +250,7 @@ theorem eps_ind (hG : GlobalArtinReciprocity) (hC : ChevalleyUnits) (hLL : Local
   obtain ⟨v', hv'⟩ := exists_place h' L'
   have hj : ∀ x, jL (algebraMap E L x) = algebraMap E' L' (j x) := fun x =>
     Subtype.ext ((hφ _).symm.trans (hP.ext x))
-  obtain ⟨iL, hiL, hiL'⟩ := GlobalTheory.T.completion_base_change_places E L E' L' w v w' v' j jL i
+  obtain ⟨iL, hiL, hiL'⟩ := _root_.GlobalTheory.CompositumCompletion.exists_ringEquiv_completion E L E' L' w v w' v' j jL i
     (fun x => by rw [← hv, ← h]; rfl) (fun x => by rw [← hv', ← h']; rfl)
     (fun x => by
       rw [← hv, ← hv', ← valuation_lt_one_iff_map hP.mem]

@@ -8,7 +8,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockSub
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FockSubstitutionPreservesHarmonicLetterPolynomiaStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RealComponentEqConjInverseRationalMatrixStatement
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfDualLatticeInFrameCoordinatesEq
+public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RealComponentEqConjInverseRationalMatrix
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RealPointActsOnThetaFockVacuaByDetPowerStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanFiniteTranslatesVacuumThetaFockVacuaStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilRepRealPointFockVectorSubstitutionStatement
@@ -95,7 +97,7 @@ theorem real_act_harm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
   refine ⟨c * d + ∑ τ, c * (V.rank * (k τ).natAbs), ?_⟩
   intro γ a γ' O hγ hrat ha hγa hden Q hQ hQO
   have hθ : IsInfFam θ := hP.1.inf
-  choose σ hσ using GlobalTheory.T.realComponent_eq_conj_inverse_rationalMatrix D θ hθ V γ a γ' hγ hrat ha hγa
+  choose σ hσ using _root_.GlobalTheory.ArchRatComp.compAt_mt_eq_map_inv D θ hθ V γ a γ' hγ hrat ha hγa
   let u : GlobalTheory.ExportSeries.GLR D V.rank := fun τ => Matrix.GeneralLinearGroup.map (σ τ) γ'⁻¹
   have hu : ∀ τ, ((u τ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) =
       Formalism.IndefR.Datum.compAt θ τ (Formalism.L2.Theta.mt V a) := fun τ => by

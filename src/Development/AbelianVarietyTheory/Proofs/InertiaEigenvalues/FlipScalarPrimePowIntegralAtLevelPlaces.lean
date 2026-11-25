@@ -8,7 +8,9 @@ public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipScalarMemCoefficientField
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharInvCentralFlipIdeleEqProdLocalComponentsStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharInvCentralFlipIdeleEqProdLocalComponents
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFieldElementLocalComponentsLevelNumber
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharInfinityEqCoeffMulHalfNormPowStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -133,7 +135,7 @@ theorem flipScal_pow_mem : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : I
   refine ⟨c, fun eT x hT hTM hx k _ _ σ la O hla hO hconj hval _ _ => ?_⟩
   have hfl : flipScal χW V W T M₀ x = z := by
     unfold flipScal
-    rw [GlobalTheory.T.char_inv_centralFlipIdele_eq_prod_local_components D V χW χ M₀ u T eT x hχ.1 rfl hT hx]
+    rw [_root_.GlobalTheory.FlipCharFormula.char_inv_eq_prod_locK_of_flip D V χW χ M₀ u T eT x hχ.1 rfl hT hx]
   rw [hfl]
   refine hc k σ la O hla hO ?_
   obtain ⟨a, hai, hA1, hA2⟩ := _root_.GlobalTheory.LevelFieldApprox.exists_approx D.host.E χ M₀ u rfl T

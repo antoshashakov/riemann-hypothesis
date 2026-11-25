@@ -16,7 +16,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteI
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteResidueFieldOfCompactIsAdicDvrStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FractionRingQuotDivisibleByUniformizerStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FractionRingQuotKilledByPowUniformizerStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H2BoundedTwistStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevRepZApply
+public import Formalism.CharacterColumnKernels.Statement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H2BoundedTwist
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HcLCExistsPowSmulEqZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocallyConstantOrbitOfInvPowCharacterStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorsionShapeOfTorsionCountsStatement
@@ -122,7 +124,7 @@ theorem shapeG_of_localDuality (hT : Formalism.GaloisCohomology.LocalTateDuality
     apply hσ1
     have h2 : ((ε (i.symm σ1)) ^ e)⁻¹ = 1 := Units.ext h1
     exact inv_eq_one.1 h2
-  obtain ⟨C, hC⟩ := GlobalTheory.T.h2_bounded_twist hT hK hϖ hpϖ ε' hcyc' e u ρ' hρ' σ2 hσ2 hcont
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CyclotomicH2Bound.h2_bounded_cyclotomic hT hK hϖ hpϖ ε' hcyc' e u ρ' hρ' σ2 hσ2 hcont
   have hone2 := GlobalTheory.T.card_H2_level_rep_one_le hT hK hϖ u ρ' (hpn 1) (hcont 1 (hpn 1))
   have key : ∀ n : ℕ, 0 < n →
       Finite (LinearMap.ker (ϖ ^ n • LinearMap.id : ReciprocityTheory.ChartRestriction.T2.HcLC ρ →ₗ[O] ReciprocityTheory.ChartRestriction.T2.HcLC ρ)) ∧

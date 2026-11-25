@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMe
 public import Formalism.SharpRestriction.LevelLetterCocycles.PairedCharacterCondition
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntegralOfNormLeOne
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfTmulOne
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDualLatticeIsOpenPerfectPairingStatement
+public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsDualLatticeIsOpenPerfectPairing
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodORingOfIntegers
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantsStableLatticeModIrreducibleEqBot
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsComplementedSubrepLocalMatrixRepTwistedSumStatement
@@ -93,7 +94,7 @@ theorem main : ∀ (D : D7), FontaineAtPlacesOverL (D := D) → PotDRL D.loc →
     intro g
     rw [← GlobalTheory.CycBridge.locChi_epsU_eq_cycLL D i w hw]
     exact ⟨Units.map (D.nbr i w hw).eO.toRingHom.toMonoidHom (epsU D.nd i ((decS D.nd w) (Br.iota D.nbr i w hw g))), rfl⟩
-  obtain ⟨LT', hLT', hopen⟩ := GlobalTheory.T.exists_dualLattice_isOpen_perfectPairing (Br.PD D.loc D.nbr i w hw) hGood hcyc _ X' PX hD1
+  obtain ⟨LT', hLT', hopen⟩ := _root_.GlobalTheory.Pass.LocDual.exists_dualLat_isOpen (Br.PD D.loc D.nbr i w hw) hGood hcyc _ X' PX hD1
     (Br.locLat D.nbr i w hw M)
   refine ⟨hU, X', PX, hSF, ?_⟩
   obtain ⟨⟨hdom, -, hfr⟩, -⟩ := hGood

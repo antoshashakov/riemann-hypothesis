@@ -7,7 +7,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Cobound
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsExactLocalConditionDataAtPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemFinitePartOfLiftStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedCocycleDescentEnlargementStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedEnlargementCutCocyclesBlochKatoStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftQMk
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedEnlargementCutCocyclesBlochKato
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationLtOneIffNorm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -62,7 +64,7 @@ theorem main : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D
     GlobalTheory.T.exists_exactLocalConditionData_at_place D HW F i r ρ π hadm20 hJa hGood hπ hG2 hG3 hCont hDec hEps h5 hsm hq hd hposition w hw
   have hTop : tableLineDegreeTwo.TopCore (Br.PD D.loc D.nbr i w hw) (embC HW C hA) lam (IK (D.nbr i w hw).Kw) :=
     hconds (D.nd.l i) (D.nbr i w hw).Kw C.LL hA lam hlam
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.unramifiedEnlargement_cut_cocycles_blochKato D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hS hGood hπ hDec hCont
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.UseLoc.Cases.main D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hS hGood hπ hDec hCont
   refine ⟨?_, ?_, ?_⟩
   · have hsub : ∀ z ∈ cutCoc i w hw r Set.univ (WpO D.nd i ρ π),
         z ∈ HfD (Br.PD D.loc D.nbr i w hw) (Br.locLat D.nbr i w hw (WpO D.nd i ρ π)) :=

@@ -9,7 +9,11 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsI
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipScalarMemCoefficientRingAuxiliaryLevelStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipScalarPrimePowIntegralAtLevelPlacesStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HalfTranslatesLeLevelHalfTranslatesOfDvdStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelHalfLeConjPlaceOfNotLeStatement
+public import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
+public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevelHalfLeConjPlaceOfNotLe
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaKernelFockVectorEqOfFinitePointMoveStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -125,10 +129,10 @@ theorem exists_flip_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
         · exact h3 (Finset.mem_filter.2 ⟨h5, h9, h7⟩)
       · obtain ⟨Q, hQ, rfl⟩ := Finset.mem_image.1 h4
         obtain ⟨hQ1, -, hQ2⟩ := Finset.mem_filter.1 hQ
-        exact GlobalTheory.T.levelHalf_le_conj_place_of_not_le D H l₂ Q (hPM Q hQ1) hQ2
+        exact _root_.GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le D H l₂ Q (hPM Q hQ1) hQ2
     · obtain ⟨Q, hQ, rfl⟩ := Finset.mem_image.1 h1
       obtain ⟨hQ1, -, hQ2⟩ := Finset.mem_filter.1 hQ
-      exact GlobalTheory.T.levelHalf_le_conj_place_of_not_le D H l₂ Q (hPM Q hQ1) hQ2) ψ V W ΛV ΛW f₀ l₂.M O
+      exact _root_.GlobalTheory.LevelSeries.mb_le_conjPl_of_not_le D H l₂ Q (hPM Q hQ1) hQ2) ψ V W ΛV ΛW f₀ l₂.M O
   have hlO : ((l : ℕ) : ℂ) ∈ O := natCast_mem O l
   have ha : (l : ℂ) ^ (hfin.toFinset.powerset.sup cOf) * flipScal χW V W T₀ M₀ x₂ ∈ O := by
     obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le' (Finset.le_sup (f := cOf) hT₀S)

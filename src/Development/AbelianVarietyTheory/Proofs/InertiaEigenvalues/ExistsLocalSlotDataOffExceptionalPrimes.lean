@@ -5,7 +5,8 @@ public import Formalism.SharpRestriction.LevelLetterCocycles.AdmissibleParameter
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.BaseSizes
 public import Formalism.SharpRestriction.ParConsts
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConductorPrimesLtSpecialPrimeThresholdEventuallyStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpSlotConditionsAtLetterStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemIntPts
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpPositionConditionsAtLetter
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LowJumpsAndCloudInWindowsAlongFamilyStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ParametersBaseSizeBoundsAlongFamilyStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ShiftedJumpUpperBoundLeTwistBoundStatement
@@ -145,7 +146,7 @@ theorem position_data_exist : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀
       apply Int.le_floor.mpr
       rw [mul_div_assoc]; exact hsg c
     have hT1 : 2 * (Fm.L x a).etaSz + 8 * ((Fm.L x a).sc.b / LevelStarExponents.lStar (Fm.L x a)) + 7 < (l : ℝ) := by linarith
-    exact GlobalTheory.T.jump_position_conditions_at_letter l (Fm.D x a).R.t (up c) (Fl c) (Fc c) (Fm.L x a).etaSz (Fm.L x a).Sc
+    exact _root_.GlobalTheory.PositionData.position_conditions l (Fm.D x a).R.t (up c) (Fl c) (Fc c) (Fm.L x a).etaSz (Fm.L x a).Sc
       ((Fm.L x a).sc.b / LevelStarExponents.lStar (Fm.L x a)) W0 (GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.sgPlus (Fm.L x a)) (Formalism.MainNotions.tableLineDegreeTwo.sg n l hh c)
       ht1 htη hB hSc hlo hcl hW1 hex (hsg c) hσP hT1
   · intro c b
