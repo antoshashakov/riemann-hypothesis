@@ -52,6 +52,7 @@ public import ReciprocityTheory.L2DbarEstimates.SkodaWeights.HlinVsqPos
 public import ReciprocityTheory.L2DbarEstimates.SkodaWeights.SmoothRLog
 public import ReciprocityTheory.L2DbarEstimates.SkodaWeights.WeightedIntegralEqLintegral
 import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.HoloContDiffAtComplex
+import ReciprocityTheory.L2DbarEstimates.Localization.UnweightBackA
 
 @[expose] public section
 
@@ -87,19 +88,8 @@ theorem near_continuous_vsq {M : Type*} [TopologicalSpace M] {p : ℕ} (g : Fin 
   exact continuous_finsetSum _ fun i _ => ((hg i).norm).pow 2
 
 theorem near_continuous_of_smoothR {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
-    (hz : IsLocalHomeomorph z) (f : M → ℝ) (hf : SmoothR n z f) : Continuous f := by
-  have hc : Continuous (fun x => (f x : ℂ)) := by
-    rw [continuous_iff_continuousAt]
-    intro x
-    obtain ⟨e, hx, he⟩ := hz x
-    have hch : IsChart n z e := fun y _ => by rw [he]
-    have h1 := (hf e hch).continuousOn.continuousAt (e.open_target.mem_nhds (e.map_source hx))
-    have h2 : ContinuousAt (((fun y => (f y : ℂ)) ∘ e.symm) ∘ e) x :=
-      ContinuousAt.comp (f := e) h1 (e.continuousAt hx)
-    refine h2.congr ?_
-    filter_upwards [e.open_source.mem_nhds hx] with y hy
-    simp [e.left_inv hy]
-  exact (Complex.continuous_re.comp hc).congr fun x => by simp
+    (hz : IsLocalHomeomorph z) (f : M → ℝ) (hf : SmoothR n z f) : Continuous f :=
+  ReciprocityTheory.L2DbarEstimates.F.unwBack_contR n z hz f hf
 
 theorem near_smooth_slice {M : Type*} [TopologicalSpace M] [T2Space M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) {p : ℕ} (g : Fin p → M → ℂ) (hg : ∀ l, Holo n z (g l))

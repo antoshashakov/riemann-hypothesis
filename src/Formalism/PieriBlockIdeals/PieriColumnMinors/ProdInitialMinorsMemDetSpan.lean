@@ -57,6 +57,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.ThetaLogCoordinates.SandwichModelDomains.SandwichModelProofs.Ascent
 
 @[expose] public section
 
@@ -859,24 +860,8 @@ private theorem la_hw_map_lemma_4 (R : Type) [CommRing R] {r n : ℕ} (hn : n �
 
 theorem la_map_weyl (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     (f : MvPolynomial (Fin r × Fin n) ℤ) (hf : f ∈ weyl ℤ r n hn ν) :
-    map (Int.castRingHom R) f ∈ weyl R r n hn ν := by
-  have hf' : f ∈ Submodule.span ℤ
-      (Set.range fun w : List (Fin r × Fin r × ℕ) => applyWord ℤ w (hw ℤ hn ν)) := hf
-  clear hf
-  induction hf' using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨w, rfl⟩ := hx
-    rw [← la_applyWord_map_lemma_3, la_hw_map_lemma_4]
-    exact la_word_mem R hn ν w
-  | zero =>
-    rw [map_zero]
-    exact Submodule.zero_mem _
-  | add x y _ _ hx hy =>
-    rw [map_add (f := _)]
-    exact Submodule.add_mem _ hx hy
-  | smul z x _ hx =>
-    rw [map_zsmul]
-    exact zsmul_mem hx z
+    map (Int.castRingHom R) f ∈ weyl R r n hn ν :=
+  Formalism.InvariantFactorPaths.INST.asc_map_weyl R hn ν f hf
 
 theorem la_incl_R_of_Z (R : Type) [CommRing R] [IsDomain R] (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ)
     (l e : ℕ) (hu : ∀ m : ℕ, ¬ l ∣ m → IsUnit (m : R)) (hZ : InclZ r n hn ν l e)

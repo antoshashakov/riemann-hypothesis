@@ -46,6 +46,7 @@ import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ChartSymmEventuallyEq
 public import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.CommFderivApply
 import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.TsupportDbSubset
+import ReciprocityTheory.L2DbarEstimates.Localization.UnweightBackA
 
 @[expose] public section
 
@@ -57,17 +58,8 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 noncomputable section
 
 theorem smoothReal_continuous {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
-    (hz : IsLocalHomeomorph z) (f : M → ℝ) (hf : SmoothR n z f) : Continuous f := by
-  have hc : Continuous (fun x => (f x : ℂ)) := by
-    refine continuous_iff_continuousAt.mpr fun x => ?_
-    obtain ⟨e, hxe, rfl⟩ := hz x
-    have hch : IsChart n (⇑e) e := fun _ _ => rfl
-    have h1 := (hf e hch).continuousOn
-    have h2 : ContinuousOn (fun y => (f y : ℂ)) e.source := by
-      refine (h1.comp e.continuousOn (fun y hy => e.map_source hy)).congr fun y hy => ?_
-      simp [Function.comp, e.left_inv hy]
-    exact h2.continuousAt (e.open_source.mem_nhds hxe)
-  exact (Complex.continuous_re.comp hc).congr fun x => by simp
+    (hz : IsLocalHomeomorph z) (f : M → ℝ) (hf : SmoothR n z f) : Continuous f :=
+  ReciprocityTheory.L2DbarEstimates.F.unwBack_contR n z hz f hf
 
 theorem sSup_image_le_max {M : Type*} (g : M → ℝ) (s : Set M) (B : ℝ)
     (hB : ∀ x ∈ s, g x ≤ B) : sSup (g '' s) ≤ max B 0 := by

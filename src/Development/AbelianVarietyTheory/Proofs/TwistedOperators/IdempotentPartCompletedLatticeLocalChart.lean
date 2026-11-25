@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Formalism.LocalToGlobal.Divisibility.CoefMod
 import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLocalMatrixChartSplitIdempotentCompletion
 
 @[expose] public section
 
@@ -66,24 +67,8 @@ open IsDedekindDomain Formalism.L2.NTheta
 theorem int_smul_mem_hat (D : D7) {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     {a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (ha : a ∈ intAE D)
     {y : Fin n → GlobalTheory.AdLat.RA D.host.F D.host.E} (hy : y ∈ GlobalTheory.AdLat.hat D.host.F (L : Set (Fin n → D.host.E))) :
-    a • y ∈ GlobalTheory.AdLat.hat D.host.F (L : Set (Fin n → D.host.E)) := by
-  induction ha using AddSubgroup.closure_induction generalizing y with
-  | mem w hw =>
-    obtain ⟨b, hb, x, rfl⟩ := hw
-    induction hy using AddSubgroup.closure_induction with
-    | mem z hz =>
-      obtain ⟨c, hc, m, hm, rfl⟩ := hz
-      refine AddSubgroup.subset_closure ⟨b * c, fun v => ?_, x • m, L.smul_mem x hm, ?_⟩
-      · exact mul_mem (hb v) (hc v)
-      · funext i
-        simp [Algebra.TensorProduct.tmul_mul_tmul]
-        rfl
-    | zero => rw [smul_zero]; exact zero_mem _
-    | add z z' _ _ h h' => rw [smul_add]; exact add_mem h h'
-    | neg z _ h => rw [smul_neg]; exact neg_mem h
-  | zero => rw [zero_smul]; exact zero_mem _
-  | add a b _ _ h h' => rw [add_smul]; exact add_mem (h hy) (h' hy)
-  | neg a _ h => rw [neg_smul]; exact neg_mem (h hy)
+    a • y ∈ GlobalTheory.AdLat.hat D.host.F (L : Set (Fin n → D.host.E)) :=
+  GlobalTheory.HatLocalChart.smul_mem_hat D L ha hy
 
 theorem mem_Ov_iff {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} (t : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) :
     t ∈ Formalism.UG.Ov F v ↔ Valued.v t ≤ 1 := Iff.rfl

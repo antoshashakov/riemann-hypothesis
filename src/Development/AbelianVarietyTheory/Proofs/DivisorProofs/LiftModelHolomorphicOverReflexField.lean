@@ -45,6 +45,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.FormalDegreeUpperC
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLowestKTypeCoeffSquareIntegrable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InnerProductFormula
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqTopOfTranslates
+import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.BlattnerShiftsSignedParameters
 
 @[expose] public section
 
@@ -57,28 +58,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 namespace GlobalTheory.LowRow
 
 theorem isEnum_unique {n : ℕ} {S : SPar} {lam lam' : Fin n → ℝ} {ε ε' : Fin n → Bool}
-    (h : IsEnum S lam ε) (h' : IsEnum S lam' ε') : lam = lam' ∧ ε = ε' := by
-  obtain ⟨hA, q, hq, hS⟩ := h
-  obtain ⟨hA', q', hq', hS'⟩ := h'
-  have hqA : StrictAnti q := fun a b hab => by
-    have := hA hab; rw [hq, hq] at this; exact_mod_cast this
-  have hqA' : StrictAnti q' := fun a b hab => by
-    have := hA' hab; rw [hq', hq'] at this; exact_mod_cast this
-  have himg : Finset.univ.image q = Finset.univ.image q' := by
-    have e := congrArg (Finset.image Prod.fst) (hS.symm.trans hS')
-    simpa [Finset.image_image, Function.comp_def] using e
-  have hr : Set.range q = Set.range q' := by
-    have := congrArg (fun s : Finset ℚ => (s : Set ℚ)) himg
-    simpa [Finset.coe_image] using this
-  have hqq : q = q' := (StrictAnti.range_inj hqA hqA').1 hr
-  subst hqq
-  refine ⟨funext fun a => by rw [hq, hq'], funext fun a => ?_⟩
-  have hm : (q a, ε a) ∈ S := by rw [hS]; exact Finset.mem_image_of_mem _ (Finset.mem_univ a)
-  rw [hS'] at hm
-  obtain ⟨b, -, hb⟩ := Finset.mem_image.1 hm
-  have hb1 : b = a := hqA.injective (congrArg Prod.fst hb)
-  subst hb1
-  exact (congrArg Prod.snd hb).symm
+    (h : IsEnum S lam ε) (h' : IsEnum S lam' ε') : lam = lam' ∧ ε = ε' :=
+  GlobalTheory.SignedParTest.isEnum_unique h h'
 
 theorem parAt_overK {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
