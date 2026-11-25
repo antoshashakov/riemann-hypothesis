@@ -227,8 +227,8 @@ theorem realCh_realCo (nS nT : ℕ) (y : WOF F E nS nT) :
   rw [RingEquiv.symm_apply_apply]
   exact pair_fst_eInf_mul _
 
-theorem continuous_of_level_real : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+theorem continuous_of_level_real_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+     ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
       Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
       ∀ g : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ,
@@ -237,7 +237,7 @@ theorem continuous_of_level_real : ∀ (F E : Type) [Field F] [NumberField F] [F
       (∀ (k : ℕ) (L : (Fin k → ℝ) →+ Formalism.IndefR.DatumF.WOF F E nS nT), Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
         ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT, ContDiff ℝ ∞ fun x => g (w + L x)) →
       Continuous g := by
-  intro F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ hstd g hU hsm
+  intro F E _ _ _ _ _ σ B nS nT JS JT _ _ ξ₀ _ _ hstd g hU hsm
   haveI := finiteFE (F := F) (E := E)
   haveI := modTop (F := F) (E := E)
   haveI := topRing (F := F) (E := E)
@@ -285,5 +285,21 @@ theorem continuous_of_level_real : ∀ (F E : Type) [Field F] [NumberField F] [F
   rw [← e]
   show _ * (B.ψ (symplOHF σ JS JT ξ₀ (a w') (u w')) * g (a w' + u w')) = _
   rw [e2, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]
+
+theorem continuous_of_level_real : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
+      Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
+      ∀ g : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ,
+      (∃ U : AddSubgroup (Formalism.IndefR.DatumF.WOF F E nS nT),
+          IsOpen (U : Set (Formalism.IndefR.DatumF.WOF F E nS nT)) ∧
+        ∀ u ∈ U, u.map (Formalism.IndefR.DatumF.infPartF F E) = 0 →
+            Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (u) g = g) →
+      (∀ (k : ℕ) (L : (Fin k → ℝ) →+ Formalism.IndefR.DatumF.WOF F E nS nT), Continuous L → (∀ t,
+          (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
+        ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT, ContDiff ℝ ∞ fun x => g (w + L x)) →
+      Continuous g := by
+  intro F E _ _ _ _ _ σ B hB_anon_
+  exact continuous_of_level_real_c F E σ B
 
 end GlobalTheory.WeilContF

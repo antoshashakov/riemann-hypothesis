@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousThetaTransformSchwartzCm
 
 @[expose] public section
 
@@ -60,10 +61,7 @@ theorem continuous_thetaTrF_k : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
           (∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : κ → F,
             co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
           ∀ Φ ∈ schA F κ, Continuous (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ) := by
-  intro F E _ _ _ _ _ σ B _ hψ nS nT JS JT _ _ ξ₀ _ _ JA JB ξ _ _ κ _ co _ Φ hΦ
-  haveI : IsModuleTopology (AF F) (Matrix (Fin nT) (Fin nS) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) :=
-    inferInstanceAs (IsModuleTopology (AF F) (Fin nT → Fin nS → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)))
-  have hc : Continuous co.e := IsModuleTopology.continuous_of_linearMap co.e.toLinearMap
-  exact (GlobalTheory.ThetaTrCont.schA_cont F B.ψ hψ.1.1 hψ.1.2.1 hΦ).2.comp hc
+  intro F E _ _ _ _ _ σ B hB_anon_
+  exact _root_.GlobalTheory.ThetaTrContF.continuous_thetaTrF_c F E σ B
 end GlobalTheory.ThetaTrContF
 end
