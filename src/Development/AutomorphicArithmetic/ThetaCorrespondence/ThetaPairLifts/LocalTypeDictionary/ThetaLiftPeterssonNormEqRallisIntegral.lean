@@ -15,7 +15,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaD
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharEqOfFinitePartPowerInverseStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeFormAnisoOfGlobalEuler
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelOfIsBlockLevel
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalIndexLocalNormNormalizingFactorEqPartialStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySubOneLe
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalIndexLocalNormNormalizingFactorEqPartial
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexBlockLevel
 public import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyEqOfIsPreconnected
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
@@ -147,7 +148,7 @@ theorem petersson_norm_bottom_theta_lift_eq (hP : _root_.GlobalTheory.FunPr.Thet
     GlobalTheory.StdLoc.relIndex_blockLevel P (modT G t) P.a hm.1 hm.2.1 P.a_le (hPa.symm ▸ hb.lev.1)
   have hidx' : ((P.J.relIndex (intG D P.d) : ℕ) : ℂ) = (locIdx D (modT G t) P.a (P.d - P.a) : ℂ) := by
     rw [← hidx]; rfl
-  have hd := GlobalTheory.T.localIndex_localNorm_normalizingFactor_eq_partial D (modT G t) (sfB G t) hm P.a (P.d - P.a) (by omega)
+  have hd := _root_.GlobalTheory.NormRatio.locIdx_mul_locNorm_mul_dSfun D (modT G t) (sfB G t) hm P.a (P.d - P.a) (by omega)
   rw [Nat.add_sub_cancel' P.a_le] at hd
   have hre : 0 < (((P.d - P.a : ℕ) : ℂ) / 2).re := by
     have : (0 : ℝ) < ((P.d - P.a : ℕ) : ℝ) := by exact_mod_cast (by omega : 0 < P.d - P.a)

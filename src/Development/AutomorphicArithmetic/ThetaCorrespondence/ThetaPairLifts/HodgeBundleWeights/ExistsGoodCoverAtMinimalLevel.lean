@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 public import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvenDomainWeightBound
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundedIntegerGoodCoverThetaSeriesIntegralStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThFamMono
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundedIntegerGoodCoverThetaSeriesIntegral
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmallScalarReflexIdealSelfDualLattice
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPhiHatIndPhi
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolynomialCoefficientEmbeddingNormLeOfL1Bound
@@ -67,7 +68,7 @@ theorem minimal_level_cover_is_good : _root_.GlobalTheory.CovTop.PublishedHodgeB
   intro _
   obtain ⟨CA, hCA0, hA⟩ := GlobalTheory.CovGmin.span_thFam
   obtain ⟨CB, hCB0, hB⟩ := GlobalTheory.RawThetaSup.homN_smul_raw_le
-  obtain ⟨CC, hCC0, hC⟩ := GlobalTheory.T.exists_bounded_integer_goodCover_thetaSeries_integral
+  obtain ⟨CC, hCC0, hC⟩ := _root_.GlobalTheory.CovInt.integral_smul_thLa
   refine ⟨CA + CB + CC + 391, by linarith only [hCA0, hCB0, hCC0], ?_⟩
   intro D T hJ j hp hq hf hj Y e o hG Lb hL hM hE hfr ho a n hDom hev hn hpos hsz
   have hH : GlobalTheory.CovGmin.Hyp D T j Y e o Lb a n :=

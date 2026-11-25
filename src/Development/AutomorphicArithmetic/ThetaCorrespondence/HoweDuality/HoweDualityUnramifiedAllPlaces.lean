@@ -12,7 +12,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FirstMemb
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HoweDualityRealPlacesPolynomialVectorsSmallPair
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsGaussianKernel
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RankSchwartzBruhatAdicCompletionPiLeAleph0
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryDualPairGlobalToLocalTensorTransferStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryDualPairGlobalToLocalTensorTransfer
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.Imports
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.KerV
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.HoweDuality.KerVp
@@ -127,7 +127,7 @@ theorem stageVp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
   obtain ⟨L, hL, hrange⟩ := GlobalTheory.T.exists_linear_tensor_polyVacuum_pureTensors G.M' Bs.ψ Bs.emb hg.hM'.std T
   have hloc := _root_.GlobalTheory.HoweGlobalPair.RealPlaceSmall.realTransfer' F E σ Bs a a' G Xc om om' R Rf hM hreal hlie hcpt
   have hfl := fun v => locVp hM v
-  obtain ⟨h1, h2, h3, h4⟩ := GlobalTheory.T.unitaryDualPair_global_to_local_tensor_transfer G.M' Bs.ψ Bs.emb om' (fun v => (hg.hM'.vac v).1) hg.hM'.std N hN T L hL
+  obtain ⟨h1, h2, h3, h4⟩ := _root_.GlobalTheory.HoweGlobalPair.tensor_transfer G.M' Bs.ψ Bs.emb om' (fun v => (hg.hM'.vac v).1) hg.hM'.std N hN T L hL
   have key := tens (ι := T) (M₀ := ↥(G.M'.Pol Bs.ψ Bs.emb))
     (M := fun v : T => ↥(SB (Fin a' × Fin (a + a') → Fv F v.1)))
     (opInf G.M' Bs.ψ Bs.emb om') (fun v => opFin om' v.1)

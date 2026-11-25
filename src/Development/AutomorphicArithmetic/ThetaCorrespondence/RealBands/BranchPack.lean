@@ -18,7 +18,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmoothVec
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgroup
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TranslatedMatrixCoefficientInAdaptedFrameStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TransversalCoefficientDecayAtRealPlace
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryHaarCoordinateReversalPositiveMultipleStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryHaarCoordinateReversalPositiveMultiple
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -191,7 +191,7 @@ theorem locOK_of_eigen : RealInputE → ∃ C : ℝ, 0 ≤ C ∧ Ev fun {D} _ _ 
   obtain ⟨B, hBu, hBg, hBad, hBz, hBmem, hBemb⟩ := GlobalTheory.T.exists_signature_matrix_extension D W.θ W.θ_is (Yc D 0) (G.V (.core 0)) G.sp.dec0 τ
     ((GlobalTheory.ConjDS.conjModel M₀).ε τ) ((GlobalTheory.ConjDS.conjModel M₀).fr τ) (MP.ε τ) e'
     ((GlobalTheory.ConjDS.conjModel M₀).fr_unit τ) ((GlobalTheory.ConjDS.conjModel M₀).fr_gram τ) hs0 hs1
-  obtain ⟨lam, hlam, hH⟩ := GlobalTheory.T.unitary_haar_coordinate_reversal_positive_multiple _ (M₀.ε τ)
+  obtain ⟨lam, hlam, hH⟩ := _root_.GlobalTheory.HaarRev.haar_rev _ (M₀.ε τ)
   obtain ⟨hreal, hmco⟩ := GlobalTheory.T.translated_matrix_coefficient_in_adapted_frame D _ _ MP τ B g₀' v₀ hBu hBg hg₀'
   obtain ⟨hpt, hlieX⟩ := _root_.GlobalTheory.PackLocFacts.frame_facts D W.θ W.θ_is (Yc D 0) _ M₀ τ
   have hAu := (GlobalTheory.ConjDS.conjModel M₀).fr_unit τ
