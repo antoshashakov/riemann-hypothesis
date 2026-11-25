@@ -4,18 +4,23 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNegBaseY
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimKStableSubspaceKFiniteLie
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.NotTrivialAndTwist
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOscillatorGaussianKernelRightStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseSpanCoherentVectorsFockStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryRepOfActionOnTotalFamilyStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockExistsUniqueGaussianVectorStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaussianInnerEqInvariantKernelStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOscillatorGaussianKernelRight
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseSpanCoherentVectorsFock
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryRepOfActionOnTotalFamily
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockExistsUniqueGaussianVector
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaussianInnerEqInvariantKernel
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GaussianVectorAnnihilatorEquationsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasDerivAtGaussianParametersAtIdentityStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasDerivAtInnerPolynomialMovingGaussianStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasDerivAtOfWeakDerivOnInvariantTotalSetStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerGaussianVectorsFockSpaceStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerLieActionAdjointGaussianPolynomialStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsUnitDetOneSubConjTransposeMulContractionsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasDerivAtGaussianParametersAtIdentity
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasDerivAtInnerPolynomialMovingGaussian
+public import Mathlib.Analysis.CStarAlgebra.Module.Constructions
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasDerivAtOfWeakDerivOnInvariantTotalSet
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerGaussianVectorsFockSpace
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerLieActionAdjointGaussianPolynomial
+public import Mathlib.Analysis.Complex.Order
+public import Mathlib.LinearAlgebra.Matrix.PosDef
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsUnitDetOneSubConjTransposeMulContractions
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,11 +71,11 @@ namespace GlobalTheory.OscGauss
 variable {P Q : ℕ}
 
 def gauss (F : Fock (Ix P Q)) {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef) (x : Ix P Q → ℂ) : F.H :=
-  (GlobalTheory.T.fock_existsUnique_gaussian_vector P Q F A x h).exists.choose
+  (_root_.GlobalTheory.FockGauss.existsUnique_gauss P Q F A x h).exists.choose
 
 theorem hasCoeff_gauss (F : Fock (Ix P Q)) {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef)
     (x : Ix P Q → ℂ) : HasCoeff F (gauss F h x) (expPS (gaussPoly A x)) :=
-  (GlobalTheory.T.fock_existsUnique_gaussian_vector P Q F A x h).exists.choose_spec
+  (_root_.GlobalTheory.FockGauss.existsUnique_gauss P Q F A x h).exists.choose_spec
 
 theorem gauss_congr (F : Fock (Ix P Q)) {A B : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef)
     (h' : (1 - Bᴴ * B).PosDef) {x y : Ix P Q → ℂ} (e : A = B) (e' : x = y) : gauss F h x = gauss F h' y := by
@@ -98,9 +103,9 @@ theorem inner_vec (F : Fock (Ix P Q)) (p q : Par P Q) :
     inner ℂ (vec F p) (vec F q) = star p.1 * q.1 * ker p.2.1.1 p.2.2.1 p.2.2.2 q.2.1.1 q.2.2.1 q.2.2.2 := by
   obtain ⟨c, ⟨Y, hY⟩, v, φ⟩ := p
   obtain ⟨c', ⟨Y', hY'⟩, v', φ'⟩ := q
-  have h1 := GlobalTheory.T.inner_gaussianVectors_fockSpace P Q F _ _ _ _ hY.posDef hY'.posDef _ _
+  have h1 := _root_.GlobalTheory.GaussInner.inner_gauss_gauss P Q F _ _ _ _ hY.posDef hY'.posDef _ _
     (hasCoeff_gauss F hY.posDef (linX Y v φ)) (hasCoeff_gauss F hY'.posDef (linX Y' v' φ'))
-  have h2 := GlobalTheory.T.gaussian_inner_eq_invariantKernel P Q Y Y' v φ v' φ' hY.isUnit hY'.isUnit (GlobalTheory.T.isUnit_det_one_sub_conjTranspose_mul_contractions P Q _ _ hY.posDef hY'.posDef)
+  have h2 := _root_.GlobalTheory.OscGauss.kerAlg P Q Y Y' v φ v' φ' hY.isUnit hY'.isUnit (_root_.GlobalTheory.isUnit_det_one_sub_conjTranspose_mul_of_contractions P Q _ _ hY.posDef hY'.posDef)
   simp only at h1 h2 ⊢
   simp only [vec, inner_smul_left, inner_smul_right, h1, ← h2, map_mul, starRingEnd_apply]
   ring
@@ -109,14 +114,14 @@ theorem isUnit_form {Y Y' : Matrix (Ix P Q) (Fin Q) ℂ} (h : IsNeg Y) (h' : IsN
     IsUnit (Yᴴ * Jm P Q * Y').det := by
   have h1 : IsUnit (-(Yᴴ * Jm P Q * Y')).det := by
     rw [form_factor Y Y' h.isUnit h'.isUnit, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]
-    exact (h.isUnit.star.mul (GlobalTheory.T.isUnit_det_one_sub_conjTranspose_mul_contractions P Q _ _ h.posDef h'.posDef)).mul h'.isUnit
+    exact (h.isUnit.star.mul (_root_.GlobalTheory.isUnit_det_one_sub_conjTranspose_mul_of_contractions P Q _ _ h.posDef h'.posDef)).mul h'.isUnit
   rw [Matrix.det_neg] at h1
   exact isUnit_of_mul_isUnit_right h1
 
 theorem dense_vec (F : Fock (Ix P Q)) : Dense (Submodule.span ℂ (Set.range (vec F)) : Set F.H) := by
   have h0 : (1 - (0 : Matrix (Fin P) (Fin Q) ℂ)ᴴ * (0 : Matrix (Fin P) (Fin Q) ℂ)).PosDef := by
     simpa using Matrix.PosDef.one
-  refine (GlobalTheory.T.dense_span_coherent_vectors_fock P Q F (gauss F h0) (hasCoeff_gauss F h0)).mono (Submodule.span_mono ?_)
+  refine (_root_.GlobalTheory.dense_span_coherent P Q F (gauss F h0) (hasCoeff_gauss F h0)).mono (Submodule.span_mono ?_)
   rintro _ ⟨x, rfl⟩
   exact ⟨base 1 h0 x, by rw [vec_base, one_smul]⟩
 
@@ -125,7 +130,7 @@ theorem exists_rep (T0 : GrpData P Q) (F : Fock (Ix P Q)) :
       ∀ g p, π g (vec F p) = vec F (act T0 g p) := by
   have hc : Continuous fun g : T0.G => (T0.cov g : Mat P Q) :=
     Units.continuous_val.comp (continuous_fst.comp T0.emb.continuous)
-  refine GlobalTheory.T.exists_unitaryRep_of_action_on_total_family T0.G (Par P Q) F.H (act T0) (vec F) (fun p => ?_) (fun g h p => ?_) (dense_vec F)
+  refine _root_.GlobalTheory.TotalFamilyRep.exists_rep T0.G (Par P Q) F.H (act T0) (vec F) (fun p => ?_) (fun g h p => ?_) (dense_vec F)
     (fun g p q => ?_) (fun p q => ?_)
   · simp [act]
   · simp [act, mul_assoc, Matrix.mul_assoc]
@@ -138,7 +143,7 @@ theorem exists_rep (T0 : GrpData P Q) (F : Fock (Ix P Q)) :
     linear_combination (star p.1 * q.1 * ker p.2.1.1 p.2.2.1 p.2.2.2 q.2.1.1 q.2.2.1 q.2.2.2) * h
   · simp only [inner_vec]
     refine (continuous_const.mul (RealPar.Cover.continuous_sq.mul continuous_const)).mul
-      (GlobalTheory.T.continuous_oscillatorGaussianKernel_right P Q T0.G _ _ _ _ _ _ ?_ ?_ ?_ fun g => isUnit_form q.2.1.2 (act T0 g p).2.1.2)
+      (_root_.GlobalTheory.OscGauss.continuous_ker_right P Q T0.G _ _ _ _ _ _ ?_ ?_ ?_ fun g => isUnit_form q.2.1.2 (act T0 g p).2.1.2)
     · exact hc.matrix_mul continuous_const
     · exact hc.matrix_mulVec continuous_const
     · exact continuous_const.matrix_vecMul (hc.comp continuous_inv)
@@ -172,21 +177,21 @@ theorem hasDerivAt_inner_act (T0 : GrpData P Q) (F : Fock (Ix P Q)) {Z : Mat P Q
   set g' : ℝ → Mat P Q := fun t => (T0.cov (T0.expt (t • Z))⁻¹ : Mat P Q) with hg'
   have g0 : g 0 = 1 := by simp [hg, T0.expt_zero]
   have g0' : g' 0 = 1 := by simp [hg', T0.expt_zero]
-  obtain ⟨hA, hx, hs⟩ := GlobalTheory.T.hasDerivAt_gaussian_parameters_at_identity P Q A x Z g g' g0 g0'
+  obtain ⟨hA, hx, hs⟩ := _root_.GlobalTheory.OscGauss.ParDer.par_deriv P Q A x Z g g' g0 g0'
     (fun a b => by
       simpa only [hg, T0.expt_cov _ (RealPar.KStabLie.smul_mem_upq hZ _)] using hasDerivAt_exp_entry Z a b)
     (fun a b => by
       simpa only [hg', expt_inv T0 hZ, T0.expt_cov _ (RealPar.KStabLie.smul_mem_upq (neg_mem_upq hZ) _), Matrix.neg_apply] using
         hasDerivAt_exp_entry (-Z) a b)
   have hn : ∀ t, IsNeg (g t * baseY A) := fun t => (isNeg_baseY h).mul (T0.cov_mem _)
-  have hp := GlobalTheory.T.hasDerivAt_inner_polynomial_moving_gaussian P Q F _ _ (fun t => gauss F (hn t).posDef
+  have hp := _root_.GlobalTheory.OscPairDer.hasDerivAt_inner_gauss P Q F _ _ (fun t => gauss F (hn t).posDef
     (linX (g t * baseY A) (g t *ᵥ baseV x) (baseF x ᵥ* g' t))) _ _ (fun t => hasCoeff_gauss F _ _) hA hx f
   have e0 : gauss F (hn 0).posDef (linX (g 0 * baseY A) (g 0 *ᵥ baseV x) (baseF x ᵥ* g' 0)) = gauss F h x :=
     gauss_congr F _ _ (by rw [g0, Matrix.one_mul, matA_baseY])
       (by rw [g0, g0', Matrix.one_mul, Matrix.one_mulVec, Matrix.vecMul_one, linX_base])
   obtain ⟨a1, a2⟩ := GlobalTheory.T.gaussianVector_annihilator_equations P Q F A x _ (hasCoeff_gauss F h x)
   have h5 := ((((RealPar.Cover.hasDerivAt_sq (T := T0) hZ).mul_const c).fun_mul hs).fun_mul hp)
-  simp only [vec_base, inner_smul_right, GlobalTheory.T.inner_lieAction_adjoint_gaussian_polynomial P Q F A x _ a1 a2 Z f]
+  simp only [vec_base, inner_smul_right, _root_.GlobalTheory.OscGauss.inner_omAct0_adjZ P Q F A x _ a1 a2 Z f]
   simp only [vec, inner_smul_right]
   refine h5.congr_deriv ?_
   simp only [e0]
@@ -198,7 +203,7 @@ theorem exists_isOsc (P Q : ℕ) (T0 : GrpData P Q) (F : Fock (Ix P Q)) :
     ∃ Om : T0.G →* (F.H →L[ℂ] F.H), IsOsc T0 F Om := by
   obtain ⟨π, h1, h2, h3⟩ := exists_rep T0 F
   refine ⟨π, h1, h2, fun Z hZ f => ?_⟩
-  refine GlobalTheory.T.hasDerivAt_of_weak_deriv_on_invariant_total_set F.H (fun t => π (T0.expt (t • Z))) (Set.range (vec F)) _ _ ?_ (fun s t => ?_) (fun t => h1 _)
+  refine _root_.GlobalTheory.Mem.Osc.hasDerivAt_of_weak_on_invariant_total F.H (fun t => π (T0.expt (t • Z))) (Set.range (vec F)) _ _ ?_ (fun s t => ?_) (fun t => h1 _)
     (fun y => (h2 y).comp (T0.expt_cont.comp_continuous (by fun_prop)
       fun t => RealPar.KStabLie.smul_mem_upq hZ t)) (dense_vec F) ?_ ?_
   · simp [T0.expt_zero]

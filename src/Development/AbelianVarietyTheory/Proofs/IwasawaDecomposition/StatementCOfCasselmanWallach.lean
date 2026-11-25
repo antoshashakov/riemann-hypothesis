@@ -5,20 +5,20 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTiedChoiceOfReads
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ThirdLevelOfGoodTwists
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceHeckeOperatorScalarOnSpherical
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdditiveCharacterEqOfCommonUnipotentLevelEigenveStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdditiveCharacterEqOfCommonUnipotentLevelEigenve
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsClassTrivialStabiliserAtTypePlace
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.ExpDefs
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNeZeroAlgebraicModularFormOfTrivialStabili
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExpectedShapeLevelIntegralAndUnipotentAtTypePlacStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinrankAlgebraicModularFormsComplexificationStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExpectedShapeLevelIntegralAndUnipotentAtTypePlac
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinrankAlgebraicModularFormsComplexification
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterSplitPlaceComponentUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProductLevelDefiniteFormsRealisationAtTwistStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemParahoricOfScalarActionOnRamifiedParahoricForStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProductLevelEqOfLocalAgreementStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProductLevelDefiniteFormsRealisationAtTwist
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemParahoricOfScalarActionOnRamifiedParahoricFor
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProductLevelEqOfLocalAgreement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingClassGroupDescentsDifferByPowerPrimeToL
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceEqOfAutomorphismMapsParahoricStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceEqOfAutomorphismMapsParahoric
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TupTiedOfMuIsW
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistReadingInducesSideEmbeddingFixedFieldStatement
 public import Formalism.LocalToGlobal.GaloisLevelStructure.TiedLevel
@@ -98,7 +98,7 @@ theorem exists_form {η : HChar D.host.E} {J : Subgroup (GAf D.host.E D.R.nV)} (
     have h2 : (⊥ : Subrepresentation ρ) ≠ ⊤ := bot_ne_top
     exact h2 (Subrepresentation.ext (Subsingleton.elim _ _))
   exact _root_.GlobalTheory.ClassForm.exists_form_of_trivial_stabiliser _ _ K W ρ J χ g fun γ hγ hm =>
-    hg γ hγ (GlobalTheory.T.expectedShapeLevel_integral_and_unipotent_at_typePlaces D η J hG h _ hm).1 ((GlobalTheory.T.expectedShapeLevel_integral_and_unipotent_at_typePlaces D η J hG h _ hm).2 k v s hs)
+    hg γ hγ (_root_.GlobalTheory.LevShapeBound.bound D η J hG h _ hm).1 ((_root_.GlobalTheory.LevShapeBound.bound D η J hG h _ hm).2 k v s hs)
 
 theorem para_rigid {L : Type} [Field L] [NumberField L] [IsCMField L] {n r : ℕ} {s : SplitPlace L} {V : Type} [AddCommGroup V]
     [Module ℂ V] {F : GAf L n → V} {J : Subgroup (GAf L n)} {χ χ' : J →* ℂˣ}
@@ -107,7 +107,7 @@ theorem para_rigid {L : Type} [Field L] [NumberField L] [IsCMField L] {n r : ℕ
     (h1 : ∀ κ, χ' κ = 1 ↔ χ κ = 1) (hE : ∀ κ : J, Eig F κ (χ' κ : ℂˣ)) :
     ∀ κ ∈ Umax L n, TrivOutside {s.v} κ → (∃ c, Eig F κ c) → NG.ParaRT s r (s.loc n κ) := by
   obtain ⟨a, ha, ha'⟩ := hr
-  refine GlobalTheory.T.mem_parahoric_of_scalar_action_on_ramifiedParahoricForm L n r s V F J χ' a hF ha h.mem hE (fun κ hκ ht hd => (h1 _).2 ?_) fun κ hκ ht hd e => ha' ?_
+  refine _root_.GlobalTheory.ParaRigid.mem_para_of_eig L n r s V F J χ' a hF ha h.mem hE (fun κ hκ ht hd => (h1 _).2 ?_) fun κ hκ ht hd e => ha' ?_
   · rw [h.chr κ hκ ht 1 hd.symm, map_one]
   · rw [← h.chr κ hκ ht a hd.symm]
     exact (h1 _).1 e
@@ -130,7 +130,7 @@ theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal 
     (x3 : ∀ kk v (s : SplitPlace D.host.E), s.w = D.naut.plGw kk v → ∃ ψ₀ ξ, NG.IsPsi0 s ψ₀ ∧ NG.IsCompAt η s ξ ∧
       ∀ e, SideRead i b k e → NG.LevelUni (cell X b hA j).J (cx e (cell X b hA j).χ) s D.R.r ψ₀ ξ)
     (hJ : Joint η m X b hA j) : LevEq m.J m.χ (cell X b hA j).J (cx e (cell X b hA j).χ) := by
-  have x1 := GlobalTheory.T.isProductLevel_definiteFormsRealisationAtTwist D X i b k Q ψ hA j
+  have x1 := _root_.GlobalTheory.LevProd.main D X i b k Q ψ hA j
   have x4 : NG.HypOutside (cell X b hA j).J (cx e (cell X b hA j).χ) (gPl D ∪ qPl D η) := fun κ hκ => by
     have h := (cell X b hA j).hyp κ fun v hv => hκ v fun h => hv fun h' => h (x0 h')
     exact ⟨h.1, fun h' => (cx_eq_one _ _ _).2 (h.2 h')⟩
@@ -159,7 +159,7 @@ theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal 
     simp only [hF', this, map_smulₛₗ, cx_apply]
   have hr0 : 2 ≤ D.R.r := by have := D.R.m_add_three_le_k; have := D.R.two_le_m; unfold Ranks.r; omega
   have hr1 : D.R.r < D.R.nV := by have := D.R.rank_add_five_le; unfold Ranks.nV; omega
-  refine GlobalTheory.T.productLevel_eq_of_local_agreement _ _ _ _ _ _ _ (_root_.GlobalTheory.LevCmp.gPl_union_qPl_finite D η) m1 x1 m4 x4 fun u hu => ?_
+  refine _root_.GlobalTheory.LevCmp.levEq_of_agree _ _ _ _ _ _ _ (_root_.GlobalTheory.LevCmp.gPl_union_qPl_finite D η) m1 x1 m4 x4 fun u hu => ?_
   rcases hu with hu | hu
   · obtain ⟨kk, v, s, rfl, hs⟩ := hG.2.1 u hu
     obtain ⟨p, ξ, a1, a2, a3⟩ := m3 kk v s hs
@@ -172,7 +172,7 @@ theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal 
       rw [← s.w_under]
       show algebraMap _ (𝓞 D.host.E) _ ∈ s.w.asIdeal
       rwa [map_natCast]
-    have key := GlobalTheory.T.additiveCharacter_eq_of_common_unipotentLevel_eigenvector _ _ _ s (D.host.g kk) (D.host.g kk - 1) θ _ _ (m.real y) F' _ _ _ _ p p' ξ ξ hg hab
+    have key := _root_.GlobalTheory.PsiCmp.fractionFieldToGenericStalk_algebraMap_eq _ _ _ s (D.host.g kk) (D.host.g kk - 1) θ _ _ (m.real y) F' _ _ _ _ p p' ξ ξ hg hab
       ((Nat.coprime_self_sub_left hg.one_le).2 (Nat.coprime_one_left _)) hr0 hr1.le hθ hf0 hF0 a1 b1 a3 (b3 e' he') E1 E2
       fun κ hκ hU => let ⟨c, c', h1, h2, h3⟩ := j3 κ (j2 kk v s hs κ hκ hU); ⟨c, c', h1 y, h2 y', h3 kk v s hs hκ⟩
     refine fun κ hκ => ⟨(a3.mem κ hκ).trans ((b3 e he).mem κ hκ).symm, fun h h' => ?_⟩
@@ -185,7 +185,7 @@ theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal 
     obtain ⟨s₁, c1, c2⟩ := j1 _ hu
     have hU : ∀ κ, TrivOutside {s.v} κ → NG.ParaRT s₁ D.R.r (s₁.loc _ κ) → κ ∈ Umax D.host.E D.R.nV := fun κ hκ hP =>
       (GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s₁ (c1 ▸ hκ)).1 hP.1
-    have hs : s' = s := GlobalTheory.T.splitPlace_eq_of_automorphism_maps_parahoric _ _ _ s s' s₁ θ (by omega) hr1 b1 c1 hθ fun κ hκ hP => by
+    have hs : s' = s := _root_.GlobalTheory.ParaOpp.splitPlace_eq_of_para _ _ _ s s' s₁ θ (by omega) hr1 b1 c1 hθ fun κ hκ hP => by
       obtain ⟨c, c', h1, h2, -⟩ := j3 κ (c2 κ (c1 ▸ hκ) hP)
       have h3 := (hθ.1 κ).2 (hU κ hκ hP)
       have h4 := (hθ.2 _ κ).2 hκ
@@ -290,7 +290,7 @@ theorem rank_of_levEq {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal D μ j') (X : 
     obtain ⟨S, hS⟩ := D.nexp.MtLat_fg i (j.1 + 1) b k Q ψ
     refine ⟨S, ?_⟩
     rw [← D.nexp.MtLat_span i (j.1 + 1) b k Q ψ, ← hS, Submodule.span_span_of_tower]
-  have h1 := GlobalTheory.T.finrank_algebraicModularForms_complexification _ _ _ e _ _ _ _ _ (cell X b hA j).χ hw (cell X b hA j).J_open
+  have h1 := _root_.GlobalTheory.LevCmp.finrank_typeSp_cx _ _ _ e _ _ _ _ _ (cell X b hA j).χ hw (cell X b hA j).J_open
     (Module.Finite.equiv (cell X b hA j).real)
   rw [(cell X b hA j).real.finrank_eq, ← h1]
   have h2 : NG.TypeSp m.wt.ρ (cell X b hA j).J (cx e (cell X b hA j).χ) = NG.TypeSp m.wt.ρ m.J m.χ := by

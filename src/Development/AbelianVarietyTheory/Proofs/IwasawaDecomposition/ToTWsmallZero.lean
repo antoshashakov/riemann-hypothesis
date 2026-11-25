@@ -3,20 +3,27 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GelfConstSmul
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitaryAdelicHeightCosetLeNormInfPowStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicHeightGrowthOfCosetGrowthUnitaryPairStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdjoinGelfandInvariantsDualPairEqStatement
+public import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.WordDerivatives
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicHeightGrowthOfCosetGrowthUnitaryPair
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdjoinGelfandInvariantsDualPairEq
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousCoordSymm
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOpenKer
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOpenLevelFixingThetaFunctionStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOrientedWeilDatumOfAdelicWeilRepThetaStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GelfandInvariantsActKernelFamilyShiftedStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlRelOfCanonicalCommutationRelationsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelLiftGelfandInvariantFiniteOfFiniteStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOpenLevelFixingThetaFunction
+public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOrientedWeilDatumOfAdelicWeilRepTheta
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsLieDataCircle
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOneP
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GelfandInvariantsActKernelFamilyShifted
+public import Formalism.RealPlaceAnalysis.StatementA
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlRelOfCanonicalCommutationRelations
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KernelLiftGelfandInvariantFiniteOfFinite
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemSmoothFunctionsOfClosedRightDerivativesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothCuspFormMemUnitaryRapidDecayFormsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaKernelLieActionThroughWeylAlgebraStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothCuspFormMemUnitaryRapidDecayForms
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsQuadOfPlane
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaKernelLieActionThroughWeylAlgebra
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaKernelLiftConvergesContinuousGrowthDerivStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilRepThetaFunctionPolynomialGrowthRealPointsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilRepThetaFunctionPolynomialGrowthRealPoints
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,13 +79,13 @@ theorem IsKerSys.lift (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfF
     [Module ℂ M] {κ : M →ₗ[ℂ] (GA D V → GA D W → ℂ)} (hκ : IsKerSys θ V W κ) {μ : Measure (GA D V)}
     {𝓕 : Set (GA D V)} (hq : IsQuot V μ 𝓕) {F : GA D V → ℂ} (hF : IsCuspForm θ V F) (f : M) :
     (∀ h, IntegrableOn (fun g => κ f g h * F g) 𝓕 μ) ∧ IsAutFunSm θ W fun h => ∫ g in 𝓕, κ f g h * F g ∂μ := by
-  have hD := GlobalTheory.T.smoothCuspForm_mem_unitaryRapidDecayForms hP D θ hθ V F hF
+  have hD := _root_.GlobalTheory.Mem.CuspDeriv.cuspForm_mem_decay hP D θ hθ V F hF
   obtain ⟨h1, h2, ⟨N, h3⟩, h4⟩ := GlobalTheory.T.thetaKernelLift_converges_continuous_growth_deriv D θ hθ V W M κ hκ μ 𝓕 hq F hD
   let L : M → GA D W → ℂ := fun f h => ∫ g in 𝓕, κ f g h * F g ∂μ
   have hd : ∀ f τ, ∀ X ∈ lieAt W τ, ∃ f', ∀ h,
       HasDerivAt (fun t : ℝ => L f (h * oneP θ W τ X t)) (L f' h) 0 := fun f τ X hX =>
     (hκ.derW τ X hX f).imp fun f' e => h4 τ X hX f f' e
-  refine ⟨h1 f, ⟨fun γ hγ h => ?_, ?_, h2 f⟩, ?_, GlobalTheory.T.kernelLift_gelfandInvariantFinite_of_finite D θ hθ V W M κ hκ μ 𝓕 hq F hD hF.1.zfin f, ?_⟩
+  refine ⟨h1 f, ⟨fun γ hγ h => ?_, ?_, h2 f⟩, ?_, _root_.GlobalTheory.Mem.LiftFin.lift_zfin D θ hθ V W M κ hκ μ 𝓕 hq F hD hF.1.zfin f, ?_⟩
   · have := fun g => hκ.left f 1 (one_mem _) γ hγ g h
     simp only [one_mul] at this
     simp only [this]
@@ -135,12 +142,12 @@ theorem isKerSys_thKer (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ
       IsOpen (U' : Set (GA D T)) ∧ ∀ k ∈ U, k ∈ GfC S → ∀ k' ∈ U', k' ∈ GfC T → ∀ g h,
         thKer ψ S T om f (g * k) (h * k') = thKer ψ S T om f g h := by
     intro f
-    obtain ⟨U, U', a, b, e⟩ := GlobalTheory.T.exists_open_level_fixing_theta_function D ψ hψ S T om hw hc f.1 f.2
+    obtain ⟨U, U', a, b, e⟩ := _root_.GlobalTheory.Mem.ThetaLevel.exists_level D ψ hψ S T om hw hc f.1 f.2
     refine ⟨U, U', a, b, fun k h1 h2 k' h3 h4 g h => ?_⟩
     have e' : om (g * k, h * k') = om (g, h) * om (k, k') := by rw [← map_mul]; rfl
     change om (g * k, h * k') f.1 0 = om (g, h) f.1 0
     rw [e', mul_apply_eq_comp, e k h1 h2 k' h3 h4]
-  obtain ⟨x, d, hx⟩ := GlobalTheory.T.thetaKernel_lieAction_through_weylAlgebra D ψ hψ S T om hw hc θ hθ
+  obtain ⟨x, d, hx⟩ := _root_.GlobalTheory.Mem.Lift.WeylAction.weyl_action D ψ hψ S T om hw hc θ hθ
   have derV : ∀ τ, ∀ X ∈ lieAt S τ, ∀ f, ∃ f', ∀ g h,
       HasDerivAt (fun t : ℝ => thKer ψ S T om f (g * oneP θ S τ X t) h) (thKer ψ S T om f' g h) 0 :=
     fun τ X hX f => ((hx τ).2.2 X hX).elim fun _ e => ⟨_, e f⟩
@@ -148,8 +155,8 @@ theorem isKerSys_thKer (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ
       HasDerivAt (fun t : ℝ => thKer ψ S T om f g (h * oneP θ T τ X t)) (thKer ψ S T om f' g h) 0 :=
     fun τ X hX f => ((hx τ).2.1 X hX).elim fun _ e => ⟨_, e f⟩
   refine ⟨cont, left, level, ?_, derV, derW, fun τ => ?_⟩
-  · obtain ⟨N, hN⟩ := GlobalTheory.T.weilRep_thetaFunction_polynomialGrowth_realPoints D ψ hψ S T om hw θ hθ
-    obtain ⟨N', hN'⟩ := GlobalTheory.T.adelicHeight_growth_of_cosetGrowth_unitaryPair D θ hθ S T N
+  · obtain ⟨N, hN⟩ := _root_.GlobalTheory.Mem.LiftBound.om_growth D ψ hψ S T om hw θ hθ
+    obtain ⟨N', hN'⟩ := _root_.GlobalTheory.Mem.LiftGrow.growth_pair D θ hθ S T N
     exact ⟨N', fun f => hN' _ (left f) (level f) fun x y =>
       (hN f.1 f.2 x y).imp fun C e a ha b hb => e a ha b hb 0⟩
   · have sT : ∀ f g, thKer ψ S T om f g ∈ SmFun θ T := fun f g => by
@@ -166,14 +173,14 @@ theorem isKerSys_thKer (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ
       · rintro _ ⟨f, rfl⟩ τ X hX
         obtain ⟨f', e⟩ := derV τ X hX f
         exact ⟨_, ⟨f', rfl⟩, fun g => e g h⟩
-    obtain ⟨g1, g2⟩ := GlobalTheory.T.glRel_of_canonicalCommutationRelations _ _ _ (x τ) (d τ) (hx τ).1
-    obtain ⟨c, e1⟩ := GlobalTheory.T.gelfandInvariants_act_kernelFamily_shifted D θ hθ T _ _ (thKer ψ S T om) sT τ (matLin fun i j => ∑ a, x τ (i, a) * d τ (j, a))
+    obtain ⟨g1, g2⟩ := _root_.GlobalTheory.Mem.Lift.glRel_of_isCCR _ _ _ (x τ) (d τ) (hx τ).1
+    obtain ⟨c, e1⟩ := _root_.GlobalTheory.Mem.Lift.OneSide.gelf_kernel D θ hθ T _ _ (thKer ψ S T om) sT τ (matLin fun i j => ∑ a, x τ (i, a) * d τ (j, a))
       (by simpa only [matLin_single] using g1) (hx τ).2.1
-    obtain ⟨c', e2⟩ := GlobalTheory.T.gelfandInvariants_act_kernelFamily_shifted D θ hθ S _ _ (swapKer (thKer ψ S T om)) sS τ
+    obtain ⟨c', e2⟩ := _root_.GlobalTheory.Mem.Lift.OneSide.gelf_kernel D θ hθ S _ _ (swapKer (thKer ψ S T om)) sS τ
       (matLin fun a b => -∑ i, x τ (i, b) * d τ (i, a)) (by simpa only [matLin_single] using g2)
       fun Y hY => ((hx τ).2.2 Y hY).imp fun _ e f h g => e f g h
     simp only [matLin_single] at e1 e2
-    exact ⟨_, _, e2, e1, (GlobalTheory.T.adjoin_gelfandInvariants_dual_pair_eq _ _ _ (x τ) (d τ) (hx τ).1 c c').symm⟩
+    exact ⟨_, _, e2, e1, (_root_.GlobalTheory.Mem.Capelli.adjoin_gelfA_dual_pair _ _ _ (x τ) (d τ) (hx τ).1 c c').symm⟩
 
 theorem toTWsmall_zero (S T : HSp D) : toTWsmall S T 0 = 0 := by
   unfold toTWsmall
@@ -183,7 +190,7 @@ theorem exists_thKer {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
     {χ χ' : IdC D} (ha : admitted V W χ χ') (hr : V.rank < W.rank) :
     ∃ om, GlobalTheory.Ker.IsWeak ψ V W om ∧ OmCont ψ V W om ∧
       ∀ Φ, ∃ f, ∀ g h, Wf.ker V W χ χ' Φ g h = thKer ψ V W om f g h := by
-  obtain ⟨om, H, e⟩ := GlobalTheory.T.exists_orientedWeilDatum_of_adelicWeilRep_theta D ψ hψ V W χ χ' _ ha hr (Wf.core.weil V W χ χ' ha)
+  obtain ⟨om, H, e⟩ := _root_.GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO D ψ hψ V W χ χ' _ ha hr (Wf.core.weil V W χ χ' ha)
   obtain ⟨E, -, -, hE, -, -, -, h7, -⟩ := GlobalTheory.OrientedCoord.exists_coord D V W hr.le
   refine ⟨om, GlobalTheory.Ker.isWeak_of_datum H, H.om_cont, fun Φ => ⟨⟨fun x => Φ.1 (toTWsmall V W x), ?_⟩, fun g h => ?_⟩⟩
   · have := (h7 ψ Φ.1).2 (mem_ThS.1 Φ.2)

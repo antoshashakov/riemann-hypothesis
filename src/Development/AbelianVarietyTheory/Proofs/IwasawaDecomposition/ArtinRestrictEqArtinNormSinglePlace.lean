@@ -3,16 +3,22 @@ module
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 public import Mathlib.RingTheory.PicardGroup
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsoluteGaloisAbelianizationEqOneOfMemOpenSubgroStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharacterGlobalArtinUnitsTrivialUniformiserPowerStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsApproxFinitePlacesNumberFieldTargetStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFinsetPlacesOverFinsetPlacesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenIdeleSubgroupContainsCongruenceUnitsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsTotallyComplexOfAlgebraOfIsTotallyComplexStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AbsoluteGaloisAbelianizationEqOneOfMemOpenSubgro
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharacterGlobalArtinUnitsTrivialUniformiserPower
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsApproxFinitePlacesNumberFieldTarget
+public import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFinsetPlacesOverFinsetPlaces
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocUnitApply
+public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsOpenIdeleSubgroupContainsCongruenceUnits
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsTotallyComplexOfAlgebraOfIsTotallyComplex
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProdIdeleCharGlobalUnitEqOneStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProdLocalValuesGlobalOverPlacesAboveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictScalarsHomContinuousKrullStatement
+public import Mathlib.FieldTheory.KrullTopology
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictScalarsHomContinuousKrull
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -91,11 +97,11 @@ theorem res_art_eq_art_norm : ∀ (E Ω : Type) [Field E] [NumberField E] [_root
             (Units.map (Algebra.norm E (S := K)) y))) := by
   intro E Ω _ _ _ _ _ _ K _ _ _ art artK ha haK v W hW hWu y τ hτ
   classical
-  haveI : IsTotallyComplex K := GlobalTheory.T.isTotallyComplex_of_algebra_of_isTotallyComplex E K
+  haveI : IsTotallyComplex K := _root_.GlobalTheory.isTotallyComplex_of_algebra E K
   haveI : IsClosed ((commutator (G E Ω)).topologicalClosure : Set (G E Ω)) :=
     Subgroup.isClosed_topologicalClosure _
   let r : G K Ω →* Gab E Ω := (toAb E Ω).comp (AlgEquiv.restrictScalarsHom E)
-  have hr : Continuous r := QuotientGroup.continuous_mk.comp (GlobalTheory.T.continuous_restrictScalarsHom' E Ω K)
+  have hr : Continuous r := QuotientGroup.continuous_mk.comp (_root_.GlobalTheory.restrictScalarsHom_continuous_krull E Ω K)
   let ρ : Gab K Ω →* Gab E Ω := liftAb r hr
   have hρ : ∀ σ : G K Ω, ρ (toAb K Ω σ) = toAb E Ω (σ.restrictScalars E) := fun σ => rfl
   have hρc : Continuous ρ := continuous_liftAb r hr
@@ -114,7 +120,7 @@ theorem res_art_eq_art_norm : ∀ (E Ω : Type) [Field E] [NumberField E] [_root
   rw [← hρ, hτ]
   change ρ (artK (locUnit K W y)) = art (locUnit E v (NK y))
   rw [← div_eq_one]
-  refine GlobalTheory.T.absoluteGaloisAbelianization_eq_one_of_mem_open_subgroups E Ω _ fun U hU => ?_
+  refine _root_.GlobalTheory.GabSep.eq_one_of_forall_isOpen_subgroup E Ω _ fun U hU => ?_
   let χ : Gab E Ω →* Gab E Ω ⧸ U := QuotientGroup.mk' U
   suffices h : χ (ρ (artK (locUnit K W y))) = χ (art (locUnit E v (NK y))) by
     have h2 : χ (ρ (artK (locUnit K W y)) / art (locUnit E v (NK y))) = 1 := by
@@ -131,15 +137,15 @@ theorem res_art_eq_art_norm : ∀ (E Ω : Type) [Field E] [NumberField E] [_root
   have ho2 : IsOpen (ψ2.ker : Set (Ideles E)) := by
     rw [hker2]; exact hU.preimage ha.quot.continuous
 
-  obtain ⟨SE, ME, hvS, hSu, hSc⟩ := GlobalTheory.T.isOpen_idele_subgroup_contains_congruence_units E ψ2.ker ho2 {v}
+  obtain ⟨SE, ME, hvS, hSu, hSc⟩ := _root_.GlobalTheory.OpenIdeleCongr.open_subgroup_contains_congr E ψ2.ker ho2 {v}
   have hvSE : v ∈ SE := hvS (Finset.mem_singleton_self v)
-  obtain ⟨TSK, hTSK⟩ := GlobalTheory.T.exists_finset_places_over_finset_places E K SE
+  obtain ⟨TSK, hTSK⟩ := _root_.GlobalTheory.PlacesOver.places_over_finset E K SE
   have hWT : W ∈ TSK := (hTSK W).mpr ⟨v, hvSE, hW⟩
-  obtain ⟨MainNotions, MK, hTS, -, hSKc⟩ := GlobalTheory.T.isOpen_idele_subgroup_contains_congruence_units K ψ1.ker ho1 TSK
-  choose M' hM' using fun v' : HeightOneSpectrum (𝓞 E) => GlobalTheory.T.norm_close_to_one_of_close_above_place E K v' ME
+  obtain ⟨MainNotions, MK, hTS, -, hSKc⟩ := _root_.GlobalTheory.OpenIdeleCongr.open_subgroup_contains_congr K ψ1.ker ho1 TSK
+  choose M' hM' using fun v' : HeightOneSpectrum (𝓞 E) => _root_.GlobalTheory.NormCompat.NormCont.norm_close_to_one E K v' ME
   let M'' : ℕ := SE.sup M'
   let m : ℕ := (WithZero.log (W.valuation K (y : K))).natAbs
-  obtain ⟨a, ha'⟩ := GlobalTheory.T.exists_approx_finite_places_numberField_target K TSK (fun w => if w = W then (y : K) else 1) (MK + M'' + m + 1)
+  obtain ⟨a, ha'⟩ := _root_.GlobalTheory.FinPlaceApprox.approx_target K TSK (fun w => if w = W then (y : K) else 1) (MK + M'' + m + 1)
   have haW : W.valuation K (a - y) ≤ WithZero.exp (-(((MK + M'' + 1 : ℕ) : ℤ) + m)) := by
     have := ha' W hWT
     rw [ite_eq_left rfl] at this
@@ -190,7 +196,7 @@ theorem res_art_eq_art_norm : ∀ (E Ω : Type) [Field E] [NumberField E] [_root
     MonoidHom.mem_ker.mp (hSu v' hv' x hx)
   have hchi := fun (v' : HeightOneSpectrum (𝓞 E)) (hv' : v' ∉ SE) (w : HeightOneSpectrum (𝓞 K))
       (hw : w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v'.asIdeal) =>
-    GlobalTheory.T.character_globalArtin_units_trivial_uniformiser_power E Ω K art artK ha haK ρ hρ (Gab E Ω ⧸ U) χ v' w hw (hunitE v' hv')
+    _root_.GlobalTheory.NormCompat.chi_artin_restrict E Ω K art artK ha haK ρ hρ (Gab E Ω ⧸ U) χ v' w hw (hunitE v' hv')
   obtain ⟨TK, TE, hTK1, hTK2, hTE1, hTE2, hprod⟩ := GlobalTheory.T.prod_localValues_global_over_places_above E K (Gab E Ω ⧸ U) ψ1 ψ2 SE hunitE
     (fun v' hv' w hw => (hchi v' hv' w hw).1) (fun v' hv' w hw => (hchi v' hv' w hw).2) au
 

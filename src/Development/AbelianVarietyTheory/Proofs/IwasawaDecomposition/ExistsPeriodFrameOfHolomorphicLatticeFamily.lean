@@ -7,9 +7,10 @@ public import Mathlib.Data.Matrix.Mul
 public import Mathlib.LinearAlgebra.LinearIndependent.Defs
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoeffMatrixMulEqOfSameIntCombinations
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoisotropicSublatticeOfTorsionCount
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexMatrixEqOfHermFormImEqRealSpanStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexMatrixEqOfHermFormImEqRealSpan
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetNeZeroOfImHermFormIntegralRealBasis
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOnRationalFramePeriodMatrixLogCoveStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOnRationalFramePeriodMatrixLogCove
 public import Mathlib.Data.Rat.Init
 public import Mathlib.LinearAlgebra.Matrix.Defs
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonDenominatorRatMatrices
@@ -17,19 +18,19 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Exist
 public import Mathlib.Basic.Real.Basic
 public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRationalSymplecticBasisAdaptedCoisotropic
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormImIntCombinationDotProductStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormImIntCombinationEqConjMulStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormImIntMatrixTransposeNegStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormImIntCombinationDotProduct
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormImIntCombinationEqConjMul
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormImIntMatrixTransposeNeg
 public import Mathlib.Algebra.Field.Rat
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntIsometryFixingRowSpaceSymplecticShift
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsUnitDetRationalCombinationFrameClosedBallStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotPeriodMatrixIntVecContinuousBoundaryStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsUnitDetRationalCombinationFrameClosedBall
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotPeriodMatrixIntVecContinuousBoundary
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodMatrixBoundaryExtensionMonodromyPosSemidefStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PosDefImPartOnPolydiscOfPuncturedCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PunctPolydiscCoverLatticeBasisRealHolomorphicStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PosDefImPartOnPolydiscOfPuncturedCover
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PunctPolydiscCoverLatticeBasisRealHolomorphic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PunctPolydiscUniversalCoverOpenConvexExpAnalytic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RatLinearIndependentCoordsOfRealIndependent
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannRelationsRationalCombinationFrameStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannRelationsRationalCombinationFrame
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,7 +90,7 @@ theorem GlobalTheory.PeriodFrame.exists_frame_of_latFam : ∀ (n a g r₀ r : �
     simp only [logDom, Set.mem_ofPred_eq]
     intro k
     by_cases h : (k : ℕ) < a <;> simp [s₀, h]
-  obtain ⟨hr, hlamR, hlamD⟩ := GlobalTheory.T.punctPolydiscCover_latticeBasis_real_holomorphic n a g r K lam hK hlamc hlam
+  obtain ⟨hr, hlamR, hlamD⟩ := _root_.GlobalTheory.ShFam.Hor.LogCh.latBasis_logCover_real_holo n a g r K lam hK hlamc hlam
   have hlB : ∀ b ∈ logDom n a, IsLatBasis (K (logExp a b)) (lam b) := fun b hb => ⟨hlamR b hb, (hlam b hb).2.2⟩
   have hmemL : ∀ b ∈ logDom n a, ∀ i, lam b i ∈ K (logExp a b) := fun b hb i =>
     ((hlam b hb).2.2 _).2 ⟨Pi.single i 1, by simp [Pi.single_apply]⟩
@@ -118,12 +119,12 @@ theorem GlobalTheory.PeriodFrame.exists_frame_of_latFam : ∀ (n a g r₀ r : �
   obtain ⟨T, hT⟩ := hTex
   obtain ⟨Hm₀, hH₀h, hH₀p, hH₀l⟩ := hH s₀ hs₀
   have hM₀ := hH₀l s₀ hs₀ rfl
-  have hMa : Mᵀ = -M := GlobalTheory.T.hermForm_im_intMatrix_transpose_neg g r Hm₀ (lam s₀) M hH₀h hM₀
+  have hMa : Mᵀ = -M := _root_.GlobalTheory.hermForm_im_antisymm g r Hm₀ (lam s₀) M hH₀h hM₀
   have hMd : M.det ≠ 0 :=
     GlobalTheory.det_ne_zero_of_im_hermForm_eq_int g r Hm₀ (lam s₀) M hH₀p (hlamR s₀ hs₀) (hlam s₀ hs₀).2.1 hM₀
   have hTM : ∀ k, T k * M * (T k)ᵀ = M := by
     intro k
-    have h1 := GlobalTheory.T.hermForm_im_intCombination_eq_conj_mul g r r Hm₀ (lam s₀) (lam (s₀ + Pi.single (Fin.castLE ha k) (2 * (Real.pi : ℂ) * Complex.I)))
+    have h1 := _root_.GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb g r r Hm₀ (lam s₀) (lam (s₀ + Pi.single (Fin.castLE ha k) (2 * (Real.pi : ℂ) * Complex.I)))
       (T k) M (fun i => hT k i s₀ hs₀) hM₀
     have h2 := hH₀l _ (hsh k s₀ hs₀).1 (hsh k s₀ hs₀).2
     ext i j
@@ -140,7 +141,7 @@ theorem GlobalTheory.PeriodFrame.exists_frame_of_latFam : ∀ (n a g r₀ r : �
     obtain ⟨S, hcard, hS⟩ := htor N hN
     refine ⟨S, by rw [hr]; exact hcard, fun u u' hu => ?_⟩
     obtain ⟨m, hm⟩ := hS u u' hu s₀ hs₀ Hm₀ hM₀
-    rw [GlobalTheory.T.hermForm_im_intCombination_dotProduct g r r₀ Hm₀ (lam s₀) (ζ (logExp a s₀)) c M (fun i => hc i s₀ hs₀) hM₀ u u'] at hm
+    rw [_root_.GlobalTheory.ShFam.Hor.LogCh.Core.hermForm_im_intComb_dotProduct g r r₀ Hm₀ (lam s₀) (ζ (logExp a s₀)) c M (fun i => hc i s₀ hs₀) hM₀ u u'] at hm
     exact ⟨m, by exact_mod_cast hm⟩)
   obtain ⟨rk, α, φ, β, gm, dl, hrk, hN1, hN2, hN3, hN4, hN5, hN6, hN7⟩ := _root_.GlobalTheory.SymplecticNormalForm.exists_adapted_rational_symplectic_basis g r r₀ M c hr hMa hMd hcLI hco
   choose b hb using fun k => _root_.GlobalTheory.isometry_fixing_rowSpace_shift g r r₀ rk M (T k) c α φ β hr hMa (hTM k) (hcT k) hN1 hN2 hN3 hN5
@@ -164,11 +165,11 @@ theorem GlobalTheory.PeriodFrame.exists_frame_of_latFam : ∀ (n a g r₀ r : �
     refine ⟨Hm, h3 s hs rfl, ?_⟩
     unfold GlobalTheory.PeriodFrame.perTau
     rw [hPeq s hs]
-    exact GlobalTheory.T.riemannRelations_rationalCombinationFrame g r Hm M (lam s) _ φ D hD h1 h2 (hlamR s hs) (h3 s hs rfl) hN1 hN2 hN3
+    exact _root_.GlobalTheory.PeriodFrame.riemann_relations_frame g r Hm M (lam s) _ φ D hD h1 h2 (hlamR s hs) (h3 s hs rfl) hN1 hN2 hN3
   have hdet : ∀ s ∈ logDom n a, IsUnit (GlobalTheory.PeriodFrame.combMat (ζ (logExp a s)) α).det := fun s hs => by
     obtain ⟨_, _, h, _⟩ := hRie s hs
     exact h
-  obtain ⟨hPd, hτd⟩ := GlobalTheory.T.differentiableOn_rationalFrame_periodMatrix_logCover n a g r₀ r ζ lam α φ D hζ hlamD hdet
+  obtain ⟨hPd, hτd⟩ := _root_.GlobalTheory.PeriodFrame.differentiableOn_combMat_perTau n a g r₀ r ζ lam α φ D hζ hlamD hdet
   have hτsm : ∀ s ∈ logDom n a, logExp a s ∈ Metric.ball (0 : Fin n → ℂ) 1 →
       (GlobalTheory.PeriodFrame.perTau a ζ lam α φ D s).IsSymm ∧
       ((GlobalTheory.PeriodFrame.perTau a ζ lam α φ D s).map Complex.im).PosDef := fun s hs _ => by
@@ -185,7 +186,7 @@ theorem GlobalTheory.PeriodFrame.exists_frame_of_latFam : ∀ (n a g r₀ r : �
   obtain ⟨hpsd, τ₀, hτ₀d, hτ₀s, hτ₀e⟩ :=
     GlobalTheory.T.periodMatrix_boundaryExtension_monodromy_posSemidef n a g ha 1 (GlobalTheory.PeriodFrame.perTau a ζ lam α φ D) Bz one_pos le_rfl hτd hτsm hmono
   have hPu : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, IsUnit (GlobalTheory.PeriodFrame.combMat (ζ z) α).det :=
-    GlobalTheory.T.isUnit_det_rational_combination_frame_closed_ball n a g r₀ r ha ζ lam c α φ gm dl rk D τ₀ Bz hD hζ hstd (fun s hs i => hc i s hs) hN7 hN6 hdet hτ₀d
+    _root_.GlobalTheory.PeriodFrame.isUnit_det_combMat_on_ball n a g r₀ r ha ζ lam c α φ gm dl rk D τ₀ Bz hD hζ hstd (fun s hs i => hc i s hs) hN7 hN6 hdet hτ₀d
       hBzs hτ₀e
   have hcont : ∀ j l, ContinuousOn (fun z => τ₀ z j l) (Metric.ball 0 1) := fun j l => (hτ₀d j l).continuousOn
   have hagree : ∀ s ∈ logDom n a, logExp a s ∈ Metric.ball (0 : Fin n → ℂ) 1 →
@@ -203,15 +204,15 @@ theorem GlobalTheory.PeriodFrame.exists_frame_of_latFam : ∀ (n a g r₀ r : �
   · intro s hs hz Hm hHm
     obtain ⟨Hm', h1, _, _, _, h5⟩ := hRie s hs
     have hHH : Hm = Hm' :=
-      GlobalTheory.T.complexMatrix_eq_of_hermForm_im_eq_real_span g r Hm Hm' (lam s) (hlam s hs).2.1 (fun i j => (hHm i j).trans (h1 i j).symm)
+      _root_.GlobalTheory.hermForm_eq_of_im_eq_on_span g r Hm Hm' (lam s) (hlam s hs).2.1 (fun i j => (hHm i j).trans (h1 i j).symm)
     subst hHH
     exact h5
   · exact continuousOn_pi.2 fun j => continuousOn_pi.2 fun l => hcont j.1 l.1
-  · refine GlobalTheory.T.posDef_imPart_on_polydisc_of_punctured_cover n a {j : Fin g // rk ≤ j.val} (fun z => (τ₀ z).submatrix (Subtype.val : {j : Fin g // rk ≤ j.val} → Fin g)
+  · refine _root_.GlobalTheory.posDef_im_on_ball_of_logExp n a {j : Fin g // rk ≤ j.val} (fun z => (τ₀ z).submatrix (Subtype.val : {j : Fin g // rk ≤ j.val} → Fin g)
       (Subtype.val : {j : Fin g // rk ≤ j.val} → Fin g))
       (fun j l => hτ₀d j.1 l.1) ?_
     intro s hs
     rw [← hagree s hs (hDmaps hs)]
     exact (hτsm s hs (hDmaps hs)).2.submatrix Subtype.val_injective
-  · exact GlobalTheory.T.not_periodMatrix_intVec_continuous_boundary n a g r₀ r K ζ lam M c α φ rk D hK hζ hζK hζ0 (fun s hs => ⟨hlamR s hs, (hlam s hs).2.2⟩)
+  · exact _root_.GlobalTheory.PeriodFrame.not_perTau_mulVec_eq_continuous n a g r₀ r K ζ lam M c α φ rk D hK hζ hζK hζ0 (fun s hs => ⟨hlamR s hs, (hlam s hs).2.2⟩)
       (fun s hs i => hc i s hs) hMa hN3 hN4 hD hdet
