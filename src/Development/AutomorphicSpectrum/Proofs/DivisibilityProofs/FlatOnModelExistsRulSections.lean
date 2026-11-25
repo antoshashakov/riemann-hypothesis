@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasBareNormDisc
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatLineIdempotentSections
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatLineIdempotentSectionsStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
+public import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameBorelChangeVectorsStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramePointVectorsStatement
 import Formalism.LocalToGlobal.ProjectiveLattices.CompSplitPfD
@@ -163,7 +164,7 @@ theorem exists_flat_sec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     Formalism.L2.Pj.CompSplitPfB.cspB_isClopen (Formalism.L2.Pj.CompSplitPfD.cspD_comp_disj Xo c) Z
   have hl := hf.1
   obtain ⟨s, s', e, -, hss₀, hsE₀, hs'E₀, -, hval⟩ :=
-    GlobalTheory.T.flat_line_idempotent_sections E H D l Xo c (Z : Set (Xo.XF c)) τ.1 O β Y Z' φ hτ hC hl hf
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_flat_rule E H D l Xo c (Z : Set (Xo.XF c)) τ.1 O β Y Z' φ hτ hC hl hf
   have hp : D.mult τ.1 = D.p := by rw [Datum.mult, if_pos hτ]
   have hq : D.mult (ComplexEmbedding.conjugate τ.1) = D.q := conj_mult hτ
   have red : ∀ p : Formalism.L2.Pj.TRing c.F, IsReduced p.R := fun p => (Ideal.isRadical_iff_quotient_reduced _).1 p.rad

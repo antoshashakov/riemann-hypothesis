@@ -1,8 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsMixedDifferenceExpansionStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumMixedExpansionStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsMixedDifferenceExpansion
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumMixedExpansion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,12 +69,12 @@ theorem mixDiff_eq_zero_of_isHomogeneous_zero {σ : Type} {Q : MvPolynomial σ �
 
 theorem rootPs_mul_mixExpansion : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N d k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (τ : Ψ) (Q : MvPolynomial (Ψ × Fin N) ℝ), Q.IsHomogeneous (d + 1 - k) → ∃ Hs : Ψ × Fin N → MvPolynomial ((Ψ × Fin N) ⊕ (Ψ × Fin N)) ℝ, (∀ i, (Hs i).IsHomogeneous (d - k)) ∧ (k = d + 1 → ∀ i, Hs i = 0) ∧ IsMixExpansion d (mixDiff (rootPs τ k * Q)) (fun i => (∑ a ∈ Finset.univ.filter (fun a : Fin N => (τ, a) = i), rename (Sum.map (fun a => (τ, a)) (fun a => (τ, a))) (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion N k a))) * rename Sum.inl Q + (∑ a : Fin N, X (Sum.inr (τ, a)) ^ k) * Hs i) := by
   intro Ψ _ _ N d k hk1 hk2 τ Q hQ
-  obtain ⟨Hs, hMix⟩ := GlobalTheory.T.exists_mixed_difference_expansion (Ψ × Fin N) (d + 1 - k) Q hQ
+  obtain ⟨Hs, hMix⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.exists_mixExpansion_mixDiff (Ψ × Fin N) (d + 1 - k) Q hQ
   unfold IsMixExpansion at hMix
   obtain ⟨hHs, hHdeg⟩ := hMix
   have hQl : (rename Sum.inl Q : MvPolynomial ((Ψ × Fin N) ⊕ (Ψ × Fin N)) ℝ).IsHomogeneous (d + 1 - k) :=
     hQ.rename_isHomogeneous
-  have hE := GlobalTheory.T.power_sum_mixed_expansion (Ψ × Fin N) N k (d + 1 - k) (fun a => (τ, a)) (rename Sum.inl Q) hQl
+  have hE := _root_.GlobalTheory.CompanionTheory.Ar.Num.isMixExpansion_psum_mul (Ψ × Fin N) N k (d + 1 - k) (fun a => (τ, a)) (rename Sum.inl Q) hQl
   unfold IsMixExpansion at hE
   obtain ⟨hE1, hE2⟩ := hE
   obtain ⟨Hs', hz, hmixQ, hdeg'⟩ : ∃ Hs' : Ψ × Fin N → MvPolynomial ((Ψ × Fin N) ⊕ (Ψ × Fin N)) ℝ,

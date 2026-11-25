@@ -5,18 +5,22 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 public import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNumberFieldPoint
-public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LocalValuationLogNormsExistenceStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlatOnModelExistsRulSectionsStatement
+public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LocalValuationLogNormsExistence
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlatOnModelExistsRulSections
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LineFnReadsLocalHeightSumStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.UnfSectionNormBoundAtHeightStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteNormLocalBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.UnfSectionNormBoundAtHeight
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteNormLocalBound
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatFirstFromResolutionAndGagaStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatZeroFromResolutionAndGagaStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionFiniteNormStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricComponentAlgClosedStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasBareNormDisc
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameFunctionFiniteNorm
+public import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GeometricComponentAlgClosed
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GoodReductionDvrModelExistsStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IrreducibleComponentClopenStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KroneckerCharacterFrameBoundStatement
+public import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegOfIsLocalModel
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KroneckerCharacterFrameBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -86,7 +90,7 @@ theorem exists_constSec : Geo.ResK.ResKStatement → GagaSections → ∀ (E : T
     GlobalTheory.T.good_reduction_dvr_model_exists E H D l Xo c ⟨2, Nat.prime_two⟩ κ hpos (hL.good 2 Nat.prime_two)
   obtain ⟨hclopen, hcpt, -⟩ := GlobalTheory.T.irreducible_component_clopen E H D l Xo c (Z : Set (Xo.XF c)) Z.2
   obtain ⟨Z'⟩ := hcpt O β Y hβ
-  have hgeom : Z'.IsGeom := GlobalTheory.T.geometric_component_alg_closed E H D l Xo c O β Y Z Z' hβ hL.geo
+  have hgeom : Z'.IsGeom := _root_.GlobalTheory.CompanionTheory.Ar.Br.isGeom_of_fnAlgClosed E H D l Xo c O β Y Z Z' hβ hL.geo
   obtain ⟨φ, hline, hflat, -⟩ := GlobalTheory.T.flat_zero_from_resolution_and_gaga hR hG E H D l Xo c O β Y Z Z' τ.1 hβ hpos τ.2 hgeom
   obtain ⟨hnorm, -⟩ := GlobalTheory.T.flat_first_from_resolution_and_gaga hR hG E H D l Xo c O β Y Z Z' τ.1 φ hβ hpos τ.2 hgeom hline hflat
   choose t ht ht' using fun σ => hnorm (Formalism.L2.Pj.goodOf c σ)
@@ -97,9 +101,9 @@ theorem exists_constSec : Geo.ResK.ResKStatement → GagaSections → ∀ (E : T
     · have := ht' σ
       rwa [h] at this
   have hFinEx : ∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), ∃ t, HasFinNorm (Z : Set (Xo.XF c)) τ.1 φ p κ t :=
-    fun p κ => GlobalTheory.T.frame_function_finite_norm hR hG E H D l Xo c O β Y Z Z' τ.1 φ p κ hβ hpos τ.2 Z.2 hgeom hflat (hL.good p p.2)
-  obtain ⟨ρ, hρ⟩ := GlobalTheory.T.finite_norm_local_bound E H D l Xo c Z τ.1 φ hFinEx
-  obtain ⟨hex, ⟨N, hNinf, hNfin⟩, hdict⟩ := GlobalTheory.T.local_valuation_log_norms_existence c.F (fun σ => Real.exp (t σ)) ρ
+    fun p κ => _root_.GlobalTheory.CompanionTheory.Ar.Br.FinGood.finGood hR hG E H D l Xo c O β Y Z Z' τ.1 φ p κ hβ hpos τ.2 Z.2 hgeom hflat (hL.good p p.2)
+  obtain ⟨ρ, hρ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Br.FinPlace.exists_rho E H D l Xo c Z τ.1 φ hFinEx
+  obtain ⟨hex, ⟨N, hNinf, hNfin⟩, hdict⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Br.Dd.deg_dict c.F (fun σ => Real.exp (t σ)) ρ
   have hinfN : ∀ s, HasInfNorm (Z : Set (Xo.XF c)) τ.1 φ s (N.inf s) := fun s => by
     rw [hNinf s, Real.log_exp]
     exact hInf s
@@ -108,16 +112,16 @@ theorem exists_constSec : Geo.ResK.ResKStatement → GagaSections → ∀ (E : T
       obtain ⟨la, π, h1, h2⟩ := hex p κ
       rw [hNfin p κ la π h1 h2]
       exact hρ p κ la π h1 h2
-  obtain ⟨hadel, hdeg⟩ := GlobalTheory.T.kronecker_character_frame_bound hR hG E H D l Xo c O β Y _ Z' τ.1 φ N χ hχ hβ hpos τ.2 hclopen hgeom hflat
+  obtain ⟨hadel, hdeg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Br.degree_of_flatOnModel hR hG E H D l Xo c O β Y _ Z' τ.1 φ N χ hχ hβ hpos τ.2 hclopen hgeom hflat
     hinfN hfinN
   obtain ⟨hsupp, hline'⟩ := hdict N hNinf hNfin
-  obtain ⟨s, s', hs, hs', hi, hi', hm, hread⟩ := GlobalTheory.T.flat_on_model_exists_rul_sections E H D l Xo c O β Y Z Z' τ φ hflat
+  obtain ⟨s, s', hs, hs', hi, hi', hm, hread⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Br.exists_flat_sec E H D l Xo c O β Y Z Z' τ φ hflat
   have hval := GlobalTheory.T.line_fn_reads_local_height_sum E H D l Xo c Z τ s φ ρ hline hread hρ
   have hPts := GlobalTheory.FlatLine.hasPts U hpos hL.good hL.unf Z
   refine ⟨{ sig := s, inv := s', sig_mem := hs, inv_mem := hs', idem_sig := hi, idem_inv := hi', mul_inv := hm,
             cInf := fun σ => Real.exp (t σ), cInf_pos := fun σ => Real.exp_pos _,
             norm_inf := fun σ => GlobalTheory.FlatLine.image_eq_singleton_iff.2 ⟨(hPts.1 σ).1, fun z hz =>
-              GlobalTheory.T.unf_section_norm_bound_at_height E H D l Xo c r (Formalism.L2.Pj.goodOf c σ) (U (Formalism.L2.Pj.goodOf c σ)) x Z τ s φ (t σ)
+              _root_.GlobalTheory.CompanionTheory.Ar.Br.homN_eq_exp_hodge E H D l Xo c r (Formalism.L2.Pj.goodOf c σ) (U (Formalism.L2.Pj.goodOf c σ)) x Z τ s φ (t σ)
                 (Formalism.L2.Pj.goodEmb_goodOf c σ) (hL.unf _ (Formalism.L2.Pj.goodEmb_goodOf c σ))
                 (hL.xi _ (Formalism.L2.Pj.goodEmb_goodOf c σ)) hs hline hread (ht σ) z hz ((hPts.1 σ).2 z hz)⟩,
             rho_vw := ρ,

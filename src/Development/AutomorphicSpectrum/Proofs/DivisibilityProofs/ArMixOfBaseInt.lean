@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIs
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ToZIsArFunIffStatement
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ToZIsArithHeightIffStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarInt
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchIntToZEqStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchIntToZEq
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ToZPowCombIsometricStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.WZIsCInfStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -78,7 +78,7 @@ theorem arMix_of_base_int : (∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoeth
   have hI : (comb (fun i => toZ (L i) t (Hc (L i))) n).archInt (toZ M t (Hc M)) D hr =
       (toZ (comb L n) t (Hc _)).archInt (toZ M t (Hc M)) D hr := by
     simp only [HermLB.archInt, iso.chernInt_eq]
-  obtain ⟨e₁, e₂⟩ := GlobalTheory.T.archInt_toZ_eq k X p t D hX (comb L n) M (Hc _) (Hc _) D r hr
+  obtain ⟨e₁, e₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.archInt_toZ k X p t D hX (comb L n) M (Hc _) (Hc _) D r hr
   have hB := e₁.1 hA
   refine ⟨hB, h₂.trans ?_⟩
   rw [hI, e₂ hB]

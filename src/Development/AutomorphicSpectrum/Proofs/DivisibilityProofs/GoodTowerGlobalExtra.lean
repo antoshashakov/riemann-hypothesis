@@ -5,7 +5,8 @@ public import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpP
 public import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX
 public import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RealTowerConvI2Statement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerOriginVectorBundleStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SplitComps
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerOriginVectorBundle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,7 +54,7 @@ theorem propA_of_goodOrigin : PB.AgreementPos → TwistAut → Cmp.CmpPair → G
   intro hAg hTw hCmp hG E _ _ _ _ H D Xo l c Y _ T o II _ hX hII _ _
   obtain ⟨_, _, _, _, _, _, _, _, _, hIn, _⟩ := hG
   have hConv : T.Conv II := (GlobalTheory.T.real_tower_conv_I2 hAg hIn II hII (CMType H) (D.p + D.q) T (realOf o.toTowerOrigin)).1
-  refine GlobalTheory.T.tower_origin_vector_bundle hCmp hTw II hII E H D l (Xo l) c Y T o.toTowerOrigin inferInstance o.omVB hX.1 ?_ hConv
+  refine _root_.GlobalTheory.CompanionTheory.Ar.TowerPropA.propA_of_origin hCmp hTw II hII E H D l (Xo l) c Y T o.toTowerOrigin inferInstance o.omVB hX.1 ?_ hConv
   intro B a a' p hp
   rw [hX.2 B a p hp, hX.2 B a' p hp]
 

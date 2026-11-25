@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Res
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ToZIsArithHeightIffStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarInt
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ToZPullIsometricStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ToZPullIsometric
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.WZIsCInfStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -70,7 +71,7 @@ theorem heightProjection_of_int : (∀ (X Y : Scheme.{0}) [IsIntegral Y] (p : X 
     (GlobalTheory.T.toZ_isArithHeight_iff k X p _ D hp L hc h).mpr hL
   have key := H X Y (p ≫ spMap (Int.castRingHom k)) (π ≫ p ≫ spMap (Int.castRingHom k)) D e
     htX htY π rfl hdim hdeg (toZ L (p ≫ spMap (Int.castRingHom k)) hc) h hLZ
-  have iso := GlobalTheory.T.toZ_pull_isometric k X Y p q (p ≫ spMap (Int.castRingHom k))
+  have iso := _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.isometric_toZ_pull k X Y p q (p ≫ spMap (Int.castRingHom k))
     (π ≫ p ≫ spMap (Int.castRingHom k)) π hπ rfl L hc hc'
   obtain ⟨h', hh', hv⟩ := GlobalTheory.HermLB.Isometric.isSelfInter htY iso.symm key
   exact ⟨h', (GlobalTheory.T.toZ_isArithHeight_iff k Y q _ e hq (L.pull π hπ) hc' h').mp hh', hv⟩

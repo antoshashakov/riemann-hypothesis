@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LaurentCechNerveLevelSpecTensorPower
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralEqGenericIntersectionStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralEqGenericIntersection
 public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PNumericalSegre
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -89,7 +89,7 @@ theorem geoMono_mapDomain_some (M : RootModel Ψ N) [DecidableEq M.K] (II : Inte
     · exact M.A_smooth
     · exact M.x_smooth 1 r
   have hsm : ∀ j, IsSmoothHerm (L j) := fun j => by rw [hL j]; exact hline _
-  rw [GlobalTheory.T.log_integral_eq_generic_intersection M.K M.ι M.P (dimFl Ψ N) M.arith (II M.K M.ι) (hII _ _) L hsm, ← intNumL_ofFn']
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.Num.ptsIntegral_one_eq_intNum M.K M.ι M.P (dimFl Ψ N) M.arith (II M.K M.ι) (hII _ _) L hsm, ← intNumL_ofFn']
   congr 2
   refine NumericalSegreProof.intNumL_perm ℚ _ ?_
   have hlist : List.ofFn (fun j => (L j).a) =

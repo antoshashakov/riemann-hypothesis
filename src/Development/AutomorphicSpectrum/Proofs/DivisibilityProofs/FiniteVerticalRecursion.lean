@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.VerticalDivisorGeometricNumberStatement
+public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LaurentCechNerveLevelSpecTensorPower
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.VerticalDivisorGeometricNumber
 public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PVocabDivCycle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -131,7 +132,7 @@ theorem key_of_mem {P : Ideal (MRing ι ℤ)} {D : ℕ} (hP : IsArithVar P (D + 
     (hp : (C ((p : ℕ) : ℤ) : MRing ι ℤ) ∈ W) :
     charOf W = p ∧ ¬ IsHorizontal W ∧ geoNum D W b = vertTerm p W (List.ofFn b) := by
   haveI : Fact (p : ℕ).Prime := ⟨p.2⟩
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.vertical_divisor_geometric_number K ι P D hP a s hs hsP W hW (p : ℕ) hp
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.GeoNumFp.geoNum_eq_intNum K ι P D hP a s hs hsP W hW (p : ℕ) hp
   refine ⟨h1, h2, ?_⟩
   rw [h3 b]
   unfold vertTerm

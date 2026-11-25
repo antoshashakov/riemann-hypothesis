@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.SheetUnsheet
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchIntegrableIffOverIntegersStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumLogNormEqSumEmbeddingsStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumLogNormEqSumEmbeddings
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.WOverRestrPow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -61,7 +61,7 @@ theorem curveDeg_toZ {k : Type} [CommRing k] {X Z : Scheme.{0}} {p : X ⟶ Sp k}
     (r : (L.restr i).B.ι → Z.functionFieldˣ) (hr : IsRatSec (L.restr i).B r) :
     HermLB.curveDeg ((toZ L t hL).restr i) (r := r) hr = HermLB.curveDeg (L.restr i) hr := by
   have hv : IsArithVar (i ≫ p) 0 := hX.of_isClosedImmersion i hc (by simpa using hd)
-  have e := GlobalTheory.T.sum_logNorm_eq_sum_embeddings k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) hv (L.restr i)
+  have e := _root_.GlobalTheory.CompanionTheory.Ar.BaseZ.sum_logNorm_curve k Z (i ≫ p) (i ≫ t) (Int.castRingHom ℂ) hv (L.restr i)
     (((toZ L t hL).restr i).φ (Int.castRingHom ℂ))
     (wOver_restr_pow k X Z p t i L hL _).1 r hr
   unfold HermLB.curveDeg

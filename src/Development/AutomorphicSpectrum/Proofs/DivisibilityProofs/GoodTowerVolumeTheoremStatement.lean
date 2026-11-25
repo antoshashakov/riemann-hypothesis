@@ -6,14 +6,20 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDesc
 public import Development.AutomorphicSpectrum.Statements.TowerExistence.GoodTowerExistsX
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.VolumeTheoremOfInputs
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComparisonOfInputsAvoidanceStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGeometricHeightConstantsStatement
+public import Development.AutomorphicSpectrum.Statements.GeometryStatements.FlatDegree
+public import Development.AutomorphicSpectrum.Statements.GeometryStatements.NineGeoU
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGeometricHeightConstants
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGoodRootTower
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatDegreeHoldsStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatFirstFromResolutionAndGagaStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlatZeroFromResolutionAndGagaStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ModelOnHodgeFromFamilyStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TrivFlagOnHodgeOfFarguesStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwistAutHoldsStatement
+public import Development.AutomorphicSpectrum.Statements.GeometryStatements.HodgeLatticeFlagBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ModelOnHodgeFromFamily
+public import Development.AutomorphicSpectrum.Statements.GeometryStatements.TrivFlagOnHodge
+public import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.FarguesHodgeTate
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TrivFlagOnHodgeOfFargues
+public import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TwistAutHolds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -65,6 +71,6 @@ theorem _root_.GlobalTheory.T.good_tower_volume_theorem : Top.Given → PtsInteg
   refine ⟨?_, ?_⟩
   · intro E _ _ _ H D Xo l c Y _ hgl hs hp hq
     exact GlobalTheory.CompanionTheory.Ar.TopTower.exists_good_tower hG hW hA0 hA1 E H D Xo l c Y hgl hs hp hq
-  · exact GlobalTheory.CompanionTheory.Ar.Cusp.volumeTheoremX_of_inputs hG hPts hW (GlobalTheory.T.exists_geometric_height_constants hG hW GlobalTheory.T.FlatDegree_holds) (GlobalTheory.T.model_on_hodge_from_family hFam)
-      (GlobalTheory.T.triv_flag_on_hodge_of_fargues hFHT) GlobalTheory.T.FlatDegree_holds GlobalTheory.T.TwistAut_holds hPair (GlobalTheory.T.comparison_of_inputs_avoidance hPB hAv hR)
+  · exact GlobalTheory.CompanionTheory.Ar.Cusp.volumeTheoremX_of_inputs hG hPts hW (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.TopNine.nineGeoU_of_given hG hW GlobalTheory.T.FlatDegree_holds) (_root_.GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.model_on_hodge_of_family_pos hFam)
+      (_root_.GlobalTheory.CompanionTheory.Ar.Num.trivFlagOnHodge_of_fargues hFHT) GlobalTheory.T.FlatDegree_holds _root_.GlobalTheory.CompanionTheory.Ar.TwistAutProof.twistAut hPair (GlobalTheory.T.comparison_of_inputs_avoidance hPB hAv hR)
 

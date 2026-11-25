@@ -3,9 +3,10 @@ module
 public import Development.AutomorphicSpectrum.Statements.GeometryStatements.CmpPair
 public import Development.AutomorphicSpectrum.Statements.GeometryStatements.PadicIntegersHenselianFiniteResidue
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerSymmetryLimitCompatStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerSymmetryLimitCompat
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmTypeHostAutPermutationStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueHostAutEmbeddingStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.AdelicGroupAlgebraActionInjective
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueHostAutEmbedding
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -77,9 +78,9 @@ end GlobalTheory.CompanionTheory.Ar.Cmp.HodgeA
 open GlobalTheory.CompanionTheory.Ar.Cmp.HodgeA in
 theorem GlobalTheory.CompanionTheory.Ar.Cmp.HodgeA.propA_of_hodgeTower : CmpPair → TwistAut → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (D.p + D.q)) (S : ℕ → Finset ℕ) (n : ℕ) (tie : ∀ B k, HodgeTie Y (S B) n (T.M B k)), IsGalois ℚ E → Mono (spMap β) → T.Conv II → (∀ B k k', ∀ p ∈ S B, (tie B k').A.R p = (tie B k).A.R p) → (∀ (B : ℕ) (Φ : Xo.X ≅ Xo.X), Φ.hom ≫ Xo.s = Xo.s → ∃ π : Equiv.Perm T.Comp, ∀ k, IsImageCpt Φ (tie B k).A (tie B (π k)).A) → T.PropA II := by
   intro hCmp hTw II hII E _ _ _ H D l Xo c O _ β Y _ T S n tie hGal hMono hConv hR hPerm
-  refine GlobalTheory.T.tower_symmetry_limit_compat (CMType H) (D.p + D.q) T II (relabGroup H) hConv ?_ ?_ hII.1
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Top.PermInv.propA_of_limits (CMType H) (D.p + D.q) T II (relabGroup H) hConv ?_ ?_ hII.1
   · intro τ τ'
-    obtain ⟨g, hg, -⟩ := GlobalTheory.T.existsUnique_host_aut_embedding E H τ.1 τ'.1 τ.2 τ'.2
+    obtain ⟨g, hg, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HostAutTrans.existsUnique_hostAut_comp E H τ.1 τ'.1 τ.2 τ'.2
     obtain ⟨π, hπ, -⟩ := GlobalTheory.T.cm_type_host_aut_permutation E H l c g
     exact ⟨π, ⟨g, hπ⟩, Subtype.ext ((hπ τ).trans hg.symm)⟩
   · intro s hs B _

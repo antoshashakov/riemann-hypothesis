@@ -3,7 +3,7 @@ module
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSectionsIsotropicCommutatorPairingPower
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CutoffCoefficientsBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.HomogeneousPowerSumDecompositionStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TestPolynomialRemainderBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TestPolynomialRemainderBound
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TestPolynomialShiftTotalStatement
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.TowerHeightIdentityExpansionStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -78,7 +78,7 @@ theorem test_height_bound_slope_flat : ∀ II : IntersectionSystem, ∀ (Ψ : Ty
   obtain ⟨Q, hQ1, hQ2⟩ := GlobalTheory.T.homogeneous_power_sum_decomposition Ψ N (testPoly T.j) (by omega) hhom
   have hdec : IsDecomp (testPoly T.j) Q := ⟨hQ1, hQ2⟩
   have hPP := GlobalTheory.T.tower_height_identity_expansion II Ψ N T hh frob B₀ A₀ b₀ (testPoly T.j) Q hId hdec
-  have hR := GlobalTheory.T.test_polynomial_remainder_bound Ψ N T.j T.bad frob B₀ Q hj1 hjN hB4 hdec
+  have hR := _root_.GlobalTheory.CompanionTheory.Ar.Top.testRest_bound Ψ N T.j T.bad frob B₀ Q hj1 hjN hB4 hdec
   have hAb := GlobalTheory.T.cutoff_coefficients_bound II Ψ N T hh frob C' rd Lval B₀ A₀ b₀ hprop hI9 hPF hB128 hbad hId
   have hSL' := hSL B₀ hB128 hB4 hbad
   have hvol : 0 < T.volT := by

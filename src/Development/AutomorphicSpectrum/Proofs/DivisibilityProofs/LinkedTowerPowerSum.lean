@@ -1,9 +1,10 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LimitHeightConstantShiftStatement
+public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LimitHeightConstantShift
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogMulDegFlBracketMul
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumHeightChangeModelStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PowerSumHeightChangeModel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -54,9 +55,9 @@ theorem power_sum_term_linked_tower : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq 
   intro Ψ _ _ N T II hII hprop φ hL
   intro B₀ B hB₀ hB c τ k hk1 hkN Q hQ
   obtain ⟨M, R, S, hS, hMc, hRc, hMPP, hRPP, hgeo, hch, hloc⟩ := hL B₀ B hB₀ hB c
-  have hstep := GlobalTheory.T.limit_height_constant_shift Ψ N M R.model II hMc hRc (toA (pk τ k * Q))
+  have hstep := _root_.GlobalTheory.CompanionTheory.Ar.Num.PP_eq_add_of_arFun_eq_add Ψ N M R.model II hMc hRc (toA (pk τ k * Q))
     (∑ p ∈ S, Real.log (p : ℕ) * M.geoFun (toA (bracket T.j (φ p) p k τ * Q)))
-    (fun t ht => GlobalTheory.T.power_sum_height_change_model Ψ N M R II hII S T.j φ hch hloc t ht τ k hk1 hkN Q hQ)
+    (fun t ht => _root_.GlobalTheory.CompanionTheory.Ar.Num.power_sum_height_model_change Ψ N M R II hII S T.j φ hch hloc t ht τ k hk1 hkN Q hQ)
   rw [hMPP, hRPP] at hstep
   rw [hstep]
   congr 1

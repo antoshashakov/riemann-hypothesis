@@ -4,8 +4,8 @@ public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Bun
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycNumIntAndComb
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycleNumberLinearStatement
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.CycleNumberRenameStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DivisorCycleSubstitutionStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LocalPairSplitSumStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DivisorCycleSubstitution
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LocalPairSplitSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -121,7 +121,7 @@ theorem cycNum_neg {ϖ : O} (hϖ : Irreducible ϖ) {P : Ideal (MRing ι O)} {d :
   have hH : (∑ i : Fin r, (X i : MvPolynomial (Fin r) ℝ) ^ m).IsHomogeneous m :=
     IsHomogeneous.sum _ _ _ fun i _ => by
       simpa using (isHomogeneous_X ℝ i).pow m
-  have h := (GlobalTheory.T.divisor_cycle_substitution O ϖ hϖ K ι P d hP 0 0 (C a) (C a) hC hC (C_not_mem hP ha) (C_not_mem hP ha)
+  have h := (_root_.GlobalTheory.CompanionTheory.Ar.Num.cycNum_linear_subst O ϖ hϖ K ι P d hP 0 0 (C a) (C a) hC hC (C_not_mem hP ha) (C_not_mem hP ha)
     (Fin r) (Fin r) cls (fun t i => if t = i then -1 else 0) _ m hH Q hQ).2
   have e1 : (fun t : Fin r => ∑ i, (if t = i then (-1 : ℤ) else 0) • cls i) = fun i => -cls i := by
     funext t
@@ -165,7 +165,7 @@ theorem flag_m3_of_local_m3 : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscre
     congrArg (fun L : LocPair ι O (Fin j) => L.ck P k Q) (hl τ)
   have e2 : (om (Sum.inl τ)).ck P k Q = (T.comp fun i : Fin j' => (τ, Fin.natAdd j i)).ck P k Q :=
     congrArg (fun L : LocPair ι O (Fin j') => L.ck P k Q) (ho τ)
-  have hadd := GlobalTheory.T.local_pair_split_sum O K ι j j' (T.comp fun i : Fin (j + j') => (τ, i)) P k Q
+  have hadd := _root_.GlobalTheory.CompanionTheory.Ar.Num.CkAppend.ck_append O K ι j j' (T.comp fun i : Fin (j + j') => (τ, i)) P k Q
   have hlin := GlobalTheory.T.cycle_number_linear O K ι (Ψ × Fin (j + j')) Z T.x Q
   rw [e1, e2] at hL
   have hleft : (((T.comp fun i : Fin (j + j') => (τ, i)).ck P k Q : ℤ) : ℝ) =

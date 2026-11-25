@@ -4,7 +4,7 @@ public import Development.AutomorphicSpectrum.PublishedTheorems.Geometry₂.Gaga
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsAlgebraicOfNormConst
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsConstSectionKroneckerCharStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsConstSectionKroneckerChar
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,7 +50,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Br
 
 theorem flatDegreeSt_of_resK_gaga : Geo.ResK.ResKStatement → GagaSections → GlobalTheory.FlatCore.FlatDegreeSt := by
   intro hR hG E _ _ _ H _ _ χ hχ Dw l Xo c r U x hL Z τ
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_const_section_kronecker_char hR hG E H Dw l Xo c r U x hL χ hχ Z τ
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Br.CovEx.exists_constSec hR hG E H Dw l Xo c r U x hL χ hχ Z τ
   let t : GlobalTheory.FlatLine.FlatSec U x Z τ := s.relat (GlobalTheory.FlatLine.flDefect_vw Dw c τ)
     (by simpa using GlobalTheory.FlatLine.finite_flDefect_vw (Dw := Dw) (c := c) τ)
   have ht : t.deg = GlobalTheory.FlatLine.flatDegVal Dw (GlobalTheory.CM.logOm E χ).re := by

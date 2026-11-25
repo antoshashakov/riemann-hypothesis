@@ -2,8 +2,9 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Proportional
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ZhangLowerBoundRationalStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ZhangUpperBoundDensePointsStatement
+public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ZhangLowerBoundRational
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ZhangUpperBoundDensePoints
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -105,11 +106,11 @@ theorem mbarTop_squeeze : SuccessiveMinimaLowerBound → SuccessiveMinimaUpperBo
   obtain ⟨F, hF, hFpt⟩ := h6 B hB c lam θ s hrat hnorm hθ hθ6 hs hgap hcg
   have hL : ((dimFl Ψ N : ℝ) + 1) * (-(C₅ * Real.log (B / (s : ℝ)))) * T.mDeg B c lam s ≤
       T.mbarTop II B c lam s :=
-    GlobalTheory.T.zhang_lower_bound_rational hZ1 II hII Ψ N (T.M B c) (scale s) (T.lamS lam s) s (-(C₅ * Real.log (B / (s : ℝ))))
+    _root_.GlobalTheory.CompanionTheory.Ar.Top.zhang_lower_bound_root_model hZ1 II hII Ψ N (T.M B c) (scale s) (T.lamS lam s) s (-(C₅ * Real.log (B / (s : ℝ))))
       hrat' hSemi hNef (fun W hW => hlow W hW)
   have hU : T.mbarTop II B c lam s ≤
       ((dimFl Ψ N : ℝ) + 1) * (C₆ * Real.log B) * T.mDeg B c lam s :=
-    GlobalTheory.T.zhang_upper_bound_dense_points hZ2 II hII Ψ N (T.M B c) (scale s) (T.lamS lam s) s (C₆ * Real.log B) F
+    _root_.GlobalTheory.CompanionTheory.Ar.Top.zhang_upper_bound_root_model hZ2 II hII Ψ N (T.M B c) (scale s) (T.lamS lam s) s (C₆ * Real.log B) F
       hrat' hSemi hNef hF (fun W hW => hFpt W hW)
   have hBpos : (0 : ℝ) < B := by exact_mod_cast (by omega : 0 < B)
   have hlogB : 0 ≤ Real.log B := Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ B))

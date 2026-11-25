@@ -1,8 +1,9 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LaurentCechNerveLevelSpecTensorPower
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ConstantsMonomialApproximationStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DescentIntersectionNumberStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ConstantsMonomialApproximation
+public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.BundleObjects
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DescentIntersectionNumber
 public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyCN
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -158,7 +159,7 @@ theorem intNumL_zmod_eq_residueDegree_mul_vNumL : ∀ (K : Type) [Fintype K] [De
         specialIdeal W' := by
     intro c a
     obtain ⟨a0, rfl⟩ := hsurj a
-    obtain ⟨n, G, hG, hmem⟩ := GlobalTheory.T.constants_monomial_approximation K ι Ω y A hconst c a0
+    obtain ⟨n, G, hG, hmem⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.const_mul_chartMonomial_pow_form K ι Ω y A hconst c a0
     refine ⟨n, MvPolynomial.map (Int.castRingHom (ZMod p)) G, isMultiHomog_map _ hG, ?_⟩
     have h1 := hpt (map_mem_pointIdeal (O := O) hmem)
     have h2 : MvPolynomial.map (IsLocalRing.residue O) _ ∈ specialIdeal W' :=
@@ -171,7 +172,7 @@ theorem intNumL_zmod_eq_residueDegree_mul_vNumL : ∀ (K : Type) [Fintype K] [De
       exact congrArg (fun φ : ℤ →+* IsLocalRing.ResidueField O => MvPolynomial.map φ G)
         (Subsingleton.elim _ _)
     simpa [hG'] using h2
-  have key := GlobalTheory.T.descent_intersection_number K ι (ZMod p) (IsLocalRing.ResidueField O) (specialIdeal W')
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.Num.intNumL_subfield_constants K ι (ZMod p) (IsLocalRing.ResidueField O) (specialIdeal W')
     (SpecialIdealMultiHomog.full O K ι W' hWh) hsu l
   rw [hcomap, hfr] at key
   exact key

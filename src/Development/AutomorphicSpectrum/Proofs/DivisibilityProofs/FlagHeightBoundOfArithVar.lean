@@ -1,8 +1,11 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DegreeLatticesPrimeCompareStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagHeightBoundArithVarStatement
+public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LaurentCechNerveLevelSpecTensorPower
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DegreeLatticesPrimeCompare
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagHeightBoundArithVar
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,10 +66,10 @@ theorem rootLines_vert_ratio : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
         ((S \ S₀).preimage (fun p : Nat.Primes => (p : ℕ)) Subtype.val_injective.injOn) ∧
       aeval y f = e r / e₀ r * aeval y g := by
     intro r
-    refine GlobalTheory.T.degree_lattices_prime_compare 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie d ha ((Fl.shrink S₀ h hvb hsub).rootLat r) (Fl.rootLat r)
+    refine _root_.GlobalTheory.CompanionTheory.Ar.Num.lat_vertOff 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie d ha ((Fl.shrink S₀ h hvb hsub).rootLat r) (Fl.rootLat r)
       (x r) (x' r) (e₀ r) (e r) (h₀ r) (h₁ r) _ ?_
     intro q hq
-    exact GlobalTheory.T.flag_height_bound_arith_var E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha Fl S₀ h hvb hsub q
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Num.rootLat_shrink_eq E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha Fl S₀ h hvb hsub q
       (fun p hp hp' hf => hq ⟨p, 𝔐.S_prime p hp⟩ (Finset.mem_preimage.2 (Finset.mem_sdiff.2 ⟨hp, hp'⟩)) hf) r
   choose f g hv hr using key
   exact ⟨f, g, hr, fun r => hv r ()⟩
