@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Discret
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CommuteCapOfCommuteEop
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLocCompAndIsLocLoc
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutingHeckeCapelliOperatorsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutingHeckeCapelliOperators
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermFiniteOfSmaller
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsRecurrencePolynomialStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentialPolynomialSolutionSpaceStatement
@@ -160,7 +160,7 @@ theorem levi_kill : ∀ (E : Type) [Field E] [NumberField E] [_root_.NumberField
           (GlobalTheory.CompanionTheory.CTFin.lev (Ad E) r s p) = 0 := by
   intro E _ _ _ r s M hr hs hcard
   classical
-  obtain ⟨S, a, b, t, hcomm, hcapc, hleft, haS, hbS, ha1, hb1, htr, hA, hB⟩ := GlobalTheory.T.commuting_hecke_capelli_operators E r s hr hs
+  obtain ⟨S, a, b, t, hcomm, hcapc, hleft, haS, hbS, ha1, hb1, htr, hA, hB⟩ := _root_.GlobalTheory.CompanionTheory.CapCoeff.exists_coeffs E r s hr hs
   obtain ⟨l', hcard', hl'⟩ := GlobalTheory.T.tensor_sum_annihilator (Finset.univ : Finset (E →+* ℂ)) (fun τ => ((M τ).powersetCard r).map Multiset.sum)
   refine ⟨l'.toList.map (· - ∑ τ, t τ), ?_, fun F hFN hFc p => ?_⟩
   · rw [List.length_map, Multiset.length_toList, hcard']

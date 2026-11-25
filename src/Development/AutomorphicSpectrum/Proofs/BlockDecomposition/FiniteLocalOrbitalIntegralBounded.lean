@@ -13,7 +13,7 @@ public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.InnerProductSpace.Basic
 public import Mathlib.MeasureTheory.Integral.Bochner.Basic
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumQuadraticCharacterBound
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelOpenCompactStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelOpenCompact
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelsNeighbourhoodBasisStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatTuple
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingBiadditive
@@ -106,7 +106,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   obtain ⟨d, ⟨b⟩⟩ : ∃ d : ℕ, Nonempty (Module.Basis (Fin d) F E) :=
     ⟨_, ⟨Module.finBasis F E⟩⟩
   obtain ⟨N, hN, hNU⟩ := GlobalTheory.T.lattice_levels_neighbourhood_basis F E σ hCM d b n M _ (invariant_mem_nhds hQ.1 hQ.2)
-  obtain ⟨hLo, hLc⟩ := GlobalTheory.T.lattice_level_open_compact F E σ hCM d b n M N hN
+  obtain ⟨hLo, hLc⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.latN_isOpen_isCompact F E σ hCM d b n M N hN
   set L := latN b n M N with hL
   obtain ⟨s, hs⟩ := eq_sum_cosets hQ.2 L hLo (fun x l hl => hNU hl x)
   obtain ⟨D, hD, hDc⟩ := GlobalTheory.T.trace_dual_denominator_bounded F

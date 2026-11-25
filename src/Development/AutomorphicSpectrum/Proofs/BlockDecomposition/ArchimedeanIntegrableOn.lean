@@ -15,7 +15,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyc
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulticonePointDescendsToSubvarietyStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalSectionFiniteOpenCover
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackIsPotentialStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackIsPotential
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightsIntegralPullbackFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZeroLocusRegularFunctionNullStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatementStatement
@@ -206,7 +206,7 @@ theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ}
       (volume.restrict ((A.chart j) '' tsupport (Pt.χ j) \ (F ∘ (A.chart j).symm) ⁻¹' Z')) :=
     (hc.aemeasurable hT).mono_measure (Measure.restrict_mono hsub le_rfl)
   have hdc := locDensCont A (fun _ => φ.locPot.pullback F hF)
-    (fun _ => GlobalTheory.T.smooth_weight_pullback_is_potential A F hF H φ hφ) j
+    (fun _ => _root_.GlobalTheory.CompanionTheory.MixZ.isPotential_pullback_locPot A F hF H φ hφ) j
   have hρ : AEMeasurable (fun u => ENNReal.ofReal |locDens A (fun _ => φ.locPot.pullback F hF) j u|)
       (volume.restrict ((A.chart j) '' tsupport (Pt.χ j) \ (F ∘ (A.chart j).symm) ⁻¹' Z')) :=
     ((ENNReal.continuous_ofReal.comp_continuousOn hdc.abs).aemeasurable hT).mono_measure

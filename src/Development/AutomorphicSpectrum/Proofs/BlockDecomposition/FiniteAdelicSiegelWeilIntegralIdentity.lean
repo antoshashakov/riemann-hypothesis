@@ -6,7 +6,7 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicIntegralInvariantOpenSubgroup
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLocalOrbitalIntegralBoundedStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianFiniteAdelesDenseRational
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScaledIntegralHermitianInOpenSubgroupStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScaledIntegralHermitianInOpenSubgroup
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableDenominatorPowerOfLtStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableOverLatticeQuotientLocallyConstantStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermOf
@@ -90,7 +90,7 @@ theorem integrable_starLoc_fin : ∀ (F E : Type) [Field F] [NumberField F] [Fie
   haveI : BorelSpace (HermR (Af F) σ n) := inferInstance
   obtain ⟨U, hUo, hUc, hUp⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Period.starLoc_periodic F E σ hCM M J n ψ hψ μ hμ Q hQ
   obtain ⟨C, t, ht, hb⟩ := GlobalTheory.T.finite_local_orbital_integral_bounded F E σ hCM M J hJ n ψ hψ μ hμ Q hQ
-  obtain ⟨τ, hτ, hc⟩ := GlobalTheory.T.scaled_integral_hermitian_in_open_subgroup F E σ hCM n U hUo t ht
+  obtain ⟨τ, hτ, hc⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.Commens.exists_smul_mem_open F E σ hCM n U hUo t ht
   have hs : (n : ℝ) < (M : ℝ) / 2 := by
     have : ((2 * n : ℕ) : ℝ) < (M : ℝ) := by exact_mod_cast hn
     push_cast at this

@@ -8,7 +8,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCoh
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsBaseChangeStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsLocalIdealStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialPullbackGivesUnitCocycleStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftMinimalGeneratorsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftMinimalGenerators
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftModuloMaximalStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -74,7 +74,7 @@ theorem fewEq : FewEqSt := by
   have dep := GlobalTheory.T.dependency_statement
   have fibre := _root_.GlobalTheory.CompanionTheory.FewEq.FibreRed.dep_fibre
   have cocycle := GlobalTheory.T.unit_cocycle_lift_modulo_maximal
-  have finish := GlobalTheory.T.unit_cocycle_lift_minimal_generators
+  have finish := _root_.GlobalTheory.CompanionTheory.FewEq.exists_correction
   intro R _ _ _ X s n hsm hpr hF M hM I hI hJ
   have hIm : I ≤ IsLocalRing.maximalIdeal R := IsLocalRing.le_maximalIdeal hI
   obtain ⟨r, t, ht, hmin⟩ := mingens R I

@@ -10,7 +10,9 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Embedded
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnipotentLiftParabolicProjStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsClosedParabolicMulEmbeddedMirabolicStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenFixedOfSubgroup
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetKernelSpanTwistedCharacterStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
+public import Mathlib.Basic.Complex.Basic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetKernelSpanTwistedCharacter
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemParabolicIffMemEmbeddedStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicDoubleCosetDichotomyStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicUnipotentLeParabolicStatement
@@ -136,7 +138,7 @@ theorem coinv_cInd (H U : Subgroup G) (hUH : U ≤ H) (hUn : U.Normal) (θ : U �
     intro y hy
     obtain ⟨f, rfl⟩ := Submodule.Quotient.mk_surjective _ y
     have h0 : Tl f = 0 := hy
-    refine (Submodule.Quotient.mk_eq_zero _).2 (GlobalTheory.T.jacquet_kernel_span_twisted_character H U hUH hUn θ ι hstab σ q hσ hker hD hbase f fun x => ?_)
+    refine (Submodule.Quotient.mk_eq_zero _).2 (_root_.GlobalTheory.CompanionTheory.LeibPhi.Kernel.mem_twKer_of_restrict_zero H U hUH hUn θ ι hstab σ q hσ hker hD hbase f fun x => ?_)
     rw [← hTl, h0]
     rfl
   have hsurj : Function.Surjective Tq := by

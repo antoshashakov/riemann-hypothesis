@@ -10,7 +10,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityC
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFormNonvanishingOnChartStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypersurfaceComplexPointsMeasurableNullStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrregularProjectionImageNullStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalChartSheetDecompositionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalChartSheetDecomposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyclePointDictionaryStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulticonePointDescendsToSubvarietyStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
@@ -207,7 +207,7 @@ theorem archIntEq_of_integrable : ArchIntegrableOn → ArchIntEq := by
   let Γ : T → (Fin D → ℂ) → (Σ k, Bk n k) → ℂ := fun l => l.1.1.2
   have hpc : ∀ l, IsPiece i Ψ N (e l) (Γ l) := fun l => l.1.2
   let ρ : T → (Fin D → ℂ) → ℝ := fun l => maDensity (fun _ y' => Real.log (B.h (Γ l y')))
-  have hd := fun l => GlobalTheory.T.local_chart_sheet_decomposition m n Nh B hB sB X i D Ψ N (e l) (Γ l) (hpc l)
+  have hd := fun l => _root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.Dens.piece_density m n Nh B hB sB X i D Ψ N (e l) (Γ l) (hpc l)
   have hcovG : G ⊆ ⋃ l, (e l).source := by
     rintro y ⟨e', Γ', hp, hy⟩
     have hmem : y ∈ ⋃ p : J, p.1.1.source := Set.mem_iUnion.2 ⟨⟨(e', Γ'), hp⟩, hy⟩

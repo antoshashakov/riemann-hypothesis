@@ -3,7 +3,8 @@ module
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.UnitaryExtremality.SatPowNonvan
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiDeltaUConjLongSimpleReflectionUnitaryStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDepthPowerLastSimpleReflectionCellStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDepthPowerLastSimpleReflectionCell
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDiagonalConjLastSimpleReflectionCellStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralEqRankOneFactorSL2OfGeometricOnShellsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntertwiningLastEven
@@ -153,7 +154,7 @@ theorem spherical_cell (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val
     Integrable (fun u : cellU y => φ (y⁻¹ * u)) μ ∧ ∫ u : cellU y, φ (y⁻¹ * u) ∂μ = cSimpleU q k α := by
   by_cases hn : Even n
   · exact spherical_even h k hk hn y hyK hy μ hμ α hαk φ hφ hφ1
-  · have hA := GlobalTheory.T.integral_depth_power_lastSimpleReflectionCell L ϖ σ q h n k hk hn y hyK hy μ hμ (α k) hαk
+  · have hA := _root_.GlobalTheory.WeylCell.WeylUnipotentShell.integral_depth_cell L ϖ σ q h n k hk hn y hyK hy μ hμ (α k) hαk
     have hpt : ∀ u : cellU y, φ (y⁻¹ * (u : GU σ n)) = ((α k : ℂ) / (q : ℂ) ^ 2) ^ depthU k (u : GU σ n) :=
       GlobalTheory.T.unitaryThreeRankOne_sphericalVector_cell_value L ϖ σ q h n k hk hn y hyK hy (fun i => (α i : ℂ)) φ hφ hφ1
     simp_rw [hpt]

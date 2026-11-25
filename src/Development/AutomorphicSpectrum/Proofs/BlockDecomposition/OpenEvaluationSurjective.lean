@@ -7,7 +7,9 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Continuo
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousShiftedOrbitMapStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvaluationMapsLinearStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCIndValue
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSmallCompactOpenBetweenStatement
+public import Mathlib.Algebra.Group.Subgroup.Defs
+public import Mathlib.Topology.Algebra.Group.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSmallCompactOpenBetween
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureOpenNonemptyNeZeroStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenFixedOfSubgroup
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LastRowUpdateNhdsGenerationStatement
@@ -265,7 +267,7 @@ theorem bump_abs [MeasurableSpace D] (μ : MeasureTheory.Measure D) (H : Subgrou
     ((hO.inter (hK₀o.preimage hsc)).inter hχ).mem_nhds ⟨⟨O.one_mem, by simp [K₀.one_mem]⟩, one_mem _⟩
   obtain ⟨K₂, hK₂o, hK₂c, hK₂⟩ := hbaseM _ h3
   obtain ⟨N₁, hN₁, hforce⟩ := force K₂ (hK₂o.mem_nhds K₂.one_mem)
-  obtain ⟨K, hKo, hKc, hCK, hKK₀, hKfac⟩ := GlobalTheory.T.exists_small_compact_open_between hbaseG K₀ (K₂.map s) hK₀o hK₀c
+  obtain ⟨K, hKo, hKc, hCK, hKK₀, hKfac⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.OntoO.exists_compactOpen_between_mul_small hbaseG K₀ (K₂.map s) hK₀o hK₀c
     (by rintro _ ⟨x, hx, rfl⟩; exact (hK₂ hx).1.2) N₁ hN₁
   obtain ⟨B, hB⟩ := GlobalTheory.CompanionTheory.BZMirOnto.exists_bump H σ K hKo hKc w v₀
     (fun a x hx e => hfix a (by rw [e]; exact (hK₀ (hKK₀ hx)).2))
