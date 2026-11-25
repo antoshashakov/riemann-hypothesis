@@ -7,8 +7,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinset
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIdempotentSumAuxiliaryPlaces
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteUnfSupportOfNeOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatTensorDependsBelowAndSmallTranslationInvariaStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatTensorSupportBoundedByUniformizerPowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatTensorVanishesUnlessLastRowBoundedStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.FlatTensorVacuum
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatTensorSupportBoundedByUniformizerPow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatTensorVanishesUnlessLastRowBounded
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportFlatIntegrand
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndicatorSmallCosetHalfIsSchwartzBruhatStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemGlLatCongOfSmul
@@ -293,8 +294,8 @@ theorem exists_isSBArgs_flat [MeasurableSpace k] [BorelSpace k] (G : Grid k) (hs
     (hm : 2 ≤ G.m) (hϖ : IsUnif ϖ) (hψ : HasConductor ψ 1) (hT : G.IsTensor ϖ e (oppositePath G.m) T) :
     ∃ n, IsSBArgs G ϖ n (flatTensor hs ψ ν (moved G keep g T)) := by
   obtain ⟨hdep, n₁, hper⟩ := GlobalTheory.T.flatTensor_depends_below_and_small_translation_invariant G hs ψ ν ϖ e T keep g hϖ hψ hT
-  obtain ⟨n₂, hsupp⟩ := GlobalTheory.T.flatTensor_support_bounded_by_uniformizer_pow G hs ψ ν ϖ e T keep g hϖ hT
-  obtain ⟨n₃, hlast⟩ := GlobalTheory.T.flatTensor_vanishes_unless_lastRow_bounded G hs ψ ν ϖ e T keep g hm hϖ hψ hT
+  obtain ⟨n₂, hsupp⟩ := _root_.GlobalTheory.FunObj.FlatSupp.flatTensor_support G hs ψ ν ϖ e T keep g hϖ hT
+  obtain ⟨n₃, hlast⟩ := _root_.GlobalTheory.FunObj.FlatLast.flatTensor_lastRow_bounded G hs ψ ν ϖ e T keep g hm hϖ hψ hT
   refine ⟨max n₁ (max n₂ n₃), hdep, fun x y a b ha hb => hper x a y b
     (fun j hj r s => (ha j hj r s).trans (val_pow_anti hϖ (le_max_left _ _)))
     (fun i hi r s => (hb i hi r s).trans (val_pow_anti hϖ (le_max_left _ _))), fun x y hxy => ⟨fun j hj r s => ?_,
