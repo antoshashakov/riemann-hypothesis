@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Exist
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorsionMapUniformisationGenericStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothCommGroupSchemeEqOfPowEqOfClosedPointStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionSectionEqPulledTraitPointField
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionSectionEqPushedTraitPointLocalStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionSectionEqPushedTraitPointLocal
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -181,7 +181,7 @@ theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [Is
   let τRU := τU.comp ρm
   have hτRU : τRU ^ k = 1 := by
     exact powc τU hτUk
-  have hG1 := GlobalTheory.T.toricTorsionSection_eq_pushed_trait_point_local E H R t P k s s1 s2 s3 _ ρ V ψ tV mV j t₀ m₀ h₀ m₀' hc hd U u hUloc hkU τU τRU hτRU hτUk
+  have hG1 := _root_.GlobalTheory.TorSecLocal.toric_torsion_section_overLocal E H R t P k s s1 s2 s3 _ ρ V ψ tV mV j t₀ m₀ h₀ m₀' hc hd U u hUloc hkU τU τRU hτRU hτUk
     (fun χ => rfl) zU hzU
   have hG2 := _root_.GlobalTheory.ToricOverField.toric_section_eq_over_field E H W t' P' k s' s3' R t g m V ψ tV mV Ω α β hβ tΩ n n' j hb hf Ω' σ (κ.comp φ) hκ.symm
     U u U.subtype hwu τU τ'' h'' (fun χ => (hτU χ).symm) zU hzU

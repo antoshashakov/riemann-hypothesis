@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplTupBijective
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlkGLMem
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealQuotientMinorEqConstSmulComplementMinorStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdMinorsMemInv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealQuotientMinorEqConstSmulComplementMinor
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.RealQuotientBottomInvariantsEquiv
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -80,7 +81,7 @@ theorem real_quotient_complement_minor : GlobalTheory.Published.HoweDualityReal 
     _root_.GlobalTheory.T.real_quotient_bottom_invariants_equiv h1 h2 h3 h4 D ψ θ θ' hθ A A' WW FA FA' FW a b had hA hA' hW hex Pr q q' hq hq' hm
   obtain ⟨α, β, ht, -⟩ := hex
   obtain ⟨p, r, -, h5, h6⟩ := ht.sig
-  exact GlobalTheory.T.realQuotient_minor_eq_const_smul_complementMinor D had n₀ Pr q q' σ (by omega) (by omega) hnt hq hq' i1 i2 i3 i4
+  exact _root_.GlobalTheory.SchurQuot.quot_minor_eq_const_smul_compl D had n₀ Pr q q' σ (by omega) (by omega) hnt hq hq' i1 i2 i3 i4
 end GlobalTheory.BotMatch
 end
 

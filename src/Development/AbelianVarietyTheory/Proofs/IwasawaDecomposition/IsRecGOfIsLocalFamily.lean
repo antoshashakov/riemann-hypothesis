@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.TieTrF
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsEmbeddingOfRingTie
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsTiedOfIsRecG
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalIdentificationPlaceEqInducedRealPlaceStatement
+public import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.FullTiedCBase
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalIdentificationPlaceEqInducedRealPlace
 import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.SelfDualAtColLevel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -126,7 +127,7 @@ theorem isRecG_of_isLocalFamily {sc : Scale} {D : D7} {L0 : LevelData D} {T : �
       IsRecG.intro D L0 I ψ hd H0 hL T' B hBs hB iK lam hK hPos CH rfl
     have hRetie : IsRecG sc D' Gt c G.herm G.forms :=
       LayerTwoModel.isRecG_retie hRec G.herm.g
-    have hPlace := GlobalTheory.T.mem_localPlace_asIdeal_iff_val_pos
+    have hPlace := _root_.GlobalTheory.TiePlace.place_of_tie
       D sc 1 L0 I ψ hd H0 hL B hBs hB iK lam hK hPos
     ⟨Gt, c, G, hRetie, fun _ => rfl, fun _ => rfl, hPlace⟩
 

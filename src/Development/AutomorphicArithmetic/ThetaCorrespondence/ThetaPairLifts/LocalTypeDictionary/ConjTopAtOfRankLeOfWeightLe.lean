@@ -6,7 +6,8 @@ public import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.D
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateTopBoundOfInputs
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyParameterSizesTestChoicesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstJetOperatorNormCauchyBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussianGrowthConjTorsionTranslatesVacuumStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussianGrowthConjTorsionTranslatesVacuum
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PairIntAt
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.KernelConjugateTransportTopDegree
 import Mathlib.Algebra.Order.Floor.Extended
@@ -207,7 +208,7 @@ theorem conjTopAt_of_rank_le_of_weight_le : (_root_.GlobalTheory.FunPr.ThetaLoca
       _ ≤ P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg * B := mul_le_mul_of_nonneg_left hu hM0
       _ ≤ _ := mul_le_mul_of_nonneg_right hMexp (le_trans (hpos _) hu)
 theorem conj_top_degree_in_kernel_mean : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → ∀ C1 : ℝ, 0 < C1 → BigC fun _ ch C b => ConjTopAt ch C b C1 :=
-  _root_.GlobalTheory.KerConjMean.conjTopAt_of_rank_le_of_weight_le _root_.GlobalTheory.T.kernel_conjugate_transport GlobalTheory.T.gaussianGrowth_conj_torsionTranslates_vacuum GlobalTheory.T.exists_const_jetOperatorNorm_cauchyBound GlobalTheory.T.eventually_parameterSizes_testChoices
+  _root_.GlobalTheory.KerConjMean.conjTopAt_of_rank_le_of_weight_le _root_.GlobalTheory.T.kernel_conjugate_transport _root_.GlobalTheory.ConjGrowth.conj_growth GlobalTheory.T.exists_const_jetOperatorNorm_cauchyBound GlobalTheory.T.eventually_parameterSizes_testChoices
 end GlobalTheory.KerConjMean
 end
 end

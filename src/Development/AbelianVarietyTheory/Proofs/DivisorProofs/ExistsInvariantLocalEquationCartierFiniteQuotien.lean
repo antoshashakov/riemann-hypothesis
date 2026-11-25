@@ -2,7 +2,13 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
 public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsDomainAndIsIntegrallyClosedLocalizationOfIsInv
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineFunctionWeightedTranslatesUnitAtStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnIffGeneratesAtInv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineFunctionWeightedTranslatesUnitAt
+public import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LevelCarrying
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsCoprimeOfNatCast
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierSectionGeneratesAtVanishesAtFinsetStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -212,7 +218,7 @@ theorem exists_invariant_isEqn : ∀ (F : Type) [Field F] [CharZero F] (X W : Sc
     refine ⟨(n : X.presheaf.stalk x), ?_, map_natCast _ n⟩
     rw [← map_natCast φF.hom n]
     exact (IsUnit.mk0 (n : F) (Nat.cast_ne_zero.2 hn)).map _
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_affineFunction_weighted_translates_unitAt X (q ⁻¹ᵁ V) hU x hxU ι σ u
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.CharIndepAt.main X (q ⁻¹ᵁ V) hU x hxU ι σ u
     (fun i f hf => regAt_sig ρ i.1 (by rw [i.2]; exact hf))
     (fun i f hf => zeroAt_sig ρ i.1 (by rw [i.2]; exact hf))
     (fun i => (hu i).regAt)
