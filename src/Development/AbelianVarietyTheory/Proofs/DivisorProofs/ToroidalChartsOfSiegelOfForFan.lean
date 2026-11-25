@@ -47,7 +47,10 @@ namespace GlobalTheory.Published
 theorem toroidalCharts_of_siegel_of_forFan (hS : GlobalTheory.Published.SiegelToroidalIntegral) (hF : GlobalTheory.Published.ToroidalChartsForFan) :
     GlobalTheory.Published.ToroidalCharts := by
   refine hF.toroidalCharts fun E _ _ _ H q => ?_
-  obtain ⟨φs, hφ, -⟩ := hS (Module.finrank ℚ E * q + 1) (Nat.le_add_left _ _)
+  obtain ⟨φs, hφ⟩ : ∃ φ, GlobalTheory.PolFan.IsPolFan (id : ℤ → ℤ)
+      (Module.finrank ℚ E * q + 1) φ :=
+    (hS (Module.finrank ℚ E * q + 1) (Nat.le_add_left _ _)).imp fun _ h' => by
+      first | exact h' | exact h'.1
   obtain ⟨φ, h₁, h₂, -⟩ := GlobalTheory.PolFan.exists_fine_invariant_fan H hφ (Nat.le_succ _) ∅ (by simp)
   exact ⟨φ, h₁, h₂⟩
 

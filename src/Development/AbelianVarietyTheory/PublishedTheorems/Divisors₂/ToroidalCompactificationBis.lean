@@ -96,7 +96,10 @@ def ToroidalForFanKS : Prop :=
 theorem SiegelToroidalIntegral.exists_fan (h : SiegelToroidalIntegral) {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : Host E) (q : ℕ) :
     ∃ φ : InvFun (𝓞 E), IsPolFan H.bar q φ ∧ NoSelfInt H.bar q φ ∧ GlobalTheory.TorRef.IsPosFn H φ := by
-  obtain ⟨φs, hs, -⟩ := h (max 1 (Module.finrank ℚ E * q)) (le_max_left _ _)
+  obtain ⟨φs, hs⟩ : ∃ φ, GlobalTheory.PolFan.IsPolFan (id : ℤ → ℤ)
+      (max 1 (Module.finrank ℚ E * q)) φ :=
+    (h (max 1 (Module.finrank ℚ E * q)) (le_max_left _ _)).imp fun _ h' => by
+      first | exact h' | exact h'.1
   obtain ⟨φ, h₁, h₂, -, h₃, -⟩ := exists_fine_invariant_fan H hs (le_max_right _ _) ∅ (by simp)
   exact ⟨φ, h₁, h₂, h₃⟩
 

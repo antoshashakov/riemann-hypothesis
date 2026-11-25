@@ -75,7 +75,10 @@ theorem exists_sec_detOm (hE : GlobalTheory.Published.SemiAbelianHomExtension) (
     (hF : GlobalTheory.Published.ToroidalChartsForFan) (hr : 1 ≤ Dw.p + Dw.q) (Y : Model Xo c (RingHom.id c.F))
     (hY : (FlagMod.detOm Y).IsLB) (w : Xo.XF c) {A : LB Y.X} (hA : A.IsLB) :
     ∃ m : ℕ, 0 < m ∧ ∃ s : (LB.div (lbPow (FlagMod.detOm Y) m) A).Sec, Y.j w ∈ nonzeroLocus s := by
-  obtain ⟨φs, hs, -⟩ := hS (max 1 (Module.finrank ℚ E * min Dw.p Dw.q)) (le_max_left _ _)
+  obtain ⟨φs, hs⟩ : ∃ φ, GlobalTheory.PolFan.IsPolFan (id : ℤ → ℤ)
+      (max 1 (Module.finrank ℚ E * min Dw.p Dw.q)) φ :=
+    (hS (max 1 (Module.finrank ℚ E * min Dw.p Dw.q)) (le_max_left _ _)).imp fun _ h' => by
+      first | exact h' | exact h'.1
   obtain ⟨φ, h₁, h₂, -⟩ := GlobalTheory.PolFan.exists_fine_invariant_fan H hs (le_max_right _ _) ∅ (by simp)
   obtain ⟨Y', BD, d, k, -, hk, hsm, -, hBD, -, hamp⟩ := hF E H Dw hr φ h₁ h₂ l Xo c
   have hY' := GlobalTheory.FanTheta.isLB_detOm_of_smooth Y' hr hsm
