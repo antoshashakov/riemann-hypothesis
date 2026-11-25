@@ -14,7 +14,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlace
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricDoubleIntegralFiniteCombinationStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricDoubleIntegralsPositionOneEqCellSumStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricPositionsDoubleIntegralExistsUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepLinearModelGLPairApplyMemSchwartzBruhatFuStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilRepLinearModelGLPairApplyMemSchwartzBruhatFu
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsSelfDualOfHasConductor
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemElt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
@@ -125,10 +126,10 @@ theorem valOne_all : ∀ D : D7, ValOne D := by
   set F : A := ⟨rTrans h₂ f, hmem _ hf' hTy'⟩ with hFdef
   let Φa : GL (Q.n₀ ⊕ Fin (Q.c + 1 + 1 + 1)) Q.k → GL (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) Q.k →
       SB (Matrix (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) (Q.n₀ ⊕ Fin (Q.c + 1 + 1 + 1)) Q.k) :=
-    fun a x => ⟨om Q.μ₁ a x Q.Φ₁.1, GlobalTheory.T.weilRepLinearModelGLPair_apply_mem_schwartzBruhatFunctions Q.k _ _ Q.μ₁ a x Q.Φ₁⟩
+    fun a x => ⟨om Q.μ₁ a x Q.Φ₁.1, _root_.GlobalTheory.SplitWeil.ValOne.om_val_mem_SB Q.k _ _ Q.μ₁ a x Q.Φ₁⟩
   let Φb : GL (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) Q.k → GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k →
       SB (Matrix (Q.n₂ ⊕ Fin (Q.c + 1)) (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) Q.k) :=
-    fun x y => ⟨om Q.μ₂ x y Q.Φ₂.1, GlobalTheory.T.weilRepLinearModelGLPair_apply_mem_schwartzBruhatFunctions Q.k _ _ Q.μ₂ x y Q.Φ₂⟩
+    fun x y => ⟨om Q.μ₂ x y Q.Φ₂.1, _root_.GlobalTheory.SplitWeil.ValOne.om_val_mem_SB Q.k _ _ Q.μ₂ x y Q.Φ₂⟩
   obtain ⟨v, hv⟩ : ∃ v : GL (Q.n₀ ⊕ Fin (Q.c + 1 + 1 + 1)) Q.k → GL (Q.n₁ ⊕ Fin (Q.c + 1 + 1)) Q.k →
       GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k → ℂ, ∀ a x y,
       v a x y = S.val c₁ c₂ ((S.s₁.om (g, h₁) ∘ₗ T₁) (Φa a x)) ((S.s₂.om (h₁, h₂) ∘ₗ T₂) (Φb x y)) φ (τ y F).1 1 1 1 :=

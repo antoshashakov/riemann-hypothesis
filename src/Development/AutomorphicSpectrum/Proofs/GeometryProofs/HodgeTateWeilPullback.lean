@@ -14,7 +14,10 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilUnique
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackSmoothStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiAbelianOfPullbackStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingPullbackStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingTransportRelationStatement
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.Algebra.Group.Units.Defs
+public import Mathlib.Algebra.Ring.Hom.Defs
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingTransportRelation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -249,7 +252,7 @@ theorem main : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type) [Field �
   have hs : Smooth G.hom := hG.smooth
   have hG' : IsSemiAbelian G' := GlobalTheory.T.semi_abelian_of_pullback X X' G G' f φ hp hG
   obtain ⟨hF', t1, t2, tm, tu1, tu2⟩ := GlobalTheory.T.full_torsion_pullback_points X X' Ω Ω' ξ ξ' f i hd G G' φ hp n hF
-  obtain ⟨c1, c2⟩ := GlobalTheory.T.weil_pairing_transport_relation Ω Ω' i (Over.mk ξ ⟶ G) (Over.mk ξ' ⟶ G') (fun a c => a.left ≫ φ = spMap i ≫ c.left)
+  obtain ⟨c1, c2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.TorsionChars.chars_descend Ω Ω' i (Over.mk ξ ⟶ G) (Over.mk ξ' ⟶ G') (fun a c => a.left ≫ φ = spMap i ≫ c.left)
     n hn t1 t2 tm tu1 tu2 e e' (fun x g g' _ hg hg' => he.mul_right x g g' ‹_› hg hg') he.perfect he.nondeg
     (fun x g g' _ hg hg' => he'.mul_right x g g' ‹_› hg hg') he'.perfect
   have om := om_pull hξ hξ' hd hp hs M M' j jd hj hjd

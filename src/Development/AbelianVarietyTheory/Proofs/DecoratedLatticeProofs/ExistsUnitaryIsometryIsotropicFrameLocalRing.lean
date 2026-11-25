@@ -2,7 +2,7 @@ module
 
 public import Formalism.SatakeDualWeyl.Statement
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsOrthonormalBasisUnimodularHermitianLocalRiStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsOrthonormalBasisUnimodularHermitianLocalRi
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaDoubledHermitianSpaceNonsplitPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -208,7 +208,7 @@ theorem exists_completion [IsLocalRing O] {s : O →+* O} (hs : ∀ x, s (s x) =
       _ = 1 := by rw [hBπ0, ← cT_mul_r, hB0, cT_one_r]
   have hGu : IsUnit (Formalism.UG.cT s B0 * Q * B0) :=
     ⟨⟨_, _, hG, mul_eq_one_comm.mp hG⟩, rfl⟩
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_orthonormal_basis_unimodular_hermitian_local_ring O s hs ⟨τ, hτ⟩ hnorm m (Formalism.UG.cT s B0 * Q * B0) (key B0 B0) hGu
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.Core.Rk.Exh.exists_orthonormal_of_isLocalRing O s hs ⟨τ, hτ⟩ hnorm m (Formalism.UG.cT s B0 * Q * B0) (key B0 B0) hGu
   obtain ⟨B, B', hB, hBB, hBg⟩ : ∃ (B : Matrix (Fin n) (Fin m) O) (B' : Matrix (Fin m) (Fin n) O),
       B' * B = 1 ∧ B * B' = π ∧ Formalism.UG.cT s B * Q * B = 1 := by
     refine ⟨B0 * a.1, (a⁻¹).1 * B0', ?_, ?_, ?_⟩

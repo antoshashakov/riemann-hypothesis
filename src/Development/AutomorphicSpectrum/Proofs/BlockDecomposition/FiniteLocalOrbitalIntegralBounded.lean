@@ -16,7 +16,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeL
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeLevelsNeighbourhoodBasisStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatTuple
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingBiadditive
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingOnRationalTupleFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingOnRationalTupleFormula
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseCocycleBimultiplicativeStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseContinuousUnitaryStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalCharacterKernelScalingStatement
@@ -183,7 +183,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
               · simpa [h] using hx
               · simp only [h, if_false]
                 exact (latN b n M N).zero_mem a i)
-            rw [hB, hbc, GlobalTheory.T.pairing_on_rational_tuple_formula F E σ M J hJ n (psiFin F ψ) c c₀ i₀ x s₂ _] at h1
+            rw [hB, hbc, _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairSingle.pair_single F E σ M J hJ n (psiFin F ψ) c c₀ i₀ x s₂ _] at h1
             exact h1)
         obtain ⟨o, ho⟩ := hx
         refine ⟨o, ?_⟩
