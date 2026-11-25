@@ -15,13 +15,14 @@ public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsTotallyIsot
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagLeviMaxCompactClosedSubgroupsStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagUnipotentRadicalClosedSubgroupKeepsStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaDecompositionUnitaryIsotropicFlagStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaIntegrationFormulaConstantLe
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaIntegrationFormulaUpToConstantStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaNMKIntegrationPiProductStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaSliceIndicatorLintegralLeStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeviFactorIntegralModIntegralPointsLeStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableFlagLocalSizesUnitaryStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableSetIwasawaSliceOfTransversalStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalIntegralPointsCovolumeStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryIwasawaIntegrationFormulaRealPlaceStatement
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -77,7 +78,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.FlagBase.OneClass
 
-theorem covol_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [PolishSpace G]
+private theorem covol_le_of_slice_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [PolishSpace G]
     [MeasurableSpace G] [BorelSpace G] (N M K : Subgroup G) (hN : IsClosed (N : Set G)) (hM : IsClosed (M : Set G))
     (hK : IsClosed (K : Set G)) (hnorm : ∀ m ∈ M, ∀ u ∈ N, m * u * m⁻¹ ∈ N)
     (huniq : ∀ u ∈ N, ∀ m ∈ M, u * m ∈ K → u = 1) (hdec : ∀ g, ∃ u ∈ N, ∃ m ∈ M, ∃ k ∈ K, g = u * m * k)
@@ -85,8 +86,8 @@ theorem covol_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     (h1 : μN (N : Set G)ᶜ = 0) (h2 : μM (M : Set G)ᶜ = 0) (h3 : μK (K : Set G)ᶜ = 0) (h4 : μK Set.univ = 1)
     (hr : ∀ l ∈ K ⊓ M, μM.map (fun g => g * l) = μM) (hδr : ∀ l ∈ K ⊓ M, ∀ m ∈ M, δ (m * l) = δ m)
     (C c R t : ENNReal) (hc0 : c ≠ 0) (hc : c ≠ ⊤) (hR0 : R ≠ 0) (hR : R ≠ ⊤) (ht0 : t ≠ 0) (ht : t ≠ ⊤)
-    (hform : ∀ φ : G → ENNReal, Measurable φ →
-      C * ∫⁻ g, φ g ∂μ = c * ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, φ (u * m * k) ∂μK ∂μM ∂μN)
+    (hform : ∀ D : Set G, MeasurableSet D →
+      C * μ D ≤ c * ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, D.indicator 1 (u * m * k) ∂μK ∂μM ∂μN)
     (Γ ΓN ΓM A Z : Set G) (hZ : MeasurableSet Z) (hmul : ∀ x ∈ Γ, ∀ y ∈ Γ, x * y ∈ Γ)
     (hΓN : ∀ x ∈ ΓN, x ∈ Γ) (hΓM : ∀ m ∈ ΓM, m ∈ M ∧ ∃ g ∈ Γ, ∃ u ∈ N, g = u * m)
     (hΓN' : ∀ x ∈ ΓN, x ∈ N)
@@ -122,9 +123,8 @@ theorem covol_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     calc C * covol Γ μ A ≤ C * μ D := by
           gcongr
           exact iInf_le_of_le D (iInf_le_of_le hD (iInf_le _ hcov))
-      _ = C * ∫⁻ g, D.indicator 1 g ∂μ := by rw [lintegral_indicator_one hD]
+      _ ≤ c * ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, D.indicator 1 (u * m * k) ∂μK ∂μM ∂μN := hform D hD
       _ ≤ _ := by
-          rw [hform _ (measurable_one.indicator hD)]
           gcongr
           exact GlobalTheory.T.iwasawa_slice_indicator_lintegral_le G N M K μN μM μK δ (fun k => k * (σ k)⁻¹) D DN (DM ∩ Z) hδ
             (measurable_id.mul hσ.inv) hDN (hDM.inter hZ) h1 h2 h3 h4 (fun k _ => hκ k) hr hδr
@@ -161,6 +161,27 @@ theorem covol_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     _ ≤ (c * ∫⁻ m in DM ∩ Z, δ m ∂μM) * (R * t) := by gcongr
     _ = c * R * (t * ∫⁻ m in DM ∩ Z, δ m ∂μM) := by ring
     _ ≤ _ := by gcongr
+
+theorem covol_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [PolishSpace G]
+    [MeasurableSpace G] [BorelSpace G] (N M K : Subgroup G) (hN : IsClosed (N : Set G)) (hM : IsClosed (M : Set G))
+    (hK : IsClosed (K : Set G)) (hnorm : ∀ m ∈ M, ∀ u ∈ N, m * u * m⁻¹ ∈ N)
+    (huniq : ∀ u ∈ N, ∀ m ∈ M, u * m ∈ K → u = 1) (hdec : ∀ g, ∃ u ∈ N, ∃ m ∈ M, ∃ k ∈ K, g = u * m * k)
+    (μ μN μM μK : Measure G) [SFinite μN] [SFinite μM] [SFinite μK] (δ w : G → ENNReal) (hδ : Measurable δ)
+    (h1 : μN (N : Set G)ᶜ = 0) (h2 : μM (M : Set G)ᶜ = 0) (h3 : μK (K : Set G)ᶜ = 0) (h4 : μK Set.univ = 1)
+    (hr : ∀ l ∈ K ⊓ M, μM.map (fun g => g * l) = μM) (hδr : ∀ l ∈ K ⊓ M, ∀ m ∈ M, δ (m * l) = δ m)
+    (C c R t : ENNReal) (hc0 : c ≠ 0) (hc : c ≠ ⊤) (hR0 : R ≠ 0) (hR : R ≠ ⊤) (ht0 : t ≠ 0) (ht : t ≠ ⊤)
+    (hform : ∀ φ : G → ENNReal, Measurable φ →
+      C * ∫⁻ g, φ g ∂μ = c * ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, φ (u * m * k) ∂μK ∂μM ∂μN)
+    (Γ ΓN ΓM A Z : Set G) (hZ : MeasurableSet Z) (hmul : ∀ x ∈ Γ, ∀ y ∈ Γ, x * y ∈ Γ)
+    (hΓN : ∀ x ∈ ΓN, x ∈ Γ) (hΓM : ∀ m ∈ ΓM, m ∈ M ∧ ∃ g ∈ Γ, ∃ u ∈ N, g = u * m)
+    (hΓN' : ∀ x ∈ ΓN, x ∈ N)
+    (hA : ∀ γ ∈ Γ, ∀ g ∈ A, γ * g ∈ A) (hAZ : ∀ u ∈ N, ∀ m ∈ M, ∀ k ∈ K, u * m * k ∈ A → m ∈ Z)
+    (hw : ∀ m ∈ M, m ∈ Z → t * δ m ≤ w m) (hcN : covol ΓN μN N ≤ R * t) :
+    C * covol Γ μ A ≤ c * R * covol ΓM (μM.withDensity w) M := by
+  refine covol_le_of_slice_le N M K hN hM hK hnorm huniq hdec μ μN μM μK δ w hδ h1 h2 h3 h4
+    hr hδr C c R t hc0 hc hR0 hR ht0 ht ?_ Γ ΓN ΓM A Z hZ hmul hΓN hΓM hΓN' hA hAZ hw hcN
+  intro D hD
+  simpa only [lintegral_indicator_one hD] using (hform _ (measurable_one.indicator hD)).le
 
 theorem size_nonneg (I : AutInst) (x : I.GA) (A B : Submodule (𝓞 I.E) (Fin I.n → I.E)) :
     0 ≤ Formalism.HN.sizeQ (bas I) (frm I x) A B := by
@@ -308,12 +329,31 @@ theorem bound : ∀ (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (xf : I.Gf) (a : �
     Real.rpow_pos_of_pos (by rw [hrd]; linarith) _
   let F : (Fin a → ℝ) → ENNReal := B.indicator fun τ => ENNReal.ofReal (layerProd I.n I.f j τ id)
   have hF : Measurable F := (measurable_layerProd I.n I.f j).ennreal_ofReal.indicator hB
-  have hform := GlobalTheory.T.iwasawaNMKIntegration_pi_product _ (fun v => Formalism.REAL.UJ (I.ε v)) (fun v => Formalism.REAL.muG (I.ε v)) μN μM μK
-    (fun v => ENNReal.ofReal (c v)) (fun _ => ENNReal.ofReal (cIw p q j)) δ (fun v => by simpa using hcp v)
-    (fun v => ENNReal.ofReal_ne_top) hδ (fun v φ hφ => GlobalTheory.T.unitary_iwasawa_integration_formula_real_place I.n (I.ε v) p q (hsig v).1 (hsig v).2 a j hj _
-      (hiso v) (c v) (μN v) (μM v) (μK v) (hc v) (hμN v) (hμM v) (hK0 v) (hK1 v) (hKl v) φ hφ)
-  rw [← ENNReal.ofReal_prod_of_nonneg fun v _ => (hcp v).le, Finset.prod_const, Finset.card_univ, hcard,
-    ← ENNReal.ofReal_pow hIw.le] at hform
+  choose κ _hκ0 _hκt hκ using fun v =>
+    GlobalTheory.T.iwasawa_integration_formula_up_to_constant I.n (I.ε v) p q
+      (hsig v).1 (hsig v).2 a j hj _ (hiso v) (μN v) (μM v) (μK v)
+      (hμN v) (hμM v) (hK0 v) (hK1 v) (hKl v)
+  have hcoeff (v : InfinitePlace I.F) : ENNReal.ofReal (c v) * κ v ≤ ENNReal.ofReal (cIw p q j) :=
+    GlobalTheory.IwConst.iwasawa_constant_le I.n (I.ε v) p q (hsig v).1 (hsig v).2 a j hj _
+      (hiso v) (μN v) (μM v) (μK v) (hμN v) (hμM v) (hK0 v) (hK1 v) (hKl v)
+      (c v) (κ v) (hc v) (hκ v)
+  have hprod := GlobalTheory.T.iwasawaNMKIntegration_pi_product _ (fun v => Formalism.REAL.UJ (I.ε v))
+    (fun v => Formalism.REAL.muG (I.ε v)) μN μM μK (fun v => ENNReal.ofReal (c v))
+    (fun v => ENNReal.ofReal (c v) * κ v) δ (fun v => by simpa using hcp v)
+    (fun _ => ENNReal.ofReal_ne_top) hδ (fun v φ hφ => by rw [hκ v φ hφ, mul_assoc])
+  have hcoeffProd : (∏ v, ENNReal.ofReal (c v) * κ v) ≤ ENNReal.ofReal (cIw p q j ^ I.f) := by
+    calc
+      (∏ v, ENNReal.ofReal (c v) * κ v) ≤ ∏ _ : InfinitePlace I.F, ENNReal.ofReal (cIw p q j) :=
+        Finset.prod_le_prod fun v _ => hcoeff v
+      _ = _ := by
+        rw [Finset.prod_const, Finset.card_univ, hcard, ← ENNReal.ofReal_pow hIw.le]
+  have hform (D : Set I.Ginf) (hD : MeasurableSet D) :
+      ENNReal.ofReal (∏ v, c v) * (Measure.pi fun v => Formalism.REAL.muG (I.ε v)) D ≤
+        ENNReal.ofReal (cIw p q j ^ I.f) * ∫⁻ u, ∫⁻ m, (∏ v, δ v (m v)) *
+          ∫⁻ k, D.indicator 1 (u * m * k) ∂(Measure.pi μK) ∂(Measure.pi μM) ∂(Measure.pi μN) := by
+    rw [ENNReal.ofReal_prod_of_nonneg fun v _ => (hcp v).le, ← lintegral_indicator_one hD]
+    exact (hprod _ (measurable_one.indicator hD)).le.trans
+      (mul_le_mul_of_nonneg_right hcoeffProd zero_le)
   have hrad := GlobalTheory.T.unipotentRadical_integral_points_covolume I xf a j hj S hsat μN hμN
   rw [ENNReal.ofReal_mul hR.le] at hrad
   have hlevi := GlobalTheory.T.levi_factor_integral_mod_integral_points_le I I₀ e xf a j S Λ x₀ T T' T₀ hj had μM c₀ hμM hc₀ F hF
@@ -323,7 +363,7 @@ theorem bound : ∀ (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (xf : I.Gf) (a : �
       ((Subgroup.pi Set.univ M : Subgroup I.Ginf) : Set I.Ginf) := Set.ext fun x => (mM x).symm
   rw [eN] at hrad
   rw [eM] at hlevi
-  have hmain := covol_le (G := I.Ginf) (Subgroup.pi Set.univ N) (Subgroup.pi Set.univ M) (Subgroup.pi Set.univ K)
+  have hmain := covol_le_of_slice_le (G := I.Ginf) (Subgroup.pi Set.univ N) (Subgroup.pi Set.univ M) (Subgroup.pi Set.univ K)
     (isClosed_set_pi fun v _ => (show IsClosed (N v : Set (Formalism.REAL.UJ (I.ε v))) by
       rw [hN]; exact (hgN v).2.1))
     (isClosed_set_pi fun v _ => (show IsClosed (M v : Set (Formalism.REAL.UJ (I.ε v))) by
