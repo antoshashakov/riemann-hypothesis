@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMatrixOfIsLattice
 
 @[expose] public section
 
@@ -93,21 +94,8 @@ theorem intAf_mul {a a' : Af D.host.F} (ha : a ∈ intAf D.host.F) (ha' : a' ∈
     a * a' ∈ intAf D.host.F := fun w => by rw [map_mul]; exact mul_mem (ha w) (ha' w)
 
 theorem intAE_mul {z z' : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D) (hz' : z' ∈ intAE D) :
-    z * z' ∈ intAE D := by
-  induction hz using AddSubgroup.closure_induction with
-  | mem x hx =>
-    obtain ⟨a, ha, y, rfl⟩ := hx
-    induction hz' using AddSubgroup.closure_induction with
-    | mem x' hx' =>
-      obtain ⟨a', ha', y', rfl⟩ := hx'
-      rw [Algebra.TensorProduct.tmul_mul_tmul]
-      exact AddSubgroup.subset_closure ⟨a * a', intAf_mul ha ha', y * y', by push_cast; rfl⟩
-    | zero => rw [mul_zero]; exact zero_mem _
-    | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
-    | neg x _ hx => rw [mul_neg]; exact neg_mem hx
-  | zero => rw [zero_mul]; exact zero_mem _
-  | add x y _ _ hx hy => rw [add_mul]; exact add_mem hx hy
-  | neg x _ hx => rw [neg_mul]; exact neg_mem hx
+    z * z' ∈ intAE D :=
+  _root_.GlobalTheory.SplitLatBasis.mul_mem_intAE D hz hz'
 
 
 

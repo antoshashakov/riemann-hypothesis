@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMatrixOfIsLattice
 
 @[expose] public section
 
@@ -178,21 +179,8 @@ theorem tmul_mem {α : Af D.host.F} (hα : α ∈ intAf D.host.F) (o : 𝓞 D.ho
   AddSubgroup.subset_closure ⟨α, hα, o, rfl⟩
 
 theorem mul_mem_int {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
-    x * y ∈ intAE D := by
-  induction hx using AddSubgroup.closure_induction with
-  | mem w hw =>
-    obtain ⟨α, hα, o, rfl⟩ := hw
-    induction hy using AddSubgroup.closure_induction with
-    | mem w hw =>
-      obtain ⟨β, hβ, o', rfl⟩ := hw
-      rw [Algebra.TensorProduct.tmul_mul_tmul]
-      exact tmul_mem (GlobalTheory.LatVac.mul_mem_intAf hα hβ) (o * o')
-    | zero => rw [mul_zero]; exact zero_mem _
-    | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
-    | neg x _ hx => rw [mul_neg]; exact neg_mem hx
-  | zero => rw [zero_mul]; exact zero_mem _
-  | add x y _ _ hx hy => rw [add_mul]; exact add_mem hx hy
-  | neg x _ hx => rw [neg_mul]; exact neg_mem hx
+    x * y ∈ intAE D :=
+  _root_.GlobalTheory.SplitLatBasis.mul_mem_intAE D hx hy
 
 theorem approx (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     ∃ x : D.host.E, ∃ u ∈ intAE D, z = 1 ⊗ₜ[D.host.F] x + u := by

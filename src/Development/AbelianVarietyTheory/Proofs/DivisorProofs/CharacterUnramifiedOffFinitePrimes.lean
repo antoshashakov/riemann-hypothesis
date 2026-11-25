@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMatrixOfIsLattice
 
 @[expose] public section
 
@@ -76,22 +77,8 @@ theorem intAE_one {D : D7} : (1 : Af D.host.F ⊗[D.host.F] D.host.E) ∈ intAE 
   exact ⟨1, fun w => by rw [map_one]; exact one_mem _, 1, by simp [Algebra.TensorProduct.one_def]⟩
 
 theorem intAE_mul {D : D7} {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
-    x * y ∈ intAE D := by
-  induction hx using AddSubgroup.closure_induction with
-  | mem x h =>
-    obtain ⟨a, ha, s, rfl⟩ := h
-    induction hy using AddSubgroup.closure_induction with
-    | mem y h' =>
-      obtain ⟨b, hb, t, rfl⟩ := h'
-      refine AddSubgroup.subset_closure ⟨a * b, fun w => ?_, s * t, ?_⟩
-      · rw [map_mul]; exact mul_mem (ha w) (hb w)
-      · rw [Algebra.TensorProduct.tmul_mul_tmul]; push_cast; rfl
-    | zero => rw [mul_zero]; exact zero_mem _
-    | add y z _ _ h1 h2 => rw [mul_add]; exact add_mem h1 h2
-    | neg y _ h1 => rw [mul_neg]; exact neg_mem h1
-  | zero => rw [zero_mul]; exact zero_mem _
-  | add x z _ _ h1 h2 => rw [add_mul]; exact add_mem h1 h2
-  | neg x _ h1 => rw [neg_mul]; exact neg_mem h1
+    x * y ∈ intAE D :=
+  _root_.GlobalTheory.SplitLatBasis.mul_mem_intAE D hx hy
 
 theorem unr_off : ∀ (D : D7) (c : (AE D)ˣ →* Circle), Continuous c →
     ∃ S : Finset ℕ, (∀ q ∈ S, q.Prime) ∧ ∀ w : Pl D.host.E, Off S w → ∀ e, Formalism.L2.NTheta.IsIdemAt e w → UnrIdem c e := by

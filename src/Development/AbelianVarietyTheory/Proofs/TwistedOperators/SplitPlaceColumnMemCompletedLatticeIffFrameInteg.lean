@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorBasePointNormSq
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMatrixOfIsLattice
 
 @[expose] public section
 
@@ -53,22 +54,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitFrameColumn
 
 theorem intAE_mul {D : D7} {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
-    x * y ∈ intAE D := by
-  induction hx using AddSubgroup.closure_induction with
-  | mem x hx =>
-    obtain ⟨a, ha, c, rfl⟩ := hx
-    induction hy using AddSubgroup.closure_induction with
-    | mem y hy =>
-      obtain ⟨b, hb, d, rfl⟩ := hy
-      refine AddSubgroup.subset_closure ⟨a * b, fun w => ?_, c * d, ?_⟩
-      · rw [map_mul]; exact mul_mem (ha w) (hb w)
-      · rw [Algebra.TensorProduct.tmul_mul_tmul]; push_cast; rfl
-    | zero => rw [mul_zero]; exact zero_mem _
-    | add y z _ _ hy hz => rw [mul_add]; exact add_mem hy hz
-    | neg y _ hy => rw [mul_neg]; exact neg_mem hy
-  | zero => rw [zero_mul]; exact zero_mem _
-  | add x z _ _ hx hz => rw [add_mul]; exact add_mem hx hz
-  | neg x _ hx => rw [neg_mul]; exact neg_mem hx
+    x * y ∈ intAE D :=
+  _root_.GlobalTheory.SplitLatBasis.mul_mem_intAE D hx hy
 
 theorem comm_mem_intAf_iff {D : D7} (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔
