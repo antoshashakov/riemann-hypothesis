@@ -3,19 +3,20 @@ module
 public import Development.WeilBound.ThetaLifts.LatticeBasics.HypothesesE
 public import Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldC
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMinorHeightBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenominatorBoundByHeightStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceMinorHeightBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMinorHeightBound
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenominatorBoundByHeight
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceMinorHeightBound
 public import Mathlib.Analysis.Complex.Norm
 public import Mathlib.NumberTheory.NumberField.Basic
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedEmbeddingsCount
 public import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftInvertibleExistsNonzeroMinorStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormFinitePlaceBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormInfinitePlaceBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormFinitePlaceBound
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormInfinitePlaceBound
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PluckerMinorsDetermineColumnSpaceStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticIntegralCoefficientsBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactEntriesIntegralStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticIntegralCoefficientsBound
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactEntriesIntegral
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableHeightPowOfPolynomialCountStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -133,10 +134,10 @@ theorem absE_mul_vecHt_le (hcm : IsCMExt F E σ) (e : ∀ w : InfinitePlace F, E
   rw [GlobalTheory.Doubling.absE_apply, vecHt, mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← finprod_mul_distrib hs2 hs]
   refine mul_le_mul' (Finset.prod_le_prod' fun w _ => ?_) (finprod_le_finprod' (hs2.union hs |>.subset (Function.mulSupport_mul _ _))
     (hB.subset (Function.mulSupport_pow _ _)) fun v => ?_)
-  · refine GlobalTheory.T.local_norm_infinite_place_bound F E σ hcm J w (e w) u _ (fun f => compInf F E w (z f)) (Bi w) (fun f => ?_) (fun f => hi w f)
+  · refine _root_.GlobalTheory.CompanionTheory.GodementH.absEw_mul_locInf_le F E σ hcm J w (e w) u _ (fun f => compInf F E w (z f)) (Bi w) (fun f => ?_) (fun f => hi w f)
     rw [hz, map_mul]
     congr 1
-  · refine GlobalTheory.T.local_norm_finite_place_bound F E σ hcm J v u _ (fun f => compFin F E v (z f)) (Bf v) (fun f => ?_) (fun f => hf v f)
+  · refine _root_.GlobalTheory.CompanionTheory.GodementH.absEv_mul_locFin_le F E σ hcm J v u _ (fun f => compFin F E v (z f)) (Bf v) (fun f => ?_) (fun f => hf v f)
     rw [hz, map_mul, compFin_inclR]
     rfl
 
@@ -169,7 +170,7 @@ theorem isIntegral_of_quad {z b c : E} (hb : IsIntegral ℤ b) (hc : IsIntegral 
 
 theorem denom_one (hcm : IsCMExt F E σ) {u : J → E} {f₀ : J} (hu : u f₀ = 1) (f : J) :
     ∃ m : ℕ, 0 < m ∧ (m : ℝ≥0) ≤ (∏ᶠ v, locFin σ v u) ^ 2 ∧ IsIntegral ℤ ((m : E) * u f) := by
-  obtain ⟨y₁, y₂, hq, hy⟩ := GlobalTheory.T.quadratic_integral_coefficients_bound F E σ hcm (u f)
+  obtain ⟨y₁, y₂, hq, hy⟩ := _root_.GlobalTheory.CompanionTheory.GodementH.trace_norm_local_sizes F E σ hcm (u f)
   have hloc : ∀ (v : Pl (F := F)), max 1 ‖algebraMap F (Fv F v) y₁‖₊ ≤ locFin σ v u ∧ max 1 ‖algebraMap F (Fv F v) y₂‖₊ ≤ locFin σ v u := by
     intro v
     obtain ⟨h1, h2⟩ := hy v (embBar F E v)
@@ -192,8 +193,8 @@ theorem denom_one (hcm : IsCMExt F E σ) {u : J → E} {f₀ : J} (hu : u f₀ =
       refine hs.subset fun v hv hv' => hv ?_
       exact le_antisymm ((hy v).trans (le_of_eq hv')) (le_max_left _ _)
     exact finprod_le_finprod' hsub hs hy
-  obtain ⟨m₁, p₁, l₁, i₁⟩ := GlobalTheory.T.denominator_bound_by_height F y₁
-  obtain ⟨m₂, p₂, l₂, i₂⟩ := GlobalTheory.T.denominator_bound_by_height F y₂
+  obtain ⟨m₁, p₁, l₁, i₁⟩ := _root_.GlobalTheory.CompanionTheory.GodementH.Den.denominator_le F y₁
+  obtain ⟨m₂, p₂, l₂, i₂⟩ := _root_.GlobalTheory.CompanionTheory.GodementH.Den.denominator_le F y₂
   refine ⟨m₁ * m₂, Nat.mul_pos p₁ p₂, ?_, ?_⟩
   · rw [sq]; push_cast
     exact mul_le_mul' (l₁.trans (hsup _ fun v => (hloc v).1)) (l₂.trans (hsup _ fun v => (hloc v).2))
@@ -420,8 +421,8 @@ theorem key_bound (hcm : IsCMExt F E σ) {B : Base F E} {b : GL (Ix n) E} {K : S
     (fun w => (n.factorial : ℝ≥0) * htInf F w (Formalism.UG.bc (compInf F E w) X) ^ n)
     (fun v => htFin F v (Formalism.UG.bc (compFin F E v) X) ^ n)
     ((finite_mulSupport_htFin F X).subset (Function.mulSupport_pow _ _))
-    (fun w f => GlobalTheory.T.archimedean_minor_height_bound F E n (Ix n) w (B.emb w) X κ (((hK k⁻¹).1 (inv_mem hk)).1 w) f Sum.inl)
-    (fun v f => GlobalTheory.T.finite_place_minor_height_bound F E n (Ix n) v X κ (fun i j => GlobalTheory.T.standard_compact_entries_integral F E σ n Y B b K hK _ (inv_mem hk) v i j) f Sum.inl)
+    (fun w f => _root_.GlobalTheory.CompanionTheory.GodementH.MinInf.minor_le_htInf F E n (Ix n) w (B.emb w) X κ (((hK k⁻¹).1 (inv_mem hk)).1 w) f Sum.inl)
+    (fun v f => _root_.GlobalTheory.CompanionTheory.GodementH.absFin_minor_mul_le F E n (Ix n) v X κ (fun i j => _root_.GlobalTheory.CompanionTheory.GodementH.StdInt.absFin_inFrame_le_one F E σ n Y B b K hK _ (inv_mem hk) v i j) f Sum.inl)
   rw [hδ] at hmain
   have hprod : (∏ w, ((n.factorial : ℝ≥0) * htInf F w (Formalism.UG.bc (compInf F E w) X) ^ n) ^ 2) *
       ∏ᶠ v, (htFin F v (Formalism.UG.bc (compFin F E v) X) ^ n) ^ 2 =

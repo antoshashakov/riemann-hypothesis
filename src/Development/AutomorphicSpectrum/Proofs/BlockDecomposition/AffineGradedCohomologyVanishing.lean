@@ -2,20 +2,23 @@ module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.GlobSerreSt
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StCocycle
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverHigherCohomologyVanishesStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
+public import Mathlib.AlgebraicGeometry.AffineScheme
+public import Mathlib.Order.CompletePartialOrder
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverHigherCohomologyVanishes
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechRefinementCohomologyBijectiveStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinatesRestrictAffineOpenStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormActionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormAddStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormCocycleStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormCoverStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormExistsOfCocycleStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormLocalOfFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormRestrictStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormSmulStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormVanishOfFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormVectorBundleStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormAction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormAdd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormCocycle
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormCover
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormExistsOfCocycle
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormFrame
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormLocalOfFrame
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormRestrict
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormSmul
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormVanishOfFrame
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFormVectorBundle
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InOpenFiniteInfIffStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -142,7 +145,7 @@ theorem cech_pos (hB : StVB) {O : Type} [CommRing O] (l s : ℕ) (hb : TFBase (d
     (c : ∀ α, Coord q (U α) (d α)) (ha : ∀ n (i : Fin (n + 1) → ι), IsAffineOpen (capO U i)) (r p : ℕ) (hr : r < s) :
     Subsingleton ((CrystallineSemistableComparison.Pb.cechH (GF q r) (fun α => SS q l s (U α)) r).cx.H (p + 1)) := by
   obtain ⟨vb⟩ := hB l s hb q U d c ha r hr
-  exact GlobalTheory.T.affine_cover_higher_cohomology_vanishes (strV q) V hV U hU ha (CrystallineSemistableComparison.Pb.cechH (GF q r) (fun α => SS q l s (U α)) r) vb p
+  exact _root_.GlobalTheory.CompanionTheory.VBAff.subsingleton_H (strV q) V hV U hU ha (CrystallineSemistableComparison.Pb.cechH (GF q r) (fun α => SS q l s (U α)) r) vb p
 
 
 theorem main (hV : StVan) (hB : StVB) (hC : StCover) : KH.GlobSerreSt → ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q]
@@ -178,7 +181,7 @@ namespace GlobalTheory.CompanionTheory.GrForm
 
 theorem gr_aff : KH.LocGr → KH.LocVan → KH.PolyTf → KH.GlobSerreSt → KH.GlobVanSt → ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q]
     (V : X.Opens) (hV : IsAffineOpen V) (s r j : ℕ), r < s → j ≠ r → Subsingleton (HQ (KS q s {V}) r ((r : ℤ) + 1) j) := fun hL _ hP hS _ =>
-  main (GlobalTheory.T.graded_form_vanish_of_frame GlobalTheory.T.graded_form_frame hL hP)
-    (GlobalTheory.T.graded_form_vector_bundle (GlobalTheory.T.graded_form_exists_of_cocycle GlobalTheory.T.graded_form_cocycle) GlobalTheory.T.graded_form_add GlobalTheory.T.graded_form_smul GlobalTheory.T.graded_form_restrict GlobalTheory.T.graded_form_action (GlobalTheory.T.graded_form_local_of_frame GlobalTheory.T.graded_form_frame hL hP))
-    GlobalTheory.T.graded_form_cover hS
+  main (_root_.GlobalTheory.CompanionTheory.GrForm.van _root_.GlobalTheory.CompanionTheory.GrForm.stFrame hL hP)
+    (_root_.GlobalTheory.CompanionTheory.GrVB.main (_root_.GlobalTheory.CompanionTheory.GrForm.exists_of_cocycle _root_.GlobalTheory.CompanionTheory.GrForm.stCocycle) _root_.GlobalTheory.CompanionTheory.GrForm.stAdd _root_.GlobalTheory.CompanionTheory.GrFormSmul.stSmul _root_.GlobalTheory.CompanionTheory.GrForm.stRes _root_.GlobalTheory.CompanionTheory.GrForm.stAct (_root_.GlobalTheory.CompanionTheory.GrForm.stLoc _root_.GlobalTheory.CompanionTheory.GrForm.stFrame hL hP))
+    _root_.GlobalTheory.CompanionTheory.GrForm.AffCover.stCover hS
 end GlobalTheory.CompanionTheory.GrForm

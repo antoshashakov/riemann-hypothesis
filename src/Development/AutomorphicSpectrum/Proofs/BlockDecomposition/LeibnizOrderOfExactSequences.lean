@@ -3,17 +3,18 @@ module
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubsingletonOfGiso
 public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.LeibnizOrd
 public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.PhiPG0
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeTwistedIsoStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiltrationStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicExtensionExactStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiPreservesIsomorphismStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiProductLeftRankZeroStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiProductRankZeroTrivialStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PsiPreservesIsomorphismStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictionProductRankZeroLeftStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictionProductRankZeroRightStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistProductDistributesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistTwistAddStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeTwistedIso
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiltration
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicExtensionExact
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiPreservesIsomorphism
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiProductLeftRankZero
+import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.ProdGPn
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiProductRankZeroTrivial
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PsiPreservesIsomorphism
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictionProductRankZeroLeft
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictionProductRankZeroRight
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistProductDistributes
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistTwistAdd
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,32 +70,32 @@ namespace Main
 section leaf
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-theorem ses_of_mext {n : ℕ} {A B C : MRep k n} (h : MExt A B C) : Ses A.ρ B.ρ C.ρ := GlobalTheory.T.mirabolic_extension_exact k n A B C h
+theorem ses_of_mext {n : ℕ} {A B C : MRep k n} (h : MExt A B C) : Ses A.ρ B.ρ C.ρ := _root_.GlobalTheory.CompanionTheory.LeibOrd.ses_of_mext k n A B C h
 theorem miso_phiN (ψ : AddChar k Circle) {n : ℕ} {A B : MRep k (n + 1)} (h : MIso A B) : MIso (phiN ψ A) (phiN ψ B) :=
-  GlobalTheory.T.phi_preserves_isomorphism k ψ n A B h
-theorem giso_psiN {n : ℕ} {A B : MRep k n} (h : MIso A B) : GIso (psiN A) (psiN B) := GlobalTheory.T.psi_preserves_isomorphism k n A B h
+  _root_.GlobalTheory.CompanionTheory.LeibOrd.miso_phiN k ψ n A B h
+theorem giso_psiN {n : ℕ} {A B : MRep k n} (h : MIso A B) : GIso (psiN A) (psiN B) := _root_.GlobalTheory.CompanionTheory.LeibOrd.PsiIso.giso_psiN k n A B h
 theorem phi_gp_zero (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {m : ℕ} (ρ : GRep k (m + 1)) (τ : MRep k 0)
     (h : (m + 1) + 0 = (m + 0) + 1) (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) :
-    Subsingleton (phiN ψ (mcast h (prodGPn ρ τ))).V := GlobalTheory.T.phi_product_rank_zero_trivial k ψ hc h1 m ρ τ h hρ hτ
+    Subsingleton (phiN ψ (mcast h (prodGPn ρ τ))).V := _root_.GlobalTheory.CompanionTheory.PhiGpZero.phiN_prodGPn_zero k ψ hc h1 m ρ τ h hρ hτ
 theorem phi_product_trivial_right (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {i : ℕ} (τ : MRep k (i + 1)) (σ : GRep k 0)
     (h : (i + 1) + 0 = (i + 0) + 1) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) :
-    MIso (phiN ψ (mcast h (prodPGn τ σ))) (prodPGn (phiN ψ τ) σ) := GlobalTheory.T.phi_product_left_rank_zero k ψ hc h1 i τ σ h hτ hσ
+    MIso (phiN ψ (mcast h (prodPGn τ σ))) (prodPGn (phiN ψ τ) σ) := _root_.GlobalTheory.CompanionTheory.LeibOrd.GLZero.phiN_prodPGn_zero k ψ hc h1 i τ σ h hτ hσ
 theorem restriction_product_left_trivial {j n : ℕ} (π₁ : GRep k 0) (π₂ : GRep k (j + 1)) (h : 0 + (j + 1) = n + 1) (h' : 0 + j = n)
     (s₁ : IsSmooth π₁.ρ) (s₂ : IsSmooth π₂.ρ) :
-    MIso (gres ((π₁.prod π₂).cast h)) (mcast h' (prodGPn π₁ (gres π₂))) := GlobalTheory.T.restriction_product_rank_zero_left k j n π₁ π₂ h h' s₁ s₂
+    MIso (gres ((π₁.prod π₂).cast h)) (mcast h' (prodGPn π₁ (gres π₂))) := _root_.GlobalTheory.CompanionTheory.LeibRes0Left.gres_prod_zero_left' k j n π₁ π₂ h h' s₁ s₂
 theorem restriction_product_right_trivial {i n : ℕ} (π₁ : GRep k (i + 1)) (π₂ : GRep k 0) (h : (i + 1) + 0 = n + 1) (h' : i + 0 = n)
     (s₁ : IsSmooth π₁.ρ) (s₂ : IsSmooth π₂.ρ) :
-    MIso (gres ((π₁.prod π₂).cast h)) (mcast h' (prodPGn (gres π₁) π₂)) := GlobalTheory.T.restriction_product_rank_zero_right k i n π₁ π₂ h h' s₁ s₂
+    MIso (gres ((π₁.prod π₂).cast h)) (mcast h' (prodPGn (gres π₁) π₂)) := _root_.GlobalTheory.CompanionTheory.LeibTrivBlock.miso_gres_prod_zero k i n π₁ π₂ h h' s₁ s₂
 theorem derivB_iso (ψ : AddChar k Circle) (j : ℕ) {n : ℕ} (π : GRep k (n + j)) :
-    GIso (derivB ψ j π) ((dG ψ j π).tw ((j : ℝ) / 2)) := GlobalTheory.T.derivative_twisted_iso k ψ j n π
+    GIso (derivB ψ j π) ((dG ψ j π).tw ((j : ℝ) / 2)) := _root_.GlobalTheory.CompanionTheory.LeibOrd.DerivTw.derivB_iso_tw k ψ j n π
 theorem tw_prod {r t : ℕ} (A : GRep k r) (B : GRep k t) (s : ℝ) :
-    GIso ((A.prod B).tw s) ((A.tw s).prod (B.tw s)) := GlobalTheory.T.twist_product_distributes k r t A B s
-theorem tw_tw {n : ℕ} (A : GRep k n) (s s' : ℝ) : GIso ((A.tw s).tw s') (A.tw (s + s')) := GlobalTheory.T.twist_twist_add k n A s s'
+    GIso ((A.prod B).tw s) ((A.tw s).prod (B.tw s)) := _root_.GlobalTheory.CompanionTheory.LeibOrd.giso_tw_prod k r t A B s
+theorem tw_tw {n : ℕ} (A : GRep k n) (s s' : ℝ) : GIso ((A.tw s).tw s') (A.tw (s + s')) := _root_.GlobalTheory.CompanionTheory.LeibOrd.giso_tw_tw k n A s s'
 theorem chain_filtration {n : ℕ} {R : ℕ → GRep k n → Prop} {Z : ℕ → Prop} {a b : ℕ} {X : GRep k n}
     (h : Chain R Z a b X) :
     ∃ F : ℕ → Subrepresentation X.ρ, Antitone F ∧ F a = ⊤ ∧ F b = ⊥ ∧ ∀ i, a ≤ i → i < b →
       (∃ A, R i A ∧ Nonempty ((subQuot (F i) (F (i + 1))).Equiv A.ρ)) ∨ (Z i ∧ F i = F (i + 1)) :=
-  GlobalTheory.T.exists_antitone_filtration_of_chain k n R Z a b X h
+  _root_.GlobalTheory.CompanionTheory.LeibOrd.ChainFilt.exists_filtration k n R Z a b X h
 end leaf
 
 section deriv

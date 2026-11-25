@@ -3,22 +3,24 @@ module
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulEqOfRangeLe
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.QuotientVanishing.NonEllFlag
 public import GroundTheory.AutomorphicForms.ReductionHeight
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralizerCompactReductionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralizerCompactReduction
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommuteOfCommuteCyclicMatrixStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutePolynomialOfMemCentralizerStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnLambdaSubgroupStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreeMulIdempotentRangeStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutePolynomialOfMemCentralizer
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnLambdaSubgroup
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreeMulIdempotentRange
 public import Mathlib.FieldTheory.Separable
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCyclicVectorOfSeparable
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsEpsilonCentralizerBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvolutionAdjoinNormStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPolynomialProjectionInvariantStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPrimitiveIdempotentsSeparatingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLatticeDecompositionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LambdaInvolutionNegStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LogAbsEqLogIdeleModuleStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsEpsilonCentralizerBound
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvolutionAdjoinNorm
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPolynomialProjectionInvariant
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPrimitiveIdempotentsSeparating
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLatticeDecomposition
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LambdaInvolutionNeg
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IsotropicMahlerBounds.OnlyIsotropic
+public import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LogAbsEqLogIdeleModule
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableSdot
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RangeIsotropicIffInvolutionMulZeroStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RangeIsotropicIffInvolutionMulZero
 import GroundTheory.AutomorphicForms.ReductionMahler
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -84,7 +86,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 theorem commute_of_mem (d : GL (Fin n) E) (t : GA E n) (ht : t ∈ adCent d) (e : Matrix (Fin n) (Fin n) E)
     (he : IsPol (nrm d).val e) : t.val * rm e = rm e * t.val :=
-  GlobalTheory.T.commute_polynomial_of_mem_centralizer E n d t ht e he
+  _root_.GlobalTheory.CompanionTheory.TorusCh.CommMem.adCent_comm_rm E n d t ht e he
 
 theorem adCent_comm (d : GL (Fin n) E) (hd : IsRegD d) (t t' : GA E n) (ht : t ∈ adCent d) (ht' : t' ∈ adCent d) :
     t * t' = t' * t := by
@@ -97,18 +99,18 @@ theorem exists_idem' {K : Type} [Field K] {n : ℕ} (γ : Matrix (Fin n) (Fin n)
     (W : Submodule K (Fin n → K)) (hW : W.map (Matrix.toLin' γ) ≤ W) :
     ∃ π, IsPol γ π ∧ π * π = π ∧ LinearMap.range (Matrix.toLin' π) = W := by
   obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector K n γ hγ
-  exact GlobalTheory.T.exists_polynomial_projection_invariant K n γ v hγ hv W hW
+  exact _root_.GlobalTheory.CompanionTheory.TorusCh.exists_idem_pol_range_eq K n γ v hγ hv W hW
 
 theorem sg_pol (d : GL (Fin n) E) (x : Matrix (Fin n) (Fin n) E) (hx : IsPol (nrm d).val x) :
     IsPol (nrm d).val (sg d x) := by
-  obtain ⟨σ, hσ1, -⟩ := GlobalTheory.T.exists_involution_adjoin_norm E n d
+  obtain ⟨σ, hσ1, -⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.SgRing.exists_sgRing E n d
   have := (σ ⟨x, (isPol_iff _ _).1 hx⟩).2
   rw [hσ1] at this
   exact (isPol_iff _ _).2 this
 
 theorem prim_dich (d : GL (Fin n) E) (e : Matrix (Fin n) (Fin n) E) (he : IsPrim (nrm d).val e) :
     e * sg d e = 0 ∨ sg d e = e := by
-  obtain ⟨σ, hσ1, hσ2⟩ := GlobalTheory.T.exists_involution_adjoin_norm E n d
+  obtain ⟨σ, hσ1, hσ2⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.SgRing.exists_sgRing E n d
   have hcomm : ∀ a b : Algebra.adjoin E {(nrm d).val}, a * b = b * a := fun a b =>
     Subtype.ext (pol_comm _ _ _ ((isPol_iff _ _).2 a.2) ((isPol_iff _ _).2 b.2))
   let x : Algebra.adjoin E {(nrm d).val} := ⟨e, (isPol_iff _ _).1 he.pol⟩
@@ -160,7 +162,7 @@ theorem prim_dich (d : GL (Fin n) E) (e : Matrix (Fin n) (Fin n) E) (he : IsPrim
 
 theorem lam_sg (d : GL (Fin n) E) (e : Matrix (Fin n) (Fin n) E) (he : IsPol (nrm d).val e) (he2 : e * e = e) (t : GA E n)
     (ht : t ∈ adCent d) : lam (sg d e) t = - lam e t :=
-  GlobalTheory.T.lambda_involution_neg E n d e he2 t ht (commute_of_mem d t ht e he) (commute_of_mem d t ht _ (sg_pol d e he))
+  _root_.GlobalTheory.CompanionTheory.TorusAdj.lam_sg E n d e he2 t ht (commute_of_mem d t ht e he) (commute_of_mem d t ht _ (sg_pol d e he))
 
 theorem height_lb {K : Type} [Field K] [NumberField K] {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) (hγ : γ.charpoly.Separable)
     (e : Matrix (Fin n) (Fin n) K) (he : IsPrim γ e) {c : ℝ} (hc : 0 < c) :
@@ -170,7 +172,7 @@ theorem height_lb {K : Type} [Field K] [NumberField K] {n : ℕ} (γ : Matrix (F
       c ≤ (GroundTheory.Global.IdeleGroup.ideleModule K s : ℝ) → ∀ x : Fin n → K, x ᵥ* e ≠ 0 →
         ε ≤ GroundTheory.Automorphic.Reduction.height g x := by
   obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector K n γᵀ (by rwa [Matrix.charpoly_transpose])
-  refine GlobalTheory.T.exists_epsilon_centralizer_bound K n γ v (fun y => ?_) e he c hc
+  refine _root_.GlobalTheory.CompanionTheory.TorusCh.HeightBound.exists_pos_le_height K n γ v (fun y => ?_) e he c hc
   obtain ⟨h, hh⟩ := hv y
   exact ⟨h, by rw [hh, aeval_transpose, Matrix.mulVec_transpose]⟩
 
@@ -198,7 +200,7 @@ theorem torusChar : DegAdelic → TorusChar := by
   have hcomm : ∀ x y : Algebra.adjoin E {γ}, x * y = y * x := by
     intro x y
     exact Subtype.ext (pol_comm γ _ _ ((isPol_iff _ _).2 x.2) ((isPol_iff _ _).2 y.2))
-  obtain ⟨σ, hσ1, hσ2⟩ := GlobalTheory.T.exists_involution_adjoin_norm E n d
+  obtain ⟨σ, hσ1, hσ2⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.SgRing.exists_sgRing E n d
   let P : (Fin m → SignType) → Algebra.adjoin E {γ} := fun e => ⟨π e, (isPol_iff _ _).1 (hπp e)⟩
   have hPv : ∀ e, (P e : Matrix (Fin n) (Fin n) E) = π e := fun _ => rfl
   have hsgpol : ∀ x : Matrix (Fin n) (Fin n) E, IsPol γ x → IsPol γ (sg d x) := fun x hx => by
@@ -206,11 +208,11 @@ theorem torusChar : DegAdelic → TorusChar := by
     rw [hσ1] at this
     exact (isPol_iff _ _).2 this
   have hisoπ : ∀ e, sg d (π e) * π e = 0 := fun e =>
-    (GlobalTheory.T.range_isotropic_iff_involution_mul_zero E n d (π e)).1 (by rw [hπr e]; exact (hIso e).2)
+    (_root_.GlobalTheory.CompanionTheory.TorusCh.iso_range_iff_sg_mul E n d (π e)).1 (by rw [hπr e]; exact (hIso e).2)
   have hfind : ∀ p : Matrix (Fin n) (Fin n) E, IsPol γ p → p * p = p → sg d p * p = 0 → ∃ e, π e = p := by
     intro p hp hp2 hp3
     have hiso : IsoStab d (LinearMap.range (Matrix.toLin' p)) :=
-      ⟨img_of_pol (nrm d) p hp, (GlobalTheory.T.range_isotropic_iff_involution_mul_zero E n d p).2 hp3⟩
+      ⟨img_of_pol (nrm d) p hp, (_root_.GlobalTheory.CompanionTheory.TorusCh.iso_range_iff_sg_mul E n d p).2 hp3⟩
     obtain ⟨e, he, -⟩ := hU _ hiso
     refine ⟨e, (idem_facts γ _ _ (hπp e) hp (hπi e) hp2).2.1 ?_⟩
     rw [hπr e, he]
@@ -225,7 +227,7 @@ theorem torusChar : DegAdelic → TorusChar := by
         _ = _ := by rw [hπi, hπi]
     refine (idem_facts γ _ _ (hπp _) hpol (hπi _) hid).2.1 ?_
     rw [(idem_facts γ _ _ (hπp e) (hπp e') (hπi e) (hπi e')).2.2, hπr, hπr, hπr, hMeet]
-  have hc := GlobalTheory.T.idempotent_lattice_decomposition _ hcomm σ hσ2 m P (fun e => Subtype.ext (hπi e))
+  have hc := _root_.GlobalTheory.CompanionTheory.TorusCh.isotropicIdempotent_signs _ hcomm σ hσ2 m P (fun e => Subtype.ext (hπi e))
     (fun e => by
       rw [hcomm]
       exact Subtype.ext (by rw [Subalgebra.coe_mul, hσ1]; exact hisoπ e))
@@ -291,16 +293,16 @@ theorem torusChar : DegAdelic → TorusChar := by
   refine ⟨a, ?_, ?_, ?_, ?_, ?_⟩
   · intro t ht x e
     rw [← hsign t ht e, ← hπr e]
-    exact GlobalTheory.T.degree_mul_idempotent_range E n hDA _ (hπi e) t x (hcm t ht e)
+    exact _root_.GlobalTheory.CompanionTheory.TorusCh.DegLam.deg_lam E n hDA _ (hπi e) t x (hcm t ht e)
   · intro t ht t' ht'
     funext j
     exact lam_mul _ (hπi _) t t' (hcm t ht _) (hcm t' ht' _)
   · rintro _ ⟨r, hr, rfl⟩
     funext j
     exact lam_rat _ (hπi _) r (hcm _ (GlobalTheory.CompanionTheory.RatDisc.ratCent_le d ⟨r, hr, rfl⟩) _)
-  · exact continuousOn_pi.2 fun j => GlobalTheory.T.continuousOn_lambda_subgroup E n _ (hπi _) (GlobalTheory.T.log_abs_eq_log_idele_module E) (adCent d) fun t ht => hcm t ht _
+  · exact continuousOn_pi.2 fun j => _root_.GlobalTheory.CompanionTheory.TorusCh.continuousOn_lam E n _ (hπi _) (_root_.GlobalTheory.CompanionTheory.TorusCh.logAbs_eq_log_ideleModule E) (adCent d) fun t ht => hcm t ht _
   · intro M
-    obtain ⟨S, hS, hSx⟩ := GlobalTheory.T.exists_primitive_idempotents_separating E n γ hsep
+    obtain ⟨S, hS, hSx⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.exists_prim_cover E n γ hsep
     have hbd : ∀ e ∈ S, ∀ t ∈ adCent d, (∀ i, |a t i| ≤ M) → |lam e t| ≤ m * |M| := by
       intro e he t ht hM
       have hp := hS e he
@@ -336,7 +338,7 @@ theorem torusChar : DegAdelic → TorusChar := by
     choose f hf0 hf using hex
     obtain ⟨ε, hε, hεf⟩ := exists_pos_le S f fun e _ => hf0 e
     obtain ⟨C, hC, hred⟩ := GroundTheory.Automorphic.Reduction.exists_isCompact_forall_of_pos_le_height (K := E) (n := n) hε
-    obtain ⟨C', hC', hred'⟩ := GlobalTheory.T.centralizer_compact_reduction E n d C hC
+    obtain ⟨C', hC', hred'⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.exists_isCompact_ratCent_mul E n d C hC
     refine ⟨C', hC', fun t ht hM => hred' t ht ?_⟩
     have hnorm : t ∈ GroundTheory.Automorphic.Reduction.normOneGL (K := E) (n := n) := by
       rw [GroundTheory.Automorphic.Reduction.mem_normOneGL]
@@ -347,7 +349,7 @@ theorem torusChar : DegAdelic → TorusChar := by
       have h3 : lam (1 : Matrix (Fin n) (Fin n) E) t = 0 := by linarith
       have h4 : lam (1 : Matrix (Fin n) (Fin n) E) t = logAbs ((GroundTheory.Automorphic.AdelicGLn.det E n t : (Ad E)ˣ) : Ad E) := by
         simp [lam, chi, rm, Matrix.map_one _ (map_zero _) (map_one _)]
-      rw [h4, GlobalTheory.T.log_abs_eq_log_idele_module E] at h3
+      rw [h4, _root_.GlobalTheory.CompanionTheory.TorusCh.logAbs_eq_log_ideleModule E] at h3
       exact Real.eq_one_of_pos_of_log_eq_zero (GroundTheory.Global.IdeleGroup.ideleModule E _).2 h3
     have hheight : ∀ x : Fin n → E, x ≠ 0 → ε ≤ GroundTheory.Automorphic.Reduction.height t x := by
       intro x hx
@@ -357,7 +359,7 @@ theorem torusChar : DegAdelic → TorusChar := by
       refine (hεf e he).trans (hf e he t (commute_of_mem d t ht γ ⟨X, (aeval_X γ).symm⟩) hu.unit hu.unit_spec ?_ x hxe)
       have h1 := abs_le.1 (hbd e he t ht hM)
       have h2 : lam e t = Real.log (GroundTheory.Global.IdeleGroup.ideleModule E hu.unit : ℝ) := by
-        rw [← GlobalTheory.T.log_abs_eq_log_idele_module E]; rfl
+        rw [← _root_.GlobalTheory.CompanionTheory.TorusCh.logAbs_eq_log_ideleModule E]; rfl
       rw [← Real.exp_log (GroundTheory.Global.IdeleGroup.ideleModule E hu.unit).2, ← h2]
       exact Real.exp_le_exp.2 (by linarith [h1.1])
     obtain ⟨_, ⟨r, rfl⟩, c, hc, rfl⟩ := hred t hnorm hheight
