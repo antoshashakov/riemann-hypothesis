@@ -62,10 +62,8 @@ namespace Formalism.REAL
 
 variable {n : ℕ}
 
-private lemma Jm_mul_Jm_eq_one (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  first
-  | exact _root_.Formalism.REAL.Jm_mul_self
-  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
+private lemma Jm_mul_Jm_eq_one (ε : Fin n → Bool) : Jm ε * Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 lemma isUnit_signature_matrix (ε : Fin n → Bool) : IsUnit (Jm ε) := ⟨⟨Jm ε, Jm ε, Jm_mul_Jm_eq_one ε, Jm_mul_Jm_eq_one ε⟩, rfl⟩
 

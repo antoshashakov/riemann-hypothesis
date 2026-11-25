@@ -113,10 +113,8 @@ lemma io_smooth_smul {f : Matrix (Fin n) (Fin n) ℂ → E} (c : ℂ) (hf : Smoo
   refine ⟨U, fun g => c • F g, hU, hgU, hF.const_smul c, fun g hg hgJ => ?_⟩
   simp only [hfF g hg hgJ]
 
-private lemma Jm_mul_self_eq_oneFormalDegreeRatio {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  first
-  | exact _root_.Formalism.REAL.Jm_mul_self
-  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
+private lemma Jm_mul_self_eq_oneFormalDegreeRatio {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 private lemma Jm_conjTranspose_eq_selfFormalDegreeRatio {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm

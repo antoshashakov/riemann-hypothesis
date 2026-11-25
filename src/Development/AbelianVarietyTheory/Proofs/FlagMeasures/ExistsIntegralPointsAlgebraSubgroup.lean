@@ -51,12 +51,8 @@ namespace GlobalTheory.AlgCutSubgroup
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
-theorem sign_sq : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [diagonal_mul_diagonal, ← diagonal_one]
-  congr 1
-  funext i
-  split_ifs <;> norm_num
+theorem sign_sq : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 theorem inv_sub_one (g : Formalism.REAL.UJ ε) :
     uMat g⁻¹ - 1 = Formalism.REAL.Jm ε * (uMat g - 1)ᴴ * Formalism.REAL.Jm ε := by

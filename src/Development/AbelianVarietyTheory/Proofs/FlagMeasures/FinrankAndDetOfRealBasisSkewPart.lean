@@ -57,11 +57,8 @@ namespace GlobalTheory.RealFormBasis
 variable {n : ℕ} (ε : Fin n → Bool)
 
 private theorem Jm_mul_self_eq_one' {n : ℕ} (ε : Fin n → Bool) :
-    Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  rw [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
+    Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 private theorem Jm_conjTransposeFlagMeasures {n : ℕ} (ε : Fin n → Bool) :
     (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by

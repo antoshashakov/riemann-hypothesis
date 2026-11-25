@@ -71,11 +71,8 @@ theorem ipL_comm (X Y : Matrix (Fin n) (Fin n) ℂ) : ipL Y X = ipL X Y := by
     rw [conjTranspose_mul, conjTranspose_conjTranspose]
   rw [hswap, trace_conjTranspose, Complex.star_def, Complex.conj_re]
 
-private theorem Jm_sq_lemma : Jm ε * Jm ε = 1 := by
-  rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
-  congr 1
-  funext a
-  by_cases ha : ε a <;> simp [ha]
+private theorem Jm_sq_lemma : Jm ε * Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 private theorem Jm_conjTransposeFlagMeasures' : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, diagonal_conjTranspose]

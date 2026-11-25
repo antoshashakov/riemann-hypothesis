@@ -56,10 +56,8 @@ open Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeter
 
 namespace GlobalTheory.MinorDecay
 
-lemma Jm_sq {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  first
-  | exact _root_.Formalism.REAL.Jm_mul_self
-  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
+lemma Jm_sq {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 lemma herm_of_inP {n : ℕ} {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h : inP ε X) :
     X.IsHermitian := by

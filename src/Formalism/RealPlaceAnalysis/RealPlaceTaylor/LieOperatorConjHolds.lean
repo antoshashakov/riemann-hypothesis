@@ -76,10 +76,8 @@ lemma p0auxiliary_theta_single {n : ℕ} (ε : Fin n → Bool) (a b : Fin n) :
   push_cast
   split_ifs <;> simp_all
 
-private lemma Jm_mul_selfRealPlaceTaylor {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  first
-  | exact _root_.Formalism.REAL.Jm_mul_self
-  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
+private lemma Jm_mul_selfRealPlaceTaylor {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 private lemma conjTranspose_Jm {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, Matrix.diagonal_conjTranspose]

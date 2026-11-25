@@ -174,10 +174,8 @@ theorem ext_mulVec' {X Y : Matrix (Fin n) (Fin n) ℂ} (h : ∀ u, X *ᵥ u = Y 
   have h1 := congrFun (h (Pi.single j 1)) i
   simpa [Matrix.mulVec_single] using h1
 
-private theorem jm_sq_lemma (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  ext i j
-  simp only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply, Matrix.one_apply]
-  split_ifs <;> simp
+private theorem jm_sq_lemma (ε : Fin n → Bool) : Jm ε * Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 private theorem jm_herm_lemma_2 (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   simp only [Formalism.REAL.Jm, Matrix.diagonal_conjTranspose]

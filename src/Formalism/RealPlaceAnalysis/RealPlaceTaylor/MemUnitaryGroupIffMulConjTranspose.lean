@@ -52,10 +52,8 @@ noncomputable section
 
 namespace Formalism.REAL
 
-private lemma Jm_mul_self_eq_oneRealPlaceTaylor {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  first
-  | exact _root_.Formalism.REAL.Jm_mul_self
-  | (apply _root_.Formalism.REAL.Jm_mul_self <;> assumption)
+private lemma Jm_mul_self_eq_oneRealPlaceTaylor {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self ε
 
 private lemma Jm_conjTranspose_eq {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm

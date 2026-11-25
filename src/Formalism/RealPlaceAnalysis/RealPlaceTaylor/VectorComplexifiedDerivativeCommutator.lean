@@ -210,12 +210,8 @@ lemma vector_right_derivative_sub (hl : RdLinV) {f : Matrix (Fin n) (Fin n) ℂ 
     rw [Matrix.conjTranspose_neg, neg_mul, mul_neg, ← neg_add, hB, neg_zero]
   rw [sub_eq_add_neg A B, vector_right_derivative_add hl hf hA hnB hg, vector_right_derivative_neg hl hf hB hg, ← sub_eq_add_neg]
 
-private lemma Jm_mul_JmRealPlaceTaylor {m : ℕ} (e : Fin m → Bool) : Jm e * Jm e = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
+private lemma Jm_mul_JmRealPlaceTaylor {m : ℕ} (e : Fin m → Bool) : Jm e * Jm e = 1 :=
+  _root_.Formalism.REAL.Jm_mul_self e
 
 private lemma Jm_mul_Jm_mulRealPlaceTaylor {m : ℕ} (e : Fin m → Bool) (Y : Matrix (Fin m) (Fin m) ℂ) :
     Jm e * (Jm e * Y) = Y := by
