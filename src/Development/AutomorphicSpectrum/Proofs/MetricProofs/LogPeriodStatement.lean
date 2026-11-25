@@ -4,13 +4,14 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackPullba
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AevalNeZeroOfNotMem
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorCommutationStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorizationOfNearTriangularStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenericBlockMatrixIsBlockDiag
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorizationOfNearTriangular
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentSwapVarietiesArithmeticStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericFlagElementaryTwistStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorSumIdentityBaseChangeStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.NearTriangularOfStepConditionsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProportionalMinorsBlockTriangularStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.NearTriangularOfStepConditions
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProportionalMinorsBlockTriangular
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -258,10 +259,10 @@ theorem fwd_flags {τ : Ψ} {a b ca cb : Fin N} {k₀ : K} (hb : (b : ℕ) = a +
     obtain ⟨α, hα, hz⟩ := H.2.2 (τ, i) k hp
     obtain ⟨β, hβ, hz'⟩ := H'.2.2 (τ, i) k hp
     rw [hsnd] at hz'
-    exact GlobalTheory.T.proportional_minors_block_triangular N j i (h τ) (h' τ) α β M.j_le (H.2.1 τ).1 (H'.2.1 τ).1 (H.2.1 τ).2 hα hβ
+    exact _root_.GlobalTheory.CompanionTheory.Ar.PB.PlVanish.quot_vanish N j i (h τ) (h' τ) α β M.j_le (H.2.1 τ).1 (H'.2.1 τ).1 (H.2.1 τ).2 hα hβ
       (step_pl M hF hzb hG hp (H.2.1 τ).1 (H'.2.1 τ).1 fun m => by rw [← hz m, ← hz' m, snd_fst_ne hkk])
-  obtain ⟨B, U, t, hB, hBt, hBd, hU, hUt, hUd, hC⟩ := GlobalTheory.T.elementary_factorization_of_near_triangular N j ca cb C hcb hS hCb hCd
-    (GlobalTheory.T.near_triangular_of_step_conditions N j a b ca cb C M.j_le hb hab hca hcb hCb vanish)
+  obtain ⟨B, U, t, hB, hBt, hBd, hU, hUt, hUd, hC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.Factor.exists_upper_transvection_upper N j ca cb C hcb hS hCb hCd
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.StepShape.upper_of_steps N j a b ca cb C M.j_le hb hab hca hcb hCb vanish)
   have hBc : ∀ c, B c c ≠ 0 := fun c => by
     rw [Matrix.det_of_upperTriangular hBt] at hBd
     exact Finset.prod_ne_zero_iff.1 hBd c (Finset.mem_univ c)

@@ -6,17 +6,22 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagBundleUn
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagFramesGenericModelLeftStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericFlagOverGenericField
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TensorEquivOfBasisExtensionStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGenericTriangularFactorizationStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoordinateTieTransferStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGenericTriangularFactorization
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoordinateTieTransfer
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GMatIsGenericFlag
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptDescentGenericPointStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptLatticeBaseChangeStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptMorphismCompatStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptDescentGenericPoint
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.FiniteEtaleSurjectiveOfPullback
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptLatticeBaseChange
+public import Development.AutomorphicSpectrum.Statements.MetricStatements.ExistsFlagModelBaseMetric
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptMorphismCompat
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.InChartIffOfDominates
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsGenFamAlgebraicIndependentFinrankStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsGenFamRevInvSubfamilyStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LatticePullSplitInjectionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsGenFamAlgebraicIndependentFinrank
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsGenFamRevInvSubfamily
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LatticePullSplitInjection
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -143,8 +148,8 @@ theorem gen_of_mat (F₀ Ω G : Type) [Field F₀] [Field Ω] [Field G] [Algebra
     (hlin : ∀ s, LinearIndependent G fun k => j₀ (c s k)) (hU : IsGenFam Ω G U) (hA : ∀ s, IsUnit (A s).det)
     (hb : ∀ s k, b s k = ∑ l, ((A s).map (algebraMap Ω G) * U s) l k • j₀ (c s l)) (hd : 0 < d)
     (hfin : Module.finrank F₀ Ω = d) : GlobalTheory.CompanionTheory.Ar.IsGenericFlag (Ω' := G) j₀ V₀ b d := by
-  obtain ⟨u', B, hu', hB, hBt, hAB⟩ := GlobalTheory.T.exists_generic_triangular_factorization Ω G S r U A hU hA
-  obtain ⟨hind, hdeg⟩ := GlobalTheory.T.isGenFam_algebraicIndependent_finrank F₀ Ω G S r u' d hd hfin hu'
+  obtain ⟨u', B, hu', hB, hBt, hAB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl.isGenFam_const_mul_eq_mul_upper Ω G S r U A hU hA
+  obtain ⟨hind, hdeg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl.genFam_degree_over_subfield F₀ Ω G S r u' d hd hfin hu'
   have hbe : ∀ s, b s = colFrame (colFrame (fun k => j₀ (c s k)) (u' s)) (B s) := fun s => by
     rw [← colFrame_mul, ← hAB]
     funext k
@@ -192,7 +197,7 @@ theorem exists_colFlags : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   have htie₀ : CoordTie ℤ 𝔐'.ξ (seg (yv (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀)) := by
     convert 𝔐'.tie using 1
     exact Subsingleton.elim _ _
-  have htie := GlobalTheory.T.hodgeCpt_dual_frame_generic E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n φ 𝔐'.X 𝔐'.ξ htie₀
+  have htie := _root_.GlobalTheory.CompanionTheory.Ar.FlagTie.flagCoord_tie E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n φ 𝔐'.X 𝔐'.ξ htie₀
   have hch := _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.inChart_iff_of_dominates 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr
     (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))) ((k : K₀) → J₀ k) (seg x₀) 𝔐.tie htie₀.gen hdom
   have hfl := GlobalTheory.T.flag_frames_generic_model_left 𝔐.X Ω 𝔐.ξ (EE 𝔐) ((k : K₀) → J₀ k) (seg x₀) (CMType H ⊕ CMType H)
@@ -204,7 +209,7 @@ theorem exists_colFlags : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   have hW : ∀ τ, (𝔐'.V (.inl τ)).IsFlagVBOn Set.univ (fun k : Fin D.p =>
       ∑ a, genU Ω (rk (CMType H) D.p D.q) (.inl τ) a k • j (bW τ a)) := by
     intro τ
-    have h1 := GlobalTheory.T.lattice_pull_split_injection 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr 𝔐.Li (EE 𝔐) (inW 𝔐)
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.PullMap.isFlagVBOn_pull_of_map 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr 𝔐.Li (EE 𝔐) (inW 𝔐)
       (LinearMap.fst Ω _ _) (𝔐.V (.inl τ)) D.p (fun a => (bW τ a : 𝔐.Li))
       (genU Ω (rk (CMType H) D.p D.q) (.inl τ)) (LinearMap.ext fun _ => rfl) (hfl (.inl τ))
     have h2 := GlobalTheory.T.flag_bundle_under_equiv 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr 𝔐.Li _ 𝔐'.Li
@@ -244,16 +249,16 @@ theorem exists_colFlags : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   have hO' : ∀ τ, (𝔐'.V (.inr τ)).IsFlagVBOn Set.univ (fun k : Fin D.q =>
       colFrame (fun a => j (v τ a)) (genU Ω (rk (CMType H) D.p D.q) (.inr τ) : Matrix (Fin D.q) (Fin D.q) _)ᵀ⁻¹ k.rev) := by
     intro τ
-    have h1 := GlobalTheory.T.lattice_pull_split_injection 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr _ (EE 𝔐) (inO 𝔐 τ)
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.PullMap.isFlagVBOn_pull_of_map 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr _ (EE 𝔐) (inO 𝔐 τ)
       ((LinearMap.proj τ).comp (LinearMap.snd Ω _ _)) (omBundle 𝔐 τ) D.q (fun a => bO τ a)
       (genU Ω (rk (CMType H) D.p D.q) (.inr τ)) (LinearMap.ext fun _ => by simp [inO]) (hfl (.inr τ))
     rw [hV]
-    exact GlobalTheory.T.hodgeCpt_lattice_base_change E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 τ 𝔐'.X _ 𝔐'.ξ pr 𝔐'.Li j (bO τ) (v τ) _ hext hdom (hv τ)
+    exact _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl.flags_dual_of_flags_pull E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 τ 𝔐'.X _ 𝔐'.ξ pr 𝔐'.Li j (bO τ) (v τ) _ hext hdom (hv τ)
       (fun a => genU_diag (r := rk (CMType H) D.p D.q) (.inr τ) a) (fun a b h => genU_above (r := rk (CMType H) D.p D.q) (.inr τ) a b h) h1
 
-  obtain ⟨ι, hι, hdomι, hfin⟩ := GlobalTheory.T.hodgeCpt_morphism_compat E H D l Xo c Y S Ω _ K₀ _ J₀ _ x₀ _ 𝔐 𝔐' pr _ j d hO hC
+  obtain ⟨ι, hι, hdomι, hfin⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagPull.field_of_hodgeOver E H D l Xo c Y S Ω _ K₀ _ J₀ _ x₀ _ 𝔐 𝔐' pr _ j d hO hC
   obtain ⟨Li₀, _, _, M₀, j₁, V₀, c₀, hpt₁, hext₁, hV₀, hc₀⟩ :=
-    GlobalTheory.T.hodgeCpt_descent_generic_point E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 𝔐'.Ω₀ 𝔐'.ξ₀ ι 𝔐'.gen₀ hdomι
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl.lie_generic_eigenspaces E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 𝔐'.Ω₀ 𝔐'.ξ₀ ι 𝔐'.gen₀ hdomι
   have hjinj : Function.Injective j := by
     refine (injective_iff_map_eq_zero j).2 fun e he => ?_
     by_contra hne
@@ -293,7 +298,7 @@ theorem exists_colFlags : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
       (GenField Ω (rk (CMType H) D.p D.q)) := fun s =>
     if Sum.isRight s = true then revInv (genU Ω (rk (CMType H) D.p D.q) s) else genU Ω (rk (CMType H) D.p D.q) s
   have hU : IsGenFam Ω (GenField Ω (rk (CMType H) D.p D.q)) U :=
-    GlobalTheory.T.isGenFam_revInv_subfamily Ω _ _ (rk (CMType H) D.p D.q) (genU Ω (rk (CMType H) D.p D.q)) (fun s => Sum.isRight s = true)
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl.isGenFam_revInv_ite Ω _ _ (rk (CMType H) D.p D.q) (genU Ω (rk (CMType H) D.p D.q)) (fun s => Sum.isRight s = true)
       (genU_isGenFam Ω _)
   have hUl : ∀ τ, U (.inl τ) = genU Ω (rk (CMType H) D.p D.q) (.inl τ) := fun τ => if_neg (by simp)
   have hUr : ∀ τ, U (.inr τ) = revInv (genU Ω (rk (CMType H) D.p D.q) (.inr τ)) := fun τ => if_pos (by simp)

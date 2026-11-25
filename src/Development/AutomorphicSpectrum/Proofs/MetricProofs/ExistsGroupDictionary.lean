@@ -6,22 +6,24 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameCh
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameDeterminesLatticeStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameInversePropertiesStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameOfEquivalentStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchimedeanActionOnLatticeVectorsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchimedeanUnitaryRepresentationStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchimedeanUnitarySurjectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallAutomorphismInverseExistsStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntEmbInjective
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchimedeanActionOnLatticeVectors
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchimedeanUnitaryRepresentation
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArchimedeanUnitarySurjective
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsFundSet
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallAutomorphismInverseExists
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusHolomorphicPotentialChangeStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusMulStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusTransitiveStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusZeroContinuousStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusZeroContinuous
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallMobiusZeroEqIffUnitaryStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsAdaptedFrameBisStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsLatticeEmbeddingStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsMajorantOfPositiveFrameStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsMajorantOfPositiveFrame
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsTranslatedRiemannLatticeStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicAdaptedFrameOnBallStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LatticeStabilizerEquivAutomorphismsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.NormSqEqAdaptedFrameSumStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LatticeStabilizerEquivAutomorphisms
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.NormSqEqAdaptedFrameSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -95,7 +97,7 @@ theorem groupDict_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have hform : ∀ t, (F.R t).form = F.form := F.form_eq
   obtain ⟨A0, hA0⟩ := GlobalTheory.T.exists_adapted_frame_bis E Ψ j j' n g Λ F C (F.R 0) (hform 0) (F.sig 0 h0)
   have fct := fun τ => GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ (A0 τ) (hA0.unit τ)
-  obtain ⟨hmul, hone, huni, hcont⟩ := GlobalTheory.T.archimedean_unitary_representation E Ψ j j' n g Λ F C
+  obtain ⟨hmul, hone, huni, hcont⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.TmBasic.tm_basic E Ψ j j' n g Λ F C
   have hinv : ∀ (a : C.Arch) τ, C.tm a τ * C.tm a⁻¹ τ = 1 := by
     intro a τ
     rw [← hmul, mul_inv_cancel, hone]
@@ -103,7 +105,7 @@ theorem groupDict_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     intro a τ
     rw [← hmul, inv_mul_cancel, hone]
   let Pt : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ := fun τ => (C.cinv (A0 τ) τ)ᴴ * C.cinv (A0 τ) τ
-  obtain ⟨M, hMlen, hMstab⟩ := GlobalTheory.T.exists_majorant_of_positive_frame E Ψ j j' n g Λ F C Pt (fun τ => (fct τ).2.2.1) (fun τ => (fct τ).2.2.2.1)
+  obtain ⟨M, hMlen, hMstab⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.TauMaj.exists_majorant E Ψ j j' n g Λ F C Pt (fun τ => (fct τ).2.2.1) (fun τ => (fct τ).2.2.2.1)
 
   have hrot : ∀ a : C.Arch, ∃ R' : RiemLat E g Λ, R'.form = (F.R 0).form ∧ R'.B = (F.R 0).B ∧
       (∀ x, R'.P x = C.perExt (F.R 0) fun τ => C.tm a⁻¹ τ *ᵥ C.vec x τ) ∧
@@ -149,7 +151,7 @@ theorem groupDict_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have hsurj : ∀ t ∈ ballDom F.q, ∃ a, π a = t := by
     intro t ht
     obtain ⟨At, hAt⟩ := GlobalTheory.T.exists_adapted_frame_bis E Ψ j j' n g Λ F C (F.R t) (hform t) (F.sig t ht)
-    obtain ⟨a, ha⟩ := GlobalTheory.T.archimedean_unitary_surjective E Ψ j j' n g Λ F C (fun τ => At τ * C.cinv (A0 τ) τ)
+    obtain ⟨a, ha⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj E Ψ j j' n g Λ F C (fun τ => At τ * C.cinv (A0 τ) τ)
       (fun τ => (fct τ).2.2.2.2.2 _ (hAt.unit τ))
     have hAa : (fun τ => C.tm a τ * A0 τ) = At := by
       funext τ
@@ -206,7 +208,7 @@ theorem groupDict_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
       exact hfib3 a b h
     · intro s hs
       obtain ⟨w, hw, hws⟩ := GlobalTheory.T.ball_mobius_transitive Ψ j j' n F.q s hs
-      obtain ⟨a, ha⟩ := GlobalTheory.T.archimedean_unitary_surjective E Ψ j j' n g Λ F C (fun τ => (A0 τ * w τ) * C.cinv (A0 τ) τ) (fun τ => by
+      obtain ⟨a, ha⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_surj E Ψ j j' n g Λ F C (fun τ => (A0 τ * w τ) * C.cinv (A0 τ) τ) (fun τ => by
         refine (fct τ).2.2.2.2.2 _ ?_
         have hw' := hw τ
         unfold IsSgU at hw'
@@ -218,15 +220,15 @@ theorem groupDict_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
         rw [ha τ, Matrix.mul_assoc (A0 τ * w τ), (fct τ).1, Matrix.mul_one, ← Matrix.mul_assoc, (fct τ).1, Matrix.one_mul]
       refine ⟨π a, (hπ a).1, ?_⟩
       rw [hZπ, hua, hws]
-  obtain ⟨Y, hY, hYZ⟩ := GlobalTheory.T.ball_automorphism_inverse_exists Ψ j j' n F.q Z G₁ hZ hbij hG₁ hpot
+  obtain ⟨Y, hY, hYZ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.BallInverse.exists_inverse Ψ j j' n F.q Z G₁ hZ hbij hG₁ hpot
   have hπY : ∀ a, π a = Y (moebBall F.q (u a) 0) := fun a => by
     rw [← hZπ, (hYZ _ (hπ a).1).2.2]
   have hucont : Continuous fun a : C.Arch => moebBall F.q (u a) 0 := by
-    refine GlobalTheory.T.ball_mobius_zero_continuous Ψ j j' n F.q C.Arch u (fun τ => ?_) uU
+    refine _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.continuous_moebBall_zero Ψ j j' n F.q C.Arch u (fun τ => ?_) uU
     exact continuous_const.matrix_mul ((hcont τ).matrix_mul continuous_const)
   have hmem : ∀ a, moebBall F.q (u a) 0 ∈ ballDom F.q := fun a =>
     (GlobalTheory.T.ball_mobius_holomorphic_potential_change Ψ j j' n F.q (u a) (uU a)).2.1 h0
-  obtain ⟨α, hα⟩ := GlobalTheory.T.lattice_stabilizer_equiv_automorphisms E Ψ j j' n g Λ F C
+  obtain ⟨α, hα⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Stab.exists_alpha E Ψ j j' n g Λ F C
   refine ⟨{ h := C.h, e := C.e, e_inj := C.e_inj, e_smul := C.e_smul, Dn := C.Dn, integral := C.integral, orth := C.orth,
             M := M, κ := 2 * C.c, κ_pos := by have := C.c_pos; positivity, π := π, π_cont := ?_, π_range := ?_,
             π_fibre := hfib2, len := ?_, α := α, α_eq := hα, α_act := ?_, act := ?_ }⟩
@@ -240,7 +242,7 @@ theorem groupDict_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     · intro ht
       exact hsurj t ht
   · intro a x
-    rw [GlobalTheory.T.normSq_eq_adapted_frame_sum E Ψ j j' n g Λ F C _ _ (hform _) (radπ a) x, hMlen a x]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.AdaptedLen.normSq_adapted E Ψ j j' n g Λ F C _ _ (hform _) (radπ a) x, hMlen a x]
     congr 1
     refine Finset.sum_congr rfl fun τ _ => ?_
     rw [aCinv, ← Matrix.mulVec_mulVec, star_mulVec_dot]
@@ -253,7 +255,7 @@ theorem groupDict_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
       congr 1
       funext τ
       have hv : C.vec ((α γ).1 x) τ = C.tm (archEmbed C.h (Pi.basisFun E (Fin (j + j'))) γ) τ *ᵥ C.vec x τ := by
-        rw [GlobalTheory.T.archimedean_action_on_lattice_vectors E Ψ j j' n g Λ F C]
+        rw [_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.tm_archEmbed_mulVec_vec E Ψ j j' n g Λ F C]
         funext i
         show embOf (F.σ τ) (C.e ((α γ).1 x) i) = _
         rw [hα]

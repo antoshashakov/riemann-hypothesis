@@ -2,19 +2,20 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntEmbInjective
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideAlt
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameBallCoordinateStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameHermitianProductStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameBallCoordinate
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AdaptedFrameHermitianProduct
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallDomainOpenConvexZeroStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallPotentialFormulaStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.EigenProjectionInEigenspaceStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallPotentialFormula
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.EigenProjectionInEigenspace
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsAdaptedFrameBisStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicCoefficientsInFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicEigenProjectionOnBallStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LinearIndependentOfGramDetUnitStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetChangeStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicEigenProjectionOnBall
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LinearIndependentOfGramDetUnit
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetChange
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.PPartRealSmul
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodExtensionImaginaryFormStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SignatureUnitaryBlocksInvertibleStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodExtensionImaginaryForm
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SignatureUnitaryBlocksInvertible
 public import GroundTheory.HeightsAndTheta.Heights.Regularisation.PosSemidefOfIntQuadNonneg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -97,9 +98,9 @@ theorem chart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
     fun τ i t => C.pPart (F.R t) τ (A₀ τ *ᵥ Sum.elim (Pi.single i 1) 0)
   let Wm : (Fin n → ℂ) → Ψ → Matrix (Fin j') (Fin j) ℂ := fun t τ => moebW (C.cinv (A₀ τ) τ * Ad t τ) 0
   have hgA := fun t (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (hA : C.IsAdapted (F.R t) A) =>
-    GlobalTheory.T.adapted_frame_hermitian_product E Ψ j j' n g Λ F C (F.R t) A (GlobalTheory.T.period_extension_imaginary_form E Ψ j j' n g Λ F C (F.R t) (F.form_eq t)) hA
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.gram_last_block E Ψ j j' n g Λ F C (F.R t) A (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.im_perExt_eq_Fm E Ψ j j' n g Λ F C (F.R t) (F.form_eq t)) hA
   have hpt := fun t (ht : t ∈ ballDom F.q) τ =>
-    GlobalTheory.T.adapted_frame_ball_coordinate E Ψ j j' n g Λ F C (F.R t) (Ad t) A₀ τ (Wm t τ) (GlobalTheory.T.signature_unitary_blocks_invertible j j') (hgA t (Ad t) (hAd t ht) τ) (hAd t ht) (hunit τ) rfl
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.point_graph_gram E Ψ j j' n g Λ F C (F.R t) (Ad t) A₀ τ (Wm t τ) (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks j j') (hgA t (Ad t) (hAd t ht) τ) (hAd t ht) (hunit τ) rfl
 
   have hgram : ∀ t ∈ ballDom F.q, ∀ τ, IsUnit (F.R t |>.gram fun b => dV τ b t).det := by
     intro t ht τ
@@ -110,7 +111,7 @@ theorem chart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
     rw [Matrix.det_mul, Matrix.det_smul, Matrix.det_one, mul_one] at h2
     exact isUnit_iff_ne_zero.2 (left_ne_zero_of_mul (h2 ▸ pow_ne_zero _ hc))
   have hind : ∀ t ∈ ballDom F.q, ∀ τ, LinearIndependent ℂ (fun b => dV τ b t) := fun t ht τ =>
-    GlobalTheory.T.linearIndependent_of_gram_det_unit E g Λ (F.R t) j' _ (hgram t ht τ)
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.linearIndependent_of_isUnit_gram_det E g Λ (F.R t) j' _ (hgram t ht τ)
 
   have hrel : ∀ t, ∀ τ (W : Matrix (Fin j') (Fin j) ℂ),
       (∀ v : Fin j → ℂ, C.pPart (F.R t) τ (A₀ τ *ᵥ Sum.elim v (W *ᵥ v)) = 0) → ∀ i,
@@ -137,9 +138,9 @@ theorem chart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
     exact sub_eq_zero.1 this
 
   have hdV : ∀ τ b, DifferentiableOn ℂ (dV τ b) (ballDom F.q) := fun τ b =>
-    GlobalTheory.T.holomorphic_eigen_projection_on_ball E Ψ j j' n g Λ F C τ _
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.pPart_differentiableOn E Ψ j j' n g Λ F C τ _
   have haV : ∀ τ i, DifferentiableOn ℂ (aV τ i) (ballDom F.q) := fun τ i =>
-    GlobalTheory.T.holomorphic_eigen_projection_on_ball E Ψ j j' n g Λ F C τ _
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.pPart_differentiableOn E Ψ j j' n g Λ F C τ _
 
   have hWd : ∀ τ i, DifferentiableOn ℂ (fun t b => Wm t τ b i) (ballDom F.q) := fun τ i =>
     GlobalTheory.T.holomorphic_coefficients_in_frame n j' g _ (fun b => dV τ b) (fun t => -aV τ i t) (fun t b => Wm t τ b i) hUo (hdV τ) (haV τ i).neg
@@ -150,7 +151,7 @@ theorem chart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
     by_cases ht : t ∈ ballDom F.q
     · have hm : dV τ b t ∈ Submodule.span ℂ (Set.range fun i => F.b τ i t) := by
         rw [((F.frames.2 t ht τ).2)]
-        exact GlobalTheory.T.eigen_projection_in_eigenspace E Ψ j j' n g Λ F C (F.R t) τ _
+        exact _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.pPart_mem_eigSp_all E Ψ j j' n g Λ F C (F.R t) τ _
       obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hm
       exact ⟨c, fun _ => hc.symm⟩
     · exact ⟨0, fun h => absurd h ht⟩
@@ -161,7 +162,7 @@ theorem chart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
       (fun t ht => (F.frames.2 t ht τ).1) (fun t ht => hYc t τ b ht)
 
   have hloc := fun t (ht : t ∈ ballDom F.q) τ =>
-    GlobalTheory.T.gram_det_change_of_basis_alt E g Λ (F.R t) j' (fun i => F.b τ i t) (fun b => dV τ b t) (Ym t τ) (1 - Wm t τ * (Wm t τ)ᴴ) (2 * C.c)
+    _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.PointLog.log_det_change E g Λ (F.R t) j' (fun i => F.b τ i t) (fun b => dV τ b t) (Ym t τ) (1 - Wm t τ * (Wm t τ)ᴴ) (2 * C.c)
       (mul_pos two_pos C.c_pos) (fun b => hYc t τ b ht) (hpt t ht τ).2.1 (hpt t ht τ).2.2
 
   let Pf : (Fin n → ℂ) → ℂ := fun t => ∏ τ, (Ym t τ).det
@@ -183,7 +184,7 @@ theorem chart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
       funext τ
       rw [hb0, Matrix.transpose_zero]
       exact huniq t ht τ _ _ (hpt t ht τ).1
-        (GlobalTheory.T.adapted_frame_ball_coordinate E Ψ j j' n g Λ F C (F.R t) A A₀ τ _ (GlobalTheory.T.signature_unitary_blocks_invertible j j') (hgA t A hA τ) hA (hunit τ) rfl).1
+        (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.point_graph_gram E Ψ j j' n g Λ F C (F.R t) A A₀ τ _ (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.sgU_blocks j j') (hgA t A hA τ) hA (hunit τ) rfl).1
     simp only [moebBall]
     exact congrArg (ballPt F.q) this
   · intro t ht
@@ -193,7 +194,7 @@ theorem chart_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
       rw [← h2, norm_prod, Real.log_prod]
       intro τ _
       exact norm_ne_zero_iff.2 (hloc t ht τ).1
-    rw [GlobalTheory.T.ball_potential_formula, ← F.logDet_eq t ht]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart.ballPot_ballPt_eq, ← F.logDet_eq t ht]
     simp only [RiemLat.logDet, ← Finset.sum_neg_distrib]
     simp only [Complex.sub_re, Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat, Complex.ofReal_re, zero_mul, sub_zero, hre]
     rw [Finset.sum_congr rfl fun τ _ => (hloc t ht τ).2]
