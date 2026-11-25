@@ -1,15 +1,15 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BigZe
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallDomainIffPosDefStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateEmbeddingsCriterionStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsNormalizedRiemannLatticeStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetEqBallPotentialStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelNormalFormOfHermitianStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelTransformCommutesActionStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelTransformSymplecticImaginaryStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SpanStandardBasisEigenspaceStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SymmetricMatrixInBallImageStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BallDomainIffPosDef
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateEmbeddingsCriterion
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsNormalizedRiemannLattice
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogDetEqBallPotential
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelNormalFormOfHermitian
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelTransformCommutesAction
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SiegelTransformSymplecticImaginary
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SpanStandardBasisEigenspace
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SymmetricMatrixInBallImage
 public import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifRiem
 public import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifUnivA
 public import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifUnivB
@@ -247,7 +247,7 @@ theorem member {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ 
     exact h.1
   · intro x y
     show (tz Z (R₁.P x) ⬝ᵥ (1 - Zᴴ * Z)⁻¹ *ᵥ star (tz Z (R₁.P y))).im = _
-    rw [GlobalTheory.T.siegel_transform_symplectic_imaginary Z hs hp, ← R₁.im, hH, one_mulVec]
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.im_tz_form' Z hs hp, ← R₁.im, hH, one_mulVec]
   · intro a x
     show tz Z (R₁.P (a • x)) = R₁.B a (tz Z (R₁.P x))
     rw [R₁.act, hc]
@@ -256,17 +256,17 @@ theorem exists_univFam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   intro E _ _ _ Ψ _ j j' n g Λ _ _ R₀ σ q hσ hsig
   classical
   obtain ⟨e, c, hc, hco⟩ := Frame.exists_ortho_frame R₀ σ hσ hsig
-  obtain ⟨R₁, hform, hHm, hB⟩ := GlobalTheory.T.exists_normalized_riemann_lattice R₀ σ e c hc hco
+  obtain ⟨R₁, hform, hHm, hB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.CoordLat.coord_lat R₀ σ e c hc hco
   have hmem : ∀ t, ∃ R : RiemLat E g Λ, R.form = R₀.form ∧ (t ∈ ballDom q → R.B = R₁.B ∧
       R.Hm = (1 - (bigZe e q t)ᴴ * bigZe e q t)⁻¹ ∧ ∀ x, R.P x = tz (bigZe e q t) (R₁.P x)) := by
     intro t
     by_cases ht : t ∈ ballDom q
     · obtain ⟨R, h1, h2, h3, h4⟩ := member R₁ (bigZe e q t) hHm (bigZe_symm e q t)
-        ((GlobalTheory.T.ball_domain_iff_pos_def e q t).1 ht) (GlobalTheory.T.siegel_transform_commutes_action σ e q t R₁.B hσ hB)
+        ((_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.mem_ballDom_iff_posDef_bigZe e q t).1 ht) (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.tz_bigZe_comm σ e q t R₁.B hσ hB)
       exact ⟨R, h1.trans hform, fun _ => ⟨h2, h3, h4⟩⟩
     · exact ⟨R₁, hform, fun h => absurd h ht⟩
   choose R hRf hR using hmem
-  have hfr := GlobalTheory.T.span_standard_basis_eigenspace σ e R₁.B hσ hB
+  have hfr := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.Frames.span_single_eigSp σ e R₁.B hσ hB
   have hli : ∀ {m : ℕ} (f : Fin m → Ix Ψ j j'), Function.Injective f →
       LinearIndependent ℂ (fun i : Fin m => (Pi.single (e (f i)) 1 : Fin g → ℂ)) := by
     intro m f hf
@@ -290,10 +290,10 @@ theorem exists_univFam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     rw [(hR t ht).1]
     exact (hfr τ).1
   · intro t ht
-    exact GlobalTheory.T.log_det_eq_ball_potential e q t (R t) ht (hR t ht).2.1
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.GramPot.logDet_coord e q t (R t) ht (hR t ht).2.1
   · intro R' hR' _
     obtain ⟨L, hL1, hL2, hL3⟩ := exists_realExt R₁ R' (hR'.trans hform.symm)
-    obtain ⟨A, Z, hZs, hZp, hLZ⟩ := GlobalTheory.T.siegel_normal_form_of_hermitian L R'.Hm R'.herm R'.pos (by
+    obtain ⟨A, Z, hZs, hZp, hLZ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.PeriodCoord.exists_linearEquiv_tz L R'.Hm R'.herm R'.pos (by
       intro z w
       rw [hL2, hHm, one_mulVec])
     have hsupp : ∀ (a : 𝓞 E) i k, emb σ (e.symm i) a * Z i k = Z i k * star (emb σ (e.symm k) a) := by
@@ -309,12 +309,12 @@ theorem exists_univFam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       rw [← hLZ, ← hLZ, hL3]
     have hZ0 : ∀ i k, Z i k ≠ 0 → (e.symm i).2 = (e.symm k).2 ∧ (e.symm i).1.isLeft ≠ (e.symm k).1.isLeft := by
       intro i k hik
-      refine (GlobalTheory.T.conjugate_embeddings_criterion σ hσ (e.symm i) (e.symm k)).1 fun a => ?_
+      refine (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.EmbConj.emb_eq_star_iff σ hσ (e.symm i) (e.symm k)).1 fun a => ?_
       have := hsupp a i k
       rw [mul_comm] at this
       exact mul_left_cancel₀ hik this
-    obtain ⟨t, rfl⟩ := GlobalTheory.T.symmetric_pattern_matrix_mem_range_bigZe e q Z hZs hZ0
-    have ht : t ∈ ballDom q := (GlobalTheory.T.ball_domain_iff_pos_def e q t).2 hZp
+    obtain ⟨t, rfl⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.exists_bigZe_eq e q Z hZs hZ0
+    have ht : t ∈ ballDom q := (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Univ.mem_ballDom_iff_posDef_bigZe e q t).2 hZp
     refine ⟨t, ⟨ht, A, fun x => ?_⟩, ?_⟩
     · rw [(hR t ht).2.2 x, ← hLZ, hL1]
       rfl

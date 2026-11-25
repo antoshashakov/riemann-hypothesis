@@ -2,21 +2,27 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsChainFirst
 public import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FieldIntersectionLinearDegreeOneStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagChainArithVarietyStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagChainUnitLogIntegralStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.IsFieldIntersection
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FieldIntersectionLinearDegreeOne
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagChainArithVariety
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagChainUnitLogIntegral
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagDegreeWeightFormula
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GenericFibreLinearEquationsStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.GenericFibreKerTarget
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.GenericFibreLinearEquations
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsBlockMapDrop
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinearStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RhoCoeffGapDeltaOneStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RhoFactorialProductEqStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SymmetricFormPolynomialCoeffStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.WeightGapDeltaEqAntisymmetricStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.WeightMapInjectiveStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RhoCoeffGapDeltaOne
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.RhoFactorialProductEq
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.PairRelationOfScaledRatio
+public import Mathlib.Tactic.Continuity
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SymmetricFormPolynomialCoeff
+public import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.WeightGapDeltaEqAntisymmetric
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.WeightMapInjective
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticDataUniformisedStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverDegreeOneRealisationStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagHeightPolynomialWeightFormStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagHeightPolynomialWeightForm
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyArithmeticStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyBoundaryDimensionDropStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagVarietyModelBaseMetricStatement
@@ -88,42 +94,42 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} {K : Type}
 
 theorem arith [Fintype K] [Nonempty K] (j : K → FlBlock Ψ N) (hj : IsChain j) :
-    IsArithVar (PPart j) (cellDim j + 1) := GlobalTheory.T.flag_chain_arith_variety Ψ N K j hj
+    IsArithVar (PPart j) (cellDim j + 1) := _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.isArithVar_pPart Ψ N K j hj
 
 theorem fibreLin [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (hj : IsChain j) (k₀ : K)
     (hmax : ∀ k, ((j k).2 : ℕ) ≤ (j k₀).2) (hne : ∃ k, k ≠ k₀) :
     ∃ G : GenFibre (dropV j k₀) (PPart j), ∃ S : Set (MRingOver G.Φ (fibreIdx (PIdx j) (Subtype.val : {k // k ≠ k₀} → K))),
       (∀ f ∈ S, IsMultiHomog f fun _ => 1) ∧ fibreIdeal (Subtype.val : {k // k ≠ k₀} → K) G = Ideal.span S :=
-  GlobalTheory.T.generic_fibre_linear_equations Ψ N K j hj k₀ hmax hne
+  _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin.fibre_lin Ψ N K j hj k₀ hmax hne
 
 theorem linDeg {F : Type} [Field F] {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (k₀ : K)
     (hK : ∀ a : K, a = k₀) (J : IFamily F ι) (hJ : IsFieldIntersection J) (S : Set (MRingOver F ι))
     (hS : ∀ f ∈ S, IsMultiHomog f fun _ => 1) (r : ℕ) (hV : IsProjVarF (Ideal.span S) r) :
-    J (Ideal.span S) r (fun _ _ => 1) = 1 := GlobalTheory.T.field_intersection_linear_degree_one F K ι k₀ hK J hJ S hS r hV
+    J (Ideal.span S) r (fun _ _ => 1) = 1 := _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.linear_subspace_degree_one F K ι k₀ hK J hJ S hS r hV
 
 theorem base (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) [Fintype K] [DecidableEq K] (k₀ : K)
     (hK : ∀ a : K, a = k₀) (j : K → FlBlock Ψ N) (hj : IsChain j) :
     ptsIntegral (PPart j) (pot fun _ : Fin (N - 1) => unitLine j k₀) (fun _ => 1) = 1 :=
-  GlobalTheory.T.flag_chain_unit_log_integral Ψ N K II hII k₀ hK j hj
+  _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.Base.ptsIntegral_first Ψ N K II hII k₀ hK j hj
 
 theorem coeff_formPoly_sym {σ : Type} [Fintype σ] [DecidableEq σ] (n : ℕ) (a : (Fin n → σ) → ℝ)
     (hsym : ∀ (π : Equiv.Perm (Fin n)) (w : Fin n → σ), a (w ∘ π) = a w) (w₀ : Fin n → σ) (m : σ →₀ ℕ)
     (hm : ∀ p, m p = (Finset.univ.filter fun r => w₀ r = p).card) :
     AddMonoidAlgebra.coeff (PB.formPoly n a) m * ∏ p, ((m p).factorial : ℝ) = (n.factorial : ℝ) * a w₀ :=
-  GlobalTheory.T.symmetric_form_polynomial_coeff σ n a hsym w₀ m hm
+  _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.CoeffSym.coeff_formPoly_mul σ n a hsym w₀ m hm
 
 theorem toWt_injective (Ψ : Type) (N : ℕ) :
-    Function.Injective (PB.toWt : MvPolynomial (Ψ × Fin N) ℝ →ₐ[ℝ] MvPolynomial (Ψ × Fin N) ℝ) := GlobalTheory.T.weight_map_injective Ψ N
+    Function.Injective (PB.toWt : MvPolynomial (Ψ × Fin N) ℝ →ₐ[ℝ] MvPolynomial (Ψ × Fin N) ℝ) := _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.toWt_leftInverse_injective Ψ N
 
 theorem toWt_gapDelta (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
-    PB.toWt (gapDelta Ψ N) = GroundTheory.Heights₂.Heights.antisymDelta Ψ N := GlobalTheory.T.weight_gap_delta_eq_antisymmetric Ψ N
+    PB.toWt (gapDelta Ψ N) = GroundTheory.Heights₂.Heights.antisymDelta Ψ N := _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.toWt_gapDelta_eq_antisymDelta Ψ N
 
 theorem coeff_gapDelta (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) : AddMonoidAlgebra.coeff (gapDelta Ψ N) (rhoM Ψ N) = 1 :=
-  GlobalTheory.T.rho_coeff_gap_delta_one Ψ N
+  _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.coeff_rhoM_gapDelta Ψ N
 
 theorem prod_rhoM (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     ∏ p, (((rhoM Ψ N) p).factorial : ℝ) =
-      ∏ _τ : Ψ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then ((k : ℝ) - (i : ℝ)) else 1) := GlobalTheory.T.rho_factorial_product_eq Ψ N
+      ∏ _τ : Ψ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then ((k : ℝ) - (i : ℝ)) else 1) := _root_.GlobalTheory.CompanionTheory.Ar.Top.FlDeg.prod_rhoM_factorial Ψ N
 
 theorem fsHerm_smooth {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (a : K → ℤ) :
     IsSmoothHerm (fsHerm ι a) := by
@@ -470,7 +476,7 @@ theorem degFl_vand (hIn : PB.Inputs) (II : IntersectionSystem) (hII : IsFullInte
     simpa [PFl] using this
   obtain ⟨c, -, hc'⟩ := GlobalTheory.T.uniformised_degree_polynomial_antisymmetric hIn Ψ N N (d + 1) (FA.S.comap some) le_rfl hd hU
   refine ⟨c, Eq.trans ?_ hc'⟩
-  rw [(GlobalTheory.T.flag_height_polynomial_weight_form hIn II hII Ψ N hN hP).2, AnSys.degPoly]
+  rw [(_root_.GlobalTheory.CompanionTheory.Ar.PB.flLines_polys hIn II hII Ψ N hN hP).2, AnSys.degPoly]
   congr 1
   rw [← hd]
   congr 1
@@ -488,7 +494,7 @@ theorem degFlPoly_eval' : PB.Inputs → ∀ II : IntersectionSystem, IsFullInter
   intro hIn II hII Ψ _ _ N _ lam hN
   obtain ⟨c, hC⟩ := degFl_vand hIn II hII Ψ N hN
   have hAr := (GlobalTheory.T.flag_variety_boundary_dimension_drop Ψ N hN).1
-  have hL := (GlobalTheory.T.flag_height_polynomial_weight_form hIn II hII Ψ N hN hAr).2
+  have hL := (_root_.GlobalTheory.CompanionTheory.Ar.PB.flLines_polys hIn II hII Ψ N hN hAr).2
   have hchain : IsChain (id : FlBlock Ψ N → FlBlock Ψ N) := ⟨Function.injective_id, fun _ q _ _ => ⟨q, rfl⟩⟩
   haveI hK : Nonempty (FlBlock Ψ N) := ⟨(Classical.arbitrary Ψ, ⟨0, by omega⟩)⟩
   obtain ⟨n, hn⟩ : ∃ n, Fintype.card (FlBlock Ψ N) = n + 1 :=

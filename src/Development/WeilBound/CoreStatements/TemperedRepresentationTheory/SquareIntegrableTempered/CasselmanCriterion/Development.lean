@@ -4,29 +4,46 @@ public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.SquareIntegrableTempered.CasselmanNecTemp
 public import GroundTheory.AutomorphicForms.GLnLocal
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleCentralLeviCongruenceStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleCentralLeviFixedSubmoduleStatement
+public import GroundTheory.AutomorphicForms.InductionParabolic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleCentralLeviCongruence
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleCentralLeviFixedSubmodule
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockCentralElementCommutesLeviStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockIndexMonotoneStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractingCentralUnipotentCongruenceStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockIndexMonotone
+public import GroundTheory.AutomorphicForms.InductionParabolicGroups
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractingCentralUnipotentCongruence
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractingDoubleCosetMeasurableStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContractingDoubleCosetVolumeBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantFunctionalOpenStabilizerStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RepresentationTheory.Basic
+public import Mathlib.Topology.Algebra.Group.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantFunctionalOpenStabilizer
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetModuleEquivFoundationStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityNeZeroSubquotientStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.LSegJacquet
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityNeZeroSubquotient
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LastBlockCentralScalarModulusOneStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeOneOfPowerBoundsStatement
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeOneOfPowerBounds
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingMemLeviStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LpCoefficientCenterNormPreservedStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LtOneOfPowerBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusContractingBlockLtOneStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NotMemLpOfGrowthStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PiTensorCentralBlockScalarStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PiTensorIrreducibleNontrivialStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothRepIsSmoothFoundationStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientNontrivialExistsMemStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientScalarActionModStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValuationLtOneOfPowTendstoZeroStatement
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsTemperedCoeff
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LpCoefficientCenterNormPreserved
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LtOneOfPowerBound
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusContractingBlockLtOne
+public import Mathlib.MeasureTheory.Function.LpSeminorm.Defs
+public import Mathlib.Order.CompletePartialOrder
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NotMemLpOfGrowth
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PiTensorCentralBlockScalar
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PiTensorIrreducibleNontrivial
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
+public import GroundTheory.AutomorphicForms.SmoothRep
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothRepIsSmoothFoundation
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnitarisableOfCharIff
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientNontrivialExistsMem
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubquotientScalarActionMod
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValuationLtOneOfPowTendstoZero
 public import GroundTheory.AutomorphicForms.JacquetAdmissible
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -90,16 +107,16 @@ theorem claim {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Represe
           ∏ i ∈ Finset.univ.filter (· ≤ j), c i) ^ r := by
   classical
   have := hi
-  have hsF : GroundTheory.Automorphic.IsSmooth π := GlobalTheory.T.smooth_rep_is_smooth_foundation k N π hs
+  have hsF : GroundTheory.Automorphic.IsSmooth π := _root_.GlobalTheory.CompanionTheory.SmoothTransfer.isSmooth_found k N π hs
   have hadm : GroundTheory.Automorphic.IsAdmissible π := GroundTheory.Automorphic.Parabolic.isAdmissible_of_isIrreducible hsF
-  obtain ⟨S, T, hST⟩ := GlobalTheory.T.jacquet_multiplicity_ne_zero_subquotient k x hd π hjm
-  have hscal := GlobalTheory.T.pi_tensor_central_block_scalar k x t c hc j
+  obtain ⟨S, T, hST⟩ := _root_.GlobalTheory.CompanionTheory.JmSub.exists_subQuot_of_jm_ne_zero k x hd π hjm
+  have hscal := _root_.GlobalTheory.CompanionTheory.JCScalar.piTensor_zj k x t c hc j
   set Λ : ℂ := ∏ i ∈ Finset.univ.filter (· ≤ j), c i with hΛdef
   set δ : ℂ := ((deltaHalf k (fun a => Fin ((x a).1)) (zj (fun a => (x a).1) t j) : ℂˣ) : ℂ) with hδdef
   have hmod : ∀ s ∈ S.toSubmodule, jac (stdBlocks (fun a => (x a).1) hd) π (zj (fun a => (x a).1) t j) s - Λ • s
       ∈ T.toSubmodule :=
-    GlobalTheory.T.subquotient_scalar_action_mod _ _ S T hST (zj (fun a => (x a).1) t j) Λ hscal
-  have := GlobalTheory.T.pi_tensor_irreducible_nontrivial k x
+    _root_.GlobalTheory.CompanionTheory.SubQuotScalar.sub_smul_mem_of_equiv_subQuot _ _ S T hST (zj (fun a => (x a).1) t j) Λ hscal
+  have := _root_.GlobalTheory.CompanionTheory.TensorIrr.nontrivial_piTensorProduct_irrGL k x
   have hΛ : Λ ≠ 0 := by
     intro h0
     obtain ⟨v, hv0⟩ := exists_ne (0 : PiTensorProduct ℂ (fun a => (x a).2.rep.V))
@@ -118,7 +135,7 @@ theorem claim {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Represe
   obtain ⟨e, -, he2⟩ := GlobalTheory.T.jacquet_module_equiv_foundation k N π h (fun a => (x a).1) hd
   have ha := GlobalTheory.T.levi_embedding_mem_levi k h N (fun a => (x a).1) hd (zj (fun a => (x a).1) t j)
   have hcen := GlobalTheory.T.block_central_element_commutes_levi k h N (fun a => (x a).1) hd t j
-  have hmono := GlobalTheory.T.block_index_monotone h N (fun a => (x a).1) hd
+  have hmono := _root_.GlobalTheory.CompanionTheory.BlockIndex.blockIdx_monotone h N (fun a => (x a).1) hd
   set W := S.toSubmodule.map e.toLinearMap
   set T' := (S.toSubmodule ⊓ T.toSubmodule).map e.toLinearMap
   have hle : T' ≤ W := Submodule.map_mono inf_le_left
@@ -140,16 +157,16 @@ theorem claim {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Represe
       rw [← he2 _ ha s, hjacU]
       simp only [map_smul, map_sub, smul_sub, smul_smul]
   have hex : ∃ w ∈ W, w ∉ T' := by
-    obtain ⟨s, hsS, hsT⟩ := GlobalTheory.T.subquotient_nontrivial_exists_mem _ _ S T hST inferInstance
+    obtain ⟨s, hsS, hsT⟩ := _root_.GlobalTheory.CompanionTheory.SubQuotNe.exists_mem_not_mem_of_subQuot_equiv _ _ S T hST inferInstance
     refine ⟨e s, ⟨s, hsS, rfl⟩, ?_⟩
     rintro ⟨s', hs', hes⟩
     have : s' = s := e.injective hes
     exact hsT (this ▸ hs'.2)
-  obtain ⟨m₀, hm₀⟩ := GlobalTheory.T.admissible_central_levi_fixed_submodule k N π hadm (blockIdx (fun a => (x a).1) hd) hmono _ ha hcen W T' (δ * Λ)
+  obtain ⟨m₀, hm₀⟩ := _root_.GlobalTheory.CompanionTheory.JacquetEigen.exists_eigenvector_fixed k N π hadm (blockIdx (fun a => (x a).1) hd) hmono _ ha hcen W T' (δ * Λ)
     (mul_ne_zero hδ hΛ) hle hWst hWmod hex
   obtain ⟨y, hy0, hyfix, hyeig⟩ := hm₀ (max m₀ 1) (le_max_left _ _)
-  obtain ⟨hcN, hcNbar⟩ := GlobalTheory.T.contracting_central_unipotent_congruence k h N (fun a => (x a).1) hd t hv.le j (max m₀ 1)
-  obtain ⟨w, l, hw, hl, hcoef⟩ := GlobalTheory.T.admissible_central_levi_congruence k N π hadm (blockIdx (fun a => (x a).1) hd) hmono (max m₀ 1)
+  obtain ⟨hcN, hcNbar⟩ := _root_.GlobalTheory.CompanionTheory.ZjContract.zj_contract k h N (fun a => (x a).1) hd t hv.le j (max m₀ 1)
+  obtain ⟨w, l, hw, hl, hcoef⟩ := _root_.GlobalTheory.CompanionTheory.JacquetCoeff.exists_coeff_geometric k N π hadm (blockIdx (fun a => (x a).1) hd) hmono (max m₀ 1)
     (le_max_right _ _) _ ha hcen hcN hcNbar y (δ * Λ) hy0 hyfix hyeig
   exact ⟨max m₀ 1, le_max_right _ _, w, l, hw, hl, hcoef⟩
 
@@ -165,7 +182,7 @@ theorem lpBound {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Repre
   obtain ⟨m, hm, w, l, hw, hl, hcoef⟩ := claim π hs hi x hd hjm t hv c hc j
   borelize (AdGL k N)
   have hopen : IsOpen {g : GL (Fin N) k | l ∘ₗ π g = l} :=
-    GlobalTheory.T.invariant_functional_open_stabilizer π (GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m)
+    _root_.GlobalTheory.CompanionTheory.Smooth.isOpen_linearForm_stabiliser π (GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m)
       (GroundTheory.Automorphic.GLnLocal.isOpen_congruenceSubgroup k N m) l hl
   obtain ⟨F, hF, hFmem⟩ := hL (Measure.haar (G := AdGL k N)) inferInstance w l hopen
   obtain ⟨hmeas, hdisj⟩ := GlobalTheory.T.contracting_double_coset_measurable k h N (fun a => (x a).1) hd hpos t hv j hj m hm
@@ -176,7 +193,7 @@ theorem lpBound {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Repre
   have hnorm : ‖δ * Λ‖ = Real.sqrt (modulus k (fun a => Fin ((x a).1)) (zj (fun a => (x a).1) t j)) * ‖Λ‖ := by
     rw [norm_mul, hδdef, val_deltaHalf, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]
   rw [← hnorm]
-  refine GlobalTheory.T.not_mem_Lp_of_growth (Measure.haar (G := AdGL k N)) F p hp hFmem _ hmeas hdisj c0 _ 1 ‖δ * Λ‖ hc0 one_pos
+  refine _root_.GlobalTheory.CompanionTheory.Casselman.mul_rpow_lt_one_of_memLp_geometric (Measure.haar (G := AdGL k N)) F p hp hFmem _ hmeas hdisj c0 _ 1 ‖δ * Λ‖ hc0 one_pos
     (norm_nonneg _) hvol ?_
   rintro r _ ⟨g, ⟨x1, hx1, y1, hy1, rfl⟩, rfl⟩
   rw [hF, one_mul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hw y1 hy1]
@@ -196,14 +213,14 @@ theorem totalNorm {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Rep
   obtain ⟨m, hm, w, l, hw, hl, hcoef⟩ := claim π hs hi x hd hjm t hv c hc jl
   obtain ⟨hsc, hmod1⟩ := GlobalTheory.T.last_block_central_scalar_modulus_one k h N (fun a => (x a).1) hd t jl (by simp [jl]; omega)
   have hopen : IsOpen {g : GL (Fin N) k | l ∘ₗ π g = l} :=
-    GlobalTheory.T.invariant_functional_open_stabilizer π (GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m)
+    _root_.GlobalTheory.CompanionTheory.Smooth.isOpen_linearForm_stabiliser π (GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m)
       (GroundTheory.Automorphic.GLnLocal.isOpen_congruenceSubgroup k N m) l hl
   have hcent : leviEmb k (stdBlocks (fun a => (x a).1) hd) (zj (fun a => (x a).1) t jl) ∈
       Subgroup.center (GL (Fin N) k) := by
     rw [hsc]
     refine Subgroup.mem_center_iff.2 fun g => Units.ext ?_
     exact (Matrix.scalar_commute (t : k) (fun _ => Commute.all _ _) g.val).symm.eq
-  have hc1 := GlobalTheory.T.lp_coefficient_center_norm_preserved k N π p hL _ hcent w l hopen
+  have hc1 := _root_.GlobalTheory.CompanionTheory.CoeffCentral.norm_coeff_central k N π p hL _ hcent w l hopen
   have h0 := hcoef 0
   have h1 := hcoef 1
   simp only [pow_zero, map_one, Module.End.one_apply] at h0
@@ -219,27 +236,27 @@ theorem totalNorm {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Rep
 theorem casselmanNecSq_holds (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : Zl.CasselmanNecSq k := by
   intro N V _ _ π hN hs hi hsq h x hd hpos hjm t ht c hc
-  have hv := GlobalTheory.T.valuation_lt_one_of_pow_tendsto_zero k t ht
+  have hv := _root_.GlobalTheory.CompanionTheory.Val.valuation_lt_one_of_tendsto_pow_zero k t ht
   have hh : 0 < h := by
     rcases Nat.eq_zero_or_pos h with rfl | hh
     · simp at hd; omega
     · exact hh
   refine ⟨fun j hj => ?_, totalNorm π hs hi x hd hjm t hv c hc hh 2 hsq⟩
   have key := lpBound π hs hi x hd hpos hjm t hv c hc j hj 2 two_pos hsq
-  have := GlobalTheory.T.lt_one_of_power_bound _ _ (modulus_pos k _) (norm_nonneg _) key
+  have := _root_.GlobalTheory.CompanionTheory.Casselman.lt_one_of_inv_mul_sqrt_mul_rpow_two_lt_one _ _ (modulus_pos k _) (norm_nonneg _) key
   rwa [norm_prod] at this
 
 theorem casselmanNecTemp_holds (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : Zl.CasselmanNecTemp k := by
   intro N V _ _ π hN hs hi htemp h x hd hpos hjm t ht c hc
-  have hv := GlobalTheory.T.valuation_lt_one_of_pow_tendsto_zero k t ht
+  have hv := _root_.GlobalTheory.CompanionTheory.Val.valuation_lt_one_of_tendsto_pow_zero k t ht
   have hh : 0 < h := by
     rcases Nat.eq_zero_or_pos h with rfl | hh
     · simp at hd; omega
     · exact hh
   refine ⟨fun j hj => ?_, totalNorm π hs hi x hd hjm t hv c hc hh (2 + 1) (htemp 1 one_pos)⟩
-  have hlt := GlobalTheory.T.modulus_contracting_block_lt_one k h N (fun a => (x a).1) hd hpos t hv j hj
-  have := GlobalTheory.T.le_one_of_power_bounds _ _ (modulus_pos k _) hlt (norm_nonneg _)
+  have hlt := _root_.GlobalTheory.CompanionTheory.JCModulus.modulus_zj_lt_one k h N (fun a => (x a).1) hd hpos t hv j hj
+  have := _root_.GlobalTheory.CompanionTheory.Casselman.le_one_of_forall_sqrt_mul_rpow_lt _ _ (modulus_pos k _) hlt (norm_nonneg _)
     (fun ε hε => lpBound π hs hi x hd hpos hjm t hv c hc j hj (2 + ε) (by linarith) (htemp ε hε))
   rwa [norm_prod] at this
 

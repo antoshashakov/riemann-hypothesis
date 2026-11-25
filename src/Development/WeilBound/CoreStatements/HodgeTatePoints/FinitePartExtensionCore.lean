@@ -5,17 +5,23 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsU
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LocallyOfFinitePresentationDiagMap
 import Development.AbelianVarietyTheory.Definitions.Uniformization.IsCPPullback
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteMapEqOfThickeningsEqStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointsOfClosedSubgroupStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointsOfTorsionKernelStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowerMapFlatSemiabelianStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowerMapLocallyQuasiFiniteStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SplitTorusExtensionTorsionStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThickTransComp
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteMapEqOfThickeningsEq
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointsOfClosedSubgroup
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointsOfTorsionKernel
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowerMapFlatSemiabelian
+public import Mathlib.AlgebraicGeometry.Morphisms.QuasiFinite
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowerMapLocallyQuasiFinite
+public import Mathlib.AlgebraicGeometry.Morphisms.Flat
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.SplitTori.SplitTorusAff
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SplitTorusExtensionTorsion
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SurjectiveLeftOfFibre
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThickeningGroupHomExtendsStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThickeningGroupHomExtends
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPoints
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionGroupOpenImmersionLiftStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationThickeningCompatStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionGroupOpenImmersionLift
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformizationThickeningCompat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -160,8 +166,8 @@ theorem kernelOf : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Over S) [Gr
   have := hP.smooth
   have := hP.separated
   have := hP.quasiCompact
-  have := GlobalTheory.T.power_map_flat_semiabelian S P hP N hN
-  have := GlobalTheory.T.power_map_locally_quasi_finite S P hP N hN
+  have := _root_.GlobalTheory.CompanionTheory.Ar.BT.flat_mul_semiAbelian S P hP N hN
+  have := _root_.GlobalTheory.CompanionTheory.Ar.BT.locallyQuasiFinite_pow_semiAbelian S P hP N hN
   have hp : IsPullback (pullback.fst ((𝟙 P) ^ N) η[P]) (toUnit (pullback ((𝟙 P) ^ N) η[P])) ((𝟙 P) ^ N) η[P] := by
     have h := IsPullback.of_hasPullback ((𝟙 P) ^ N) η[P]
     rwa [toUnit_unique (pullback.snd _ _) (toUnit _)] at h
@@ -194,7 +200,7 @@ theorem gt_q_compat : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D 
 theorem finiteMulAbelian : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (B : Over S) [GrpObj B], IsAbelianScheme B → ∀ N : ℕ, 1 ≤ N → IsFinite ((𝟙 B) ^ N).left := by
   intro S _ B _ hB N hN
   have := hB.proper
-  have := GlobalTheory.T.power_map_locally_quasi_finite S B (GlobalTheory.isSemiAbelian_of_isAbelianScheme B hB) N hN
+  have := _root_.GlobalTheory.CompanionTheory.Ar.BT.locallyQuasiFinite_pow_semiAbelian S B (GlobalTheory.isSemiAbelian_of_isAbelianScheme B hB) N hN
   have hw : ((𝟙 B) ^ N).left ≫ B.hom = B.hom := Over.w _
   have : IsProper ((𝟙 B) ^ N).left := by
     have h : IsProper (((𝟙 B) ^ N).left ≫ B.hom) := by rw [hw]; infer_instance
@@ -208,7 +214,7 @@ theorem finitePart_extension_core : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
     (finiteMulAbelian _ B hBab N hN)
   obtain ⟨AT, _, _, jT, _, hpT, finT, flatT⟩ := kernelOf (Spec (CommRingCat.of R)) (splitTorus (Spec (CommRingCat.of R)) X) inferInstance N hN
     (finiteMulTorus _ X N hN)
-  obtain ⟨v, hvl, _, _, hker⟩ := GlobalTheory.T.torsion_group_open_immersion_lift R G N T Γ i hi H Γf u hop hcl
+  obtain ⟨v, hvl, _, _, hker⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.FinPart.finite_part_torsion R G N T Γ i hi H Γf u hop hcl
   have monoB : Mono jB := Tors.mono_of_pullback hpB
   have hfb : ∀ e, ∃ w : thickObj R (IsLocalRing.maximalIdeal R) e Γf.G ⟶ thickObj R (IsLocalRing.maximalIdeal R) e AB,
       w ≫ (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map jB = (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map v ≫ q e := fun e => by
@@ -217,7 +223,7 @@ theorem finitePart_extension_core : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
     have h2 := hker e
     exact factor_of_kernel h2 h1 (q e)
   haveI := hfin
-  obtain ⟨b, _, hb⟩ := GlobalTheory.T.thickening_group_hom_extends R (IsLocalRing.maximalIdeal R) Γf.G AB G B v jB q qhom hcq hfb
+  obtain ⟨b, _, hb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.LiftHom.lift_hom R (IsLocalRing.maximalIdeal R) Γf.G AB G B v jB q qhom hcq hfb
   have hfa : ∀ e, ∃ w : thickObj R (IsLocalRing.maximalIdeal R) e AT ⟶ thickObj R (IsLocalRing.maximalIdeal R) e Γf.G,
       w ≫ (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map v = (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map jT ≫
         ((GlobalTheory.Diag.baseChangeIso (thick R (IsLocalRing.maximalIdeal R) e) X).hom ≫ ii e) := fun e => by
@@ -225,7 +231,7 @@ theorem finitePart_extension_core : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
     have h1 := kernel_pull (thick R (IsLocalRing.maximalIdeal R) e) hpT
     have h2 := hker e
     exact factor_of_kernel h1 h2 _
-  obtain ⟨a, _, ha⟩ := GlobalTheory.T.thickening_group_hom_extends R (IsLocalRing.maximalIdeal R) AT Γf.G (splitTorus (Spec (CommRingCat.of R)) X) G jT v
+  obtain ⟨a, _, ha⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.LiftHom.lift_hom R (IsLocalRing.maximalIdeal R) AT Γf.G (splitTorus (Spec (CommRingCat.of R)) X) G jT v
     (fun e => (GlobalTheory.Diag.baseChangeIso (thick R (IsLocalRing.maximalIdeal R) e) X).hom ≫ ii e)
     (fun e => by have := ihom e; infer_instance)
     (fun e => by simpa [Over.comp_left] using hci e) hfa
@@ -237,11 +243,11 @@ theorem finitePart_extension_core : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
   have hk3 := hker 0
   have := qhom 0
   have := ihom 0
-  obtain ⟨hf, hs, hpk⟩ := GlobalTheory.T.split_torus_extension_torsion _ X (thickObj R (IsLocalRing.maximalIdeal R) 0 G) (thickObj R (IsLocalRing.maximalIdeal R) 0 B) (ii 0) (q 0) hfl hsu hqc hk0 N hN _ _ _ _ _ _ η[(Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).obj AB] hk1 hk3 hk2 (IsMonHom.one_hom _) ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).map a) ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).map b) (by rw [ha0, Category.assoc]) hb0
+  obtain ⟨hf, hs, hpk⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.Tors.Ext.torsion_exact _ X (thickObj R (IsLocalRing.maximalIdeal R) 0 G) (thickObj R (IsLocalRing.maximalIdeal R) 0 B) (ii 0) (q 0) hfl hsu hqc hk0 N hN _ _ _ _ _ _ η[(Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).obj AB] hk1 hk3 hk2 (IsMonHom.one_hom _) ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).map a) ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).map b) (by rw [ha0, Category.assoc]) hb0
   rw [Functor.obj.η_def AB] at hpk
   have flatG : Flat Γf.G.hom := Γf.flat
   have hab : a ≫ b = toUnit AT ≫ η[AB] := by
-    refine GlobalTheory.T.finite_map_eq_of_thickenings_eq R (IsLocalRing.maximalIdeal R) AT AB _ _ (fun e => ?_)
+    refine _root_.GlobalTheory.CompanionTheory.Ar.BT.EqRed.eq_of_reductions R (IsLocalRing.maximalIdeal R) AT AB _ _ (fun e => ?_)
     have hm : Mono ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map jB) :=
       Tors.mono_of_pullback (kernel_pull (thick R (IsLocalRing.maximalIdeal R) e) hpB)
     rw [← cancel_mono ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map jB)]
@@ -258,14 +264,14 @@ theorem finitePart_extension_core : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
     rw [← cancel_mono (Functor.Monoidal.εIso (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e))).inv]
     exact toUnit_unique _ _
   obtain ⟨hcl', hfb', hsb', hpb'⟩ := GlobalTheory.CompanionTheory.Ar.BT.FinFlat.exact_of_closedFibre R AT Γf.G AB a b η[AB] hab (isPullback_map_unit _ hpk) hf hs
-  obtain ⟨C, _, ΓB, φB, _, htB⟩ := GlobalTheory.T.generic_points_of_torsion_kernel R B hBs N hN AB jB hpB (fun g hg => by
+  obtain ⟨C, _, ΓB, φB, _, htB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.Tors.exists_qfGroup_kernel R B hBs N hN AB jB hpB (fun g hg => by
     obtain ⟨w, rfl⟩ := hsb'.surj g
     have hw : (Γf.G.hom w).asIdeal = ⊥ := by
       rw [← Scheme.Hom.comp_apply, Over.w b] at hg
       exact hg
     obtain ⟨t, x, hx⟩ := Γf.pt_onto w hw
     exact ⟨Γf.pt t ≫ b, x, by simp [hx]⟩)
-  obtain ⟨M, _, ΓM, φM, _, htM⟩ := GlobalTheory.T.generic_points_of_torsion_kernel R _ inferInstance N hN AT jT hpT (GlobalTheory.T.generic_points_of_closed_subgroup R H Γf AT AB a b η[AB] hcl' hpb')
+  obtain ⟨M, _, ΓM, φM, _, htM⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.Tors.exists_qfGroup_kernel R _ inferInstance N hN AT jT hpT (_root_.GlobalTheory.CompanionTheory.Ar.BT.RatKer.exists_section_of_generic R H Γf AT AB a b η[AB] hcl' hpb')
   have hinv : IsMonHom φB.inv := inferInstance
   have isoL : IsIso φB.inv.left := inferInstanceAs (IsIso ((Over.forget _).map φB.inv))
   have isoM : IsIso φM.hom.left := inferInstanceAs (IsIso ((Over.forget _).map φM.hom))
@@ -290,6 +296,6 @@ theorem finitePart_extension : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
     infer_instance
   exact finitePart_extension_core R G D.toPre.P.A D.toPre.X (fun e => (U.gt e).q) (fun e => (U.gt e).i) D.toPre.P.isAb
     (fun e => (U.gt e).q_hom) (fun e => (U.gt e).i_hom) (gt_q_compat R _ D A G U)
-    (GlobalTheory.T.uniformization_thickening_compat R _ D A G U) (fun e => (U.gt e).isKernel.w) (U.gt 0).q_flat (U.gt 0).q_surj hq0 (U.gt 0).isKernel N hN T Γ i hi H Γf u hop hfin hcl
+    (_root_.GlobalTheory.CompanionTheory.Ar.BT.GtI.gt_i R _ D A G U) (fun e => (U.gt e).isKernel.w) (U.gt 0).q_flat (U.gt 0).q_surj hq0 (U.gt 0).isKernel N hN T Γ i hi H Γf u hop hfin hcl
 
 end PositivityTheory.HtPt.Stight.D1

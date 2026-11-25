@@ -3,16 +3,17 @@ module
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LabelSigBijective
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianMapLieModelEigenFrameStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianMapLieModelEigenFrame
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianMapLieModelLatticeStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrPullbackSemiabelianStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLieModelCompleteDvrStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramePointAbelianMapCompatStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLieModelCompleteDvr
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjEmbRtOfNe
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FramePointAbelianMapCompat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionField
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginGenericFrameFinalStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginGenericFrameFinal
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecFracExt
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorLieModelLiftStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorLieModelLift
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,7 +75,7 @@ theorem lieEig_basis_rf : Top.Given → ∀ (E : Type) [Field E] [NumberField E]
   have hExt : GlobalTheory.Published.SemiAbelianHomExtension := hGiven.2.2.1
   have hξ : IsCptGen Or.𝔐.ξ := Or.𝔐.tie.gen
   have hptz : Small.ptY Y zT = FinRd.Roots.gen T zV ≫ Or.𝔐.f :=
-    GlobalTheory.T.root_origin_generic_frame_final E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y evT zT t hI' zV hR
+    _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.ptY_eq_gen E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y evT zT t hI' zV hR
   have hpty : Small.ptY Y y.1 = FinRd.Roots.gen T zV ≫ Or.𝔐.f := by
     rw [← hptz, Small.ptY, Small.ptY]
     congr 1
@@ -82,7 +83,7 @@ theorem lieEig_basis_rf : Top.Given → ∀ (E : Type) [Field E] [NumberField E]
     · rw [Small.ptF_fst, Small.ptF_fst, hBor.1]
     · rw [Small.ptF_snd, Small.ptF_snd]
   obtain ⟨G, t', m1, m2, ⟨ub, htan, heig, hbasis, hlift⟩, -⟩ := y.2.2
-  obtain ⟨b, hb, hbact, hbu⟩ := GlobalTheory.T.frame_point_abelian_map_compat E H Dw l Xo c O β Y Or.𝔐.X Or.𝔐.t Or.𝔐.f Or.𝔐.m T.Fr y.1 t' m1 _ hpty
+  obtain ⟨b, hb, hbact, hbu⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.genFibre_pullback_cover E H Dw l Xo c O β Y Or.𝔐.X Or.𝔐.t Or.𝔐.f Or.𝔐.m T.Fr y.1 t' m1 _ hpty
   obtain ⟨Ψ, hΨ, hm2, hΨact⟩ := GlobalTheory.T.complete_dvr_pullback_semiabelian E H hExt Or.𝔐.X Or.𝔐.t T zV G t' m2 b hb hbact
   have hsig : ∀ a, algebraMap T.V T.Fr (σ a) = io (embK c (Small.labelC s) a) := fun a => by
     rw [Small.embK_labelC]
@@ -94,7 +95,7 @@ theorem lieEig_basis_rf : Top.Given → ∀ (E : Type) [Field E] [NumberField E]
   have hinj : Function.Injective (algebraMap T.V T.Fr) := IsFractionRing.injective _ _
   have hyb : ∀ i, ∃ w : EC, (MC.pt w).left = Spec.map (CommRingCat.ofHom (dualMap (algebraMap T.V T.Fr))) ≫
       (ub (Small.labelC s) (Small.labelFin Dw s i)).left ≫ Ψ := fun i =>
-    GlobalTheory.T.tangent_vector_lie_model_lift E H Or.𝔐.X Or.𝔐.t T zV G Ψ hΨ EC MC _ (htan _ _)
+    _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.exists_val_of_isTan E H Or.𝔐.X Or.𝔐.t T zV G Ψ hΨ EC MC _ (htan _ _)
   choose yb hyb using hyb
   have hybT : ∀ i, (MC.pt (yb i)).left ≫ Or.𝔐.m.φ = Small.tanY Y y.1 (Small.labelC s) (Small.labelFin Dw s i) := fun i => by
     obtain ⟨u', hu1, hu2⟩ := hlift (Small.labelC s) (Small.labelFin Dw s i)
@@ -108,10 +109,10 @@ theorem lieEig_basis_rf : Top.Given → ∀ (E : Type) [Field E] [NumberField E]
     simp only [Category.assoc]
   have hr : labelRk Dw s = Dw.mult (Small.labelC s) := (Small.mult_labelC Dw s).symm
   have hu' : ∀ i, (MC.pt (u i)).left ≫ Or.𝔐.m.φ = Small.tanY Y zT (Small.labelC s) (Fin.cast hr i) := hu
-  refine ⟨GlobalTheory.T.abelian_map_lie_model_eigen_frame E H Dw l Xo c O β Y Or.𝔐.X Or.𝔐.t Or.𝔐.f Or.𝔐.m T.Fr _ EC MC zT hptz _ _ hr u hu', yb,
+  refine ⟨_root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.indep_of_frame E H Dw l Xo c O β Y Or.𝔐.X Or.𝔐.t Or.𝔐.f Or.𝔐.m T.Fr _ EC MC zT hptz _ _ hr u hu', yb,
     GlobalTheory.T.abelian_map_lie_model_lattice E H Dw l Xo c O β Y Or.𝔐.X Or.𝔐.t Or.𝔐.f Or.𝔐.m T.Fr _ EC MC zT hptz y.1 t hBor _ _ hr u yb hu' hybT, ?_⟩
   have hsm : AlgebraicGeometry.Smooth Or.𝔐.t.G.hom := Or.𝔐.t.semi.smooth
-  refine GlobalTheory.T.eigen_lie_model_complete_dvr E H Or.𝔐.X Or.𝔐.t T zV G Ψ hΨ hΨact EC MC ρC hρ σ _ (fun i => ub (Small.labelC s) (Small.labelFin Dw s i))
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.EigSpan.eig_span E H Or.𝔐.X Or.𝔐.t T zV G Ψ hΨ hΨact EC MC ρC hρ σ _ (fun i => ub (Small.labelC s) (Small.labelFin Dw s i))
     (fun i => htan _ _) (fun i a => heig _ _ a _ (hsig a)) ?_ yb hyb _ (fun w =>
       lieLat_fibAt_iff _ _ _ _ _ Or.𝔐.M T.V zV T.Fr EC MC hξ hsm (Or.𝔐.all _) (Or.𝔐.all _) w)
   intro w hw hwe
