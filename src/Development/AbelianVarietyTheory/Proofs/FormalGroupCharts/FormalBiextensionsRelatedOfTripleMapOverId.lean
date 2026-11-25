@@ -2,14 +2,14 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.TwoChartAtlas.AdditionLawSecondIdentity
 public import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.AdjointnessSeriesTransportFramesStatement
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartsWithFramesRelatedAllOrdersStatement
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.AdjointnessSeriesTransportFrames
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartsWithFramesRelatedAllOrders
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsGroupIsoCubicalIsoOfTripleMapIdStatement
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsPushFrStatement
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FamSyPushStatement
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FirstPartialLawPushAlongTripleMapStatement
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsPushFr
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FamSyPush
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FirstPartialLawPushAlongTripleMap
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PushChartStatement
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.SecondPartialLawPushAlongTripleMapStatement
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.SecondPartialLawPushAlongTripleMap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,15 +64,15 @@ theorem jrel_of_sabMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   obtain ⟨y, hy, hyu, hyc, hycomb⟩ := GlobalTheory.T.pushChartAlt E H V t t' n d x
   obtain ⟨_, _, _, _, _, w, hw⟩ := GlobalTheory.T.exists_groupIso_cubicalIso_of_tripleMap_id E H V t t' n
   obtain ⟨hg, h1, h2, h3, h4⟩ := (isFrameG_iff t _ d x _ _ _ _ _ _ e).1 hf
-  obtain ⟨f, hp⟩ := GlobalTheory.T.exists_pushFr_of_isGen E H V t t' n w d x y e hw.1 hy hg
+  obtain ⟨f, hp⟩ := _root_.GlobalTheory.ChartCmp.exists_pushFr E H V t t' n w d x y e hw.1 hy hg
   have hfy : IsFrameG t' (𝟙 (Sp V)) d y B.G.F B.A.act B.ph1 B.ph2 B.sy B.ad f :=
     (isFrameG_iff t' _ d y _ _ _ _ _ _ f).2
       ⟨fun m => (hp m).1,
-        GlobalTheory.T.firstPartialLaw_push_along_tripleMap E H V t t' n w d x y e f hw hy hg hp _ _ κ tg uv _ hc h1,
-        GlobalTheory.T.secondPartialLaw_push_along_tripleMap E H V t t' n w d x y e f hw hy hg hp _ _ κ tg uv _ hc h2,
-        GlobalTheory.T.famSy_of_pushFr_cubIso E H V t t' n w d x y e f hw hy hg hp _ h3,
-        GlobalTheory.T.adjointness_series_transport_frames E H V t t' n w d x y e f hw hy hg hp _ _ κ tg uv _ hc h4⟩
-  obtain ⟨φ, φi, hj, hd⟩ := GlobalTheory.T.chartsWithFrames_related_allOrders E H hstar V t' hs d B B' κ κ' (fun l => tg l ≫ n.φ) tg' uv uv' y x' f e'
+        _root_.GlobalTheory.famPh1_push E H V t t' n w d x y e f hw hy hg hp _ _ κ tg uv _ hc h1,
+        _root_.GlobalTheory.PushSecondLaw.famPh2_push E H V t t' n w d x y e f hw hy hg hp _ _ κ tg uv _ hc h2,
+        _root_.GlobalTheory.PushSym.famSy_push E H V t t' n w d x y e f hw hy hg hp _ h3,
+        _root_.GlobalTheory.ChartCmp.PushAd.famAd_push E H V t t' n w d x y e f hw hy hg hp _ _ κ tg uv _ hc h4⟩
+  obtain ⟨φ, φi, hj, hd⟩ := _root_.GlobalTheory.ChartCmp.jRel_of_charts_frames E H hstar V t' hs d B B' κ κ' (fun l => tg l ≫ n.φ) tg' uv uv' y x' f e'
     (hyc _ _ κ tg uv hc) hc' (hyu hu) hu' hfy hf'
   exact ⟨φ, φi, hj, fun u u' v h h' => hd u u' _ (hycomb u v h) h'⟩
 

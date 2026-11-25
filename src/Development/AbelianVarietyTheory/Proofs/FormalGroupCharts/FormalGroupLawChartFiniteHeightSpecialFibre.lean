@@ -4,10 +4,12 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FiniteTorsionSpecialFibreOfUnif
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.GermEvalOneStandardPointSelf
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsFormalGroupLawOfChartOfJetChartStatement
+public import Development.AbelianVarietyTheory.Definitions.TwoChartAtlas.TwoChartSt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsFormalGroupLawOfChartOfJetChart
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsNilpotentOfMemKerJetTruncR
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsSeriesOfMorphismInChartsPowMulFormalGroupLawStatement
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsUniversalChartOfFormalGroupChartStatement
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsSeriesOfMorphismInChartsPowMulFormalGroupLaw
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.IsUniversalChartOfFormalGroupChart
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.LocallyOfFiniteTypePullbackUnit
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PowSpanXLeAndFiniteQuotientOfLeSupPowSucc
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PushEquivSymmLeft
@@ -84,9 +86,9 @@ theorem finite_torsion_pull {S S' Z : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G
 
 theorem exists_pow_span_X_le_span_map_residue_mulF : ∀ (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T] (G : Over (Sp T)) [GrpObj G] [IsCommMonObj G] (D : Out.DegData T (maximalIdeal T)) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing T)))) (_ : Out.UnifPre (maximalIdeal T) D A G) (d : ℕ) (F : FGLaw T d) (x : ∀ m : ℕ, algOver T (JetR T (Fin 1 × Fin d) m) ⟶ G), IsChartJ G F x → ∀ N : ℕ, 1 ≤ N → ∃ M : ℕ, Ideal.span (Set.range (MvPowerSeries.X : Fin 1 × Fin d → PS (ResidueField T) 1 d)) ^ M ≤ Ideal.span (Set.range fun j => MvPowerSeries.map (residue T) (mulF F.F N j)) := by
   intro T _ _ _ G _ _ D A U d F x hx N hN
-  obtain ⟨x0, hu, hρ⟩ := GlobalTheory.T.isUniversalChart_of_formalGroupChart T G U.smooth d F x hx
-  have hlaw := GlobalTheory.T.isFormalGroupLawOfChart_of_jetChart T G d F x hx x0 hu hρ
-  have hmap := GlobalTheory.T.isSeriesOfMorphismInCharts_pow_mulFormalGroupLaw T G d x0 hu F.F hlaw N
+  obtain ⟨x0, hu, hρ⟩ := _root_.GlobalTheory.ChartUniv.isUnivChart_of_isChartJ T G U.smooth d F x hx
+  have hlaw := _root_.GlobalTheory.ChartJLaw.isLawOf_of_isChartJ T G d F x hx x0 hu hρ
+  have hmap := _root_.GlobalTheory.JetSer.isMapOf_pow_mulF T G d x0 hu F.F hlaw N
   have hp := isGrpPullback_pullback G (Spec.map (CommRingCat.ofHom (residue T)))
   obtain ⟨x', hu', -, hm, -⟩ := GlobalTheory.ChartBaseChange.chartBaseChange GlobalTheory.JetSer.jetAlg
     (GlobalTheory.JetSer.serSt_of_jetAlgSt GlobalTheory.JetSer.jetAlg) T (ResidueField T) (residue T) G _ _ hp d x0 hu

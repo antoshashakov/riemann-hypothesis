@@ -2,10 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.TwoChartAtlas.AdditionLawSecondIdentity
 public import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.BiextensionDepthLeOfRelatedStatement
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.BiextensionDepthLeOfRelated
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsIsoIntegralModelsMatchingLieBasesStatement
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormalBiextensionsRelatedOfTripleMapOverIdStatement
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.LocalChartDepthEqIntegralBiextDepthStatement
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.LocalChartDepthEqIntegralBiextDepth
 import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PushChartStatement
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.SurjectiveAppTopIntegralModelSquareStatement
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.UniversalJetCoordinatesDimUniqueStatement
@@ -93,7 +93,7 @@ theorem nuAlg_le_of_charts {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   subst hd
   obtain ⟨φ, φi, hrel, hlin⟩ := GlobalTheory.T.formal_biextensions_related_of_triple_map_over_id E H hs T.V t t' n hsurj d B B' (Fin d) (Fin d) tg tg' uv uv' x x' e e'
     hc hc' hu hu' hf hf'
-  refine GlobalTheory.T.biextension_depth_le_of_related E H Dw l Xo c hs T io d B B' φ φi h h' u u' hrel hg hg' heig ?_ ε k a N
+  refine _root_.GlobalTheory.ChartCmp.nuAlg_le_of_jrel E H Dw l Xo c hs T io d B B' φ φi h h' u u' hrel hg hg' heig ?_ ε k a N
   intro ℓ
   have hu1 : u ℓ = fun i => algebraMap T.V T.Fr (uT ℓ i) := funext (huT ℓ)
   have hu2 : u' ℓ = fun j => algebraMap T.V T.Fr (uT' ℓ j) := funext (huT' ℓ)
@@ -114,8 +114,8 @@ theorem nuLocC_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   obtain ⟨BT', hF', hA', hP1', hP2', hSy', hAd', hK'⟩ := GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y C'
   obtain ⟨hFK, hActK, hG, hGc⟩ := hK T.Fr
   obtain ⟨hFK', hActK', hG', hGc'⟩ := hK' T.Fr
-  rw [GlobalTheory.T.localChartDepth_eq_integralBiextDepth E H Dw l Xo c T io y C BT hFK hActK e k a n,
-    GlobalTheory.T.localChartDepth_eq_integralBiextDepth E H Dw l Xo c T io y C' BT' hFK' hActK' e k a n]
+  rw [_root_.GlobalTheory.ChartCmp.nuLocC_eq_nuAlg E H Dw l Xo c T io y C BT hFK hActK e k a n,
+    _root_.GlobalTheory.ChartCmp.nuLocC_eq_nuAlg E H Dw l Xo c T io y C' BT' hFK' hActK' e k a n]
   obtain ⟨nm, hnm⟩ := GlobalTheory.T.exists_iso_integralModels_matching_lieBases E H Dw l Xo c T io _ C.I C'.I
   have hsurj := GlobalTheory.T.surjective_appTop_integralModel_square E H Dw l Xo c T io _ C'.I
   have hU := GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y
