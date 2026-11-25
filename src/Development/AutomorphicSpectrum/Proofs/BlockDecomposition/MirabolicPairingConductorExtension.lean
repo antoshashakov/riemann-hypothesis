@@ -5,8 +5,8 @@ public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCoefficientContinuous
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingConductorVanishingStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingDepthVanishingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicTwistedKernelNonvanishingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearOrbitFiniteStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicTwistedKernelNonvanishing
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearOrbitFinite
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearPreservesBoxMembershipStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorFixedSmallShearStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedBoxIntegralIdentity
@@ -136,7 +136,7 @@ theorem exists_evVal_ne_zero : ∀ {k : Type} [Field k] [ValuativeRel k] [Topolo
     rcases le_total (valuation k (r₁ : k)) (valuation k (r₂ : k)) with h | h
     · exact ⟨r₁, hr₁, le_rfl, h⟩
     · exact ⟨r₂, hr₂, h, le_rfl⟩
-  obtain ⟨t₀, ht₀⟩ := GlobalTheory.T.mirabolic_twisted_kernel_nonvanishing ν ψ T B hψ hT hnd v hv
+  obtain ⟨t₀, ht₀⟩ := _root_.GlobalTheory.CompanionTheory.MirPair.AvgBox.exists_JJ_ne_zero ν ψ T B hψ hT hnd v hv
   obtain ⟨t, htt₀, htc⟩ := exists_large_unit c r t₀
   obtain ⟨v', hv'⟩ := ht₀ t htt₀
   by_contra hno
@@ -149,7 +149,7 @@ theorem exists_evVal_ne_zero : ∀ {k : Type} [Field k] [ValuativeRel k] [Topolo
     obtain ⟨τ, hτ⟩ := hA
     exact ⟨τ, fun u hu => (hτ u hu).trans h0⟩
   choose τ hτ using hev
-  obtain ⟨u, htu, hu⟩ := exists_unit_bound (GlobalTheory.T.shear_orbit_box_finite_of_isSmooth T' hT' v' r hr) τ t
+  obtain ⟨u, htu, hu⟩ := exists_unit_bound (_root_.GlobalTheory.CompanionTheory.MirPair.ShearOrbit.shear_orbit_finite T' hT' v' r hr) τ t
   have hz : ∀ b ∈ box (n + 1) (c * t⁻¹), ∫ x in (box (n + 1) u : Set (Fin (n + 1) → k)),
       ((ψ (-(b ⬝ᵥ x)) : Circle) : ℂ) * (wt ψ n x * coef T B v v' x) ∂(piHaar ν (n + 1)) = 0 := by
     intro b hb
