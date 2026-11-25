@@ -16,7 +16,12 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubmersivePresentationAddZeroVariablesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitLiftClosedSubschemeNearFibreStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitRatioLocalGeneratorsCommonPullbackStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPushoutLocalizedPresentationBaseChangeStatement
+public import Mathlib.Algebra.Category.Ring.Basic
+public import Mathlib.Algebra.MvPolynomial.Eval
+public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Defs
+public import Mathlib.RingTheory.Ideal.Quotient.Operations
+public import Mathlib.RingTheory.Localization.Away.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPushoutLocalizedPresentationBaseChange
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStandardSmoothLocalizationAwayJacobianDvdStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanRelationsConductorOfEvalEqZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartOffClosedPartFromBaseStatement
@@ -122,11 +127,11 @@ theorem exists_standardSmooth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R]
     rw [P.jacobiMatrix_apply, ← hF, pderiv_map]
     rfl
   have hu : IsUnit (aeval P.val (map (Ideal.Quotient.mk c) (Δ * (H + 1)))) := hΔ ▸ P.jacobian_isUnit
-  obtain ⟨α, hα, hα'⟩ := GlobalTheory.T.isPushout_localized_presentation_baseChange R R' C' (Localization.Away (aeval ξ (map (algebraMap R R') (Δ * (H + 1))))) _ _
+  obtain ⟨α, hα, hα'⟩ := _root_.GlobalTheory.Pinch.isPushout_localization_baseChange R R' C' (Localization.Away (aeval ξ (map (algebraMap R R') (Δ * (H + 1))))) _ _
     (algebraMap R R') F (Δ * (H + 1)) ξ hsurj hF0 (fun G hG ↦ by
       rw [map_mul, map_add (f := _), hH, map_one, sub_add_cancel, _root_.mul_assoc]
       exact Ideal.mul_mem_left _ _ (hs2 G hG)) inferInstance
-  obtain ⟨β, hβ, hβ'⟩ := GlobalTheory.T.isPushout_localized_presentation_baseChange R (R ⧸ c) D D _ _ (Ideal.Quotient.mk c) F (Δ * (H + 1)) P.val
+  obtain ⟨β, hβ, hβ'⟩ := _root_.GlobalTheory.Pinch.isPushout_localization_baseChange R (R ⧸ c) D D _ _ (Ideal.Quotient.mk c) F (Δ * (H + 1)) P.val
     P.aeval_val_surjective (fun s ↦ by rw [hF]; exact P.aeval_val_relation s)
     (fun G hG ↦ Ideal.mul_mem_left _ _ (hkP ▸ hG)) (IsLocalization.away_of_isUnit_of_bijective _ hu Function.bijective_id)
   have ht : IsUnit (π (aeval ξ (map (algebraMap R R') (Δ * (H + 1))))) := by

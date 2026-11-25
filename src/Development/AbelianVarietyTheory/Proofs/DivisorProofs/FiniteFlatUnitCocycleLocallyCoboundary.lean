@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescCocycle
 public import Mathlib.AlgebraicGeometry.Morphisms.Finite
 public import Mathlib.Combinatorics.Quiver.ReflQuiver
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorSquareEquivFibreSquareSections
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitBasicOpenOfCoboundaryIdentityStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PullCub
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitBasicOpenOfCoboundaryIdentity
 public import Mathlib.AlgebraicGeometry.Morphisms.Flat
 public import Mathlib.AlgebraicGeometry.Noetherian
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFaithfullyFlatAlgebraOverAffineOpen
@@ -99,7 +100,7 @@ theorem coboundary_locally_of_cocycle : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [Is
     have := congrArg e hm
     rw [map_mul, he, he] at this
     simpa [c₀] using this
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_unit_basicOpen_of_coboundary_identity f V V₀ h hle c r m s n hm' hs
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.LBDescent.coboundary_unit_basicOpen f V V₀ h hle c r m s n hm' hs
   refine ⟨Y.basicOpen r, (Y.basicOpen_le r).trans hV₀V, ?_, u, hu⟩
   rw [Scheme.mem_basicOpen _ _ _ hyV₀]
   by_contra hh

@@ -2,7 +2,10 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.InterpStatementPfL
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHormanderPeakCutoffSingularWeightsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicWeightedSquareIntegrableVanishesStatement
+public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+public import Mathlib.Topology.Separation.CompletelyRegular
+public import ReciprocityTheory.L2DbarEstimates.IsLocalHomeomorph
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicWeightedSquareIntegrableVanishes
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeakExtensionVanishOtherOrbitPointsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlurisubharmonicDecreasingLimitExtensionStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -184,7 +187,7 @@ theorem hormander_peak : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [Numb
           exact (lintegral_mono_set hball2).trans hFI
       _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hA
   have hF0val : F 0 = 1 := by
-    have h0 := GlobalTheory.T.holomorphic_weighted_square_integrable_vanishes hnd (fun z => F0 z - F z) (ρ / 2) (by linarith) hu hint0
+    have h0 := _root_.GlobalTheory.holo_vanish_of_critical_integrable hnd (fun z => F0 z - F z) (ρ / 2) (by linarith) hu hint0
     have h1 := hF01 0 (by rw [norm_zero]; linarith)
     rw [h1] at h0
     exact (sub_eq_zero.1 h0).symm

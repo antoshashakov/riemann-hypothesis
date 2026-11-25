@@ -6,7 +6,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicMatrix
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnimodularFrameInertPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertCompletionConjugationPropertiesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertCompletionToAdelesPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceBigCellLocalUnitaryDecompositionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InLat2
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceBigCellLocalUnitaryDecomposition
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemAdelicLatticeAtFinitePlaceIffInertStatement
 import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
 import Mathlib.Algebra.Order.Floor.Extended
@@ -153,7 +154,7 @@ theorem exists_bigCell : (∀ {O : Type} [CommRing O] [IsLocalRing O] (c : O →
       hpres' Q (fun y hy => by rw [hQ]; exact (hglat y hy).2) z hz⟩
 
   obtain ⟨P0, P0', hPP, hP0U, hP0d, hP0lat, N, hN, hNlat⟩ :=
-    GlobalTheory.T.inertPlace_bigCell_local_unitary_decomposition H (w.adicCompletionIntegers E) (conjW σ hw) cc cO h2 h2ne
+    _root_.GlobalTheory.InertCellLocal.bigCell_local_step H (w.adicCompletionIntegers E) (conjW σ hw) cc cO h2 h2ne
       (W.J.map (algebraMap E (w.adicCompletion E))) hskew b δ hδ hint hdet hdetinv P Q hPQ hU hPlat
 
   let u : GL (Fin d ⊕ Fin d) (AE F E) :=

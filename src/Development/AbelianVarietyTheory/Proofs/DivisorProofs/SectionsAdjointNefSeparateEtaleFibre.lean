@@ -19,7 +19,7 @@ public import Mathlib.AlgebraicGeometry.Morphisms.Etale
 public import Mathlib.Combinatorics.Quiver.ReflQuiver
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsolatedInFibreOfEtaleRestriction
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataLogTerminalIffEtalePullbackStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleValueAtPointNeZeroIffMemNonzeroLocusStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleValueAtPointNeZeroIffMemNonzeroLocus
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundary
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowMulIntersectionLeOfNefClassOnClosed
 public import Mathlib.RingTheory.Henselian
@@ -209,8 +209,8 @@ theorem sections_separate_fibre : GlobalTheory.Published.NadelVanishingAndNonKlt
       have : H0.val (z i) (k i) le_top (hk i) (H0.ofSec (f ≫ p) ⊤ s) = 0 := by
         by_contra hne
         exact hs' _ ((hsupp _ (hzM i)).2 (hfz i)) (hzne i j hij)
-          ((GlobalTheory.T.lineBundleValueAtPoint_ne_zero_iff_mem_nonzeroLocus ℂ M (f ≫ p) _ s (z i) (k i) (hk i)).1 hne)
+          ((_root_.GlobalTheory.ValNe.val_ofSec_ne_zero_iff ℂ M (f ≫ p) _ s (z i) (k i) (hk i)).1 hne)
       rw [this, mul_zero]) (fun h => absurd (Finset.mem_univ j) h)] at h1
-  exact (mul_eq_zero.1 h1).resolve_right ((GlobalTheory.T.lineBundleValueAtPoint_ne_zero_iff_mem_nonzeroLocus ℂ M (f ≫ p) _ s (z j) (k j) (hk j)).2 hs)
+  exact (mul_eq_zero.1 h1).resolve_right ((_root_.GlobalTheory.ValNe.val_ofSec_ne_zero_iff ℂ M (f ≫ p) _ s (z j) (k j) (hk j)).2 hs)
 
 end GlobalTheory.EtaleSep

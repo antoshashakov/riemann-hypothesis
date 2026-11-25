@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIf
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroPrimitiveFrameDatumRenumber
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatBlockScaledHasLatticeDepthStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatBlockScaledHasLatticeDepth
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaIntegralTwoSidedMovedDatumEqSmallZeta
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -95,7 +95,7 @@ theorem exists_depth_bigP_eq_smallP : ∀ (k : Type) [Field k] [ValuativeRel k] 
     have := comp_mul_mem_SB (1 : GL A' k) (invT c₀)⁻¹ hΨ
     simp only [invT_inv_val, Units.val_one, Matrix.one_mul] at this
     exact this
-  obtain ⟨m, hm⟩ := GlobalTheory.T.schwartzBruhat_blockScaled_hasLatticeDepth k A' C ϖ P _ hΨ' hϖ
+  obtain ⟨m, hm⟩ := _root_.GlobalTheory.PurityDepth.hasDepth_scaled k A' C ϖ P _ hΨ' hϖ
   refine ⟨m, fun n hn μ _ σ' r hr => ?_⟩
   obtain ⟨u, hu, hphi⟩ := _root_.GlobalTheory.ColumnRenumber.phiA_renumber k (Fin a) A' C μ σ σ' ν
   obtain ⟨c, hc0, hc⟩ : ∃ c : NNReal, c ≠ 0 ∧ μ = c • μ₀ :=

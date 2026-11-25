@@ -13,7 +13,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolarisedPer
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RefinesPolarisedDataBaseChangeSymmetricStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RefinesPolarisedDataRescaleCoboundaryStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RescaleDegDataTrivialisationsPsiEvenOfSqrtStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetricTwoCocycleFreeAbelianIsCoboundaryStatement
+public import Mathlib.LinearAlgebra.FreeModule.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetricTwoCocycleFreeAbelianIsCoboundary
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TauBimultOfRefinesPolarisedDataStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -67,7 +68,7 @@ theorem GlobalTheory.PolDeg.refine_monomial_of_polarised : ∀ (R : Type) [CommR
   haveI : IsNoetherianRing R₁ := hCN₁.1
   obtain ⟨D, e, f, hD⟩ := GlobalTheory.T.exists_symmetric_data_compare_polarised_up_to_function R R₁ Q ρ₁ P β β₂ hinj₁ hpb hsq hiso
   obtain ⟨hfs, hfc⟩ := GlobalTheory.T.polarisedPeriod_comparison_symm_cocycle R R₁ Q ρ₁ D e f hinj₁ hD
-  obtain ⟨g, hg⟩ := GlobalTheory.T.symmetric_twoCocycle_free_abelian_isCoboundary D.X _ f hfs hfc
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.symm_cocycle_isCoboundary D.X _ f hfs hfc
   have hD₁ : Half Q ρ₁ (rescale D g) e (fun _ _ => 1) :=
     GlobalTheory.T.refinesPolarisedData_rescale_coboundary R R₁ Q ρ₁ D e f (fun _ _ => 1) g hD (fun a b => by rw [hg a b, _root_.mul_one])
   have hb₁ : (rescale D g).TauBimult := GlobalTheory.T.tauBimult_of_refines_polarised_data R R₁ Q ρ₁ (rescale D g) e hinj₁ hD₁

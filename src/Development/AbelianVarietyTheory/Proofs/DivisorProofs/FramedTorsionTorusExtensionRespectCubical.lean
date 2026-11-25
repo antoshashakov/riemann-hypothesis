@@ -8,7 +8,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalPoints
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HRedFst
 public import Development.AbelianVarietyTheory.BlockTheory.CMModuli.FlatIsoUnitGenerator
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramesRespectCubicalStructures
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointFrameMulEqIntegralGeneratorsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsTheta
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointFrameMulEqIntegralGenerators
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationCubicalStructureGenericFibreStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationSectionsExtendingPointsMultiplyStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -99,7 +100,7 @@ theorem cube_of_liesOver : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing
   obtain ⟨JG, hJG⟩ : ∃ J, Good U.LG.L z J := by
     choose I hI using fun χ : _ ⟶ G.left => exists_chart U.LG.isLB (χ z)
     exact ⟨I, hI⟩
-  have v := fun S => GlobalTheory.T.torsionPointFrame_mul_eq_integralGenerators V hV D A G hG U w₀ hw₀ N hN (g S) (w S) (x S) (e S)
+  have v := fun S => _root_.GlobalTheory.Poinc.IntEval.frames_mul_eq_integral V hV D A G hG U w₀ hw₀ N hN (g S) (w S) (x S) (e S)
     (hS S).1 (hS S).2.1 (hS S).2.2.1 (hS S).2.2.2 (h S) (g' S) (f S) (t S) (hF S) (hE S) (hP S) (hf S) (ht S) (hT S)
     z JA JG JB hJA hJG hJB
   have c₁ := _root_.GlobalTheory.Poinc.IntCube.integral_cube V hV D A G hG U h g' f t a₀ m₁.1 m₂.1 m₃.1 a₄ b₀ m₁.2 m₂.2 m₃.2 b₄ hF hf ht hT z JG JB hJG hJB

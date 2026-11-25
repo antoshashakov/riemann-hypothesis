@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartGrpLawA
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescentMorphismToLocalSchemeStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFaithfullyFlatFactorThroughLocalSchemeStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFieldPt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenOfSaturatedLocalSchemeBaseChangeStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Flat
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenOfSaturatedLocalSchemeBaseChange
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothNhdsOfSmoothOverLocalSchemeStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpreadMorphismBasicOpenAgreeFlatStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpObjOfLawUnitInverseAgreeAwayStatement
@@ -235,7 +237,7 @@ theorem exists_open (σ : Setup) (E : Emb σ) (hC : σ.Common) (x : Sp σ.R)
   obtain ⟨hw, hop⟩ := E.openIn x
   have sat := fst_mem_U_iff_range σ E hC x hw
   have hx : spMap (σ.ρ x) (closedPoint _) = x := by rw [← σ.hρ]; exact (σ.C x).centre
-  obtain ⟨V', hV'⟩ := GlobalTheory.T.exists_open_of_saturated_local_scheme_baseChange _ _ _ E.p x ξ' _ hξ ‹_› ‹_› ‹_› _
+  obtain ⟨V', hV'⟩ := _root_.GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange _ _ _ E.p x ξ' _ hξ ‹_› ‹_› ‹_› _
     (pullback.lift (E.emb x) (σ.C x).G.hom hw).isOpenEmbedding.isOpen_range
     (fun w w' h hm => by rw [← sat] at hm ⊢; rwa [← h])
   obtain ⟨e', he', pb'⟩ := GlobalTheory.T.isPullback_of_open_baseChange_eq_preimage _ _ _ _ E.p _ _ _ hw hop V' hV'

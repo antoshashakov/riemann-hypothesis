@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricR
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsSplitExtDatumOfSplitTorusExtension
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PolOfSecondQuotient
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEvenCubicalTrivTranslateOrderTwoStatement
+public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEvenCubicalTrivTranslateOrderTwo
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslatedCubicalBundleClosedFibreUniformisationStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsMemCommonChart
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsCPMapCompCancel
@@ -119,7 +120,7 @@ theorem evenOn_translate : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
     (toBase_mul_of_isMonHom g.q _) w₄ k₄
   have De : Q.Desc P₀ := ⟨M, w₅, k₅⟩
   obtain ⟨a₀, P', -, ha₀, hl', hL', hs', hc'⟩ := GlobalTheory.T.translatedCubicalBundle_closedFibre_uniformisation R D A G U a ha P hP hsym hcub P₀ hlev'
-  obtain ⟨σ', hσ'⟩ := GlobalTheory.T.exists_even_cubicalTriv_translate_order_two _ _ D.toPre.X Q P₀ ⟨De⟩ a₀ ha₀ P' hL' hs' hc'
+  obtain ⟨σ', hσ'⟩ := _root_.GlobalTheory.TranslateEvenTriv.exists_even_cubTriv _ _ D.toPre.X Q P₀ ⟨De⟩ a₀ ha₀ P' hL' hs' hc'
   exact ⟨D.toPre.X, inferInstance, inferInstance, inferInstance, Q, P', hl', σ', hσ'⟩
 
 end GlobalTheory.Mum.TransEven

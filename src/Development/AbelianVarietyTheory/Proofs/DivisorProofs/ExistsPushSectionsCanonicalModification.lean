@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsUn
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBijectiveStalkMapOverDvrPoint
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsJacobianSectionIsUnitGermOfLocalIso
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GermMemRangeStalkOfPullbackMulLocalIso
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralSmoothProjectiveModificationOfNonemptyStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralSmoothProjectiveModificationOfNonempty
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -126,7 +126,7 @@ theorem exists_push_sections : ∀ (F : Type) [Field F] [CharZero F] (Y : Scheme
   have : GlobalTheory.IsNormalScheme Y := isNormalScheme_of_smooth p
   have : Nonempty U := hU.to_subtype
   have := M.iso
-  have hXi : IsIntegral M.X := GlobalTheory.T.isIntegral_smoothProjectiveModification_of_nonempty F Y p U d M hU
+  have hXi : IsIntegral M.X := _root_.GlobalTheory.isIntegral_of_nonempty_modif F Y p U d M hU
   obtain ⟨J, hJ⟩ := _root_.GlobalTheory.exists_jacobian_section_isUnit_germ F Y M.X p M.σ d K K'
   have hL : (tens K.bundle B).IsLB := isLB_tens K.isLB hB
   let C := jacChart M.σ K'.isLB K.isLB hB

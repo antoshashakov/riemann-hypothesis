@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AntiCols
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSkewHermitianCorrectionOfLocalSoluti
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInverseIntegralMatricesPreservingDoubledLaStatement
+public import Mathlib.Data.Matrix.Block
+public import Mathlib.Tactic.Continuity
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInverseIntegralMatricesPreservingDoubledLa
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalDictionaryInertPlaceStatement
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
 public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
@@ -74,7 +76,7 @@ theorem exists_transversal : (∀ (O : Type) [CommRing O] [IsLocalRing O] (c : O
   obtain ⟨hg1, hg2⟩ := hg
   have hinv : GlobalTheory.DblVac.matD g * GlobalTheory.DblVac.matD g⁻¹ = 1 := by
     simp [GlobalTheory.DblVac.matD]
-  obtain ⟨G, G', hGG, hMG⟩ := GlobalTheory.T.exists_inverse_integral_matrices_preserving_doubled_lattice (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)) O ι n P Q (GlobalTheory.InertSph.latAt X v : Set (Fin n → _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) hinj hPQ hQP hP hQ
+  obtain ⟨G, G', hGG, hMG⟩ := _root_.GlobalTheory.LatticeStab.matrix_in_diag_basis (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)) O ι n P Q (GlobalTheory.InertSph.latAt X v : Set (Fin n → _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) hinj hPQ hQP hP hQ
     (fun z => hlat z) (GlobalTheory.DblVac.matD g) (GlobalTheory.DblVac.matD g⁻¹) hinv (fun z h1 h2 => by
       obtain ⟨ha, hb⟩ := hg2 z ⟨h1, h2⟩
       exact ⟨ha.1, ha.2, hb.1, hb.2⟩)

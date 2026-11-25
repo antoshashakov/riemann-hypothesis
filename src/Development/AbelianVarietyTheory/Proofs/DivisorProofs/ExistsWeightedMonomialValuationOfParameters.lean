@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsBa
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsWeaklyRegularIffIsQuasiRegularSeqOfIsLocalRing
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResidueCoordinatesOfLocalModelBelowPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeightedMonomialPlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeightedMonomialPlace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeGeneratorTopForm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SpanFinrankMaximalIdealLeNcardOfLeSupSq
 import Mathlib.Algebra.Order.Floor.Extended
@@ -135,7 +135,7 @@ theorem monomial_place : ∀ {L : Type} [Field L] (c : ℂ →+* L) (Q : Subring
   letI := hQ.isLocalRing
   intro r N z wt hm hdim hw0 hw1 hx
   obtain ⟨hN, hqr⟩ := isQuasiRegularSeq_of_locModel c Q hQ r z hm hdim
-  obtain ⟨V, hC, u, hu, hirr, hmV, hunit, hloc⟩ := GlobalTheory.T.exists_weightedMonomialPlace_of_isLocModel c Q hQ r z wt hN hm.symm hqr hw0 hw1
+  obtain ⟨V, hC, u, hu, hirr, hmV, hunit, hloc⟩ := _root_.GlobalTheory.exists_weightedMonomialPlace c Q hQ r z wt hN hm.symm hqr hw0 hw1
   have ht0 : (z 0 : L) ≠ 0 := fun h => hirr.ne_zero (Subtype.ext h)
   have hordt : V.ord (z 0 : L) = 1 := by
     have h := V.ord_irreducible hirr
