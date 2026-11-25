@@ -12,7 +12,8 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GMatIsGenericF
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptDescentGenericPointStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptLatticeBaseChangeStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HodgeCptMorphismCompatStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.InChartIffOfDominatesStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.InChartIffOfDominates
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsGenFamAlgebraicIndependentFinrankStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsGenFamRevInvSubfamilyStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LatticePullSplitInjectionStatement
@@ -192,7 +193,7 @@ theorem exists_colFlags : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     convert 𝔐'.tie using 1
     exact Subsingleton.elim _ _
   have htie := GlobalTheory.T.hodgeCpt_dual_frame_generic E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n φ 𝔐'.X 𝔐'.ξ htie₀
-  have hch := GlobalTheory.T.inChart_iff_of_dominates' 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr
+  have hch := _root_.GlobalTheory.CompanionTheory.Ar.FlagBun.inChart_iff_of_dominates 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr
     (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))) ((k : K₀) → J₀ k) (seg x₀) 𝔐.tie htie₀.gen hdom
   have hfl := GlobalTheory.T.flag_frames_generic_model_left 𝔐.X Ω 𝔐.ξ (EE 𝔐) ((k : K₀) → J₀ k) (seg x₀) (CMType H ⊕ CMType H)
     (rk (CMType H) D.p D.q) (VV 𝔐) (LL 𝔐) m n φ (cc 𝔐 bW bO) 𝔐'.X 𝔐'.ξ pr 𝔐.tie 𝔐.all hvb htw hcc htie 𝔐'.all hdom hch

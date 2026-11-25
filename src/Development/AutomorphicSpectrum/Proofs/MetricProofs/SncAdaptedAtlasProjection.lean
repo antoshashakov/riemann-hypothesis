@@ -1,7 +1,8 @@
 module
 
 public import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.CompatibleChartProductProjectionStatement
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialOfFun
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.CompatibleChartProductProjection
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSncAdaptedChartAtPointStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncAdaptedChartSectionFormStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -102,7 +103,7 @@ theorem isSNC_pull {e n : ℕ} {X Z : Type} [TopologicalSpace X] [TopologicalSpa
   intro x
   obtain ⟨ψb, hcb, hxb, hsub, σb, hinj, hW, u, hu, hu0, hfac⟩ := hsnc (pr x)
   obtain ⟨ψ, kb, σ, hc, hx, hpr⟩ := hprod x
-  obtain ⟨ψ', hc', hsrc, hco⟩ := GlobalTheory.T.compatible_chart_product_projection e n X Z A Ab pr ψ kb σ ψb hc hcb hpr
+  obtain ⟨ψ', hc', hsrc, hco⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.ChartSwap.chart_swap e n X Z A Ab pr ψ kb σ ψb hc hcb hpr
   have hsrc' : ∀ y ∈ ψ'.source, pr y ∈ ψb.source := fun y hy => by
     rw [hsrc] at hy; exact hy.2
   refine ⟨ψ', hc', by rw [hsrc]; exact ⟨hx, hxb⟩, fun y hy => hsub (hsrc' y hy),

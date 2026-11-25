@@ -5,7 +5,8 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SameOrbitRefl
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BiholomorphicLiftSystemStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugationAntiholomorphicChartsStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugationInvariantSingularPotentialStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicDegreeOneBiholomorphismStatement
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicDegreeOneBiholomorphism
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LiftSystemComplexConjugationStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LiftSystemRealStructureStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularWeightMonotoneRegularizationStatement
@@ -165,7 +166,7 @@ theorem conj_of_flagAn [Fintype Ψ] {M : FlagModel y Ψ N j} {n d : ℕ} {BM : B
   have hdeg : IsDegreeOff FA.S.A FA.Re.R.A FA.Re.π 1 ∅ := by
     have := FA.Re.degree
     rwa [FA.deg_one, FA.br_empty] at this
-  obtain ⟨g, hgπ, hπg, hgh⟩ := GlobalTheory.T.holomorphic_degree_one_biholomorphism FA.S.A FA.Re.R.A FA.Re.π FA.Re.holo hdeg
+  obtain ⟨g, hgπ, hπg, hgh⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.Cj.exists_holoMap_inverse_of_degree_one FA.S.A FA.Re.R.A FA.Re.π FA.Re.holo hdeg
   have hsys := GlobalTheory.T.biholomorphic_lift_system FA.J_top FA.Re.R FA.S.A g FA.Re.π hgπ hπg hgh FA.Re.holo
   obtain ⟨c, hspec, hcont, hinv⟩ := GlobalTheory.T.lift_system_complex_conjugation hsys
   have hanal := GlobalTheory.T.conjugation_antiholomorphic_charts hsys c hspec hcont

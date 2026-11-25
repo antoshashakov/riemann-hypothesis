@@ -2,7 +2,9 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntEmbInjective
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AlternatingFormHermitianDescentStatement
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AlternatingFormHermitianDescent
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AlternatingFormLatticeCompatibleStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.CMFieldDegreeEqTwiceCardStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.EmbeddingInverseRootImaginaryStatement
@@ -102,7 +104,7 @@ theorem exists_latEmb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   have halt : ∀ x, F.form x x = 0 := fun x => by rw [← hform]; exact R.alt x
   have hadj : ∀ a a' : 𝓞 E, (a' : E) = IsCMField.complexConj E (a : E) → ∀ x y, F.form (a • x) y = F.form x (a' • y) := by
     rw [← hform]; exact R.adj
-  obtain ⟨B, hBe, hBadj, hBskew, hBnd⟩ := GlobalTheory.T.alternating_form_hermitian_descent E Λ (j + j') e einj esmul hspan F.form halt hunim hadj
+  obtain ⟨B, hBe, hBadj, hBskew, hBnd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatBil.exists_rat_bilin E Λ (j + j') e einj esmul hspan F.form halt hunim hadj
   obtain ⟨h, m, hm, hmaster, hint⟩ := GlobalTheory.T.skew_hermitian_form_exists E H Λ (j + j') e B hBadj hBskew hBnd
   have hdual := GlobalTheory.T.alternating_form_lattice_compatible E H Λ (j + j') e einj F.form hunim B hBe hBskew hBnd hspan h m hm hmaster
   have hrt : (H.rt : E) ≠ 0 := by

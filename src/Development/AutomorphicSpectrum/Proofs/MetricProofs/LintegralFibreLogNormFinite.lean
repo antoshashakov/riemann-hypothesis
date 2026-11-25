@@ -5,7 +5,7 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MemChartCompon
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AemeasurableCxPosDensityStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartComponentsFiniteProjectionStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartDensityIntegrableStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartDensityIntegrable
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartSectionNotMemComponentsStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.DomCellLogNormMeasurableInvariantStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGoodProjFirstCoordinateStatement
@@ -128,7 +128,7 @@ theorem cell_mass_lt_top {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type
   have hzero := GlobalTheory.T.zeroSet_chartIdeal_eq_chartSet K ι Q _ σ i hQ.2.1.2.1
   have hdim := GlobalTheory.T.ringKrullDim_chartComponents K ι Q e _ σ i hQ
   have hfin := GlobalTheory.T.chartComponents_finite_projection K ι Q e _ σ i Ψ hQ hΨ hΨ0 hdim
-  have hfs := GlobalTheory.T.chart_density_integrable K ι Q e _ σ i N G Ψ hQ hN hGi hΨ0 (GlobalTheory.T.setFibre_finite_of_goodProj K ι Q e Ψ hQ hΨ) hzero hdim hfin
+  have hfs := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.FibSum.fibreSum K ι Q e _ σ i N G Ψ hQ hN hGi hΨ0 (GlobalTheory.T.setFibre_finite_of_goodProj K ι Q e Ψ hQ hΨ) hzero hdim hfin
   have hsm : ∀ j, ∀ J ∈ chartComponents (conePts Q) σ i, GroundTheory.Heights₂.Heights.SmoothNear
       (GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J) (chartPot σ i N j) := fun j J hJ =>
     GroundTheory.Heights₂.Heights.smoothNear_chartPot σ i hN (fun x hx => by

@@ -6,7 +6,8 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.CauchyBinetSum
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsComponentInChartRegularStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalFrameOfTwistGenerationStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorExpansionOfScaledProductStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorRatioRegularOfMatrixIdentityStatement
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorRatioRegularOfMatrixIdentity
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ProdXbPowEqXcOfPowStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.TMatBlockDiagDetFactorsStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.YvEqSumMinorsGMat
@@ -140,7 +141,7 @@ theorem frames_pure (A : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (x₀
   let υs : Ψ ⊕ Ψ → Ω := fun s => ((C s).submatrix (rowsOf c s) id).det
   have hu : ∀ s, υs s ≠ 0 ∧ υs s ∈ R ∧ (υs s)⁻¹ ∈ R ∧
       zOf A c s * (Ts s).det = (xcOf x₀ c ^ m s) ^ rk Ψ p q s * υs s := fun s =>
-    GlobalTheory.T.minor_ratio_regular_of_matrix_identity R (A s) (C s) (B s) (Ts s) _ (hAT s) (pow_ne_zero _ hx) (hT s) (hBC s) (hC s) (hB s) (rowsOf c s)
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.minor_isUnit_of_leftInverse R (A s) (C s) (B s) (Ts s) _ (hAT s) (pow_ne_zero _ hx) (hT s) (hBC s) (hC s) (hB s) (rowsOf c s)
       (hz s) (hr s)
   have hW : ∀ s, (Ts s).det = (xcOf x₀ c ^ m s) ^ rk Ψ p q s * υs s * (zOf A c s)⁻¹ := fun s => by
     have := (hu s).2.2.2

@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffGuarded
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArithmeticVarietyGenericFibreProjectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLatticeShiftNonzeroStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartLatticeShiftNonzero
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericIntersectionEqualsPointsIntegralStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GeometricDegreeNonnegativePshStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationPotentialDegreeCompatibilityStatement
@@ -105,7 +106,7 @@ theorem nefPol : NefPol := by
       rw [ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.genIdeal, ← h1]; exact hgp
     exact_mod_cast this
   have hsec := hIn.siuZ K ι Ω y D (combLine Re.ref n).a I hI Re.arith hBir hnef hI0
-  exact GlobalTheory.T.chart_lattice_shift_nonzero K ι Ω y (combLine Re.ref n).a dβ
+  exact _root_.GlobalTheory.CompanionTheory.Ar.PB.section_sub_degree K ι Ω y (combLine Re.ref n).a dβ
     (exists_ne_zero_of_relevant y Re.arith.2.1.2.2) hsec
 
 end GlobalTheory.CompanionTheory.Ar.PB

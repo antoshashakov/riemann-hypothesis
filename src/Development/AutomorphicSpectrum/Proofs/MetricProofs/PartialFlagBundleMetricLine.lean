@@ -9,7 +9,8 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapHolomor
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapPullbackFirstStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapPullbackSecondStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagGapPullbackThirdStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FubiniStudyMetricSmoothStatement
+public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FlagIndices.InstFintypeFlIdx
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FubiniStudyMetricSmooth
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFubiniStudyPositiveStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SingularPotentialLogGrowthPshStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -63,7 +64,7 @@ theorem stepWeight_exists : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k,
   have hyp : IsStepHyp M BM p κ v R pr := ⟨hb, hr, hp, h1⟩
   have hc := GlobalTheory.T.flag_gap_pullback_third K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hyp
   have hfs : IsPotential R.A (potOf R (fsHerm ιk fun k => M.dy p (κ k))) :=
-    (GlobalTheory.T.log_resolution_fubini_study_positive Kk ιk _ e R).1 _ (GlobalTheory.T.fubini_study_metric_smooth Kk ιk _)
+    (GlobalTheory.T.log_resolution_fubini_study_positive Kk ιk _ e R).1 _ (_root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.fsHerm_isSmoothHerm Kk ιk _)
   have hnorm : ∀ x, logNormSec (BM.L.pullback pr hp.1) (fun x y => BM.s (pr x) (pr y)) x ≤ 0 :=
     fun x => BM.norm_le (pr x)
   have hsm := GlobalTheory.T.flag_gap_holomorphic_pullback_first K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hp hc hfs

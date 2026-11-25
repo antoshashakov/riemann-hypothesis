@@ -6,7 +6,9 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.EigenComponent
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsExtendLinearIndependentOfSpanStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GramDetPosIffLinearIndependentStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicFamilySmoothEntriesStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicLocalQuotientMapStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicLocalQuotientMap
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicSpanCoefficientsStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicEigencomponentConjugateFormStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicQuotientStructureStatement
@@ -202,7 +204,7 @@ theorem localQuot {U : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g
       ∀ t ∈ W, ∀ y z, (∀ u ∈ I, (R t).ip ((R t).P u) y = 0) → (R' t).ip (q t y) (q t z) = (R t).ip y z := by
   obtain ⟨g', k, Λ', i1, i2, e, form', π, hk, hπ, hall⟩ := GlobalTheory.T.isotropic_quotient_structure E g Λ (R t₀) I hsat hiso
   have hform : ∀ t ∈ U, (R t).form = (R t₀).form := fun t ht => hHol.1 t ht t₀ ht₀
-  obtain ⟨W, hWo, ht₀W, hWU, q, hq, hqs⟩ := GlobalTheory.T.holomorphic_local_quotient_map g' k g n U (fun i t => (R t).P (e i)) t₀ hU ht₀ hk
+  obtain ⟨W, hWo, ht₀W, hWU, q, hq, hqs⟩ := _root_.GlobalTheory.CompanionTheory.Metric.QuotHol.exists_holomorphic_quotient g' k g n U (fun i t => (R t).P (e i)) t₀ hU ht₀ hk
     (fun i => hHol.2 (e i)) (hall (R t₀) rfl).1
   have hker : ∀ t ∈ W, LinearMap.ker (q t) = Submodule.span ℂ ((R t).P '' I) := fun t ht => by
     rw [(hqs t ht).2, (hall (R t) (hform t (hWU ht))).2.1]

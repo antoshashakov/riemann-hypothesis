@@ -6,7 +6,7 @@ public import Mathlib.Order.CompletePartialOrder
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AemeasurableCxPosDensity
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.CxSheetSimpleNull
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FibreDensityIndependentProjectionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FibreDensityIndependentProjection
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SetFibreFiniteOfGoodProj
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.VolumeNonsimpleFibresEqZeroStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -130,7 +130,7 @@ theorem cx_posPart_indep : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, 
           ∫⁻ y, ENNReal.ofReal (cxPosDens (conePts Q) Ψ' (pot L) (E.indicator g) y) := by
     intro z
     by_cases hz : Gd z
-    · obtain ⟨W, hW, hzW, hWi, hWE⟩ := GlobalTheory.T.fibre_density_independent_projection K ι Q e Ψ Ψ' L g z hP hΨ hΨ' hLs hg hg0 hz.1 hz.2.1 hz.2.2
+    · obtain ⟨W, hW, hzW, hWi, hWE⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local K ι Q e Ψ Ψ' L g z hP hΨ hΨ' hLs hg hg0 hz.1 hz.2.1 hz.2.2
       exact ⟨W, hW, hWi, fun _ => hzW, hWE⟩
     · refine ⟨∅, isOpen_empty, fun _ _ _ => Iff.rfl, fun h => absurd h hz, fun E _ _ hE => ?_⟩
       rw [Set.subset_empty_iff.1 hE, Set.indicator_empty]

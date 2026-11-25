@@ -15,7 +15,8 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedHod
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightPshAndBoundsStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightTendstoC2Statement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RegularizedWeightTendstoUniformlyStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothOnAtlasContinuousStatement
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialOfFun
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SmoothOnAtlasContinuous
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.VerticalHodgeMetricLogFormulaStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -182,7 +183,7 @@ theorem tendsto_arLimFun (hLoc : ReciprocityTheory.ChartRestriction.G.AI.I2.Metr
       refine ⟨?_, fun x hx => ?_⟩
       · letI : MeasurableSpace M.Xc := borel M.Xc
         haveI : BorelSpace M.Xc := ⟨rfl⟩
-        have hc : Continuous (GT t) := hκc.sub (GlobalTheory.T.smooth_on_atlas_continuous D.n M.Xc M.atlas _ ht.1)
+        have hc : Continuous (GT t) := hκc.sub (_root_.GlobalTheory.CompanionTheory.Ar.AtlasSmooth.continuous_of_atlas_smooth D.n M.Xc M.atlas _ ht.1)
         exact hc.measurable.indicator hYo.measurableSet
       · obtain ⟨h2, -⟩ := ht.2 x hx
         have hL := hlogr x hx
@@ -208,7 +209,7 @@ theorem tendsto_arLimFun (hLoc : ReciprocityTheory.ChartRestriction.G.AI.I2.Metr
   have hmeasT : ∀ t, M.atlas.Smooth (S.regWeight t) → ∀ j, AEStronglyMeasurable (GT t ∘ (M.atlas.chart j).symm)
       (volume.restrict (M.atlas.chart j).target) := by
     intro t ht j
-    have hc : Continuous (GT t) := hκc.sub (GlobalTheory.T.smooth_on_atlas_continuous D.n M.Xc M.atlas _ ht)
+    have hc : Continuous (GT t) := hκc.sub (_root_.GlobalTheory.CompanionTheory.Ar.AtlasSmooth.continuous_of_atlas_smooth D.n M.Xc M.atlas _ ht)
     exact (hc.comp_continuousOn (M.atlas.chart j).continuousOn_symm).aestronglyMeasurable
       (M.atlas.chart j).open_target.measurableSet
   have hmeasG : ∀ j, AEStronglyMeasurable (G ∘ (M.atlas.chart j).symm)
