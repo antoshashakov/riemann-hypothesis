@@ -2,9 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SimpLabMinValOne
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsFanLowerMaxMultiplicityStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.MaxMultiplicityLtTopStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.SmoothOfMaxMultiplicityLeOneStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsFanLowerMaxMultiplicity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.MaxMultiplicityLtTop
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotIsPrimZero
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.SmoothOfMaxMultiplicityLeOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,7 +56,7 @@ theorem resolution : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero 
       IsTwG w0 φ → IsTwG w0 lab → SimpLab bar q φ lab →
       ∃ φ' : InvFun O, IsPolFan bar q φ' ∧ NoSelfInt bar q φ' ∧ IsTwG w0 φ' ∧ Subordinate bar q φ' φ by
     intro hP hT hL hS
-    have hfin := GlobalTheory.T.max_multiplicity_lt_top O bar hO q φ hP
+    have hfin := _root_.GlobalTheory.CompanionTheory.Ar.Fan.MaxMultiplicityFinite.maxMult_lt_top O bar hO q φ hP
     obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.mp hfin.ne
     exact key n φ lab hn.symm hP hT hL hS
   intro n
@@ -67,8 +68,8 @@ theorem resolution : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero 
         rw [hn]
         exact ENat.natCast_lt_top n
       obtain ⟨φ', lab', hP', hT', hL', hS', hSub, hlt⟩ :=
-        GlobalTheory.T.exists_fan_lower_max_multiplicity O bar w0 hO q φ lab hDom hP hT hL hS hfin h2
-      have hfin' := GlobalTheory.T.max_multiplicity_lt_top O bar hO q φ' hP'
+        _root_.GlobalTheory.CompanionTheory.Ar.Fan.RoundBelowMaxMultiplicity.exists_round_lt_maxMult O bar w0 hO q φ lab hDom hP hT hL hS hfin h2
+      have hfin' := _root_.GlobalTheory.CompanionTheory.Ar.Fan.MaxMultiplicityFinite.maxMult_lt_top O bar hO q φ' hP'
       obtain ⟨n', hn'⟩ := ENat.ne_top_iff_exists.mp hfin'.ne
       have hlt' : n' < n := by
         rw [hn, ← hn'] at hlt
@@ -79,7 +80,7 @@ theorem resolution : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero 
         rw [hn] at h2 ⊢
         have h3 : ¬ (2 ≤ n) := by exact_mod_cast h2
         exact_mod_cast (show n ≤ 1 by omega)
-      obtain ⟨g1, g2⟩ := GlobalTheory.T.smooth_of_max_multiplicity_le_one O bar hO q φ lab hDom hP hS hle
+      obtain ⟨g1, g2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.SmoothFanTerminal.smoothEnd O bar hO q φ lab hDom hP hS hle
       exact ⟨φ, g1, g2, hT, fun χ hχ => hχ⟩
 
 end GlobalTheory.CompanionTheory.Ar.Fan.FanResolution

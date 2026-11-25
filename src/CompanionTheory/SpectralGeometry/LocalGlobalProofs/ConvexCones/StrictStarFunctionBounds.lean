@@ -4,10 +4,11 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarD
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.BalancedFormDecompositionBoundStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.CentreFunctionOneOnCellStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarDepthBoundedDenominatorStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarDepthGapOnCellStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarFunctionOffCellStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.UniformCellBoundPolyhedralFanStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarDepthBoundedDenominator
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarDepthGapOnCell
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarFunctionOffCell
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.UniformCellBoundPolyhedralFan
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EllEqOfInRCone
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -53,8 +54,8 @@ namespace GlobalTheory.CompanionTheory.Ar.Fan.StrictStarFunction
 
 theorem exists_starFun_strict : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (ψ w : InvFun O), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsCentreSet bar q ψ w → ∃ K D : ℕ, 0 < K ∧ 0 < D ∧ (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → ∃ n : ℤ, (starFun bar ψ w K D).evalZ β = n) ∧ (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ → (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → w.evalZ β = 0) → IsStrict bar (starFun bar ψ w K D) γ) ∧ (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ → ∀ β₀ ∈ balForms bar X, (∀ y, 0 ≤ β₀ y y) → w.evalZ β₀ = 1 → InRCone γ β₀ → ∀ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut γ s h → 0 < h β₀ → IsStrict bar (starFun bar ψ w K D) (Fin.cons β₀ fun j => γ (s j))) := by
   intro O _ _ _ _ bar hb q ψ w hdom hψ hcs
-  obtain ⟨D₀, hD₀, hint⟩ := GlobalTheory.T.star_depth_bounded_denominator O bar hb q ψ w hψ hcs
-  obtain ⟨N₀, C₀, hdata⟩ := GlobalTheory.T.uniform_cell_bound_polyhedral_fan O bar hb q ψ hdom hψ
+  obtain ⟨D₀, hD₀, hint⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.StarDepthDenominator.starDepth_den O bar hb q ψ w hψ hcs
+  obtain ⟨N₀, C₀, hdata⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.UniformStrictBound.exists_strict_data O bar hb q ψ hdom hψ
   obtain ⟨b, hgens⟩ := GlobalTheory.T.balanced_form_decomposition_bound O bar hb q ψ w hψ hcs
   have hD₀r : (0 : ℝ) < D₀ := by exact_mod_cast hD₀
   refine ⟨N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1, D₀, by omega, hD₀, ?_, ?_, ?_⟩
@@ -67,7 +68,7 @@ theorem exists_starFun_strict : ∀ (O : Type) [CommRing O] [IsDedekindDomain O]
     linear_combination hn₂
   · intro X _ _ _ _ hX m γ hγ hnoc
     obtain ⟨N, ℓ, hN, hNN, hsw, -⟩ := hdata X hX m γ hγ
-    have hgap := GlobalTheory.T.star_depth_gap_on_cell O bar hb q ψ w hψ hcs X hX m γ N ℓ hγ hnoc hN hsw
+    have hgap := _root_.GlobalTheory.CompanionTheory.Ar.Fan.StarDepthGap.starDepth_le_gap O bar hb q ψ w hψ hcs X hX m γ N ℓ hγ hnoc hN hsw
     have hnn : ∀ β : LinearMap.BilinForm ℤ X, 0 ≤ (starDepth bar ψ w).evalZ β := fun β =>
       starDepth_eval_nonneg (fun a b => (β a b : ℝ))
     set K := N₀ + N₀ * C₀ + N₀ ^ 2 * C₀ * b + 1 with hKdef
@@ -121,7 +122,7 @@ theorem exists_starFun_strict : ∀ (O : Type) [CommRing O] [IsDedekindDomain O]
       have h2 : N ^ 2 * C₀ * b ≤ N₀ ^ 2 * C₀ * b :=
         Nat.mul_le_mul_right _ (Nat.mul_le_mul_right _ (Nat.pow_le_pow_left hNN 2))
       omega
-    have hoff := GlobalTheory.T.star_function_off_cell O bar hb q ψ w b hψ hcs X hX (hgens X hX) m γ N ℓ hγ hN hsw β₀ hβ₀ hp₀ hw₀ hin₀ m' s h'
+    have hoff := _root_.GlobalTheory.CompanionTheory.Ar.Fan.StarOffCell.off_cell O bar hb q ψ w b hψ hcs X hX (hgens X hX) m γ N ℓ hγ hN hsw β₀ hβ₀ hp₀ hw₀ hin₀ m' s h'
       hcut' hp' C₀ hdom' K hKb
     have hlinγ : ∀ β, InRCone γ β → (ℓ β : ℝ) = N * ψ.evalZ β := fun β hβ => StarKey.ell_eq_of_inRCone hγ.linear hsw hβ
     have hcast : (((h' β₀).toNat : ℕ) : ℝ) = (h' β₀ : ℝ) := by

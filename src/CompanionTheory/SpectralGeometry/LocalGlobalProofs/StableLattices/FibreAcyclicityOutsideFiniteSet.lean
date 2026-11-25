@@ -1,12 +1,15 @@
 module
 
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FibAc
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.AffineCoverOfProductFibresStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.AffineCoverSeparatingFiniteClosedPointsStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechAcyclicityOverAffineBaseStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.AffineCoverOfProductFibres
+public import Mathlib.AlgebraicGeometry.AffineScheme
+public import Mathlib.Order.CompletePartialOrder
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.AffineCoverSeparatingFiniteClosedPoints
+public import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechAcyclicityOverAffineBase
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubeTotalComplexAcyclicOfSlicesInductionOnCard
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechSliceAcyclicOfTruncation
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FibrewiseAcyclicityBaseChangeStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FibrewiseAcyclicityBaseChange
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsAffineOpenBiInfOfLe
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MumfordBundleCechCohomologyFinrank
 import Mathlib.Algebra.Order.Floor.Extended
@@ -101,9 +104,9 @@ theorem exists_acyclic_cechLB_fibre : ∀ {k : Type} [Field k] [IsAlgClosed k] {
     rintro _ ⟨y, hyF | rfl, rfl⟩
     · exact hclosed y hyF.2
     · exact hclosed _ hy
-  obtain ⟨r, V, hV, hVc, hV₁⟩ := GlobalTheory.T.affine_cover_separating_finite_closed_points T F₁ hF₁ hF₁c
-  obtain ⟨m', B, hB, hBc, -⟩ := GlobalTheory.T.affine_cover_separating_finite_closed_points X ∅ Set.finite_empty (by simp)
-  obtain ⟨d, D, hD, hDc, -⟩ := GlobalTheory.T.affine_cover_separating_finite_closed_points Z ∅ Set.finite_empty (by simp)
+  obtain ⟨r, V, hV, hVc, hV₁⟩ := _root_.GlobalTheory.CompanionTheory.CoverPoints.exists_affine_cover_finite_closed_points T F₁ hF₁ hF₁c
+  obtain ⟨m', B, hB, hBc, -⟩ := _root_.GlobalTheory.CompanionTheory.CoverPoints.exists_affine_cover_finite_closed_points X ∅ Set.finite_empty (by simp)
+  obtain ⟨d, D, hD, hDc, -⟩ := _root_.GlobalTheory.CompanionTheory.CoverPoints.exists_affine_cover_finite_closed_points Z ∅ Set.finite_empty (by simp)
   let U : Fin (m' + 1) → Z.Opens := fun i => p ⁻¹ᵁ B i
   let W : Fin (r + 1) → Z.Opens := fun j => q ⁻¹ᵁ V j
   have hT : ∀ n, Limits.IsZero ((cubeComplex (Cube.trunc₂ (secCube (p ≫ a) G
@@ -114,7 +117,7 @@ theorem exists_acyclic_cechLB_fibre : ∀ {k : Type} [Field k] [IsAlgClosed k] {
       (by simp only [W]; rw [← Scheme.Hom.preimage_iSup, hVc, Scheme.Hom.preimage_top])
       (fun i _ h => GlobalTheory.MumfordCohom.isAffineOpen_preimage_inf _ (hB i) h)
       (fun j _ h => GlobalTheory.MumfordCohom.isAffineOpen_preimage_inf _ (hV j) h)
-      (fun i j => (GlobalTheory.T.affine_cover_of_product_fibres a b p q H (hV j) B hB hBc G hG).1 i) n
+      (fun i j => (_root_.GlobalTheory.CompanionTheory.PointSurjectivity.over_affineOpen_of_isPullback a b p q H (hV j) B hB hBc G hG).1 i) n
     have hz := ((htot _ D hD hDc) n).isZero_homology
     have := ModuleCat.subsingleton_of_isZero hz
     have := e.symm.toEquiv.subsingleton
@@ -125,11 +128,11 @@ theorem exists_acyclic_cechLB_fibre : ∀ {k : Type} [Field k] [IsAlgClosed k] {
     have hne : t.Nonempty := Finset.card_pos.1 (by omega)
     have hVt : IsAffineOpen (⨅ j ∈ t, V j) :=
       IsAffineOpen.biInf _ t.finite_toSet hne fun j _ => hV j
-    obtain ⟨-, Y, π, f, E, Hy, hE, hEc, ⟨i₁⟩⟩ := GlobalTheory.T.affine_cover_of_product_fibres a b p q H hVt B hB hBc G hG
+    obtain ⟨-, Y, π, f, E, Hy, hE, hEc, ⟨i₁⟩⟩ := _root_.GlobalTheory.CompanionTheory.PointSurjectivity.over_affineOpen_of_isPullback a b p q H hVt B hB hBc G hG
     obtain ⟨i₂⟩ := GlobalTheory.MumfordCohom.nonempty_cech_sliceFst_iso (p ≫ a) G U W t _
       (preimage_biInf V q t)
     obtain ⟨j₁, hj₁, j₂, hj₂, hne'⟩ := Finset.one_lt_card.1 ht
-    have hfac := GlobalTheory.T.fibrewise_acyclicity_base_change a b p q H ha G hG Γ(T, ⨅ j ∈ t, V j) hVt.fromSpec Y π f Hy
+    have hfac := _root_.GlobalTheory.CompanionTheory.PointSurjectivity.fibAc_of_closed_fibres a b p q H ha G hG Γ(T, ⨅ j ∈ t, V j) hVt.fromSpec Y π f Hy
       (fun s σ hs hσ₁ hσ₂ => hfib (s ≫ hVt.fromSpec) σ (by simpa using hs) hσ₁ hσ₂ (by
         intro hmem
         have hp : hVt.fromSpec (s q₀) ∈ (⨅ j ∈ t, V j : T.Opens) :=
@@ -144,7 +147,7 @@ theorem exists_acyclic_cechLB_fibre : ∀ {k : Type} [Field k] [IsAlgClosed k] {
     have : y₀ q₀ ∈ (⨆ j, V j : T.Opens) := hVc ▸ trivial
     exact TopologicalSpace.Opens.mem_iSup.1 this
   have hcol := _root_.GlobalTheory.CompanionTheory.PointSurjectivity.cechComplex_sliceFst_singleton_acyclic_of_trunc₂ _ hA hT j₀
-  obtain ⟨-, Y, π, f, E, Hy, hE, hEc, ⟨i₁⟩⟩ := GlobalTheory.T.affine_cover_of_product_fibres a b p q H (hV j₀) B hB hBc G hG
+  obtain ⟨-, Y, π, f, E, Hy, hE, hEc, ⟨i₁⟩⟩ := _root_.GlobalTheory.CompanionTheory.PointSurjectivity.over_affineOpen_of_isPullback a b p q H (hV j₀) B hB hBc G hG
   obtain ⟨i₂⟩ := GlobalTheory.MumfordCohom.nonempty_cech_sliceFst_iso (p ≫ a) G U W {j₀} (q ⁻¹ᵁ V j₀)
     (by simp [W])
   have hac₁ : (cechLB (f ≫ (hV j₀).fromSpec ≫ b) (G.pull π) E).Acyclic :=
@@ -159,7 +162,7 @@ theorem exists_acyclic_cechLB_fibre : ∀ {k : Type} [Field k] [IsAlgClosed k] {
     exact hj₀
   let s : Sp k ⟶ Spec Γ(T, V j₀) := IsOpenImmersion.lift (hV j₀).fromSpec y₀ hrange
   have hs : s ≫ (hV j₀).fromSpec = y₀ := IsOpenImmersion.lift_fac _ _ _
-  obtain ⟨D', hD', hD'c, hD'a⟩ := GlobalTheory.T.exists_affine_cover_cechLB_fibre_acyclic a b p q H G hG Γ(T, V j₀) (hV j₀).fromSpec Y π f Hy E hE hEc hac
+  obtain ⟨D', hD', hD'c, hD'a⟩ := _root_.GlobalTheory.CompanionTheory.PointSurjFibre.cech_fibre_acyclic a b p q H G hG Γ(T, V j₀) (hV j₀).fromSpec Y π f Hy E hE hEc hac
     s σ₀ (by rw [← Category.assoc, hs]; exact hy) h₁ (by rw [hs]; exact h₂)
   exact ⟨m' + 1, D', hD', hD'c, hD'a⟩
 

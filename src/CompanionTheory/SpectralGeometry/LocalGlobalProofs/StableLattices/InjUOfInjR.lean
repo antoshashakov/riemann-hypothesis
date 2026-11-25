@@ -1,17 +1,17 @@
 module
 
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.FarRegularity.LKTExists
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.BoundaryCreationAnticommutatorStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CreationProductSingleBasisStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CreationProductSupportDegreeStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsOrderedCreationListStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.BoundaryCreationAnticommutator
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CreationProductSingleBasis
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CreationProductSupportDegree
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsOrderedCreationList
 public import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.EigenspaceCyclicDensity.LowKMultOneP
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FiniteDimInvariantSubspaceAdjointPair
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HighestWeightVectorKilledByRaisingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LeviActionCommutesWithBoundaryStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LeviActionUnitaryAdjointStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LocallyFiniteLeviInvariantSubspaceStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OrderedCreationCommutesPastLeviStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HighestWeightVectorKilledByRaising
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LeviActionCommutesWithBoundary
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LeviActionUnitaryAdjoint
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LocallyFiniteLeviInvariantSubspace
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.OrderedCreationCommutesPastLevi
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,28 +66,28 @@ namespace GlobalTheory.CompanionTheory.RgExh
 theorem injU_of_injR : CompanionTheory.RgExh.U.InjR → CompanionTheory.RgExh.U.InjU := by
   intro hR n ε γ lev V _ _ E hG hE hU hL hM u y hu hy hd hb
   have hmono := hG.2.1
-  have hsingle := GlobalTheory.T.highest_weight_vector_killed_by_raising n ε lev V E γ u hu
-  obtain ⟨T, hTf, hyT, hTS, hTs⟩ := GlobalTheory.T.locally_finite_levi_invariant_subspace n ε lev V E _ y hL hy hd
+  have hsingle := _root_.GlobalTheory.CompanionTheory.RgExh.lF_single_omU n ε lev V E γ u hu
+  obtain ⟨T, hTf, hyT, hTS, hTs⟩ := _root_.GlobalTheory.CompanionTheory.RgExhStableChains.exists_stable n ε lev V E _ y hL hy hd
   obtain ⟨y', hy'T, hy'0, hy'b⟩ := _root_.GlobalTheory.CompanionTheory.FarReg.highest_preimage_of_stable n V
     {pq : Fin n × Fin n // pq.1 < pq.2 ∧ ε pq.1 = ε pq.2 ∧ lev pq.1 = lev pq.2} T
     (fun i => lF E i.1.1 i.1.2) (fun i => lF E i.1.2 i.1.1) (bd (allT n) E) y hTf
-    (fun i x z => GlobalTheory.T.levi_action_unitary_adjoint n ε V E hU _ _ i.2.2.1 x z)
+    (fun i x z => _root_.GlobalTheory.CompanionTheory.RgExhFarReg.ChainAdj.lF_adjoint n ε V E hU _ _ i.2.2.1 x z)
     (fun i t ht => hTs _ _ i.2.2.1 i.2.2.2 t ht)
     (fun i t ht => hTs _ _ i.2.2.1.symm i.2.2.2.symm t ht)
-    (fun i t ht => GlobalTheory.T.levi_action_commutes_with_boundary n lev V E hmono hE _ _ i.2.2.2 t (hTS t ht).1)
-    (fun i t ht => GlobalTheory.T.levi_action_commutes_with_boundary n lev V E hmono hE _ _ i.2.2.2.symm t (hTS t ht).1) hyT
+    (fun i t ht => _root_.GlobalTheory.CompanionTheory.LeviChain.lF_bd_comm n lev V E hmono hE _ _ i.2.2.2 t (hTS t ht).1)
+    (fun i t ht => _root_.GlobalTheory.CompanionTheory.LeviChain.lF_bd_comm n lev V E hmono hE _ _ i.2.2.2.symm t (hTS t ht).1) hyT
     (fun i => by rw [hb]; exact hsingle _ _ i.2.1 i.2.2.1 i.2.2.2)
   obtain ⟨hy's, hy'd⟩ := hTS y' hy'T
-  obtain ⟨l, hnd, hmem, hcl⟩ := GlobalTheory.T.exists_ordered_creation_list n ε lev hmono
+  obtain ⟨l, hnd, hmem, hcl⟩ := _root_.GlobalTheory.CompanionTheory.RgClusterOrder.exists_inside_order n ε lev hmono
   have hlc : ∀ e ∈ l, e.1.1 < e.1.2 ∧ ε e.1.1 = ε e.1.2 ∧ lev e.1.1 = lev e.1.2 := fun e he => by
     obtain ⟨h1, h2⟩ := (hmem e).1 he
     have hc : ε e.1.1 = ε e.1.2 := (Finset.mem_filter.1 h1).2
     refine ⟨e.2, hc, le_antisymm (hmono e.2.le) ?_⟩
     by_contra h3
     exact h2 (Finset.mem_filter.2 ⟨Finset.mem_univ _, hc, not_le.1 h3⟩)
-  have hbd := GlobalTheory.T.ordered_creation_commutes_past_levi n V E (GlobalTheory.T.boundary_creation_anticommutator n V E) l y' hcl
+  have hbd := _root_.GlobalTheory.CompanionTheory.FarReg.BdProd.bd_prod n V E (_root_.GlobalTheory.CompanionTheory.Cartan.cartan n V E) l y' hcl
     (fun e he => hy'0 ⟨e.1, hlc e he⟩)
-  obtain ⟨c, hc0, hcw⟩ := GlobalTheory.T.creation_product_single_basis n V l (omU ε lev) u hnd (fun i hi => ((hmem i).1 hi).2)
+  obtain ⟨c, hc0, hcw⟩ := _root_.GlobalTheory.CompanionTheory.Chains.prod_cre_single n V l (omU ε lev) u hnd (fun i hi => ((hmem i).1 hi).2)
   have hun : omU ε lev ∪ l.toFinset = om ε := by
     ext i
     simp only [Finset.mem_union, List.mem_toFinset, hmem]
@@ -102,7 +102,7 @@ theorem injU_of_injR : CompanionTheory.RgExh.U.InjR → CompanionTheory.RgExh.U.
   have hcard : (om ε).card = (omU ε lev).card + l.length := by
     rw [← hun, Finset.card_union_of_disjoint, List.toFinset_card_of_nodup hnd]
     exact Finset.disjoint_left.2 fun i h1 h2 => ((hmem i).1 (List.mem_toFinset.1 h2)).2 h1
-  obtain ⟨hs1, hs2⟩ := GlobalTheory.T.creation_product_support_degree n V (inR ε lev) l y' _ (fun i hi => Or.inl (hlc i hi).2.1)
+  obtain ⟨hs1, hs2⟩ := _root_.GlobalTheory.CompanionTheory.RgExh.suppIn_deg_cre_prod n V (inR ε lev) l y' _ (fun i hi => Or.inl (hlc i hi).2.1)
     (fun A hA i hi => Or.inr (hy's A hA i hi)) hy'd
   set C : Cn n V := ((l.map cre).prod : Module.End ℂ (Cn n V)) y' with hC
   have hsm : ∀ (s : ℂ) (x : Cn n V) (A : Finset (Pos n)), s • x A ≠ 0 → x A ≠ 0 := fun s x A h h0 => h (by rw [h0, smul_zero])
