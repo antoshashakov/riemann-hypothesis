@@ -4199,19 +4199,14 @@ open Finset
 
 theorem hasDerivAt_prodLin (a : ℕ → ℝ) (T : ℝ) : ∀ (s : Finset ℕ), (∀ i ∈ s, T ≠ a i) →
     HasDerivAt (fun T => ∏ i ∈ s, (T - a i)) ((∏ i ∈ s, (T - a i)) * ∑ i ∈ s, 1 / (T - a i)) T := by
-  intro s
-  induction s using Finset.induction_on with
-  | empty => intro _; simpa using hasDerivAt_const T (1 : ℝ)
-  | insert x s hx ih =>
-    intro h
-    have hx' : T - a x ≠ 0 := sub_ne_zero.2 (h x (mem_insert_self x s))
-    have h1 := ih (fun i hi => h i (mem_insert_of_mem hi))
-    have h2 : HasDerivAt (fun T => T - a x) 1 T := (hasDerivAt_id T).sub_const (a x)
-    have h3 := h2.mul h1
-    simp only [prod_insert hx, sum_insert hx]
-    refine h3.congr_deriv ?_
-    have e : (T - a x) * (1 / (T - a x)) = 1 := mul_one_div_cancel hx'
-    linear_combination -(∏ i ∈ s, (T - a i)) * e
+  intro s hs
+  have hd := HasDerivAt.fun_finsetProd (u := s)
+    (fun (i : ℕ) (_ : i ∈ s) => (hasDerivAt_id T).sub_const (a i))
+  refine hd.congr_deriv ?_
+  simp only [id_eq, smul_eq_mul, mul_one, mul_sum]
+  refine sum_congr rfl fun i hi => ?_
+  rw [mul_one_div, eq_div_iff (sub_ne_zero.mpr (hs i hi))]
+  exact prod_erase_mul s (fun j => T - a j) hi
 
 theorem hasDerivAt_ratioLin (s t : Finset ℕ) (a b : ℕ → ℝ) (T : ℝ) (ha : ∀ i ∈ s, T ≠ a i)
     (hb : ∀ j ∈ t, T ≠ b j) :
@@ -4227,79 +4222,46 @@ theorem tele_left (T D : ℝ) (hD : 0 < D) (A B : ℕ → ℝ) : ∀ n : ℕ,
     (∀ j < n, A j ≤ B j) → (∀ j, j + 1 < n → B j ≤ A (j + 1)) → (∀ j < n, D ≤ T - B j) →
     -(1 / D) ≤ ∑ j ∈ range n, (1 / (T - A j) - 1 / (T - B j)) ∧
       ∑ j ∈ range n, (1 / (T - A j) - 1 / (T - B j)) ≤ 0 := by
-  intro n h1 h2 h3
-  have key : ∀ m, m ≤ n → 0 < m →
-      1 / (T - A 0) - 1 / (T - B (m - 1)) ≤ ∑ j ∈ range m, (1 / (T - A j) - 1 / (T - B j)) ∧
-        ∑ j ∈ range m, (1 / (T - A j) - 1 / (T - B j)) ≤ 0 := by
-    intro m
-    induction m with
-    | zero => intro _ h; omega
-    | succ m ih =>
-      intro hm _
-      have hBm : D ≤ T - B m := h3 m (by omega)
-      have hAm : A m ≤ B m := h1 m (by omega)
-      have hterm : 1 / (T - A m) - 1 / (T - B m) ≤ 0 := by
-        rw [sub_nonpos]; apply one_div_le_one_div_of_le (by linarith); linarith
-      rcases Nat.eq_zero_or_pos m with rfl | hm0
-      · simp only [zero_add, range_one, sum_singleton, Nat.sub_self]
-        exact ⟨le_refl _, hterm⟩
-      · obtain ⟨ih1, ih2⟩ := ih (by omega) hm0
-        rw [sum_range_succ]
-        have hB' : B (m - 1) ≤ A m := by have := h2 (m - 1) (by omega); rwa [Nat.sub_add_cancel hm0] at this
-        have hBm1 : D ≤ T - B (m - 1) := h3 (m - 1) (by omega)
-        have hmono : 1 / (T - B (m - 1)) ≤ 1 / (T - A m) := one_div_le_one_div_of_le (by linarith) (by linarith)
-        refine ⟨?_, by linarith⟩
-        simp only [Nat.add_sub_cancel]
-        linarith
-  rcases Nat.eq_zero_or_pos n with rfl | hn
-  · simp only [range_zero, sum_empty]
-    exact ⟨by have : 0 < 1 / D := by positivity
-              linarith, le_refl _⟩
-  · obtain ⟨k1, k2⟩ := key n le_rfl hn
-    refine ⟨?_, k2⟩
-    have hA0 : 0 < 1 / (T - A 0) := by
-      have := h1 0 hn; have := h3 0 hn; apply one_div_pos.2; linarith
-    have hBn : 1 / (T - B (n - 1)) ≤ 1 / D := one_div_le_one_div_of_le hD (h3 (n - 1) (by omega))
-    linarith
+  intro n hAB hBA hB
+  have sum_gaps_le (A B : ℕ → ℝ) (C : ℝ) (hC : 0 ≤ C) (n : ℕ)
+      (hAB : ∀ j < n, A j ≤ B j) (hBA : ∀ j, j + 1 < n → B j ≤ A (j + 1))
+      (hA : ∀ j < n, 0 ≤ A j) (hB : ∀ j < n, B j ≤ C) :
+      0 ≤ ∑ j ∈ range n, (B j - A j) ∧ ∑ j ∈ range n, (B j - A j) ≤ C := by
+    refine ⟨sum_nonneg fun j hj => sub_nonneg.mpr (hAB j (mem_range.mp hj)), ?_⟩
+    cases n with
+    | zero => simpa using hC
+    | succ n =>
+      rw [sum_sub_distrib, sum_range_succ B, sum_range_succ' A]
+      have hsum : ∑ j ∈ range n, B j ≤ ∑ j ∈ range n, A (j + 1) :=
+        sum_le_sum fun j hj => hBA j (Nat.succ_lt_succ (mem_range.mp hj))
+      linarith [hA 0 (Nat.succ_pos n), hB n (Nat.lt_succ_self n)]
+  have hposB j (hj : j < n) : 0 < T - B j := hD.trans_le (hB j hj)
+  have hposA j (hj : j < n) : 0 < T - A j := by linarith [hposB j hj, hAB j hj]
+  obtain ⟨hlo, hhi⟩ := sum_gaps_le (fun j => 1 / (T - A j)) (fun j => 1 / (T - B j))
+    (1 / D) (by positivity) n
+    (fun j hj => one_div_le_one_div_of_le (hposB j hj) (by linarith [hAB j hj]))
+    (fun j hj => one_div_le_one_div_of_le (hposA (j + 1) hj) (by linarith [hBA j hj]))
+    (fun j hj => (one_div_pos.mpr (hposA j hj)).le)
+    (fun j hj => one_div_le_one_div_of_le hD (hB j hj))
+  simpa only [← sum_neg_distrib, neg_sub] using And.intro (neg_le_neg hhi) (neg_nonpos.mpr hlo)
 
 theorem tele_right (T D : ℝ) (hD : 0 < D) (A B : ℕ → ℝ) : ∀ n : ℕ,
     (∀ j < n, B j ≤ A j) → (∀ j, j + 1 < n → A j ≤ B (j + 1)) → (∀ j < n, D ≤ B j - T) →
     0 ≤ ∑ j ∈ range n, (1 / (B j - T) - 1 / (A j - T)) ∧
       ∑ j ∈ range n, (1 / (B j - T) - 1 / (A j - T)) ≤ 1 / D := by
-  intro n h1 h2 h3
-  have key : ∀ m, m ≤ n → 0 < m →
-      ∑ j ∈ range m, (1 / (B j - T) - 1 / (A j - T)) ≤ 1 / (B 0 - T) - 1 / (A (m - 1) - T) ∧
-        0 ≤ ∑ j ∈ range m, (1 / (B j - T) - 1 / (A j - T)) := by
-    intro m
-    induction m with
-    | zero => intro _ h; omega
-    | succ m ih =>
-      intro hm _
-      have hBm : D ≤ B m - T := h3 m (by omega)
-      have hAm : B m ≤ A m := h1 m (by omega)
-      have hterm : 0 ≤ 1 / (B m - T) - 1 / (A m - T) := by
-        rw [sub_nonneg]; apply one_div_le_one_div_of_le (by linarith); linarith
-      rcases Nat.eq_zero_or_pos m with rfl | hm0
-      · simp only [zero_add, range_one, sum_singleton, Nat.sub_self]
-        exact ⟨le_refl _, hterm⟩
-      · obtain ⟨ih1, ih2⟩ := ih (by omega) hm0
-        rw [sum_range_succ]
-        have hA' : A (m - 1) ≤ B m := by have := h2 (m - 1) (by omega); rwa [Nat.sub_add_cancel hm0] at this
-        have hBm1 : D ≤ B (m - 1) - T := h3 (m - 1) (by omega)
-        have hAm1 : B (m - 1) ≤ A (m - 1) := h1 (m - 1) (by omega)
-        have hmono : 1 / (B m - T) ≤ 1 / (A (m - 1) - T) := one_div_le_one_div_of_le (by linarith) (by linarith)
-        refine ⟨?_, by linarith⟩
-        simp only [Nat.add_sub_cancel]
-        linarith
-  rcases Nat.eq_zero_or_pos n with rfl | hn
-  · simp only [range_zero, sum_empty]
-    exact ⟨le_refl _, by positivity⟩
-  · obtain ⟨k1, k2⟩ := key n le_rfl hn
-    refine ⟨k2, ?_⟩
-    have hAn : 0 < 1 / (A (n - 1) - T) := by
-      have := h1 (n - 1) (by omega); have := h3 (n - 1) (by omega); apply one_div_pos.2; linarith
-    have hB0 : 1 / (B 0 - T) ≤ 1 / D := one_div_le_one_div_of_le hD (h3 0 hn)
-    linarith
+  intro n hAB hBA hB
+  let reflect (f : ℕ → ℝ) (j : ℕ) := -f (n - 1 - j)
+  have h := tele_left (-T) D hD (reflect A) (reflect B) n
+    (fun j hj => neg_le_neg (hAB _ (by omega)))
+    (fun j hj => by
+      apply neg_le_neg
+      have hs : n - 1 - (j + 1) + 1 = n - 1 - j := by omega
+      simpa only [hs] using hBA (n - 1 - (j + 1)) (by omega))
+    (fun j hj => by dsimp [reflect]; linarith [hB (n - 1 - j) (by omega)])
+  simp only [reflect, neg_sub_neg] at h
+  rw [sum_range_reflect (fun j => 1 / (A j - T) - 1 / (B j - T)) n] at h
+  simpa only [← sum_neg_distrib, neg_sub, neg_neg] using
+    And.intro (neg_nonneg.mpr h.2) (neg_le_neg h.1)
 
 end Formalism.FourierDecayAlt.P.MAx3.R
 
@@ -4329,26 +4291,13 @@ theorem partialFrac (s t : Finset ℕ) (a b : ℕ → ℝ) (hcard : s.card = t.c
   set r := Pp %ₘ Dp with hr
   have hdecomp : r + Dp * q = Pp := modByMonic_add_div Pp Dp
   have hqd : q.natDegree = 1 := by rw [hq, natDegree_divByMonic Pp hDm, hPd, hDd, hcard]; omega
-  have hq0 : q ≠ 0 := by intro h; rw [h] at hqd; simp at hqd
   have hrlt : r.degree < Dp.degree := degree_modByMonic_lt Pp hDm
-  have hlt2 : r.degree < (Dp * q).degree := by
-    rw [degree_mul]
-    refine lt_of_lt_of_le hrlt ?_
-    have : (0 : WithBot ℕ) ≤ q.degree := by
-      rw [degree_eq_natDegree hq0]; exact WithBot.coe_le_coe.2 (Nat.zero_le _)
-    calc Dp.degree = Dp.degree + 0 := (add_zero _).symm
-      _ ≤ Dp.degree + q.degree := add_le_add_right this _
-  have hqm : q.leadingCoeff = 1 := by
-    have h1 : Pp.leadingCoeff = (r + Dp * q).leadingCoeff := by rw [hdecomp]
-    rw [leadingCoeff_add_of_degree_lt hlt2, leadingCoeff_mul, hDm.leadingCoeff, one_mul, hPm.leadingCoeff] at h1
-    exact h1.symm
-  have hqform : q = X + C (q.coeff 0) := by
-    have := eq_X_add_C_of_natDegree_le_one (le_of_eq hqd)
-    rw [this]
-    have hc1 : q.coeff 1 = 1 := by
-      have : q.leadingCoeff = q.coeff 1 := by rw [leadingCoeff, hqd]
-      rw [← this, hqm]
-    simp [hc1]
+  have hdeg : Dp.degree ≤ Pp.degree := by
+    rw [degree_eq_natDegree hDm.ne_zero, degree_eq_natDegree hPm.ne_zero, hDd, hPd, hcard]
+    exact WithBot.coe_le_coe.mpr (Nat.le_succ _)
+  have hqm : q.Monic := by
+    rw [Monic, hq, leadingCoeff_divByMonic_of_monic hDm hdeg, hPm.leadingCoeff]
+  have hqform := hqm.eq_X_add_C hqd
   refine ⟨q.coeff 0, fun T hT => ?_⟩
   have hrdeg : r.degree < (t.card : WithBot ℕ) := by
     rw [degree_eq_natDegree hDm.ne_zero, hDd] at hrlt; exact hrlt
