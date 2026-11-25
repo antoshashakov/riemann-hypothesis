@@ -16,7 +16,8 @@ public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.I
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionNonvanishingPoint
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTensorSectionNonvanishingOfBaseChange
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberCurveOfClassEqSmulAddStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.LineBundleGlobalSectionsDimCongrPicardClass
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberCurveOfClassEqSmulAdd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBigLineBundleOfSmulClassEqAmpleAtAddNefStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefLineBundleBaseChangeFieldExtensionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundaryStatement
@@ -107,8 +108,8 @@ theorem core_gen (hK : GlobalTheory.Published.NadelVanishingAndNonKltDivisor) (h
       linarith)
   obtain ⟨J, hJ, hvan⟩ := GlobalTheory.T.nadel_vanishing_canonical_add_boundary hK.1 X q D hq K B N hB D₀ m' 2 hm' two_pos hD₀ hNn hNb
     (fun C hC => by
-      have e1 := GlobalTheory.T.intersectionNumber_curve_of_class_eq_smul_add ℂ X q hq B N N' hB hN hN' m 1 C hC (by rw [hBc, one_smul])
-      have e2 := GlobalTheory.T.intersectionNumber_curve_of_class_eq_smul_add ℂ X q hq N₀ N N' h₀ hN hN' (2 * m - 1) 2 C hC hc₀
+      have e1 := _root_.GlobalTheory.interNumRed_of_cls_eq_nsmul_add ℂ X q hq B N N' hB hN hN' m 1 C hC (by rw [hBc, one_smul])
+      have e2 := _root_.GlobalTheory.interNumRed_of_cls_eq_nsmul_add ℂ X q hq N₀ N N' h₀ hN hN' (2 * m - 1) 2 C hC hc₀
       have e3 := hcur C hC
       rw [e3, e1, e2]
       have : ((2 * m - 1 : ℕ) : ℚ) = 2 * m - 1 := by

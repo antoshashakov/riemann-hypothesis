@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenS
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinitePlaceVacuumOfHeisenbergLattice
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegerAddConjEqOneUnramifiedCmStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianTensorSkewHermitianLatticeOpenCompactStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianTensorSkewHermitianLatticeOpenCompact
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAddCharSymplecticLocalLatticeEqOneStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicCharacterNontrivialAtPlacesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceSymplecticAddSelfExpansionHalfIdempotent
@@ -69,7 +69,7 @@ theorem exists_isVac : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Num
   intro F E _ _ _ _ _ σ B n d X Y r s r' s' hB hX hY M hrat v
   obtain ⟨θ, hθ⟩ := GlobalTheory.T.exists_integer_add_conj_eq_one_unramified_cm σ B hB
   obtain ⟨hAt, hSt⟩ := GlobalTheory.LatVac.latAtV_at_stable X Y v
-  obtain ⟨hO, hC⟩ := GlobalTheory.T.hermitian_tensor_skewHermitian_lattice_open_compact σ B X Y r s r' s' hX hY M hrat v
+  obtain ⟨hO, hC⟩ := _root_.GlobalTheory.LatOpenCpt.main σ B X Y r s r' s' hX hY M hrat v
   have hint := GlobalTheory.T.standardAddChar_symplectic_local_lattice_eq_one σ B X Y r s r' s' hB hX hY v θ
   have h2 : GlobalTheory.AdelicU.evFin F v (⅟(2 : AF F)) * 2 = 1 := by
     rw [← map_ofNat (GlobalTheory.AdelicU.evFin F v) 2, ← map_mul, invOf_mul_self, map_one]

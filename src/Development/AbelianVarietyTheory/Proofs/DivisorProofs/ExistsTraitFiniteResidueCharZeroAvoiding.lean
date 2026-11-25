@@ -3,7 +3,9 @@ module
 public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 public import Mathlib.RingTheory.Jacobson.Ring
 public import Mathlib.RingTheory.LocalRing.ResidueField.Defs
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeNotMemRingKrullDimQuotientEqOneStatement
+public import Mathlib.RingTheory.KrullDimension.Basic
+public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPrimeNotMemRingKrullDimQuotientEqOne
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueFieldMapAdicCompletionSurjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -122,7 +124,7 @@ theorem exists_trait_finite_residueField_charZero_avoiding : ∀ (B : Type) [Com
     rw [Ne, ← map_zero (algebraMap B R)]; exact fun e => mul_ne_zero hh hpB (hinj e)
   have hxm : algebraMap B R (h * p) ∈ IsLocalRing.maximalIdeal R :=
     (IsLocalization.AtPrime.to_map_mem_maximal_iff R m _).mpr (m.mul_mem_left h hpm)
-  obtain ⟨q, hq, hnq, hdim⟩ := GlobalTheory.T.exists_prime_not_mem_ringKrullDim_quotient_eq_one R (algebraMap B R (h * p)) hx0 hxm
+  obtain ⟨q, hq, hnq, hdim⟩ := _root_.GlobalTheory.exists_prime_notMem_ringKrullDim_quotient_eq_one R (algebraMap B R (h * p)) hx0 hxm
   let D := R ⧸ q
   haveI : IsDomain D := Ideal.Quotient.isDomain q
   haveI : IsLocalRing D := IsLocalRing.of_surjective' (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective

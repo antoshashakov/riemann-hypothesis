@@ -18,7 +18,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImag
 public import Mathlib.AlgebraicGeometry.Morphisms.Etale
 public import Mathlib.Combinatorics.Quiver.ReflQuiver
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsolatedInFibreOfEtaleRestriction
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataLogTerminalIffEtalePullbackStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataLogTerminalIffEtalePullback
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleValueAtPointNeZeroIffMemNonzeroLocus
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundary
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowMulIntersectionLeOfNefClassOnClosed
@@ -180,7 +180,7 @@ theorem sections_separate_fibre : GlobalTheory.Published.NadelVanishingAndNonKlt
     have e : UM.ι ≫ f = M.homOfLE hle ≫ (f ∣_ U) ≫ U.ι := by
       rw [morphismRestrict_ι, ← Category.assoc, Scheme.homOfLE_ι]
     rw [e]; infer_instance
-  have hkl := GlobalTheory.T.kawamataLogTerminal_iff_etale_pullback M W p f n m' UM D₀ D₁ hEtM hm' heq
+  have hkl := _root_.GlobalTheory.EtaleKlt.kltAt_iff_etale M W p f n m' UM D₀ D₁ hEtM hm' heq
   have hsupp : ∀ y ∈ UM, (y ∈ Jd.support ↔ f y = x₀) := by
     intro y hy
     rw [hJ, hkl y hy]

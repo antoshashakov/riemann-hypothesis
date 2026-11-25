@@ -12,7 +12,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardTransver
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecMemThetaSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVectorOrthogonalTranslateFinitePoint
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicThetaReadsCurveThetaFunctionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSelfDualLatticeVacuumReadingStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSelfDualLatticeVacuumReading
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockFormMinorProductEqProdHookProducts
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDefiniteUnitaryQuotientEqClassSumStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelOfIsBlockLevel
@@ -285,7 +285,7 @@ theorem finite_data (hI : GlobalTheory.NormSum.Inp D) (h : IsExact P X r) {𝔪 
   obtain ⟨R, hR, hRu, hF⟩ := hstd
   refine (exists_reads_coset h hm.1 o).elim fun φ hφ => ?_
   refine (exists_reads_vacuum h).elim fun f₀ hf₀ => ?_
-  refine (GlobalTheory.T.exists_selfDualLattice_vacuumReading X.ψ X.θ X.A X.B X.rkA X.rkB δ r h.setup).elim fun LB ⟨hLB, hz, hsph⟩ => ?_
+  refine (_root_.GlobalTheory.NormRatio.vacLat_of_reads X.ψ X.θ X.A X.B X.rkA X.rkB δ r h.setup).elim fun LB ⟨hLB, hz, hsph⟩ => ?_
   have hs₀ := hsph P.e0 P.vac.1 f₀ hf₀
   have hsd := (GlobalTheory.T.standardLattice_selfDual_and_integral_iff_stabilizes X.A P.a (X.ιA 1) 1 h.std.frame.gramA X.rkA (h.std.ptA 1)).1
   have hv := vac_eq_sum hI h hm.1 hF hφ

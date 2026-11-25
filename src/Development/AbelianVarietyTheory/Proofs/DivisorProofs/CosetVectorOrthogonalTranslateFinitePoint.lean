@@ -14,7 +14,7 @@ public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalZero
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecMemThetaSpace
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseRationalHomPointsIdealCompletionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseRationalHomPointsIdealCompletion
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowIntegralCompletedHomLattice
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartRationalTensorZeroAtPrimeIffPlaceIdem
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFinitePointReadsClassicalTranslationStatement
@@ -181,7 +181,7 @@ theorem heis_two_hatPt {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {r : D.hos
       heisO ψ S T (2 • finPt (S := S) (T := T) rfl rfl r z) f = f) {u : WO S T} (hu : HatPt r I u) :
     heisO ψ S T (2 • u) f = f := by
   obtain ⟨U, hU, hUf⟩ := hf.level
-  obtain ⟨z, hz, hk⟩ := GlobalTheory.T.dense_rationalHomPoints_idealCompletion S T r I hr hI U hU u hu
+  obtain ⟨z, hz, hk⟩ := _root_.GlobalTheory.CosetOrthDens.exists_finPt_sub_mem S T r I hr hI U hU u hu
   set x := finPt (S := S) (T := T) rfl rfl r z with hx
   have hxi : x.map (infPart D) = 0 := GlobalTheory.VacUnique.finRat_inf S T _
   have hki : (u - x).map (infPart D) = 0 := by

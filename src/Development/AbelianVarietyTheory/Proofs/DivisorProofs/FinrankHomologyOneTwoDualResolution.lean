@@ -9,7 +9,8 @@ public import Mathlib.LinearAlgebra.FreeModule.Basic
 public import Mathlib.LinearAlgebra.TensorProduct.Tower
 public import Mathlib.RingTheory.Finiteness.Defs
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHomologyResolutionsResidueField
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRangeBaseChangeEqFinrankRangeDualMapStatement
+public import Mathlib.LinearAlgebra.Dual.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankRangeBaseChangeEqFinrankRangeDualMap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KoszulResolutionThreeTermsExactStatement
 public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsRegularOfFnOfRingKrullDimQuotientAddLe
 import Mathlib.Algebra.Order.Floor.Extended
@@ -170,9 +171,9 @@ theorem finrank_homology_one_two_of_dual_resolution : ∀ (O : Type) [CommRing O
   have hc2 : Module.finrank K (K ⊗[O] (Fin (g.choose 2) → O)) = g.choose 2 :=
     GlobalTheory.Semicont.finrank_baseChange_fin _ _
 
-  obtain ⟨r0, n0⟩ := GlobalTheory.T.finrank_range_baseChange_eq_finrank_range_dualMap O K (C.X 0) (C.X 1) (C.d 0 1).hom
-  obtain ⟨r1, n1⟩ := GlobalTheory.T.finrank_range_baseChange_eq_finrank_range_dualMap O K (C.X 1) (C.X 2) (C.d 1 2).hom
-  obtain ⟨r2, n2⟩ := GlobalTheory.T.finrank_range_baseChange_eq_finrank_range_dualMap O K (C.X 2) (C.X 3) (C.d 2 3).hom
+  obtain ⟨r0, n0⟩ := _root_.GlobalTheory.AbCoh.finrank_range_baseChange_eq_dualMap_and_finrank_dual O K (C.X 0) (C.X 1) (C.d 0 1).hom
+  obtain ⟨r1, n1⟩ := _root_.GlobalTheory.AbCoh.finrank_range_baseChange_eq_dualMap_and_finrank_dual O K (C.X 1) (C.X 2) (C.d 1 2).hom
+  obtain ⟨r2, n2⟩ := _root_.GlobalTheory.AbCoh.finrank_range_baseChange_eq_dualMap_and_finrank_dual O K (C.X 2) (C.X 3) (C.d 2 3).hom
   have k1 := LinearMap.finrank_range_add_finrank_ker ((C.d 0 1).hom.dualMap.baseChange K)
   have k2 := LinearMap.finrank_range_add_finrank_ker ((C.d 1 2).hom.dualMap.baseChange K)
 

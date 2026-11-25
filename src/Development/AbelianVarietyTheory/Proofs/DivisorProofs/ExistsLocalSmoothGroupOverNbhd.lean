@@ -12,7 +12,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmooth
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpreadMorphismBasicOpenAgreeFlatStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpObjOfLawUnitInverseAgreeAwayStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrpUnitsAndInversesAgreeOfLawsAgreeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackOfOpenBaseChangeEqPreimageStatement
+public import Mathlib.AlgebraicGeometry.Pullbacks
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackOfOpenBaseChangeEqPreimage
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocallyOfFiniteTypeNearGenerisationOfPointStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -240,7 +241,7 @@ theorem exists_open (σ : Setup) (E : Emb σ) (hC : σ.Common) (x : Sp σ.R)
   obtain ⟨V', hV'⟩ := _root_.GlobalTheory.Desc.exists_open_of_saturated_stalkBaseChange _ _ _ E.p x ξ' _ hξ ‹_› ‹_› ‹_› _
     (pullback.lift (E.emb x) (σ.C x).G.hom hw).isOpenEmbedding.isOpen_range
     (fun w w' h hm => by rw [← sat] at hm ⊢; rwa [← h])
-  obtain ⟨e', he', pb'⟩ := GlobalTheory.T.isPullback_of_open_baseChange_eq_preimage _ _ _ _ E.p _ _ _ hw hop V' hV'
+  obtain ⟨e', he', pb'⟩ := _root_.GlobalTheory.Desc.isPullback_of_open_part_eq_preimage _ _ _ _ E.p _ _ _ hw hop V' hV'
   have hG : Smooth (σ.C x).G.hom := (σ.C x).semi.smooth
   have hGq : QuasiCompact (σ.C x).G.hom := (σ.C x).semi.quasiCompact
   have hA : Smooth σ.A.hom := σ.ab.smooth
@@ -293,7 +294,7 @@ theorem exists_open (σ : Setup) (E : Emb σ) (hC : σ.Common) (x : Sp σ.R)
       obtain ⟨y', hy', h⟩ := Set.mem_iUnion₂.1 (hs (Set.mem_univ y))
       exact Or.inl ⟨⟨y', hy'⟩, by rw [hemb]; exact h⟩
   refine ⟨V, smooth_of_forall _ _ fun z hz => ?_, ?_, fun z hz => (hmem z).2 (Or.inr hz),
-    fun w h => (hV w).2 ((sat w).1 h), GlobalTheory.T.isPullback_of_open_baseChange_eq_preimage _ _ _ _ E.p _ _ _ hw hop V hV⟩
+    fun w h => (hV w).2 ((sat w).1 h), _root_.GlobalTheory.Desc.isPullback_of_open_part_eq_preimage _ _ _ _ E.p _ _ _ hw hop V hV⟩
   · rcases (hmem z).1 hz with ⟨y, hy⟩ | h
     · exact ⟨_, hy, hWs _⟩
     · refine ⟨E.ιA.opensRange, h, ?_⟩

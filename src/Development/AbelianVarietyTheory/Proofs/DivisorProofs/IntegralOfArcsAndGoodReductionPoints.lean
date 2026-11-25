@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsChartOfIsLocalRing
 public import Mathlib.RingTheory.HahnSeries.PowerSeries
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowerSeriesOfNoPoleAwayUniformizerXStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RingTheory.LaurentSeries
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowerSeriesOfNoPoleAwayUniformizerX
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDiscreteValuationRingLocalizationPowerSeriesUnStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsArcDataOfBadReductionFiniteExtensionStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsComplexEmbeddingFractionFieldCdvr
@@ -246,7 +248,7 @@ theorem integral_of_arcs_of_good : ∀ (E : Type) [Field E] [NumberField E] [IsC
     rintro _ ⟨x, rfl⟩
     exact (hab₀ (spMap ρ x)).2 fun hx => x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _
       (show ρ PowerSeries.X ∈ x.asIdeal from hx) hρ))
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_powerSeries_of_no_pole_away_uniformizer_X T'.V ϖ hϖ κ₀ hκ₀ S ιC hιC _ hres hden
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.PowerSeriesNoPole.exists_eq_algebraMap T'.V ϖ hϖ κ₀ hκ₀ S ιC hιC _ hres hden
 
   have hϖu : IsUnit ((algebraMap T'.V T'.Fr).comp evu (PowerSeries.C ϖ * PowerSeries.X)) := by
     rw [RingHom.comp_apply, map_mul evu, hevC, hevX]

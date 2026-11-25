@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.CMLattices.IntegralOf
 public import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGoodCmPointAtCmBasisFrame
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodCmPtFrPolyNeZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumberFieldFrameValueNeZeroOfComplexStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumberFieldFrameValueNeZeroOfComplex
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationFrameReadingNeZeroStatement
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
@@ -99,7 +100,7 @@ theorem exists_good_cmPt_frame_ne_zero {D : D7} {T : Core D} {j : ℕ} (Y : Deep
     change (if h : x ∈ ((Y.U _).X k).dom then toC (evR Y.d.Xo₂ Y.d.c₂ F ((Y.U _).un k ⟨x, h⟩)) else 0) = 0
     rw [dite_eq_left hx]
     exact h0
-  obtain ⟨y, hy, hyne⟩ := GlobalTheory.T.exists_numberFieldFrame_value_ne_zero_of_complex _ _ _ _ _ _ z.K z.y _ F hFm.1 _ σ₁ _ hzx hev
+  obtain ⟨y, hy, hyne⟩ := _root_.GlobalTheory.FrameDenseZ.exists_frame_evR_ne_zero_of_complex _ _ _ _ _ _ z.K z.y _ F hFm.1 _ σ₁ _ hzx hev
   exact ⟨z, La, y, hz, hy.trans hz.2.2.2.1, hyne⟩
 
 

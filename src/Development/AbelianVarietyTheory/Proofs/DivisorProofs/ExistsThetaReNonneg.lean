@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNonnegAdelicSchwartzBumpTestStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalProjectionSectionIsotropicSpanStatement
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRationalProjectionSectionIsotropicSpan
 public import GroundTheory.GlobalFields.Adele.Discrete
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -82,7 +83,7 @@ theorem exists_theta_re_nonneg : ∀ (F : Type) [Field F] [NumberField F] (ψ : 
       (∀ s ∈ S, 0 ≤ (thetaSum F (schr ψ s Φ)).re) ∧ 0 < (thetaSum F (schr ψ 0 Φ)).re := by
   intro F _ _ ψ hψ κ _ S hiso hspan
   classical
-  obtain ⟨P, Q, hP, hQ, hker⟩ := GlobalTheory.T.exists_rational_projection_section_isotropicSpan F κ S hspan
+  obtain ⟨P, Q, hP, hQ, hker⟩ := _root_.GlobalTheory.rational_proj_section_of_span F κ S hspan
   obtain ⟨D, hD, hDξ⟩ := disc F κ
   set PA := P.map (algebraMap F (AF F)) with hPA
   set QA := Q.map (algebraMap F (AF F)) with hQA

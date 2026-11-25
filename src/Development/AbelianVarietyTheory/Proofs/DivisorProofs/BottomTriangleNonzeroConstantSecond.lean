@@ -27,7 +27,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisedVa
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareNuCharConductorExponentsPosProdModulusStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatticeDoubleCosetClassesStabilisers
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairSecondUnitBlockCosetRootOfUnity
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitBlockCosetIffMaximalLevelCongruentConjIdealStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitBlockCosetIffMaximalLevelCongruentConjIdeal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitVacuumEntireFactorIsThetaFunctionStandardStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryCharFiniteIdeleEqHeckeCharValueStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumFinitePartMovesVacuumAsThetaModelStatement
@@ -273,7 +274,7 @@ theorem stdSnd_eq_sum (hS : S.gram = 1) (hT : T.gram = 1) (hc : D.host.ccK = ⊤
   · obtain ⟨k, hk, hk'⟩ := GlobalTheory.T.exists_maximalLevel_moves_standardPairSupport_to_unitCoset S T hS hT hc βS hβ e P c he o ho ν y h0
     obtain ⟨r, ⟨hr, hr'⟩, hu⟩ := hR' k hk
     have hi := fun r' (h' : r' ∈ R) =>
-      GlobalTheory.T.unitBlockCoset_iff_maximalLevel_congruent_conjIdeal S T hS e P c he.1 o ho k hk r' (hR r' h') (g k) (g r') (hg k) (hg r') y (hk' _ (hg k))
+      _root_.GlobalTheory.BotSmallDict.CosetCong.coset_iff_congOne S T hS e P c he.1 o ho k hk r' (hR r' h') (g k) (g r') (hg k) (hg r') y (hk' _ (hg k))
     rw [Finset.sum_eq_single_of_mem r hr, h01 _ ((hi r hr).2 hr'), key r hr ((hi r hr).2 hr'), mul_one, mul_comm]
     intro r' h' hne
     by_contra h

@@ -23,7 +23,9 @@ public import Mathlib.RingTheory.Ideal.Quotient.Operations
 public import Mathlib.RingTheory.Localization.Away.Basic
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPushoutLocalizedPresentationBaseChange
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStandardSmoothLocalizationAwayJacobianDvdStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanRelationsConductorOfEvalEqZeroStatement
+public import Mathlib.RingTheory.Ideal.Maps
+public import Mathlib.RingTheory.Ideal.Quotient.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanRelationsConductorOfEvalEqZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartOffClosedPartFromBaseStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartsAffineOfSpectraStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PinchedChartsRestrictMatchingOpensStatement
@@ -114,7 +116,7 @@ theorem exists_standardSmooth : ∀ (R : Type) [CommRing R] [IsNoetherianRing R]
   obtain ⟨s', hs1, hs2⟩ := GlobalTheory.T.exists_sub_one_mem_mul_ker_nakayama_flat R' (MvPolynomial (κ ⊕ ν₀) R') C' (aeval ξ) hsurj
     (Ideal.span (Set.range fun s ↦ map (algebraMap R R') (F s))) (c.map (algebraMap R R'))
     (Ideal.span_le.2 (by rintro _ ⟨s, rfl⟩; exact hF0 s))
-    (fun G hG ↦ GlobalTheory.T.mem_span_relations_conductor_of_eval_eq_zero R R' D E _ _ (algebraMap R R') c (π.comp φ) ψ P.val F P.aeval_val_surjective hkP h2 G
+    (fun G hG ↦ _root_.GlobalTheory.PinchKernel.mem_span_of_eval_eq_zero R R' D E _ _ (algebraMap R R') c (π.comp φ) ψ P.val F P.aeval_val_surjective hkP h2 G
       (by rw [← key, show aeval ξ G = 0 from hG, map_zero]))
   obtain ⟨H, hH0, hH⟩ := GlobalTheory.T.exists_mvPolynomial_lift_conductor_coeffs R R' _ c hc _ hs1
   letI : Fintype (κ ⊕ σ₀) := Fintype.ofFinite _

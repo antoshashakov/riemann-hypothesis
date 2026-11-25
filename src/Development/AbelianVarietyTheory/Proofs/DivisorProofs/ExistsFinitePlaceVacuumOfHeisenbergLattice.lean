@@ -10,7 +10,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergLa
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VacFn
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantHeisenbergLatticeVacuumFunction
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorHeisenbergLatticeVacuumEigenStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorHeisenbergLatticeVacuumEigen
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -131,7 +132,7 @@ theorem exists_local_vac {F : Type} [Field F] [NumberField F] (v : GlobalTheory.
       rwa [← add_smul, invOf_two_add_invOf_two, one_smul] at e)
   have hx : ∀ y : κ → Fv F v, ((0 : κ → Fv F v), y) ∈ Λ → χ (0, y) = ψ₀ (x₀ ⬝ᵥ y) := fun y hy => hx₀ y hy
   refine ⟨vacFn ψ₀ Λ χ x₀, ⟨_root_.GlobalTheory.HeisLatVac.isLocallyConstant_vacFn_place v ψ₀ hc Λ ho χ x₀ hco hx h2, GlobalTheory.T.heisenbergLatticeVacuumFn_hasCompactSupport v ψ₀ Λ χ x₀ hk⟩, ?_,
-    GlobalTheory.T.schroedingerOperator_heisenbergLatticeVacuum_eigen ψ₀ Λ χ x₀ hco hx hiso⟩
+    _root_.GlobalTheory.HeisLatVac.schr_vacFn ψ₀ Λ χ x₀ hco hx hiso⟩
   intro h
   have e := GlobalTheory.T.heisenbergLatticeVacuumFn_apply_add ψ₀ Λ χ x₀ hco hx 0 (zero_mem _)
   simp only [Prod.fst_zero, Prod.snd_zero, add_zero, dotProduct_zero, neg_zero, mul_zero, sub_zero,

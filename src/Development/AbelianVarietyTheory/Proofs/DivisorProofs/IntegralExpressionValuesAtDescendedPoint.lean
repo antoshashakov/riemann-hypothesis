@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueScalar
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FromBaseAlt
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterValueMemLocalUnitsMulSubfieldStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterValueMemLocalUnitsMulSubfield
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodGeneratorsValLocalUnitsMulSubfieldStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetryGeneratorValueLocalUnitsMulSubfieldStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGeneratorValuesScalarMulLocalUnitStatement
@@ -134,7 +134,7 @@ theorem ev_values : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [CommRing
     obtain ⟨c1, hc1, e1⟩ := hκ (b c * D.c (e mu)) hPd
     obtain ⟨c2, hc2, e2⟩ := _root_.GlobalTheory.USep.EvG.frame_ev V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ N₁ hN
       (b c) (hb c) hBd (t c) (ht c)
-    obtain ⟨c3, hc3, e3⟩ := GlobalTheory.T.characterValue_mem_localUnits_mul_subfield V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ N₁ hN
+    obtain ⟨c3, hc3, e3⟩ := _root_.GlobalTheory.USep.EvG.chi_mem V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ N₁ hN
       (e mu) (b c) (hb c) hBd (χt mu c) (hχt mu c)
     obtain ⟨c4, hc4, e4⟩ := GlobalTheory.T.symmetryGenerator_value_localUnits_mul_subfield V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ (e mu)
     obtain ⟨c5, hc5, e5⟩ := GlobalTheory.T.periodGenerators_val_localUnits_mul_subfield V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀
