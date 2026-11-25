@@ -45,6 +45,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.NumberTheory.ModularForms.LevelOne.Basic
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSturmBoundIsModularFormCoeffSeq
 
 @[expose] public section
 
@@ -76,39 +77,8 @@ private theorem fd_bigO {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin 
 private theorem fd_order {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin 2) ℝ)} {k : ℤ} [ModularFormClass F Γ k]
     (hΓ : (1 : ℝ) ∈ Γ.strictPeriods) (f : F) (m : ℕ)
     (h : (f : ℍ → ℂ) =O[atImInfty] fun τ : ℍ => Periodic.qParam 1 τ ^ m) :
-    ∀ n < m, (qExpansion 1 f).coeff n = 0 := by
-  have hF := ModularFormClass.analyticAt_cuspFunction_zero f one_pos hΓ
-  have hq := qParam_tendsto_atImInfty (h := 1) one_pos
-  have hle : ((m : ℕ) : ℕ∞) ≤ analyticOrderAt (cuspFunction 1 f) 0 := by
-    by_contra hlt
-    push_neg at hlt
-    obtain ⟨n, hn⟩ := ENat.ne_top_iff_exists.mp (ne_top_of_lt hlt)
-    rw [← hn, Nat.cast_lt] at hlt
-    obtain ⟨g, hg, hg0, hev⟩ := hF.analyticOrderAt_eq_natCast.mp hn.symm
-    obtain ⟨C, hC⟩ := h.bound
-    have key : ∀ᶠ τ : ℍ in atImInfty,
-        ‖g (Periodic.qParam 1 τ)‖ ≤ C * ‖Periodic.qParam 1 τ‖ ^ (m - n) := by
-      filter_upwards [hC, hq.eventually hev] with τ h1 h2
-      rw [← SlashInvariantFormClass.eq_cuspFunction f τ hΓ one_ne_zero, h2, sub_zero,
-        smul_eq_mul, norm_mul, norm_pow, norm_pow] at h1
-      have hpos : 0 < ‖Periodic.qParam 1 (τ : ℂ)‖ ^ n :=
-        pow_pos (norm_pos_iff.mpr (Periodic.qParam_ne_zero _)) n
-      have hsplit : ‖Periodic.qParam 1 (τ : ℂ)‖ ^ m =
-          ‖Periodic.qParam 1 (τ : ℂ)‖ ^ n * ‖Periodic.qParam 1 (τ : ℂ)‖ ^ (m - n) := by
-        rw [← pow_add, Nat.add_sub_cancel' hlt.le]
-      rw [hsplit, mul_left_comm] at h1
-      exact le_of_mul_le_mul_left h1 hpos
-    have t1 : Tendsto (fun τ : ℍ => ‖g (Periodic.qParam 1 τ)‖) atImInfty (𝓝 ‖g 0‖) :=
-      (hg.continuousAt.tendsto.comp hq).norm
-    have t2 : Tendsto (fun τ : ℍ => C * ‖Periodic.qParam 1 τ‖ ^ (m - n)) atImInfty
-        (𝓝 (C * ‖(0 : ℂ)‖ ^ (m - n))) :=
-      (hq.norm.pow (m - n)).const_mul C
-    have hlim := le_of_tendsto_of_tendsto t1 t2 key
-    rw [norm_zero, zero_pow (by omega), mul_zero] at hlim
-    exact hg0 (norm_le_zero_iff.mp hlim)
-  intro n hn
-  have hz := (natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero hF).mp hle n hn
-  simp [qExpansion_coeff, hz]
+    ∀ n < m, (qExpansion 1 f).coeff n = 0 :=
+  GlobalTheory.EisM.qExpansion_coeff_zero_of_isBigO_qParam_pow hΓ f m h
 
 private theorem fd_norm {F : Type*} [FunLike F ℍ ℂ] {Γ : Subgroup (GL (Fin 2) ℝ)} {k : ℤ} [ModularFormClass F Γ k]
     [Γ.IsArithmetic] (f : F) : (ModularForm.norm 𝒮ℒ f : ℍ → ℂ) =O[atImInfty] (f : ℍ → ℂ) := by

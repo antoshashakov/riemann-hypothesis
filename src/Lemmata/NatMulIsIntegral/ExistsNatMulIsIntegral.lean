@@ -42,22 +42,14 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenExists
 
 @[expose] public section
 
 namespace Bl.NatMulIsIntegral
 
 private theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (c : E) :
-    ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * c) := by
-  obtain ⟨y, hy, hint⟩ := IsAlgebraic.exists_integral_multiple
-    ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c))
-  obtain ⟨m, hm⟩ : ∃ m : ℕ, m = y.natAbs := ⟨_, rfl⟩
-  rcases Int.natAbs_eq y with h | h <;> rw [← hm] at h <;> subst h
-  · refine ⟨m, by omega, ?_⟩
-    simpa [zsmul_eq_mul] using hint
-  · refine ⟨m, by omega, ?_⟩
-    have h2 := hint.neg
-    simpa [zsmul_eq_mul] using h2
+    ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * c) := GlobalTheory.DenominatorExistence.den_exists c
 
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [NumberField.{0} E] {n : Nat}

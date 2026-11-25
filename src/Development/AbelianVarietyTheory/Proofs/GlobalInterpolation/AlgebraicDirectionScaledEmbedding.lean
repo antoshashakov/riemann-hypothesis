@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenExists
 
 @[expose] public section
 
@@ -50,17 +51,7 @@ noncomputable section
 namespace GlobalTheory.AlgDirMom
 
 theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (c : E) :
-    ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : E) * c) := by
-  have hc : IsAlgebraic ℤ c :=
-    (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic c)
-  obtain ⟨z, hz0, hz⟩ := hc.exists_integral_multiple
-  refine ⟨z.natAbs, Int.natAbs_pos.2 hz0, ?_⟩
-  rw [zsmul_eq_mul] at hz
-  rcases Int.natAbs_eq z with h | h
-  · rw [h] at hz; simpa using hz
-  · rw [h] at hz
-    have := hz.neg
-    simpa using this
+    ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : E) * c) := GlobalTheory.DenominatorExistence.den_exists c
 
 theorem exists_nat_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L' : Submodule (𝓞 E) (Fin n → E))
     (hL' : Submodule.span E (L' : Set (Fin n → E)) = ⊤) (v : Fin n → E) :

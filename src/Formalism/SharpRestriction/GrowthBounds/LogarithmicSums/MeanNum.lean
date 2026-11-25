@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GrowthBounds.LogarithmicSums.StarNumB
 
 @[expose] public section
 
@@ -91,35 +92,8 @@ theorem inv_delta1 (s : Scale) : 1 / s.delta1 = s.x ^ (s.eps / 8) := by
 theorem one_le_xpow (s : Scale) (y : ℝ) (hy : 0 ≤ y) : 1 ≤ s.x ^ y := Real.one_le_rpow s.one_lt_alt.le hy
 
 theorem Gp_le (s : Scale) (hx : Real.exp 1 ≤ s.x) :
-    (Gp s : ℝ) ≤ cGE s.eps * Real.log s.x * s.x ^ (s.eps / 8) := by
-  have he := s.eps_pos
-  have hx0 := sc_x_pos s
-  have lx1 : 1 ≤ Real.log s.x := (Real.le_log_iff_exp_le hx0).2 hx
-  have hy1 : 1 ≤ s.x ^ (s.eps / 8) := one_le_xpow s _ (by positivity)
-  have hU : ((goodU s.delta1 : ℕ) : ℝ) ≤ 2 * s.x ^ (s.eps / 8) := by
-    unfold goodU
-    rw [inv_delta1]
-    have := Nat.ceil_lt_add_one (le_trans zero_le_one hy1)
-    linarith
-  have hM : ((orbitSmallMultiplicity (rG s) (hG s) s.x : ℕ) : ℝ) ≤ ((2 + 8 * s.eps + 3) * 10 ^ (6 * rE s.eps + 1) + 1) * Real.log s.x := by
-    unfold orbitSmallMultiplicity hG
-    rw [rG_rE, zpow_neg, div_inv_eq_mul, zpow_natCast]
-    have h0 : 0 ≤ (2 + 8 * s.eps + 3) * Real.log s.x * 10 ^ (6 * rE s.eps + 1) := by positivity
-    linarith only [Nat.ceil_lt_add_one h0, lx1]
-  unfold Gp goodG' goodEll
-  push_cast
-  rw [rG_rE] at hM ⊢
-  unfold cGE
-  have h5 : ((orbitSmallMultiplicity (rE s.eps) (hG s) s.x : ℕ) : ℝ) + 5 ≤
-      (((2 + 8 * s.eps + 3) * 10 ^ (6 * rE s.eps + 1) + 1) + 5) * Real.log s.x := by
-    linarith only [hM, lx1]
-  have h6 : (6 * (rE s.eps : ℝ) + 1) * ((goodU s.delta1 : ℕ) : ℝ) ≤ (6 * (rE s.eps : ℝ) + 1) * (2 * s.x ^ (s.eps / 8)) :=
-    mul_le_mul_of_nonneg_left hU (by positivity)
-  calc (((orbitSmallMultiplicity (rE s.eps) (hG s) s.x : ℕ) : ℝ) + 5) * ((6 * (rE s.eps : ℝ) + 1) * ((goodU s.delta1 : ℕ) : ℝ))
-      ≤ ((((2 + 8 * s.eps + 3) * 10 ^ (6 * rE s.eps + 1) + 1) + 5) * Real.log s.x) *
-          ((6 * (rE s.eps : ℝ) + 1) * (2 * s.x ^ (s.eps / 8))) :=
-        mul_le_mul h5 h6 (by positivity) (by positivity)
-    _ = _ := by ring
+    (Gp s : ℝ) ≤ cGE s.eps * Real.log s.x * s.x ^ (s.eps / 8) :=
+  Formalism.MainNotions.AuxBlock8.Pf.St.B.Gp_le s hx
 
 theorem first_count_le_log (s : Scale) (hx : Real.exp 1 ≤ s.x) : (N1 s : ℝ) ≤ cNE s.eps * Real.log s.x := by
   have he := s.eps_pos

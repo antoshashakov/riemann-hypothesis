@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.OrthogonalGaussModels.OneLetterGaussTranslateOfCmCase
 
 @[expose] public section
 
@@ -73,17 +74,8 @@ theorem sqrt_sq (d : ℕ) :
     rw [← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg d)]; simp
   linear_combination Complex.I * Complex.I * h + (d : ℂ) * Complex.I_mul_I
 
-theorem odd_b {a : ℕ} {b c : ℤ} {d : ℕ} (hOK : CmOK a b c d) : Odd b := by
-  have h1 := hOK.1
-  have h8 := hOK.2.2.1
-  rcases Int.even_or_odd b with ⟨k, hk⟩ | h
-  · exfalso
-    have h2 : (d : ℤ) = 4 * ((a : ℤ) * c - k * k) := by
-      rw [hk] at h1
-      linear_combination (-1 : ℤ) * h1
-    generalize (a : ℤ) * c - k * k = X at h2
-    omega
-  · exact h
+theorem odd_b {a : ℕ} {b c : ℤ} {d : ℕ} (hOK : CmOK a b c d) : Odd b :=
+  Formalism.L2.Th1.Top.HAux.odd_b hOK
 
 theorem gcd_one {a : ℕ} {b c : ℤ} {d : ℕ} (hOK : CmOK a b c d) :
     Int.gcd (a : ℤ) (Int.gcd b c : ℤ) = 1 := by

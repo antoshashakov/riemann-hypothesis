@@ -50,6 +50,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ComponentAttainedAtBaseFrame
 
 @[expose] public section
 
@@ -62,20 +63,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HostAAPartition
 
-theorem host_AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
-  have hb : D.host.𝔟 ≠ ⊥ := by
-    intro h0
-    have h1 := D.host.𝔟_spec.1
-    rw [h0, Ideal.bot_mul] at h1
-    exact differentIdeal_ne_bot h1
-  have hc : D.host.ccE ≠ ⊥ := by
-    unfold Formalism.BasicNotions.Host.ccE
-    rw [Ne, Ideal.map_eq_bot_iff_of_injective
-      (FaithfulSMul.algebraMap_injective (𝓞 D.host.K) (𝓞 D.host.E))]
-    exact D.host.ccK_ne_bot
-  unfold Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0
-  exact mul_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hc)
-    (inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hb))
+theorem host_AA_ne_zero (D : D7) : D.host.AA ≠ 0 := GlobalTheory.RecDict.comp_AA_ne_zero D
 
 theorem host_AA_partition : ∀ (D : D7), ∃ (m : ℕ) (a c : Fin m → D.host.E), (∀ i, a i ∈ D.host.AA) ∧ (∀ i, ∀ x ∈ D.host.AA, ∃ b : 𝓞 D.host.E, (b : D.host.E) = c i * x) ∧ ∑ i, a i * c i = 1 := by
   intro D

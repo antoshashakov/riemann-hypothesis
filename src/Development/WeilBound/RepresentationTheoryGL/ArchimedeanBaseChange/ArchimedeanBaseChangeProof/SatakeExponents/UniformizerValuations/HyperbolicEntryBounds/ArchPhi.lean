@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.InfinitesimalCharacterLimits.AllLeaves
+import Development.DiscreteGroups.PiInvariants.CasimirInfinity.CasInfOfIm
 
 @[expose] public section
 
@@ -102,38 +103,8 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 theorem multiplier_function_continuous_compact {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) (M : KMod n) (Tθ : M.V →L[ℂ] M.V)
     (k : Mat n → (M.V →L[ℂ] M.V)) (val : Inf n → ℂ) (T : ℝ) (h : IsMult μ M k val T) :
-    Continuous (phiOf M Tθ k) ∧ HasCompactSupport (phiOf M Tθ k) := by
-  obtain ⟨m, c, w, g, ks, hks, hk, -⟩ := h
-  let L : (M.V →L[ℂ] M.V) →ₗ[ℂ] ℂ :=
-    { toFun := fun A => LinearMap.trace ℂ M.V ((A * Tθ : M.V →L[ℂ] M.V) : M.V →ₗ[ℂ] M.V)
-      map_add' := fun A B => by simp [add_mul]
-      map_smul' := fun z A => by simp }
-  have hL : Continuous L := L.continuous_of_finiteDimensional
-  have hphi : phiOf M Tθ k = fun y : G n => L (k (y : Mat n)) := rfl
-  have hmem : ∀ y : G n, (y : Mat n) ∈ GLs n := fun y => (Matrix.isUnits_det_units y).ne_zero
-  have hkc : ContinuousOn k (GLs n) :=
-    (continuousOn_finsetSum _ fun i _ => ((hks i).2.1.continuousOn).const_smul (c i)).congr
-      (fun y hy => by simpa using hk y hy)
-  refine ⟨?_, ?_⟩
-  · rw [hphi]
-    exact hL.comp (hkc.comp_continuous Units.continuous_val hmem)
-  · choose R hR using fun i => (hks i).2.2.1
-    set Rt : ℝ := ∑ i, |R i|
-    have hRi : ∀ i, R i ≤ Rt := fun i =>
-      (le_abs_self _).trans (Finset.single_le_sum (fun j _ => abs_nonneg (R j)) (Finset.mem_univ i))
-    refine HasCompactSupport.intro (isCompact_entries (n := n) (Real.exp Rt)) fun y hy => ?_
-    have hlt : Rt < lg (y : Mat n) := by
-      by_contra hle
-      push Not at hle
-      apply hy
-      refine ⟨fun a b => (entry_le_of_lg hle a b).1, fun a b => ?_⟩
-      rw [Matrix.coe_units_inv]
-      exact (entry_le_of_lg hle a b).2
-    have hk0 : k (y : Mat n) = 0 := by
-      rw [hk _ (hmem y)]
-      exact Finset.sum_eq_zero fun i _ => by rw [hR i _ (hmem y) ((hRi i).trans_lt hlt), smul_zero]
-    rw [hphi]
-    simp [hk0]
+    Continuous (phiOf M Tθ k) ∧ HasCompactSupport (phiOf M Tθ k) :=
+  PositivityTheory.Rg.BcB.F.F0.phiOf_cs μ M Tθ k val T h
 
 end SlopeTestRemainingChoices
 

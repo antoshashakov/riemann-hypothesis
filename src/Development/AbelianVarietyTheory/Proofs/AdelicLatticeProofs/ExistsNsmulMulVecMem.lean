@@ -4,6 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnimodularity.Exi
 public import Mathlib.NumberTheory.NumberField.Basic
 import Supplements.MathlibImports.AnalysisAndTactics
 import Mathlib.RingTheory.SimpleRing.Principal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenExists
 
 @[expose] public section
 
@@ -12,22 +13,7 @@ namespace GlobalTheory.IntegralMultipleClearDenominators
 open NumberField
 
 theorem exists_nat_mul_integral {E : Type} [Field E] [NumberField E] (c : E) :
-    ∃ K : ℕ, 0 < K ∧ IsIntegral ℤ ((K : E) * c) := by
-  have h : IsAlgebraic ℤ c :=
-    (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic c)
-  obtain ⟨y, hy, hint⟩ := h.exists_integral_multiple
-  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩
-  rw [zsmul_eq_mul] at hint
-  rcases Int.natAbs_eq y with h1 | h1
-  · have : ((y.natAbs : ℕ) : E) = (y : E) := by
-      conv_rhs => rw [h1]
-      exact (Int.cast_natCast _).symm
-    rw [this]; exact hint
-  · have : ((y.natAbs : ℕ) : E) = -(y : E) := by
-      conv_rhs => rw [h1]
-      rw [Int.cast_neg, neg_neg]
-      exact (Int.cast_natCast _).symm
-    rw [this, neg_mul]; exact hint.neg
+    ∃ K : ℕ, 0 < K ∧ IsIntegral ℤ ((K : E) * c) := GlobalTheory.DenominatorExistence.den_exists c
 
 theorem exists_nsmul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (RingOfIntegers E) (Fin n → E))

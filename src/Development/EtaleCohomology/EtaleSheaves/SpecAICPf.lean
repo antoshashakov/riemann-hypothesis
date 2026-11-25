@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Development.EtaleCohomology.EtaleSheaves.AlgebraicIntegralClosure.AicLoc
 
 @[expose] public section
 
@@ -81,34 +82,7 @@ theorem card_roots_of_aic {A : Type} [CommRing A] [IsDomain A] (h : AIC A) :
     simp; omega
 
 theorem aic_localization {B S : Type} [CommRing B] [CommRing S] [Algebra B S] (M : Submonoid B)
-    [IsLocalization M S] (h : AIC B) : AIC S := by
-  classical
-  intro p hp hd
-  obtain ⟨b, hb⟩ := IsLocalization.exist_integer_multiples_of_finset M (Finset.image p.coeff (Finset.range (p.natDegree + 1)))
-  set r : S := algebraMap B S b
-  have hl : p.scaleRoots r ∈ lifts (algebraMap B S) := by
-    rw [lifts_iff_coeff_lifts]
-    intro i
-    rw [coeff_scaleRoots]
-    rcases lt_trichotomy i p.natDegree with hi | hi | hi
-    · obtain ⟨t, ht⟩ := hb (p.coeff i) (Finset.mem_image.2 ⟨i, Finset.mem_range.2 (by omega), rfl⟩)
-      refine ⟨t * b ^ (p.natDegree - (i + 1)), ?_⟩
-      rw [map_mul, ht, map_pow, Algebra.smul_def]
-      simp only [r]
-      have : p.natDegree - i = (p.natDegree - (i + 1)) + 1 := by omega
-      rw [this, pow_succ]; ring
-    · subst hi; rw [hp.coeff_natDegree]; exact ⟨1, by simp⟩
-    · rw [coeff_eq_zero_of_natDegree_lt hi]; exact ⟨0, by simp⟩
-  obtain ⟨q, hq, hqd, hqm⟩ := lifts_and_natDegree_eq_and_monic hl ((monic_scaleRoots_iff r).2 hp)
-  obtain ⟨β, hβ⟩ := h q hqm (by rw [hqd, natDegree_scaleRoots]; exact hd)
-  have hru : IsUnit r := IsLocalization.map_units S b
-  refine ⟨algebraMap B S β * hru.unit⁻¹, ?_⟩
-  have h1 := scaleRoots_eval₂_mul (p := p) (RingHom.id S) (algebraMap B S β * hru.unit⁻¹) r
-  simp only [eval₂_id, RingHom.id_apply] at h1
-  have h2 : r * (algebraMap B S β * hru.unit⁻¹) = algebraMap B S β := by
-    rw [mul_comm, mul_assoc, IsUnit.val_inv_mul, mul_one]
-  rw [h2, ← hq, eval_map, eval₂_hom, hβ, map_zero] at h1
-  exact (hru.pow _).mul_right_eq_zero.1 h1.symm
+    [IsLocalization M S] (h : AIC B) : AIC S := LateralTheory.E.BaseAICPf.Loc.aic_loc M h
 
 end LateralTheory.E.SpecAICPf
 

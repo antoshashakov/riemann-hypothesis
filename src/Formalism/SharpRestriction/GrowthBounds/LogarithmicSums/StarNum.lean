@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GrowthBounds.LogarithmicSums.StarNumB
 
 @[expose] public section
 
@@ -87,41 +88,8 @@ theorem one_le_xpow (s : Scale) (y : ℝ) (hy : 0 ≤ y) : 1 ≤ s.x ^ y :=
   Real.one_le_rpow s.one_lt_alt.le hy
 
 theorem Gp_le (s : Scale) (hx : Real.exp 1 ≤ s.x) :
-    (Gp s : ℝ) ≤ cGE s.eps * Real.log s.x * s.x ^ (s.eps / 8) := by
-  have he := s.eps_pos
-  have hL : 1 ≤ Real.log s.x := by
-    rw [← Real.log_exp 1]
-    exact Real.log_le_log (Real.exp_pos 1) hx
-  have hy : 1 ≤ s.x ^ (s.eps / 8) := one_le_xpow s _ (by linarith)
-  set r := rG s with hr
-  set A : ℝ := (2 + 8 * s.eps + 3) * 10 ^ (6 * r + 1) with hA
-  have hA0 : 0 ≤ A := mul_nonneg (by linarith) (by positivity)
-  have hM : (orbitSmallMultiplicity r (hG s) s.x : ℝ) ≤ A * Real.log s.x + 1 := by
-    unfold orbitSmallMultiplicity
-    have harg : (hG s + 3) * Real.log s.x / (10 : ℝ) ^ (-((6 * r + 1 : ℕ) : ℤ)) =
-        A * Real.log s.x := by
-      rw [zpow_neg, zpow_natCast, div_inv_eq_mul, hA, hG]
-      ring
-    rw [harg]
-    exact (Nat.ceil_lt_add_one (mul_nonneg hA0 (by linarith))).le
-  have hE : (goodEll r s.delta1 : ℝ) ≤ (6 * (r : ℝ) + 1) * (2 * s.x ^ (s.eps / 8)) := by
-    unfold goodEll goodU
-    push_cast
-    rw [inv_delta1]
-    have hc := (Nat.ceil_lt_add_one (by linarith : (0 : ℝ) ≤ s.x ^ (s.eps / 8))).le
-    have h6 : (0 : ℝ) ≤ 6 * (r : ℝ) + 1 := by positivity
-    exact mul_le_mul_of_nonneg_left (by linarith) h6
-  have hc : cGE s.eps = (A + 1 + 5) * (6 * (r : ℝ) + 1) * 2 := rfl
-  unfold Gp goodG'
-  push_cast
-  have h1 : A * Real.log s.x + 1 + 5 ≤ (A + 1 + 5) * Real.log s.x := by nlinarith
-  have h2 : 0 ≤ (6 * (r : ℝ) + 1) * (2 * s.x ^ (s.eps / 8)) := by positivity
-  calc ((orbitSmallMultiplicity r (hG s) s.x : ℝ) + 5) * (goodEll r s.delta1 : ℝ)
-      ≤ (A * Real.log s.x + 1 + 5) * ((6 * (r : ℝ) + 1) * (2 * s.x ^ (s.eps / 8))) := by
-        gcongr
-    _ ≤ ((A + 1 + 5) * Real.log s.x) * ((6 * (r : ℝ) + 1) * (2 * s.x ^ (s.eps / 8))) :=
-        mul_le_mul_of_nonneg_right h1 h2
-    _ = cGE s.eps * Real.log s.x * s.x ^ (s.eps / 8) := by rw [hc]; ring
+    (Gp s : ℝ) ≤ cGE s.eps * Real.log s.x * s.x ^ (s.eps / 8) :=
+  Formalism.MainNotions.AuxBlock8.Pf.St.B.Gp_le s hx
 
 theorem first_count_le_log (s : Scale) (hx : Real.exp 1 ≤ s.x) : (N1 s : ℝ) ≤ cNE s.eps * Real.log s.x := by
   exact _root_.Formalism.MainNotions.AuxBlock8.Pf.first_count_le_log s hx
