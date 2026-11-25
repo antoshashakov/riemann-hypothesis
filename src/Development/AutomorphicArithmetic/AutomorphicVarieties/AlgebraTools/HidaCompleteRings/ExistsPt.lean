@@ -60,11 +60,6 @@ section SlopeTestRemainingChoices
 
 open Polynomial
 
-private theorem exPt_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 end SlopeTestRemainingChoices
 
 private theorem exPt_coef {l : ℕ} [Fact l.Prime] (c : Coef l) (s : Finset (PadicAlgCl l))
@@ -86,7 +81,7 @@ private theorem exPt_nonunit {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) (hx
   obtain ⟨w, hw⟩ := hu.exists_right_inv
   have hi : IsIntegral ℤ_[l] (w : PadicAlgCl l) :=
     (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) w).map c.O.val
-  have h1 := (exPt_intIff _).1 hi
+  have h1 := (UpperTheory.V.Hi.Up.intIff _).1 hi
   have h2 : (x : PadicAlgCl l) * w = 1 := congrArg Subtype.val hw
   have h3 := congrArg norm h2
   rw [norm_mul, norm_one] at h3
@@ -110,7 +105,7 @@ theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.existsPt :
   haveI := Fintype.ofFinite σ
   obtain ⟨c', hc, hm⟩ := exPt_coef c (Finset.univ.image z) fun x hx => by
     obtain ⟨i, -, rfl⟩ := Finset.mem_image.1 hx
-    exact (exPt_intIff _).2 (hz i).le
+    exact (UpperTheory.V.Hi.Up.intIff _).2 (hz i).le
   have hm' : ∀ i, z i ∈ c'.O := fun i => hm _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))
   obtain ⟨G, hC, hX⟩ := exPt_ev l c'.O (Subalgebra.inclusion hc).toRingHom (fun i => ⟨z i, hm' i⟩)
     fun i => exPt_nonunit c' _ (hz i)

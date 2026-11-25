@@ -55,11 +55,6 @@ section SlopeTestRemainingChoices
 
 open Polynomial
 
-private theorem cop_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 private theorem cop_norm_lt {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ_[l] R]
     (y : R →ₐ[ℤ_[l]] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt y a ha
@@ -72,7 +67,7 @@ private theorem cop_coef {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l]
   let e := (integralClosure ℤ_[l] K).equivMapOfInjective f hf
   refine ⟨⟨(integralClosure ℤ_[l] K).map f, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e,
     Module.Finite.equiv e.toLinearEquiv⟩, fun x hx h => ?_⟩
-  exact ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 ((cop_intIff _).2 h), rfl⟩
+  exact ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 ((UpperTheory.V.Hi.Up.intIff _).2 h), rfl⟩
 
 private theorem cop_geom {R κ : Type} [CommRing R] [IsNoetherianRing R] [NormedField κ] [IsUltrametricDist κ]
     (m : Ideal R) (y : R →+* κ) (h1 : ∀ x, ‖y x‖ ≤ 1) (hm : ∀ x ∈ m, ‖y x‖ < 1) :
@@ -113,7 +108,7 @@ private theorem cop_bdd {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsNoet
     rw [map_sum, TrivSqZeroExt.snd_sum]
     refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
     rw [map_smul, TrivSqZeroExt.snd_smul, Algebra.smul_def, norm_mul]
-    exact mul_le_of_le_one_left (norm_nonneg _) ((cop_intIff _).1 isIntegral_algebraMap)
+    exact mul_le_of_le_one_left (norm_nonneg _) ((UpperTheory.V.Hi.Up.intIff _).1 isIntegral_algebraMap)
   have h7 : (F a).snd = (F (a - ∑ i, u i • b i)).snd + (F (∑ i, u i • b i)).snd := by
     rw [← TrivSqZeroExt.snd_add, ← map_add (f := _), sub_add_cancel]
   rw [h7]
@@ -159,7 +154,7 @@ private theorem cop_main {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDom
       (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) c).map (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l))
     show ‖f x‖ ≤ 1
     rw [h2]
-    exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hm _ hc).le ((cop_intIff _).1 h3))
+    exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hm _ hc).le ((UpperTheory.V.Hi.Up.intIff _).1 h3))
   obtain ⟨E, hE⟩ := UpperTheory.V.Loc.ptFin (l := l) R F hm
   haveI : FiniteDimensional ℚ_[l] E.1 := E.2
   obtain ⟨c', hc'⟩ := cop_coef E.1

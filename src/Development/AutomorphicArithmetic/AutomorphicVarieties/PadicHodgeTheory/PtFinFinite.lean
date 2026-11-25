@@ -56,11 +56,6 @@ public import Formalism.SharedLemmas.IntIffNormLe
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial
 
-private theorem ptFin_int {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 private theorem ptFin_pow {O S : Type} [CommRing O] [CommRing S] [Algebra O S] [IsNoetherianRing S] (m : Ideal S)
     (hres : ∀ x : S, ∃ a : O, x - algebraMap O S a ∈ m) (n : ℕ) :
     ∃ N : Submodule O S, N.FG ∧ ∀ x : S, ∃ y ∈ N, x - y ∈ m ^ n :=
@@ -111,7 +106,7 @@ theorem UpperTheory.V.Loc.ptFin :
   have hint : ∀ a : R, IsIntegral O (f a) := by
     intro a
     obtain ⟨c, hc⟩ := IsCO.res_surj (O := O) a
-    have h1 : IsIntegral O (f (a - algebraMap O R c)) := ((ptFin_int _).2 (hF _ hc).le).tower_top
+    have h1 : IsIntegral O (f (a - algebraMap O R c)) := ((UpperTheory.V.Hi.Up.intIff _).2 (hF _ hc).le).tower_top
     have h2 : f a = f (a - algebraMap O R c) + algebraMap O _ c := by simp
     rw [h2]
     exact h1.add isIntegral_algebraMap

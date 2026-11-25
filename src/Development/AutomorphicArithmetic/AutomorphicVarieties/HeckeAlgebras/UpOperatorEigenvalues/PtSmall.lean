@@ -59,15 +59,10 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Hi.Up
 
-private theorem int_iff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 variable {l : ℕ} [Fact l.Prime] {c : Coef l}
 
 theorem coef_le (a : c.O) : ‖algebraMap c.O (Qbar l) a‖ ≤ 1 :=
-  (int_iff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map c.O.val)
+  (UpperTheory.V.Hi.Up.intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map c.O.val)
 
 section Pt
 

@@ -234,11 +234,6 @@ section SlopeTestRemainingChoices
 
 open IsLocalRing Polynomial
 
-private theorem ts_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 private theorem ts_norm_lt {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ_[l] R]
     (y : R →ₐ[ℤ_[l]] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt y a ha
@@ -355,7 +350,7 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.tanScale :
   obtain ⟨-, -, WS, hWS, hz⟩ := sInternal D hD M
   have hsp := spanMono D hD M hF
   have hO : ∀ a : c.O, ‖algebraMap c.O (PadicAlgCl l) a‖ ≤ 1 := fun a =>
-    (ts_intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map c.O.val)
+    (UpperTheory.V.Hi.Up.intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a).map c.O.val)
   have hO' : ∀ a ∈ maximalIdeal c.O, ‖algebraMap c.O (PadicAlgCl l) a‖ < 1 := ts_norm_lt c.O.val
   let f : M.SS →ₐ[c.O] PadicAlgCl l := (TrivSqZeroExt.fstHom c.O _ _).comp ξ
   let N := ts_near hO M.SS (maximalIdeal M.S) f
@@ -382,7 +377,7 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.tanScale :
     rw [hWS, hsp, Submodule.span_le]
     exact Algebra.subset_adjoin
   obtain ⟨Ξ, hΞ⟩ := ts_ext WS (K := PadicAlgCl l) Subtype.val_injective
-    (fun x hx => ((ts_intIff x).2 hx).tower_top) (ξ.comp (Subalgebra.inclusion hle))
+    (fun x hx => ((UpperTheory.V.Hi.Up.intIff x).2 hx).tower_top) (ξ.comp (Subalgebra.inclusion hle))
     (fun x => by
       obtain ⟨a, -, ha⟩ := hN (Subalgebra.inclusion hle x)
       show ‖f (Subalgebra.inclusion hle x)‖ ≤ 1

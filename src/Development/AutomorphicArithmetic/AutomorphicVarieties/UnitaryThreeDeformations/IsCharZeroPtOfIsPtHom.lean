@@ -72,14 +72,9 @@ public import Formalism.SharedLemmas.IntIffNormLe
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
-private theorem int_iff_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 private theorem norm_le_of_int {l : ℕ} [Fact l.Prime] {T : Type} [CommRing T] [Algebra ℤ_[l] T]
     [Algebra.IsIntegral ℤ_[l] T] (φ : T →ₐ[ℤ_[l]] PadicAlgCl l) (x : T) : ‖φ x‖ ≤ 1 :=
-  (int_iff_norm _).1 ((Algebra.IsIntegral.isIntegral x).map φ)
+  (UpperTheory.V.Hi.Up.intIff _).1 ((Algebra.IsIntegral.isIntegral x).map φ)
 
 private theorem mem_max_iff {l : ℕ} [Fact l.Prime] {T : Type} [CommRing T] [IsLocalRing T] [Algebra ℤ_[l] T]
     [Algebra.IsIntegral ℤ_[l] T] (φ : T →ₐ[ℤ_[l]] PadicAlgCl l) (x : T) : x ∈ maximalIdeal T ↔ ‖φ x‖ < 1 :=
@@ -116,7 +111,7 @@ private theorem exists_dvr {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Alg
   let A : Subalgebra O (PadicAlgCl l) := { B.toSubsemiring with algebraMap_mem' := hO }
   have d1 : IsDiscreteValuationRing B := IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e
   have d2 : Module.Finite ℤ_[l] B := Module.Finite.equiv e.toLinearEquiv
-  refine ⟨A, d1, ?_, fun i => hB _ (Or.inl ⟨i, rfl⟩) ((int_iff_norm _).2 (hb i))⟩
+  refine ⟨A, d1, ?_, fun i => hB _ (Or.inl ⟨i, rfl⟩) ((UpperTheory.V.Hi.Up.intIff _).2 (hb i))⟩
   haveI : Module.Finite ℤ_[l] A := d2
   exact Module.Finite.of_restrictScalars_finite ℤ_[l] O A
 

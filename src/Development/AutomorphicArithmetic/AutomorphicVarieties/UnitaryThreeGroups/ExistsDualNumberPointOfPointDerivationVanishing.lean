@@ -63,10 +63,6 @@ open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV Uppe
 section SlopeTestRemainingChoices
 
 open Polynomial in
-private theorem md_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
 
 private theorem md_ext {O X R K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X]
@@ -265,5 +261,5 @@ theorem UpperTheory.exists_dualNumber_point_of_pointDerivation_vanishing :
   haveI : IsLocalRing c.O := c.dvr.toIsLocalRing
   haveI : IsAdicComplete (maximalIdeal c.O) c.O := (UpperTheory.V.Base.dvrFacts l c.O).2.2.2.1
   haveI : Algebra.IsIntegral ℤ_[l] c.O := Algebra.IsIntegral.of_finite _ _
-  exact md_main Subtype.val_injective (fun x => ⟨fun hx => (md_intIff x).1 (isIntegral_trans (A := c.O) x hx),
-    fun hx => ((md_intIff x).2 hx).tower_top⟩) W h qh hq g hker hM f hf D hD hDI
+  exact md_main Subtype.val_injective (fun x => ⟨fun hx => (UpperTheory.V.Hi.Up.intIff x).1 (isIntegral_trans (A := c.O) x hx),
+    fun hx => ((UpperTheory.V.Hi.Up.intIff x).2 hx).tower_top⟩) W h qh hq g hker hM f hf D hD hDI

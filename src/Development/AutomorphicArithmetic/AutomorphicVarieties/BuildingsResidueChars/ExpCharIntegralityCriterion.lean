@@ -52,11 +52,6 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ValuativeRel IsLoc
 open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
-private theorem ec_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 private theorem ec_le {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime] {w : W.Plc L} (j : W.Emb l w)
     (x : 𝒪[w.adicCompletion L]) : ‖j.1 (x : w.adicCompletion L)‖ ≤ 1 := by
   have hc : Continuous fun y : 𝒪[w.adicCompletion L] => ‖j.1 (y : w.adicCompletion L)‖ :=
@@ -102,11 +97,11 @@ theorem UpperTheory.expChar_integrality_criterion :
       Module.Finite.equiv e.toLinearEquiv⟩
     obtain ⟨c', hc, hd⟩ := (HV.coefSup l).1 c d
     refine ⟨c', hc, fun x => hd ?_⟩
-    exact ⟨⟨_, hj x⟩, (isIntegral_algHom_iff f hf).1 ((ec_intIff _).2 (ec_le j x)), rfl⟩
+    exact ⟨⟨_, hj x⟩, (isIntegral_algHom_iff f hf).1 ((UpperTheory.V.Hi.Up.intIff _).2 (ec_le j x)), rfl⟩
   · obtain ⟨y, hy⟩ := hu.exists_left_inv
     have hy' : (y : PadicAlgCl l) * j.1 (x : w.adicCompletion L) = 1 := congrArg Subtype.val hy
     have h1 : ‖(y : PadicAlgCl l)‖ ≤ 1 :=
-      (ec_intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c'.O.val)
+      (UpperTheory.V.Hi.Up.intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c'.O.val)
     have h2 := mul_lt_one_of_nonneg_of_lt_one_right h1 (norm_nonneg _) (ec_lt j x hx)
     rw [← norm_mul, hy', norm_one] at h2
     exact lt_irrefl _ h2

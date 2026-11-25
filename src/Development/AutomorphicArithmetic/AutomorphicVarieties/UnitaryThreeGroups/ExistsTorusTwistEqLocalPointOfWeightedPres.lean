@@ -58,10 +58,6 @@ public import Formalism.SharedLemmas.IntIffNormLe
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
 open Polynomial in
-private theorem pts_int {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
 
 private theorem pts_unit {B K : Type} [CommRing B] [Field K] [Algebra B K] (hi : Function.Injective (algebraMap B K))
     (b : B) (h0 : algebraMap B K b ≠ 0) (h : IsIntegral B (algebraMap B K b)⁻¹) : IsUnit b := by
@@ -115,7 +111,7 @@ private theorem pts_loc {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [CommRi
     rw [hz, norm_zero] at hge
     linarith
   have hint : IsIntegral ℤ_[l] (f x)⁻¹ :=
-    (pts_int _).mpr (by rw [norm_inv]; exact inv_le_one_of_one_le₀ hge)
+    (UpperTheory.V.Hi.Up.intIff _).mpr (by rw [norm_inv]; exact inv_le_one_of_one_le₀ hge)
   exact hx (pts_sur f x h0 hint.tower_top)
 
 private theorem fg_lemma {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {K : Type} [Field K]

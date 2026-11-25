@@ -78,11 +78,6 @@ section SlopeTestRemainingChoices
 
 open Polynomial
 
-private theorem qb_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 private theorem qb_norm_lt {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ_[l] R]
     (y : R →ₐ[ℤ_[l]] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt y a ha
@@ -105,7 +100,7 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algeb
 
 omit [IsLocalRing O] in
 private theorem qb_le (c : O) : ‖algebraMap O (PadicAlgCl l) c‖ ≤ 1 :=
-  (qb_intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) c).map (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l)))
+  (UpperTheory.V.Hi.Up.intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) c).map (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l)))
 
 omit [IsLocalRing O] in
 private theorem qb_le' {x : PadicAlgCl l} {c : O} (h : ‖x - algebraMap O _ c‖ < 1) : ‖x‖ ≤ 1 := by
@@ -186,7 +181,7 @@ private theorem qb_ring [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
   haveI : Module.Finite ℤ_[l] (integralClosure ℤ_[l] K) := IsIntegralClosure.finite ℤ_[l] ℚ_[l] K _
   let j : A →ₗ[ℤ_[l]] integralClosure ℤ_[l] K :=
     { toFun := fun a => ⟨⟨a.1, a.2.1⟩, (isIntegral_algHom_iff (K.val.restrictScalars ℤ_[l]) Subtype.val_injective).1
-        ((qb_intIff _).2 (qb_le' a.2.2.choose_spec))⟩
+        ((UpperTheory.V.Hi.Up.intIff _).2 (qb_le' a.2.2.choose_spec))⟩
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
   haveI : Module.Finite ℤ_[l] A := Module.Finite.of_injective j fun a b h =>

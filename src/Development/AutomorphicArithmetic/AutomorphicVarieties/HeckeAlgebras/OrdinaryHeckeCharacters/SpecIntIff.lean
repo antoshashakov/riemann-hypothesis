@@ -50,18 +50,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
-private theorem spec_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
-
 private theorem spec_int {l : ℕ} [Fact l.Prime] (c : Coef l) (ι : Qbar l ≃+* ℂ) [Algebra c.O ℂ]
     (h : ∀ a : c.O, algebraMap c.O ℂ a = ι a) (μ : ℂ) : IsIntegral c.O μ ↔ ‖ι.symm μ‖ ≤ 1 := by
   let e : Qbar l →ₐ[c.O] ℂ := { ι.toRingHom with commutes' := fun a => (h a).symm }
   have h1 : IsIntegral c.O (e (ι.symm μ)) ↔ IsIntegral c.O (ι.symm μ) := isIntegral_algHom_iff e ι.injective
   have h2 : e (ι.symm μ) = μ := ι.apply_symm_apply μ
   rw [h2] at h1
-  rw [h1, ← spec_intIff]
+  rw [h1, ← UpperTheory.V.Hi.Up.intIff]
   exact ⟨fun h => isIntegral_trans _ h, fun h => h.tower_top⟩
 
 private theorem spec_unit {l : ℕ} [Fact l.Prime] (c : Coef l) (ι : Qbar l ≃+* ℂ) [Algebra c.O ℂ]
@@ -155,7 +150,7 @@ theorem UpperTheory.V.Hi.spec :
     have h3 := congrArg norm h1
     rw [norm_mul, norm_one] at h3
     have h4 := mul_le_of_le_one_right (norm_nonneg (x b))
-      ((spec_intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) w).map c'.O.val) : ‖(w : PadicAlgCl l)‖ ≤ 1)
+      ((UpperTheory.V.Hi.Up.intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) w).map c'.O.val) : ‖(w : PadicAlgCl l)‖ ≤ 1)
     linarith⟩
   obtain ⟨ψ, hψ⟩ := spec_chi hinj R
   let φ : H.X.I.T →* c'.Oˣ := (Units.map y.toMonoidHom).comp θ / ψ

@@ -78,10 +78,6 @@ private theorem cd_compact {R : Type} [CommRing R] [WithIdeal R] [IsAdicComplete
   refine ⟨Set.range s, Set.finite_range s, fun x _ => ?_⟩
   refine Set.mem_biUnion (Set.mem_range_self (Ideal.Quotient.mk _ x)) ⟨x - s (Ideal.Quotient.mk _ x), hN ?_, by simp⟩
   exact Ideal.Quotient.eq.1 (hs _).symm
-private theorem cd_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  first
-  | exact _root_.UpperTheory.V.Hi.Up.intIff
-  | (apply _root_.UpperTheory.V.Hi.Up.intIff <;> assumption)
 private theorem cd_norm_lt {l : ℕ} [Fact l.Prime] (c : Coef l) {R : Type} [CommRing R] [IsLocalRing R] [Algebra c.O R]
     (y : R →ₐ[c.O] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.Gs5b.cd_norm_lt c y a ha
@@ -91,7 +87,7 @@ private theorem cd_pow {l : ℕ} [Fact l.Prime] (c : Coef l) {R : Type} [CommRin
     obtain ⟨o, ho⟩ := Alg.IsCO.res_surj (O := c.O) a
     have e : y a = y (a - algebraMap c.O R o) + algebraMap c.O _ o := by simp
     rw [e]
-    refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (cd_norm_lt c y _ ho).le ((cd_intIff _).1 ?_))
+    refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (cd_norm_lt c y _ ho).le ((UpperTheory.V.Hi.Up.intIff _).1 ?_))
     exact (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) o).map (IsScalarTower.toAlgHom ℤ_[l] c.O (PadicAlgCl l))
   let J : ℝ → Ideal R := fun b =>
     { carrier := {a | ‖y a‖ ≤ max b 0}
