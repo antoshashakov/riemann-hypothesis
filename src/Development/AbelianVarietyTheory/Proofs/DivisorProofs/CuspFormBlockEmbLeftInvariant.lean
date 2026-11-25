@@ -65,10 +65,8 @@ namespace GlobalTheory.CuspBlockLeft
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem sigma_sigma {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]
+theorem sigma_sigma {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj hcm x
 
 theorem yx_eq_one {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n r : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : IsHermND σ J) {X Y : Matrix (Fin n) (Fin r) E} (hW : GlobalTheory.SiegelSet.IsWittFrame σ J X Y) :

@@ -94,11 +94,8 @@ end Abstract
 section Place
 
 theorem sigma_invol {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨_, _, _, hτ⟩ := h
-  obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
-  apply w.embedding.injective
-  rw [hτ, hτ, star_star]
+    {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h x
 
 theorem sigR_invol {F E : Type} [Field F] [Field E] [Algebra F E] (A : Type) [CommRing A] [Algebra F A]
     {σ : E →ₐ[F] E} (h : ∀ x, σ (σ x) = x) (x : A ⊗[F] E) : sigR A σ (sigR A σ x) = x := by

@@ -52,10 +52,8 @@ namespace GlobalTheory.CMTrace
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [h.2.2.2, h.2.2.2, star_star]
+theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h x
 
 theorem sig_ne_id {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x :=
   _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h

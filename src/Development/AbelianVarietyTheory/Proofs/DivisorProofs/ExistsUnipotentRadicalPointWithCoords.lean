@@ -105,10 +105,8 @@ theorem gr_adMat {n p q : ℕ} (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n
     gr (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) = adMat F (cT (σ : E →+* E) X * J * Y) := by
   simp only [gr, cT_adMat, adMat, Matrix.map_mul]
 
-theorem invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom
-  apply τ.injective
-  rw [h.2.2.2, h.2.2.2, star_star]
+theorem invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h x
 
 theorem sigR_invol (h : IsCMExt F E σ) (x : AF F ⊗[F] E) : sigR (AF F) σ (sigR (AF F) σ x) = x := by
   induction x using TensorProduct.induction_on with

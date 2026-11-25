@@ -57,10 +57,8 @@ open PositivityTheory.SiegelWeilFormula
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-theorem rel_sigma_sigma (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ) : E →ₐ[ℚ] ℂ).toRingHom
-  apply τ.injective
-  rw [h.2.2.2, h.2.2.2, star_star]
+theorem rel_sigma_sigma (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h x
 
 theorem rel_cA_incM {a b : Type} (X : Matrix a b E) : (incM F X).map (cA σ) = incM F (X.map σ) := by
   ext i j

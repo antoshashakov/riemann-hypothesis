@@ -55,11 +55,8 @@ noncomputable section
 namespace GlobalTheory.TrEll.RatEll
 
 theorem sig_sig {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
-    (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
-  obtain ⟨-, -, -, h⟩ := h
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [h, h, star_star]
+    (h : IsCMExt F E σ) (e : E) : σ (σ e) = e :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h e
 
 theorem exists_cls_of_irreducible : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → Function.Bijective (diagH σ J F) ∧ ∀ γ : GRat σ J, Irreducible γ.1.1.charpoly → ∃ P : PPol σ n, γ.1.1.charpoly = P.1 ∧ ∃ q, HasCls P F J (diagH σ J F γ) q := by
   intro F E _ _ _ _ _ σ hσ n J hJ

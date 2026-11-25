@@ -59,12 +59,8 @@ theorem cA_inclR (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF 
   unfold cA inclR
   simp [Algebra.TensorProduct.includeRight_apply]
 
-private theorem isHecke_div_and_resEtaPow_div (hcm : IsCMExt F E σ) (a : E) : σ (σ a) = a := by
-  unfold IsCMExt at hcm
-  obtain ⟨-, -, -, h⟩ := hcm
-  let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ)).toRingHom
-  apply τ.injective
-  rw [h, h, star_star]
+private theorem isHecke_div_and_resEtaPow_div (hcm : IsCMExt F E σ) (a : E) : σ (σ a) = a :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj hcm a
 
 theorem cA_cA (hcm : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   have hσσ := isHecke_div_and_resEtaPow_div hcm
@@ -74,10 +70,8 @@ theorem cA_cA (hcm : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   | tmul a b => simp [hσσ]
   | add x y hx hy => simp only [map_add (f := _), hx, hy]
 
-theorem sigma_sigma' (hcm : IsCMExt F E σ) (a : E) : σ (σ a) = a := by
-  let τ : E →+* ℂ := (IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom
-  apply τ.injective
-  rw [hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]
+theorem sigma_sigma' (hcm : IsCMExt F E σ) (a : E) : σ (σ a) = a :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj hcm a
 
 private theorem isPair_and_isPair_of_isTriple (hcm : IsCMExt F E σ) : ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ := by
   have hσσ := isHecke_div_and_resEtaPow_div hcm

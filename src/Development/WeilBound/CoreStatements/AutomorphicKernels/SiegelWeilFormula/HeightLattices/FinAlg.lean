@@ -53,11 +53,8 @@ open PositivityTheory.SiegelWeilFormula.KWhit.Ht
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-theorem sig_sig (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨-, hE, -, h⟩ := hcm
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [h, h, star_star]
+theorem sig_sig (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj hcm x
 
 theorem sgv_sgv (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (v : HeightOneSpectrum (𝓞 F)) (z : v.adicCompletion F ⊗[F] E) :
     HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ z) = z := by

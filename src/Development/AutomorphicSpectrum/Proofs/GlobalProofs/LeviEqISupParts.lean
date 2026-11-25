@@ -98,10 +98,8 @@ section Field
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {r : ℕ}
 
-theorem sig_sig (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [hCM.2.2.2, hCM.2.2.2, star_star]
+theorem sig_sig (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj hCM x
 
 def blockDiag (B : Set (Fin r)) : Matrix (Fin r) (Fin r) E := diagonal (B.indicator 1)
 

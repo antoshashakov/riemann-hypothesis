@@ -53,11 +53,8 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Globa
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem conj_conj (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨-, -, -, hτ⟩ := h
-  let τ : E →+* ℂ := Classical.arbitrary _
-  apply τ.injective
-  rw [hτ, hτ, star_star]
+theorem conj_conj (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h x
 
 theorem exists_moved (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ y, σ y ≠ y :=
   _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h

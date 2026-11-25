@@ -115,10 +115,8 @@ theorem sg_comm (h : IsCMExt F E σ) (g : E ≃ₐ[ℚ] E) (x : E) : g (σ x) = 
   rw [h2]
   exact h1
 
-theorem sg_sg (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [h.2.2.2, h.2.2.2, star_star]
+theorem sg_sg (h : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h x
 
 theorem sg_ne (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   exact _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h

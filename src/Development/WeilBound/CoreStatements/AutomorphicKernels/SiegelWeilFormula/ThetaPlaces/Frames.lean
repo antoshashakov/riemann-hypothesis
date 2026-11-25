@@ -55,10 +55,8 @@ open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-theorem sig_invol (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply φ.injective
-  rw [hcm.2.2.2, hcm.2.2.2, star_star]
+theorem sig_invol (hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj hcm x
 
 
 omit [NumberField F] [NumberField E] in

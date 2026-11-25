@@ -130,10 +130,8 @@ theorem rep_F (hσ : ∀ z, σ (σ z) = z) {J : Matrix (Fin n) (Fin n) E} (hJ : 
   rw [← Algebra.traceForm_apply, LinearMap.BilinForm.apply_toDual_symm_apply]
   simp [hσ]
 
-theorem invol (h : IsCMExt F E σ) (z : E) : σ (σ z) = z := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [h.2.2.2, h.2.2.2, star_star]
+theorem invol (h : IsCMExt F E σ) (z : E) : σ (σ z) = z :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h z
 
 theorem isIntegral_map {z : E} (h : IsIntegral ℤ z) : IsIntegral ℤ (σ z) := h.map (σ.toRingHom.toIntAlgHom)
 

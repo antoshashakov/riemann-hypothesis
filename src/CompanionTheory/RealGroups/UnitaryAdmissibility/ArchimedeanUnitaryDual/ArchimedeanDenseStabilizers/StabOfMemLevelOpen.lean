@@ -160,10 +160,8 @@ theorem mem_orbit_of_eq {v : HeightOneSpectrum (𝓞 F)} {K : Subgroup (GLoc σ 
   rw [e2]
   group
 
-theorem sigma_invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
+theorem sigma_invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  _root_.GlobalTheory.AdelicU.cm_conj_conj h x
 
 theorem exists_sigma_ne (h : IsCMExt F E σ) : ∃ z, σ z ≠ z :=
   _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
