@@ -130,17 +130,18 @@ theorem symplOF_rat (σ : E →ₐ[F] E) [Module.Finite F E] {nS nT : ℕ}
   rw [GlobalTheory.LatVac.trace_tmul, one_mul]
 end
 
-theorem ratLF_annihilator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
-    (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+theorem ratLF_annihilator_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
+    (B : Base F E), IsCMExt F E σ → IsStd B.ψ →
+        ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
     IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → ∀ x : WOF F E nS nT,
       (∀ γ ∈ ratLF F E nS nT, B.ψ (symplOF σ JS JT ξ₀ x γ) = 1) ↔ x ∈ ratLF F E nS nT := by
-  intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ x
-  haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hB.cm.2.2.1]; norm_num)
+  intro F E _ _ _ _ _ σ B hB_cm hB_std nS nT JS JT hS hT ξ₀ hξ x
+  haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hB_cm.2.2.1]; norm_num)
   have hσ : Function.Surjective σ := (Algebra.IsAlgebraic.algHom_bijective σ).2
   constructor
   · intro h
     have hent : ∀ i j, ∃ e : E, x i j = (1 : AF F) ⊗ₜ[F] e := fun i j =>
-      GlobalTheory.RatAnnih.tensor_rat (x i j) fun e => adele_rat_of_isGood hB _ fun c => by
+      GlobalTheory.RatAnnih.tensor_rat (x i j) fun e => adele_rat_of_isGood_c hB_cm hB_std _ fun c => by
         obtain ⟨γ, hγ, hγe⟩ := exists_symplOF_eq σ hσ hS hT hξ x i j (c • e)
         exact (congrArg B.ψ ((GlobalTheory.RatAnnih.trace_mul_algebraMap (x i j) e c).trans hγe.symm)).trans (h γ hγ)
     choose M hM using hent
@@ -150,6 +151,13 @@ theorem ratLF_annihilator : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   · rintro ⟨M, rfl⟩ _ ⟨N, rfl⟩
     obtain ⟨a, ha⟩ := symplOF_rat σ JS JT ξ₀ M N
     rw [ha]
-    exact (GlobalTheory.StdCharWeilDatum.isCharAF hB.std).2.2.1 a
+    exact (GlobalTheory.StdCharWeilDatum.isCharAF hB_std).2.2.1 a
+
+theorem ratLF_annihilator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
+    (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+    IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → ∀ x : WOF F E nS nT,
+      (∀ γ ∈ ratLF F E nS nT, B.ψ (symplOF σ JS JT ξ₀ x γ) = 1) ↔ x ∈ ratLF F E nS nT := by
+  intro F E _ _ _ _ _ σ B hB
+  exact ratLF_annihilator_c F E σ B hB.cm hB.std
 
 end GlobalTheory.RatAnnihF
