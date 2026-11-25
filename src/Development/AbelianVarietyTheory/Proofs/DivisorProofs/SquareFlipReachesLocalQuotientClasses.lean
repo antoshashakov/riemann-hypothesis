@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlipAtEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLagrModelOfIsLin
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStanding
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTripleRealizationSquareClassStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaTripleRealizationSquareClass
 public import Mathlib.Analysis.Matrix.MeasurableSpace
 public import Formalism.DoubleCosetMeasures.StatementZ
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaIntegralBlockTranslateOfFlipDatum
@@ -117,4 +117,4 @@ theorem GlobalTheory.SquareFlipReach.flip_reach : ∀ {D : D7} {T : Type} {L : L
     ∀ w ∈ locPl G t, ∀ v, w.under (𝓞 D.host.F) = v → ∀ φ₀ ∈ GlobalTheory.WeilM.SB _,
     ∃ n Φ φ₂ g φ₃, depthAt G w ≤ n ∧ IsNatDatum (unifAt w) n Φ ∧ IsLocFn W B t e Γ w v (flipAt W t i j w n Φ) φ₂ ∧
       φ₃ ∈ GlobalTheory.WeilM.SB _ ∧ Acts (evFin D.host.F v) (om (1, blkU _ _ e h.JWW g)) φ₂ φ₃ ∧ Rf.p v φ₃ = Rf.p v φ₀ :=
-  GlobalTheory.SquareFlipReach.flip_reach_of GlobalTheory.T.theta_triple_realization_square_class _root_.GlobalTheory.PureMatch.pure_match
+  GlobalTheory.SquareFlipReach.flip_reach_of _root_.GlobalTheory.MixCompare.mixed_compare _root_.GlobalTheory.PureMatch.pure_match

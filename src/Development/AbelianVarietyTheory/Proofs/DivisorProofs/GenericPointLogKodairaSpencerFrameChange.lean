@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatFrameApply
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopPairDForm
 public import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenToFunctionFieldInjectiveAndFractionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenToFunctionFieldInjectiveAndFraction
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogDerivationExtensionBasicOpen
 public import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LevelCarrying
@@ -206,7 +206,7 @@ theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   have hfacU : ρ = ρW.comp (TF.Y.X.presheaf.map (homOfLE hWU).op).hom := rho_fac U W hWU ρ ρW (hρ.trans hρW.symm)
   have hfacU' : ρ' = ρW.comp (TF.Y.X.presheaf.map (homOfLE hWU').op).hom :=
     rho_fac U' W hWU' ρ' ρW (hρ'.trans hρW.symm)
-  obtain ⟨hinj, hfr⟩ := GlobalTheory.T.affineOpen_to_functionField_injective_and_fraction TF.Y.X (barComp TF.Y Z) W (hWU.trans hU) ρW hρW
+  obtain ⟨hinj, hfr⟩ := _root_.GlobalTheory.GenFrac.injective_and_frac TF.Y.X (barComp TF.Y Z) W (hWU.trans hU) ρW hρW
   have hcr := chart_res U W hWU
   have hcr' := chart_res U' W hWU'
   obtain ⟨hfu, hfloc⟩ := basic_loc U W hWU f hWf

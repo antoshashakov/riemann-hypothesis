@@ -5,7 +5,7 @@ public import Formalism.PieriBlockIdeals.StatementLA
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdjugateSubstLinearEquivSymmMemNablaStatement
 public import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualLatticeEmbeddedLastCoordinateSum
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLatticeOfLastCoordinateExtensionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLatticeOfLastCoordinateExtension
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumExactExponentsSmulMemLocalizedCoeffLattice
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StatementWithTransposeOfBranching
 import Formalism.LocalToGlobal.Columns.CoefficientsModP
@@ -79,7 +79,7 @@ theorem finLocal : ∀ {E K ι : Type} [Field E] [NumberField E] [Field K] [Numb
         Formalism.DivisionValues.vw w (GlobalTheory.BrPairF.brPairF σ hN Λ u v) := by
   intro E K ι _ _ _ _ _ _ emb n N hN Λ σ hI hS M L hM hL w u v hu hv
   have hLlat : Submodule.IsFullLattice E L := by
-    haveI : Submodule.IsLattice E L := GlobalTheory.T.isLattice_of_lastCoordinate_extension hN M L hM.toIsLattice hL
+    haveI : Submodule.IsLattice E L := _root_.GlobalTheory.latLast_isLattice hN M L hM.toIsLattice hL
     refine ⟨?_⟩
     subst hN
     have hiC : ∀ k : Fin n, Formalism.L2.Col.Br.iC (rfl : n + 1 = n + 1) k = Fin.castSucc k := fun k => Fin.ext rfl

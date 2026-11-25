@@ -4,7 +4,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplTupBijective
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdMinorsMemInv
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplementaryMinorMapRealPlacesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDetCharInvariantSameValueTwistedStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDetCharInvariantSameValueTwisted
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryDetPowCharacterSeparatesWeightsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDetCharInvariantsLeSpanProdMaximalMinors
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDetCharInvariantsRowSubstitutionIrreducibleStatement
@@ -156,7 +158,7 @@ theorem exists_const_of_equivariant {a d : ℕ} (had : a ≤ d) (n₀ : ι → �
     ∃ ρ : ℂ, ρ ≠ 0 ∧ ∀ P ∈ inv (ι := ι) a d n₀, F P = ρ • q P := by
   set V := inv (ι := ι) a d n₀ with hV
 
-  have havg := GlobalTheory.T.exists_detCharInvariant_same_value_twisted a d n₀ Pr q hq
+  have havg := _root_.GlobalTheory.MinorFrame.exists_mem_inv_eq_of_twisted a d n₀ Pr q hq
   have hsurj : Function.Surjective (q ∘ₗ V.subtype) := by
     intro x
     obtain ⟨P, rfl⟩ := hqs x
@@ -271,7 +273,7 @@ theorem quot_minor_eq_const_smul_compl : ∀ (D : D7) {a a' d : ℕ} (had : a + 
     push_neg at hcon
     obtain ⟨x, hx⟩ := exists_ne (0 : Pr)
     obtain ⟨P', rfl⟩ := hq's x
-    obtain ⟨P₀, hP₀, he⟩ := GlobalTheory.T.exists_detCharInvariant_same_value_twisted a' d n₀ Pr q' hq' P'
+    obtain ⟨P₀, hP₀, he⟩ := _root_.GlobalTheory.MinorFrame.exists_mem_inv_eq_of_twisted a' d n₀ Pr q' hq' P'
     apply hx
     rw [he]
     have hle : Submodule.span ℂ (Set.range (prodMinors (ι := D.what₂.Tau) (a := a') (d := d) (n := n₀))) ≤

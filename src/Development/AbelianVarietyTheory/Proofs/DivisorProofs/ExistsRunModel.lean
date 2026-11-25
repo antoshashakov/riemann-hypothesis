@@ -2,7 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunModel
 public import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.LatticeAndConstantUnique
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelGroupTransportUniformisationComponentStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatPIffMulVec
+public import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.TwoLevelLogarithm
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIsometryOfSabMap
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelGroupTransportUniformisationComponent
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticePreservedByComponentStabilizerStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UsedRunUniformisationCharacterTrivialArithmeticGStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UsedRunUniformisationComponentsShareCmDataStatement
@@ -69,7 +72,7 @@ theorem exists_runModel (p : PtAt ex Csz) (hm : More p) (r : TwoRuns p.T p.P.Gp)
   have hcom := GlobalTheory.T.uniformisation_components_share_cmData p hm r h ho i v
   have hchi := GlobalTheory.T.uniformisation_character_trivial_arithmeticGroup p hm r h ho i v
   have hcong := GlobalTheory.T.lattice_preserved_by_component_stabilizer p hm r h ho i v
-  obtain ⟨act, tr, h1, hmul, hmt, hconj, hcoc, hfaith, ⟨a, ha⟩, hd2⟩ := GlobalTheory.T.exists_levelGroup_transport_uniformisation_components p hm r h ho i v
+  obtain ⟨act, tr, h1, hmul, hmt, hconj, hcoc, hfaith, ⟨a, ha⟩, hd2⟩ := _root_.GlobalTheory.ShareOn.exists_transport p hm r h ho i v
   choose Xx hXd hXL using exists_dataX_latP p r h i v
   have hΓ : ∀ c, (Xx c).Γ = ((uAt r v i).X c).Γ := fun c => congrArg Data.Γ (hXd c)
   have hΛ : ∀ c, (Xx c).Λ = ((uAt r v i).X c).Λ := fun c => congrArg Data.Λ (hXd c)

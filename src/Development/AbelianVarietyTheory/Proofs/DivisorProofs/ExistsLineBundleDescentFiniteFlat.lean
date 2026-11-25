@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescCocycle
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescentDatumFrameCocycleUnitStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DescentDatumFrameCocycleUnit
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleOfDescentInvariantFramesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleTrivialNearFibreFiniteStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFlatUnitCocycleLocallyCoboundaryStatement
@@ -63,7 +63,7 @@ theorem exists_descent : ∀ (X Y : Scheme.{0}) (f : X ⟶ Y) [IsFinite f] [Flat
   intro X Y f _ _ _ _ L hL φ hc hcoc
   refine GlobalTheory.T.exists_lineBundle_of_descentInvariant_frames f L hL φ fun y => ?_
   obtain ⟨V, hy, t, ht⟩ := GlobalTheory.T.exists_lineBundle_trivial_near_fibre_finite f L hL y
-  obtain ⟨c, hct, hcc⟩ := GlobalTheory.T.descentDatum_frame_cocycle_unit f L hL φ hc hcoc V t ht
+  obtain ⟨c, hct, hcc⟩ := _root_.GlobalTheory.LBDescent.frame_cocycle f L hL φ hc hcoc V t ht
   obtain ⟨V', hle, hy', u, hu⟩ := GlobalTheory.T.finiteFlat_unitCocycle_locally_coboundary f V c hcc y hy
   exact ⟨V', hy', _root_.GlobalTheory.LBDescent.twist_frame_descent f L φ V t ht c hct V' hle u hu⟩
 

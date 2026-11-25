@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDatNeZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernCocycleTangentContractionCohomologousTorsorStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCocCocOf
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernCocycleTangentContractionCohomologousTorsor
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -70,7 +71,7 @@ theorem contr_chern_eq_tanCoc : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) 
     change w.1 _ _ _ _ _ - ℓ.1 T T' T'' a b = 0
     rw [h0, sub_zero]
     exact hw _ _ _ _ _ h h' h''
-  · exact GlobalTheory.T.chernCocycle_tangentContraction_cohomologous_torsor
+  · exact _root_.GlobalTheory.PtExt.ChernContr.contr_cohom
       R A B P hP v hv j hj w hw i hi U ℓ hU hℓ n hn κ hκ
 
 end GlobalTheory.PtExt

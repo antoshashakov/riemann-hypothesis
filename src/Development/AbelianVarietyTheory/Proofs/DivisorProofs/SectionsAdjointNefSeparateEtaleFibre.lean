@@ -13,7 +13,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectio
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberCurveOfClassEqSmulAdd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberPullbackProportionalOfProportiStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImageSectionProjectiveOverField
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsolatedInFibreOfEtaleRestrictionStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Etale
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsolatedInFibreOfEtaleRestriction
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataLogTerminalIffEtalePullbackStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleValueAtPointNeZeroIffMemNonzeroLocusStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundary
@@ -195,7 +197,7 @@ theorem sections_separate_fibre : GlobalTheory.Published.NadelVanishingAndNonKlt
     hij (hzi (_root_.GlobalTheory.section_eq_of_point_eq ℂ M (f ≫ p) (z i) (z j) (hzp i) (hzp j) e))
   funext j
   show a j = 0
-  obtain ⟨V, hzV, hV⟩ := GlobalTheory.T.isolated_in_fibre_of_etale_restriction M W f U hEt (z j pt) (by rw [hfz j]; exact hx₀U)
+  obtain ⟨V, hzV, hV⟩ := _root_.GlobalTheory.isolated_in_fibre_of_etale_restrict M W f U hEt (z j pt) (by rw [hfz j]; exact hx₀U)
   obtain ⟨s, hs, hs'⟩ := _root_.GlobalTheory.exists_sec_mem_nonzeroLocus_of_isolated_zero_else ℂ M (f ≫ p) hpM (tens K.bundle B) (isLB_tens K.isLB hB) Jd (z j pt) (V ⊓ UM)
     (_root_.GlobalTheory.secClosed_closedPoint ℂ M (f ≫ p) (z j) hpM (hzp j)) ⟨hzV, hzM j⟩ (fun y hy => by
       rw [hsupp y hy.2, ← hfz j]
