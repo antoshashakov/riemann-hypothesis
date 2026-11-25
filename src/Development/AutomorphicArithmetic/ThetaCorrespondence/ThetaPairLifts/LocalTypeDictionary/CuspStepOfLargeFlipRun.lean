@@ -11,7 +11,9 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsThetaFu
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SizesOfSizeRows
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TestGridMeasureDomainDownwardEqSenderStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaKernelDownwardArrowLeftInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaKernelDownwardTestGridEqSenderGridStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOrthogonalSumLatticeSameLatticedSpace
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaKernelDownwardTestGridEqSenderGrid
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.CuspidalLiftSmoothAtOfCuspidalLift
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -101,7 +103,7 @@ theorem cuspStep_of_large_flipRun : GlobalTheory.IndefiniteRowSideFullHecke.Cusp
     have eA := ga_eq_of_match hMa hi (Nat.succ_le_of_lt hj)
     have eB := ga_eq_of_match hMa hi hj.le
     have hΨ := GlobalTheory.T.isThetaFunction_fock_vector_downward_arrow ch.rm t i j hi hj he hf Q
-    obtain ⟨Φ, hΦ, hK⟩ := GlobalTheory.T.thetaKernel_downward_testGrid_eq_sender_grid ch.W hch.weil G hG hMa t i j hi hj eA eB _ hΨ
+    obtain ⟨Φ, hΦ, hK⟩ := _root_.GlobalTheory.FlipDown.kernel_down ch.W hch.weil G hG hMa t i j hi hj eA eB _ hΨ
     have hF' := (GlobalTheory.T.isCuspTyped_testGrid_iff_sender_grid_conj hset hgap ch.W hch.weil G hG hMa i (j + 1) hi (Nat.succ_le_of_lt hj) eA Fn).1 hFn
     obtain ⟨hint, hcusp⟩ := hCS.th t i j hi hj Φ hΦ _ hF'
     have hθ : ch.W.θ = R.θ := hch.weil.θ

@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHasDerivAtZeroOfMapAddMulStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzOneParameterGroupFormula
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoSlopeMetaplecticLiftSchwartzStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TendstoSlopeMetaplecticLiftSchwartz
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.RealWeilRepresentationSchurScalar
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -103,7 +104,7 @@ theorem metaplectic_scalar_derivative_nonempty (hP : _root_.GlobalTheory.FunPr.T
     have e := congrArg (fun g : Sch l => g 0) (e1.symm.trans e2)
     simpa [hf0] using e
   have hcontS : ContinuousAt (fun t => omS (γ t) f0) 0 := by
-    have hd := GlobalTheory.T.tendsto_slope_metaplecticLift_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f0
+    have hd := _root_.GlobalTheory.RealWeil.tendsto_slope_omS_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f0
     have h1 : Tendsto (fun t : ℝ => t • (t⁻¹ • (omS (γ t) f0 - f0))) (𝓝[≠] 0) (𝓝 ((0 : ℝ) • quad Z f0)) :=
       (tendsto_nhdsWithin_of_tendsto_nhds tendsto_id).smul hd
     rw [zero_smul] at h1
@@ -128,7 +129,7 @@ theorem metaplectic_scalar_derivative_nonempty (hP : _root_.GlobalTheory.FunPr.T
   refine ⟨a, fun f => ?_⟩
   have hslope := hasDerivAt_iff_tendsto_slope_zero.1 ha
   simp only [zero_add, hν0] at hslope
-  have hd := GlobalTheory.T.tendsto_slope_metaplecticLift_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f
+  have hd := _root_.GlobalTheory.RealWeil.tendsto_slope_omS_schwartz l G pr om omS h3 h4 Z hZ γ hγ0 hγpr hγd f
   have hν1 : Tendsto ν (𝓝[≠] 0) (𝓝 1) := by
     rw [← hν0]
     exact hνc.tendsto.mono_left nhdsWithin_le_nhds
