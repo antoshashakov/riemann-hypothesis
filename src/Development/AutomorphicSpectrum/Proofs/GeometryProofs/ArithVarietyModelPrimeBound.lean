@@ -8,7 +8,10 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVariety
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmFlagUnramifiedPrimeStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CpRatioUnramifiedOddPrimeStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DotDualLatticeFamilyStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrLocalizationConstantsStatement
+public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LaurentCechNerveLevelSpecTensorPower
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InstFintypeSumElim
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrLocalizationConstants
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSandwichOfHodgeTateFreeStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericTorsionUnramifiedPrimeStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularLatticeLocalFreeStatement
@@ -76,7 +79,7 @@ theorem coordLat_locFree (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Com
       (∀ q : Cpt ξ, InChart ξ (mseg y) c q → (∀ o : O, algebraMap O Ω o ∈ regAt ξ q) → g ≠ 0 → g⁻¹ ∈ regAt ξ q →
         Fintype.linearCombination Ω b e ∈ L q) → ∃ n : ℕ, g ^ n • e ∈ coordLat O y L b c := by
   classical
-  obtain ⟨h1, h2, h3, h4⟩ := GlobalTheory.T.dvr_localization_constants X Ω ξ K J y hT A hA m O c hc
+  obtain ⟨h1, h2, h3, h4⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.FamEx.chart_points_over_place X Ω ξ K J y hT A hA m O c hc
   let Q : Type := {q : Cpt ξ // InChart ξ (mseg y) c q ∧ ∀ o : O, algebraMap O Ω o ∈ regAt ξ q}
   let Λ : Q → AddSubgroup (Fin r → Ω) := fun q =>
     (L q.1).toAddSubgroup.comap (Fintype.linearCombination Ω b).toAddMonoidHom

@@ -8,7 +8,9 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.OverZpO
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartSequenceHoldsStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyModelPrimeRelayStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeCountStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeDegreeStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+public import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeDegree
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeHeightStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeRelayStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyPrimeHodgeValueStatement
@@ -122,7 +124,7 @@ theorem seq_holds : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → ∀ 
   haveI := hFr
   have hc : ∀ x, HT.cmConj E (HT.cmConj E x) = x := fun x => by simp [HT.cmConj]
   obtain ⟨σ, hσ, hσ', huniq⟩ := GlobalTheory.T.cm_embedding_conjugate_compat E H D l Xo c O₀ β Y S Ω K J y 𝔐 t
-  have hd := GlobalTheory.T.arith_variety_prime_hodge_degree E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS hdisc A m hpm O
+  have hd := _root_.GlobalTheory.CompanionTheory.Ar.Num.FamEx.Diff.embedding_integers_and_different_unit E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS hdisc A m hpm O
   have hgd : ∀ τ : E →+* Ω, HT.GeneratesDiff τ (1 : CR O y c') := fun τ =>
     generatesDiff_one _ τ (hd τ).1 (hd τ).2
   have hloc := GlobalTheory.T.arith_variety_prime_hodge_height E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hA hpq p hpS A m hpm O G c' hc' P

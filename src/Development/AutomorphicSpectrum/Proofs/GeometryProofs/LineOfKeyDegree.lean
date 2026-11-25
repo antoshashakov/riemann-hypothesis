@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsThetaMeanSquareNorm
-public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.IntegralFlagEmbeddingCriterionStatement
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
+public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.IntegralFlagEmbeddingCriterion
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsIntegralJetBasisStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsThetaSectionsBoundedStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PolarizedDataFieldExtensionStatement
@@ -271,7 +272,7 @@ theorem core_applied {H : Host E} {L : Type} [Field L] [NumberField L] (D : PPDa
     obtain ⟨h5, h6⟩ := hc2 c hc
     exact ⟨a, f, c, hf, fun j => h2 _ _ _ (hf j), hc, h6 hx, h5⟩
   obtain ⟨J, hint, hJ⟩ := GlobalTheory.T.exists_integral_jet_basis E H L D x (3 * n') r s
-  refine GlobalTheory.T.integral_flag_embedding_criterion L r n' J
+  refine _root_.GlobalTheory.CompanionTheory.Ar.FlagSlope.flag_slope L r n' J
     (fun i σ => √(Real.exp 1 * ((3 * n' : ℕ) : ℝ) * n') ^ i * D.len σ x ^ i * (√(r : ℝ) * Mv σ)) ?_ hint ?_ ?_
   · intro i σ
     have := hlen σ

@@ -11,7 +11,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCen
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataIntersectionSumStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConstantsInCoordRatioFieldStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsChartBundleStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPositiveHermitianLineStatement
+public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsPositiveHermitianLine
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTorusStableSncChartsStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GlobalSncChartSystemStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairLatticeDegreeBoundStatement
@@ -96,7 +98,7 @@ theorem exists_componentData_origin : Top.Given → Out.WeilSt → ∀ (E : Type
   obtain ⟨hbir, harith⟩ := GlobalTheory.T.birational_of_transcendence_degree 𝔐.X Ω 𝔐.ξ K J y _ htie htr
   obtain ⟨hcl, htor, hconj⟩ := GlobalTheory.T.boundary_points_closed 𝔐.X Ω 𝔐.ξ K J y (abLocus 𝔐.t.G) bd htie hbd
   obtain ⟨nc, χ, hcov'⟩ := GlobalTheory.T.exists_torus_stable_snc_charts K J Ω y _ bd hsnc harith htor
-  obtain ⟨A, hAa, hApos, hAconj, hAh⟩ := GlobalTheory.T.exists_positive_hermitian_line II K J (mCoordIdeal y) hII
+  obtain ⟨A, hAa, hApos, hAconj, hAh⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_fubiniStudy_line II K J (mCoordIdeal y) hII
   have hLvb : ∀ τ, (Lat.comap (fun p => 𝔐.V (bg τ) p ⊔ 𝔐.V (sm τ) p)
       (𝔐.Vgen (bg τ) ⊔ 𝔐.Vgen (sm τ)).subtype).IsVB (D.p + D.q) ⊤ := fun τ => by
     have e : labelRk D (bg τ) + labelRk D (sm τ) = D.p + D.q := by

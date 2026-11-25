@@ -4,7 +4,7 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTheta
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TopLeOfClosedPoint
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.JacobsonClosedPointsToolsInt
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgebraicPointOverNumberFieldStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GroupSchemeIntegralNoetherianStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GroupSchemeIntegralNoetherian
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleSectionDivisibleStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeIdealExtensionLocalDomainStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointLineBundleUnitStatement
@@ -202,7 +202,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.Reg
 theorem section_dvd_of_torsVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (n : ℕ) (s : Out.H0 D.t.PP.L n) (d : 𝓞 L), d ≠ 0 → (∀ (K : Type) [Field K] [NumberField K] (c : 𝓞 L →+* K) (y : Over.mk (spMap c) ⟶ D.t.G) (N : ℕ) (T : K), TorsVal D.t.PP s y N T → IsIntegral ℤ (T / c d ^ (N ^ 2))) → ∃ s' : Out.H0 D.t.PP.L n, ∀ j, s.f j = constFn D.t.G.hom _ d * s'.f j := by
   intro E _ _ _ H L _ _ D n s d hd Hy
   have hS := D.t.semi
-  obtain ⟨hInt, hring⟩ := GlobalTheory.T.group_scheme_integral_noetherian L D.t.G hS
+  obtain ⟨hInt, hring⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Reg.semiAb_props L D.t.G hS
   haveI := hInt
   have hδ : sc D.t.G.hom ⊤ d ≠ 0 := by
     intro h0

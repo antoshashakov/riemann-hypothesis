@@ -15,7 +15,9 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelCons
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelDominantHodgeStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackActionRingStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncModelAddedCoordsStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncModelAddedCoords
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TensorEquivOfBasisExtensionStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UnipotentEntriesFieldDegreeStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -134,7 +136,7 @@ theorem GlobalTheory.CompanionTheory.Ar.exists_flagStep : ∀ (E : Type) [Field 
     exact hgf'
   have hg'' : IsCptGen ξ' := hg'
   have tie₁ := GlobalTheory.T.coords_added_projective X X' Ω₀ Ω' ξ ξ' f' K J y N x' hall htie htie' hdom
-  have snc₁ := GlobalTheory.T.snc_model_added_coords X X' Ω₀ Ω' ξ ξ' f' K J y N x' D.dim bd _ _ hall hall' htie tie₁ hdom hsm halg htop hsnc
+  have snc₁ := _root_.GlobalTheory.CompanionTheory.Ar.SncPull.isSncModel_pull X X' Ω₀ Ω' ξ ξ' f' K J y N x' D.dim bd _ _ hall hall' htie tie₁ hdom hsm halg htop hsnc
   rw [GlobalTheory.T.dimension_plus_flag_count E H D l c] at snc₁
   refine ⟨Ω', inferInstance, inferInstance, inferInstance, Unit ⊕ K, inferInstance, addJ J N, inferInstance,
     addY y x', X', ξ', f' ≫ f, cst', t', n, Li', inferInstance, inferInstance, M', ρ', Li₀, inferInstance,

@@ -7,7 +7,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsNeighb
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GradedSandwichDegreeBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFrameProjectionAtStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFrameProjectionAt
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFrameProjectionStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionContinuousAtStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularSectionsOpenNeighbourhoodStatement
@@ -215,7 +215,7 @@ theorem local_bound : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω �
     rintro rfl
     rw [zero_mul, zero_mul] at hr
     exact mul_ne_zero hu0 hp0 hr
-  have hgv := GlobalTheory.T.lie_metric_frame_projection_at X Ω ξ K J y G Li M h z hzq r b π B i hξ hd (hπq z hzq hzU) hB f e v ve s
+  have hgv := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.ArchB.gram_val X Ω ξ K J y G Li M h z hzq r b π B i hξ hd (hπq z hzq hzU) hB f e v ve s
     (fun j => by rw [hfl]; exact hf j) (by rw [hfl]; exact he) hv hve hs hs0 hG
   rw [hg1 z w B hz hB, hg0 z w B hz hB] at hgv
   have hlog : ∀ c : K → ℂ, (∀ k, c k ≠ 0) → Real.log ‖∏ k, c k ^ A.a k‖ = ∑ k, (A.a k : ℝ) * Real.log ‖c k‖ := by

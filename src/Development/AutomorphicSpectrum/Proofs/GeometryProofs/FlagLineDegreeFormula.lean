@@ -15,7 +15,8 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramDetNeZer
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HermitianLineMetricBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelValueLiftStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRatioProductFormulaStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LogCardQuotientBoundStatement
+public import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LogCardQuotientBound
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtComplexEmbeddingStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -110,7 +111,7 @@ theorem one_label (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K 
     B MB (F.F i.castSucc) (F.F i.succ) hsub₀ hsub₁ c₀ hc₀ φ hval
   have hφ : φ ⟨s, hs1⟩ = u := hval ⟨s, hs1⟩ e ve t u he hve hsv hcls hu
   obtain ⟨hρ, hfin, hsum⟩ := GlobalTheory.T.local_ratio_product_formula L K J A.a w c₀ u hne hc₀ hu0
-  have hidx := GlobalTheory.T.log_card_quotient_bound L B.carrier (F.F i.castSucc) (F.F i.succ) φ ⟨s, hs1⟩ m (locRatio A.a w c₀)
+  have hidx := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.log_index_le L B.carrier (F.F i.castSucc) (F.F i.succ) φ ⟨s, hs1⟩ m (locRatio A.a w c₀)
     (IsNoetherian.noetherian _) hker (by rw [hφ]; exact hu0) hm hρ hfin hloc
   rw [hφ, hsum] at hidx
   have hgr := GlobalTheory.T.graded_degree_formula L B r F i f s hf hfi hs1 hs0

@@ -3,7 +3,7 @@ module
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LabelSigBijective
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsFrameVec
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrCoordRatioValueStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrCoordRatioValue
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompleteDvrLieModelLatticeStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteResidueAbsoluteValueStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagEqualChangeLowerTriangularStatement
@@ -267,7 +267,7 @@ theorem reads_roots : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [Is
     have h1 := habs x
     rw [h0, show absT p la T e (0 : T.Fr) = 0 from if_pos rfl] at h1
     exact hx (norm_eq_zero.1 h1)
-  obtain ⟨zV, h, hch, hRd⟩ := GlobalTheory.T.complete_dvr_coord_ratio_value Or.𝔐.X RM.Ω Or.𝔐.ξ RM.K RM.ι RM.y Or.𝔐.all Or.𝔐.tie A T evT ch hy hr hVr
+  obtain ⟨zV, h, hch, hRd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.chart_point Or.𝔐.X RM.Ω Or.𝔐.ξ RM.K RM.ι RM.y Or.𝔐.all Or.𝔐.tie A T evT ch hy hr hVr
     (fun a => by
       obtain ⟨b, h1, h2, h3⟩ := hden a
       exact ⟨b, hne b h1, h2, h3⟩)

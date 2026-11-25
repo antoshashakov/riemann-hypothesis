@@ -15,7 +15,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsDvrExt
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagBasisLinIndepSpanStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagPairChartBundleCompatStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FunctionFieldDvrExtensionStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeFlagCmTypeDegreeStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeFlagCmTypeDegree
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeFlagOutsidePrimeFibresStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ModelDescentGenericFibreStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ModelDescentIntegralClosureStatement
@@ -122,7 +122,7 @@ theorem model_on_hodge_of_family_pos : FamilyExistsPos → HodgeLatticeFlagBound
     (GroundTheory.Heights₂.Heights.NumbersDVR.BundleExamples.isModelOver_iff O' _ d).2 ⟨hV.1, hModel'⟩
   have hagree : ∀ s (q : Cpt 𝔐.ξ), (∀ p' : ℕ, p'.Prime → ¬ InFibre 𝔐.ξ p' q) → 𝔐.HT p s q = 𝔐.dR s q :=
     GlobalTheory.T.hodge_flag_outside_prime_fibres E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS
-  have hLat := GlobalTheory.T.hodge_flag_cm_type_degree E H D l Xo c O₀ β Y S Ω K J y 𝔐 Fl S₀ T hT p hpS hpS₀ hagree
+  have hLat := _root_.GlobalTheory.CompanionTheory.Ar.TwoLevelLat.latFlagPair_of_twoLevels E H D l Xo c O₀ β Y S Ω K J y 𝔐 Fl S₀ T hT p hpS hpS₀ hagree
   have hag2 : ∀ s, ∀ q : Cpt 𝔐.ξ, q ∈ overPrime 𝔐.ξ p → ¬ InFibre 𝔐.ξ p q → 𝔐.dR s q = 𝔐.HT p s q := by
     intro s q hq hqp
     refine (hagree s q fun p' hp' => ?_).symm

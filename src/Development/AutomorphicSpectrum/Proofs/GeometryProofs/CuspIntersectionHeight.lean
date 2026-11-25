@@ -7,7 +7,9 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartL
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CompactDatumIntersectionStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentDataAbelianPartBoundStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordValuationBoundLocal
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GluedLatticeFromLocalMatricesStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ExistsIntSmulIsAdicIntegralInTensorBasis
+public import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GluedLatticeFromLocalMatrices
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionDatumDegreeSumStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionSystemWeightRightStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRatioProductFormula
@@ -270,7 +272,7 @@ theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   have hidx : ∀ τ, logIdx (Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) (A.fam (Or.sm τ) v (q τ)) =
       (∑ᶠ x : FinitePlace L, Real.log (x (T τ x).det)) + ∑ σ : L →+* ℂ, Real.log ‖σ (C τ).det‖ := by
     intro τ
-    rw [← GlobalTheory.T.glued_lattice_from_local_matrices L V _ (sL τ) _ (T τ) (C τ) (hsLi τ) (hb4 τ) (hC2 τ) (hb5 τ) (hb6 τ)]
+    rw [← _root_.GlobalTheory.CompanionTheory.Ar.Cusp.LocFrame.logIdx_localFrames L V _ (sL τ) _ (T τ) (C τ) (hsLi τ) (hb4 τ) (hC2 τ) (hb5 τ) (hb6 τ)]
     refine logIdx_congr _ _ _ ?_
     ext x
     constructor

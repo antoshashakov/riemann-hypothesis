@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ModelSmall
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GoodOriginRootWeightBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GoodOriginRootWeightBound
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFormDefiningValueStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.SumFundCoMulSumIic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -286,7 +286,7 @@ theorem vs_mult : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     have := hu τ h
     simpa [reW] using this
   obtain ⟨q₀, n₀, ε, w, C, s₀, hq₀, hn₀, hε0, hεm, hw, hC, hs₀, hI⟩ :=
-    GlobalTheory.T.good_origin_root_weight_bound E H Dw l Xo c Y T o B b (reW u) (nOf u) hn' hreg
+    _root_.GlobalTheory.CompanionTheory.Ar.Small.good_origin_root_coefficients E H Dw l Xo c Y T o B b (reW u) (nOf u) hn' hreg
   obtain ⟨e, he, hev⟩ := GlobalTheory.T.exists_form_defining_value _ _ _ (T.M B b).y (T.M B b).birational (T.M B b).arith.2.1.2.2
     (Top.combLine ((T.M B b).line 1) n₀).a ε
   obtain ⟨N₀, hN₀⟩ := exists_nat_gt (1 / s₀)

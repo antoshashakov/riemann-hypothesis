@@ -3,7 +3,9 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieChart
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualModuleFiniteProjectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualNumberPointsGlueStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualNumberPointsGlue
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinearStatement
 public import Mathlib.Algebra.Module.LocalizedModule.Basic
 public import Mathlib.RingTheory.Ideal.Span
@@ -194,7 +196,7 @@ theorem loc_of_family {R : Type} [CommRing R] (x : Sp R ⟶ S) {J : Type} [Finit
       ((mg g).pt (r e)).left = spMap (dualMap (algebraMap R (Localization.Away g.1))) ≫ (M.pt e).left :=
     fun g => exists_trL (R := R) x (ptAt x g.1) (algebraMap R _) (fun _ => rfl) rfl M (mg g)
   choose ρ hρ using hρ
-  have hglue := fun X => GlobalTheory.T.dual_number_points_glue X R J f hf
+  have hglue := fun X => _root_.GlobalTheory.CompanionTheory.Ar.LieFinGlue.dual_glue X R J f hf
   refine ⟨ρ, hρ, _root_.GlobalTheory.CompanionTheory.BasicCover.isLocalizedModule_of_basic_cover R E J f hf F res ρ ?_ ?_ ?_ ?_ ?_ ?_ ?_⟩
   · intro g h y
     apply pt_left_inj (mg g)

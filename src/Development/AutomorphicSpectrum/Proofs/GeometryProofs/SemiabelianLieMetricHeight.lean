@@ -8,7 +8,8 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharValMulti
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsFiniteTypeOverIntegersStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCocharacterLieModelStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteSurjectiveLiftsPointsStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HermitianSquareNormGramStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsOrthFull
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HermitianSquareNormGram
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IrreducibleClosedIntegralSubschemeStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFinitePullback
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricTorusPullbackStatement
@@ -353,7 +354,7 @@ theorem stratum_good : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (X
       ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] ε b) := by
     intro a b
     exact (hF σ (ε a) (ε b) (v a) (v b) rfl rfl).symm
-  rw [GlobalTheory.T.hermitian_square_norm_gram L B σ r ε _ hΓ w]
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.TorusUnif.sqAt_sum_eq_gram L B σ r ε _ hΓ w]
   exact ⟨hlo, hhi⟩
 
 end GlobalTheory.CompanionTheory.Ar.TorusUnif

@@ -10,7 +10,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjoinInvers
 public import ReciprocityTheory.AnalyticForms.RegularLocalRings.MemConePtsIffChartIdeal
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartIdealLocalizationMap
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteTorusTranslatesCoverStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteTorusTranslatesCover
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerDifferentialsSpanLocalStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RationalRelationInChartIdealStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularLocalChartCoords
@@ -445,7 +445,7 @@ theorem exists_sncCharts : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, F
     obtain ⟨a, r, h, ha, hr, hr0, hh, hb⟩ := snc_params K J Ω y n bd hPh hS c w hw hc
     exact _root_.GlobalTheory.CompanionTheory.Ar.ChartParams.sncChart_of_regular_parameters K J _ hPh n _ c w hw hc a r h hdim ha hr hr0 hh hb
   choose χ O hO hwO hcov using key
-  obtain ⟨m, e, he⟩ := GlobalTheory.T.finite_torus_translates_cover K J _ hPh _ O hO (fun z hz => ⟨⟨z, hz⟩, hwO ⟨z, hz⟩⟩)
+  obtain ⟨m, e, he⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ChartCover.mcPts_finite_cover_up_to_torus K J _ hPh _ O hO (fun z hz => ⟨⟨z, hz⟩, hwO ⟨z, hz⟩⟩)
   refine ⟨m, fun a => χ (e a), fun z hz => ?_⟩
   obtain ⟨a, c, hc, h1, h2⟩ := he z hz
   obtain ⟨t, ht, c', hc', h3⟩ := hcov (e a) _ ⟨h1, h2⟩

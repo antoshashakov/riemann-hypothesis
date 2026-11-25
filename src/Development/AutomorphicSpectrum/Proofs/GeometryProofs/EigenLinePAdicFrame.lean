@@ -14,7 +14,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CpEmbeddingF
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CpIntegersValuationRingStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrPointComponentEigenReductionStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrPointEigenFrameReductionStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrSpecializationEigenFrameStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrSpecializationEigenFrame
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIffEigenspaceBasisStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FractionFieldEigenBasisDescendsStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointComponentLocalRingStatement
@@ -234,9 +234,9 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   obtain ⟨hwLI, hwsp⟩ := hbasK (βK.comp (inE c (ComplexEmbedding.conjugate τ))) _ wK (fun a => rfl) hF.2.2.2
   have hfr₁ := hℓ ⟨_, h₁⟩ trivial hy₂
   have hfr₂ := hℓ ⟨_, h₂⟩ trivial hU₂
-  have hvV := GlobalTheory.T.dvr_specialization_eigen_frame E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _ (βK.comp (inE c τ)) _ vK
+  have hvV := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.IntFrameSpan.span_eq_eigSub E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _ (βK.comp (inE c τ)) _ vK
     hz hle hVr hfr₂ hfr₁ hSV hVal hAU (fun a => rfl) hIv hvLI
-  have hwV := GlobalTheory.T.dvr_specialization_eigen_frame E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _
+  have hwV := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.IntFrameSpan.span_eq_eigSub E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _
     (βK.comp (inE c (ComplexEmbedding.conjugate τ))) _ wK hz hle hVr hfr₂ hfr₁ hSV hVal hAU (fun a => rfl) hIw hwLI
   have hjmap := GlobalTheory.T.tied_action_compose_residue_map E Z.Ω Z.V K ℂ_[p] Z.ρ _ _ ℓ ψ j ρK ρC hρst hTK hTC
   have hjV : ∀ a : K, a ∈ (algebraMap V K).range → j a ∈ (algebraMap (OCp p) ℂ_[p]).range := fun a ha =>

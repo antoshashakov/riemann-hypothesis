@@ -7,7 +7,8 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsSubMem
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreCurveDegreeCompareStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibrePowerFreeConjInjectiveStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FormalGermBaseChangeStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionHiddenFirstStatement
+public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IntersectionHiddenFirst
 import Mathlib.Algebra.CharP.Subring
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -309,7 +310,7 @@ theorem germ_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
     have hK : IsMapOf (Scheme.stalkClosedPointTo Γ.η).hom B' gK.B :=
       isMapOf_cancel hm' (by rw [← stalk_sq Γ i]; exact mi.trans mK)
     exact ⟨gi.B, gK.B, Bk, φ', ψ', lam', mi, mK, mk, hk,
-      GlobalTheory.T.intersection_first _ _ _ d _ _ _ _ _ _ _ _ m0 hK hiso, he, fun hl a b => integral_at S Γ hξ i hiso he hl a b⟩
+      _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegZ.isIso_map _ _ _ d _ _ _ _ _ _ _ _ m0 hK hiso, he, fun hl a b => integral_at S Γ hξ i hiso he hl a b⟩
   choose Bi BK Bk φ' ψ' lam' mi mK mk hk hiso he hint using place
   obtain ⟨Y, hY, -⟩ := GlobalTheory.T.fibre_curve_degree_compare X Ω ξ O s ϖ Γ hξ
   obtain ⟨U, hU, hloc⟩ := S.loc ⟨centre Γ.η, Γ.η_spec⟩

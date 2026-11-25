@@ -8,7 +8,11 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AnalyticChar
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AnalyticChartVanishingSectionStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfSpecializes
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsUnitOfNonvanishingPointsStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleFromUnitRatiosStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
+public import Mathlib.AlgebraicGeometry.Noetherian
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleFromUnitRatios
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OverlappingAnalyticChartsRatioStatement
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.RingTheory.Smooth.StandardSmooth
@@ -94,7 +98,7 @@ theorem gaga_rat_C : GagaSections → ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (�
   have dens := _root_.GlobalTheory.CompanionTheory.Ar.Flat.GagaC.eq_zero_of_forall_points_eq_zero
   have chart := GlobalTheory.T.analytic_chart_vanishing_section
   have unit := GlobalTheory.T.is_unit_of_nonvanishing_points
-  have trans := GlobalTheory.T.line_bundle_from_unit_ratios
+  have trans := _root_.GlobalTheory.CompanionTheory.Ar.Flat.GagaC.Transition.exists_transition
   have hch := GlobalTheory.T.analytic_chart_unit_section
   have cmp := GlobalTheory.T.overlapping_analytic_charts_ratio
   intro hG X s Ω _ _ ξ L W F hp hs hξs hgen hcl hVB hW h1 hext

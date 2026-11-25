@@ -4,7 +4,8 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatA
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeAt
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrEigenTangentExtension
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrSpecializationLieLatticeStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrSpecializationLieLattice
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionFieldStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackCorrespondence
@@ -102,7 +103,7 @@ theorem span_eq_eigSub : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     rintro _ _ rfl M
     exact ⟨M, fun _ => rfl⟩
   obtain ⟨MC, hMC⟩ := cast _ _ hz MY
-  have hfib := GlobalTheory.T.dvr_specialization_lie_lattice Y.X Y.t.G Z.Ω (Z.ξ₀ ≫ Y.j) Z.V Z.M V K (y ≫ Y.j) z h₁ h₂ ψ g ℓ MY MC hz hMC Z.gen hreg hint hfr₂ hval
+  have hfib := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.fibAt_lat_eq_stdLat Y.X Y.t.G Z.Ω (Z.ξ₀ ≫ Y.j) Z.V Z.M V K (y ≫ Y.j) z h₁ h₂ ψ g ℓ MY MC hz hMC Z.gen hreg hint hfr₂ hval
   have hsm := Y.t.semi.smooth
   have h₁' : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ z) := by
     have : Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ z = y ≫ Y.j := hz
