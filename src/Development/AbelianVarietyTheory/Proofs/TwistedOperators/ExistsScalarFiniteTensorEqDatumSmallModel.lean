@@ -14,7 +14,8 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ThetaAtEqSumH
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoxGraphGraphHeis
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsINeZeroKind
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNatMulIntegralOfIsCompact
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridLocalTensorPlacesSplitIdempotentSumStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridLocalTensorPlacesSplitIdempotentSum
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergStableRelationOfVacuaStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfPartAlgebraMapLiftV
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem
@@ -481,7 +482,7 @@ theorem exists_scalar_datum : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Cons
         (summable_of_mem_schA _ (GlobalTheory.HeisSchA.rho_mem_schA Γ.M' W.ψ hstd u _ hΦ')))
   have hf : thetaS Γ W.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f Γ.M'.vac) = boxS t e (ρ.vT i j) (ρ.vX i j) :=
     funext fun u => (hf₀.2 u).trans ((Finsupp.sum_single_index (zero_mul _)).trans (one_mul _))
-  obtain ⟨hid, hsumid⟩ := GlobalTheory.T.gridLocalTensorPlaces_splitIdempotent_sum hL (G := G) t
+  obtain ⟨hid, hsumid⟩ := _root_.GlobalTheory.IdemAtPl.main hL (G := G) t
   have hh := fun w hw => halves_split hL W t i j e Γ h.JW₁ h.JWW _ _ (hid w hw).1 (hid w hw).2
   have hco := mixCoS_spec B t i j e
   have hv := fun w hw => lagr_vac (hI w hw) (hG.vac _).1 (hG.vac _).2.1 (latPtS t e (w.under (𝓞 D.host.F)) : Set _)

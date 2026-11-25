@@ -8,7 +8,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlphaDivBeta
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteBottomDictionaryFramesExponentsKernel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEmbeddingSplitPrimeGridLocalTensorPlacesStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridCharactersUnramifiedStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridLocalTensorPlacesSplitIdempotentSumStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridLocalTensorPlacesSplitIdempotentSum
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelCharacterUnramifiedMuStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridCharacterQuotientNotUnramifiedOverBaseP
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterUnramifiedOffBad
@@ -65,8 +67,8 @@ theorem _root_.GlobalTheory.T.fockF_image_eq_zero_or_exists_eq_smul : GlobalTheo
       G.nu t i (j + 1) := mul_div_mul_right_eq_div _ _ _
   have e' : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j = G.nu t i (j + 1) := mul_div_mul_right_eq_div _ _ _
   refine _root_.GlobalTheory.BotMatch.bottom_matching_of_triangle hH hPr hLM W.ψ_std W.θ_is X hX.is t (hd t).1 (e ▸ chrEq_nu G t i j hL)
-    (GlobalTheory.T.exists_embedding_splitPrime_gridLocalTensorPlaces hL t) (fun w hw hu => ?_) (fun w hw => ?_) (GlobalTheory.T.gridLocalTensorPlaces_splitIdempotent_sum hL t).1
-    ((GlobalTheory.T.gridLocalTensorPlaces_splitIdempotent_sum hL t).2 _ (hX.is.idem t)).1 FA FA' FW hf hf'
+    (GlobalTheory.T.exists_embedding_splitPrime_gridLocalTensorPlaces hL t) (fun w hw hu => ?_) (fun w hw => ?_) (_root_.GlobalTheory.IdemAtPl.main hL t).1
+    ((_root_.GlobalTheory.IdemAtPl.main hL t).2 _ (hX.is.idem t)).1 FA FA' FW hf hf'
   · have hu' : GlobalTheory.LFun.UnrAt (F := D.host.F) (E := D.host.E)
         (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) w := by
       rw [e', ← e]; exact hu

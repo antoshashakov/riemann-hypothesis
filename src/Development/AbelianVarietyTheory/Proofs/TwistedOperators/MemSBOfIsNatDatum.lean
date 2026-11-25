@@ -13,7 +13,10 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNatDatumSq
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemGlLatCongOfSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemMatLatSmulBlockLat
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrientedHermitianFormQuadSumEqTrace
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveFrameDatumZetaIntegralEqSmallerStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveFrameDatumZetaIntegralEqSmaller
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfDualLocalSubgroupFirstProjEqAnnihilator
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareModelNegSpaceGoodSchroedingerStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnderMemAndPlaceAboveEqOfMem
@@ -353,7 +356,7 @@ theorem local_match (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (i j :
     simp [chrW, GlobalTheory.LFun.locChar, Chars.ν]
   refine (hz φ hφ φ' hφ').2 ?_
   rw [e5, e6]
-  refine (z₁ _ _ (z₂ _ _ (GlobalTheory.T.primitiveFrameDatum_zetaIntegral_eq_smaller (Kw w) _ _ _ _ _ _ 1 _ n _ _ hS.unif))).trans ?_
+  refine (z₁ _ _ (z₂ _ _ (_root_.GlobalTheory.OneSquareZeta.bigZeta_phiA_eq_smallZeta (Kw w) _ _ _ _ _ _ 1 _ n _ _ hS.unif))).trans ?_
   congr 1
   funext Y
   have := congrFun e4 Y

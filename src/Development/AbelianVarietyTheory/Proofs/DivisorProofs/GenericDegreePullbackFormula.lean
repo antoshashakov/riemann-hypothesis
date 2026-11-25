@@ -1,10 +1,11 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OfSwap2
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernDensityPullbackWeightInLiftedChartStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartOverProperClosedEqZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartPreimageOfFiniteLiftedChartCoveringStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenEtaleChartCoveringComplexPointsStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernDensityPullbackWeightInLiftedChart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartOverProperClosedEqZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPartPreimageOfFiniteLiftedChartCovering
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenEtaleChartCoveringComplexPoints
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -80,7 +81,7 @@ theorem mass {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegr
     (hδ : π.residueDegree (genericPoint Y) ≠ 0) (L : HermLB p) (σ : k →+* ℂ) (ε : ℤˣ) :
     ((L.φ σ).pull π hπ).chernPart D ε Set.univ =
       (π.residueDegree (genericPoint Y) : ℝ≥0∞) * (L.φ σ).chernPart D ε Set.univ := by
-  obtain ⟨U, hUη, hU⟩ := GlobalTheory.T.exists_open_etaleChart_covering_complexPoints hX hY π hπ hη hδ
+  obtain ⟨U, hUη, hU⟩ := _root_.GlobalTheory.CoverDeg.exists_open_covering_charts hX hY π hπ hη hδ
   obtain ⟨hcard, hchart, hlift⟩ := hU σ
   have hpre : PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ U = ptsIn q σ (π ⁻¹ᵁ U) := by
     ext z
@@ -94,14 +95,14 @@ theorem mass {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegr
       {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ ((U : X.Opens) : Set X)ᶜ} := by
     ext y
     simp [mem_ptsIn]
-  have h0Y := GlobalTheory.T.chernPart_over_properClosed_eq_zero hY ((π ⁻¹ᵁ U : Y.Opens) : Set Y)ᶜ (π ⁻¹ᵁ U).isOpen.isClosed_compl
+  have h0Y := _root_.GlobalTheory.ChernNull.chernPart_over_closed hY ((π ⁻¹ᵁ U : Y.Opens) : Set Y)ᶜ (π ⁻¹ᵁ U).isOpen.isClosed_compl
     (by simp [hη, hUη]) σ ((L.φ σ).pull π hπ) ε
-  have h0X := GlobalTheory.T.chernPart_over_properClosed_eq_zero hX ((U : X.Opens) : Set X)ᶜ U.isOpen.isClosed_compl (by simp [hUη]) σ
+  have h0X := _root_.GlobalTheory.ChernNull.chernPart_over_closed hX ((U : X.Opens) : Set X)ᶜ U.isOpen.isClosed_compl (by simp [hUη]) σ
     (L.φ σ) ε
   rw [← hcY] at h0Y
   rw [← hcX] at h0X
-  have h3 := GlobalTheory.T.chernPart_preimage_of_finite_liftedChartCovering hX hY π hπ (L.φ σ) (L.cInf σ) ε (ptsIn p σ U) (isOpen_ptsIn U) _ hcard
-    hchart hlift (fun c c' hc w hw => GlobalTheory.T.chernDensity_pullbackWeight_in_liftedChart π hπ (L.φ σ) (L.cInf σ) c c' hc w hw) _
+  have h3 := _root_.GlobalTheory.CoverChern.chernPart_preimage_of_cover hX hY π hπ (L.φ σ) (L.cInf σ) ε (ptsIn p σ U) (isOpen_ptsIn U) _ hcard
+    hchart hlift (fun c c' hc w hw => _root_.GlobalTheory.PullChartDens.chernDens_pull_of_chart π hπ (L.φ σ) (L.cInf σ) c c' hc w hw) _
     (isOpen_ptsIn U).measurableSet subset_rfl
   rw [hpre] at h3
   rw [← measure_add_measure_compl (isOpen_ptsIn (π ⁻¹ᵁ U)).measurableSet, h0Y, add_zero, h3,
