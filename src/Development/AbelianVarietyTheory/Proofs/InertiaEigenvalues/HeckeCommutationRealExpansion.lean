@@ -6,7 +6,8 @@ public import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.NHkRow
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.HeckeSplitOne
 public import Formalism.LocalToGlobal.IndefiniteReal.ConcretePkgSpec
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AevalIntertwine
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexHeckeConjugatePlacePeterssonAdjointStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.ZeroPartEigenvalueConvention
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ComplexHeckeConjugatePlacePeterssonAdjoint
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsConjugateSplitPlaceOffStableSetStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodProjectorFormsIdempotentStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeOperatorsRationalFormsCommuteStatement
@@ -180,7 +181,7 @@ theorem hL_separable_good : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I
   obtain ⟨P', hPP', hP's, hP'0, hoffP, hoffP', h2P, h2P'⟩ :=
     GlobalTheory.T.exists_conjugate_splitPlace_off_stableSet D (D.ntw.S0 i) Rl.Sb P (fun P1 P2 h h' => hS0c i P1 P2 h h') (hS02 i) (hS0b i) hPs hP0
   obtain ⟨α, α', R, R', hα, hRd, hα', hRd', hxR, hyR, hadj⟩ :=
-    GlobalTheory.T.complexHecke_conjugatePlace_petersson_adjoint Rl F hR i0 k P P' hPs hPP' hoffP hoffP' h2P h2P' hk1 hk2
+    _root_.GlobalTheory.CxHeckeAdj.hecke_adjoint Rl F hR i0 k P P' hPs hPP' hoffP hoffP' h2P h2P' hk1 hk2
   have hkP : HkIdx i k P := ⟨hk1, hk2, hPs, hP0⟩
   have hkP' : HkIdx i k P' := ⟨hk1, hk2, hP's, hP'0⟩
   obtain ⟨hPQ, hPg⟩ := GlobalTheory.T.heckeOperatorsRationalForms_commute Rl cG S Y H hG hC i hi ((i0 : ℕ) + 1) h1 h2 b k P k P' hkP hkP'

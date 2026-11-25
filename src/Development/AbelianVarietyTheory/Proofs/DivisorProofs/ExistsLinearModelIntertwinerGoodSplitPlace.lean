@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Con
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodinger
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallySelfDualLatticeIndicatorIsVacuum
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnipotentMapsForThetaTripleStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnipotentMapsForThetaTriple
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleCMBaseDataOfSquareTupleStanding
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddChar
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalAddCharUnramifiedOfSplitsCompletelyAbovePla
@@ -106,7 +106,7 @@ theorem exists_isLinBar : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.Indefinit
     (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V' Γ.W) (hTr : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ X om om'),
     ∃ ι : ((Fin a' × Fin (a + a') → Fv D.host.F Bs.v₁) → ℂ) →ₗ[ℂ] (Matrix (Fin a') (Fin (a + a')) (Fv D.host.F Bs.v₁) → ℂ), Γ.M'.IsLinBar Bs.ψ Bs.τ₁ 1 1 ι := by
   intro D a a' Bs Γ X om om' hTr
-  obtain ⟨uT, uM, hT, hM, hspan, hsymp⟩ := GlobalTheory.T.exists_unipotent_maps_for_theta_triple Bs Γ X om om' hTr
+  obtain ⟨uT, uM, hT, hM, hspan, hsymp⟩ := _root_.GlobalTheory.LinCoords.coords Bs Γ X om om' hTr
   have hψc : Continuous (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) := GlobalTheory.VacAny.continuous_psiV hTr.base.std.1 Bs.v₁
   have hunr : PsiUnr Bs.ψ Bs.v₁ := GlobalTheory.BaseGoodPlace.psiUnr_of_not_le
     (GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D Bs.ψ hTr.base.std) Bs.v₁

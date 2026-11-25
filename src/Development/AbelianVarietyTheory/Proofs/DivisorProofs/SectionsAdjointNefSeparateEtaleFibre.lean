@@ -10,7 +10,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNefBig
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionSeparatingClosedPointStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberCurveOfClassEqSmulAdd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberPullbackProportionalOfProportiStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImageSectionProjectiveOverFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImageSectionProjectiveOverField
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsolatedInFibreOfEtaleRestrictionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataLogTerminalIffEtalePullbackStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleValueAtPointNeZeroIffMemNonzeroLocusStatement
@@ -107,7 +107,7 @@ theorem sections_separate_fibre : GlobalTheory.Published.NadelVanishingAndNonKlt
   have hrange : ∀ Z : Closeds W, x₀ ∈ Z → Set.range x ⊆ Z := by
     rintro Z h _ ⟨q, rfl⟩
     rwa [Subsingleton.elim q pt]
-  have hx₀c : IsClosed ({x₀} : Set W) := GlobalTheory.T.isClosed_image_section_projective_over_field ℂ W p x hp hxp
+  have hx₀c : IsClosed ({x₀} : Set W) := _root_.GlobalTheory.secClosed_closedPoint ℂ W p x hp hxp
   have hx₀U : x₀ ∈ U := hxU (Set.mem_univ pt)
 
   obtain ⟨N₀, h₀, hc₀, hn₀, hb₀⟩ := GlobalTheory.nef_big_of_cls_eq_smul_add_smul hNN ℂ W p hp N N hN hN (2 * c₀ + 1) 0
@@ -195,7 +195,7 @@ theorem sections_separate_fibre : GlobalTheory.Published.NadelVanishingAndNonKlt
   show a j = 0
   obtain ⟨V, hzV, hV⟩ := GlobalTheory.T.isolated_in_fibre_of_etale_restriction M W f U hEt (z j pt) (by rw [hfz j]; exact hx₀U)
   obtain ⟨s, hs, hs'⟩ := GlobalTheory.T.exists_section_separating_closed_point ℂ M (f ≫ p) hpM (tens K.bundle B) (isLB_tens K.isLB hB) Jd (z j pt) (V ⊓ UM)
-    (GlobalTheory.T.isClosed_image_section_projective_over_field ℂ M (f ≫ p) (z j) hpM (hzp j)) ⟨hzV, hzM j⟩ (fun y hy => by
+    (_root_.GlobalTheory.secClosed_closedPoint ℂ M (f ≫ p) (z j) hpM (hzp j)) ⟨hzV, hzM j⟩ (fun y hy => by
       rw [hsupp y hy.2, ← hfz j]
       exact ⟨hV y hy.1, fun e => e ▸ rfl⟩) (hvan 1 one_pos)
   have h1 := hrel (H0.ofSec (f ≫ p) ⊤ s)

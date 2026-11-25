@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedL
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalSectionThetaQuotientProjChartStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GluedSectionGenericValueNonvanishingStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleLocalSectionEqOfGenericFibreStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalThetaSectionsRatioCoordinatesOverlapStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalThetaSectionsRatioCoordinatesOverlap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -131,7 +131,7 @@ theorem pull_theta_bundle : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   intro E _ _ _ H k Ω _ _ _ _ _ M t g m n c h hn ho h3 hu hp hth hc
   obtain ⟨θ, pt, hg, hl⟩ := hth
   choose s hs hgs hfs using chart_sec E H k Ω M t g m n c h θ pt hn ho h3 hu hp hg hl hc
-  have hcross := GlobalTheory.T.localThetaSections_ratio_coordinates_overlap k Ω M t.G t.PP.L n c h (SecM.ofSec t.G θ) hc (GlobalTheory.T.lineBundleLocalSection_eq_of_generic_fibre M.Z t.G t.semi t.PP.L Ω M.pt M.gen)
+  have hcross := _root_.GlobalTheory.UMin.ThBdl.cross_ratio_sections k Ω M t.G t.PP.L n c h (SecM.ofSec t.G θ) hc (GlobalTheory.T.lineBundleLocalSection_eq_of_generic_fibre M.Z t.G t.semi t.PP.L Ω M.pt M.gen)
   have hle : ∀ p : (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).ι,
       (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).U p ≤
         t.PP.L.U p.1 ⊓ t.G.hom ⁻¹ᵁ (h ⁻¹ᵁ chart k n (p.2 PUnit.unit PUnit.unit)) := fun p y hy =>

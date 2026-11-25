@@ -9,7 +9,12 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinear
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsRingHomAddEpsMul
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FirstOrderDeformationPointsDifferEpsAllOpensStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineHomOfField
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenInfOfSeparatedOverAffineOpenStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Separated
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineOpenInfOfSeparatedOverAffineOpen
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsAlgHomOfComp
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FlatBCSec
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeformationChartPointSpecMapStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTangentOfFibrePullbackTangentAtChartStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTranslateOfTangentVectorFibreToGroupSchemeStatement
@@ -78,7 +83,7 @@ theorem chartPt_sub : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   have := t.semi.separated
   have hut : ∀ a, IsTangent (u a) := GlobalTheory.T.isTangent_of_fibre_pullback_tangent_at_chart t U v hv x0 hU A m u hm hu
   let Ω : t.G.left.affineOpens :=
-    ⟨Ω₁.1 ⊓ Ω₂.1, GlobalTheory.T.isAffineOpen_inf_of_separated_over_affineOpen t.G.hom U Ω₁ Ω₂ (hΩ₁.trans (hW₀ _)) (hΩ₂.trans (hW₀ _))⟩
+    ⟨Ω₁.1 ⊓ Ω₂.1, _root_.GlobalTheory.SepAffInf.isAffineOpen_inf_of_le_preimage t.G.hom U Ω₁ Ω₂ (hΩ₁.trans (hW₀ _)) (hΩ₂.trans (hW₀ _))⟩
   have e₁ : Ω.1 ≤ Ω₁.1 := inf_le_left
   have e₂ : Ω.1 ≤ Ω₂.1 := inf_le_right
   have hxΩ : ⊤ ≤ x ⁻¹ᵁ (m ⁻¹ᵁ Ω.1) := fun p hp => ⟨(hxW hp).1.1, (hxW hp).2.1⟩

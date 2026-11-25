@@ -9,7 +9,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegr
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalArithmeticVarietyModelProjectiveSpac
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameConjugateEmbeddingEqConjMulUnitaryStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FubiniStudyCoordinateCombinationsNoCommonZeroStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NefFibOfIsGenerated
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FubiniStudyCoordinateCombinationsNoCommonZero
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnIffGeneratesAtInv
 public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.TwistingSheafOneChartEqPreimageStandardChart
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackCoordinateCombinationRatioAndVanish
@@ -122,7 +123,7 @@ theorem exists_model_of_image : _root_.GlobalTheory.CovTop.PublishedHodgeBundleT
     ProjSpace.iSup_nonzeroLocus_secPull (ProjSpace.iSup_nonzeroLocus_coord (𝓞 K) m) g
   let A' : (𝓞 K →+* ℂ) → Matrix (Fin (m + 1)) (Fin N) ℂ := fun τ =>
     c.map (OfLattice.extEmb τ) * A (OfLattice.extEmb τ)
-  have hnz := GlobalTheory.T.fubiniStudy_coordinate_combinations_noCommonZero K V m N X p g u b c A hgp hrelV (fun j => (hcc j).symm) hF.herm
+  have hnz := _root_.GlobalTheory.FubiniStudyFrame.noCommonZero_comb K V m N X p g u b c A hgp hrelV (fun j => (hcc j).symm) hF.herm
   have hcU : ∀ τ : 𝓞 K →+* ℂ, ∃ U ∈ Matrix.unitaryGroup (Fin N) ℂ,
       A' ((starRingEnd ℂ).comp τ) = (A' τ).map (starRingEnd ℂ) * U := by
     intro τ

@@ -5,7 +5,7 @@ public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicOpenCoverAffineOpenSpecStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombIn
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftsAgreeOfCocycle
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowCocycleStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowCocycle
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquareZeroLiftBasicOpenPairAgreeStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -70,7 +70,7 @@ theorem lifts_corrected_agree_on_overlaps : ∀ (R R₀ : Type) [CommRing R] [Co
     Finset.le_sup (f := fun p : κ × κ => N₀ p.1 p.2) (Finset.mem_univ (k, j))
   choose t ht1 ht2 ht3 ht4 using fun k j => hN₀ k j _ (hN k j)
   choose n s W hs hW hWl using fun j l => GlobalTheory.T.exists_basicOpen_cover_affineOpen_spec _ _ (spMap (IsLocalization.Away.awayToAwayRight (P := Localization.Away (f j * f l)) (f j) (f l)) ≫ e j)
-  obtain ⟨M, t', h1, h2, h3, h4⟩ := GlobalTheory.T.exists_pow_cocycle_alt R R₀ π hπ hI X hX g₀ hg₀ κ f V hV e he1 he2 he3 _ t ht1 ht2 ht3 ht4 n s W hs hW hWl
+  obtain ⟨M, t', h1, h2, h3, h4⟩ := _root_.GlobalTheory.SecGlue.exists_pow_cocycle R R₀ π hπ hI X hX g₀ hg₀ κ f V hV e he1 he2 he3 _ t ht1 ht2 ht3 ht4 n s W hs hW hWl
   exact _root_.GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle R R₀ π hπ hI X g₀ hg₀ κ f hf V hV e he1 he2 he3 _ t' h1 h2 h3 n s W hs hW hWl h4
 
 end GlobalTheory.SecGlue

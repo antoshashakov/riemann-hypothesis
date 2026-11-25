@@ -9,7 +9,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BranchingPai
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTotalExponentTopWeightBound
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLatticeVertexLatticeGridCorner
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemVertexLatticeOrthonormalCoordsTopNodeIff
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceValuationLocalDegreeArithmeticStatement
+public import Formalism.QuotientMetricDivisors.Statement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceValuationLocalDegreeArithmetic
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightsTopGrid
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NsmulProjectionXColumnsMemSelfDualLattice
 import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.RamBasic
@@ -105,7 +106,7 @@ theorem finPair : FinPairK := by
   obtain ⟨x₀, hx⟩ := h6' ε
   refine ⟨x₀, fun D large₂ he hx0 Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt _ => ?_⟩
   obtain ⟨hb1, Dn, hDn, hdiv, hlog⟩ := hx D large₂ he hx0 Γ Pl0 T A Ks R F hS ch hIs hAt
-  obtain ⟨h5mul, h5div, h5fin, h5sum⟩ := GlobalTheory.T.placeValuation_localDegree_arithmetic (K := D.what₂.LL)
+  obtain ⟨h5mul, h5div, h5fin, h5sum⟩ := _root_.GlobalTheory.vw_lw_arith (K := D.what₂.LL)
   have hm : (1 : ℝ) ≤ D.R.m := by exact_mod_cast (le_trans (by norm_num) hS.size.2.2.2.1 : 1 ≤ D.R.m)
   have hsig : 0 ≤ sig ch.G := Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)
   have hlb : 0 ≤ Real.log large₂.sc.b := Real.log_nonneg hb1
