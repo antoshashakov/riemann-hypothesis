@@ -1,15 +1,20 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SameIdIff
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveLineBundleFamilyOfDisjointOpenPiecesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCechPicardGlueFiniteDisjointCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointDisjointUnionRepresentingAdditiveFamiStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSetsInAffineOpenFiniteCoproductStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasProperSmoothDualRepresentativeFinAffineOfIsoStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionWhiskerLeftRangePreimageSndStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointDisjointUnionRepresentingFamilyUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProperSmoothGeomConnectedSigmaDescDisjointCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecPiDisjointOpenCoverFactorsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveLineBundleFamilyOfDisjointOpenPieces
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCechPicardGlueFiniteDisjointCover
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointDisjointUnionRepresentingAdditiveFami
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteSetsInAffineOpenFiniteCoproduct
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasProperSmoothDualRepresentativeFinAffineOfIso
+public import Mathlib.AlgebraicGeometry.Pullbacks
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenImmersionWhiskerLeftRangePreimageSnd
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointDisjointUnionRepresentingFamilyUnique
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProperSmoothGeomConnectedSigmaDescDisjointCover
+public import Mathlib.Order.CompletePartialOrder
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpecPiDisjointOpenCoverFactors
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -82,7 +87,7 @@ theorem hasRepAF_of_disjoint_cover {S : Scheme.{0}} (A : Over S) [GrpObj A] (g :
   have hb : ∀ i, j i ≫ bt = b i ≫ Over.homMk (V i).ι := fun i => by
     ext1; simp [j, bt]
 
-  haveI hk : ∀ i, IsOpenImmersion (A ◁ j i).left := fun i => (GlobalTheory.T.isOpenImmersion_whiskerLeft_range_preimage_snd A (j i)).1
+  haveI hk : ∀ i, IsOpenImmersion (A ◁ j i).left := fun i => (_root_.GlobalTheory.DualCon.isOpenImmersion_whiskerLeft_left_and_range A (j i)).1
   have hkc : ⨆ i, (A ◁ j i).left.opensRange = ⊤ := by
     rw [eq_top_iff]
     intro z _
@@ -90,7 +95,7 @@ theorem hasRepAF_of_disjoint_cover {S : Scheme.{0}} (A : Over S) [GrpObj A] (g :
     obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 hz
     refine TopologicalSpace.Opens.mem_iSup.2 ⟨i, ?_⟩
     change z ∈ Set.range (A ◁ j i).left
-    rw [(GlobalTheory.T.isOpenImmersion_whiskerLeft_range_preimage_snd A (j i)).2]
+    rw [(_root_.GlobalTheory.DualCon.isOpenImmersion_whiskerLeft_left_and_range A (j i)).2]
     exact hi
   have hkd : Pairwise fun i i' => Disjoint (A ◁ j i).left.opensRange (A ◁ j i').left.opensRange := by
     intro i i' hii'
@@ -98,26 +103,26 @@ theorem hasRepAF_of_disjoint_cover {S : Scheme.{0}} (A : Over S) [GrpObj A] (g :
     rintro z ⟨h1, h2⟩
     change z ∈ Set.range (A ◁ j i).left at h1
     change z ∈ Set.range (A ◁ j i').left at h2
-    rw [(GlobalTheory.T.isOpenImmersion_whiskerLeft_range_preimage_snd A (j i)).2] at h1
-    rw [(GlobalTheory.T.isOpenImmersion_whiskerLeft_range_preimage_snd A (j i')).2] at h2
+    rw [(_root_.GlobalTheory.DualCon.isOpenImmersion_whiskerLeft_left_and_range A (j i)).2] at h1
+    rw [(_root_.GlobalTheory.DualCon.isOpenImmersion_whiskerLeft_left_and_range A (j i')).2] at h2
     exact (disjoint_iff.1 (hjd hii')).le ⟨h1, h2⟩
-  obtain ⟨d, hd⟩ := GlobalTheory.T.exists_cechPicard_glue_finite_disjoint_cover (fun i => (A ◁ j i).left) hkc hkd (fun i => cls (P i) (hP i).1.fam.isLB)
+  obtain ⟨d, hd⟩ := _root_.GlobalTheory.CechPic.Glue.exists_pic_glue (fun i => (A ◁ j i).left) hkc hkd (fun i => cls (P i) (hP i).1.fam.isLB)
   obtain ⟨Pt, hPt, rfl⟩ := cls_surj d
   have hPi : ∀ i, LBIso (Pt.pull (A ◁ j i).left) (P i) := fun i =>
     (cls_eq_iff (pull_isLB hPt _) (hP i).1.fam.isLB).1 ((cls_pull hPt _ _).trans (hd i))
-  refine ⟨Bt, bt, Pt, ⟨GlobalTheory.T.additiveLineBundleFamily_of_disjoint_open_pieces A Bt B j hjc hjd P Pt (fun i => (hP i).1.fam) hPt hPi, fun T t N hN => ?_⟩, ?_, ?_⟩
-  · obtain ⟨x, hx, hxN⟩ := GlobalTheory.T.exists_point_disjointUnion_representingAdditiveFamily A X V hcov hdisj Bt B j hjc hjd b bt hb P Pt (fun i => (hP i).1) hPt hPi T t N hN
+  refine ⟨Bt, bt, Pt, ⟨_root_.GlobalTheory.DualCon.ProdGlue.fam_of_pieces A Bt B j hjc hjd P Pt (fun i => (hP i).1.fam) hPt hPi, fun T t N hN => ?_⟩, ?_, ?_⟩
+  · obtain ⟨x, hx, hxN⟩ := _root_.GlobalTheory.DualCon.ProdGlue.rep_exists A X V hcov hdisj Bt B j hjc hjd b bt hb P Pt (fun i => (hP i).1) hPt hPi T t N hN
     refine ⟨x, ⟨hx, hxN⟩, fun y hy => ?_⟩
-    refine GlobalTheory.T.point_disjointUnion_representingFamily_unique A X V hcov hdisj Bt B j hjc hjd b bt hb P Pt (fun i => (hP i).1) hPt hPi T y x (hy.1.trans hx.symm) ?_
+    refine _root_.GlobalTheory.DualCon.ProdGlue.eq_of_same_of_disjoint_cover A X V hcov hdisj Bt B j hjc hjd b bt hb P Pt (fun i => (hP i).1) hPt hPi T y x (hy.1.trans hx.symm) ?_
     rw [Same, ← cls_eq_iff (pull_isLB hPt _) (pull_isLB hPt _), ← (cls_eq_iff hN.isLB (pull_isLB hPt _)).2 hy.2,
       ← (cls_eq_iff hN.isLB (pull_isLB hPt _)).2 hxN]
-  · exact GlobalTheory.T.properSmoothGeomConnected_sigmaDesc_disjoint_cover V hcov hdisj (fun i => (b i).left) g (fun i => (hP i).2.1)
-  · exact GlobalTheory.T.finiteSetsInAffineOpen_finite_coproduct (fun i => (B i).left) (fun i => (hP i).2.2)
+  · exact _root_.GlobalTheory.DualCon.good_sigmaDesc_of_disjoint_cover V hcov hdisj (fun i => (b i).left) g (fun i => (hP i).2.1)
+  · exact _root_.GlobalTheory.DualCon.finAff_sigma (fun i => (B i).left) (fun i => (hP i).2.2)
 
 theorem hasRepAF_pi : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → ∀ (n : ℕ) (D : Fin n → Type) [∀ i, CommRing (D i)] [∀ i, Algebra R (D i)], (∀ i, HasRepAF A g (Over.mk (spMap (algebraMap R (D i))))) → HasRepAF A g (Over.mk (spMap (algebraMap R (∀ i, D i)))) := by
   intro R _ A _ g _ n D _ _ h
-  obtain ⟨V, hcov, hdisj, he⟩ := GlobalTheory.T.spec_pi_disjoint_open_cover_factors R n D
+  obtain ⟨V, hcov, hdisj, he⟩ := _root_.GlobalTheory.SpecPi.specPi_cover R n D
   exact hasRepAF_of_disjoint_cover A g (Over.mk (spMap (algebraMap R (∀ i, D i)))) V hcov hdisj
-    (fun i => GlobalTheory.T.hasProperSmoothDualRepresentativeFinAffine_of_iso A g (he i).some.symm (h i))
+    (fun i => _root_.GlobalTheory.hasRepAF_of_iso A g (he i).some.symm (h i))
 
 end GlobalTheory.DualCon.ProdGlue

@@ -2,15 +2,18 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PolEval
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutingOperatorsPolynomialEvalPderivStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHeisenbergOperatorOfCoordsEqSumMulLeftPderivStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergAnnihilationCreationCommutatorEqDeltaStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergCreationOperatorsCommuteOfCcrStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFamilyExpandCreationAnnihilationStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InjectiveOfMapPderivEqAndMapOneNeZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorPolynomialsToProductVariablesCompMulLeftXStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorPolynomialsToProductVariablesCompPderivStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorPolynomialsToProductVariablesInjectiveStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutingOperatorsPolynomialEvalPderiv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHeisenbergOperatorOfCoordsEqSumMulLeftPderiv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergAnnihilationCreationCommutatorEqDelta
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergCreationOperatorsCommuteOfCcr
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFamilyExpandCreationAnnihilation
+public import Mathlib.Algebra.MvPolynomial.PDeriv
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InjectiveOfMapPderivEqAndMapOneNeZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorPolynomialsToProductVariablesCompMulLeftX
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorPolynomialsToProductVariablesCompPderiv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TensorPolynomialsToProductVariablesInjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -85,25 +88,25 @@ theorem fock_map_of_ccr : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Ty
       ∀ c T, Φ (sumPl (fun w => heisOp (c w)) T) = H c (Φ T) := by
   intro V _ _ W _ _ P Q R S H hadd hsmul hccr f₀ hf₀ hvac
 
-  have hm : ∀ i j, fockM H i * fockM H j = fockM H j * fockM H i := GlobalTheory.T.heisenberg_creation_operators_commute_of_ccr H hadd hsmul hccr
-  have hcr := GlobalTheory.T.heisenberg_annihilation_creation_commutator_eq_delta H hadd hsmul hccr
+  have hm : ∀ i j, fockM H i * fockM H j = fockM H j * fockM H i := _root_.GlobalTheory.CCRFock.fockM_comm H hadd hsmul hccr
+  have hcr := _root_.GlobalTheory.CCRFock.CommDM.fockD_fockM_comm H hadd hsmul hccr
 
   have hd0 : ∀ j, fockD H j f₀ = 0 := by
     rintro ⟨w, a, b⟩
     have h := hvac w a b
     simp only [fockD, unitAt, LinearMap.neg_apply, LinearMap.smul_apply, LinearMap.add_apply]
     rw [h, smul_zero, neg_zero]
-  have hpd := GlobalTheory.T.commutingOperatorsPolynomialEval_pderiv (fockM H) (fockD H) hm f₀ hcr hd0
+  have hpd := _root_.GlobalTheory.CCRFock.polEval_pderiv (fockM H) (fockD H) hm f₀ hcr hd0
   have hinj0 : Function.Injective (polEval (fockM H) hm f₀) :=
-    GlobalTheory.T.injective_of_map_pderiv_eq_and_map_one_ne_zero _ (fockD H) hpd (by rw [polEval_one]; exact hf₀)
-  refine ⟨polEval (fockM H) hm f₀ ∘ₗ polMap W (Ix P Q × Ix R S), hinj0.comp (GlobalTheory.T.tensorPolynomialsToProductVariables_injective W _), ?_⟩
+    _root_.GlobalTheory.FockAlg.injective_of_pderiv _ (fockD H) hpd (by rw [polEval_one]; exact hf₀)
+  refine ⟨polEval (fockM H) hm f₀ ∘ₗ polMap W (Ix P Q × Ix R S), hinj0.comp (_root_.GlobalTheory.CCRFock.polMap_injective W _), ?_⟩
 
   have hX : ∀ (w : W) (l : Ix P Q × Ix R S) T, polEval (fockM H) hm f₀ (polMap W (Ix P Q × Ix R S)
       (GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial (Ix P Q × Ix R S) ℂ) w
         (LinearMap.mulLeft ℂ (MvPolynomial.X l)) T)) =
       fockM H (w, l) (polEval (fockM H) hm f₀ (polMap W (Ix P Q × Ix R S) T)) := by
     intro w l T
-    have h := LinearMap.congr_fun (GlobalTheory.T.tensorPolynomialsToProductVariables_comp_mulLeft_X W (Ix P Q × Ix R S) w l) T
+    have h := LinearMap.congr_fun (_root_.GlobalTheory.CCRFock.polMap_comp_atPl_mulLeft_X W (Ix P Q × Ix R S) w l) T
     simp only [LinearMap.comp_apply, LinearMap.mulLeft_apply] at h
     rw [h, polEval_X]
   have hD : ∀ (w : W) (l : Ix P Q × Ix R S) T, polEval (fockM H) hm f₀ (polMap W (Ix P Q × Ix R S)
@@ -111,7 +114,7 @@ theorem fock_map_of_ccr : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Ty
         (MvPolynomial.pderiv l).toLinearMap T)) =
       fockD H (w, l) (polEval (fockM H) hm f₀ (polMap W (Ix P Q × Ix R S) T)) := by
     intro w l T
-    have h := LinearMap.congr_fun (GlobalTheory.T.tensorPolynomialsToProductVariables_comp_pderiv W (Ix P Q × Ix R S) w l) T
+    have h := LinearMap.congr_fun (_root_.GlobalTheory.CCRFock.polMap_comp_atPl_pderiv W (Ix P Q × Ix R S) w l) T
     simp only [LinearMap.comp_apply, Derivation.coeFn_coe] at h
     rw [h, hpd]
 
@@ -127,10 +130,10 @@ theorem fock_map_of_ccr : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Ty
     intro w
     clear hX hD hpd hinj0 hcr hm hd0 hvac hccr hsmul hadd hf₀
 
-    rw [← hL w (heisOp (c w)), GlobalTheory.T.fockHeisenbergOperatorOfCoords_eq_sum_mulLeft_pderiv (c w), map_sum]
+    rw [← hL w (heisOp (c w)), _root_.GlobalTheory.CCRFock.heisOp_eq_sum_mul_pderiv (c w), map_sum]
     simp only [map_add (f := _), map_smul]
     simp only [hL]
-  rw [GlobalTheory.T.heisenberg_family_expand_creation_annihilation H hadd hsmul c]
+  rw [_root_.GlobalTheory.CCRFock.heis_expand H hadd hsmul c]
 
   simp only [GlobalTheory.RealLift.sumPl, hsum, LinearMap.comp_apply, LinearMap.sum_apply,
   LinearMap.add_apply, LinearMap.smul_apply, map_sum, map_add, map_smul, hX, hD]

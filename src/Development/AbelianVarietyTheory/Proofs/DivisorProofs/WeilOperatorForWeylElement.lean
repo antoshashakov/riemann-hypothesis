@@ -1,15 +1,18 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSymp
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHaarAdelicIntegralFormulaStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFourierTransformSurjectiveIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFourierDoubleReflectionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFourierSchrodingerIntertwineStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFourierSchwartzStableStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalLatticeIndicatorFourierStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzAdelicEqSpanPureStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatRestrictedProductCharStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSelfDualFor
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHaarAdelicIntegralFormula
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteFourierTransformSurjectiveIntegral
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFourierDoubleReflection
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFourierSchrodingerIntertwine
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFourierSchwartzStable
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalLatticeIndicatorFourier
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartz
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzAdelicEqSpanPure
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatRestrictedProductChar
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -73,10 +76,10 @@ theorem GlobalTheory.WeylFour.weyl_hasOp : ∀ (F : Type) [Field F] [NumberField
     · simp [spAct, weylM, Matrix.fromBlocks_map, Matrix.mulVec, dotProduct, Matrix.fromBlocks, Matrix.one_apply]
     · simp [spAct, weylM, Matrix.fromBlocks_map, Matrix.mulVec, dotProduct, Matrix.fromBlocks, Matrix.one_apply]
 
-  have hSB := fun v => GlobalTheory.T.local_fourier_schwartz_stable F ψ hψ v (hnt v) κ
-  have hInv := fun v => GlobalTheory.T.local_fourier_double_reflection F ψ hψ v (hnt v) κ
-  have hLaw := GlobalTheory.T.local_fourier_schrodinger_intertwine F ψ hψ
-  have hInd := fun v => GlobalTheory.T.local_lattice_indicator_fourier F ψ hψ v κ
+  have hSB := fun v => _root_.GlobalTheory.WeylFour.fourV_sb F ψ hψ v (hnt v) κ
+  have hInv := fun v => _root_.GlobalTheory.WeylFour.LocInv.fourV_fourV F ψ hψ v (hnt v) κ
+  have hLaw := _root_.GlobalTheory.WeylFour.schr_fourV_loc F ψ hψ
+  have hInd := fun v => _root_.GlobalTheory.WeylFour.IndOSelf.indO_self_fourier F ψ hψ v κ
   have hsmV : ∀ v (c : ℂ) (φ : (κ → Fv F v) → ℂ), fourV ψ v (c • φ) = c • fourV ψ v φ := by
     intro v c φ; funext y
     simp only [fourV, Pi.smul_apply, smul_eq_mul, mul_assoc]
@@ -120,17 +123,17 @@ theorem GlobalTheory.WeylFour.weyl_hasOp : ∀ (F : Type) [Field F] [NumberField
     simp only [Pi.zero_apply, neg_neg] at h3
     exact h3.symm
 
-  obtain ⟨ei, hsurj, hei, hcont⟩ := GlobalTheory.T.finite_fourier_transform_surjective_integral F κ
-  obtain ⟨μ, hμ, hprod⟩ := GlobalTheory.T.exists_haar_adelic_integral_formula F ψ hψ hunr hnt κ
+  obtain ⟨ei, hsurj, hei, hcont⟩ := _root_.GlobalTheory.WeylFour.exists_fourier_measI F κ
+  obtain ⟨μ, hμ, hprod⟩ := _root_.GlobalTheory.WeylMeas.exists_meas F ψ hψ hunr hnt κ
   haveI := hμ
   haveI : BorelSpace (AF F) := ⟨rfl⟩
-  have hspan := GlobalTheory.T.schwartz_adelic_eq_span_pure F κ
+  have hspan := _root_.GlobalTheory.WeylSpan.schA_eq_span_pure F κ
   let fA : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ := fun Φ y => ∫ x, Φ x * ψ (x ⬝ᵥ y) ∂μ
   have hpure : ∀ (f : SInf F κ) (φ : ∀ v : Pl (F := F), (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB _) →
       (∀ᶠ v in cofinite, φ v = indO v) → ∀ y, Integrable (fun x => pure f φ x * ψ (x ⬝ᵥ y)) μ ∧
         fA (pure f φ) y = pure (ei f) (fun v => fourV ψ v (φ v)) y := by
     intro f φ hφ hae y
-    obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.schwartz_bruhat_restricted_product_char F ψ hψ hunr κ f φ y hφ hae
+    obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.WeylTwist.pure_mul_psi F ψ hψ hunr κ f φ y hφ hae
     have e : (fun x => pure f φ x * ψ (x ⬝ᵥ y)) = fun x =>
         (fun z => f z * eInf z (fun i => evI F (y i))) (fun i => evI F (x i)) *
           ∏ᶠ v, (fun z => φ v z * GlobalTheory.LatVac.psiAt ψ v (z ⬝ᵥ fun i => evFin F v (y i))) (fun i => evFin F v (x i)) :=
@@ -212,7 +215,7 @@ theorem GlobalTheory.WeylFour.weyl_hasOp : ∀ (F : Type) [Field F] [NumberField
     rw [hQid Φ hΦ]
   refine ⟨e, ei, ev, hsurj, fun Φ hΦ => ?_, fun w Φ hΦ => ?_, hmap, hinj, fun v w φ hφ => ?_, ?_, ?_⟩
   · rw [he Φ hΦ]; exact hkeep Φ hΦ
-  · rw [he _ (GlobalTheory.T.schrodinger_preserves_schwartz F ψ hψ κ w Φ hΦ), he Φ hΦ, hlawA, hsp]
+  · rw [he _ (_root_.GlobalTheory.WeylFour.SchrKeep.schr_mem_schA F ψ hψ κ w Φ hΦ), he Φ hΦ, hlawA, hsp]
   · rw [hsp, hev v _ ((hSB v).2.2 w φ hφ), hev v φ hφ, hLaw v κ w φ]
   · filter_upwards [hunr] with v hv
     rw [hev v _ (hInd v).1, (hInd v).2 hv]

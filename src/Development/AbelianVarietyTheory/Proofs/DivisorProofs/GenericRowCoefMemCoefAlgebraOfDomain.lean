@@ -2,16 +2,18 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowSubst
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseChange
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerRowOperatorMemDualWeylEndSubalgebraStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericGaussFactorisationCoeffSmulInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericRowSubstitutionCoeffExponentLeDegreeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixRowSubstitutionPolyDiagonalEqSumComponentsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixRowSubstitutionPolyEqEvalGenericRowSubstitStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixRowSubstitutionPolyTransvectionEqSumStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddStrictLowerMemClosureTransvectionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddStrictUpperMemClosureTransvectionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowSubstDualWeylExpressibleMatrixMulClosedStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalDegreeLeOfMemDualWeylLatticeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerRowOperatorMemDualWeylEndSubalgebra
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericGaussFactorisationCoeffSmulInjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericRowSubstitutionCoeffExponentLeDegree
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixRowSubstitutionPolyDiagonalEqSumComponents
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixRowSubstitutionPolyEqEvalGenericRowSubstit
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixRowSubstitutionPolyTransvectionEqSum
+public import Mathlib.LinearAlgebra.Matrix.Transvection
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddStrictLowerMemClosureTransvection
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddStrictUpperMemClosureTransvection
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RowSubstDualWeylExpressibleMatrixMulClosed
+public import Formalism.GradedWeylDivisibility.StatementA
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TotalDegreeLeOfMemDualWeylLattice
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,42 +64,42 @@ open MvPolynomial Formalism.GradedWeylDivisibility
 namespace GlobalTheory.GenCoef
 
 theorem expr_mul_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (R : Type) [CommRing R] [Algebra O R]
-    (Y Y' : Matrix (Fin N) (Fin N) R), Expr O N ν R Y → Expr O N ν R Y' → Expr O N ν R (Y * Y') := GlobalTheory.T.rowSubstDualWeylExpressible_matrix_mul_closed
+    (Y Y' : Matrix (Fin N) (Fin N) R), Expr O N ν R Y → Expr O N ν R Y' → Expr O N ν R (Y * Y') := _root_.GlobalTheory.GenCoef.expr_mul
 
 theorem rowSubst_diagonal_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (d : Fin N → R) (D : ℕ)
     (f : MvPolynomial (Fin N × Fin N) O), f.totalDegree ≤ D →
     rowSubst O N R (Matrix.diagonal d) f = ∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (D + 1)),
-      (∏ a, d a ^ w a) • MvPolynomial.map (algebraMap O R) (weightedHomogeneousComponent (rowW N N) w f) := GlobalTheory.T.matrixRowSubstitutionPoly_diagonal_eq_sum_components
+      (∏ a, d a ^ w a) • MvPolynomial.map (algebraMap O R) (weightedHomogeneousComponent (rowW N N) w f) := _root_.GlobalTheory.DiagRowSubst.rowSubst_diagonal_eq_sum_components
 
 theorem rowDiv_mem_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (a b : Fin N), a ≠ b → ∀ k : ℕ,
     ∃ p ∈ dwAlg O N ν, ∀ f : dualWeyl O N N ν,
-      (p f : MvPolynomial (Fin N × Fin N) O) = rowDiv O a b k (f : MvPolynomial (Fin N × Fin N) O) := GlobalTheory.T.dividedPowerRowOperator_mem_dualWeylEndSubalgebra
+      (p f : MvPolynomial (Fin N × Fin N) O) = rowDiv O a b k (f : MvPolynomial (Fin N × Fin N) O) := _root_.GlobalTheory.GenCoef.rowDiv_mem_dwAlg
 
 theorem rowSubst_transvection_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (a b : Fin N) (r : R)
     (D : ℕ) (f : MvPolynomial (Fin N × Fin N) O), f.totalDegree ≤ D →
     rowSubst O N R (Matrix.transvection a b r) f =
-      ∑ k ∈ Finset.range (D + 1), r ^ k • MvPolynomial.map (algebraMap O R) (rowDiv O b a k f) := GlobalTheory.T.matrixRowSubstitutionPoly_transvection_eq_sum
+      ∑ k ∈ Finset.range (D + 1), r ^ k • MvPolynomial.map (algebraMap O R) (rowDiv O b a k f) := _root_.GlobalTheory.RowSubstTransvection.rowSubst_transvection
 
 theorem totalDegree_le_of_mem_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O),
-    f ∈ dualWeyl O N N ν → f.totalDegree ≤ ∑ a, ν a := GlobalTheory.T.totalDegree_le_of_mem_dualWeylLattice
+    f ∈ dualWeyl O N N ν → f.totalDegree ≤ ∑ a, ν a := _root_.GlobalTheory.DualWeylDeg.totalDegree_le_of_mem_dualWeyl
 
 theorem lower_mem_closure_of_parts : ∀ (R : Type) [CommRing R] (N : ℕ) (c : Matrix (Fin N) (Fin N) R), (∀ a b, a ≤ b → c a b = 0) →
-    1 + c ∈ Submonoid.closure {M | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r} := GlobalTheory.T.one_add_strictLower_mem_closure_transvection'
+    1 + c ∈ Submonoid.closure {M | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r} := _root_.GlobalTheory.one_add_strictLower_mem_closure_transvection
 
 theorem upper_mem_closure_of_parts : ∀ (R : Type) [CommRing R] (N : ℕ) (c : Matrix (Fin N) (Fin N) R), (∀ a b, b ≤ a → c a b = 0) →
-    1 + c ∈ Submonoid.closure {M | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r} := GlobalTheory.T.one_add_strictUpper_mem_closure_transvection
+    1 + c ∈ Submonoid.closure {M | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r} := _root_.GlobalTheory.UpperTransvection.upper_mem_closure
 
 theorem lduHom_pure_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (M : Type) [AddCommGroup M] [Module O M]
     (s : Finset (Fin N × Fin N →₀ ℕ)) (c : (Fin N × Fin N →₀ ℕ) → M),
-    (∀ n, ∑ m ∈ s, (lduHom O N (monomial m 1)).coeff n • c m = 0) → ∀ m ∈ s, c m = 0 := GlobalTheory.T.genericGaussFactorisation_coeff_smul_injective
+    (∀ n, ∑ m ∈ s, (lduHom O N (monomial m 1)).coeff n • c m = 0) → ∀ m ∈ s, c m = 0 := _root_.GlobalTheory.GenCoef.lduHom_coeff_smul_injective
 
 theorem rowSubst_eq_sum_genSub_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R]
     (Y : Matrix (Fin N) (Fin N) R) (f : MvPolynomial (Fin N × Fin N) O),
     rowSubst O N R Y f = ∑ m ∈ (GlobalTheory.HighWt.genSub O N f).support, (m.prod fun v k => Y v.1 v.2 ^ k) •
-      MvPolynomial.map (algebraMap O R) ((GlobalTheory.HighWt.genSub O N f).coeff m) := GlobalTheory.T.matrixRowSubstitutionPoly_eq_eval_genericRowSubstitution
+      MvPolynomial.map (algebraMap O R) ((GlobalTheory.HighWt.genSub O N f).coeff m) := _root_.GlobalTheory.GenCoef.RowSubstSum.main
 
 theorem genSub_coeff_le_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (D : ℕ) (f : MvPolynomial (Fin N × Fin N) O), f.totalDegree ≤ D →
-    ∀ m, (GlobalTheory.HighWt.genSub O N f).coeff m ≠ 0 → ∀ v, m v ≤ D := GlobalTheory.T.genericRowSubstitution_coeff_exponent_le_degree
+    ∀ m, (GlobalTheory.HighWt.genSub O N f).coeff m ≠ 0 → ∀ v, m v ≤ D := _root_.GlobalTheory.GenSubDeg.genSub_coeff_le
 
 end GlobalTheory.GenCoef
 
