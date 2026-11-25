@@ -5,7 +5,9 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralDataFramedTorsionPointTorusExtStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalPointsAbelianPartsMultiplyStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramesRespectCubicalStructuresStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HRedFst
+public import Development.AbelianVarietyTheory.BlockTheory.CMModuli.FlatIsoUnitGenerator
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFramesRespectCubicalStructures
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointFrameMulEqIntegralGeneratorsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationCubicalStructureGenericFibreStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationSectionsExtendingPointsMultiplyStatement
@@ -100,7 +102,7 @@ theorem cube_of_liesOver : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing
   have v := fun S => GlobalTheory.T.torsionPointFrame_mul_eq_integralGenerators V hV D A G hG U w₀ hw₀ N hN (g S) (w S) (x S) (e S)
     (hS S).1 (hS S).2.1 (hS S).2.2.1 (hS S).2.2.2 (h S) (g' S) (f S) (t S) (hF S) (hE S) (hP S) (hf S) (ht S) (hT S)
     z JA JG JB hJA hJG hJB
-  have c₁ := GlobalTheory.T.integral_frames_respect_cubical_structures V hV D A G hG U h g' f t a₀ m₁.1 m₂.1 m₃.1 a₄ b₀ m₁.2 m₂.2 m₃.2 b₄ hF hf ht hT z JG JB hJG hJB
+  have c₁ := _root_.GlobalTheory.Poinc.IntCube.integral_cube V hV D A G hG U h g' f t a₀ m₁.1 m₂.1 m₃.1 a₄ b₀ m₁.2 m₂.2 m₃.2 b₄ hF hf ht hT z JG JB hJG hJB
   have c₂ := GlobalTheory.T.uniformisation_cubical_structure_generic_fibre V hV D A G hG U w₀ hw₀ ρ hρ c x h hx₀ hx₁ hx₂ hx₃ hx₄ a₀ m₁.1 m₂.1 m₃.1 a₄ hE z JA JG hJA hJG
   have hb : ∀ S, toUnit (TF (R := V) (FractionRing V)) ≫ (g' S).b = (g S).b := fun S =>
     Over.OverMorphism.ext (hP S).1.symm

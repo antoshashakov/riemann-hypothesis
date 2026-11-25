@@ -8,7 +8,10 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AngehrnSiuNo
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscrepancySubQCartierCoeffNonposStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DvrPlaceTopFormOrdersApi
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalEquationEffectiveQCartierDivisor
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLtBinomialBoundOfMulPowLtStatement
+public import Mathlib.Data.Nat.Choose.Basic
+public import Mathlib.Data.Rat.Init
+public import Mathlib.Tactic.ToAdditive
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLtBinomialBoundOfMulPowLt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResidueMapClosurePointStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSectionsRestrictBasis
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTrBasisMemOfIsLocalRingOfVarietyPointStatement
@@ -294,7 +297,7 @@ theorem exists_global_step : GlobalTheory.Published.Principalisation → ∀ (X 
   intro hPr X _ _ _ p n hp hn Δ m G A D P z k h hΔ _ hm hG hA hD hP hk hZ hcase hh hnum l₀
   haveI := GlobalTheory.isProjOver_locallyOfFiniteType ℂ X p hp
 
-  obtain ⟨q, hq, hnumq⟩ := GlobalTheory.T.exists_lt_binomial_bound_of_mul_pow_lt P.card k h _ hk hh hnum
+  obtain ⟨q, hq, hnumq⟩ := _root_.GlobalTheory.elementary_binom_bound P.card k h _ hk hh hnum
   obtain ⟨l₁, hl₁⟩ := GlobalTheory.T.h0_lower_bound_of_isAmple_cartierDiv X p hp A z k q hA hZ hq
   obtain ⟨l₂, hl₂⟩ := exists_sections_restrict_basis X p hp A z hA
   obtain ⟨l, M, hl0, hM, hkl, hhl, hcl⟩ := hnumq (max l₀ (max l₁ l₂))

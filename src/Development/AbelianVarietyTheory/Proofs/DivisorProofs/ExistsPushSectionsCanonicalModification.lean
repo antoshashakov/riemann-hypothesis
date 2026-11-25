@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsoOverOfIsOpenImmersion
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsUniqueLbIsoPullEqOfCoheightLeOne
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBijectiveStalkMapOverDvrPointStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBijectiveStalkMapOverDvrPoint
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsJacobianSectionIsUnitGermOfLocalIso
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GermMemRangeStalkOfPullbackMulLocalIso
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralSmoothProjectiveModificationOfNonemptyStatement
@@ -143,7 +143,7 @@ theorem exists_push_sections : ∀ (F : Type) [Field F] [CharZero F] (Y : Scheme
       rw [hs₀]; exact (C.mulEquiv hJU).apply_symm_apply _
     obtain ⟨t, ht⟩ := (exists_sec_res_eq_iff hL (W := U) (LB.coord_mem s₀)).2 (fun x hx1 _ => by
       have := IsNormalScheme.isDiscreteValuationRing_stalk hx1
-      obtain ⟨x', rfl, hb⟩ := GlobalTheory.T.exists_bijective_stalkMap_over_dvrPoint F Y p U d M hproj hU x this
+      obtain ⟨x', rfl, hb⟩ := _root_.GlobalTheory.CompHS.Modif.exists_bijective_stalkMap_of_dvr F Y p U d M hproj hU x this
       obtain ⟨i, hi⟩ := exists_chart hL (M.σ x')
       have : Nonempty ((tens K.bundle B).U i) := ⟨⟨_, hi⟩⟩
       have hne := nonempty_inf_of_isIntegral U ((tens K.bundle B).U i)

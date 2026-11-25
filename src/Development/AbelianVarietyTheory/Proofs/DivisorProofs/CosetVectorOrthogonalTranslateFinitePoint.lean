@@ -18,7 +18,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseRationa
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowIntegralCompletedHomLatticeStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartRationalTensorZeroAtPrimeIffPlaceIdem
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFinitePointReadsClassicalTranslationStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOfCompletedLatticeSelfDualRankOneStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOfCompletedLatticeSelfDualRankOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIntertwinerStandardToSkewMemThetaSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemIdealIntegralFiniteAdelesOfMemCompletionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
@@ -292,7 +292,7 @@ theorem mem_of_char_eq {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {r : D.hos
     obtain ⟨σ, hσ, eσ⟩ := exists_fe (algebraMap D.host.E (FA D) r⁻¹ * s)
     have e1 : algebraMap D.host.E (FA D) r * fe D σ = s := by
       rw [eσ, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hr, map_one, one_mul]
-    have h1 := GlobalTheory.T.integral_of_completedLattice_selfDual_rankOne ψ S T r LB _ hψ gS gT (stdLat_selfDual gS) hLB hr hk ⟨o + j, by omega⟩ j
+    have h1 := _root_.GlobalTheory.CosetOrth.inHat_of_char_dual ψ S T r LB _ hψ gS gT (stdLat_selfDual gS) hLB hr hk ⟨o + j, by omega⟩ j
       (2 * σ * (1 - mt S g⁻¹) i j) (by rw [RingHom.map_mul, RingHom.map_mul, hσ, mul_zero, zero_mul]) fun t ht ht' => by
         have e2 : algebraMap D.host.E (FA D) r * fe D (t * σ) = fe D t * s := by
           rw [RingHom.map_mul, mul_left_comm, e1]
