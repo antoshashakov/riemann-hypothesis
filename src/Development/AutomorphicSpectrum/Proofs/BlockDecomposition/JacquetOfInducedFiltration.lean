@@ -10,7 +10,9 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPe
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictBlockOrderStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiltrationTransportEquivStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InductionReindexEquivStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothCompContinuousStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
+public import GroundTheory.AutomorphicForms.SmoothRep
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothCompContinuous
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 public import GroundTheory.AutomorphicForms.InductionParabolic
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetModuleDeterminantTwist
@@ -122,7 +124,7 @@ theorem jacquetOfInducedFiltration : ∀ (k : Type) [Field k] [ValuativeRel k] [
   refine ⟨K, Equiv.ofBijective toSM ⟨inj, surj⟩, ?_⟩
   intro W _ _ ρ hρ
   let σ := ρ.comp φ.symm.toMonoidHom
-  have hσ : GroundTheory.Automorphic.IsSmooth σ := GlobalTheory.T.isSmooth_comp_continuous φ.symm.toMonoidHom hφsc ρ hρ
+  have hσ : GroundTheory.Automorphic.IsSmooth σ := _root_.GlobalTheory.CompanionTheory.SmoothBridge.isSmooth_comp φ.symm.toMonoidHom hφsc ρ hρ
   have hF := hfilt W σ hσ
   obtain ⟨V, hF⟩ := hF
   obtain ⟨hV0, hF⟩ := hF

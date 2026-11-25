@@ -6,7 +6,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockCou
 public import GroundTheory.AutomorphicForms.FiniteBruhat
 public import GroundTheory.AutomorphicForms.InductionParabolicGroups
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviDoubleCosetIntersection
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEquivContinuousStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.LeviEmbMemNormalizerLower
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEquivContinuous
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRefinementBlockOrderStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRefinementParabolicStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RefinedBlockOrderCompatStatement
@@ -196,7 +197,7 @@ theorem cell_equiv (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) 
   have hU : ∀ u, u ∈ relUnip k f ↔ φ u ∈ leviUnipotent k N β (γ ∘ ⇑w⁻¹) := by
     intro u
     rw [GlobalTheory.T.levi_refinement_parabolic k e f (γ ∘ ⇑w⁻¹) hδf u, leviUnipotent, Subgroup.mem_subgroupOf, hφ]
-  obtain ⟨hc, hc'⟩ := GlobalTheory.T.levi_equiv_continuous k e' γ φ' hφ'
+  obtain ⟨hc, hc'⟩ := _root_.GlobalTheory.CompanionTheory.LeviCont.levi_iso_homeo k e' γ φ' hφ'
   refine nonempty_indRep_comp_equiv φ' hc hc' (cellLeviSub k β γ w) (relParab k g) hP _ _
     (coinvEquiv ρ φ (relUnip k f) (leviUnipotent k N β (γ ∘ ⇑w⁻¹)) hU) ?_
   intro p v

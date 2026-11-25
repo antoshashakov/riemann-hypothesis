@@ -18,7 +18,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeL
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatTuple
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingBiadditive
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingOnRationalTupleFormula
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseCocycleBimultiplicativeStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseCocycleBimultiplicative
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseContinuousUnitary
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalCharacterKernelScaling
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalTupleInLatticeLevel
@@ -127,7 +127,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
 
   have hbd : ‖starLoc (Af F) σ J (psiFin F ψ) μ Q bc‖ ≤
       (∑ a ∈ s, ‖Q a‖) * √((μ (L : Set _)).toReal * (μ S).toReal) := by
-    have hw := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.weyl_sq_compact_open _ μ L hLc hLo q B hp1 hp2 (GlobalTheory.T.phase_cocycle_bimultiplicative F E σ hCM M J hJ n ψ hψ bc) hq1 hq2
+    have hw := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.weyl_sq_compact_open _ μ L hLc hLo q B hp1 hp2 (_root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PhaseAdd.phaseB_add F E σ hCM M J hJ n ψ hψ bc) hq1 hq2
     exact _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.CosetBound.twisted_integral_finite_coset_combination_bound _ μ L hLc hLo q hp1 hp2 _ hw Q s hs
 
   have hSm : MeasurableSet S := by

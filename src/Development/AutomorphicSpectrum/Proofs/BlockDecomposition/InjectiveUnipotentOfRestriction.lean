@@ -8,7 +8,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwLMulSe
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundaryProdCreationLeviChains
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteLeviStableChainsStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviAdjointOnChains
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviCommuteUnipotentBoundaryStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviCommuteUnipotentBoundary
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRaisingKillsTopChainStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -210,7 +210,7 @@ theorem injUU_of_injRL : InjRL → InjUU := by
   have hP : IsPairA E1 E2 := ⟨hA.gl1, hA.gl2, hA.comm⟩
   have hup : ∀ a b : Fin n, a < b → kA E1 E2 a b u = 0 := fun a b hab => hu.2 a b hab rfl
   obtain ⟨T, hTf, hyT, hTS, hTs⟩ := GlobalTheory.T.exists_finite_levi_stable_chains n lev V E1 E2 _ y hA.locFin hy hd
-  have hC := GlobalTheory.T.levi_commute_unipotent_boundary n lev V E1 E2 hm hP
+  have hC := _root_.GlobalTheory.CompanionTheory.LvComm.lv_bd_comm n lev V E1 E2 hm hP
   have hone := GlobalTheory.T.levi_raising_kills_top_chain n lev V E1 E2 u hup
   obtain ⟨y', hy'T, hy'0, hy'b⟩ := highest_preimage
     (ι := {pq : Fin n × Fin n // pq.1 < pq.2 ∧ lev pq.1 = lev pq.2}) T

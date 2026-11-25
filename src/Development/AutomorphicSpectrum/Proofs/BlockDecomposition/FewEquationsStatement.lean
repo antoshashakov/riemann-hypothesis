@@ -1,7 +1,7 @@
 module
 
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.AbelianDeRham.AbelianHodgeDeRham.H1DimGeAbelianDim
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleUnitsTrivializeModuloIdealStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleUnitsTrivializeModuloIdeal
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DependencyStatementStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMulTrInv
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCohomologyRankBoundAtClosedPoint
@@ -67,7 +67,7 @@ open GlobalTheory.AbLaw (rs)
 namespace GlobalTheory.CompanionTheory.FewEq
 
 theorem fewEq : FewEqSt := by
-  have gen := GlobalTheory.T.cocycle_units_trivialize_modulo_ideal
+  have gen := _root_.GlobalTheory.CompanionTheory.FewEq.triv_of_compatible_mod
   have data := _root_.GlobalTheory.CompanionTheory.FewEq.exists_local_of_triv
   have mingens := GlobalTheory.T.minimal_generators_local_ideal
   have flat := GlobalTheory.T.minimal_generators_base_change

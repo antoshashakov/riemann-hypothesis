@@ -11,7 +11,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Intertwining
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemWeylCellUnitaryGroupLongSimpleReflectionIffStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalVectorValueUnitaryRankOneGindikinKarpelStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusConjugationWeylCell
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryBorelEqDiagonalMulUnipotentStatement
+public import Formalism.SatakeDualWeyl.StatementF
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryBorelEqDiagonalMulUnipotent
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryRankOneSphericalIntegrandDiagonalTorusFac
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryThreeRankOneSphericalVectorCellValueStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellHaarRightTranslateInvariant
@@ -243,7 +244,7 @@ theorem integral_law (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val +
     (β : GU σ n) (hβ : IsBorelU β) :
     ∫ u : cellU y, ψ (y⁻¹ * u * β) ∂μ =
       chiDeltaU q (fun i => (actU k α i : ℂ)) β * ∫ u : cellU y, ψ (y⁻¹ * u) ∂μ := by
-  obtain ⟨t, ν, rfl, hν, htd, htdiag⟩ := GlobalTheory.T.unitaryBorel_eq_diagonal_mul_unipotent L σ n β hβ
+  obtain ⟨t, ν, rfl, hν, htd, htdiag⟩ := _root_.GlobalTheory.UnitaryBorel.borel_eq_diag_mul_unip_sameDiag L σ n β hβ
   have hBt := (GlobalTheory.WeylCell.diagConjU L σ n y _ hy t htd).1
   obtain ⟨s, hs, hchi⟩ := scale_cell h k hk y hyK hy μ hμ α t htd
   have hχ : chiDeltaU q (fun i => (actU k α i : ℂ)) (t * ν) = chiDeltaU q (fun i => (actU k α i : ℂ)) t :=

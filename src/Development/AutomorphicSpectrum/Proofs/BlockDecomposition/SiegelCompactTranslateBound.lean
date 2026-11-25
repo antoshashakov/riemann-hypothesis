@@ -8,7 +8,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactF
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeFrameWeightRatioBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqZeroOfIsIntegralMulOfSmall
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameBlockZeroStabilizesFlagStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameBlockZeroStabilizesFlag
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicFrameBlockZeroStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusArchimedeanFrameActionStatement
 public import Development.WeilBound.ThetaLifts.Reductions.SiegelAbs
@@ -257,7 +257,7 @@ theorem flag_key : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
         rw [← mul_div_assoc, div_lt_one hr0]
         nlinarith
       exact pow_lt_one₀ (by positivity) h2 Module.finrank_pos.ne'
-  exact GlobalTheory.T.frame_block_zero_stabilizes_flag E (σ : E →+* E) n r J X Y (gram_YX hcm hJ hW) γ.1.1 j hzero l hl
+  exact _root_.GlobalTheory.CompanionTheory.RapidDecay.stabilises_flag_span E (σ : E →+* E) n r J X Y (gram_YX hcm hJ hW) γ.1.1 j hzero l hl
 
 end GlobalTheory.CompanionTheory.FlagKey
 

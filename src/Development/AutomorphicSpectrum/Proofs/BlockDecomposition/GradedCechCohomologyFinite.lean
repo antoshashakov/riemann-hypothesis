@@ -8,7 +8,7 @@ public import Mathlib.Tactic.ENatToNat
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverCohomologyFinite
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverCupActionBasis
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGradedFormOnAffineChartStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGradedFormOnAffineChart
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InOpenFiniteInfIffStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationPropertyStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -101,7 +101,7 @@ theorem vb_cech (hLoc : KH.LocGr) (hPoly : KH.PolyTf) {O : Type} [CommRing O] (l
   classical
   have isF : ∀ Q : ObjectProperty (Thick (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥))), IsFil (sP Q) (sFil Q) :=
     fun Q => GlobalTheory.T.sheaf_filtration_property Q
-  choose ω hω using fun α => GlobalTheory.T.exists_graded_form_on_affine_chart hLoc hPoly l s hb q (U.c α) r hr
+  choose ω hω using fun α => _root_.GlobalTheory.CompanionTheory.GrCech.Omega.basis hLoc hPoly l s hb q (U.c α) r hr
   have hT : ∀ {n : ℕ} (i : Fin (n + 1) → U.ι) (T : Thick (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥))), capT (fun α => St (TF l s) {U.U α}) i T → InU (capO U.U i) T := by
     intro n i T h
     rw [capT_eq] at h

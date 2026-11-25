@@ -6,7 +6,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Miraboli
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingDepthVanishingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearPreservesBoxMembershipStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorFixedSmallShearStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedBoxIntegralIdentityStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedBoxIntegralIdentity
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -108,7 +108,7 @@ theorem JJ_preimage_box_eq_JJ_box : ∀ {k : Type} [Field k] [ValuativeRel k] [T
     hw.mul (_root_.GlobalTheory.CompanionTheory.MirPair.continuous_coef T B hT v v')
   have hsub : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) t : Set (Fin (n + 1) → k)) ⊆ M :=
     fun x hx => hgt x hx
-  have key := GlobalTheory.T.fourier_box_integral_vanishing ν ψ c hψ hc (n + 1) t M
+  have key := _root_.GlobalTheory.CompanionTheory.MirPair.setIntegral_inter_box_of_twists ν ψ c hψ hc (n + 1) t M
     (fun x => GlobalTheory.CompanionTheory.MirPair.wt ψ n x * GlobalTheory.CompanionTheory.MirPair.coef T B v v' x)
     (GlobalTheory.CompanionTheory.MirPair.JJ ν ψ T B M v v') hMc hMm hf (by
       intro b hb

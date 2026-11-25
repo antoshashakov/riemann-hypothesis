@@ -7,7 +7,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactC
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactConjugateRationalEntriesBounded
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOpenLevel
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicRestrictionMeasureStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicRestrictionMeasure
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
 public import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Archimedean
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteZSpanIntegralRepresentation
@@ -218,7 +218,7 @@ theorem moderate_growth : ∀ (E : Type) [Field E] [NumberField E] [_root_.Numbe
   obtain ⟨ν, hν⟩ : ∃ ν : Measure (AutomorphicForm.archGroup E a), ν = (μ.restrict (q ⁻¹' U)).map p := ⟨_, rfl⟩
   haveI : ν.IsHaarMeasure := by
     rw [hν, hpdef, hqdef]
-    exact GlobalTheory.T.finite_adelic_restriction_measure E a μ U hUc hU1
+    exact _root_.GlobalTheory.CompanionTheory.GrowthHaar.isHaarMeasure_map_restrict E a μ U hUc hU1
   obtain ⟨κ, hκc, hκs, hκ⟩ := _root_.GlobalTheory.CompanionTheory.HCRep.GrowthKernel.exists_kernel_of_finite E a φ hK hZ ν
   obtain ⟨S, hS⟩ : ∃ S, S = tsupport κ := ⟨_, rfl⟩
   have hSc : IsCompact S := hS ▸ hκs

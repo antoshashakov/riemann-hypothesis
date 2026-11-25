@@ -8,7 +8,9 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Continuo
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousParabolicProjStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeFunctorTwistEquivStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbeddedSmallNeighbourhoodFactorStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnipotentLiftParabolicProjStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.ColMatMulGlEmbMat
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.LeibnizDerivatives.EPGFalseEqLastIff
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnipotentLiftParabolicProj
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsClosedParabolicMulEmbeddedMirabolicStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenFixedOfSubgroup
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
@@ -220,7 +222,7 @@ theorem phiMinus_prodGP (ψ : AddChar k Circle) (hψ1 : ψ ≠ 1) {m j : ℕ}
           exact Submodule.smul_mem _ c hx
         | mem x hx =>
           obtain ⟨n, w', rfl⟩ := hx
-          obtain ⟨u, hh, e⟩ := GlobalTheory.T.exists_unipotent_lift_parabolic_proj k m j n
+          obtain ⟨u, hh, e⟩ := _root_.GlobalTheory.CompanionTheory.LeibPhi.exists_mirUin_gpProj_lift k m j n
           obtain ⟨-, hv, hθ⟩ := GlobalTheory.T.parabolic_proj_unipotent_character_compat k ψ m j u hh
           refine Submodule.subset_span ⟨u, v ⊗ₜ w', ?_⟩
           have e2 : (⟨_, hv⟩ : MirUin k (j + 1)) = n := Subtype.ext (congrArg Prod.snd e)

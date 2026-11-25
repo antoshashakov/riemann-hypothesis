@@ -15,7 +15,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsWi
 public import Formalism.SatakeDualWeyl.Statement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameStabilizerFlagConverse
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameStabilizerFlagCriterionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameStabilizerFlagCriterion
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicArchimedeanStabilizesStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalPointsEqEmbeddingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularSemisimpleFlagStabilizerStatement
@@ -112,8 +112,8 @@ theorem bd_eq_self {L : Type} [Field L] (s : L →+* L) (hs : ∀ x, s (s x) = x
     rw [frm_swap, ← Matrix.submatrix_mul _ _ sw id sw Function.bijective_id, hl, Matrix.submatrix_one_equiv]
   have a2 : frm Y Z X * (Qi.submatrix sw id) = 1 := by
     rw [frm_swap, Matrix.submatrix_mul_equiv, hr]; rfl
-  have b1 := GlobalTheory.T.frame_stabilizer_flag_criterion L s hs n r m J X Y Z Qi hJ xx yy xy xz yz hl hr S g hg hu h1
-  have b2 := GlobalTheory.T.frame_stabilizer_flag_criterion L s hs n r m J Y X Z (Qi.submatrix sw id) hJ yy xx yx yz xz a1 a2 S g hg hu h2
+  have b1 := _root_.GlobalTheory.CompanionTheory.CFin.Tri.witt_blockTriangular L s hs n r m J X Y Z Qi hJ xx yy xy xz yz hl hr S g hg hu h1
+  have b2 := _root_.GlobalTheory.CompanionTheory.CFin.Tri.witt_blockTriangular L s hs n r m J Y X Z (Qi.submatrix sw id) hJ yy xx yx yz xz a1 a2 S g hg hu h2
   ext u v
   simp only [bd, Matrix.of_apply]
   split_ifs with h
@@ -153,7 +153,7 @@ theorem exists_conj_levi (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittF
   have hs : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x := sigma_sigma h
   have hJ' : cT (σ : E →+* E) J = J := Matrix.ext fun i j => hJ.1 _ _
   have tri := fun (g : GRat σ J) (hg : ∀ j ∈ S, StabUpTo X g.1.1 j) =>
-    GlobalTheory.T.frame_stabilizer_flag_criterion E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S g.1.1 g.1.isUnit g.2 hg
+    _root_.GlobalTheory.CompanionTheory.CFin.Tri.witt_blockTriangular E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S g.1.1 g.1.isUnit g.2 hg
   obtain ⟨g, hg, hμ⟩ := GlobalTheory.T.regular_semisimple_flag_stabilizer F E σ h n J hJ r X Y hW S δ hδ hst
   obtain ⟨μ, hμdef⟩ : ∃ μ : GRat σ J, μ = g⁻¹ * δ * g := ⟨_, rfl⟩
   rw [← hμdef] at hμ
@@ -293,7 +293,7 @@ theorem parabolic_triangular_frame : ∀ (F E : Type) [Field F] [NumberField F] 
     rw [hfrm, ← Matrix.map_mul, hl, one_map]
   have hr' : frm (X.map τ.1) (Z.map τ.1) (Y.map τ.1) * Qi.map τ.1 = 1 := by
     rw [hfrm, ← Matrix.map_mul, hr, one_map]
-  have t := GlobalTheory.T.frame_stabilizer_flag_criterion ℂ (starRingEnd ℂ) (fun x => star_star x) n r m (J.map τ.1) (X.map τ.1) (Y.map τ.1)
+  have t := _root_.GlobalTheory.CompanionTheory.CFin.Tri.witt_blockTriangular ℂ (starRingEnd ℂ) (fun x => star_star x) n r m (J.map τ.1) (X.map τ.1) (Y.map τ.1)
     (Z.map τ.1) (Qi.map τ.1) hJc ((rel X X 0 hW.xx).trans zero_map) ((rel Y Y 0 hW.yy).trans zero_map)
     ((rel X Y 1 hW.xy).trans one_map) ((rel X Z 0 xz).trans zero_map) ((rel Y Z 0 yz).trans zero_map) hl' hr' S
     (archMat σ J τ (projArch σ J w p)) ((Group.isUnit (projArch σ J w p)).map (archMat σ J τ))
@@ -369,7 +369,7 @@ theorem arch_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame �
   have b3 := bM y By (fun i j => hBy y hy w τ i j) ((le_max_right _ _).trans (le_max_right _ _))
   have tP := parabolic_triangular_frame F E σ h n r m J X Y Z Qi hJ hW xz yz hl hr p (hΩP hp) w τ S
   have tN : ((Qi * δ.1.1 * frm X Z Y).map φ).BlockTriangular (lev m S) := by
-    have t0 := GlobalTheory.T.frame_stabilizer_flag_criterion E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S δ.1.1
+    have t0 := _root_.GlobalTheory.CompanionTheory.CFin.Tri.witt_blockTriangular E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S δ.1.1
       δ.1.isUnit δ.2 hst
     intro i j hij
     simp only [Matrix.map_apply, t0 hij, map_zero]

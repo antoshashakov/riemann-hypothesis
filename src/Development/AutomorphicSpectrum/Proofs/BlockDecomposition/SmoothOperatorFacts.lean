@@ -4,7 +4,8 @@ public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusOnSobolev
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianCasimirRelationStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianPowerCasimirBoundStatement
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.FriedrichsKernels.Friedrichs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianPowerCasimirBound
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightWordLaplacianPowerBoundStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevOperatorFacts
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevSpaceCompleteStatement
@@ -89,7 +90,7 @@ theorem word_est (hAE : AlgEst) (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hC : 
   choose hm hhm using hh
   obtain ⟨C₁, hC₁⟩ := (GlobalTheory.T.right_word_laplacian_power_bound) n μ E.V hL hU hR hAE hCF hIb w
   obtain ⟨Q, hQ⟩ := (GlobalTheory.T.laplacian_casimir_relation) n E hR hOF
-  choose Cj hCj using (GlobalTheory.T.laplacian_power_casimir_bound) n μ E Q hL hU hR hCF hQ
+  choose Cj hCj using (_root_.GlobalTheory.CompanionTheory.LapSec.sectionBound) n μ E Q hL hU hR hCF hQ
   refine ⟨|C₁| * ∑ j ∈ range (w.length + 1), |Cj j| * ∑ i ∈ range (j + 1), ‖hm i‖, ?_⟩
   intro f f' hsec hS hcl
   have hsob : ∀ i, Sob μ (Om^[i] f') := by

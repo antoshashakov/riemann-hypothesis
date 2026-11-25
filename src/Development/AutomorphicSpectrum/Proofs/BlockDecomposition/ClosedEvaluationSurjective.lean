@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableA
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddCharConductorAndHaarIntegersExist
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BumpSectionValueLocalIntegralStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosedEvaluationInducedStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupOpenCompactStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupOpenCompact
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CongruenceSubgroupsBasisNhds
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EvaluationMapsLinearStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenFixedOfSubgroup
@@ -327,7 +327,7 @@ theorem exists_local {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (
   have hfx := GlobalTheory.T.smooth_vector_fixed_near_identity k i t τ σ hτ hσ w
   obtain ⟨O₁, hO₁, hfix⟩ := hfx
   obtain ⟨s, hs, hs1, hψ1, hsO, hsO₁⟩ := exists_radius ψ hψ O hO O₁ hO₁
-  obtain ⟨hKo, hKc⟩ := GlobalTheory.T.congruence_subgroup_open_compact k ((i + 1) + t + 1) s hs
+  obtain ⟨hKo, hKc⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM_isOpen_isCompact k ((i + 1) + t + 1) s hs
   have hb := GlobalTheory.CompanionTheory.BZMirOnto.exists_bump (HPG k (i + 1) (t + 1)) (sigX τ σ)
     (congM k s hs ((i + 1) + t + 1)) hKo hKc 1 w (fun a x hx e => hfix a (by
       have e' : (a : Mir k ((i + 1) + (t + 1))) = x := by rw [e]; group
@@ -336,7 +336,7 @@ theorem exists_local {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (
   obtain ⟨F, hF1, hF0⟩ := hb
   have hbump : IsBump s hs w F := ⟨hF1, hF0⟩
   have hc := local_core ψ hψ τ σ hτ hσ w s hs hs1 hψ1 (fun x hx => (hsO x hx).2) F hbump
-  exact ⟨congM k s hs ((i + 1) + t), (GlobalTheory.T.congruence_subgroup_open_compact k _ s hs).1, fun x hx => (hsO x hx).1, hc⟩
+  exact ⟨congM k s hs ((i + 1) + t), (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Onto.congM_isOpen_isCompact k _ s hs).1, fun x hx => (hsO x hx).1, hc⟩
 
 theorem imC_translate {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (g : Mir k ((i + 1) + t)) (B : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ))

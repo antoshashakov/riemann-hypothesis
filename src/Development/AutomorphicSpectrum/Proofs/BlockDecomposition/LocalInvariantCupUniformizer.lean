@@ -10,7 +10,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Decompos
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAlgHomMulEquivDec
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KummerCharacterTameFormula
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerOrderEqOneStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedCharacterContinuousStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedCharacterContinuous
 public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmp
 import GroundTheory.ProfiniteCohomology.CupProducts.ExistsCocycleMapFEqD
 import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
@@ -181,7 +181,7 @@ theorem core (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNo
     (hF : ∀ g, unramifiedDegree K Ω g = Multiplicative.ofAdd 1 → χ g = 1)
     (z : Z2 (charRep c)) (hz : ∀ g h, z.1 (g, h) = κ g * χ h) :
     Submodule.span (ZMod n) {(Submodule.Quotient.mk z : H2 (charRep c))} = ⊤ := by
-  have hcont := GlobalTheory.T.unramified_character_continuous K Ω n χ hadd hF
+  have hcont := _root_.GlobalTheory.CompanionTheory.LocalUnram.continuous_of_additive_of_frobenius_eq_one K Ω n χ hadd hF
   have he := mu_equivariant K Ω n c ζ hζ hc
   obtain ⟨e2, hex, he2⟩ := PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 Gal(Ω/K) (ZMod n) (ZMod n) (charRep c)
     (galRootsOfUnity.{0} K Ω n) (muEquiv ζ hζ) he

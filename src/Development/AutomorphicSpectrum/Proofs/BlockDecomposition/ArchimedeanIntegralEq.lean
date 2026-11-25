@@ -15,7 +15,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalCha
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyclePointDictionaryStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulticonePointDescendsToSubvarietyStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjectionRegularOnNonvanishingChartStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjectionRegularOnNonvanishingChart
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalSectionLogNormOnSheetStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheetDensityLogNormFormulaStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheetIntegralProjectionFormula
@@ -109,7 +109,7 @@ theorem ae_cover {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClose
     obtain ⟨c, hcT, hyc⟩ := Set.mem_iUnion₂.1 hyU
     have h0 : Ψ (segre z) 0 ≠ 0 := by simp [hzv]
     by_cases hreg : IsRegAt i Ψ c y
-    · exact absurd ⟨y, hy, GlobalTheory.T.projection_regular_on_nonvanishing_chart m n X i D Ψ N a hN c y z hyc hy hNz h0 hreg⟩ hno
+    · exact absurd ⟨y, hy, _root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet m n X i D Ψ N a hN c y z hyc hy hNz h0 hreg⟩ hno
     · refine Or.inr (Set.mem_iUnion₂.2 ⟨c, hcT, y, ⟨hyc, ⟨z, hy, h0⟩, hreg⟩, ?_⟩)
       have hl : Over i y (liftOf i y) := by
         have hex : ∃ z, Over i y z := ⟨z, hy⟩
@@ -195,7 +195,7 @@ theorem archIntEq_of_integrable : ArchIntegrableOn → ArchIntEq := by
       · refine Or.inl ⟨hv, ?_⟩
         by_cases h0 : Ψ (ReciprocityTheory.ChartRestriction.G.Geo.segre z) 0 = 0
         · exact Or.inl ⟨z, hz, h0⟩
-        · exact Or.inr fun hreg => hvG (GlobalTheory.T.projection_regular_on_nonvanishing_chart m n X i D Ψ N _ hNh c _ z (c.e.map_target hv) hz hNz h0 hreg)
+        · exact Or.inr fun hreg => hvG (_root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet m n X i D Ψ N _ hNh c _ z (c.e.map_target hv) hz hNz h0 hreg)
     exact measure_mono_null hsub (measure_union_null (_root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit m n X i D hX Ψ hΨ c)
       ((GlobalTheory.T.hypersurface_complex_points_measurable_null m n X i D N _ hNh hNP).2 c))
 
