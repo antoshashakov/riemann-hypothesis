@@ -3,8 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsUniqueVec
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.GeometricGaloisRepCompatibility
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftRowsInjectiveAndTypePropertiesOfNonvanishingStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RallisConvOfHypotheses
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DownwardThetaLiftPreservesGood
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GoodTypesExcludeLevelCharacter
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaLiftGenerationAtRealPlaces
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaLiftGenerationFinitePlaces
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TypeNZOfNonVanGen
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.NonGaloisDownLiftNonvanishing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -49,10 +52,14 @@ namespace GlobalTheory.DownLift.AtReal
 theorem lift_splits_locally : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → ∀ (D : D7) (cf : CharFrame D)
     (nch : NChoice D) (tp : TupTied D cf nch) (X : GlobalTheory.NJoin.RealAt D cf nch tp) j t, GlobalTheory.DownLift.TypeNZ X.R j t := by
   intro hP hH hX D cf nch tp X j t
-  have hR : GlobalTheory.RawLift.RallisConv D := GlobalTheory.RawLift.Assembled.rallisConv_of_siegelWeil hP hX.sw D
   have hN : ∀ i t, GlobalTheory.DownLift.NonVan X.R i t := fun i t =>
     _root_.GlobalTheory.T.nonGalois_downLift_nonvanishing hP hX.dbl hX.udbl hX.hl hH D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full i t
-  exact ((GlobalTheory.T.liftInj_and_properties_of_rallis_of_nonVan hP hH D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full hR hN).2 j t).1
+  exact GlobalTheory.DownLift.typeNZ_of_nonVan_gen
+    D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full j t (hN j t)
+    (GlobalTheory.GenReal.genInf D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full j t)
+    (GlobalTheory.DownLift.GenFinite.genFin hH D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full j t)
+    (GlobalTheory.GoodTypeNoChi.goodNoChi D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full j t)
+    (GlobalTheory.GoodLift.goodMem_of_given D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full j t)
 end GlobalTheory.DownLift.AtReal
 end
 
