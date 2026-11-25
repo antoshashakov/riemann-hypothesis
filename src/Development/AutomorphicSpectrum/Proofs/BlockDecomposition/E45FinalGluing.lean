@@ -1,29 +1,29 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankPosOfLeaves
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapacityEquivalenceStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceCompositionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceInfimumStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceShiftStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceStripStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscreteInfimumStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorInductionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorLimitStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HullGenerationStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfimumOfEqualityStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeafBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitListsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitTreesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairEmbeddingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairFiniteDimensionalStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairFirstStepStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairRestrictionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSecondStepStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSlicesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdCloseStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SingleGluingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SliceTypeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TopologicalInfimumStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapacityEquivalence
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceComposition
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceInfimum
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceShift
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConvergenceStrip
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscreteInfimum
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorInduction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorLimit
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HullGeneration
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfimumOfEquality
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeafBound
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitLists
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitTrees
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairEmbedding
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairFiniteDimensional
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairFirstStep
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairRestriction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSecondStep
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSlices
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdClose
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SingleGluing
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SliceType
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TopologicalInfimum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -150,20 +150,20 @@ theorem eFinalGlue_of (hCS : ConvStrip) (hCC : ConvComp) (hFS : FactorStep) (hLL
     hI₁, hI₂, hF0, hFm, hFt, hFe⟩
 
 theorem eFinalGlue : PositivityTheory.Rg.BcB.SpectralAccumulation.InfinitesimalCharacterGlue :=
-  have hPS := GlobalTheory.T.pair_slices
-  have hP1 := GlobalTheory.T.pair_first_step hPS
-  have hP2 := GlobalTheory.T.pair_second_step hPS
-  have hCE := GlobalTheory.T.capacity_equivalence
-  have hDI := GlobalTheory.T.discrete_infimum
-  have hTI := GlobalTheory.T.topological_infimum
-  have hIE := GlobalTheory.T.infimum_of_equality
-  have hCS := GlobalTheory.T.convergence_strip
-  have hCC := GlobalTheory.T.convergence_composition
-  have hMC := GlobalTheory.T.closure_facts_alt
-  eFinalGlue_of hCS hCC GlobalTheory.T.factor_induction (GlobalTheory.T.limit_lists hCS GlobalTheory.T.convergence_shift hCC)
-    (GlobalTheory.T.single_gluing hPS GlobalTheory.T.pair_restriction GlobalTheory.T.pair_finite_dimensional GlobalTheory.T.slice_type hP1 hP2 GlobalTheory.T.hull_generation hCE)
-    (GlobalTheory.T.factor_limit hCC (GlobalTheory.T.limit_trees hCC) (GlobalTheory.T.leaf_bound_alt hDI hTI hIE) (GlobalTheory.T.convergence_infimum hDI hTI) hIE hCE hMC)
-    hMC (GlobalTheory.T.pair_embedding hPS hP1 hP2) hPS GlobalTheory.T.slice_type
+  have hPS := _root_.GlobalTheory.CompanionTheory.EGlue.pairSlices
+  have hP1 := _root_.GlobalTheory.CompanionTheory.EGlue.TensorOne.pairStep₁_of_slices hPS
+  have hP2 := _root_.GlobalTheory.CompanionTheory.EGlue.pairStep₂ hPS
+  have hCE := _root_.GlobalTheory.CompanionTheory.EGlue.capEquiv
+  have hDI := _root_.GlobalTheory.CompanionTheory.EGlue.discInf
+  have hTI := _root_.GlobalTheory.CompanionTheory.EGlue.Gl0.topInf
+  have hIE := _root_.GlobalTheory.CompanionTheory.EGlue.infOfEq_holds
+  have hCS := _root_.GlobalTheory.CompanionTheory.EGlue.ConvStripProof.convStrip
+  have hCC := _root_.GlobalTheory.CompanionTheory.EGlue.convComp_proved
+  have hMC := _root_.GlobalTheory.CompanionTheory.EGlue.mCloseFacts_holds
+  eFinalGlue_of hCS hCC _root_.GlobalTheory.CompanionTheory.EGlue.factorStep_holds (_root_.GlobalTheory.CompanionTheory.EGlue.limLists hCS _root_.GlobalTheory.CompanionTheory.EGlue.convShift_holds hCC)
+    (_root_.GlobalTheory.CompanionTheory.EGlue.OneStepProof.oneStep_of_parts hPS _root_.GlobalTheory.CompanionTheory.EGlue.pairRestrict_holds _root_.GlobalTheory.CompanionTheory.EGlue.pairFD_holds _root_.GlobalTheory.CompanionTheory.EGlue.SliceTypePf.main hP1 hP2 _root_.GlobalTheory.CompanionTheory.EGlue.hullGen hCE)
+    (_root_.GlobalTheory.CompanionTheory.EGlue.FactorLimProof.factorLim_of_parts hCC (_root_.GlobalTheory.CompanionTheory.EGlue.LimT.limTrees hCC) (_root_.GlobalTheory.CompanionTheory.EGlue.LeafB.leafBound hDI hTI hIE) (_root_.GlobalTheory.CompanionTheory.EGlue.ConvInfProof.convInf_of_discInf_topInf hDI hTI) hIE hCE hMC)
+    hMC (_root_.GlobalTheory.CompanionTheory.EGlue.pairEmb_of_steps hPS hP1 hP2) hPS _root_.GlobalTheory.CompanionTheory.EGlue.SliceTypePf.main
 
 end GlobalTheory.CompanionTheory.EGlue
 

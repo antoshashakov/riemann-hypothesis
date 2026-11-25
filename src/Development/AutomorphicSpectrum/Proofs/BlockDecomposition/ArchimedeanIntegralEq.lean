@@ -6,18 +6,19 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Arithmet
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BadProjectionLocusNull
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChernPartNullSetZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointLiftsToMulticoneStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointsSecondCountableStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPullHermPullLine
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointsSecondCountable
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityChartIntegralFormulaStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFormNonvanishingOnChartStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFormNonvanishingOnChart
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypersurfaceComplexPointsMeasurableNullStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrregularProjectionImageNullStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrregularProjectionImageNull
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalChartSheetDecomposition
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyclePointDictionaryStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulticonePointDescendsToSubvarietyStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjectionRegularOnNonvanishingChart
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalSectionLogNormOnSheetStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheetDensityLogNormFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheetDensityLogNormFormula
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheetIntegralProjectionFormula
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -91,7 +92,7 @@ theorem ae_cover {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClose
     ⟨{N}, by rintro f rfl; exact ⟨a, hN⟩, rfl⟩ (fun h => hNP (h (Ideal.subset_span rfl)))
   have h2 : volume (⋃ c ∈ T, projCoord i Ψ '' {y | y ∈ c.e.source ∧
       (∃ z, Over i y z ∧ Ψ (segre z) 0 ≠ 0) ∧ ¬ IsRegAt i Ψ c y}) = 0 :=
-    (measure_biUnion_null_iff hTc).2 fun c _ => GlobalTheory.T.irregular_projection_image_null m n X i D Ψ c
+    (measure_biUnion_null_iff hTc).2 fun c _ => _root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.volume_image_crit m n X i D Ψ c
   have h3 := measure_union_null h1 h2
   refine ae_iff.2 (measure_mono_null ?_ h3)
   intro v hv
@@ -124,7 +125,7 @@ theorem exists_form_chart {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n)
       ∀ y z, Over i y z → eval z (map (Int.castRingHom ℂ) j) ≠ 0 →
         ∃ c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D, y ∈ c.e.source := by
   obtain ⟨U, x, hU, hg, hx⟩ := _root_.GlobalTheory.CompanionTheory.MixZ.GenericCoords.exists_etale_coords_int X (i ≫ mpStr ℤ m n) D hX
-  obtain ⟨j, a, hj, hjP, hjU⟩ := GlobalTheory.T.exists_form_nonvanishing_on_chart m n X i U hg
+  obtain ⟨j, a, hj, hjP, hjU⟩ := _root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.exists_form_of_mem_open m n X i U hg
   refine ⟨j, a, hj, hjP, fun y z hyz hz => ?_⟩
   obtain ⟨c, hc, -⟩ := GlobalTheory.AlgChart.exists_of_etale hU x hx (hjU y z hyz hz)
   exact ⟨c, hc⟩
@@ -144,7 +145,7 @@ theorem archIntEq_of_integrable : ArchIntegrableOn → ArchIntEq := by
   have hPp : (ptIdeal (i (genericPoint X))).IsPrime := hP.2.1.1
   have hex : ∃ Ψ : LinProj n D, IsGoodProj (ptIdeal (i (genericPoint X))) Ψ :=
     ReciprocityTheory.ChartRestriction.G.Geo.goodProjExists _ _ _ D hP
-  haveI hsc : SecondCountableTopology (GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀) := GlobalTheory.T.complex_points_second_countable m n X i D hX
+  haveI hsc : SecondCountableTopology (GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀) := _root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.secondCountable_cxPts m n X i D hX
   unfold ptsIntegral
   rw [dif_pos hex]
   set Ψ : LinProj n D := hex.choose with hΨdef
@@ -229,7 +230,7 @@ theorem archIntEq_of_integrable : ArchIntegrableOn → ArchIntEq := by
     rw [GlobalTheory.Weight.chernInt, setIntegral_congr_set (hae 1), setIntegral_congr_set (hae (-1))]
   rw [hchern, hSI, ReciprocityTheory.ChartRestriction.G.Geo.ptsIntegralAt]
   refine integral_congr_ae ?_
-  filter_upwards [ae_cover i hP Ψ hΨ N _ hNh hNP hcov, GlobalTheory.T.sheet_density_log_norm_formula m n _ D Ψ B A f g hP hΨ sB hfg] with v h1 h2
+  filter_upwards [ae_cover i hP Ψ hΨ N _ hNh hNP hcov, _root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.sheetDensity_eq_of_isSheet m n _ D Ψ B A f g hP hΨ sB hfg] with v h1 h2
   have h3 : ∀ z ∈ mcPts (ptIdeal (i (genericPoint X))), Ψ (ReciprocityTheory.ChartRestriction.G.Geo.segre z) = Fin.cons 1 v →
       ∃ y, Over i y z ∧ y ∈ ⋃ l, S l := fun z hz hzv => by
     rw [hSU]
