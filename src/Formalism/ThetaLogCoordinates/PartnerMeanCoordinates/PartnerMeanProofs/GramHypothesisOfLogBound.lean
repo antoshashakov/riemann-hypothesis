@@ -83,22 +83,15 @@ theorem theoremMXB : TheoremMXB :=
 
 theorem natLog_le_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r x : ℕ) (ha : 0 ≤ a) (hr : 1 ≤ r)
     (hx : (x : ℝ) ≤ p * (8 * a + r)) : (Nat.log p x : ℝ) ≤ lgSeg p a r := by
-  unfold lgSeg
   have hp : 1 < (p : ℝ) := by exact_mod_cast (Fact.out : p.Prime).one_lt
   have hr' : (1 : ℝ) ≤ r := by exact_mod_cast hr
-  rcases Nat.eq_zero_or_pos x with hx0 | hx0
-  · subst hx0
-    simp only [Nat.log_zero_right, Nat.cast_zero]
-    linarith [Real.logb_nonneg hp (show (1 : ℝ) ≤ 8 * a + r by linarith)]
-  · have h1 : ((p ^ Nat.log p x : ℕ) : ℝ) ≤ (x : ℝ) := by
-      exact_mod_cast Nat.pow_log_le_self p hx0.ne'
-    push_cast at h1
-    have hpy : (0 : ℝ) < p * (8 * a + r) := mul_pos (by linarith) (by linarith)
-    have h2 : (Nat.log p x : ℝ) ≤ Real.logb p (p * (8 * a + r)) := by
-      rw [Real.le_logb_iff_rpow_le hp hpy, Real.rpow_natCast]
-      linarith
-    rw [Real.logb_mul (by positivity) (by linarith), Real.logb_self_eq_one hp] at h2
-    linarith
+  have hb : 1 ≤ 8 * a + r := by linarith
+  unfold lgSeg
+  rw [← Real.logb_self_eq_one hp, ← Real.logb_mul (by linarith : 8 * a + r ≠ 0) (by positivity),
+    mul_comm (8 * a + r) (p : ℝ)]
+  rcases Nat.eq_zero_or_pos x with rfl | hx0
+  · simpa using Real.logb_nonneg hp (one_le_mul_of_one_le_of_one_le hp.le hb)
+  · exact (Real.natLog_le_logb x p).trans (Real.logb_le_logb_of_le hp (by exact_mod_cast hx0) hx)
 
 theorem one_le_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r : ℕ) (ha : 0 ≤ a) (hr : 1 ≤ r) : 1 ≤ lgSeg p a r := by
   unfold lgSeg
@@ -109,19 +102,12 @@ theorem one_le_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r : ℕ) (ha : 0 ≤ a)
 
 theorem natLog_floor_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r : ℕ) (ha : 0 ≤ a) (hr : 1 ≤ r) :
     (Nat.log p ⌊8 * a + r⌋₊ : ℝ) + 1 ≤ lgSeg p a r := by
-  unfold lgSeg
   have hp : 1 < (p : ℝ) := by exact_mod_cast (Fact.out : p.Prime).one_lt
   have hr' : (1 : ℝ) ≤ r := by exact_mod_cast hr
-  have hy : (1 : ℝ) ≤ 8 * a + r := by linarith
-  have hfl : 1 ≤ ⌊8 * a + (r : ℝ)⌋₊ := Nat.le_floor (by rw [Nat.cast_one]; exact hy)
-  have h3 : ((p ^ Nat.log p ⌊8 * a + (r : ℝ)⌋₊ : ℕ) : ℝ) ≤ (⌊8 * a + (r : ℝ)⌋₊ : ℝ) := by
-    exact_mod_cast Nat.pow_log_le_self p (by omega)
-  have h4 := Nat.floor_le (by linarith : (0 : ℝ) ≤ 8 * a + r)
-  push_cast at h3
-  have h2 : (Nat.log p ⌊8 * a + (r : ℝ)⌋₊ : ℝ) ≤ Real.logb p (8 * a + r) := by
-    rw [Real.le_logb_iff_rpow_le hp (by linarith), Real.rpow_natCast]
-    linarith
-  linarith
+  have hb : 1 ≤ 8 * a + r := by linarith
+  have hf : 0 < ⌊8 * a + (r : ℝ)⌋₊ := Nat.floor_pos.mpr hb
+  exact add_le_add_left ((Real.natLog_le_logb _ p).trans
+    (Real.logb_le_logb_of_le hp (by exact_mod_cast hf) (Nat.floor_le (by linarith)))) 1
 
 theorem choose_two_le (r : ℕ) : ((r.choose 2 : ℕ) : ℝ) ≤ (r : ℝ) ^ 2 / 2 := by
   have h : 2 * r.choose 2 ≤ r ^ 2 := by
@@ -278,22 +264,17 @@ theorem theoremMV7 : TheoremMV7 := by
         (T.S (LL.setTies T (fun i => n₀ i + dd i * (Yl i - 1))) i : ℝ) := by exact_mod_cast hSle
     push_cast at h2S
     linarith
-  have hS0 : (0 : ℝ) ≤ (((LL.setTies T n).takeD (T.pos i + 1)).total : ℝ) := Nat.cast_nonneg _
-  refine gram_hypothesis_of_log_bound p (T.pos i) r _ T.J (T.thrUpTo i) ρ (lgSeg p a r) _ hr hρ (takeD_vec_last LL T hadm n i) ?_ ?_ ?_
-  · apply natLog_le_lgSeg p a r _ ha0 (by omega)
-    have h1 : ((((LL.setTies T n).takeD (T.pos i + 1)).total + r - 1 : ℕ) : ℝ) ≤
-        (((LL.setTies T n).takeD (T.pos i + 1)).total : ℝ) + r := by
-      have : ((LL.setTies T n).takeD (T.pos i + 1)).total + r - 1 ≤ ((LL.setTies T n).takeD (T.pos i + 1)).total + r :=
-        Nat.sub_le _ _
-      exact_mod_cast this
+  let S := ((LL.setTies T n).takeD (T.pos i + 1)).total
+  have hlog : (Nat.log p (4 * S + r - 1) : ℝ) ≤ lgSeg p a r := by
+    apply natLog_le_lgSeg p a r _ ha0 (by omega)
+    have hsub : ((4 * S + r - 1 : ℕ) : ℝ) ≤ 4 * (S : ℝ) + r := by
+      exact_mod_cast Nat.sub_le (4 * S + r) 1
+    change 2 * (S : ℝ) + 1 ≤ 8 * a + r at hSr
     nlinarith
-  · apply natLog_le_lgSeg p a r _ ha0 (by omega)
-    have h1 : ((4 * ((LL.setTies T n).takeD (T.pos i + 1)).total + r - 1 : ℕ) : ℝ) ≤
-        4 * (((LL.setTies T n).takeD (T.pos i + 1)).total : ℝ) + r := by
-      have : 4 * ((LL.setTies T n).takeD (T.pos i + 1)).total + r - 1 ≤
-          4 * ((LL.setTies T n).takeD (T.pos i + 1)).total + r := Nat.sub_le _ _
-      exact_mod_cast this
-    nlinarith
+  have hmono : (Nat.log p (S + r - 1) : ℝ) ≤ Nat.log p (4 * S + r - 1) := by
+    exact_mod_cast Nat.log_mono_right (b := p) (show S + r - 1 ≤ 4 * S + r - 1 by omega)
+  refine gram_hypothesis_of_log_bound p (T.pos i) r _ T.J (T.thrUpTo i) ρ (lgSeg p a r) _ hr hρ
+    (takeD_vec_last LL T hadm n i) (hmono.trans hlog) hlog ?_
   · have hK : ((T.pos i : ℕ) : ℝ) + 7 ≤ 2 * ((s : ℝ) + 4) := by
       have : T.pos i + 7 ≤ 2 * (s + 4) := by omega
       exact_mod_cast this
