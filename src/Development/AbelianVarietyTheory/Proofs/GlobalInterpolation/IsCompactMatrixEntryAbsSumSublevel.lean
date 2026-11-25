@@ -2,20 +2,22 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ContinuousMatrixEntryAbsSum
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsBorelSectionUnitaryOrbitQuadric
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIsOrthogonalComplementIsometryEmbeddingTraStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsTangentBorelSectionQuadricStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUnitaryBlockEmbeddingOntoStabiliserStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianNormFibreMeasureEqPolarCoordinatesStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIsOrthogonalComplementIsometryEmbeddingTra
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsTangentBorelSectionQuadric
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUnitaryBlockEmbeddingOntoStabiliser
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianNormFibreMeasureEqPolarCoordinates
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianNormFibreMeasureFiniteInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvariantMeasureQuadricMulHaarStabilizerStatement
+public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.PerpendicularEmbedding
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvariantMeasureQuadricMulHaarStabilizer
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasurePreservingGlue
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrthogonalComplementUnitaryEmbeddingConjBlockStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PositiveDefiniteUnitSphereMassProofStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadricPointGaugePolarCoordinatesCompareTangentGStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadricPointGaugeSectionMulBlockCompareStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TendstoSublevelDensityProdMeasureStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryExpLieBallComparableEntryGaugeStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryLieVolumeBallSplitBasisVectorStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrthogonalComplementUnitaryEmbeddingConjBlock
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PositiveDefiniteUnitSphereMassProof
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadricPointGaugePolarCoordinatesCompareTangentG
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuadricPointGaugeSectionMulBlockCompare
+public import Mathlib.MeasureTheory.Measure.Prod
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TendstoSublevelDensityProdMeasure
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryExpLieBallComparableEntryGauge
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnitaryLieVolumeBallSplitBasisVector
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqEqOfOmegaDensity
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqIsMulRightInvariant
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpqLocallyCompactGroup
@@ -166,7 +168,7 @@ theorem tendsto_gauge {μ : Measure (UpqT P Q)} {c : ℝ≥0∞} (hc : c ≠ ⊤
   obtain rfl := GlobalTheory.CompactDualUnique.isOmegaLeb_unique h1 hl
   refine tendsto_div_of_squeeze (F := fun r => μ (expBall P Q r)) hc (ballU_props hl).1 h2
     fun t ht => ?_
-  filter_upwards [GlobalTheory.T.unitaryExpLieBall_comparable_entryGauge P Q t ht] with r hr using ⟨measure_mono hr.1, measure_mono hr.2⟩
+  filter_upwards [_root_.GlobalTheory.ExpBallCompare.expBall_compare P Q t ht] with r hr using ⟨measure_mono hr.1, measure_mono hr.2⟩
 
 theorem tendsto_fib (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he : SignCompat e)
     {fib : ℝ → Measure (Sp P Q)} (hf : IsDxDq fib) :
@@ -179,8 +181,8 @@ theorem tendsto_fib (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he :
   · refine tendsto_const_nhds.congr' ?_
     filter_upwards [self_mem_nhdsWithin] with r hr
     rw [mul_div_assoc, ENNReal.div_self (tanBall_props.2 r hr).1 (tanBall_props.2 r hr).2, mul_one]
-  · filter_upwards [GlobalTheory.T.quadricPointGauge_polarCoordinates_compare_tangentGauge P Q P' Q' e t ht, Ioo_mem_nhdsGT one_pos] with r hr hr1
-    rw [GlobalTheory.T.hermitianNormFibreMeasure_eq_polar_coordinates P Q P' Q' e he fib hf _
+  · filter_upwards [_root_.GlobalTheory.PolarCompare.polar_compare P Q P' Q' e t ht, Ioo_mem_nhdsGT one_pos] with r hr hr1
+    rw [_root_.GlobalTheory.FibrePolar.fibre_eq_polar P Q P' Q' e he fib hf _
       (isOpen_lt (continuous_ptGauge e) continuous_const).measurableSet fun y hy h0 => ?_]
     · refine ⟨mul_le_mul_right ?_ _, mul_le_mul_right ?_ _⟩
       · apply measure_mono
@@ -226,7 +228,7 @@ theorem const_mul_density (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc P Q
   obtain ⟨i1', i2', i3', i4', i5', -⟩ := GlobalTheory.UpqTopology.upq_lcsc P' Q'
   haveI : BorelSpace (lieU P' Q') := ⟨rfl⟩
-  obtain ⟨σ, hσ, hσe⟩ := GlobalTheory.T.exists_tangent_borelSection_quadric P Q P' Q' e
+  obtain ⟨σ, hσ, hσe⟩ := _root_.GlobalTheory.TangentSection.exists_tangent_section P Q P' Q' e
   have ⟨lam, hl, _⟩ := h
   have ⟨lam', hl', _⟩ := h'
   haveI := hl'.1
@@ -241,7 +243,7 @@ theorem const_mul_density (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   set ν := fib (sg (e none)) with hν
   haveI : IsFiniteMeasureOnCompacts ν := (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero _)).1
   haveI : IsLocallyFiniteMeasure ν := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts
-  have h1 := GlobalTheory.T.tendsto_sublevel_density_prod_measure _ _ _ _ ν volume μ' lam' (ptGauge e) tanGauge gauge
+  have h1 := _root_.GlobalTheory.SublevelDensity.tendsto_prod_density _ _ _ _ ν volume μ' lam' (ptGauge e) tanGauge gauge
     (fun X => l1 (X : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ)) _ a'
     (continuous_ptGauge e).measurable continuous_tanGauge.measurable continuous_gauge.measurable
     (continuous_matrixEntryAbsSum.comp continuous_subtype_val).measurable (ptGauge_nonneg e) tanGauge_nonneg
@@ -255,7 +257,7 @@ theorem const_mul_density (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
       (Or.inr (ENNReal.inv_ne_top.2 h20))
     rw [← mul_assoc, ENNReal.inv_mul_cancel h20 h2t, one_mul] at h3
     refine h3.congr fun r => ?_
-    rw [GlobalTheory.T.unitaryLie_volume_ball_split_basis_vector P Q P' Q' e he lam lam' hl hl' r, div_eq_mul_inv, div_eq_mul_inv,
+    rw [_root_.GlobalTheory.OmegaSplit.omega_split P Q P' Q' e he lam lam' hl hl' r, div_eq_mul_inv, div_eq_mul_inv,
       ENNReal.mul_inv (Or.inl h20) (Or.inl h2t)]
     ring
   have hm : Measurable fun p : Sp P Q × UpqT P' Q' => σ p.1 * j p.2 :=
@@ -273,7 +275,7 @@ theorem const_mul_density (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   have h5 : Tendsto (fun r : ℝ => (ν.prod μ') {p | gauge (σ p.1 * j p.2) < r} /
       lam (ballU P Q r)) (𝓝[>] 0) (𝓝 a') := by
     refine tendsto_div_of_squeeze ha' (ballU_props hl).1 h2 fun t ht => ?_
-    obtain ⟨δ, hδ, H⟩ := GlobalTheory.T.quadricPointGauge_section_mul_block_compare P Q P' Q' e j hj t ht
+    obtain ⟨δ, hδ, H⟩ := _root_.GlobalTheory.SectionGaugeCompare.gauge_section_mul_block P Q P' Q' e j hj t ht
     have ht0 : 0 < t := by linarith
     filter_upwards [Ioo_mem_nhdsGT (show 0 < min δ 1 / 2 by positivity)] with r hr
     have hr1 : 2 * r < δ := by linarith [hr.2, min_le_left δ 1]
@@ -318,7 +320,7 @@ theorem formula_base (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕
   haveI := c.haar (P' + Q') 0
   haveI := c.prob (P' + Q')
   haveI := c.prob (P + Q)
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.invariant_measure_quadric_mul_haar_stabilizer P Q P' Q' _ _ j _ _ _ hjc hjr (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero _)).1
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.QuadricHaar.quadric_haar P Q P' Q' _ _ j _ _ _ hjc hjr (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero _)).1
     (GlobalTheory.RealPlaceCompare.ae_qf hf _) (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant P Q fib _ hf (sg_ne_zero (e none))).2
     (c.haar P Q) (c.haar P' Q')
   have k1 := const_mul_density e he hf j hj hjc.continuous
@@ -332,9 +334,9 @@ theorem formula_base (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕
     · rfl
     · exact i.elim0
   have he₀ : SignCompat e₀ := fun i => by rw [sg0, sg0]
-  obtain ⟨j₀, hj₀, hjc₀, hjr₀⟩ := GlobalTheory.T.exists_unitaryBlockEmbedding_onto_stabiliser _ _ _ _ e₀ he₀
-  obtain ⟨⟨fib₀, hf₀⟩, hmass⟩ := GlobalTheory.T.positiveDefiniteUnitSphereMass_proof (P + Q) (by omega)
-  obtain ⟨κ₀, hκ₀⟩ := GlobalTheory.T.invariant_measure_quadric_mul_haar_stabilizer _ _ _ _ _ _ j₀ _ _ _ hjc₀ hjr₀
+  obtain ⟨j₀, hj₀, hjc₀, hjr₀⟩ := _root_.GlobalTheory.BlockEmbedding.exists_blockEmb _ _ _ _ e₀ he₀
+  obtain ⟨⟨fib₀, hf₀⟩, hmass⟩ := _root_.GlobalTheory.SphereMassProof.sphereMass (P + Q) (by omega)
+  obtain ⟨κ₀, hκ₀⟩ := _root_.GlobalTheory.QuadricHaar.quadric_haar _ _ _ _ _ _ j₀ _ _ _ hjc₀ hjr₀
     (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant _ _ fib₀ _ hf₀ (sg_ne_zero _)).1
     (GlobalTheory.RealPlaceCompare.ae_qf hf₀ _) (GlobalTheory.T.hermitianNormFibreMeasure_finite_invariant _ _ fib₀ _ hf₀ (sg_ne_zero (e₀ none))).2
     (c.haar (P + Q) 0) (c.haar (P' + Q') 0)
@@ -350,16 +352,16 @@ theorem formula_base (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕
 theorem quotFormula (c : CDHaar) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     (he : SignCompat e) : QuotFormula c P Q P' Q' (sg (e none)) := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc P Q
-  obtain ⟨j₀, hj₀, hjc₀, hjr₀⟩ := GlobalTheory.T.exists_unitaryBlockEmbedding_onto_stabiliser _ _ _ _ e he
+  obtain ⟨j₀, hj₀, hjc₀, hjr₀⟩ := _root_.GlobalTheory.BlockEmbedding.exists_blockEmb _ _ _ _ e he
   intro x₀ hx₀
   constructor
   · obtain ⟨s₀, hs₀⟩ := GlobalTheory.QuadricSection.exists_isSection _ _ _ _ (sg_ne_zero (e none))
       (qf_baseVec e)
-    obtain ⟨A, hA⟩ := GlobalTheory.T.exists_isOrthogonalComplementIsometryEmbedding_translate _ _ _ _ e he j₀ hj₀ (s₀ x₀)
+    obtain ⟨A, hA⟩ := _root_.GlobalTheory.PerpFrameTranslate.exists_isPerpEmb _ _ _ _ e he j₀ hj₀ (s₀ x₀)
     rw [hs₀.2 x₀ hx₀] at hA
     exact ⟨(A, _), hA⟩
   rintro ⟨A, j⟩ hA
-  obtain ⟨g₀, hg₀, hj⟩ := GlobalTheory.T.orthogonalComplement_unitary_embedding_conj_block _ _ _ _ e he j₀ hj₀ x₀ A j hx₀ hA
+  obtain ⟨g₀, hg₀, hj⟩ := _root_.GlobalTheory.CompactDualQuot.PerpConj.perp_conj _ _ _ _ e he j₀ hj₀ x₀ A j hx₀ hA
   have hinv : act g₀⁻¹ x₀ = baseVec e := by
     rw [← hg₀, ← GlobalTheory.RealPlaceCompare.act_mul, inv_mul_cancel, GlobalTheory.RealPlaceCompare.act_one]
   refine ⟨?_, GlobalTheory.RealPlaceCompare.exists_isDxDq P Q, fun fib hf =>

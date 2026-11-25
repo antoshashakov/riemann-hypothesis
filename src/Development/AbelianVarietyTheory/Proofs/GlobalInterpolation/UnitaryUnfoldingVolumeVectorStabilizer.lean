@@ -5,21 +5,24 @@ public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.Invar
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.AdelicUnitaryHaarMeasure
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.StabilizerLattices
 public import Development.AbelianVarietyTheory.Definitions.Foundations.CdScaleTieIff
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsAdelicUnitaryComplementRangeStabiliserStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsBruhatFunctionOfClosedEmbeddingStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsComplementFrameCompatibleStabilizerEmbeddiStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIsQuotientMeasureOfBruhatFunctionStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsMeasurableRealOrbitMapOfAdelicOrbitStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUnfoldingKernelLevelSubgroupBruhatStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FinPartInvSmulMemLatHatIffStabMulLevelStatement
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.FrameTransport
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsAdelicUnitaryComplementRangeStabiliser
+public import Mathlib.MeasureTheory.Group.Measure
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsBruhatFunctionOfClosedEmbedding
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsComplementFrameCompatibleStabilizerEmbeddi
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIsQuotientMeasureOfBruhatFunction
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsMeasurableRealOrbitMapOfAdelicOrbit
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsUnfoldingKernelLevelSubgroupBruhat
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FinPartInvSmulMemLatHatIffStabMulLevel
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FundamentalDomainNeZero
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianFormAndSelfDualLatticeInFrameCoordsStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsClosedEmbeddingOfIsStabilizerEmbeddingUpqStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatHatStabiliserIffComplementFrameRelStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LintegralTsumOrbitUnfoldStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MapRestrictLatticeStabiliserMeasureEqCompactDualStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HermitianFormAndSelfDualLatticeInFrameCoords
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsClosedEmbeddingOfIsStabilizerEmbeddingUpq
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatHatStabiliserIffComplementFrameRel
+public import Mathlib.MeasureTheory.Group.FundamentalDomain
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LintegralTsumOrbitUnfold
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MapRestrictLatticeStabiliserMeasureEqCompactDual
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuotientIntegrationFormulaDiscreteSubgroupLeft
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalVectorsSameLengthOneUnitaryOrbitStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalVectorsSameLengthOneUnitaryOrbit
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqIsMulRightInvariant
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCMFamHost
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LeftInvOfUnitary
@@ -83,7 +86,7 @@ theorem exists_perp_matrix {F E : Type} [Field F] [NumberField F] [Field E] [Num
     ∃ B : Matrix (Fin W.rank) (Fin W'.rank) E, Formalism.UG.cT (cm.sig : E →+* E) B * W.gram * B = W'.gram ∧
       (∀ j, hE cm.sig W.gram (coordTup W x 0) (fun i => B i j) = 0) ∧
       ∀ y, y ∈ latC W' ↔ B *ᵥ y ∈ latC W := by
-  have hd := (GlobalTheory.T.hermitian_form_and_selfDual_lattice_in_frame_coords F E cm W).1
+  have hd := (_root_.GlobalTheory.FrameDict.dict F E cm W).1
   refine ⟨Matrix.of fun i j => W.frame.repr (ι (W'.frame j)) i, ?_, fun j => ?_, fun y => ?_⟩
   · ext a b
     have := hd (ι (W'.frame a)) (ι (W'.frame b))
@@ -162,9 +165,9 @@ theorem rational_orbit {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     Function.Injective (fun x' : {x' : W.V // W.hT x' x' = β} => ratTup (F := F) (AF F) (coordTup W x'.1)) ∧
     ∀ y, y ∈ Set.range (fun x' : {x' : W.V // W.hT x' x' = β} => ratTup (F := F) (AF F) (coordTup W x'.1)) ↔
       ∃ γ ∈ ratPts (AF F) cm.sig W.gram, γ • ratTup (F := F) (AF F) (coordTup W x) = y := by
-  have hd := (GlobalTheory.T.hermitian_form_and_selfDual_lattice_in_frame_coords F E cm W).1
+  have hd := (_root_.GlobalTheory.FrameDict.dict F E cm W).1
   have hxx : hE cm.sig W.gram (coordTup W x 0) (coordTup W x 0) = β := (hd x x).trans hx
-  obtain ⟨hw1, hw2⟩ := GlobalTheory.T.rational_vectors_same_length_one_unitary_orbit F E cm.sig (isCMExt cm) _ W.gram (isHermND cm W) (coordTup W x) (hxx ▸ hβ)
+  obtain ⟨hw1, hw2⟩ := _root_.GlobalTheory.RatOrbit.rational_sphere_orbit F E cm.sig (isCMExt cm) _ W.gram (isHermND cm W) (coordTup W x) (hxx ▸ hβ)
   refine ⟨fun a b hab => ?_, fun y => Iff.trans ⟨?_, ?_⟩ (hw2 y)⟩
   · exact Subtype.ext (W.frame.repr.injective (Finsupp.ext (congrFun (congrFun (hw1 hab) 0))))
   · rintro ⟨x', rfl⟩
@@ -210,8 +213,8 @@ theorem unfoldAt (hT : StabTransitive) (D : D7) (W W' : HSpace D.host.E) (P Q P'
   have hM : W.rank = P + Q := by have := sig_sum W hs τ₀; rw [hPQ] at this; exact this.symm
   have hM' : W'.rank = P' + Q' := by have := sig_sum W' hs' τ₀; rw [hPQ'] at this; exact this.symm
   have hMM : W'.rank + 1 = W.rank := by omega
-  obtain ⟨hd, L, hLs, hLc⟩ := GlobalTheory.T.hermitian_form_and_selfDual_lattice_in_frame_coords _ _ D.sp.cm W
-  obtain ⟨-, L', hLs', hLc'⟩ := GlobalTheory.T.hermitian_form_and_selfDual_lattice_in_frame_coords _ _ D.sp.cm W'
+  obtain ⟨hd, L, hLs, hLc⟩ := _root_.GlobalTheory.FrameDict.dict _ _ D.sp.cm W
+  obtain ⟨-, L', hLs', hLc'⟩ := _root_.GlobalTheory.FrameDict.dict _ _ D.sp.cm W'
   obtain ⟨B, hB, hBx, hBL⟩ := exists_perp_matrix D.sp.cm W W' ι x hι hr hL
   have hxx : hE D.sp.cm.sig W.gram (coordTup W x 0) (coordTup W x 0) = algebraMap _ _ β := (hd x x).trans hx
   have hx0 : hE D.sp.cm.sig W.gram (coordTup W x 0) (coordTup W x 0) ≠ 0 := hxx ▸ hβ0
@@ -257,10 +260,10 @@ theorem unfoldAt (hT : StabTransitive) (D : D7) (W W' : HSpace D.host.E) (P Q P'
   have := fun P Q => GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure P Q (D.cd.cd P Q) (D.cd.haar P Q)
   have := fun P Q => GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant (D.cd.cd P Q)
   have hjc : IsClosedEmbedding (piEmb j) :=
-    IsClosedEmbedding.piMap fun ρ => GlobalTheory.T.isClosedEmbedding_of_isStabilizerEmbeddingUpq P Q P' Q' hc _ (hAx ρ) (j ρ) (hj ρ)
+    IsClosedEmbedding.piMap fun ρ => _root_.GlobalTheory.StabEmbClosed.isClosedEmbedding_of_isStabEmb P Q P' Q' hc _ (hAx ρ) (j ρ) (hj ρ)
   have hjm := hjc.continuous.measurable
-  obtain ⟨b, hb, hb1⟩ := GlobalTheory.T.exists_bruhatFunction_of_closedEmbedding _ _ (piEmb j) hjc (Measure.pi fun _ => D.cd.cd P' Q')
-  refine ⟨GlobalTheory.T.exists_isQuotientMeasure_of_bruhat _ _ (piEmb j) hjm _ _ b hb hb1, fun ν hν => ?_⟩
+  obtain ⟨b, hb, hb1⟩ := _root_.GlobalTheory.exists_bruhat_function_closedEmbedding _ _ (piEmb j) hjc (Measure.pi fun _ => D.cd.cd P' Q')
+  refine ⟨_root_.GlobalTheory.exists_isQuotientMeasure_of_bruhatFunction _ _ (piEmb j) hjm _ _ b hb hb1, fun ν hν => ?_⟩
   obtain ⟨i1, i2, i3⟩ := GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary _ _ D.sp.cm.sig W.rank W.gram
   obtain ⟨i1', i2', i3'⟩ := GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary _ _ D.sp.cm.sig W'.rank W'.gram
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig W.gram
@@ -275,21 +278,21 @@ theorem unfoldAt (hT : StabTransitive) (D : D7) (W W' : HSpace D.host.E) (P Q P'
     have : (W'.gram.map (embOf D ρ)).det = embOf D ρ W'.gram.det := ((embOf D ρ).map_det W'.gram).symm
     rw [this]
     exact (map_ne_zero _).2 hJ'.2
-  choose A' hA' hAj using fun ρ => GlobalTheory.T.exists_complement_frame_compatible_stabilizerEmbedding P Q P' Q' _ _ hc hM' _ _ _ _ (A ρ) (hA ρ) (hBτ ρ).1 (hdet' ρ)
+  choose A' hA' hAj using fun ρ => _root_.GlobalTheory.StabFrameCompat.exists_compatible_frame P Q P' Q' _ _ hc hM' _ _ _ _ (A ρ) (hA ρ) (hBτ ρ).1 (hdet' ρ)
     (hBτ ρ).2 (hAx ρ) (j ρ) (hj ρ)
-  obtain ⟨⟨N, hN, hN'⟩, ψ, hψ, hψA, hψm⟩ := GlobalTheory.T.map_restrict_latticeStabiliser_measure_eq_compactDual _ _ _ hcm _ (embOf D) θ hθ _ P Q hM W.gram hJ.2 A hA L hK D.cd μ
+  obtain ⟨⟨N, hN, hN'⟩, ψ, hψ, hψA, hψm⟩ := _root_.GlobalTheory.VolStabImage.map_restrict_stab _ _ _ hcm _ (embOf D) θ hθ _ P Q hM W.gram hJ.2 A hA L hK D.cd μ
     (by rw [hLc]; exact (hμ.2.2 θ hθ).2 A hA)
-  obtain ⟨-, ψ', hψ', hψA', hψm'⟩ := GlobalTheory.T.map_restrict_latticeStabiliser_measure_eq_compactDual _ _ _ hcm _ (embOf D) θ hθ _ P' Q' hM' W'.gram hJ'.2 A' hA' L' hK' D.cd μ'
+  obtain ⟨-, ψ', hψ', hψA', hψm'⟩ := _root_.GlobalTheory.VolStabImage.map_restrict_stab _ _ _ hcm _ (embOf D) θ hθ _ P' Q' hM' W'.gram hJ'.2 A' hA' L' hK' D.cd μ'
     (by rw [hLc']; exact (hμ'.2.2 θ hθ).2 A' hA')
-  obtain ⟨hpt, hpt'⟩ := GlobalTheory.T.exists_measurable_realOrbitMap_of_adelicOrbit _ _ _ hcm _ (embOf D) hτ θ hθ _ P Q W.gram A N hN hN' (coordTup W x)
+  obtain ⟨hpt, hpt'⟩ := _root_.GlobalTheory.RealOrbitMap.realOrbit _ _ _ hcm _ (embOf D) hτ θ hθ _ P Q W.gram A N hN hN' (coordTup W x)
   refine ⟨hpt, fun pt hp Φi hΦ => ?_⟩
   obtain ⟨hpm, hpi, hph⟩ := hpt' pt hp
-  obtain ⟨φ, hφc, hφi, hφr, hφB, hφΓ⟩ := GlobalTheory.T.exists_adelic_unitary_complement_range_stabiliser _ _ _ hcm _ _ W.gram W'.gram B (coordTup W x) hMM hJ hJ' hB hBx hx0
+  obtain ⟨φ, hφc, hφi, hφr, hφB, hφΓ⟩ := _root_.GlobalTheory.StabiliserOfVector.exists_hom_range_stabiliser _ _ _ hcm _ _ W.gram W'.gram B (coordTup W x) hMM hJ hJ' hB hBx hx0
   have hφx : ∀ g, φ g ∈ Hstab (AF D.host.F) D.sp.cm.sig W.gram (coordTup W x) := fun g => hφr ▸ ⟨g, rfl⟩
   have hφψ : ∀ g, ψ (φ g) = piEmb j (ψ' g) := fun g => funext fun ρ =>
     hAj ρ _ _ _ _ (infMat_fix (hθ ρ) (hφx g)) (infMat_frame (hθ ρ) (hφB g)) (hψA (φ g) ρ) (hψA' g ρ)
-  obtain ⟨u, hu, hu1, hu2⟩ := GlobalTheory.T.exists_unfoldingKernel_levelSubgroup_bruhat_alt _ _ _ _ μ μ' _ _ _ _ hK hK' φ ψ ψ' (piEmb j) hψ.measurable hψ'.measurable hjm
-    (fun g => GlobalTheory.T.latHat_stabiliser_iff_complement_frameRel hT _ _ _ hcm (unramified_host D) _ _ W.gram W'.gram B (coordTup W x) hMM hJ hJ' hB hBx hx0 L L'
+  obtain ⟨u, hu, hu1, hu2⟩ := _root_.GlobalTheory.exists_unfoldingKernel_levelSubgroup_bruhat _ _ _ _ μ μ' _ _ _ _ hK hK' φ ψ ψ' (piEmb j) hψ.measurable hψ'.measurable hjm
+    (fun g => _root_.GlobalTheory.StabFrame.stab_iff_of_frameRel hT _ _ _ hcm (unramified_host D) _ _ W.gram W'.gram B (coordTup W x) hMM hJ hJ' hB hBx hx0 L L'
       hLs β hβ hxL' hxx (fun y => by rw [hLc', ← SetLike.mem_coe, hLc]; exact hBL y) _ g (hφx g) (hφB g))
     hφψ hψm hψm' b hb hb1 (fun t => Φi (pt t)) (hΦ.comp hpm)
     (fun s t => congrArg Φi (hpi _ _ fun ρ => (hj ρ).inv_mul_fix (s ρ) (t ρ))) ν hν
@@ -297,13 +300,13 @@ theorem unfoldAt (hT : StabTransitive) (D : D7) (W W' : HSpace D.host.E) (P Q P'
   have : Countable (ratPts (AF D.host.F) D.sp.cm.sig W.gram) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _
   have : Countable (ratPts (AF D.host.F) D.sp.cm.sig W'.gram) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _
   rw [← hu1]
-  refine GlobalTheory.T.lintegral_tsum_orbit_unfold_alt _ _ _ {x' : W.V // W.hT x' x' = algebraMap _ _ β} μ μ' (ratPts _ _ _) (ratPts _ _ _) 𝓕 𝓕' h𝓕 h𝓕' φ
+  refine _root_.GlobalTheory.lintegral_tsum_orbit_unfold _ _ _ {x' : W.V // W.hT x' x' = algebraMap _ _ β} μ μ' (ratPts _ _ _) (ratPts _ _ _) 𝓕 𝓕' h𝓕 h𝓕' φ
     hφc.measurable hφi hφΓ _ hφr
     (fun x' => ratTup (F := D.host.F) (AF D.host.F) (coordTup W x'.1)) hw1 hw2 u hu
     (phiLat (L0c D W) Φi) fun h => ?_
   · rw [hu2, hph h (ψ h) (hψA h)]
     refine congrArg (· * _) ?_
-    have h1 := GlobalTheory.T.finPart_inv_smul_mem_latHat_iff_stab_mul_level hT _ _ _ hcm (unramified_host D) _ W.gram hJ L hLs β hβ (coordTup W x) hxL' hxx h
+    have h1 := _root_.GlobalTheory.AdelicOrbit.mem_latHat_iff hT _ _ _ hcm (unramified_host D) _ W.gram hJ L hLs β hβ (coordTup W x) hxL' hxx h
     have h2 : (L : Set _) = L0c D W := hLc
     rw [← h2]
     refine Set.indicator_eq_indicator (h1.trans ⟨?_, ?_⟩) rfl
