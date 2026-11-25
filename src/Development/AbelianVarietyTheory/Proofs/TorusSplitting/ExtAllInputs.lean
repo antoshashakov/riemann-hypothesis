@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.FilteredPoleLength.LocalDescentLevels.DetMulEqSumPrincipal
 
 @[expose] public section
 
@@ -74,53 +75,8 @@ private theorem ext_cauchyBinetMax' : _root_.ReciprocityTheory.ChartRestriction.
   unfold _root_.GlobalTheory.subsetEnum
   exact (Finset.orderEmbOfFin _ _).strictMono
 
-private theorem ext_detPerturbation : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbation := by
-  unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbation
-  intro 𝕜 _ i κ _ w σ₀ ε Δmax hΔ
-  classical
-  set f := (Matrix.detRowAlternating : (Fin i → 𝕜) [⋀^Fin i]→ₗ[𝕜] 𝕜).toMultilinearMap with hf
-  have hD : ∀ cols : Fin i → Fin i → 𝕜, (Matrix.of fun a j => cols j a).det = f cols := by
-    intro cols
-    rw [show (Matrix.of fun a j => cols j a) = (Matrix.of cols).transpose from rfl, Matrix.det_transpose]
-    rfl
-  have hΔ0 : 0 ≤ Δmax := (norm_nonneg _).trans (hΔ σ₀)
-  set coef : Fin i → Option κ → 𝕜 := fun j o => Option.elim o 1 (ε j) with hcoef
-  set pick : Fin i → Option κ → κ := fun j o => Option.elim o (σ₀ j) id with hpick
-  have hcol : (fun j => w (σ₀ j) + ∑ k, ε j k • w k) = fun j => ∑ o, coef j o • w (pick j o) := by
-    funext j
-    rw [Fintype.sum_option]
-    simp [hcoef, hpick]
-  have hexp : f (fun j => w (σ₀ j) + ∑ k, ε j k • w k)
-      = ∑ r : Fin i → Option κ, (∏ j, coef j (r j)) • f (fun j => w (pick j (r j))) := by
-
-    rw [hcol, MultilinearMap.map_sum]
-    refine Finset.sum_congr rfl fun r _ => ?_
-    exact f.map_smul_univ (fun j => coef j (r j)) (fun j => w (pick j (r j)))
-  set r0 : Fin i → Option κ := fun _ => none with hr0
-  have hterm0 : (∏ j, coef j (r0 j)) • f (fun j => w (pick j (r0 j))) = f (fun j => w (σ₀ j)) := by
-    simp [hr0, hcoef, hpick]
-  rw [hD, hD, hexp, ← Finset.add_sum_erase _ _ (Finset.mem_univ r0), hterm0, add_sub_cancel_left]
-  have hbound : ∀ r : Fin i → Option κ, ‖(∏ j, coef j (r j)) • f (fun j => w (pick j (r j)))‖
-      ≤ (∏ j, ‖coef j (r j)‖) * Δmax := by
-    intro r
-    rw [norm_smul, norm_prod]
-    refine mul_le_mul_of_nonneg_left ?_ (by positivity)
-    rw [← hD]
-    exact hΔ (fun j => pick j (r j))
-  have hsum : ∑ r : Fin i → Option κ, ∏ j, ‖coef j (r j)‖ = ∏ j, (1 + ∑ k, ‖ε j k‖) := by
-    have hps : ∏ j, ∑ o, ‖coef j o‖ = ∑ r : Fin i → Option κ, ∏ j, ‖coef j (r j)‖ := by
-      rw [Finset.prod_univ_sum, Fintype.piFinset_univ]
-    rw [← hps]
-    refine Finset.prod_congr rfl fun j _ => ?_
-    rw [Fintype.sum_option]
-    simp [hcoef]
-  have hone : ∏ j, ‖coef j (r0 j)‖ = 1 := by simp [hr0, hcoef]
-  calc ‖∑ r ∈ Finset.univ.erase r0, (∏ j, coef j (r j)) • f (fun j => w (pick j (r j)))‖
-      ≤ ∑ r ∈ Finset.univ.erase r0, (∏ j, ‖coef j (r j)‖) * Δmax :=
-        (norm_sum_le _ _).trans (Finset.sum_le_sum fun r _ => hbound r)
-    _ = (∏ j, (1 + ∑ k, ‖ε j k‖) - 1) * Δmax := by
-        rw [← Finset.sum_mul, ← hsum, ← Finset.add_sum_erase _ _ (Finset.mem_univ r0), hone]
-        ring
+private theorem ext_detPerturbation : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbation :=
+  _root_.Formalism.LatticeBaseChangeAlt.detPerturbation
 
 private theorem ext_detPerturbNumeric : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbNumeric := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbNumeric
