@@ -60,18 +60,8 @@ theorem sig_invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) 
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
-theorem sig_ne {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
-  by_contra hc
-  push_neg at hc
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := ⟨(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom⟩
-  have hr : NumberField.ComplexEmbedding.IsReal τ := by
-    ext x
-    simp only [NumberField.ComplexEmbedding.conjugate_coe_eq]
-    have e := h.2.2.2 τ x
-    rw [hc] at e
-    exact e.symm
-  have hc2 := h.2.1.isComplex (NumberField.InfinitePlace.mk τ)
-  exact (NumberField.InfinitePlace.isComplex_mk_iff.1 hc2) hr
+theorem sig_ne {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x, σ x ≠ x :=
+  _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
 
 
 variable (F E) in

@@ -165,19 +165,8 @@ theorem sigma_invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
-theorem exists_sigma_ne (h : IsCMExt F E σ) : ∃ z, σ z ≠ z := by
-  by_contra hc
-  push_neg at hc
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have hr : ComplexEmbedding.IsReal τ := by
-    rw [ComplexEmbedding.isReal_iff]
-    ext x
-    have := h.2.2.2 τ x
-    rw [hc x] at this
-    simpa [ComplexEmbedding.conjugate_coe_eq] using this.symm
-  have h1 := h.2.1
-  have := (NumberField.IsTotallyComplex.isComplex (K := E) (InfinitePlace.mk τ))
-  exact (InfinitePlace.not_isReal_iff_isComplex.2 this) ((InfinitePlace.isReal_mk_iff).2 hr)
+theorem exists_sigma_ne (h : IsCMExt F E σ) : ∃ z, σ z ≠ z :=
+  _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
 
 theorem mem_range_of_sigma_eq (h : IsCMExt F E σ) {y : E} (hy : σ y = y) : y ∈ (algebraMap F E).range := by
   by_contra hc

@@ -218,17 +218,8 @@ theorem sig_delta (h : Hyp L nb uM nb' w₁ cM δ) : σ δ = -(((R.ε : ℤ) : E
   have e2 := eps_mulE R
   linear_combination (((R.ε : ℤ) : E)) * hδ - σ δ * e2
 
-theorem sigNeId (hcm : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
-  obtain ⟨-, htc, -, h⟩ := hcm
-  by_contra hn
-  push Not at hn
-  let τ : E →+* ℂ := Classical.arbitrary _
-  refine @IsTotallyComplex.complexEmbedding_not_isReal E _ htc τ (ComplexEmbedding.isReal_iff.2 ?_)
-  ext x
-  rw [ComplexEmbedding.conjugate_coe_eq]
-  have := h τ x
-  rw [hn x] at this
-  exact this.symm
+theorem sigNeId (hcm : IsCMExt F E σ) : ∃ x, σ x ≠ x :=
+  _root_.GlobalTheory.AdelicU.exists_cm_conj_ne hcm
 
 theorem eigLine (hcm : IsCMExt F E σ) (ε : ℤˣ) {δ : E} (hδ0 : δ ≠ 0) (hδ : σ δ = -(((ε : ℤ) : E)) * δ) {e : E}
     (he : σ e = -(((ε : ℤ) : E)) * e) : ∃ c : F, c • δ = e := by

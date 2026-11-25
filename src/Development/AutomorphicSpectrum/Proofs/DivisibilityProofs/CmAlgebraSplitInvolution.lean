@@ -69,18 +69,7 @@ theorem sigma_invol {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheory
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
-theorem exists_moved {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) : ∃ x, σ x ≠ x := by
-  by_contra hc
-  push_neg at hc
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have hr : ComplexEmbedding.IsReal τ := by
-    rw [ComplexEmbedding.isReal_iff]
-    ext x
-    have := h.2.2.2 τ x
-    rw [hc x] at this
-    exact this.symm
-  have hR : (InfinitePlace.mk τ).IsReal := ⟨τ, hr, rfl⟩
-  have := h.2.1.isComplex (InfinitePlace.mk τ)
-  exact (InfinitePlace.not_isReal_iff_isComplex.mpr this) hR
+theorem exists_moved {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) : ∃ x, σ x ≠ x :=
+  _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
 
 end GlobalTheory.CompanionTheory.Ar.RT.ArchRing

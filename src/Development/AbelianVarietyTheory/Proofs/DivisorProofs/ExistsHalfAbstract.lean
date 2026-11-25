@@ -138,18 +138,8 @@ theorem sig_invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) 
   apply w.embedding.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
-theorem sig_ne {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
-  by_contra hc
-  push_neg at hc
-  obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
-  have hw : w.IsComplex := h.2.1.isComplex w
-  rw [InfinitePlace.isComplex_iff, ComplexEmbedding.isReal_iff] at hw
-  apply hw
-  ext x
-  have := h.2.2.2 w.embedding x
-  rw [hc] at this
-  rw [ComplexEmbedding.conjugate_coe_eq]
-  exact this.symm
+theorem sig_ne {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x, σ x ≠ x :=
+  _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
 
 theorem tensor_decomp {A : Type} [CommRing A] [Algebra F A] (δ : E)
     (h : ∀ x : E, ∃ u w : F, x = u • (1 : E) + w • δ) (z : A ⊗[F] E) :

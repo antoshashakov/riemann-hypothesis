@@ -57,18 +57,8 @@ theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = 
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
-theorem sig_ne_id {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
-  by_contra hc
-  push_neg at hc
-  obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
-  have hr : w.IsReal := by
-    rw [InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]
-    ext x
-    simp only [ComplexEmbedding.conjugate_coe_eq]
-    have := h.2.2.2 w.embedding x
-    rw [hc x] at this
-    exact this.symm
-  exact (InfinitePlace.not_isReal_iff_isComplex.mpr (h.2.1.isComplex w)) hr
+theorem sig_ne_id {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x :=
+  _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
 
 def sigE {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : Gal(E/F) :=
   AlgEquiv.ofAlgHom σ σ (AlgHom.ext fun x => sig_sig h x) (AlgHom.ext fun x => sig_sig h x)

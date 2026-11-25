@@ -59,17 +59,8 @@ theorem conj_conj (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) 
   apply τ.injective
   rw [hτ, hτ, star_star]
 
-theorem exists_moved (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ y, σ y ≠ y := by
-  obtain ⟨-, hC, -, hτ⟩ := h
-  by_contra hno
-  push Not at hno
-  let τ : E →+* ℂ := Classical.arbitrary _
-  have hR : ComplexEmbedding.IsReal τ := by
-    rw [ComplexEmbedding.isReal_iff]
-    ext x
-    exact ((hτ τ x).symm.trans (congrArg τ (hno x)) : _)
-  exact (InfinitePlace.not_isReal_iff_isComplex.2 (hC.isComplex (InfinitePlace.mk τ)))
-    (InfinitePlace.isReal_mk_iff.2 hR)
+theorem exists_moved (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ y, σ y ≠ y :=
+  _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
 
 theorem add_conj_mem (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (e : E) :
     ∃ c : F, e + σ e = algebraMap F E c := by
