@@ -3,7 +3,8 @@ module
 public import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.DictInf
 public import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelEisensteinContinuationOfDoublingMethod
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartSectionExistsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DivisibilityStatementStatement
+public import Development.WeilBound.RepresentationTheoryGL.EisensteinResidues.AnisotropicGlobalForms.SectionTrace.SecOf
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DivisibilityStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalarSectionExistsStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardSectionExistsStatement
 public import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.EisensteinChartSplitting.PositiveSumGrowth.AbsAPos
@@ -51,6 +52,6 @@ open ResidueKilled.Tr
 
 theorem siegelEisensteinContinuation_of (hD : Dict) (hI : DictInf) (hL : SecLaw) (hW : WallLaw) (hG : CMGood)
     (hT : GrpTop) (hB : BdetLaw) (hE : ExtLaw) (hP : ParLaw) (hS : SgAll) : GlobalTheory.Published.SiegelEisensteinContinuation :=
-  ResidueKilled.Tr.tTop hG hT hB hE hP hS (GlobalTheory.T.chart_section_exists hD hI GlobalTheory.T.standard_section_exists) (GlobalTheory.T.scalar_section_exists hL hW) GlobalTheory.T.divisibility_statement
+  ResidueKilled.Tr.tTop hG hT hB hE hP hS (GlobalTheory.T.chart_section_exists hD hI GlobalTheory.T.standard_section_exists) (GlobalTheory.T.scalar_section_exists hL hW) _root_.GlobalTheory.CompanionTheory.DivMult.div_multiplier
 
 end PositivityTheory.RgEis.Sp

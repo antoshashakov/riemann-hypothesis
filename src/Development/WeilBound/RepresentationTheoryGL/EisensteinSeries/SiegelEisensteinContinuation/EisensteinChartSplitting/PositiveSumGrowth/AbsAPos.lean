@@ -1,7 +1,8 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.EisensteinResidues.AnisotropicGlobalForms.SectionTrace.SecOf
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuesWithModerateGrowthShiftTranslatePowStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ContinuesConst
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuesWithModerateGrowthShiftTranslatePow
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeterssonAdjointHeckeOperatorEqDualLabel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowOfRestrictsToQuadrati
 public import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.ExistsNotEisContinues
@@ -227,7 +228,7 @@ theorem tTop : TTop := by
   have hCont := hDv D (dblSp V)
     (fun z g => GlobalTheory.Eis.cosetSum (siegel V) (GQ (dblSp V)) (fun x => Complex.exp (z * η (Φ x)) * f x) g) H Am R hAd
     hAne hHd hHc hHe hgrow
-  have hflat := GlobalTheory.T.continuesWithModerateGrowth_shift_translate_pow D (dblSp V) _ (fun s g => GlobalTheory.Eis.eis V (flat V a φ s₁ s) g) (p : GA D (dblSp V)) c s₁
+  have hflat := _root_.GlobalTheory.EisCont.Shift.contMod_shift D (dblSp V) _ (fun s g => GlobalTheory.Eis.eis V (flat V a φ s₁ s) g) (p : GA D (dblSp V)) c s₁
     ((V.rank : ℂ) / 2) hc (fun s g => ?_) hCont
   · exact ⟨⟨GlobalTheory.Eis.ContModel.isEisFamily_flat ha hμ hφ, hflat.1⟩, hflat.2⟩
   show GlobalTheory.Eis.cosetSum (siegel V) (GQ (dblSp V)) (flat V a φ s₁ s) g = npow c (s₁ - s) *
