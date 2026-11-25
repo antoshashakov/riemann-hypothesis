@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -77,13 +78,8 @@ theorem pow_lN (ν : Valuation ℂ ℝ≥0) (l : ℕ) {b : ℂ} (hb : ν b ≤ 1
     rw [pow_succ', mul_assoc]
     exact mul_le_mul_of_nonneg_left (pow_lN ν l hb hbp N) zero_le
 
-theorem lt_one_le (a : WithZero (Multiplicative ℤ)) (h : a < 1) : a ≤ WithZero.exp (-1 : ℤ) := by
-  by_cases h0 : a = 0
-  · rw [h0]; exact zero_le
-  · rw [← WithZero.exp_log h0] at h ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
-    rw [WithZero.exp_le_exp]
-    omega
+theorem lt_one_le (a : WithZero (Multiplicative ℤ)) (h : a < 1) : a ≤ WithZero.exp (-1 : ℤ) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 end UpperTheory.Esk.NormOneUnitsLemmas
 

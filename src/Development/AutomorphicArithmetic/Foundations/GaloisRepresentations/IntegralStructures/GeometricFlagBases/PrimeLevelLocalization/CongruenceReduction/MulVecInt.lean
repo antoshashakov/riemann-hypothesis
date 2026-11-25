@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -62,14 +63,8 @@ private theorem alg_int {E : Type} [Field E] [NumberField E] (u : Plc E) (c : �
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, val_alg]
   exact HeightOneSpectrum.valuation_le_one u c
 
-private theorem lt_one_le {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
-  rcases eq_or_ne x 0 with rfl | h0
-  · exact zero_le'
-  · rw [← WithZero.exp_log h0] at h ⊢
-    rw [WithZero.exp_le_exp]
-    have : WithZero.log x < 0 := by
-      rwa [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
-    omega
+private theorem lt_one_le {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 private theorem split_at {E : Type} [Field E] [NumberField E] (w u : Plc E) (a b : 𝓞 E)
     (hab : Ideal.span {a} ⊔ Ideal.span {b} = w.asIdeal) (y : u.adicCompletion E)

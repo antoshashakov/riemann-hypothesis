@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -79,13 +80,8 @@ theorem exists_finiteAdele_of_denom {F : Type} [Field F] [NumberField F] (r : He
   rw [map_mul, hv1, one_mul] at h1
   exact h1
 
-theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) := by
-  by_cases h0 : x = 0
-  · rw [h0]; exact zero_le'
-  · rw [← WithZero.exp_log h0] at hx ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at hx
-    rw [WithZero.exp_le_exp]
-    omega
+theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one hx
 
 theorem locMap_val_eq_one_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (P : HeightOneSpectrum (𝓞 E)) (a : (P.under (𝓞 F)).adicCompletion F) :

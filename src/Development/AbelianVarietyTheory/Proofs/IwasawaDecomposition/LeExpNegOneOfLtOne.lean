@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.Automorphisms.PlaceA
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -64,13 +65,8 @@ section Local
 
 variable {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {n : ℕ}
 
-theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) := by
-  by_cases h0 : x = 0
-  · rw [h0]; exact zero_le'
-  · rw [← WithZero.exp_log h0] at hx ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at hx
-    rw [WithZero.exp_le_exp]
-    omega
+theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one hx
 
 theorem int_of_double_coset (ϖ : v.adicCompletion F) (k : ℕ) (hϖ : Valued.v ϖ ≤ 1)
     (a b g : GL (Fin n) (v.adicCompletion F))

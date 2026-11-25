@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -94,13 +95,8 @@ theorem lt_one_of_map (s : w.adicCompletion E →+* w.adicCompletion E) (hs : Co
   have : 1 ≤ Valued.v (s x ^ N) := by rw [map_pow]; exact one_le_pow₀ hc
   exact absurd hN (not_lt.2 this)
 
-theorem le_exp_neg_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) := by
-  by_cases h0 : x = 0
-  · rw [h0]; exact zero_le'
-  · rw [← WithZero.exp_log h0] at hx ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at hx
-    rw [WithZero.exp_le_exp]
-    omega
+theorem le_exp_neg_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one hx
 
 theorem valued_map_eq (s : w.adicCompletion E →+* w.adicCompletion E) (hs : Continuous s) (hss : ∀ x, s (s x) = x)
     (x : w.adicCompletion E) : Valued.v (s x) = Valued.v x := by

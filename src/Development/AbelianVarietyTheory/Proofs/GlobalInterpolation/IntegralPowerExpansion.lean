@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -66,13 +67,8 @@ theorem intAt_iff_val (P : HeightOneSpectrum (𝓞 E)) (a : E) : IntAt P a ↔ P
     obtain ⟨n, d, hnd⟩ := P.exists_primeCompl_mul_eq_of_integer a h
     exact ⟨n, d, d.2, by rw [mul_comm]; exact hnd⟩
 
-theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1) := by
-  rcases eq_or_ne x 0 with rfl | hx
-  · exact zero_le
-  · rw [← WithZero.exp_log hx] at h ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
-    rw [WithZero.exp_le_exp]
-    omega
+theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 theorem val_q {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) :
     P.valuation E (qOf P : E) = WithZero.exp (-1) := by

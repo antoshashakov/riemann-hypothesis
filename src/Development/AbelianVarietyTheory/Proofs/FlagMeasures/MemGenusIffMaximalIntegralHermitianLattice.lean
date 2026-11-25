@@ -64,6 +64,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -250,12 +251,8 @@ theorem val_unif {p : HeightOneSpectrum (𝓞 K)} {a : 𝓞 K} (h1 : a ∈ p.asI
   rw [← WithZero.exp_log a0, WithZero.exp_inj]
   omega
 
-theorem le_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
-  by_cases a0 : x = 0
-  · rw [a0]; exact zero_le
-  rw [← WithZero.exp_log a0, ← WithZero.exp_zero, WithZero.exp_lt_exp] at h
-  rw [← WithZero.exp_log a0, WithZero.exp_le_exp]
-  omega
+theorem le_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 theorem exists_norm (hK : IsCMUnram K) {p : HeightOneSpectrum (𝓞 K)}
     (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal) {u : K} (hu : p.valuation K u ≤ 1)

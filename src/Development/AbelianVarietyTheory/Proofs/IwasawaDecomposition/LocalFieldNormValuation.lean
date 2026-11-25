@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -76,12 +77,8 @@ theorem exists_unit_valued_eq :
     intro h'; rw [h', map_zero] at h; exact WithZero.zero_ne_coe h
   exact ⟨Units.mk0 _ h0, h⟩
 
-theorem le_exp_neg_one_of_lt_one {a : WithZero (Multiplicative ℤ)} (ha : a < 1) : a ≤ WithZero.exp (-1) := by
-  by_cases h0 : a = 0
-  · simp [h0]
-  · rw [← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp] at ha
-    rw [← WithZero.exp_log h0, WithZero.exp_le_exp]
-    omega
+theorem le_exp_neg_one_of_lt_one {a : WithZero (Multiplicative ℤ)} (ha : a < 1) : a ≤ WithZero.exp (-1) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one ha
 
 theorem valued_eq_exp (x : (w.adicCompletion E)ˣ) :
     Valued.v (x : w.adicCompletion E) = WithZero.exp (-ord (w.adicCompletion E) x) := by

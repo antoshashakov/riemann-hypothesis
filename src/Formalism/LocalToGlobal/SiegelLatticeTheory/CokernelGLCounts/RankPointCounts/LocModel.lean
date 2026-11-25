@@ -55,6 +55,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -629,13 +630,8 @@ namespace Formalism.L2.SG.Pf.LocModel.LM
 
 open NumberField IsDedekindDomain ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroups
 
-theorem withZero_exp_lt_one {a : WithZero (Multiplicative ℤ)} (h : a < 1) : a ≤ WithZero.exp (-1 : ℤ) := by
-  rcases eq_or_ne a 0 with rfl | ha
-  · exact zero_le'
-  · rw [← WithZero.exp_log ha] at h ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
-    rw [WithZero.exp_le_exp]
-    omega
+theorem withZero_exp_lt_one {a : WithZero (Multiplicative ℤ)} (h : a < 1) : a ≤ WithZero.exp (-1 : ℤ) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 theorem withZero_exp_gt_neg_two {a : WithZero (Multiplicative ℤ)} (h : WithZero.exp (-2 : ℤ) < a) :
     WithZero.exp (-1 : ℤ) ≤ a := by

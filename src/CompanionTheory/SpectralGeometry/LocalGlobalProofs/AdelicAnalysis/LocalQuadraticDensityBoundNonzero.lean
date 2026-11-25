@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -67,14 +68,8 @@ theorem exists_unif (v : HeightOneSpectrum (𝓞 F)) : ∃ π : Fv F v, Valued.v
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer F
   exact ⟨((π : v.adicCompletion F) : Fv F v), by rw [v.valuedAdicCompletion_eq_valuation', hπ]⟩
 
-theorem le_exp_of_lt_one {a : WithZero (Multiplicative ℤ)} (h : a < 1) : a ≤ WithZero.exp (-1 : ℤ) := by
-  rcases eq_or_ne a 0 with rfl | ha
-  · exact zero_le
-  · rw [← WithZero.exp_log ha] at h ⊢
-    have h' : WithZero.log a < 0 := by
-      rw [← WithZero.exp_lt_exp, WithZero.exp_zero]; exact h
-    rw [WithZero.exp_le_exp]
-    omega
+theorem le_exp_of_lt_one {a : WithZero (Multiplicative ℤ)} (h : a < 1) : a ≤ WithZero.exp (-1 : ℤ) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 variable {v : HeightOneSpectrum (𝓞 F)} {ι : Type} [Fintype ι]
 

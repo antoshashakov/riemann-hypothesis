@@ -54,6 +54,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.Automorphisms.PlaceA
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -62,13 +63,8 @@ open NumberField IsDedekindDomain Formalism.L2.Host IsLocalRing Polynomial
 namespace GlobalTheory.Mem.WildChar
 
 theorem le_exp_neg_one_of_lt_one {g : WithZero (Multiplicative ℤ)} (hy : g < 1) :
-    g ≤ WithZero.exp (-1 : ℤ) := by
-  by_cases hg : g = 0
-  · rw [hg]; exact zero_le
-  · rw [← WithZero.exp_log hg] at hy ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at hy
-    rw [WithZero.exp_le_exp]
-    omega
+    g ≤ WithZero.exp (-1 : ℤ) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one hy
 
 theorem val_pow_sub_pow_le {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ]
     (w : Valuation K Γ) {a b : K} (ha : w a ≤ 1) (hb : w b ≤ 1) (m : ℕ) :

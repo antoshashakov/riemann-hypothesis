@@ -47,6 +47,7 @@ public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.StableIffCarrierEq
 import Formalism.LocalToGlobal.HilbertRowConditions.CenterIdempotentAction
 import Formalism.LocalToGlobal.IndefiniteReal.RecTie
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -60,14 +61,8 @@ open GlobalTheory.StdFrames GlobalTheory.AdIsom GlobalTheory.IdemSupport
 namespace GlobalTheory.ConjLt
 variable {D : D7}
 
-theorem lt_one_le_exp {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1) := by
-  rcases eq_or_ne x 0 with rfl | hx
-  · exact zero_le'
-  · obtain ⟨n, rfl⟩ := WithZero.ne_zero_iff_exists.1 hx
-    have : (n : WithZero (Multiplicative ℤ)) = WithZero.exp (Multiplicative.toAdd n) := rfl
-    rw [this, ← WithZero.exp_zero, WithZero.exp_lt_exp] at h
-    rw [this, WithZero.exp_le_exp]
-    omega
+theorem lt_one_le_exp {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 theorem cpt_sg_lt_one (Q : Pl D.host.E) (z : EAf D) (h : Valued.v (cpt Q z) < 1) :
     Valued.v (cpt (cP Q) (sg D z)) < 1 := by

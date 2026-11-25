@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -56,13 +57,8 @@ noncomputable section
 namespace GlobalTheory.Hk3.IntWitt
 
 theorem le_exp_neg_one_of_lt_one' {x : WithZero (Multiplicative ℤ)} (h : x < 1) :
-    x ≤ WithZero.exp (-1) := by
-  rcases eq_or_ne x 0 with rfl | hx
-  · exact zero_le
-  · rw [← WithZero.exp_log hx] at h ⊢
-    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
-    rw [WithZero.exp_le_exp]
-    omega
+    x ≤ WithZero.exp (-1) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 

@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormCloseToOneOfCloseAbovePlace
 
 @[expose] public section
 
@@ -62,12 +63,8 @@ variable {K : Type*} [Field K] [NumberField K]
 def differentExp (v : HeightOneSpectrum (𝓞 K)) : ℤ :=
   FractionalIdeal.count K v ((differentIdeal ℤ (𝓞 K) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)
 
-theorem le_exp_neg_one_of_lt_one {x : ℤᵐ⁰} (h : x < 1) : x ≤ exp (-1) := by
-  rcases eq_or_ne x 0 with rfl | hx
-  · exact zero_le
-  · rw [← exp_log hx, exp_le_exp]
-    rw [← exp_log hx, ← exp_zero, exp_lt_exp] at h
-    omega
+theorem le_exp_neg_one_of_lt_one {x : ℤᵐ⁰} (h : x < 1) : x ≤ exp (-1) :=
+  _root_.GlobalTheory.NormCompat.NormCont.le_exp_neg_one_of_lt_one h
 
 theorem multiplicity_finprod_asIdeal_pow {R : Type*} [CommRing R] [IsDedekindDomain R]
     {a : HeightOneSpectrum R → ℕ} (ha : (Function.support a).Finite) (v : HeightOneSpectrum R) :
