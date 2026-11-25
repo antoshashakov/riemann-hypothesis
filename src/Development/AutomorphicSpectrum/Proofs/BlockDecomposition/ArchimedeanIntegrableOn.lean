@@ -16,7 +16,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Multicon
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalSectionFiniteOpenCoverStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackIsPotentialStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightsIntegralPullbackFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightsIntegralPullbackFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZeroLocusRegularFunctionNullStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ResolutionExistsOfResolutionStatementStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -184,7 +184,7 @@ theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ}
   have hle := _root_.GlobalTheory.CompanionTheory.ArchDom.chernPart_le_sum_map A F hF H Z' hZ'm hZ'0 (fun y hy => hs y fun h => hy (Or.inl h))
     (fun x x' hx => hi x x' fun h => hx (Or.inl h)) φ hφ ε (fun j => (A.chart j) '' tsupport (Pt.χ j))
     (fun j => (hKK j).1) (fun j => (hKK j).2) hcovK
-  have hfin (j : Fin A.n) := GlobalTheory.T.lintegral_indicator_mul_locDens_pullback_lt_top A F hF H φ hφ ψ hψ g S Z' W b a d hcov hWb
+  have hfin (j : Fin A.n) := _root_.GlobalTheory.CompanionTheory.MixZ.lintegral_logNorm_locDens_lt_top A F hF H φ hφ ψ hψ g S Z' W b a d hcov hWb
     (fun l y hy hyS hyZ => hf l y hy hyS fun h0 => hyZ (Or.inr (Set.mem_iUnion.2 ⟨l, hy, h0⟩))) hSo hgc hZ'm j
     _ (hKK j).2 (hKK j).1
   refine ⟨hgc.aestronglyMeasurable hSo.measurableSet, ?_⟩

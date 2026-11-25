@@ -2,7 +2,9 @@ module
 
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BernsteinUnitaryProductIrreducible
 public import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteHeisenbergTranslateSelfDualVacuumFockJetsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrT
+public import Development.AbelianVarietyTheory.Definitions.Divisors.InvVolConjLevelOne
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteHeisenbergTranslateSelfDualVacuumFockJets
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SelfDualLatticesDifferentiableOperator
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.MovedVacuumVectorCorrespondence
 import Mathlib.Algebra.Order.Floor.Extended
@@ -62,7 +64,7 @@ theorem jets_moved_by_translation : _root_.GlobalTheory.FunPr.ThetaLocalInputs �
   intro p hp x y
   obtain ⟨Ls, Lt, κ, hSs, hSt, hκ, hd, hq, hvac, hmov, hjet⟩ := hx D large₂ hε hx₀ Γ Pl0 T A Ks R F hS ch hIs hAt p hp x y
   refine ⟨Ls, Lt, κ, hSs, hSt, hκ, hd, hq, fun n hn w hw => ?_⟩
-  obtain ⟨ζ, s, hζ, hs, hj⟩ := GlobalTheory.T.finiteHeisenbergTranslate_selfDualVacuum_fockJets ch.S.toGridChoice p hp Ls Lt κ _ hSs hSt hd hvac hjet n hn _
+  obtain ⟨ζ, s, hζ, hs, hj⟩ := _root_.GlobalTheory.HeisTrans.main ch.S.toGridChoice p hp Ls Lt κ _ hSs hSt hd hvac hjet n hn _
     (by rw [← actO_nsmul]; exact hmov _ hw)
   refine ⟨ζ, s, hζ, hs, fun mon => ?_⟩
   rw [jetTab_heisO ch.W ch.S.N.frC p hp _ (ch.S.Z.vac_is p hp).2.theta w _ _ mon]

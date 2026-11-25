@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinea
 import Development.AbelianVarietyTheory.Definitions.Foundations.MeasurePreservingRmulQuotMeas
 import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EqSemiMeasOfCovolOne
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiProductMapHaarFiniteOnCompactsStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiProductMapHaarFiniteOnCompacts
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ProdRFJCoe
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsMulLeftInvariantMapLevyProductMapToFourierJaco
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapHaarFiniteOnCompactsStatement
@@ -171,7 +171,7 @@ theorem quot_int_haar : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
         rw [this]; exact isClosed_univ
     haveI : LocallyCompactSpace (RFJ k n c ρ) := hcl.locallyCompactSpace
     haveI := _root_.GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ k n c ρ h1 h2 ν hν.1 m hm
-    haveI := GlobalTheory.T.fourierJacobiProductMap_haar_finiteOnCompacts k n c ρ h1 h2 ν hν.1 m hm
+    haveI := _root_.GlobalTheory.HaarR.finite_on_compacts_prodRFJ k n c ρ h1 h2 ν hν.1 m hm
     have hmeas : Measurable (prodRFJ (k := k) (n := n) (c := c) ρ) :=
       (Continuous.subtype_mk (((GlobalTheory.RootEx.QuotStep.continuous_embX.comp (continuous_fst.comp continuous_fst)).mul
         (continuous_subtype_val.comp (continuous_snd.comp continuous_fst))).mul

@@ -12,7 +12,11 @@ public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SemicharacterT
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionCanonicalFormStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaFunctionCanonicalMultiplierStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaNormInPeriodCoordinatesStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaZeroDivisorJetBoundStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.Topology.MetricSpace.HausdorffDistance
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaZeroDivisorJetBound
 public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.AssemblyAnalytic
 public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.CoordSiegel
 import Mathlib.Algebra.Order.Floor.Extended
@@ -351,7 +355,7 @@ theorem nform : ∃ C₀ : ℝ, 0 ≤ C₀ ∧ ∀ {S : Scheme.{0}} {G : Over S}
     change θ (w + l) = _ at this
     rw [this]
     simp [hne, Complex.exp_ne_zero]
-  filter_upwards [GlobalTheory.T.theta_zero_divisor_jet_bound g a.u.Λ θ L (Sum.inr 0) (a₀ 0) hθ.1 hnz hLint hinv (hhalf a₀ ha₀ 0)] with m hm
+  filter_upwards [_root_.GlobalTheory.CompanionTheory.TorsOff.torsion_off_zeros g a.u.Λ θ L (Sum.inr 0) (a₀ 0) hθ.1 hnz hLint hinv (hhalf a₀ ha₀ 0)] with m hm
   intro Ix _ r hr hu
   obtain ⟨hne, hcard⟩ := hm Ix r hr hu
   refine ⟨hne, ?_⟩

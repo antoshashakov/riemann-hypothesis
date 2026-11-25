@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry�
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NotInSupportOfSubsingleton
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivProdIrrTw
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsCentralScalarDistinctGeometricLemmaCellsStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntertwiningOfCentralFiltrationStepStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnitarisableOfCharIff
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIntertwiningOfCentralFiltrationStep
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIrreducibleTensorOfJacquetSubquotient
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GeometricLemmaCellOneBlockSwapEquivStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalisedParabolicInductionReindexEquivStatement
@@ -138,7 +140,7 @@ theorem exists_jac_map_ne_zero : GlobalTheory.Published.BernsteinZelevinskyFinit
     have h1 : E.toLinearEquiv (subQuot (S t.succ) (S t.castSucc) z y) = _ := LinearMap.congr_fun (E.isIntertwining' z) y
     have h2 := hbad (b t) (hbad' t ht) (b t).nonempty_rows.some (b t).nonempty_cols.some (E.toLinearEquiv y)
     exact h1.trans (h2.trans (LinearEquiv.map_smul E.toLinearEquiv c' y).symm)
-  obtain ⟨φ, v, hv⟩ := GlobalTheory.T.exists_intertwining_of_central_filtration_step (jac e' (multiProd e fun i => (σ i).π))
+  obtain ⟨φ, v, hv⟩ := _root_.GlobalTheory.exists_intertwining_of_central_step (jac e' (multiProd e fun i => (σ i).π))
     (piTensor fun j => (σ (Equiv.swap 0 1 j)).π) N S hmono h0 hN z hz (b.symm G0) c (fun _ => c')
     (fun _ _ => hcc.symm) hstep
     ⟨(h4 (b.symm G0) f₀ g₀).some.trans E₀⟩ hX
