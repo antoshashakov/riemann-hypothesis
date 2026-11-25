@@ -82,91 +82,10 @@ variable {E : Type} [Field E] {C : Type} [CommRing C] [Algebra E C] [Module.Fini
 
 theorem chi_dvd (g : C) (hs : (LinearMap.mulLeft E g).charpoly.Separable) (f : E[X]) (hf : aeval g f = 0) :
     (LinearMap.mulLeft E g).charpoly ∣ f := by
-  classical
-  by_cases hf0 : f = 0
-  · rw [hf0]
-    exact dvd_zero _
-  set T := LinearMap.mulLeft E g with hT
-  have hlm : Algebra.lmul E C g = T := by
-    ext x
-    simp [hT]
-  have hfT : aeval T f = 0 := by
-    rw [← hlm, Polynomial.aeval_algHom_apply, hf, map_zero]
-
-  let b := Module.finBasis E C
-  let M := LinearMap.toMatrixAlgEquiv b T
-  have hMχ : M.charpoly = T.charpoly := LinearMap.charpoly_toMatrix T b
-  have hfM : aeval M f = 0 := by
-    have hM : M = (LinearMap.toMatrixAlgEquiv b).toAlgHom T := rfl
-    rw [hM, Polynomial.aeval_algHom_apply, hfT, map_zero]
-  let L := AlgebraicClosure E
-  let ML : Matrix (Fin (Module.finrank E C)) (Fin (Module.finrank E C)) L :=
-    (AlgHom.mapMatrix (Algebra.ofId E L)) M
-  have hmon : T.charpoly.Monic := LinearMap.charpoly_monic T
-  have hcL : ML.charpoly = T.charpoly.map (algebraMap E L) := by
-    rw [← hMχ]
-    exact Matrix.charpoly_map M (algebraMap E L)
-  have hfL : aeval ML (f.map (algebraMap E L)) = 0 := by
-    rw [Polynomial.aeval_map_algebraMap, Polynomial.aeval_algHom_apply, hfM, map_zero]
-  have hroot : ∀ x ∈ (T.charpoly.map (algebraMap E L)).roots, (f.map (algebraMap E L)).IsRoot x := by
-    intro x hx
-    have hx' : IsRoot ML.charpoly x := by
-      rw [hcL]
-      exact (Polynomial.mem_roots (hmon.map _).ne_zero).mp hx
-    have : Nonempty (Fin (Module.finrank E C)) := by
-      by_contra hne
-      rw [not_nonempty_iff] at hne
-      rw [Matrix.charpoly_isEmpty] at hx'
-      simp at hx'
-    have hsp : x ∈ spectrum L ML := Matrix.mem_spectrum_of_isRoot_charpoly hx'
-    have h2 := spectrum.subset_polynomial_aeval ML (f.map (algebraMap E L)) ⟨x, hsp, rfl⟩
-    rw [hfL, spectrum.zero_eq] at h2
-    exact h2
-  have hsplit : (T.charpoly.map (algebraMap E L)).Splits := IsAlgClosed.splits _
-  have hnd : (T.charpoly.map (algebraMap E L)).roots.Nodup := Polynomial.nodup_roots (hs.map)
-  have hfL0 : f.map (algebraMap E L) ≠ 0 :=
-    (Polynomial.map_ne_zero_iff (algebraMap E L).injective).mpr hf0
-  have hdvd : T.charpoly.map (algebraMap E L) ∣ f.map (algebraMap E L) := by
-    rw [hsplit.eq_prod_roots_of_monic (hmon.map _),
-      Multiset.prod_X_sub_C_dvd_iff_le_roots hfL0, Multiset.le_iff_subset hnd]
-    intro x hx
-    exact (Polynomial.mem_roots hfL0).mpr (hroot x hx)
-  exact (Polynomial.map_dvd_map (algebraMap E L) (algebraMap E L).injective hmon).mp hdvd
+  exact GlobalTheory.SepGen.charpoly_dvd g hs f hf
 
 theorem isReduced (g : C) (hs : (LinearMap.mulLeft E g).charpoly.Separable) : IsReduced C := by
-  classical
-  have hint : IsIntegral E g := IsIntegral.of_finite E g
-
-  have hμ : (LinearMap.mulLeft E g).charpoly ∣ minpoly E g := chi_dvd g hs _ (minpoly.aeval E g)
-  have hdeg : Module.finrank E C ≤ (minpoly E g).natDegree := by
-    rw [← LinearMap.charpoly_natDegree (LinearMap.mulLeft E g)]
-    exact Polynomial.natDegree_le_of_dvd hμ (minpoly.ne_zero hint)
-  have htop : Algebra.adjoin E ({g} : Set C) = ⊤ := by
-    have h1 : Module.finrank E (Algebra.adjoin E ({g} : Set C)) = (minpoly E g).natDegree :=
-      (Algebra.adjoin.powerBasis hint).finrank
-    have h2 : Module.finrank E (Subalgebra.toSubmodule (Algebra.adjoin E ({g} : Set C))) =
-        (minpoly E g).natDegree := (Subalgebra.finrank_toSubmodule _).trans h1
-    apply Algebra.toSubmodule_eq_top.mp
-    apply Submodule.eq_top_of_finrank_eq
-    exact le_antisymm (Submodule.finrank_le _) (hdeg.trans h2.ge)
-
-  have hss : Module.End.IsSemisimple (LinearMap.mulLeft E g) :=
-    Module.End.isSemisimple_of_squarefree_aeval_eq_zero hs.squarefree (LinearMap.aeval_self_charpoly _)
-  have hlm : Algebra.lmul E C g = LinearMap.mulLeft E g := by
-    ext x
-    simp
-  refine ⟨fun x hx => ?_⟩
-  have hxmem : x ∈ Algebra.adjoin E ({g} : Set C) := by
-    rw [htop]
-    exact Algebra.mem_top
-  rw [Algebra.adjoin_singleton_eq_range_aeval] at hxmem
-  obtain ⟨p, rfl⟩ := (AlgHom.mem_range _).mp hxmem
-  have hsp : Module.End.IsSemisimple (Algebra.lmul E C (aeval g p)) := by
-    rw [← Polynomial.aeval_algHom_apply, hlm]
-    exact Module.End.IsSemisimple.aeval hss p
-  have hnil : IsNilpotent (Algebra.lmul E C (aeval g p)) := hx.map (Algebra.lmul E C)
-  have h0 := Module.End.eq_zero_of_isNilpotent_isSemisimple hnil hsp
-  exact Algebra.lmul_injective (h0.trans (map_zero _).symm)
+  exact GlobalTheory.SepGen.isReduced g hs
 
 theorem eq_zero_of_trace [CharZero E] (g : C) (hs : (LinearMap.mulLeft E g).charpoly.Separable) (x : C)
     (hx : ∀ y, Algebra.trace E C (x * y) = 0) : x = 0 := by
@@ -737,31 +656,13 @@ theorem N_one (h : Half B e π) (he : e ∈ Algebra.adjoin K.O ({B.g} : Set B.A)
 
   have hsurj : Function.Surjective ((Units.map (π : B.A →* C)).comp B.T.subtype) := by
     intro u
-    obtain ⟨w, hw⟩ := h.surj (u : C)
-    obtain ⟨w', hw'⟩ := h.surj ((u⁻¹ : Cˣ) : C)
-    have he2 : e * e = e := h.idem
-    have hsw : B.σ e = 1 - e := eq_sub_of_add_eq' h.swap
-    have hes : e * B.σ e = 0 := by rw [hsw, mul_sub, mul_one, he2, sub_self]
-    have hss : B.σ e * B.σ e = B.σ e := by rw [← map_mul, he2]
-    have hww : e * (w * w') = e := by
-      apply h.ext
-      · rw [map_mul, map_mul, hw, hw', h.map_e, Units.mul_inv, mul_one]
-      · rw [map_mul, map_mul, h.map_sigma, zero_mul]
-    set t₀ : B.A := e * w + B.σ (e * w') with ht₀
-    have hσt : B.σ t₀ = B.σ e * B.σ w + e * w' := by
-      rw [ht₀, map_add (f := _), B.σ_σ, map_mul]
-    have h1 : t₀ * B.σ t₀ = 1 := by
-      have hww' : B.σ e * (B.σ w' * B.σ w) = B.σ e := by
-        rw [← map_mul, ← map_mul, mul_comm w' w, hww]
-      calc t₀ * B.σ t₀ = e * e * (w * w') + (e * B.σ e) * (w * B.σ w)
-            + (B.σ e * B.σ e) * (B.σ w' * B.σ w) + (e * B.σ e) * (w' * B.σ w') := by
-              rw [hσt, ht₀, map_mul]; ring
-        _ = e + B.σ e := by rw [he2, hes, hss, hww, hww']; ring
-        _ = 1 := h.swap
-    refine ⟨⟨Units.mkOfMulEqOne t₀ (B.σ t₀) h1, h1⟩, ?_⟩
-    apply Units.ext
-    show π t₀ = (u : C)
-    rw [ht₀, map_add (f := _), map_mul, map_mul, map_mul, h.map_e, hw, h.map_sigma, one_mul, zero_mul, add_zero]
+    obtain ⟨s, hs1, hs2⟩ := h.exists_sec
+    let t : B.A := s (u : C) + B.σ (s ↑(u⁻¹ : Cˣ))
+    have ht : π t = (u : C) := by simp [t, hs1, hs2]
+    have hσt : π (B.σ t) = ↑(u⁻¹ : Cˣ) := by simp [t, B.σ_σ, hs1, hs2]
+    have hN : t * B.σ t = 1 :=
+      h.ext (by simp [map_mul, ht, hσt]) (by simp [map_mul, B.σ_σ, ht, hσt])
+    exact ⟨⟨Units.mkOfMulEqOne t (B.σ t) hN, hN⟩, Units.ext ht⟩
   show orbSum K.O B.T (B.X 1) (fun _ => 1) =
     orbSum K.O ⊤ {L : Submodule K.O C | IsLat K.O K.E L ∧ ∀ y ∈ L, π B.g * y ∈ L} (fun _ => 1)
   refine orbSum_hom B.T ((Units.map (π : B.A →* C)).comp B.T.subtype) hsurj (B.X 1) _
@@ -830,46 +731,23 @@ theorem half_quot (B : InvAlg K) {e f : B.A} (hi : e * e = e) (hef : e + f = 1) 
         (LinearMap.mulLeft K.E (Ideal.Quotient.mk (Ideal.span {e}) B.g)).charpoly := by
   have hf : f = 1 - e := by rw [← hef]; ring
   have hef0 : e * f = 0 := by rw [hf, mul_sub, mul_one, hi, sub_self]
-  have hfe0 : f * e = 0 := by rw [mul_comm]; exact hef0
-  have hff : f * f = f := by
-    rw [hf]
-    calc (1 - e) * (1 - e) = 1 - e - e + e * e := by ring
-      _ = 1 - e := by rw [hi]; ring
   set I : Ideal B.A := Ideal.span {f} with hI
   set J : Ideal B.A := Ideal.span {e} with hJ
-
+  have hIf : Ideal.Quotient.mk I f = 0 :=
+    Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self f)
   have hIe : Ideal.Quotient.mk I e = 1 := by
-    rw [← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]
-    rw [show e - 1 = -f by rw [hf]; ring]
-    exact I.neg_mem (Ideal.mem_span_singleton_self f)
-  have hJe : Ideal.Quotient.mk J e = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self e)
-  have hIf : Ideal.Quotient.mk I f = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self f)
-  have hJf : Ideal.Quotient.mk J f = 1 := by
-    rw [← map_one (Ideal.Quotient.mk J), Ideal.Quotient.eq]
-    rw [show f - 1 = -e by rw [hf]; ring]
-    exact J.neg_mem (Ideal.mem_span_singleton_self e)
-
-  let Φ : B.A →ₐ[K.E] (B.A ⧸ I) × (B.A ⧸ J) := (Ideal.Quotient.mkₐ K.E I).prod (Ideal.Quotient.mkₐ K.E J)
-  have hΦ : Function.Bijective Φ := by
-    constructor
-    · rw [injective_iff_map_eq_zero]
-      intro y hy
-      have h1 : Ideal.Quotient.mk I y = 0 := congrArg Prod.fst hy
-      have h2 : Ideal.Quotient.mk J y = 0 := congrArg Prod.snd hy
-      rw [Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.mem_span_singleton] at h1
-      rw [Ideal.Quotient.eq_zero_iff_mem, hJ, Ideal.mem_span_singleton] at h2
-      obtain ⟨a, rfl⟩ := h1
-      obtain ⟨b, hb⟩ := h2
-      calc f * a = f * (f * a) := by rw [← mul_assoc, hff]
-        _ = f * (e * b) := by rw [hb]
-        _ = 0 := by rw [← mul_assoc, hfe0, zero_mul]
-    · rintro ⟨u, v⟩
-      obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective u
-      obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective v
-      refine ⟨a * e + b * f, ?_⟩
-      show (Ideal.Quotient.mk I (a * e + b * f), Ideal.Quotient.mk J (a * e + b * f)) = _
-      simp only [map_add (f := _), map_mul, hIe, hIf, hJe, hJf, mul_one, mul_zero, add_zero, zero_add]
-  let Ψ : B.A ≃ₐ[K.E] (B.A ⧸ I) × (B.A ⧸ J) := AlgEquiv.ofBijective Φ hΦ
+    simpa only [map_add, hIf, add_zero, map_one] using congrArg (Ideal.Quotient.mk I) hef
+  have hJe : Ideal.Quotient.mk J e = 0 :=
+    Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self e)
+  have hcop : IsCoprime I J :=
+    (Ideal.isCoprime_span_singleton_iff f e).2 ⟨1, 1, by simpa [add_comm] using hef⟩
+  have hProd : I * J = ⊥ := by
+    rw [hI, hJ, Ideal.span_singleton_mul_span_singleton, mul_comm f e, hef0]
+    simp
+  let ΨR := (RingEquiv.quotientBot B.A).symm.trans <|
+    (Ideal.quotEquivOfEq hProd.symm).trans (Ideal.quotientMulEquivQuotientProd I J hcop)
+  let Ψ : B.A ≃ₐ[K.E] (B.A ⧸ I) × (B.A ⧸ J) :=
+    { __ := ΨR, commutes' a := rfl }
   have hΨ : ∀ y, Ψ y = (Ideal.Quotient.mk I y, Ideal.Quotient.mk J y) := fun y => rfl
   refine ⟨⟨hi, by rw [hs]; exact hef, Ideal.Quotient.mkₐ_surjective K.E I, ?_, ?_⟩, ?_⟩
   · intro y
