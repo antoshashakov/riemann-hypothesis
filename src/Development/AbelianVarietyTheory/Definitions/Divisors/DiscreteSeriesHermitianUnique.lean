@@ -93,14 +93,6 @@ structure Hypotheses₂ : Prop where
 
   greenSeriesSt : GlobalTheory.Published.GreenSeriesSt
 
-  linnik : GlobalTheory.Published.Linnik
-
-  complexMultiplicationJSt : GlobalTheory.Published.ComplexMultiplicationJSt
-
-  cuspidalMirabolic : GlobalTheory.Published.CuspidalMirabolic
-
-  weylBranching : GlobalTheory.Published.WeylBranching
-
   bernsteinUnitaryProductIrreducible : GlobalTheory.Published.BernsteinUnitaryProductIrreducible
 
   zelevinskyPolynomialRing : GlobalTheory.Published.ZelevinskyPolynomialRing
@@ -115,17 +107,11 @@ structure Hypotheses₂ : Prop where
 
   siegelWeilAnisotropicUnitary : GlobalTheory.Published.SiegelWeilAnisotropicUnitary
 
-  rallisInnerProductConvergent : GlobalTheory.Published.RallisInnerProductConvergent
-
   regularisedSiegelWeilFirstTerm : GlobalTheory.Published.RegularisedSiegelWeilFirstTerm
 
   doublingMethod : GlobalTheory.Published.DoublingMethod
 
   unramifiedDoublingGL : GlobalTheory.Published.UnramifiedDoublingGL
-
-  hermitianLocalGlobal : GlobalTheory.Published.HermitianLocalGlobal
-
-  quadraticClassFieldTheory : GlobalTheory.Published.QuadraticClassFieldTheory
 
   labesseWaldspurger : GlobalTheory.Published.LabesseWaldspurger
 
@@ -134,10 +120,6 @@ structure Hypotheses₂ : Prop where
   harishChandraCharacters : GlobalTheory.Published.HarishChandraCharacters
 
   langlandsClassification : GlobalTheory.Published.LanglandsClassification
-
-  borelCasselman : GlobalTheory.Published.BorelCasselman
-
-  radfordShufflePolynomial : GlobalTheory.Published.RadfordShufflePolynomial
 
   dixmierMalliavinFactorisation : GlobalTheory.Published.DixmierMalliavinFactorisation
 
@@ -149,17 +131,9 @@ structure Hypotheses₂ : Prop where
 
   kFiniteVectorsUnitary : GlobalTheory.Published.KFiniteVectorsUnitary
 
-  discreteSeriesLowestKType : GlobalTheory.Published.DiscreteSeriesLowestKType
-
-  holomorphicDiscreteSeries : GlobalTheory.Published.HolomorphicDiscreteSeries
-
-  gKGlobalisation : GlobalTheory.Published.GKGlobalisation
-
   cuspBounded : GlobalTheory.Published.CuspBounded
 
   strongApproxSU : GlobalTheory.Published.StrongApproxSU
-
-  heckeLEntireAndNonzeroAtOne : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne
 
   realMetaplecticRepresentation : GlobalTheory.Published.RealMetaplecticRepresentation
 
@@ -167,27 +141,13 @@ structure Hypotheses₂ : Prop where
 
   besselUniquenessReal : GlobalTheory.Published.BesselUniquenessReal
 
-  gLHoweDuality : GlobalTheory.Published.GLHoweDuality
-
-  kudlaSplittingSplitUnitary : GlobalTheory.Published.KudlaSplittingSplitUnitary
-
-  metaplecticRepresentation : GlobalTheory.Published.MetaplecticRepresentation
-
   harishChandraModules : GlobalTheory.Published.HarishChandraModules
 
   discreteSeriesCover : GlobalTheory.Published.DiscreteSeriesCover
 
-  idealInvariantsOneOrbitSt : GlobalTheory.Published.IdealInvariantsOneOrbitSt
-
-  hermitianHassePrinciple : GlobalTheory.Published.HermitianHassePrinciple
-
-  stoneVonNeumann : GlobalTheory.Published.StoneVonNeumann
-
   discreteSeriesUpqExists : GlobalTheory.Published.DiscreteSeriesUpqExists
 
   formalDegreeCompactDual : GlobalTheory.Published.FormalDegreeCompactDual
-
-  thetaRationalInvariance : GlobalTheory.Published.ThetaRationalInvariance
 
   discreteSeriesHermitianUnique : GlobalTheory.Published.DiscreteSeriesHermitianUnique
 
