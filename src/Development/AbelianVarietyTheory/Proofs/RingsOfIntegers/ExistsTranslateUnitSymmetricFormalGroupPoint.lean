@@ -12,7 +12,11 @@ public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConstantSe
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.EvalIotaSeriesEqQuadraticInversionPartialsStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.EvalThetaSeriesMulQuadraticPartialsStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsPowerSeriesLimitOfCompatibleJetPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsSymmetricLiftOddOrderLocalRingStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.BaseOver
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThetaPt
+public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsSymmetricLiftOddOrderLocalRing
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupPointsOfIntegralChartSpec
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.GermSymmetricTranslateFibreEqModelStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IntegralChartFormalBiextensionGaugeBound
@@ -557,7 +561,7 @@ theorem model_unit {tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)}
     have := congrArg (s ≫ ·) q
     simp only [← Category.assoc, MonObj.comp_one] at this
     rwa [base_ext (s ≫ _) (𝟙 _), Category.id_comp] at this
-  obtain ⟨U, hU⟩ := GlobalTheory.T.exists_symmetric_lift_odd_order_localRing E H V t hs k hk aV hak
+  obtain ⟨U, hU⟩ := _root_.GlobalTheory.SymLiftConst.exists_symLift_local E H V t hs k hk aV hak
   obtain ⟨j, hj0⟩ := Geo.Tor.exists_chart t.PP.isLB (η[t.G].left (closedPoint V))
   have hj : ⊤ ≤ η[t.G].left ⁻¹ᵁ t.PP.L.U j :=
     ((IsLocalRing.closedPoint_mem_iff (R := V) (η[t.G].left ⁻¹ᵁ t.PP.L.U j)).1 hj0).ge

@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
-public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsUniqueNormalisedPullbackRationalNormStatement
+public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsUniqueNormalisedPullbackRationalNorm
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsUniqueSymmetricTranslateOddLevelStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsNormalisedPullbackSectionMulStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.NormalisedPullbackCommutesSymmetricTranslationsStatement
@@ -78,21 +78,21 @@ theorem uu_eq_pull_reach : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     · right; exact Nat.pow_le_pow_left (n := 2) (by omega) 2
   refine ⟨hsq, ?_⟩
   obtain ⟨F₀, F₁, hF₀, hF₁, hF₂⟩ := ((GlobalTheory.T.symmetricTranslates_multiplication_pullback_description E H Dw l Xo S x N hodd s).1 x₁ x₂ F h₁ h₂).1 hUU
-  obtain ⟨G₀, hG₀, -⟩ := GlobalTheory.T.existsUnique_normalisedPullback_rational_norm E H Dw l Xo S x (n' : 𝓞 E) (n' ^ 2) 1 (n' ^ 2) hn (Nat.one_mul _).symm s
+  obtain ⟨G₀, hG₀, -⟩ := _root_.GlobalTheory.existsUnique_pulls E H Dw l Xo S x (n' : 𝓞 E) (n' ^ 2) 1 (n' ^ 2) hn (Nat.one_mul _).symm s
   obtain ⟨G₁, hG₁, -⟩ := (GlobalTheory.T.existsUnique_symmetricTranslate_oddLevel E H Dw l Xo S x (n' ^ 2) ho1 _ h₁' G₀).1
-  obtain ⟨K₁, hK₁, -⟩ := GlobalTheory.T.existsUnique_normalisedPullback_rational_norm E H Dw l Xo S x α A (n' ^ 2) (n' ^ 2 * A) hα rfl G₁
+  obtain ⟨K₁, hK₁, -⟩ := _root_.GlobalTheory.existsUnique_pulls E H Dw l Xo S x α A (n' ^ 2) (n' ^ 2 * A) hα rfl G₁
   obtain ⟨hh, hhh, -⟩ := (GlobalTheory.T.existsUnique_symmetricTranslate_oddLevel E H Dw l Xo S x (n' ^ 2 * A) ho2 _ h₂' K₁).1
   refine ⟨hh, ?_, ?_⟩
   · refine Reach.move _ _ K₁ hh (Reach.pull (n' ^ 2) A _ α G₁ K₁ ?_ hlev hoA hα rfl hK₁) hhh
     refine Reach.move _ _ G₀ G₁ ?_ hG₁
     exact Reach.pull 1 (n' ^ 2) _ _ s G₀ Reach.base (Or.inl rfl) ho1 hn (Nat.one_mul _).symm hG₀
   · have hsq' : N ^ 2 = n' ^ 2 * (A * Bn) := by rw [hsq, Nat.mul_assoc]
-    obtain ⟨P, hP, -⟩ := GlobalTheory.T.existsUnique_normalisedPullback_rational_norm E H Dw l Xo S x (α * β) (A * Bn) (n' ^ 2) (N ^ 2) hαβ hsq' G₀
-    obtain ⟨Q, hQ, -⟩ := GlobalTheory.T.existsUnique_normalisedPullback_rational_norm E H Dw l Xo S x β Bn (n' ^ 2 * A) (N ^ 2) hβ hsq K₁
-    obtain ⟨R, hR, -⟩ := GlobalTheory.T.existsUnique_normalisedPullback_rational_norm E H Dw l Xo S x β Bn (n' ^ 2 * A) (N ^ 2) hβ hsq hh
+    obtain ⟨P, hP, -⟩ := _root_.GlobalTheory.existsUnique_pulls E H Dw l Xo S x (α * β) (A * Bn) (n' ^ 2) (N ^ 2) hαβ hsq' G₀
+    obtain ⟨Q, hQ, -⟩ := _root_.GlobalTheory.existsUnique_pulls E H Dw l Xo S x β Bn (n' ^ 2 * A) (N ^ 2) hβ hsq K₁
+    obtain ⟨R, hR, -⟩ := _root_.GlobalTheory.existsUnique_pulls E H Dw l Xo S x β Bn (n' ^ 2 * A) (N ^ 2) hβ hsq hh
     have hPN : Pulls Xo (N : 𝓞 E) s P := hN' ▸ GlobalTheory.T.isNormalisedPullbackSection_mul E H Dw l Xo S x _ _ _ _ _ s G₀ P hG₀ hP
     have hPF : P = F₀ :=
-      (GlobalTheory.T.existsUnique_normalisedPullback_rational_norm E H Dw l Xo S x (N : 𝓞 E) (N ^ 2) 1 (N ^ 2) hNN (Nat.one_mul _).symm s).unique hPN hF₀
+      (_root_.GlobalTheory.existsUnique_pulls E H Dw l Xo S x (N : 𝓞 E) (N ^ 2) 1 (N ^ 2) hNN (Nat.one_mul _).symm s).unique hPN hF₀
     have hQ' : Pulls Xo (α * β) G₁ Q := GlobalTheory.T.isNormalisedPullbackSection_mul E H Dw l Xo S x _ _ _ _ _ G₁ K₁ Q hK₁ hQ
     have hm₁ : Moves Xo x₁ P Q :=
       GlobalTheory.T.normalisedPullback_commutes_symmetric_translations E H Dw l Xo S x (α * β) (A * Bn) _ _ hαβ hsq' hoN _ x₁ rfl h₁ G₀ G₁ P Q hG₁ hP hQ'

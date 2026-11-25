@@ -4,7 +4,11 @@ public import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.Adapt
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.NatCastMulCoeffOfPderivEq
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ConstantDvdTraceOfJacobianFiniteColengthStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DetJacobianFormalModuleMatrixEqConstMulUnitStatement
-public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsFiniteBasisPowerSeriesSubstFiniteColengthStatement
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Mathlib.RingTheory.LocalRing.ResidueField.Defs
+public import Mathlib.RingTheory.MvPowerSeries.Substitution
+public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsFiniteBasisPowerSeriesSubstFiniteColength
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsPowSpanXLeSpanFormalModuleMatrixStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalGroupTranslateAutomorphismAndMatrixKernelStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.FormalMatrixKernelFiniteNcardEqRankStatement
@@ -249,9 +253,9 @@ theorem sum_shift_kerM_mul : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscret
   obtain ⟨hfin, hcard⟩ := GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank V d O B hB n (p * q) s N hN h1 hj hsp
   obtain ⟨-, hcardq⟩ := GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank V d O B hB n q _ N hN hq hjq hsq
   have cp := GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n p _ N hN hp
-  obtain ⟨r, b, -, hb⟩ := GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B p) (crd_const B p) cp
-  obtain ⟨r', b', hr', hb'⟩ := GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B q) (crd_const B q) (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n q _ N hN hq)
-  obtain ⟨r'', b'', hr'', hb''⟩ := GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B (p * q)) (crd_const B _)
+  obtain ⟨r, b, -, hb⟩ := _root_.GlobalTheory.FiniteColength.exists_basis_subst_finrank_quotient V _ (crd B p) (crd_const B p) cp
+  obtain ⟨r', b', hr', hb'⟩ := _root_.GlobalTheory.FiniteColength.exists_basis_subst_finrank_quotient V _ (crd B q) (crd_const B q) (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n q _ N hN hq)
+  obtain ⟨r'', b'', hr'', hb''⟩ := _root_.GlobalTheory.FiniteColength.exists_basis_subst_finrank_quotient V _ (crd B (p * q)) (crd_const B _)
     (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n _ s N hN h1)
   refine ⟨hfin, ?_⟩
   choose M hM using fun j => (hb (f' * b j)).exists

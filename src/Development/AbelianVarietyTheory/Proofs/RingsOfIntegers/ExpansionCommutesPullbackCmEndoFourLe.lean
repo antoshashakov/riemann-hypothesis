@@ -9,7 +9,7 @@ public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsSecK
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MemBasicOpenIffGs
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.MixedCrossIdentityGenericFibreStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.UnifPreGenericFibreSurjectiveAppTopAndIsIntegral
-public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ValueAtUnitSectionGenericFibreStatement
+public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ValueAtUnitSectionGenericFibre
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -141,7 +141,7 @@ theorem expands_pull_of_four_le : Laws → ∀ (V : Type) [CommRing V] [IsDomain
       rw [hb _ _ y J hJ, sval_pullMulSec _ _ u hu _ y hJ, Category.id_comp]
       exact hc s₀ y J hJ) unitK y J hJ'
     rw [hb _ _ y J hJ', sval_pullMulSec _ _ u hu _ y hJ', unitK_endK] at e₁
-    have e₂ := GlobalTheory.T.value_at_unitSection_genericFibre hLaws V E H t P a N hN hN0 k s₀ _ _ _ (hFx s₀) (hsp _) (hFp _) y J hJ'
+    have e₂ := _root_.GlobalTheory.GenericUnitValue.value_at_generic_unit hLaws V E H t P a N hN hN0 k s₀ _ _ _ (hFx s₀) (hsp _) (hFp _) y J hJ'
     have e₃ : val u unitK y J = val (L := P.U.LG.L) P.U.LG.rig (jK V) y J ^ (k * (N - 1)) := by
       have e := val_corr hJ' hn (𝟙 _)
       rw [val_pull hJ', val_pull hJ', Category.id_comp, Category.id_comp, val_pow] at e
