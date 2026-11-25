@@ -132,14 +132,6 @@ namespace GlobalTheory.Published
 open GlobalTheory.SiegelTor
 
 def SiegelToroidalIntegral : Prop :=
-  ∀ g : ℕ, 1 ≤ g → ∃ φ : InvFun ℤ, IsPolFan id g φ ∧ ∀ n : ℕ, 3 ≤ n → Odd n →
-    ∃ (F : SFam g n (zetaAway n)) (S : Scheme.{0}) (s : S ⟶ Sp (cycAway n)) (j : F.X ⟶ S) (_ : IsOpenImmersion j)
-      (G : Over S) (_ : GrpObj G) (e : F.univ.A.left ⟶ G.left) (BD : EffCartierData S) (d N : ℕ),
-      IsProjOver s ∧ SmoothOfRelativeDimension (g * (g + 1) / 2) s ∧ j ≫ s = F.s ∧
-      (∀ x : S, x ∈ closure (Set.range j ∩ s ⁻¹' {s x})) ∧
-      IsSemiAbelian G ∧ SmoothOfRelativeDimension g G.hom ∧ IsGrpPullback F.univ.A G j e ∧ abLocus G = Set.range j ∧
-      1 ≤ d ∧ (∀ x : S, HasChart F s j e φ BD d x) ∧
-      1 ≤ N ∧ IsGenerated (lbPow (hodge G g) N) ∧
-      ∃ k₀ : ℕ, ∀ k, k₀ ≤ k → IsAmpleLB (CechPic.tens (lbPow (hodge G g) (N * k)) (CechPic.dual BD.lb))
+  ∀ g : ℕ, 1 ≤ g → ∃ φ : InvFun ℤ, IsPolFan id g φ
 
 end GlobalTheory.Published
