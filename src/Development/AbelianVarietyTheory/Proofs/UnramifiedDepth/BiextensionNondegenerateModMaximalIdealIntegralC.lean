@@ -11,16 +11,18 @@ public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FiniteFlatSur
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RatioTranslate
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.UniformisationTriplesCompleteDVRTorsion
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AbelianPartProjectionRespectsOrthogonalityStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AlphaPHomomorphismCubicalWeilTrivialRationalTorsStatement
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AbelianPartProjectionRespectsOrthogonality
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AlphaPHomomorphismCubicalWeilTrivialRationalTors
 import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.AlphaPMultiplicativeCharacterEqOneStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CubicalWeilTrivialOfLocalArtinianPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DegenerateDirectionOfNotNondegenerateStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqOneOfTangentVectorEqOneStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsAlgClosedResidueFieldValuedFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFiniteExtensionSplitSpecialFibrePointStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFormalChartPointNilpotentCoordinatesStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIsTorusExtensionOnPointsModIdealStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CubicalWeilTrivialOfLocalArtinianPoints
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DegenerateDirectionOfNotNondegenerate
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqOneOfTangentVectorEqOne
+public import Formalism.LocalToGlobal.CharacterGerms.HostTraceIdentity
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsAlgClosedResidueFieldValuedField
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFiniteExtensionSplitSpecialFibrePoint
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsFormalChartPointNilpotentCoordinates
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIsTorusExtensionOnPointsModIdeal
 public import Mathlib.Algebra.CharP.Defs
 public import Mathlib.LinearAlgebra.FreeModule.Basic
 public import Mathlib.RingTheory.Finiteness.Defs
@@ -29,12 +31,14 @@ public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPthR
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
 public import ReciprocityTheory.DualLattices.FormalChartAtZero
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsRingHomValuationRingOfEmbOKStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsTorusExtensionPointsPullbackFieldPointStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FramePartialLawsNilpotentCoordinatesStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntegralFramedPointModelPolarisedGenericFibreStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NotNondegenerateOfDegenerateSeriesDirectionStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.UniversalChartPointsOverFieldPointStatement
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsRingHomValuationRingOfEmbOK
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsTorusExtensionPointsPullbackFieldPoint
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FramePartialLawsNilpotentCoordinates
+public import Formalism.LocalToGlobal.ProjectiveLattices.ChartDirectionsIntegral
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntegralFramedPointModelPolarisedGenericFibre
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NotNondegenerateOfDegenerateSeriesDirection
+public import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.UniversalChartPointsOverFieldPoint
 import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -108,7 +112,7 @@ theorem eps_pow : (DualNumber.eps : DualNumber Ω) ^ p = 0 :=
 theorem eq_one_of_torus (h : IsTorExt s s' G B X τ io) {g : Fam s G} (hg : IsAlpha p s G g)
     (h1 : τ _ (g (DualNumber Ω) DualNumber.eps) = 1) : g (DualNumber Ω) DualNumber.eps = 1 := by
   classical
-  have h2 := GlobalTheory.T.eq_one_of_tangent_vector_eq_one Ω p S' s' B _ (hg.map h) h1
+  have h2 := _root_.GlobalTheory.AlphaPair.IsAlpha.eq_one_of_tangent Ω p S' s' B _ (hg.map h) h1
   have h3 : ∀ (A : Type) [CommRing A] [Algebra Ω A] (a : A), ∃ χ, a ^ p = 0 → io A χ = g A a := fun A _ _ a => by
     by_cases ha : a ^ p = 0
     · obtain ⟨χ, hχ⟩ := (h.2.2.2.1 A _).1 (h2 A a ha)
@@ -161,11 +165,11 @@ theorem NonDeg.of_perf [IsAlgClosed Ω] (hf : IsFinite ((𝟙 G) ^ p : G ⟶ G).
   intro g hg ho
   have hp := (Fact.out : p.Prime).ne_zero
   have : Module.Finite Ω (DualNumber Ω) := inferInstanceAs (Module.Finite Ω (Ω × Ω))
-  refine hP _ _ (hg.pow_eq_one hp eps_pow) (GlobalTheory.T.cubicalWeil_trivial_of_localArtinian_points Ω S s G L c p hf (DualNumber Ω) _ (hg.pow_eq_one hp eps_pow)
+  refine hP _ _ (hg.pow_eq_one hp eps_pow) (_root_.GlobalTheory.AlphaPair.cubWeil_one_of_local_artinian Ω S s G L c p hf (DualNumber Ω) _ (hg.pow_eq_one hp eps_pow)
     fun A _ _ π hπ f y hy => ?_)
   have he : f DualNumber.eps ^ 2 = 0 := by rw [← map_pow, pow_two, DualNumber.eps_mul_eps, map_zero]
   have hx : (homAt s π ≫ y) ^ p = 1 := by rw [← MonObj.comp_pow, hy, MonObj.comp_one]
-  have k₁ := GlobalTheory.T.alphaP_homomorphism_cubicalWeil_trivial_rational_torsion Ω p S s G L c g hg _ hx A _ (pow_p_of_sq he)
+  have k₁ := _root_.GlobalTheory.AlphaPair.cubWeil_alpha_rational Ω p S s G L c g hg _ hx A _ (pow_p_of_sq he)
   have k₂ := ho A π hπ _ he (y * (homAt s (Algebra.ofId Ω A) ≫ homAt s π ≫ y)⁻¹)
     (by rw [MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc (homAt s π), hom_comp,
       Subsingleton.elim (π.comp (Algebra.ofId Ω A)) (AlgHom.id Ω Ω), hom_id, Category.id_comp, mul_inv_cancel])
@@ -198,13 +202,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 theorem nonDeg_of_polAt {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : GlobalTheory.LN.CDvr V) (t : SAB H (Sp V))
     (ht : GlobalTheory.LN.PolAt t (Out.jK V)) {Ω : Type} [Field Ω] [IsAlgClosed Ω] (p : ℕ) [Fact p.Prime] [CharP Ω p]
     (β : V →+* Ω) (hβ : ∀ a ∈ maximalIdeal V, β a = 0) : NonDeg p (spMap β) t.G t.cub := by
-  obtain ⟨W, _, _, _, f, β', t', m, hW, hf, hβ', ht', hs⟩ := GlobalTheory.T.exists_finite_extension_split_special_fibre_point E H V hV t ht Ω β hβ
-  obtain ⟨τ, io, h₁, h₂⟩ := GlobalTheory.T.exists_torusExtension_points_pullback_fieldPoint E H _ _ _ t t' m Ω (spMap β) (spMap β') (by
+  obtain ⟨W, _, _, _, f, β', t', m, hW, hf, hβ', ht', hs⟩ := _root_.GlobalTheory.SplitPoint.exists_split_extension E H V hV t ht Ω β hβ
+  obtain ⟨τ, io, h₁, h₂⟩ := _root_.GlobalTheory.AlphaPair.exists_isTorExt_pull E H _ _ _ t t' m Ω (spMap β) (spMap β') (by
     rw [← hf]; exact (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom β')).symm) p
   refine NonDeg.of_torExt h₁ h₂ ?_
   obtain ⟨P, -⟩ := GlobalTheory.LN.uDvrSt_holds E H W hW t' ht' hs
-  obtain ⟨τ', io', k₁, k₂⟩ := GlobalTheory.T.exists_isTorusExtensionOnPoints_mod_ideal W _ P.D.toPre t'.G (P.U.gt 0) Ω β' hβ'
-  have k₃ := GlobalTheory.T.abelianPart_projection_respects_orthogonality W _ P.D P.A t'.G P.U.toUnifPre Ω β' hβ' τ' k₂ p
+  obtain ⟨τ', io', k₁, k₂⟩ := _root_.GlobalTheory.TorExtPoints.exists_isTorExt W _ P.D.toPre t'.G (P.U.gt 0) Ω β' hβ'
+  have k₃ := _root_.GlobalTheory.AlphaPair.transfer_of_unif W _ P.D P.A t'.G P.U.toUnifPre Ω β' hβ' τ' k₂ p
   have := hW.1
   have := hW.2.2
   obtain ⟨f₁, f₂⟩ := perf_of_polAV P.D.toPre.P ⟨_, P.D.toPre.rig, P.D.toPre.P.isLB, P.D.toPre.rig_gen⟩ rfl
@@ -232,21 +236,21 @@ theorem ndg_at_chart : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsC
   letI := H.starRing
   letI := io.toAlgebra
   by_contra hN
-  obtain ⟨Ω, _, _, _, ρ, hρ⟩ := GlobalTheory.T.exists_algClosed_residueField_valuedField C V Y.algClosed
-  obtain ⟨j, hj, hjm⟩ := GlobalTheory.T.exists_ringHom_valuationRing_of_embOK T C V ι' hι
+  obtain ⟨Ω, _, _, _, ρ, hρ⟩ := _root_.GlobalTheory.AlphaPair.ResField.exists_residueField C V Y.algClosed
+  obtain ⟨j, hj, hjm⟩ := _root_.GlobalTheory.embOK_exists_ringHom T C V ι' hι
   have : Fact V.l.Prime := ⟨V.l_prime⟩
   obtain ⟨BT, hF, -, h1, h2, -⟩ := integralChart_formalBiext E H Dw l Xo c T io y C3
   have hF0 : ∀ i, MvPowerSeries.constantCoeff (C3.FT i) = 0 := fun i => hF ▸ BT.G.const i
   have e : V.RR.subtype.comp j = ι'.comp (algebraMap T.V T.Fr) := RingHom.ext hj
-  have hD := GlobalTheory.T.degenerate_direction_of_not_nondegenerate C V _ _ Y T.V j C3.FT C3.ph2T hF0
+  have hD := _root_.GlobalTheory.AlphaPair.Reduce.degenerate_of_not_ndg C V _ _ Y T.V j C3.FT C3.ph2T hF0
     (fun i => by rw [hY.F, e, MvPowerSeries.map_comp]; exact congrArg _ (C3.gen.1.1 i))
     (by rw [hY.ph2, e, MvPowerSeries.map_comp]; exact congrArg _ C3.gen.1.2.2.2.1) Ω ρ hρ hN
-  obtain ⟨P, hP, hL⟩ := GlobalTheory.T.exists_formalChart_point_nilpotent_coordinates E H T.V C3.I.G _ _ _ _ _ _ C3.chartT hF0 Ω (ρ.comp j)
-  refine GlobalTheory.T.not_nondegenerate_of_degenerate_series_direction Ω V.l _ _ C3.I.G.G _ C3.I.G.cub _ _ (MvPowerSeries.map (ρ.comp j) C3.ph1T) _ P
+  obtain ⟨P, hP, hL⟩ := _root_.GlobalTheory.AlphaPair.exists_jetPt E H T.V C3.I.G _ _ _ _ _ _ C3.chartT hF0 Ω (ρ.comp j)
+  refine _root_.GlobalTheory.AlphaPair.DegenDir.not_nonDeg_of_degenerate Ω V.l _ _ C3.I.G.G _ C3.I.G.cub _ _ (MvPowerSeries.map (ρ.comp j) C3.ph1T) _ P
     (fun i => by rw [MvPowerSeries.constantCoeff_map, hF0, map_zero]) ?_ ?_ ?_ hL
-    (GlobalTheory.T.universalChart_points_over_field_point E H T.V C3.I.G _ _ (PowGerm.univSt_holds E H Dw l Xo c T io y C3) Ω _ P hP)
-    (GlobalTheory.T.frame_partial_laws_nilpotent_coordinates E H T.V C3.I.G _ _ _ _ _ _ _ _ _ C3.frameT hF0 Ω _ P hP) hD
-    (nonDeg_of_polAt ⟨T.dvr, T.cpl, T.ch0⟩ C3.I.G (GlobalTheory.T.integralFramedPoint_model_polarised_generic_fibre E H Dw l Xo c T io y.1 C3.I) V.l _
+    (_root_.GlobalTheory.AlphaPair.jetUniv E H T.V C3.I.G _ _ (PowGerm.univSt_holds E H Dw l Xo c T io y C3) Ω _ P hP)
+    (_root_.GlobalTheory.AlphaPair.Cube.isPtCube_of_isFrame E H T.V C3.I.G _ _ _ _ _ _ _ _ _ C3.frameT hF0 Ω _ P hP) hD
+    (nonDeg_of_polAt ⟨T.dvr, T.cpl, T.ch0⟩ C3.I.G (_root_.GlobalTheory.AlphaPair.polAt_of_intData E H Dw l Xo c T io y.1 C3.I) V.l _
       fun a ha => (hρ _).2 (hjm a ha))
   · refine ev_map_eq_one _ _ _ _ ?_ ?_ (h1 ▸ BT.cocycleLeft_zero_fst) <;> intro a b <;> fin_cases a <;> simp [pt]
   · refine ev_map_eq_one _ _ _ _ ?_ ?_ (h1 ▸ BT.cocycleLeft_zero_snd) <;> intro a b <;> fin_cases a <;> simp [pt]

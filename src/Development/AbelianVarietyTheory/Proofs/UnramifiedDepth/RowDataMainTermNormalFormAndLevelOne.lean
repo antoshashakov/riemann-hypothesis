@@ -2,17 +2,18 @@ module
 
 public import Formalism.LocalToGlobal.CharacterGerms.LatticeInclusionFormsInjective
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.TwoMulChainStartIndexAddOneOfOdd
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ChainStepKernelRankLeModMaxIdealStatement
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ChainStepKernelRankLeModMaxIdeal
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CoeffLeafGaugeSubMainTermEqZeroOnFirstAxisStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsUnimodularMulEqNegOfIndependentModMaximalStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugeSubMainTermIntegralLowBidegreeStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IndependentModFirstCoeffChainLastStepStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LeafCoordinateWeightNonnegOfAdaptedChainDataStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PairingKernelLeOfSaturatedSubmoduleStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PowerSemilinearRankNullityModMaxIdealStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RowDataAdaptedChainDataStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightGaugeSubMainTermLeafStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ZetaSeriesLeafMainTermCurveSystemStatement
+public import Formalism.LocalToGlobal.CharacterGerms.Interface
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsUnimodularMulEqNegOfIndependentModMaximal
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.GaugeSubMainTermIntegralLowBidegree
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IndependentModFirstCoeffChainLastStep
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LeafCoordinateWeightNonnegOfAdaptedChainData
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PairingKernelLeOfSaturatedSubmodule
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.PowerSemilinearRankNullityModMaxIdeal
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RowDataAdaptedChainData
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightGaugeSubMainTermLeaf
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ZetaSeriesLeafMainTermCurveSystem
 import Formalism.LocalToGlobal.CharacterGerms.CartesianBoundOnCurves
 public import Formalism.LocalToGlobal.CharacterGerms.CoeffIterateZero
 import Mathlib.Algebra.Order.Floor.Extended
@@ -92,7 +93,7 @@ theorem chain_rank (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod d)
   | succ s ih =>
     obtain ⟨m, cc, hm, hI⟩ := ih (by omega)
     have hsK : s < Kn D.i := by rw [h.2.2.1]; omega
-    obtain ⟨m', cc', hm', hI'⟩ := GlobalTheory.T.powerSemilinear_rank_nullity_mod_maxIdeal C V (I g) m X.j' (V.l ^ 2)
+    obtain ⟨m', cc', hm', hI'⟩ := _root_.GlobalTheory.SemilinearNullity.rank_nullity C V (I g) m X.j' (V.l ^ 2)
       (Nat.one_le_pow _ _ V.l_prime.pos)
       (fun δ c => if D.lev c = s + 1 then chainMat D (s + 1) c (em (cc δ)) else 0)
       (by
@@ -102,7 +103,7 @@ theorem chain_rank (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod d)
         · exact VF.Ge.zero 0)
       (by
         intro N' x hx hxI hxM
-        refine GlobalTheory.T.chainStep_kernel_rank_le_mod_maxIdeal C V d I J X hA g a hb i S Z D h s hs m
+        refine _root_.GlobalTheory.ChainStep.rank_le C V d I J X hA g a hb i S Z D h s hs m
           (fun δ c => chainMat D s c (em (cc δ))) (fun δ c => h.chainMat_int _ _ _) hI N' x hx hxI ?_
         intro ν e he
         have := hxM ν e
@@ -117,7 +118,7 @@ theorem mainVec_rank (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod 
   have hi : Odd i := h.2.2.1 ▸ D.i_odd
   obtain ⟨m, cc, hm, hI⟩ := chain_rank X hA g a hb i S D h N em hem (s0 i) (chainStartIndex_lt_chainLength_of_odd hi)
   refine ⟨m, cc, hm, fun co hco hM => ?_⟩
-  refine GlobalTheory.T.independentMod_firstCoeff_chainLastStep C V d I J X hA g a hb i S Z D h (s0 i) (chainStartIndex_lt_chainLength_of_odd hi) m
+  refine _root_.GlobalTheory.LastStep.indepMod_first_coeff C V d I J X hA g a hb i S Z D h (s0 i) (chainStartIndex_lt_chainLength_of_odd hi) m
     (fun δ c => chainMat D (s0 i) c (em (cc δ))) (fun δ c => h.chainMat_int _ _ _) hI co hco ?_
   intro κ
   have h1 := hM κ
@@ -154,19 +155,19 @@ theorem both (X : RowData C V d I J) (hA : X.Alt) (h5 : 5 ≤ V.l) (g : Fin 2) (
   haveI := X.algClosed
   haveI := X.charZero
   obtain ⟨S, N1, D, hv, hl, hDi, hal, hty, hN1, A, hAint, hAeq⟩ :=
-    GlobalTheory.T.rowData_adaptedChainData C V d I J X hA g a hb i hi hid U hU
+    _root_.GlobalTheory.AdaptedChain.adaptedChainData C V d I J X hA g a hb i hi hid U hU
   have h : Adapted S D a i := ⟨hv, hl, hDi, hal, hty⟩
   obtain ⟨m, c1, hm, hI1⟩ := mainVec_rank X hA g a hb i S D h N1 ⟨D.ι, D.ι_inj⟩ D.ι_lev
   have hΨint : ∀ c0 (u : I (1 - g) → C), (∀ k, V.Ge 0 (u k)) →
       V.Ge 0 (∑ κ : J g, ∑ k : I (1 - g), mainVec S D c0 κ * X.pair g κ k * u k) :=
     fun c0 u hu => VF.Ge.sum fun κ _ => VF.Ge.sum fun k _ =>
       ((h.mainVec_int c0 κ).mul_int (X.pair_int g κ k)).mul_int (hu k)
-  obtain ⟨n0, c2, hn0, hI2⟩ := GlobalTheory.T.powerSemilinear_rank_nullity_mod_maxIdeal C V (Fin X.n) m X.j 1 le_rfl
+  obtain ⟨n0, c2, hn0, hI2⟩ := _root_.GlobalTheory.SemilinearNullity.rank_nullity C V (Fin X.n) m X.j 1 le_rfl
     (fun δ b => ∑ κ : J g, ∑ k : I (1 - g), mainVec S D (D.ι (c1 δ)) κ * X.pair g κ k * U' b k)
     (fun δ b => hΨint _ _ (hU'.1.1 b))
     (by
       intro N x hx hxI hxM
-      refine GlobalTheory.T.pairing_kernel_le_of_saturated_submodule C V d I J X g _ (not_big_add_odd X hA g a hb hi) U' hU' N
+      refine _root_.GlobalTheory.PairCount.pair_kernel_le C V d I J X g _ (not_big_add_odd X hA g a hb hi) U' hU' N
         (fun ν κ => ∑ δ, x ν δ * mainVec S D (D.ι (c1 δ)) κ)
         (fun ν κ => VF.Ge.sum fun δ _ => (hx ν δ).mul_int (h.mainVec_int _ _)) ?_ ?_ ?_
       · intro ν κ hκ
@@ -189,7 +190,7 @@ theorem both (X : RowData C V d I J) (hA : X.Alt) (h5 : 5 ≤ V.l) (g : Fin 2) (
     rw [hty _ (by rw [hem]; exact hK), hem]; simp
   have hemal : ∀ δ x, S.al (em δ) 1 x = 0 := fun δ x =>
     h.al_one (D.pure_good _ (by rw [hem, hDi]; exact hK)) x
-  obtain ⟨hn0n, Y, hYint, hYdet, hYΦ⟩ := GlobalTheory.T.exists_unimodular_mul_eq_neg_of_independent_mod_maximal C V X.n n0
+  obtain ⟨hn0n, Y, hYint, hYdet, hYΦ⟩ := _root_.GlobalTheory.exists_unimodular_mul_eq_neg_of_indepMod C V X.n n0
     (fun b c => ∑ κ : J g, ∑ k : I (1 - g), mainVec S D (em c) κ * X.pair g κ k * U' b k)
     (fun b c => hΨint _ _ (hU'.1.1 b)) hI2
   let v' : Fin X.n → I (1 - g) → C := fun b x => ∑ b', Y b b' * U' b' x
@@ -215,7 +216,7 @@ theorem both (X : RowData C V d I J) (hA : X.Alt) (h5 : 5 ≤ V.l) (g : Fin 2) (
   obtain ⟨SS, rfl⟩ : ∃ SS : ∀ g', Sys (X.G g'), SS g = S :=
     ⟨Function.update (fun g' => (hS0 g').some) g S, by simp⟩
   choose t ht using fun g' => (tExistsUnique (X.G g') (SS g')).exists
-  have hζ := GlobalTheory.T.zetaSeries_leaf_mainTerm_curveSystem C V d (I g) (J g) (X.G g) (SS g) _ D a i h hid (t g) (ht g) n0 em hem
+  have hζ := _root_.GlobalTheory.MainTerm.zeta_leaf_main_term C V d (I g) (J g) (X.G g) (SS g) _ D a i h hid (t g) (ht g) n0 em hem
   refine ⟨n0, fun δ => (SS g).tan (em δ), v',
     fun b c => ∑ κ : J g, ∑ k : I (1 - g), mainVec (SS g) D (em c) κ * X.pair g κ k * v' b k,
     ⟨⟨?_, hn0n⟩, isSat_tan _ em, ⟨fun c => A (c1 (c2 c)), fun c b => hAint _ b, fun c x => ?_⟩,
@@ -235,12 +236,12 @@ theorem both (X : RowData C V d I J) (hA : X.Alt) (h5 : 5 ≤ V.l) (g : Fin 2) (
     refine Finset.sum_congr rfl fun κ _ => ?_
     rw [Finset.sum_comm]
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-  · exact GlobalTheory.T.weight_gauge_sub_mainTerm_leaf C V d I J X hA h5 g a i hi hid SS t ht n0 X.n _ v'
+  · exact _root_.GlobalTheory.MainTermWeight.weight_gauge_sub_main C V d I J X hA h5 g a i hi hid SS t ht n0 X.n _ v'
       (fun c => mainVec (SS g) D (em c)) hety hv'int hv'ty
-      (GlobalTheory.T.leafCoordinate_weight_nonneg_of_adaptedChainData C V d (I g) (J g) (X.G g) (SS g) _ D a i h (t g) (ht g) n0 em hem) hζ
+      (_root_.GlobalTheory.LeafCoordWeight.weight_nonneg C V d (I g) (J g) (X.G g) (SS g) _ D a i h (t g) (ht g) n0 em hem) hζ
   · rintro rfl
     simp only [fun c => funext (h.mainVec_level_one (hem c))]
-    exact GlobalTheory.T.gauge_sub_mainTerm_integral_lowBidegree C V d I J X hA hid g a SS t ht n0 em v' hemty hemal hv'int hv'ty
+    exact _root_.GlobalTheory.MainTerm.mPlus_of_good_tangents C V d I J X hA hid g a SS t ht n0 em v' hemty hemal hv'int hv'ty
 
 theorem main : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type) [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J), X.LemmaM ∧ X.LemmaMPlus := by
   intro C _ V d _ I J _ _ X

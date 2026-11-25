@@ -4,15 +4,19 @@ public import Formalism.LocalToGlobal.CharacterGerms.BiadditiveInSingleVariables
 public import Mathlib.RingTheory.PowerSeries.Exp
 public import ReciprocityTheory.DualLattices.FischerAdjointStatement
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.BlockValueOnRowsEqStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DetFrobeniusSubPowSupportStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DeterminantPairingQuotientValuationLowerBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorialWeightedPairingDetPowProportionalStatement
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DetFrobeniusSubPowSupport
+public import Mathlib.Analysis.SpecialFunctions.Log.Base
+public import Mathlib.RingTheory.Valuation.Basic
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DeterminantPairingQuotientValuationLowerBound
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorialWeightedPairingDetPowProportional
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreAndCapelli
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelliStatement
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelli
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NewtonBoundPosAndNewtonStep
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ProdIccMulFactorial
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RadiiValuationDifferences
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightNonnegExpOfWeightGeInvPrimeSubOneStatement
+public import Mathlib.Algebra.Algebra.Rat
+public import Mathlib.Basic.Real.Basic
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightNonnegExpOfWeightGeInvPrimeSubOne
 public import Formalism.FormalGroupLog.FormalGroupLogProofs.ChainRule
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -621,7 +625,7 @@ theorem main :
     by_contra h
     obtain ⟨q, hq⟩ := hz 0 (by simpa using h)
     simp at hq
-  have hg := GlobalTheory.T.weight_nonneg_exp_of_weight_ge_inv_prime_sub_one C v l hl hv _ _ h₁ h0 hw
+  have hg := _root_.GlobalTheory.ExpWeight.weight_exp C v l hl hv _ _ h₁ h0 hw
   have hg0 := ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.constantCoeff_exp h0
   set g := PowerSeries.subst h₁ (PowerSeries.exp C) with hgdef
   set ψ := MvPolynomial.map (Int.castRingHom C) (psi l (l ^ i) E n) with hψ
@@ -659,7 +663,7 @@ theorem main :
     rw [act_eq, map_sum]
     refine v.map_le_sum fun m hm => ?_
     rw [hψ, ← map_pow] at hm ⊢
-    obtain ⟨a1, a2, a3⟩ := GlobalTheory.T.det_frobenius_sub_pow_support_bounds l i E n s hl hi1 (psi l (l ^ i) E n) rfl m
+    obtain ⟨a1, a2, a3⟩ := _root_.GlobalTheory.det_frobenius_sub_pow_support l i E n s hl hi1 (psi l (l ^ i) E n) rfl m
       (MvPolynomial.support_map_subset _ _ hm)
     rw [actMon, LinearMap.map_smul, LinearMap.map_smul, MvPowerSeries.coeff_monomial_mul, smul_eq_mul, smul_eq_mul]
     split_ifs with hle
@@ -688,7 +692,7 @@ theorem main :
       Finsupp.snd_sumFinsuppEquivProdFinsupp]
     have := real_bound (L := l ^ i) (E := E) h5 (Nat.one_le_pow _ _ hl.pos) (by push_cast; exact hE)
       hs hn a1 (padicValNat l (∏ j, (m (Sum.inr j)).factorial)) (by positivity) (fun hK => by
-        have := (GlobalTheory.T.legendre_bounds_factorial_multiIndex_capelli l hl).2.1 (Fin n × Fin n) (fun j => m (Sum.inr j)) hK
+        have := (_root_.GlobalTheory.LegendreBounds.legendre_bounds l hl).2.1 (Fin n × Fin n) (fun j => m (Sum.inr j)) hK
         simpa [sq] using this)
     simpa only [Nat.cast_mul, Nat.cast_pow] using this
   · intro y
@@ -907,11 +911,11 @@ theorem main : CoefficientExpansionLambda := by
     congr 1
     refine Finset.sum_congr rfl fun s hs => ?_
     have hsy : s ≤ y := Nat.lt_succ_iff.1 (Finset.mem_range.1 hs)
-    have h4 := GlobalTheory.T.factorialWeightedPairing_detPow_proportional C n0 (l ^ i * s) (l ^ i * y) (Q s) (Nat.mul_le_mul_left _ hsy) (hQh s)
+    have h4 := _root_.GlobalTheory.DetPowPairing.pairing_pow_proportional C n0 (l ^ i * s) (l ^ i * y) (Q s) (Nat.mul_le_mul_left _ hsy) (hQh s)
     rw [pair_self, pair_self] at h4
     rw [eq_div_of_mul_eq (hcap _) h4]
     ring
-  · have := GlobalTheory.T.determinantPairing_quotient_valuation_lower_bound C v l hl hv i n0 s (Q s) hs hn (hQv s hs hn)
+  · have := _root_.GlobalTheory.DetPairingBound.main C v l hl hv i n0 s (Q s) hs hn (hQv s hs hn)
     rw [pair_self] at this
     exact this
 

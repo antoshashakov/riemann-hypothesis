@@ -1,10 +1,12 @@
 module
 
 public import Formalism.LocalToGlobal.CharacterGerms.Interface
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenvectorOfGeneralizedEigenUnramifiedStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsEmbeddingCongrIntegralCharacterStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIntegralCharacterGeneralizedEigenStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RingHomEqOfCongruentIntegralUnramifiedStatement
+public import Formalism.LocalToGlobal.CharacterGerms.GeNatCast
+public import Mathlib.Data.Matrix.Mul
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EigenvectorOfGeneralizedEigenUnramified
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsEmbeddingCongrIntegralCharacter
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIntegralCharacterGeneralizedEigen
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RingHomEqOfCongruentIntegralUnramified
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -220,7 +222,7 @@ theorem limit_idempotent_range : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : V
       exact hk
     by_cases hv0 : v = 0
     · subst hv0; simpa using hzero
-    obtain ⟨ψ, hψχ, hψ⟩ := GlobalTheory.T.exists_integral_character_generalizedEigen C V O κ L hL χ v hv0 hgen
+    obtain ⟨ψ, hψχ, hψ⟩ := _root_.GlobalTheory.GenChar.exists_character C V O κ L hL χ v hv0 hgen
     by_cases hw0 : E.mulVec v = 0
     · rw [hw0]; exact hzero
     set w := E.mulVec v with hwdef
@@ -269,7 +271,7 @@ theorem limit_idempotent_range : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : V
       simp only [map_sub, map_mul, Matrix.mulVec_sub, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec,
         Pi.sub_apply]
       ring
-    have heig := GlobalTheory.T.eigenvector_of_generalized_eigen_unramified C V O κ L hL d hd ε hε hF ψ w hψ hgenw hfix
+    have heig := _root_.GlobalTheory.GenEigen.eigen_of_gen_eigen C V O κ L hL d hd ε hε hF ψ w hψ hgenw hfix
     have hnot : ¬ V.MM (ψ ε) := by
       intro hm
       apply hw0
@@ -292,10 +294,10 @@ theorem limit_idempotent_range : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : V
       obtain ⟨y, hy⟩ := hε
       have := hl (ε - 1) y (by rw [← hy]; ring)
       simpa using this
-    obtain ⟨a, ha⟩ := GlobalTheory.T.exists_embedding_congr_integral_character C V O d em h0 h1 ψ hψ fun x hx => by
+    obtain ⟨a, ha⟩ := _root_.GlobalTheory.ResidueChar.main C V O d em h0 h1 ψ hψ fun x hx => by
       obtain ⟨y, hy⟩ := hP x hx
       exact hl x y hy
-    have hψa := GlobalTheory.T.ringHom_eq_of_congruent_integral_unramified C V O d hd ε hε hF ψ (em a) hψ (h0 a) hone ha
+    have hψa := _root_.GlobalTheory.CongruentCharacters.eq_of_congruent C V O d hd ε hε hF ψ (em a) hψ (h0 a) hone ha
     refine ⟨Pi.single a w, fun b x => ?_, by simp⟩
     by_cases hb : b = a
     · subst hb; rw [Pi.single_eq_same, heig, hψa]
