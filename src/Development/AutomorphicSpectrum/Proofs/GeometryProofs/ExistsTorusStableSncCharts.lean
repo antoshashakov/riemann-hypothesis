@@ -7,7 +7,9 @@ public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIde
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPC
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsBis
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdjoinInverseElementFormStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartIdealLocalizationMapStatement
+public import ReciprocityTheory.AnalyticForms.RegularLocalRings.MemConePtsIffChartIdeal
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ChartIdealLocalizationMap
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteTorusTranslatesCoverStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.KaehlerDifferentialsSpanLocalStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RationalRelationInChartIdealStatement
@@ -209,7 +211,7 @@ theorem snc_params : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype
       IsUnit (θ (map (algebraMap ℚ ℂ) (F l))) → ∃ ψ : S →+* R, ∀ (G : MvPolynomial (Σ k, J k) ℚ) (s : S),
         (s : Ω) = aeval u G → ψ s = θ (map (algebraMap ℚ ℂ) G) := by
     intro R _ θ h1 h2
-    have := GlobalTheory.T.chart_ideal_localization_map K J Ω y c hc R θ (by rw [← hCI]; exact h1) (F l) h2 S hS'
+    have := _root_.GlobalTheory.CompanionTheory.Ar.ChartHom.exists_hom_chart K J Ω y c hc R θ (by rw [← hCI]; exact h1) (F l) h2 S hS'
     rwa [← hu] at this
   have hval : ∀ (R : Type) [CommRing R] (θ : MvPolynomial (Σ k, J k) ℂ →+* R) (ψ : S →+* R),
       (∀ (G : MvPolynomial (Σ k, J k) ℚ) (s : S), (s : Ω) = aeval u G → ψ s = θ (map (algebraMap ℚ ℂ) G)) →

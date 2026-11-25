@@ -18,7 +18,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DvrSpecializ
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIffEigenspaceBasisStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FractionFieldEigenBasisDescendsStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointComponentLocalRingStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeEigenDecompositionLocalStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeEigenDecompositionLocal
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeAt
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeExtendScalars
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeStableUnderActionStatement
@@ -190,7 +190,7 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   have hrk' : Module.finrank Z.Ω (HT.eigSp Z.ρ (Z.inc.comp (inE c (ComplexEmbedding.conjugate τ)))) = D.q := by
     rw [← hws', finrank_span_eq_card hw]; simp
   obtain ⟨b₁, b₂, u', A', hb₁, hs₁, hb₂, hs₂, had', hu'm, hA', hfA⟩ :=
-    GlobalTheory.T.hodge_lattice_eigen_decomposition_local E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ D.p D.q ℓ t (𝓗.HL ⟨_, h₁⟩) (Z.inc.comp (inE c τ))
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.Frames.adapted_frames E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ D.p D.q ℓ t (𝓗.HL ⟨_, h₁⟩) (Z.inc.comp (inE c τ))
       (Z.inc.comp (inE c (ComplexEmbedding.conjugate τ))) 𝓗.act_fst 𝓗.act_inr
       (fun a => by simp only [RingHom.comp_apply, hbarF]) hinv (hregF τ) (hregF _) hLI hℓs hHy hrk hrk'
   have hcoord : ∀ {n : ℕ} (b : Fin n → Z.V) (W' : Submodule _ Z.V), W' ≤ Submodule.span (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) (Set.range ℓ) →

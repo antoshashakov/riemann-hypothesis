@@ -16,7 +16,8 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFr
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameRelayBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginFrameTotalBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginRootIndexBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializationCoordRatioValueStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializationCoordRatioValue
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecializesOfUnits
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TriangularSpanCoeffRatioStatement
 import Development.AutomorphicSpectrum.Statements.GeometryStatements.ExistsAlgPtOff
@@ -258,7 +259,7 @@ theorem reads_roots : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [Is
     rw [MvPolynomial.aeval_X] at h1
     exact hc0 k h1
   have hr : ∀ k i, RM.y ⟨k, i⟩ / RM.y ⟨k, ch k⟩ ∈ A := fun k i => hrat k i (ch k) (hy k)
-  obtain ⟨hevr, hden⟩ := GlobalTheory.T.specialization_coord_ratio_value RM.K RM.ι RM.Ω RM.y (PadicAlgCl p) z A ev hzp hval ch hc0 hy hr
+  obtain ⟨hevr, hden⟩ := _root_.GlobalTheory.CompanionTheory.Ar.DenValue.value_and_denominator RM.K RM.ι RM.Ω RM.y (PadicAlgCl p) z A ev hzp hval ch hc0 hy hr
   have hVr : ∀ k i, evT ⟨_, hr k i⟩ ∈ (algebraMap T.V T.Fr).range := fun k i => (hle _).1 (by
     rw [← habs, hevr, norm_div]
     exact div_le_one_of_le₀ (hcm k i) (norm_nonneg _))

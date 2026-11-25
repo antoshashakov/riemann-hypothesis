@@ -12,7 +12,8 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFrameProje
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularFunctionContinuousAtStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularSectionsOpenNeighbourhoodStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothGroupRelDimGenericStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformBoundOnClosedConeStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.UniformBoundOnClosedCone
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtGenIndependentChoiceStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -262,7 +263,7 @@ theorem arch_bound : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶
       ∃ (f : Fin i → Li) (e : Li) (v : Fin i → (epsAt z ⟶ G)) (ve : epsAt z ⟶ G) (t : Ω) (u : ℂ),
       (∀ j, f j ∈ flagStep Ω b₀ i) ∧ e ∈ flagStep Ω b₀ (i + 1) ∧ (∀ j, M.ValAt z (f j) (v j)) ∧ M.ValAt z e ve ∧
       IsCls b₀ i e t ∧ ValAt ξ z (t / gen y A.a e₀ c₀) u ∧ u ≠ 0 ∧ (gramAt h z v).det ≠ 0 ∧ x = Ex z w c₀ v ve u
-  obtain ⟨C, hC⟩ := GlobalTheory.T.uniform_bound_on_closed_cone K J {w | ∃ z : Sp ℂ ⟶ X, CoordsAt ξ y z w} Bd
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.RootHt.bound_of_local_bounds_of_blockScale K J {w | ∃ z : Sp ℂ ⟶ X, CoordsAt ξ y z w} Bd
     (fun w ⟨z, hz⟩ k => (hz.1 k).imp fun c hc => hc.ne_zero)
     (fun w hw hb => GlobalTheory.T.complex_points_closure_coords X Ω ξ K J y hall htie w hw hb)
     (fun w x ⟨z, hz, _⟩ => ⟨z, hz⟩)

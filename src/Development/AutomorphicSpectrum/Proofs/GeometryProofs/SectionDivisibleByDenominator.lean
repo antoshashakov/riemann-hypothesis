@@ -8,7 +8,11 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GroupSchemeI
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleSectionDivisibleStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeIdealExtensionLocalDomainStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointLineBundleUnitStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointValuationRingLiftStatement
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointValuationRingLift
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueUniqueBaseChangeStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -102,7 +106,7 @@ theorem point_bound (D : PPData H L) (n : ℕ) (s : Out.H0 D.t.PP.L n) (d : 𝓞
     have h1 : w ∈ D.t.G.left.basicOpen b ↔ (⟨m, hm.isPrime⟩ : PrimeSpectrum Γ(D.t.G.left, W)) ∈ hW.fromSpec ⁻¹ᵁ D.t.G.left.basicOpen b := Iff.rfl
     rw [h1, hW.fromSpec_preimage_basicOpen]
     rfl
-  obtain ⟨N, O, ρ, y, hN, hyN, hyw, hρ⟩ := GlobalTheory.T.torsion_point_valuation_ring_lift L D.t.G hS w hwc
+  obtain ⟨N, O, ρ, y, hN, hyN, hyw, hρ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Reg.exists_torsion_point_reducing_to L D.t.G hS w hwc
   let C := AlgebraicClosure L
   let yO : Sp O ⟶ D.t.G.left := y.left
   have hyO : yO ≫ D.t.G.hom = spMap ρ := Over.w y

@@ -9,7 +9,10 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionSupNo
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrameStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierQuadraticCharacterStatement
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsThetaSupBoundLogMeanStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IteratedDerivBoundGaussianGrowthStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
+public import Mathlib.Analysis.Complex.Exponential
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IteratedDerivBoundGaussianGrowth
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ThetaDerivativeBoundStatement
 import GroundTheory.HeightsAndTheta.Heights.FactorialBounds.Assembly
 import GroundTheory.HeightsAndTheta.Heights.LatticeLemmas.BaseChangeIndex
@@ -308,7 +311,7 @@ theorem core_applied {H : Host E} {L : Type} [Field L] [NumberField L] (D : PPDa
         rw [herm_smul, hl2]
         ring
       rwa [h9] at h8
-    have h10 := GlobalTheory.T.iterated_deriv_bound_gaussian_growth (fun τ : ℂ => ∑ j, c j * f j (τ • v)) _ (D.len σ x) (3 * n') n' i hdiff (hlen σ)
+    have h10 := _root_.GlobalTheory.CompanionTheory.Ar.Sl.norm_iteratedDeriv_zero_le_of_gaussian_growth (fun τ : ℂ => ∑ j, c j * f j (τ • v)) _ (D.len σ x) (3 * n') n' i hdiff (hlen σ)
       (by omega) hn' hi hgrow
     calc _ ≤ _ := h10
       _ = _ := by ring

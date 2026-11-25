@@ -8,7 +8,9 @@ public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.FlagM3Fr
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LocalNumberPermutationInvariantStatement
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LocalizationModelOverPlaceStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyCoordIdealStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyDedekindConstantsStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPreFamilyOfLatticeFamilyTwo
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLatFlagPair
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArithVarietyDedekindConstants
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsDvrExtensionFieldStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagBasisLinIndepSpanStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagPairChartBundleCompatStatement
@@ -127,7 +129,7 @@ theorem model_on_hodge_of_family_pos : FamilyExistsPos → HodgeLatticeFlagBound
     by_cases h : p' = p
     · subst h; exact hqp
     · exact hq p' hp' h
-  have hB := fun s => GlobalTheory.T.arith_variety_dedekind_constants 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie d hV A hAinj hAcst p hpP m hm O ϖ hϖ 𝔐.Li
+  have hB := fun s => _root_.GlobalTheory.CompanionTheory.Ar.CoordRead.flagPair_coord 𝔐.X Ω 𝔐.ξ K J y 𝔐.tie d hV A hAinj hAcst p hpP m hm O ϖ hϖ 𝔐.Li
     (labelRk D s) (Fl.b s) (hb s).1 (𝔐.dR s) (𝔐.HT p s) (labelPair D T s) (hLat s) (hag2 s)
   choose B B' v v' hBlat hBfp using hB
   have hC := fun s : CMType H ⊕ CMType H => GlobalTheory.T.flag_pair_chart_bundle_compat O Ω K J y ϖ _ (B s.swap) (B' s.swap) (v s.swap) (v' s.swap) _ _ _ _

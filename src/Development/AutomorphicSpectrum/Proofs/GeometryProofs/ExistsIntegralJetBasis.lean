@@ -3,7 +3,9 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsThetaMeanSquareNorm
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SpecMapCompAppLE
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DerivationHolUnifTangentStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IteratedDerivativeFactorStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IteratedDerivativeFactor
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionRatioOverlapStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -385,7 +387,7 @@ theorem jets : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
       refine (ev_res _ hle hW hτ' _).trans ?_
       refine (valF_eq _ _ hW _).symm.trans ?_
       exact hf j i₀ (τ • v) hU
-    have key := GlobalTheory.T.iterated_derivative_factor r _ c _ _ (fun j => (AN j).1) hFan (by rw [hF0]; exact hσr) hev i
+    have key := _root_.GlobalTheory.CompanionTheory.Ar.JetLeib.jet_first_nonzero r _ c _ _ (fun j => (AN j).1) hFan (by rw [hF0]; exact hσr) hev i
     have hJ : ∀ k : ℕ, ∑ j, c j * σ (ev (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) V h₀
         ((der (D.MB.pt x) hv₀ hV)^[k] ((D.t.G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) /
         ev (spMap (algebraMap (𝓞 L) L)) _ hr (D.t.PP.rig.s fun _ => i₀).val ^ n) =

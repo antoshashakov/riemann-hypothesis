@@ -11,7 +11,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsModelV
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagBundleUnderEquivStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericCoordsDescendSubfield
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericFlagUnderEquivStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelConstantsExtensionStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelConstantsExtension
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelDominantHodgeStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackActionRingStatement
@@ -169,7 +169,7 @@ theorem GlobalTheory.CompanionTheory.Ar.exists_flagStep : ∀ (E : Type) [Field 
       fun q hq => EigBase.isIntegrallyClosed_of_snc htie hsnc q hq
     have hi₁ : ∀ q : Cpt ξ', (∀ r : ℕ, r.Prime → ¬ InFibre ξ' r q) → IsIntegrallyClosed (regAt ξ' q) :=
       fun q hq => EigBase.isIntegrallyClosed_of_snc tie₁ snc₁ q hq
-    exact GlobalTheory.T.lie_model_constants_extension E H l c X X' t t' f' Ω₀ Ω' ξ ξ' cst Li Li' M M' ρ ρ' L j' (labelRk D) (fun s k => Φ (b₁ s k)) hg hg'
+    exact _root_.GlobalTheory.CompanionTheory.Ar.FlagStep.eigLat_isFlagVBOn_of_pull_char0 E H l c X X' t t' f' Ω₀ Ω' ξ ξ' cst Li Li' M M' ρ ρ' L j' (labelRk D) (fun s k => Φ (b₁ s k)) hg hg'
       hdom hact hact' hi₀ hi₁ hLeq hj₅ heig' hfl' s
   · intro z w hw
     have hw₁ := GlobalTheory.T.complex_coords_added X X' Ω₀ Ω' ξ ξ' f' K J y N x' z w hall htie hg'' hall' hdom hw

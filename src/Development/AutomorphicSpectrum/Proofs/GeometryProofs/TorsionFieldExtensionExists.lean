@@ -8,7 +8,10 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundlePu
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TheoremOfCubeSectionValueStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueLineBundleSectionStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionValueUniqueBaseChangeStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuesIdentityPowerRelationStatement
+public import Mathlib.Algebra.Group.Nat.Defs
+public import Mathlib.Algebra.Group.Units.Defs
+public import Mathlib.Algebra.Ring.Defs
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValuesIdentityPowerRelation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,7 +67,7 @@ alias torsVal_val := GlobalTheory.T.torsion_value_line_bundle_section
 alias exists_lin := GlobalTheory.T.theorem_of_cube_section_value
 alias exists_sec_of_gen := GlobalTheory.T.line_bundle_pullback_generator
 alias exists_root_gen := GlobalTheory.T.finite_group_scheme_sum_extension
-alias transl_algebra := GlobalTheory.T.values_identity_power_relation
+alias transl_algebra := _root_.GlobalTheory.CompanionTheory.Ar.Sl.Transl.values_identity_units
 
 end GlobalTheory.CompanionTheory.Ar.Sl.Transl
 

@@ -10,7 +10,7 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCochar
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteSurjectiveLiftsPointsStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HermitianSquareNormGramStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IrreducibleClosedIntegralSubschemeStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFinitePullbackStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricFinitePullback
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieMetricTorusPullbackStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelValueLift
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SemiabelianFiniteCoverTorusStatement
@@ -207,7 +207,7 @@ theorem gram_bound (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K
       apply Over.OverMorphism.ext
       rw [hvv, hv', e]
     simp only [H, this]
-  have hcont := GlobalTheory.T.gram_matrix_continuous X Ω K J y ξ hall hT G Li M h Z' ρ G' Φ hP Xc u r (fun a => β a) H hH
+  have hcont := _root_.GlobalTheory.CompanionTheory.Ar.TorusUnif.gramAt_continuous_anTop X Ω K J y ξ hall hT G Li M h Z' ρ G' Φ hP Xc u r (fun a => β a) H hH
   letI := anTop Z'
   haveI := GlobalTheory.T.analytic_points_finite_compact X Ω K J y ξ hall hT Z' f hf
   obtain ⟨C, hC, hb⟩ := GlobalTheory.CompanionTheory.GramCompact.exists_bounds (Sp ℂ ⟶ Z') Set.univ (Fin r) H isCompact_univ

@@ -10,7 +10,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfS
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsUnitOfNonvanishingPointsStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleFromUnitRatiosStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.OverlappingAnalyticChartsRatioStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothAlgebraEqZeroOfVanishOpenStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.RingTheory.Smooth.StandardSmooth
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SmoothAlgebraEqZeroOfVanishOpen
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,7 +91,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 theorem gaga_rat_C : GagaSections → ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (Ω : Type) [Field Ω] [Algebra ℂ Ω] (ξ : Sp Ω ⟶ X) (L : Lat ξ Ω) (W : X.Opens) (F : (Sp ℂ ⟶ X) → ℂ), IsProper s → Smooth s → ξ ≫ s = spMap (algebraMap ℂ Ω) → IsCptGen ξ → ConstClosed ℂ Ω → L.IsVB 1 ⊤ → genPt ξ ∈ W → (∀ p : Cpt ξ, p.1 ∈ W → L.IsGenAt p 1) → (∀ (x : Sp ℂ ⟶ X) (h : genPt ξ ⤳ centre x), x ≫ s = spMap (RingHom.id ℂ) → ∃ t : Ω, L.IsGenAt ⟨centre x, h⟩ t ∧ ExtendsUnitAt s (RingHom.id ℂ) ξ W F t x) → ∃ (f : Ω) (κ : ℂ), κ ≠ 0 ∧ (∀ p : Cpt ξ, L.IsGenAt p f) ∧ ∀ y : Sp ℂ ⟶ X, y ≫ s = spMap (RingHom.id ℂ) → ⊤ ≤ y ⁻¹ᵁ W → genPt ξ ⤳ centre y → ValAt ξ y f (κ * F y) := by
-  have dens := GlobalTheory.T.smooth_algebra_eq_zero_of_vanish_open
+  have dens := _root_.GlobalTheory.CompanionTheory.Ar.Flat.GagaC.eq_zero_of_forall_points_eq_zero
   have chart := GlobalTheory.T.analytic_chart_vanishing_section
   have unit := GlobalTheory.T.is_unit_of_nonvanishing_points
   have trans := GlobalTheory.T.line_bundle_from_unit_ratios

@@ -5,7 +5,8 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBet
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundCharZeroStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundGenericStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundOfFlagStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsOrthFull
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundOfFlag
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsAtComplexEmbeddingStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagLabelBasesExistStatement
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GrGenOfIsFlagVBOn
@@ -100,7 +101,7 @@ theorem one_label (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K 
   choose c₀ hc₀ using hne
   have hne : ∀ k, ∃ c, w ⟨k, c⟩ ≠ 0 := fun k => ⟨c₀ k, hc₀ k⟩
   obtain ⟨f, ef, s, e, t, u, vf, ve, hf, hfi, hs1, hs0, hef, he, hv, hve, hsv, hcls, hu, hu0⟩ :=
-    GlobalTheory.T.coord_degree_bound_of_flag X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw B MB F hsub c₀ hc₀
+    _root_.GlobalTheory.CompanionTheory.Ar.RootHt.Pick.pick X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw B MB F hsub c₀ hc₀
   have hsub₀ : IsSubFibre M (flagStep Ω b₀ i) z MB (F.F i.castSucc) := by simpa using hsub i.castSucc
   have hsub₁ : IsSubFibre M (flagStep Ω b₀ (i + 1)) z MB (F.F i.succ) := by simpa using hsub i.succ
   obtain ⟨φ, hker, hval⟩ := GlobalTheory.T.coord_degree_bound_generic X Ω ξ K J y G Li M V r b₀ m i A.a e₀ hc hall htie hm hind hsw hdeg L w z hw
