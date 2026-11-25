@@ -3,23 +3,25 @@ module
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LinearDescent
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharpolyMulLeftGeneratorEqMapSymmStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGLCompletionLatticeEqColumnsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormOfClassOfFixedUnitsEqStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTwistedConjDeltaOfUnitModNormsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceNormGramInverseEqMulMatrixStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfIntegralMatrixCharpolyRootStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfPreservesFullLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSpannedByGLColumnsEqIffGLintCosetStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSpannedByGLColumnsMulLeftMatrixEqMulStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGLCompletionLatticeEqColumns
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnitLemmaGroup
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormOfClassOfFixedUnitsEq
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTwistedConjDeltaOfUnitModNorms
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceNormGramInverseEqMulMatrix
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfIntegralMatrixCharpolyRoot
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfPreservesFullLattice
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSpannedByGLColumnsEqIffGLintCoset
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeSpannedByGLColumnsMulLeftMatrixEqMul
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralProperties
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalCongruenceGLConjMaxCompactIffStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalCongruenceLevelIffLatticeStableStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeparableElementBasisIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTwistedOrbitalIntegralsEqFinsumParametrisedStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerEquivNormOneTorusNonsplitStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjIffMulNormInvAlgStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedNormIntegralIffLatticeUnimodularStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralIndicatorEqLatticeCountStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalCongruenceGLConjMaxCompactIff
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulMat
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalCongruenceLevelIffLatticeStable
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeparableElementBasisIntegral
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTwistedOrbitalIntegralsEqFinsumParametrised
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerEquivNormOneTorusNonsplit
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConjIffMulNormInvAlg
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedNormIntegralIffLatticeUnimodular
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralIndicatorEqLatticeCount
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralTwistedConjInvariant
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemAdjoinOfMulEqOne
 import Mathlib.Algebra.Order.Floor.Extended
@@ -94,7 +96,7 @@ theorem twOrb_level_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
       · intro h
         exact mul_mem (mul_mem (inv_mem hcK) h) (hθK c hcK)
     have h2 : nrmL m w (c⁻¹ * y * thL m w c) ∈ cong ↔ nrmL m w y ∈ cong := by
-      rw [hnrm]; exact GlobalTheory.T.principalCongruenceGL_conj_maxCompact_iff E w m k c _ hcK
+      rw [hnrm]; exact _root_.GlobalTheory.congConj_iff E w m k c _ hcK
     simp only [hf, h1, h2]
   have hf01 : ∀ y, f y = 0 ∨ f y = 1 := by
     intro y; simp only [hf]; split_ifs <;> simp
@@ -132,38 +134,38 @@ theorem twOrb_level_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
       (neg_one_pow_eq_or B.A (m - 1))
     have hβ₀' : B.σ (β₀ : B.A) = β₀ * ((-1) ^ (m - 1) * u) := hβ₀
     have hgram : ∀ x : B.Aˣ, IsUnit (gram e b ((β₀ : B.A) * x)) := fun x =>
-      GlobalTheory.T.separable_element_basis_integral E hE w hw K e hc hint hval B m b u _ hsep hQu hadj _ (β₀.isUnit.mul x.isUnit)
+      _root_.GlobalTheory.TwLat.isUnit_gram_of_separable E hE w hw K e hc hint hval B m b u _ hsep hQu hadj _ (β₀.isUnit.mul x.isUnit)
     have hσβ : ∀ x : B.Aˣ, B.σ (x : B.A) = x → B.σ ((β₀ : B.A) * x) = (β₀ * x) * ((-1) ^ (m - 1) * u) := by
       intro x hx
       rw [map_mul, hβ₀', hx]; ring
     have hN : ∀ x : B.Aˣ, B.σ (x : B.A) = x → (nrmL m w (dlt e b ((β₀ : B.A) * x))).val = mulMat e b u :=
-      fun x hx => GlobalTheory.T.inertPlace_norm_gramInverse_eq_mulMatrix E hE w hw K e hc hint hval B m b u _ (hgram x) (hσβ x hx)
+      fun x hx => _root_.GlobalTheory.TwLat.nrmL_dlt E hE w hw K e hc hint hval B m b u _ (hgram x) (hσβ x hx)
     have hcp : (mulMat e b u).charpoly = Q := by
       have h1 := Matrix.charpoly_map (LinearMap.toMatrix b b (LinearMap.mulLeft K.E u)) (e : K.E →+* w.adicCompletion E)
       have h2 : mulMat e b u = (LinearMap.toMatrix b b (LinearMap.mulLeft K.E u)).map (e : K.E →+* w.adicCompletion E) := rfl
       rw [h2, h1, LinearMap.charpoly_toMatrix, hP, Polynomial.map_map]
       ext n
       simp [Polynomial.coeff_map]
-    obtain ⟨hΛK, hlat⟩ := GlobalTheory.T.latticeSpannedByGLColumns_eq_iff_GLint_coset E hE w hw K e hc hint hval B m b
+    obtain ⟨hΛK, hlat⟩ := _root_.GlobalTheory.TwLatCoset.lat_coset E hE w hw K e hc hint hval B m b
     have hOrb : ∀ x : B.Aˣ, B.σ (x : B.A) = x →
         twOrb (thL m w) (GlobalTheory.LFun.KGL w (n := m)) (dlt e b ((β₀ : B.A) * x)) f = ((B.N x : ℚ) : ℂ) := by
       intro x hx
-      obtain ⟨φ, hφv, hφc⟩ := GlobalTheory.T.twistedCentralizer_equiv_normOneTorus_nonsplit E hE w hw K e hc hint hval B m b u _ (β₀.isUnit.mul x.isUnit)
+      obtain ⟨φ, hφv, hφc⟩ := _root_.GlobalTheory.TwLat.twCent_equiv_torus E hE w hw K e hc hint hval B m b u _ (β₀.isUnit.mul x.isUnit)
         (hσβ x hx) hadj (hgram x)
-      refine GlobalTheory.T.twistedOrbitalIntegral_indicator_eq_latticeCount K B x (GLw m w) (thL m w) (GlobalTheory.LFun.KGL w (n := m)) _ f φ (lat e b) hfK hf01 hφc hΛK ?_ ?_
-        (fun L hL => GlobalTheory.T.exists_GL_completion_lattice_eq_columns E hE w hw K e hc hint hval B m b L hL.1)
+      refine _root_.GlobalTheory.LatTransfer.twOrb_eq_N K B x (GLw m w) (thL m w) (GlobalTheory.LFun.KGL w (n := m)) _ f φ (lat e b) hfK hf01 hφc hΛK ?_ ?_
+        (fun L hL => _root_.GlobalTheory.TwLat.exists_GLw_lat_eq E hE w hw K e hc hint hval B m b L hL.1)
       · intro t' q
-        refine GlobalTheory.T.latticeSpannedByGLColumns_mulLeftMatrix_eq_mul E hE w hw K e hc hint hval B m b _ q _ ?_
+        refine _root_.GlobalTheory.TwLatMul.lat_mul E hE w hw K e hc hint hval B m b _ q _ ?_
         rw [Units.val_mul, hφv t']
       · intro q
         have hf1 : f (q⁻¹ * dlt e b ((β₀ : B.A) * x) * thL m w q) = 1 ↔
             (q⁻¹ * dlt e b ((β₀ : B.A) * x) * thL m w q ∈ GlobalTheory.LFun.KGL w (n := m) ∧
               nrmL m w (q⁻¹ * dlt e b ((β₀ : B.A) * x) * thL m w q) ∈ cong) := by
           simp only [hf]; split_ifs with h <;> simp [h]
-        rw [hf1, hnrm, GlobalTheory.T.twistedNorm_integral_iff_lattice_unimodular E hE w hw K e hc hint hval B m b _ (hgram x) q]
+        rw [hf1, hnrm, _root_.GlobalTheory.TwLat.Unimod.unimodular_iff E hE w hw K e hc hint hval B m b _ (hgram x) q]
         have hlev : q⁻¹ * nrmL m w (dlt e b ((β₀ : B.A) * x)) * q ∈ cong ↔
             ∀ y ∈ lat e b q, B.g * y ∈ lat e b q :=
-          GlobalTheory.T.principalCongruenceLevel_iff_lattice_stable E hE w hw K e hc hint hval B m b t k ht htk q _ (hN x hx)
+          _root_.GlobalTheory.TwLat.Lv.level_iff E hE w hw K e hc hint hval B m b t k ht htk q _ (hN x hx)
         rw [hlev]
         have hXiff : (GlobalTheory.UnitLemma.IsLat K.O K.E (lat e b q) ∧ ∀ z, z ∈ lat e b q ↔
             ∀ y ∈ lat e b q, B.herm ((β₀ : B.A) * x) y z ∈ (algebraMap K.O K.E).range) ↔ lat e b q ∈ Bu.X x := by
@@ -174,15 +176,15 @@ theorem twOrb_level_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
         · rintro ⟨hun, hg⟩
           obtain ⟨hL, -, hsd⟩ := hXiff.1 ⟨hlat q, hun⟩
           exact ⟨hL, hg, hsd⟩
-    have hsum := GlobalTheory.T.sum_twistedOrbitalIntegrals_eq_finsum_parametrised (GLw m w) (thL m w) (GlobalTheory.LFun.KGL w (n := m)) S f B.Cl
+    have hsum := _root_.GlobalTheory.BCT.ClSumParam.clSum_eq_finsum_param (GLw m w) (thL m w) (GlobalTheory.LFun.KGL w (n := m)) S f B.Cl
       (fun c => dlt e b ((β₀ : B.A) * ((Quot.out c).1 : B.Aˣ))) (fun c => ((B.N c.rep : ℚ) : ℂ))
       (fun c => by show (nrmL m w _).val.charpoly = Q; rw [hN _ (Quot.out c).2]; exact hcp)
       (by
         intro y hy
-        obtain ⟨x, hx, g, rfl⟩ := GlobalTheory.T.exists_twistedConj_delta_of_unit_mod_norms E hE w hw K e hc hint hval B m b u Q hQs hQu hadj β₀ hβ₀' hgram y hy
+        obtain ⟨x, hx, g, rfl⟩ := _root_.GlobalTheory.TwLat.ClSurj.exists_twConj_dlt E hE w hw K e hc hint hval B m b u Q hQs hQu hadj β₀ hβ₀' hgram y hy
         let c : B.Cl := Quot.mk _ ⟨x, hx⟩
-        obtain ⟨a, ha⟩ := GlobalTheory.T.exists_norm_of_classOfFixedUnits_eq K B ⟨x, hx⟩ (Quot.out c) (Quot.out_eq c).symm
-        obtain ⟨g', hg'⟩ := (GlobalTheory.T.twistedConj_iff_mul_norm_invAlg E hE w hw K e hc hint hval B m b u hadj β₀ hβ₀' hgram x (Quot.out c).1 hx
+        obtain ⟨a, ha⟩ := _root_.GlobalTheory.UnitLemma.InvAlg.ClRel.eq_of_mk_eq K B ⟨x, hx⟩ (Quot.out c) (Quot.out_eq c).symm
+        obtain ⟨g', hg'⟩ := (_root_.GlobalTheory.TwLatInj.dlt_twConj_iff E hE w hw K e hc hint hval B m b u hadj β₀ hβ₀' hgram x (Quot.out c).1 hx
           (Quot.out c).2).2 ⟨a, ha⟩
         refine ⟨c, g'⁻¹ * g, ?_⟩
         show _ = _ * dlt e b ((β₀ : B.A) * ((Quot.out c).1 : B.Aˣ)) * _
@@ -190,7 +192,7 @@ theorem twOrb_level_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
         simp only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left])
       (by
         intro c c' hcc
-        obtain ⟨a, ha⟩ := (GlobalTheory.T.twistedConj_iff_mul_norm_invAlg E hE w hw K e hc hint hval B m b u hadj β₀ hβ₀' hgram (Quot.out c).1
+        obtain ⟨a, ha⟩ := (_root_.GlobalTheory.TwLatInj.dlt_twConj_iff E hE w hw K e hc hint hval B m b u hadj β₀ hβ₀' hgram (Quot.out c).1
           (Quot.out c').1 (Quot.out c).2 (Quot.out c').2).1 hcc
         rw [← Quot.out_eq c, ← Quot.out_eq c']
         exact Quot.sound ⟨a, ha⟩)
@@ -208,7 +210,7 @@ theorem twOrb_level_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
       ext L
       simp only [Set.mem_empty_iff_false, iff_false]
       rintro ⟨hL, hg, -⟩
-      exact hui (GlobalTheory.T.isIntegral_of_preserves_fullLattice K B u L hL (hgu L hg))
+      exact hui (_root_.GlobalTheory.UnitLemma.isIntegral_of_lat_stable K B u L hL (hgu L hg))
     have hN0 : ∀ x : B.A, B.N x = 0 := by
       intro x
       unfold GlobalTheory.UnitLemma.InvAlg.N GlobalTheory.UnitLemma.orbSum
@@ -225,7 +227,7 @@ theorem twOrb_level_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
       simp only [hf]
       rw [if_neg]
       rintro ⟨-, hn, -⟩
-      exact hui (GlobalTheory.T.isIntegral_of_integral_matrix_charpoly_root E hE w hw K e hc hint hval B m b u Q hQm hQu _ hn ((hSinv y q).2 hy))
+      exact hui (_root_.GlobalTheory.TwLat.isIntegral_of_charpoly_intGL E hE w hw K e hc hint hval B m b u Q hQm hQu _ hn ((hSinv y q).2 hy))
     have hst : B.stSum = 0 := by
       unfold GlobalTheory.UnitLemma.InvAlg.stSum
       simp [hN0]
