@@ -5,11 +5,13 @@ public import Mathlib.LinearAlgebra.Charpoly.Basic
 public import Mathlib.NumberTheory.NumberField.Basic
 public import Mathlib.RingTheory.Coalgebra.IsFrobenius
 public import Mathlib.RingTheory.HopfAlgebra.Basic
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlgebraActionBundleFiltrationStepStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FilteredExactSequenceProjectorBundlesStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IdealDescendingOneDimQuotientStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlgebraActionBundleFiltrationStep
+public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FilteredExactSequenceProjectorBundles
+public import Mathlib.RingTheory.Ideal.Maps
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IdealDescendingOneDimQuotient
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LinearIndependentMapVec
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ModuleBasisLatticeBundleFreeStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ModuleBasisLatticeBundleFree
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShortExactFirstTermBundle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -267,7 +269,7 @@ theorem hodge_part (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (x : Ten
     subDeg C D.H (LinearMap.range (act k D.ρH x)) =
       subDeg C (dotDual C D.lie) (LinearMap.range (act k (toEnd (conjT D.ρ)) x)) +
       subDeg C D.lie (LinearMap.range (act k (toEnd D.ρ) x)) := by
-  refine GlobalTheory.T.filtered_exact_sequence_projector_bundles K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.hodge (idem_apply _ hx) (idem_apply _ hx)
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegCurve.subDeg_range_shortExact K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.hodge (idem_apply _ hx) (idem_apply _ hx)
     (idem_apply _ hx) (fun y => ?_) (fun y => ?_) (act_isHom C D.H_bun hk _ D.ρH_hom x)
   · refine (act_comm (toEnd (conjT D.ρ)) D.ρH (LinearMap.inr K _ _) (fun a v => ?_) x y)
     simp [D.ρH_inr, toEnd_apply, conjT_apply]
@@ -280,7 +282,7 @@ theorem conj_part (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (x : Tens
       subDeg C (frobLat C p D.lie) (LinearMap.range (act k (toEnd (twist p D.ρ)) x)) +
       subDeg C (frobLat C p (dotDual C D.lie))
         (LinearMap.range (act k (toEnd (twist p (conjT D.ρ))) x)) := by
-  refine GlobalTheory.T.filtered_exact_sequence_projector_bundles K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.conj (idem_apply _ hx) (idem_apply _ hx)
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegCurve.subDeg_range_shortExact K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.conj (idem_apply _ hx) (idem_apply _ hx)
     (idem_apply _ hx) (fun y => ?_) (fun y => ?_) (act_isHom C D.H_bun hk _ D.ρH_hom x)
   · refine (act_comm (toEnd (twist p D.ρ)) D.ρH D.α (fun a v => ?_) x y)
     rw [toEnd_apply, twist_apply, D.α_act]
@@ -392,10 +394,10 @@ theorem deg_count (L : C.I → AddSubgroup V) (k A : Type) [Field k] [Algebra k 
       · subst h0
         exact ⟨0, by rw [idealV_bot, subDeg_bot]; simp, fun h => absurd rfl h⟩
       · obtain ⟨J₁, t, l, hlt, ht, hJt, hm, hl0, hl1⟩ :=
-          GlobalTheory.T.ideal_descending_one_dim_quotient k A χ e J he h1 hnil hJ h0
+          _root_.GlobalTheory.CompanionTheory.Ar.Flat.StepIdeal.exists_colength_one k A χ e J he h1 hnil hJ h0
         obtain ⟨n, hn, -⟩ := ih J₁ hlt (hlt.le.trans hJ)
         refine ⟨n + 1, ?_, fun _ => Nat.succ_pos n⟩
-        rw [GlobalTheory.T.algebra_action_bundle_filtration_step K C V L k A τ r χ J₁ J t l hL hτ hτk hk hfree hlt.le ht hJt hm hl0 hl1, hn]
+        rw [_root_.GlobalTheory.CompanionTheory.Ar.Flat.DegCurve.FiltStep.subDeg_step K C V L k A τ r χ J₁ J t l hL hτ hτk hk hfree hlt.le ht hJt hm hl0 hl1, hn]
         push_cast; ring
   have he0 : Ideal.span {e} ≠ ⊥ := by
     intro h
@@ -436,7 +438,7 @@ theorem deg_quot_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [StarRing (�
     (fun c x => by
       rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply, act_tmul]
       simp)
-    hk (fun i => GlobalTheory.T.module_basis_lattice_bundle_free K C _ D.H _ _ k (RingOfIntegers.basis E) D.ρH r i D.H_bun (hk i) (hfr i))
+    hk (fun i => _root_.GlobalTheory.CompanionTheory.Ar.Flat.DegCurve.freeAt_of_basis_lattice K C _ D.H _ _ k (RingOfIntegers.basis E) D.ρH r i D.H_bun (hk i) (hfr i))
     he h1 hnil
   rw [vanish D k hk e he, idealV_ker K k (𝓞 E) _ D.ρH χ₀] at hc
   change _ = _ * deg C (quot C D.H (⨆ a : 𝓞 E, LinearMap.range (D.ρH a - χ a • LinearMap.id))) at hc

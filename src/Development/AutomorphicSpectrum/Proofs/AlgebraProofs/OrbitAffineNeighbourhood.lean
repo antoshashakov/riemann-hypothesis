@@ -2,15 +2,24 @@ module
 
 public import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.RegularHypothesesAndConclusion
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFreeHom
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BasicOpenNormFibreIffStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFlatLocallyFreeAffineStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFreePullbackAffineStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteSetBasicOpenAffineStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MemOrbitSelfStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormNotMemPrimeIffStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.OrbitTransStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackRestrictOpenStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShearIsoActionProjectionStatement
+public import Mathlib.AlgebraicGeometry.AffineScheme
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BasicOpenNormFibreIff
+public import Mathlib.AlgebraicGeometry.Morphisms.Finite
+public import Mathlib.AlgebraicGeometry.Morphisms.FinitePresentation
+public import Mathlib.AlgebraicGeometry.Morphisms.Flat
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFlatLocallyFreeAffine
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteFreePullbackAffine
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FiniteSetBasicOpenAffine
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MemOrbitSelf
+public import Mathlib.RingTheory.Norm.Defs
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormNotMemPrimeIff
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.OrbitTrans
+public import Mathlib.AlgebraicGeometry.Restrict
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackRestrictOpen
+public import Mathlib.AlgebraicGeometry.Pullbacks
+public import Mathlib.CategoryTheory.Monoidal.Mod
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ShearIsoActionProjection
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,7 +83,7 @@ theorem mem_orbit_iff {x y : X.left} : y ∈ orbit G X x ↔
   · rintro ⟨z, hz, rfl⟩; exact ⟨z, hz, rfl⟩
 
 theorem orbit_symm {x y : X.left} (h : y ∈ orbit G X x) : x ∈ orbit G X y := by
-  obtain ⟨σ, -, h1, h2⟩ := GlobalTheory.T.shear_iso_action_projection G X
+  obtain ⟨σ, -, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotProof.exists_iso_swap_action_snd G X
   obtain ⟨z, rfl, rfl⟩ := (mem_orbit_iff G X).1 h
   refine (mem_orbit_iff G X).2 ⟨σ.left z, ?_, ?_⟩
   · rw [← Scheme.Hom.comp_apply, ← Over.comp_left, h1]
@@ -135,8 +144,8 @@ theorem exists_norm {P D : Scheme.{0}} [IsAffine P] [IsAffine D] (v : P ⟶ D)
   letI := v.appTop.hom.toAlgebra
   have h1 : Module.Free Γ(D, ⊤) Γ(P, ⊤) := hv.1
   have h2 : Module.Finite Γ(D, ⊤) Γ(P, ⊤) := hv.2
-  refine ⟨Algebra.norm Γ(D, ⊤) e, GlobalTheory.T.basic_open_norm_fibre_iff v _ e fun p => ?_⟩
-  rw [GlobalTheory.T.norm_not_mem_prime_iff e p.asIdeal p.isPrime]
+  refine ⟨Algebra.norm Γ(D, ⊤) e, _root_.GlobalTheory.CompanionTheory.PrimesToPts.primes_to_pts v _ e fun p => ?_⟩
+  rw [_root_.GlobalTheory.CompanionTheory.NormPrime.norm_notMem_iff e p.asIdeal p.isPrime]
   constructor
   · intro h q hq
     exact h q.asIdeal q.isPrime hq
@@ -148,30 +157,30 @@ theorem exists_stable_affine_nbhd : ∀ {S : Scheme.{0}} (G X : Over S) [GrpObj 
   have hfl := hG.1
   have hfl2 := hG.2.1
   have hfl3 := hG.2.2
-  obtain ⟨W, hsW, hW, hfree⟩ := GlobalTheory.T.finite_flat_locally_free_affine G.hom (X.hom x)
+  obtain ⟨W, hsW, hW, hfree⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.exists_affine_finiteFreeHom G.hom (X.hom x)
   have htrans : ∀ {y w : X.left}, y ∈ orbit G X x → w ∈ orbit G X y → w ∈ orbit G X x :=
-    fun {y w} => GlobalTheory.T.mem_orbit_trans G X x y w
+    fun {y w} => _root_.GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.orbit_trans G X x y w
   let O : X.left.Opens := U ⊓ X.hom ⁻¹ᵁ W
   have hxO : orbit G X x ⊆ O := fun y hy => ⟨hxU hy, by
     show X.hom y ∈ W
     rw [orbit_hom G X hy]; exact hsW⟩
   let V₀ : X.left.Opens := ⟨{y | orbit G X y ⊆ O}, isOpen_saturated hG O⟩
-  have hV₀O : V₀ ≤ O := fun y hy => hy (GlobalTheory.T.mem_orbit_self' G X y)
+  have hV₀O : V₀ ≤ O := fun y hy => hy (_root_.GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self G X y)
   have hV₀U : V₀ ≤ U := hV₀O.trans inf_le_left
   have hxV₀ : orbit G X x ⊆ V₀ := fun y hy w hw => hxO (htrans hy hw)
-  obtain ⟨f, hKf, hfV⟩ := GlobalTheory.T.finite_set_basic_open_affine U V₀ hU hV₀U _ (orbit_finite hG x) hxV₀
+  obtain ⟨f, hKf, hfV⟩ := _root_.GlobalTheory.CompanionTheory.PrimeAvoid.exists_basicOpen_between U V₀ hU hV₀U _ (orbit_finite hG x) hxV₀
   let D : X.left.Opens := X.left.basicOpen f
   have hD : IsAffineOpen D := hU.basicOpen f
   have hDW : D ≤ X.hom ⁻¹ᵁ W := (hfV.trans hV₀O).trans inf_le_right
   have hsq : IsPullback (fst G X).left (snd G X).left G.hom X.hom :=
     IsPullback.of_hasPullback G.hom X.hom
-  obtain ⟨h, u, hpb⟩ := GlobalTheory.T.pullback_restrict_open hsq W D hDW
+  obtain ⟨h, u, hpb⟩ := _root_.GlobalTheory.CompanionTheory.PullbackRestrict.isPullback_restrict_opens hsq W D hDW
   have := isFinite_snd (X := X) hG
   haveI : IsAffine D.toScheme := hD
   haveI : IsAffine W.toScheme := hW
   haveI : IsAffine (G.hom ⁻¹ᵁ W).toScheme := hW.preimage G.hom
   haveI : IsAffine ((snd G X).left ⁻¹ᵁ D).toScheme := hD.preimage (snd G X).left
-  have hfree' := GlobalTheory.T.finite_free_pullback_affine hpb hfree
+  have hfree' := _root_.GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_appTop_of_isPullback hpb hfree
   let P' : (G ⊗ X).left.Opens := (snd G X).left ⁻¹ᵁ D
   let c : P'.toScheme ⟶ X.left := P'.ι ≫ (γ[G, X] : G ⊗ X ⟶ X).left
   have hc : ⊤ ≤ c ⁻¹ᵁ U := by
@@ -200,10 +209,10 @@ theorem exists_stable_affine_nbhd : ∀ {S : Scheme.{0}} (G X : Over S) [GrpObj 
       have h2 : (snd G X).left z.1 = y :=
         (morphismRestrict_base_coe _ _ z).symm.trans (congrArg Subtype.val hz)
       exact ho ((mem_orbit_iff G X).2 ⟨z.1, h2, rfl⟩)
-  refine ⟨V, W, (hVmem x).2 ⟨hKf (GlobalTheory.T.mem_orbit_self' G X x), fun y hy => hKf hy⟩, ?_, hW, ?_, ?_⟩
+  refine ⟨V, W, (hVmem x).2 ⟨hKf (_root_.GlobalTheory.CompanionTheory.FreeQuotProof.mem_orbit_self G X x), fun y hy => hKf hy⟩, ?_, hW, ?_, ?_⟩
   · exact ((isAffineOpen_top D.toScheme).basicOpen N).image_of_isOpenImmersion D.ι
   · exact fun y hy => hDW ((hVmem y).1 hy).1
   · refine stable_of_forall G X V fun y hy w hw => (hVmem w).2 ⟨((hVmem y).1 hy).2 hw, fun t ht => ?_⟩
-    exact ((hVmem y).1 hy).2 (GlobalTheory.T.mem_orbit_trans G X y w t hw ht)
+    exact ((hVmem y).1 hy).2 (_root_.GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.orbit_trans G X y w t hw ht)
 
 end GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd

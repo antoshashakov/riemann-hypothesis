@@ -2,10 +2,17 @@ module
 
 public import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedAFStatement
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationLengthColengthBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationLengthsExistStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationQuotientEquivLatticeStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeLengthMonoStrictStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SymplecticPeriodMatrixIntegralityStatement
+public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsTight
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationLengthsExist
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AugmentationQuotientEquivLattice
+public import ReciprocityTheory.DualLattices.CotangentSurjective
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeLengthMonoStrict
+public import Mathlib.Basic.NNReal.Defs
+public import Mathlib.Data.Matrix.ColumnRowPartitioned
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.RingTheory.Valuation.Integers
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SymplecticPeriodMatrixIntegrality
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -156,7 +163,7 @@ theorem polarisedAF : PolarisedAFStatement := by
       (RingHom.map_det _ _).symm
     rw [this]; exact H.isUnit_det_E.map _
   obtain ⟨hdet, hker, himg, hcpmem⟩ :=
-    GlobalTheory.T.symplectic_period_matrix_integrality C v R hv g H.Ht H.Bt _ cp hcp hEalt hEu H.form_eq_alt
+    _root_.GlobalTheory.CompanionTheory.Ar.GR.gp_mat_lattice C v R hv g H.Ht H.Bt _ cp hcp hEalt hEu H.form_eq_alt
 
   set L := Submodule.span R (Set.range fun k => Matrix.fromRows H.Ht H.Bt k) with hL
   have hLle : L ≤ AF :=
@@ -167,14 +174,14 @@ theorem polarisedAF : PolarisedAFStatement := by
     exact h
 
   have hkill : ∀ x : Nb p g, p • x = 0 := by intro x; ext i; simp
-  obtain ⟨cA, cN, cO, -, -, -, hA, hN, hO⟩ := GlobalTheory.T.augmentation_lengths_exist p C v R hv hp1 (Nb p g) hkill H.AA
+  obtain ⟨cA, cN, cO, -, -, -, hA, hN, hO⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.lens_exist p C v R hv hp1 (Nb p g) hkill H.AA
   have hcO : cO = v (algebraMap R C (p : R)) ^ g := hasLen_unique hv hO (PolAF.hasLen_omAA_htd H)
   have hdeg := u4 p C v R hv hp1 (Nb p g) hkill H.AA cN cO hN hO
   obtain ⟨hcnt, hgen⟩ := GlobalTheory.T.augmentation_length_colength_bound p C v R hv hp1 (Nb p g) hkill H.AA cA cN hA hN
-  obtain ⟨eq⟩ := GlobalTheory.T.augmentation_quotient_equiv_lattice p C v R hv hp1 (Ix g) H.AA
+  obtain ⟨eq⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.afQuot_equiv_coords p C v R hv hp1 (Ix g) H.AA
   have hAF : HasLen v R ((Ix g → R) ⧸ AF) cA := hasLen_of_equiv eq.symm hA
   obtain ⟨hle, hLeq⟩ :=
-    GlobalTheory.T.lattice_length_mono_strict C v R hv (Ix g) L AF hLle _ _ (pow_ne_zero _ hvcp) hLlen hAF
+    _root_.GlobalTheory.CompanionTheory.Ar.GR.submodule_eq_of_hasLen_eq C v R hv (Ix g) L AF hLle _ _ (pow_ne_zero _ hvcp) hLlen hAF
   have hn : Fintype.card (Nb p g) * (p - 1) ≠ 0 :=
     Nat.mul_ne_zero Fintype.card_ne_zero (by omega)
   have hOeq : cO ^ Fintype.card (Nb p g) =

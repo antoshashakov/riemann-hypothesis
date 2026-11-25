@@ -13,14 +13,24 @@ public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleOfFib
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelExtensionOverDvr
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.RigidifiedSymDescendToSubring
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GenericPointOpenImmersionStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HenselianAlgClosedResidueStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PicardGenericFibreInjectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PicardGenericTrivialNearSpecialStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PicardMayerVietorisExtendStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RelAmpleOfSamePolarizationStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SectionThroughClosedPointStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ValuationIntegersRankOneStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GenericPointOpenImmersion
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HenselianAlgClosedResidue
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PicardGenericFibreInjective
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PicardGenericTrivialNearSpecial
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PicardMayerVietorisExtend
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHeckeQuotientTriple
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.RelAmpleOfSamePolarization
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Mathlib.RingTheory.Henselian
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SectionThroughClosedPoint
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZeroSectionBase
+public import Mathlib.Basic.NNReal.Defs
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.RingTheory.DedekindDomain.Basic
+public import Mathlib.RingTheory.Valuation.ValuationRing
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ValuationIntegersRankOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -180,12 +190,12 @@ theorem near : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R] 
     ∀ y : A.left, IsClosed {y} → A.hom y = IsLocalRing.closedPoint R →
       ∃ V : A.left.Opens, y ∈ V ∧ pull (jj A (spMap (algebraMap R C)) ⁻¹ᵁ V).ι l = 0 := by
   intro C _ _ R _ _ _ _ _ _ A _ hA c l h y hy hyc
-  obtain ⟨hH, hk⟩ := GlobalTheory.T.henselian_alg_closed_residue C R
+  obtain ⟨hH, hk⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.Hens.henselian_and_residueField_isAlgClosed C R
   haveI := hA.comm
   have hs₀ := hA.smooth
-  obtain ⟨V₀, hV₀, e₀⟩ := GlobalTheory.T.picard_generic_trivial_near_special C R A hA l
-  obtain ⟨b₀, hb₀⟩ := (GlobalTheory.T.section_through_closed_point R A hs₀).2 V₀ hV₀
-  obtain ⟨b, hb⟩ := (GlobalTheory.T.section_through_closed_point R A hs₀).1 y hy hyc
+  obtain ⟨V₀, hV₀, e₀⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin.NearZero.near_zero C R A hA l
+  obtain ⟨b₀, hb₀⟩ := (_root_.GlobalTheory.CompanionTheory.Sections.exists_section R A hs₀).2 V₀ hV₀
+  obtain ⟨b, hb⟩ := (_root_.GlobalTheory.CompanionTheory.Sections.exists_section R A hs₀).1 y hy hyc
   let d : 𝟙_ (Over (Sp R)) ⟶ A := b⁻¹ * b₀
   obtain ⟨τ, hτ, hl⟩ := transl_id A (spMap (algebraMap R C)) (fun c ↦ GlobalTheory.ThetaExtend.pic_local c) c l h d
   have hbd : b ≫ GlobalTheory.PolTranslate.transl d = b₀ := by
@@ -222,7 +232,7 @@ theorem extend : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R
     ∃ p : Pic A.left, pull (jj A (spMap (algebraMap R C))) p = l := by
   intro C _ _ R _ _ _ _ _ _ A _ hA l hn
   have hp₀ := hA.proper
-  have hio := GlobalTheory.T.generic_point_open_immersion C R
+  have hio := _root_.GlobalTheory.CompanionTheory.ValGeneric.isOpenImmersion_spMap_fraction C R
   let j := jj A (spMap (algebraMap R C))
   have hjo : IsOpenImmersion j := by
     show IsOpenImmersion (pullback.fst A.hom (spMap (algebraMap R C)))
@@ -244,7 +254,7 @@ theorem extend : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R
   have step : ∀ (W V : A.left.Opens), Q W → IsCompact (V : Set A.left) → pull (j ⁻¹ᵁ V).ι l = 0 → Q (W ⊔ V) := by
     rintro W V ⟨hW, r, p, hr, hp⟩ hV hl
     have hz : pull (A.left.homOfLE (inf_le_left : W ⊓ V ≤ W)) p = 0 := by
-      refine GlobalTheory.T.picard_generic_fibre_injective C R A hA (W ⊓ V) ?_ _ ?_
+      refine _root_.GlobalTheory.CompanionTheory.ValFibre.eq_zero_of_pull_generic_eq_zero C R A hA (W ⊓ V) ?_ _ ?_
       · exact QuasiSeparatedSpace.inter_isCompact _ _ W.isOpen hW V.isOpen hV
       · have e : (pullback.fst A.hom (spMap (algebraMap R C)) ∣_ (W ⊓ V)) ≫ A.left.homOfLE (inf_le_left : W ⊓ V ≤ W) =
             (j ⁻¹ᵁ (W ⊓ V)).ι ≫ r := by
@@ -252,7 +262,7 @@ theorem extend : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R
           exact morphismRestrict_ι _ _
         rw [← pull_comp, e, pull_comp, hp]
         exact pull_eq_zero_of_mem (j ⁻¹ᵁ V) (j ⁻¹ᵁ (W ⊓ V)).ι (fun z ↦ (show _ ∈ W ⊓ V from z.2).2) hl
-    obtain ⟨q, hq⟩ := GlobalTheory.T.picard_mayer_vietoris_extend A.left W V p hz
+    obtain ⟨q, hq⟩ := _root_.GlobalTheory.CompanionTheory.CechMV.exists_extend_of_pull_inf_eq_zero A.left W V p hz
     refine ⟨hW.union hV, r ≫ A.left.homOfLE le_sup_left, q, by simp [hr], ?_⟩
     rw [pull_comp, hq, hp]
   have hN : ∀ z : A.left, ∃ N : A.left.Opens, z ∈ N ∧ ∀ W, Q W → Q (W ⊔ N) := fun z ↦ by
@@ -300,8 +310,8 @@ theorem relAmple_of_cls {K : Type} [CommRing K] (B : Over (Sp K)) {M N : LB B.le
 
 theorem symmetricBundle (hD : GlobalTheory.Published.DualAbelianScheme) (hC : GlobalTheory.Published.CubeTheorem) : SymmetricBundleSt := by
   intro C _ _ v R _ _ hv A _ hA c hc
-  obtain ⟨_, _, _, _⟩ := GlobalTheory.T.valuation_integers_rank_one C v R hv
-  obtain ⟨hH, hk⟩ := GlobalTheory.T.henselian_alg_closed_residue C R
+  obtain ⟨_, _, _, _⟩ := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin.integers_valuationRing_dimensionLEOne_isFractionRing C v R hv
+  obtain ⟨hH, hk⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.Hens.henselian_and_residueField_isAlgClosed C R
   haveI := hA.comm
   have hs₀ := hA.smooth
   have hp₀ := hA.proper
@@ -347,7 +357,7 @@ theorem symmetricBundle (hD : GlobalTheory.Published.DualAbelianScheme) (hC : Gl
   · exact relAmple_of_cls _ (pull_isLB hL _) hL' ((cls_pull hL _ _).trans hp) ha'
   · obtain ⟨L₁, hL₁, a₁, k₁, e₁⟩ := hc.2.2 (IsLocalRing.ResidueField R) (spMap (IsLocalRing.residue R))
     have hB' := PolPull.isAbelianScheme_of_isGrpPullback hA (isGrpPullback_pullback A (spMap (IsLocalRing.residue R)))
-    refine GlobalTheory.T.rel_ample_of_same_polarization _ _ hB' _ L₁ (pull_isLB hL _) hL₁ a₁ k₁ ?_
+    refine _root_.GlobalTheory.CompanionTheory.AmpleForm.relAmple_of_lam_eq _ _ hB' _ L₁ (pull_isLB hL _) hL₁ a₁ k₁ ?_
     rw [cls_pull hL, ← pull_sq_lam, hlam, e₁]
 
 end GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin.SymB

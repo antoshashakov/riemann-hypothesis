@@ -5,11 +5,17 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDesc
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsNilpotentGroupChartSmoothCommGroup
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsPowerSeriesReadingGroupHomNilpotentCharts
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HopfPointMem
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AbelianSchemeTorsionRepresentationStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalGroupChartFamilyStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeTateDatumReduceScalarsStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedVarietyIntegerActionStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TrivialPolarizedAbelianPointEqOneStatement
+public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsFinFlatSub
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AbelianSchemeTorsionRepresentation
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalGroupChartFamily
+public import ReciprocityTheory.DualLattices.CotangentSurjective
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HodgeTateDatumReduceScalars
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.RosatiAdj
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedVarietyIntegerAction
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.LePreimageOfNil
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.NonzeroLocus
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TrivialPolarizedAbelianPointEqOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -70,7 +76,7 @@ namespace GlobalTheory.CompanionTheory.Ar.GR.Top
 
 theorem pt_eq_one_of_g_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (P : Out.PolAV (Spec (CommRingCat.of R))), P.g = 0 → ∀ z : sp (R₀ := R) R ⟶ P.A, z = 1 :=
-  GlobalTheory.T.trivial_polarized_abelian_point_eq_one
+  _root_.GlobalTheory.CompanionTheory.Ar.DimZero.eq_one_of_g_eq_zero
 
 theorem exists_cp (p : ℕ) [hp : Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
     {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C] (hv : v.Integers R)
@@ -127,7 +133,7 @@ theorem main : HodgeTateDatumStatement := by
   haveI : IsAdicComplete (Ideal.span {(p : R)}) R := hcomp
   haveI : IsCommMonObj P.A := P.isAb.comm
   have hT : Nonempty (TorsRep P.A p) :=
-    GlobalTheory.T.abelian_scheme_torsion_representation R p (Fact.out : p.Prime).one_le P.A P.L P.isAb P.isLB P.ample
+    _root_.GlobalTheory.CompanionTheory.Ar.GR.torsRep_nonempty_of_relAmple R p (Fact.out : p.Prime).one_le P.A P.L P.isAb P.isLB P.ample
   refine ⟨hT, ?_⟩
   rcases Nat.eq_zero_or_pos P.g with hg | hg
   · obtain ⟨cp, hcp⟩ := exists_cp p hv hp
@@ -146,7 +152,7 @@ theorem main : HodgeTateDatumStatement := by
       | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
     obtain ⟨H⟩ := GlobalTheory.ChF.htd_dim_zero p C v R hv ℤ cp
     rw [← hg] at H
-    obtain ⟨hS', H', -⟩ := GlobalTheory.T.hodge_tate_datum_reduce_scalars p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H
+    obtain ⟨hS', H', -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.htd_restrict_coefficients p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H
     have h1 := pt_eq_one_of_g_zero R P hg
     revert H'
     rw [hg]
@@ -161,13 +167,13 @@ theorem main : HodgeTateDatumStatement := by
       exact ⟨fun _ => ⟨0, (h1 z).symm⟩, fun _ => by rw [h1 z]; exact one_pow p⟩
     · rw [hopf_carrier_g_zero, torsFun_one_eq]
   · obtain ⟨F, X, hX⟩ := GlobalTheory.ChF.exists_nilChart R P.A P.g P.smoothDim
-    obtain ⟨o⟩ := GlobalTheory.T.polarised_variety_integer_action R P
+    obtain ⟨o⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int R P
     have hα : ∀ a : ℤ, ∃ φ, Reads X X (o.act a) φ := fun a =>
       GlobalTheory.ChF.exists_reads R P.A P.A _ _ F.F F.F X X hX hX (o.act a) (o.hom a)
     choose α hα using hα
     obtain ⟨cp, hS, H, S, pt, -, -, -, -, -, hpt, hAA, -⟩ :=
-      GlobalTheory.T.formal_group_chart_family p C v R hv P hg P.g rfl ℤ o F X hX α hα
-    obtain ⟨hS', H', hAA', -⟩ := GlobalTheory.T.hodge_tate_datum_reduce_scalars p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H
+      _root_.GlobalTheory.CompanionTheory.Ar.GR.exists_htd_act p C v R hv P hg P.g rfl ℤ o F X hX α hα
+    obtain ⟨hS', H', hAA', -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.GR.htd_restrict_coefficients p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H
     exact ⟨cp, hS', H', pt, hpt, fun T => by rw [hAA']; exact hAA T⟩
 
 end GlobalTheory.CompanionTheory.Ar.GR.Top

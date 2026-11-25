@@ -5,13 +5,15 @@ public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Bund
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.GenericFibreKerTarget
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtensionStatement
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleBaseExtensionUniqueStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleShortExactStatement
+public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.InstFintypeSumElim
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartBundleShortExact
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChernClassOnFlagPairStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagPairBaseExtensionStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagPairBaseExtension
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBaseExtensionStatement
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericBundleChainStatement
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SameGenericFlagComparisonStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubQuotientStatementStatement
+public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsBundles
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubQuotientStatement
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.ClassListMapDomainPerm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -173,7 +175,7 @@ theorem HasFlag.pull {M : ℕ} {W : Type} [AddCommGroup W] [Module Ω W] {ϖ : O
     HasFlag ϖ (joinCoord x z) BB B'B := by
   obtain ⟨w, w', b, b', f, g, hf⟩ := h
   exact ⟨w, w', _, _, _, _,
-    (GlobalTheory.T.flag_pair_base_extension O Ω K ι x ϖ M W B B' w w' b b' f g hf).1 K' ι' z BB B'B hp hp'⟩
+    (_root_.GlobalTheory.CompanionTheory.Ar.Num.PullFlagPair.main O Ω K ι x ϖ M W B B' w w' b b' f g hf).1 K' ι' z BB B'B hp hp'⟩
 
 theorem exists_flag {M : ℕ} {W : Type} [AddCommGroup W] [Module Ω W] {ϖ : O} (hϖ : Irreducible ϖ)
     {x : (Σ k, ι k) → Ω} {d : ℕ}
@@ -228,8 +230,8 @@ theorem descend {x : (Σ k, ι k) → Ω} {d : ℕ} {E E' : ChartBundle O (mseg 
   obtain ⟨hM, hs, h, h'⟩ := hS
   have hS' : Setup (joinCoord x z) d EB E'B i p E₁B E₁'B E₂B E₂'B :=
     ⟨hz, (GlobalTheory.T.chart_bundle_base_extension_unique O Ω K ι x N V E E' K' ι' z EB E'B p0 p0').2.1 hs,
-      GlobalTheory.T.chart_bundle_short_exact O Ω K ι x N N₁ N₂ V V₁ V₂ E i p E₁ E₂ h K' ι' z EB E₁B E₂B p0 p1 p2,
-      GlobalTheory.T.chart_bundle_short_exact O Ω K ι x N N₁ N₂ V V₁ V₂ E' i p E₁' E₂' h' K' ι' z E'B E₁'B E₂'B p0' p1' p2'⟩
+      _root_.GlobalTheory.CompanionTheory.Ar.Num.PullSubQuot.main O Ω K ι x N N₁ N₂ V V₁ V₂ E i p E₁ E₂ h K' ι' z EB E₁B E₂B p0 p1 p2,
+      _root_.GlobalTheory.CompanionTheory.Ar.Num.PullSubQuot.main O Ω K ι x N N₁ N₂ V V₁ V₂ E' i p E₁' E₂' h' K' ι' z E'B E₁'B E₂'B p0' p1' p2'⟩
   intro k hk1 hk2 q L Q hQ
   have e := H hS' k hk1 hk2 q (fun j => pullDeg (K' := K') (L j)) Q hQ
   rw [(GlobalTheory.T.same_generic_base_extension O Ω K ι x d hM N V E E' hs K' ι' z hz hb EB E'B p0 p0').1 k hk1 hk2 q L Q hQ,
@@ -268,7 +270,7 @@ theorem ckAdd_of_flags {ϖ : O} (hϖ : Irreducible ϖ) {x : (Σ k, ι k) → Ω}
   refine Finset.sum_congr rfl fun μ hμ => ?_
   rw [← mul_add]
   congr 1
-  exact GlobalTheory.T.sub_quotient_statement O ϖ hϖ Ω K ι x d hM' N N₁ V V₁ V₂ E E' E₁ E₁' E₂ E₂' i p h.1 h.2.1 h.2.2.1 s0
+  exact _root_.GlobalTheory.CompanionTheory.Ar.Num.SubQuotFlags.main O ϖ hϖ Ω K ι x d hM' N N₁ V V₁ V₂ E E' E₁ E₁' E₂ E₂' i p h.1 h.2.1 h.2.2.1 s0
     (fun c hc => ⟨fun z => by rw [(h.2.2.2 c hc).1]; rfl, fun z => by rw [(h'.2.2.2 c hc).1]; rfl,
       fun q => by rw [(h.2.2.2 c hc).2]; rfl, fun q => by rw [(h'.2.2.2 c hc).2]; rfl⟩)
     w w' b b' f g hf w₁ w₁' b₁ b₁' f₁ g₁ hf₁ w₂ w₂' b₂ b₂' f₂ g₂ hf₂ k (psumExpansion N k)

@@ -1,10 +1,12 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.HasAffineChartIff
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartRestrictPreimageOpenStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GlueQuotientChartsCoverStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.InvariantOpenChartPreimageStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackOfGluedChartsStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ChartRestrictPreimageOpen
+public import Mathlib.AlgebraicGeometry.Restrict
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GlueQuotientChartsCover
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.InvariantOpenChartPreimage
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PullbackOfGluedCharts
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,8 +74,8 @@ theorem exists_iso_of_effectiveEpi {T Y₁ Y₂ : Scheme.{0}} (q₁ : T ⟶ Y₁
 theorem IsChart.exists_isOpenImmersion {P X Y Y' : Scheme.{0}} {a b : P ⟶ X} {V V' : X.Opens}
     {q : V.toScheme ⟶ Y} {q' : V'.toScheme ⟶ Y'} (h : IsChart a b V q) (h' : IsChart a b V' q')
     (hle : V' ≤ V) : ∃ k : Y' ⟶ Y, IsOpenImmersion k ∧ q' ≫ k = X.homOfLE hle ≫ q := by
-  obtain ⟨D, rfl⟩ := GlobalTheory.T.invariant_open_chart_preimage h V' hle h'.stable
-  obtain ⟨hle₂, q'', hc, hq⟩ := GlobalTheory.T.chart_restrict_preimage_open h D
+  obtain ⟨D, rfl⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.IsChart.exists_opens_image_preimage h V' hle h'.stable
+  obtain ⟨hle₂, q'', hc, hq⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.isChart_restrict_quotient_open h D
   have := h'.effectiveEpi
   have := hc.effectiveEpi
   obtain ⟨e, he⟩ := exists_iso_of_effectiveEpi q' q'' fun Z g₁ g₂ ↦ by
@@ -85,7 +87,7 @@ theorem exists_common {P X : Scheme.{0}} {a b : P ⟶ X} {U V : X.Opens}
     (hU : HasAffineChart a b U) (hV : HasAffineChart a b V) (x : X) (hxU : x ∈ U) (hxV : x ∈ V) :
     ∃ W, HasAffineChart a b W ∧ x ∈ W ∧ W ≤ U ∧ W ≤ V := by
   obtain ⟨Y, q, hY, hq⟩ := (hasAffineChart_iff a b U).1 hU
-  obtain ⟨D, hD⟩ := GlobalTheory.T.invariant_open_chart_preimage hq (U ⊓ V) inf_le_left (by
+  obtain ⟨D, hD⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.IsChart.exists_opens_image_preimage hq (U ⊓ V) inf_le_left (by
     have h1 := hq.stable
     have h2 := hV.1
     ext p
@@ -95,7 +97,7 @@ theorem exists_common {P X : Scheme.{0}} {a b : P ⟶ X} {U V : X.Opens}
   have hx : x ∈ U.ι ''ᵁ (q ⁻¹ᵁ D) := hD ▸ ⟨hxU, hxV⟩
   obtain ⟨u, hu, rfl⟩ := hx
   obtain ⟨D', hD', hm, hle⟩ := exists_isAffineOpen_mem_and_subset (X := Y) (x := q u) (U := D) hu
-  obtain ⟨hW, q', hc, hq'⟩ := GlobalTheory.T.chart_restrict_preimage_open hq D'
+  obtain ⟨hW, q', hc, hq'⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.isChart_restrict_quotient_open hq D'
   have hle' : U.ι ''ᵁ (q ⁻¹ᵁ D') ≤ U ⊓ V := by
     rw [← hD]
     rintro _ ⟨v, hv, rfl⟩
@@ -135,7 +137,7 @@ theorem GlobalTheory.CompanionTheory.FreeQuotGlue.exists_of_affineCharts : ∀ {
   let R : X → X → Prop := fun x y ↦ ∃ p : P, a p = x ∧ b p = y
   have hk (U V : 𝒰) (h : U.1 ≤ V.1) := (hq V).exists_isOpenImmersion (hq U) h
   choose k hk hqk using hk
-  obtain ⟨Y', π, em, hem, hcomm, hpre, hsurj⟩ := GlobalTheory.T.glue_quotient_charts_cover R 𝒰
+  obtain ⟨Y', π, em, hem, hcomm, hpre, hsurj⟩ := _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.exists_colimit_of_quotient_charts R 𝒰
     (fun U hU V hV x hx hx' ↦ by
       obtain ⟨W, h1, h2, h3, h4⟩ := exists_common hU hV x hx hx'
       exact ⟨W, h1, h2, h3, h4⟩)
@@ -155,4 +157,4 @@ theorem GlobalTheory.CompanionTheory.FreeQuotGlue.exists_of_affineCharts : ∀ {
   · exact prop_of_charts @Flat.{0} π _ Y q em hcomm hpre hsurj fun U ↦ (hq U).flat
   · exact prop_of_charts @LocallyOfFinitePresentation.{0} π _ Y q em hcomm hpre hsurj fun U ↦ (hq U).lfp
   · exact prop_of_charts @Surjective.{0} π _ Y q em hcomm hpre hsurj fun U ↦ (hq U).surjective
-  · exact GlobalTheory.T.pullback_of_glued_charts a b π _ Y q em hq hcomm hpre hsurj
+  · exact _root_.GlobalTheory.CompanionTheory.FreeQuotGlue.isPullback_of_isChart a b π _ Y q em hq hcomm hpre hsurj
