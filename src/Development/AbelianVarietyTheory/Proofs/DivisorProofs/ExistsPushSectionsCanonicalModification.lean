@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.IsoOverOfIsO
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsUniqueLbIsoPullEqOfCoheightLeOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBijectiveStalkMapOverDvrPointStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsJacobianSectionIsUnitGermOfLocalIsoStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GermMemRangeStalkOfPullbackMulLocalIsoStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GermMemRangeStalkOfPullbackMulLocalIso
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralSmoothProjectiveModificationOfNonemptyStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 import Mathlib.Algebra.Order.Floor.Extended
@@ -147,7 +147,7 @@ theorem exists_push_sections : ∀ (F : Type) [Field F] [CharZero F] (Y : Scheme
       obtain ⟨i, hi⟩ := exists_chart hL (M.σ x')
       have : Nonempty ((tens K.bundle B).U i) := ⟨⟨_, hi⟩⟩
       have hne := nonempty_inf_of_isIntegral U ((tens K.bundle B).U i)
-      exact ⟨i, hne, hi, GlobalTheory.T.germ_mem_range_stalk_of_pullback_mul_localIso F Y M.X p M.σ U _ _ _ C J g s₀ rel x' hb (hJ x' hb) i hi⟩)
+      exact ⟨i, hne, hi, _root_.GlobalTheory.germToFunctionField_mem_range_stalk_of_mul_pull F Y M.X p M.σ U _ _ _ C J g s₀ rel x' hb (hJ x' hb) i hi⟩)
     refine ⟨H0.ofSec p ⊤ t, ?_⟩
     have e : H0.restr (le_top : U ≤ ⊤) (H0.ofSec p ⊤ t) = s₀ := by
       rw [restr_ofSec]; exact LB.sec_ext fun i => ht i
