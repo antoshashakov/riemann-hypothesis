@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LFunctionBounds.AbelSummation
 
 @[expose] public section
 
@@ -129,16 +130,7 @@ lemma natCast_add_one_eq (n : ℕ) : ((n : ℂ) + 1) = (((n : ℝ) + 1 : ℝ) : 
 
 lemma norm_dterm_le {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) (n : ℕ) :
     ‖dterm χ s n‖ ≤ B * (‖s‖ * (n : ℝ) ^ (-s.re - 1)) := by
-  have hB0 : 0 ≤ B := (norm_nonneg _).trans (hB 0)
-  rcases Nat.eq_zero_or_pos n with rfl | hn
-  · rw [dterm_zero, norm_zero]
-    exact mul_nonneg hB0 (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg _) _))
-  · have hx : (0 : ℝ) < n := by exact_mod_cast hn
-    have key := norm_cpow_sub_le' hx hs
-    rw [← natCast_add_one_eq, Complex.ofReal_natCast] at key
-    show ‖Ap χ n * ((n : ℂ) ^ (-s) - ((n : ℂ) + 1) ^ (-s))‖ ≤ _
-    rw [norm_mul]
-    exact mul_le_mul (hB n) key (norm_nonneg _) hB0
+  exact Formalism.LFunctionBounds.AbelSummation.norm_dterm_le (fun n => χ (n : ZMod q)) hB hs n
 
 lemma norm_dterm_le' {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) {n : ℕ}
     (hn : 1 ≤ n) :
@@ -153,8 +145,7 @@ lemma norm_dterm_le' {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs :
 
 lemma summable_norm_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Summable (fun n => ‖dterm χ s n‖) := by
-  refine Summable.of_nonneg_of_le (fun n => norm_nonneg _) (norm_dterm_le χ hB hs) ?_
-  exact ((Real.summable_nat_rpow.mpr (by linarith)).mul_left ‖s‖).mul_left B
+  exact Formalism.LFunctionBounds.AbelSummation.summable_norm_dterm (fun n => χ (n : ZMod q)) hB hs
 
 lemma summable_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Summable (dterm χ s) := (summable_norm_dterm χ hB hs).of_norm
@@ -162,56 +153,11 @@ lemma summable_dterm {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs :
 lemma partial_identity (s : ℂ) (M : ℕ) :
     ∑ n ∈ Finset.range (M + 1), dterm χ s n + Ap χ M * ((M : ℂ) + 1) ^ (-s) =
       ∑ n ∈ Finset.Icc 1 M, χ (n : ZMod q) * (n : ℂ) ^ (-s) := by
-  induction M with
-  | zero => simp [dterm_zero, Ap_zero]
-  | succ M ih =>
-    rw [Finset.sum_range_succ, Finset.sum_Icc_succ_top (by omega), ← ih]
-    simp only [dterm]
-    rw [Ap_succ]
-    push_cast
-    ring
+  exact Formalism.LFunctionBounds.AbelSummation.partial_identity (fun n => χ (n : ZMod q)) s M
 
 lemma G_differentiableOn {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) :
     DifferentiableOn ℂ (G χ) {s : ℂ | 0 < s.re} := by
-  intro s0 hs0
-  have hs0' : 0 < s0.re := hs0
-  have hB0 : 0 ≤ B := (norm_nonneg _).trans (hB 0)
-  have hUo : IsOpen ({s : ℂ | s0.re / 2 < s.re} ∩ Metric.ball 0 (‖s0‖ + 1)) :=
-    (isOpen_lt continuous_const Complex.continuous_re).inter Metric.isOpen_ball
-  have hs0U : s0 ∈ {s : ℂ | s0.re / 2 < s.re} ∩ Metric.ball 0 (‖s0‖ + 1) := by
-    refine ⟨?_, ?_⟩
-    · show s0.re / 2 < s0.re
-      linarith
-    · simp
-  have hdiff : DifferentiableOn ℂ (fun w => ∑' n, dterm χ w n)
-      ({s : ℂ | s0.re / 2 < s.re} ∩ Metric.ball 0 (‖s0‖ + 1)) := by
-    apply Complex.differentiableOn_tsum_of_summable_norm (F := fun n w => dterm χ w n)
-      (u := fun n : ℕ => B * ((‖s0‖ + 1) * (n : ℝ) ^ (-(s0.re / 2) - 1)))
-    · exact ((Real.summable_nat_rpow.mpr (by linarith)).mul_left _).mul_left _
-    · intro n w hw
-      have h1 : s0.re / 2 < w.re := hw.1
-      have hw0 : w ≠ 0 := fun h => by rw [h, Complex.zero_re] at h1; linarith
-      apply DifferentiableAt.differentiableWithinAt
-      show DifferentiableAt ℂ (fun w => Ap χ n * ((n : ℂ) ^ (-w) - ((n : ℂ) + 1) ^ (-w))) w
-      apply DifferentiableAt.const_mul
-      apply DifferentiableAt.sub
-      · exact (differentiableAt_id.neg).const_cpow (Or.inr (neg_ne_zero.mpr hw0))
-      · exact (differentiableAt_id.neg).const_cpow (Or.inr (neg_ne_zero.mpr hw0))
-    · exact hUo
-    · intro n w hw
-      have h1 : s0.re / 2 < w.re := hw.1
-      have h2 : ‖w‖ < ‖s0‖ + 1 := by simpa using hw.2
-      have hwre : 0 < w.re := by linarith
-      rcases Nat.eq_zero_or_pos n with rfl | hn
-      · show ‖dterm χ w 0‖ ≤ B * ((‖s0‖ + 1) * ((0 : ℕ) : ℝ) ^ (-(s0.re / 2) - 1))
-        rw [dterm_zero, norm_zero]
-        exact mul_nonneg hB0 (mul_nonneg (by positivity) (Real.rpow_nonneg (Nat.cast_nonneg _) _))
-      · show ‖dterm χ w n‖ ≤ B * ((‖s0‖ + 1) * (n : ℝ) ^ (-(s0.re / 2) - 1))
-        refine (norm_dterm_le χ hB hwre n).trans ?_
-        apply mul_le_mul_of_nonneg_left _ hB0
-        apply mul_le_mul h2.le _ (Real.rpow_nonneg (Nat.cast_nonneg _) _) (by positivity)
-        exact Real.rpow_le_rpow_of_exponent_le (Nat.one_le_cast.mpr hn) (by linarith)
-  exact (hdiff.differentiableAt (hUo.mem_nhds hs0U)).differentiableWithinAt
+  exact Formalism.LFunctionBounds.AbelSummation.G_differentiableOn (fun n => χ (n : ZMod q)) hB
 
 lemma sum_Icc_eq_sum_range (f : ℕ → ℂ) (hf : f 0 = 0) (M : ℕ) :
     ∑ n ∈ Finset.Icc 1 M, f n = ∑ n ∈ Finset.range (M + 1), f n := by
@@ -224,24 +170,7 @@ lemma sum_Icc_eq_sum_range (f : ℕ → ℂ) (hf : f 0 = 0) (M : ℕ) :
 lemma partial_tendsto_G {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) :
     Tendsto (fun M : ℕ => ∑ n ∈ Finset.Icc 1 M, χ (n : ZMod q) * (n : ℂ) ^ (-s)) atTop
       (𝓝 (G χ s)) := by
-  have hB0 : 0 ≤ B := (norm_nonneg _).trans (hB 0)
-  have h1 : Tendsto (fun M : ℕ => ∑ n ∈ Finset.range (M + 1), dterm χ s n) atTop (𝓝 (G χ s)) :=
-    ((summable_dterm χ hB hs).hasSum.tendsto_sum_nat).comp (tendsto_add_atTop_nat 1)
-  have h2 : Tendsto (fun M : ℕ => Ap χ M * ((M : ℂ) + 1) ^ (-s)) atTop (𝓝 0) := by
-    rw [tendsto_zero_iff_norm_tendsto_zero]
-    have hg : Tendsto (fun M : ℕ => ((M : ℝ) + 1) ^ (-s.re)) atTop (𝓝 0) :=
-      (tendsto_rpow_neg_atTop hs).comp
-        (tendsto_natCast_atTop_atTop.atTop_add (tendsto_const_nhds (x := (1 : ℝ))))
-    have hg' := hg.const_mul B
-    rw [mul_zero] at hg'
-    refine squeeze_zero (fun M => norm_nonneg _) (fun M => ?_) hg'
-    show ‖Ap χ M * ((M : ℂ) + 1) ^ (-s)‖ ≤ B * ((M : ℝ) + 1) ^ (-s.re)
-    have hM : (0 : ℝ) < (M : ℝ) + 1 := by positivity
-    rw [norm_mul, natCast_add_one_eq, Complex.norm_cpow_eq_rpow_re_of_pos hM, Complex.neg_re]
-    exact mul_le_mul_of_nonneg_right (hB M) (Real.rpow_nonneg hM.le _)
-  have h3 := h1.add h2
-  rw [add_zero] at h3
-  exact h3.congr (partial_identity χ s)
+  exact Formalism.LFunctionBounds.AbelSummation.partial_tendsto_G (fun n => χ (n : ZMod q)) hB hs
 
 lemma LFunction_eq_G_of_one_lt {B : ℝ} (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 1 < s.re) :
     DirichletCharacter.LFunction χ s = G χ s := by
