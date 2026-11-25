@@ -14,7 +14,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasureZ
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyclePointDictionaryStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulticonePointDescendsToSubvarietyStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalSectionFiniteOpenCoverStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalSectionFiniteOpenCover
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackIsPotentialStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightsIntegralPullbackFormula
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZeroLocusRegularFunctionNullStatement
@@ -147,7 +147,7 @@ theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ}
     {r : C.ι → X.functionFieldˣ} (hr : IsRatSec C r) (ε : ℤˣ) :
     IntegrableOn (GlobalTheory.Cartier.logNorm ψ r) (offSupp q σ (divOfRatSec ψ.isLB hr)) (φ.chernPart D ε) := by
   classical
-  obtain ⟨N, W, b, a, d, hcov, hWb, hd, hf⟩ := GlobalTheory.T.rational_section_finite_open_cover ψ hr
+  obtain ⟨N, W, b, a, d, hcov, hWb, hd, hf⟩ := _root_.GlobalTheory.CompanionTheory.MixZ.ArchRep.logNorm_finite_rep ψ hr
   set S := offSupp q σ (divOfRatSec ψ.isLB hr) with hSdef
   have hSo : IsOpen S := isOpen_offSupp _
   have hgc := GlobalTheory.T.log_norm_continuous_off_divisor ψ hψ hr

@@ -6,7 +6,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDet
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockIntegralIffStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockInverseIntegralIffStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermHeckeFormulaStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DetOrderBoundedHeckeSupportStatement
+public import Formalism.SatakeDualWeyl.StatementF
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DetOrderBoundedHeckeSupport
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiagonalLatticeIndexPowStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeIndicatorFormulaStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeVectorLinearCombinationStatement
@@ -167,8 +168,8 @@ theorem ct_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (
       funext X
       rw [tj_blk E n a b h w ϖ hϖ k hk m, if_neg]
       rintro ⟨i1, j1, -, i2, j2, -, e⟩
-      obtain ⟨i, hi, i3⟩ := GlobalTheory.T.det_order_bounded_hecke_support E w a ϖ hϖ m.1 i1 i2
-      obtain ⟨j, hj, j3⟩ := GlobalTheory.T.det_order_bounded_hecke_support E w b ϖ hϖ m.2 j1 j2
+      obtain ⟨i, hi, i3⟩ := _root_.GlobalTheory.CompanionTheory.CtS.ordL_det_range E w a ϖ hϖ m.1 i1 i2
+      obtain ⟨j, hj, j3⟩ := _root_.GlobalTheory.CompanionTheory.CtS.ordL_det_range E w b ϖ hϖ m.2 j1 j2
       have hp : (⟨i, j⟩ : ℕ × ℕ) ∈ pairs a b k := by
         have : i + j = k := by rw [i3, j3] at e; exact_mod_cast e
         exact mem_pairs.2 ⟨this, hi, hj⟩

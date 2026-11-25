@@ -1,7 +1,7 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SerreClassOfCechSpectralSequence
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechDoubleComplexMapStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechDoubleComplexMap
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleComplexDegenerateColumnIsoStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleComplexLeadSurjectiveStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleComplexMapLeadCompatStatement
@@ -160,7 +160,7 @@ theorem cech_deg : ∀ (R : Type) [CommRing R], ∃ e : ∀ {C : Type 1} [Catego
   intro R _
   refine ⟨fun F _ U hU hc a hv j => eDeg F U hU hc a hv j, ?_⟩
   intro C C' _ _ F F' ι ι' U U' hU hc hU' hc' a hv hv' m τ hτ j c h0 h1
-  obtain ⟨φ, hφ1, hφ2⟩ := GlobalTheory.T.cech_double_complex_map F F' U U' hU hU' m τ hτ
+  obtain ⟨φ, hφ1, hφ2⟩ := _root_.GlobalTheory.CompanionTheory.CechSerre.dbl_mor F F' U U' hU hU' m τ hτ
   obtain ⟨c₁, rfl⟩ := (colCmp_bij U hU F j a).2 c
   have hd₁ : (colH (dbl U hU F) a).d j c₁ = 0 := by
     refine (colCmp_bij U hU F (j + 1) a).1 ?_

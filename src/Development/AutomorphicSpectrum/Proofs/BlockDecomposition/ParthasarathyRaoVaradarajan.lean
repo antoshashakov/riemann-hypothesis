@@ -6,7 +6,9 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PR
 public import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.DiscreteSeriesCharacters.DiscreteSeriesInfinitesimalCharacter
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CliffordVectorSpinWeightStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCliffordLowestVectorStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHighestWeightModuleStatement
+public import Formalism.RealPlaceAnalysis.StatementA
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHighestWeightModule
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightAntitoneOfFiniteDimensionalStable
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Sl2SquareKillsVectorStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinGlRelationsAdjointStatement
@@ -173,7 +175,7 @@ theorem assemble {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n 
     linarith
   refine ⟨σ, hσ, ?_⟩
   obtain ⟨Z, iZ1, iZ2, iZ3, E, u, a0, hEgl, hEu, hu0, hu, hirr, ha0, haw, hah⟩ :=
-    GlobalTheory.T.exists_highest_weight_module (fun a => wtR ν (σ a) - rhoV n (σ a)) hσ (-(((n : ℝ) - 1) / 2))
+    _root_.GlobalTheory.CompanionTheory.RealCount.Extremal.extremal_module (fun a => wtR ν (σ a) - rhoV n (σ a)) hσ (-(((n : ℝ) - 1) / 2))
       (fun a => ⟨ν (σ a) + ((σ a : ℕ) : ℤ), by simp only [wtR, rhoV]; push_cast; ring⟩) σ
   have hay : ∀ y, E y y a0 = ((wtR ν y - rhoV n y : ℝ) : ℂ) • a0 := by
     intro y

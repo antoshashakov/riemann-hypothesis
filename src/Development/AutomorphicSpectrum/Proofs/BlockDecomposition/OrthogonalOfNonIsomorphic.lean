@@ -11,7 +11,10 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOp
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarRightInvariantStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralEqL2InnerStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieSkewAdjointBisStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepresentationUnitaryAverageStatement
+public import Mathlib.Analysis.CStarAlgebra.Module.Constructions
+public import Mathlib.MeasureTheory.Group.Measure
+public import Mathlib.RepresentationTheory.Basic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepresentationUnitaryAverage
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightTranslateIsometryStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -105,7 +108,7 @@ theorem exists_repr (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInv
   letI : MeasurableSpace (Kinf E N) := borel _
   haveI : BorelSpace (Kinf E N) := ⟨rfl⟩
   haveI : CompactSpace (Kinf E N) := GlobalTheory.KinfCompactness.compactSpace_Kinf E N
-  have key := GlobalTheory.T.representation_unitary_average (Measure.haar : Measure (Kinf E N)) (cptRep E N) (l2Map μ) (fixS V L) (fixS V' L)
+  have key := _root_.GlobalTheory.CompanionTheory.FinDiscRepr.representing_vector (Measure.haar : Measure (Kinf E N)) (cptRep E N) (l2Map μ) (fixS V L) (fixS V' L)
     (fun g : GA E N => (LinearMap.proj g).comp (Sm E N).subtype)
     (fun k a ha b hb => hunit k hV' hV a ha.1 b hb.1)
     (fun k a ha b hb => hunit k hV' hV' a ha.1 b hb.1)

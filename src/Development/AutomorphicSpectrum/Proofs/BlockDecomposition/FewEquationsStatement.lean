@@ -3,7 +3,8 @@ module
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.AbelianDeRham.AbelianHodgeDeRham.H1DimGeAbelianDim
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleUnitsTrivializeModuloIdealStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DependencyStatementStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCohomologyRankBoundAtClosedPointStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMulTrInv
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCohomologyRankBoundAtClosedPoint
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsBaseChangeStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsLocalIdealStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialPullbackGivesUnitCocycleStatement
@@ -71,7 +72,7 @@ theorem fewEq : FewEqSt := by
   have mingens := GlobalTheory.T.minimal_generators_local_ideal
   have flat := GlobalTheory.T.minimal_generators_base_change
   have dep := GlobalTheory.T.dependency_statement
-  have fibre := GlobalTheory.T.first_cohomology_rank_bound_at_closed_point
+  have fibre := _root_.GlobalTheory.CompanionTheory.FewEq.FibreRed.dep_fibre
   have cocycle := GlobalTheory.T.unit_cocycle_lift_modulo_maximal
   have finish := GlobalTheory.T.unit_cocycle_lift_minimal_generators
   intro R _ _ _ X s n hsm hpr hF M hM I hI hJ

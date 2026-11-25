@@ -8,7 +8,10 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Mov
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormSqEqToL2
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSeriesFactorizableRestrictionFinite
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNonnegativeSchwartzBumpStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNonnegativeSchwartzBump
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ModerateGrowthSchwartz
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramMapContinuousHermitianStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianCoordinatesTracePairingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianScalarSequenceTendsZeroStatement
@@ -115,7 +118,7 @@ theorem vanish_generic (F : Type) [Field F] [NumberField F] (hF : NumberField.Is
   haveI := hμ.1
   refine vanish_ring ψ hψ.1 hψ.2.1 κ μ Y ν φ g hg N hN ?_ z₀ hz
   intro hφ hJ N' hN' hsub z₁ hz₁
-  obtain ⟨Φ, hΦ, hΦ0, hΦN, hΦ1⟩ := GlobalTheory.T.exists_nonnegative_schwartz_bump F κ N' hN' z₁ hz₁
+  obtain ⟨Φ, hΦ, hΦ0, hΦN, hΦ1⟩ := _root_.GlobalTheory.CompanionTheory.AdelicBump.exists_bump F κ N' hN' z₁ hz₁
   obtain ⟨hΦc, -, hΦi⟩ := GlobalTheory.SplitSvN.schA_facts hF hΦ
   exact ⟨Φ, hΦc, hΦi μ hμ.1, hΦ0, hΦN, hΦ1,
     GlobalTheory.T.tamagawa_fourier_integrable F hF ψ hψ κ μ hμ Y ν φ g hφ hg hJ Φ hΦ (fun y => hΦN _ fun h' => hgN y (hsub h'))⟩

@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsDiff
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasimirMemCenterEnvelopingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactSpanFiniteDimStableStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianMonicAnnihilatorMeasureStatement
+public import GroundTheory.AutomorphicForms.GKModules.Casimir
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianMonicAnnihilatorMeasure
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OmegaOperatorCommutesInfiniteGlStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OmegaOperatorEqCasimirSumStatement
 import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.GKStableLaplacian
@@ -200,7 +201,7 @@ theorem uJ_eq_conv : ∀ (E : Type) [Field E] [NumberField E] [_root_.NumberFiel
   intro E _ _ _ a φ hs hA _ _ μ _ k J
   obtain ⟨d, b, ε, hε, horth, hskew⟩ := exists_archCartanBasis (K := E) (n := a)
   obtain ⟨P, hm, hd, hP⟩ := exists_aeval_lapOp_eq_zero φ hA b ε hε horth hskew
-  exact GlobalTheory.T.laplacian_monic_annihilator_measure E a (smL E a φ) d b P hm hd
+  exact _root_.GlobalTheory.CompanionTheory.HCRep.ConvLap.exists_conv_uJ_of_aeval_laplacian E a (smL E a φ) d b P hm hd
     (fun g => by rw [← sliceL_aeval_lapOp, hP, map_zero, map_zero]) μ k J
 
 end GlobalTheory.CompanionTheory.HCRep

@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.AnalyticOnNhdFinChartIff
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnSourceIffOfDensity
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackChartFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothWeightPullbackChartFormula
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -184,7 +184,7 @@ theorem GlobalTheory.CompanionTheory.ArchDom.chernPart_le_sum_map : ∀ {k : Typ
   · intro j u hu u' hu' hZu h
     exact (A.chart j).symm.injOn (hKt j hu) (hKt j hu') (hinj _ _ hZu h)
   · intro j u hu hsrc _
-    obtain ⟨han, hd⟩ := GlobalTheory.T.smooth_weight_pullback_chart_formula A F hF hol φ hφ c j u (hKt j hu) hsrc
+    obtain ⟨han, hd⟩ := _root_.GlobalTheory.CompanionTheory.MixZ.PullDens.locDens_pullback_eq A F hF hol φ hφ c j u (hKt j hu) hsrc
     have hG : (toV D).symm ∘ c.e ∘ (F ∘ (A.chart j).symm) =
         c.finChart ∘ F ∘ (A.chart j).symm := rfl
     rw [hG]

@@ -19,7 +19,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatTuple
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingBiadditive
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingOnRationalTupleFormula
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseCocycleBimultiplicativeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseContinuousUnitaryStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhaseContinuousUnitary
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalCharacterKernelScaling
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalTupleInLatticeLevelStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceDualDenominatorBoundedStatement
@@ -116,7 +116,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   refine ⟨(∑ a ∈ s, ‖Q a‖) * (μ (L : Set _)).toReal, t₁ * (s₂ : F), mul_ne_zero ht₁ hs₂F, fun c => ?_⟩
   set t : F := t₁ * (s₂ : F) with ht
   set bc := hermIn (Af F) σ n c with hbc
-  obtain ⟨hp1, hp2, hp3⟩ := GlobalTheory.T.phase_continuous_unitary F E σ hCM M J n ψ hψ bc
+  obtain ⟨hp1, hp2, hp3⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.phaseB_pairB_props F E σ hCM M J n ψ hψ bc
   obtain ⟨hq1, hq2⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairAdd.pairB_add F E σ M J n ψ bc
   set q := phaseB σ J (psiFin F ψ) bc with hq
   set B := pairB σ J (psiFin F ψ) bc with hB

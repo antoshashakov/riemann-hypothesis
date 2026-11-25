@@ -20,7 +20,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityB
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisintegrationAlongContinuousQuotientMapStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GoodSetCompactLinearlyIndependentStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableDensityFromBoxVolumeGrowthStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzArchContinuousIntegrableStatement
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzArchContinuousIntegrable
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearPreservesArchimedeanHaarStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearPushforwardHermitianMeasureStatement
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
@@ -427,7 +428,7 @@ theorem avgInf_tendsto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
     exact h1
   have hbm : ∀ r : Fin n → NumberField.InfinitePlace F → ℝ, MeasurableSet (boxK (M := M) κ r) :=
     fun r => (hbc r).measurableSet
-  obtain ⟨hφc, hφi, ⟨B, hB⟩, hdec⟩ := GlobalTheory.T.schwartz_arch_continuous_integrable F E σ hCM κ hκ n M 2 b lam hlam φ hφ
+  obtain ⟨hφc, hφi, ⟨B, hB⟩, hdec⟩ := _root_.GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple.schwartzArch_facts F E σ hCM κ hκ n M 2 b lam hlam φ hφ
   have hdom : ∀ ε : ℝ≥0∞, ε ≠ 0 → ∃ A : Set (Fin n → Fin M → Ainf F ⊗[F] E), IsCompact A ∧
       A ⊆ {X | LinearIndependent (Ainf F ⊗[F] E) X} ∧ ∀ Y, MeasurableSet Y →
         ∫⁻ X in Aᶜ ∩ Q ⁻¹' Y, ‖φ X‖ₑ ∂μ ≤ ε * ν Y := by

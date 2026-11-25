@@ -4,7 +4,10 @@ public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDiagonalDoubleCosets
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralEqSumSmallerLevelStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactPartDiagonalMapStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteDiagonalDoubleCosetsStatement
+public import Mathlib.Algebra.BigOperators.Finprod
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.GroupTheory.DoubleCoset
+public import Mathlib.GroupTheory.Index
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeConvolutionSupportStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeIntegralFiniteSumStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSupportFacts
@@ -239,7 +242,7 @@ theorem core [T2Space H] (K L : Subgroup H) (N : H) (f₁ f₂ : H → ℂ)
   obtain ⟨B1, B2⟩ := GlobalTheory.T.twistedOrbitalIntegral_eq_sum_smallerLevel H (MonoidHom.id H) K hKo hKc (fun k hk => hk) L
     ⟨hLo, hLK, fun k hk => hk⟩ N cv (hcvf ▸ hconv.1) (fun x => ⟨hZK x, hZL x⟩)
     (finite_single L hLo hprop h₁.1 h₂.1 cv fun y hy => hconv.2 y (by rwa [← hcv]))
-  have hcount := GlobalTheory.T.finite_diagonal_double_cosets H (twCent (MonoidHom.id H) N) L (cptPart (twCent (MonoidHom.id H) N))
+  have hcount := _root_.GlobalTheory.CompanionTheory.OrbitCount.orbit_count H (twCent (MonoidHom.id H) N) L (cptPart (twCent (MonoidHom.id H) N))
     (FF N f₁ f₂) (fun x => ⟨hle x, hZL x⟩)
     (fun t ht c hc => by
       rw [hG.1 t ht c (hCZ hc), mul_inv_cancel_right]

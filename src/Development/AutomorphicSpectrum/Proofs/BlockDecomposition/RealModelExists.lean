@@ -4,7 +4,13 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrderedC
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.ConeWeightsNotSecondType
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterActsByScalarOnCyclicStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqZeroOnUnitaryOfVanishAtOneStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHaarUnitaryGroupStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.LinearAlgebra.UnitaryGroup
+public import Mathlib.MeasureTheory.Group.Defs
+public import Mathlib.MeasureTheory.Measure.OpenPos
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHaarUnitaryGroup
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MapMemKfin
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsKFiniteSubmoduleContainingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPermShiftedWeightEqInfCharStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandInvariantCommuteGeneratorStatement
@@ -238,7 +244,7 @@ theorem modelEx_main : ModelEx := by
   classical
   letI : MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ) := borel _
   haveI : BorelSpace (Matrix.unitaryGroup (Fin n) ℂ) := ⟨rfl⟩
-  obtain ⟨κ, hκ1, hκ2, hκ3⟩ := GlobalTheory.T.exists_haar_unitary_group n
+  obtain ⟨κ, hκ1, hκ2, hκ3⟩ := _root_.GlobalTheory.CompanionTheory.ModelS.exists_rightInvariant_measure_unitaryGroup n
   have hmem := GlobalTheory.T.inducedFunction_smooth n lam hlam lev hlev
   let F : SmF n := ⟨fRaw lam lev, hmem⟩
   have hF : F.1 = fRaw lam lev := rfl

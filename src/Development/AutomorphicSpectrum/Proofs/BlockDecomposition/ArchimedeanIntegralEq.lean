@@ -17,7 +17,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSame
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjectionRegularOnNonvanishingChartStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalSectionLogNormOnSheetStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheetDensityLogNormFormulaStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheetIntegralProjectionFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheetIntegralProjectionFormula
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -233,7 +233,7 @@ theorem archIntEq_of_integrable : ArchIntegrableOn → ArchIntEq := by
       ∃ y, Over i y z ∧ y ∈ ⋃ l, S l := fun z hz hzv => by
     rw [hSU]
     exact h1 z hz hzv
-  have h4 := GlobalTheory.T.sheet_integral_projection_formula m n X i D Ψ N hP hΨ e Γ S hpc hSs hSd v h3
+  have h4 := _root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.finsum_fibre_eq m n X i D Ψ N hP hΨ e Γ S hpc hSs hSd v h3
     (fun w => sheetDensity (ptIdeal (i (genericPoint X))) Ψ (pot fun _ : Fin D => B) (logNormRat A f g) v w)
     (fun l => F ((e l).symm v) * ρ l v) (fun l hl => by
       obtain ⟨y, hyS, rfl⟩ := hl

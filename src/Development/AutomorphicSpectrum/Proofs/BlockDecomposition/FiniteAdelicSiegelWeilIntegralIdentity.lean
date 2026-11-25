@@ -5,7 +5,7 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicIntegralInvariantOpenSubgroup
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLocalOrbitalIntegralBoundedStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianFiniteAdelesDenseRationalStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianFiniteAdelesDenseRational
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScaledIntegralHermitianInOpenSubgroupStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableDenominatorPowerOfLtStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableOverLatticeQuotientLocallyConstantStatement
@@ -100,6 +100,6 @@ theorem integrable_starLoc_fin : ∀ (F E : Type) [Field F] [NumberField F] [Fie
     (fun c l hl => by
       show ‖_‖ = ‖_‖
       rw [map_add (f := _), hUp _ _ hl]) C ((M : ℝ) / 2) hb (GlobalTheory.T.summable_denominator_power_of_lt F E σ hCM n _ hs)
-  exact GlobalTheory.T.summable_over_lattice_quotient_locally_constant _ _ ν U hUo hUc (hermIn (Af F) σ n) (GlobalTheory.T.hermitian_finite_adeles_dense_rational F E σ hCM n U hUo) _ (fun g u hu => hUp g u hu) hsum
+  exact GlobalTheory.T.summable_over_lattice_quotient_locally_constant _ _ ν U hUo hUc (hermIn (Af F) σ n) (_root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.hermE_dense_finite F E σ hCM n U hUo) _ (fun g u hu => hUp g u hu) hsum
 
 end GlobalTheory.CompanionTheory.SiegelND.Integ.Hua
