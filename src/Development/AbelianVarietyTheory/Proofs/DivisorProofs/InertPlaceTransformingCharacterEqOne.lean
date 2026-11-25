@@ -31,7 +31,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalProduct
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalizedAbsDetMulIntegralCompMulVecFinitePlaceStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrodingerPreservesSchwartzBruhat
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelParabolicLeviInverseQuotientDetNormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicAddCharNontrivialFinitePlaceStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicAddCharNontrivialFinitePlace
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticFormEqZeroOfLagrangianAtPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationLocalityUnitaryGroupVStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
@@ -198,7 +198,7 @@ theorem char_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
   obtain ⟨h2, -, hunr⟩ := hT.base.inert v w hin
   have hψc : Continuous (psiAt B.ψ v) := GlobalTheory.SchrSB.continuous_psiAt B.ψ hT.base.std.1 v
   have hψ1 : psiAt B.ψ v ≠ 1 := by
-    obtain ⟨t, ht⟩ := GlobalTheory.T.standardAdelicAddChar_nontrivial_finitePlace B.ψ hT.base.std v
+    obtain ⟨t, ht⟩ := _root_.GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one B.ψ hT.base.std v
     intro h; exact ht (by rw [h]; rfl)
   have hJ : IsUnit G.V'.J.det := GlobalTheory.isUnit_det_of_isHerm F E σ B a' G.V' _ _ hT.geo.hV'
   obtain ⟨-, ⟨d', hd', hBw⟩, -⟩ := hT.weil'
