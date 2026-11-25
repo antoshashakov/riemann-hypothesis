@@ -4498,59 +4498,33 @@ theorem resA_nonneg (k : ℕ) (hk : 1 ≤ k) (a b : ℕ → ℝ)
     (hab : ∀ j ∈ Icc 1 (k - 1), a j ≤ b j ∧ b j ≤ a (j + 1))
     (hbinc : ∀ i ∈ Icc 1 (k - 1), ∀ j ∈ Icc 1 (k - 1), i < j → b i < b j)
     (j : ℕ) (hj : j ∈ Icc 1 (k - 1)) : 0 ≤ resA (Icc 1 k) (Icc 1 (k - 1)) a b j := by
-  have hj' := mem_Icc.1 hj
-
-  have hmono : ∀ n, ∀ i, 1 ≤ i → i + n ≤ k → a i ≤ a (i + n) := by
-    intro n
-    induction n with
-    | zero => intro i _ _; simp
-    | succ n ih =>
-      intro i hi hin
-      have h1 := ih i hi (by omega)
-      have h2 := hab (i + n) (by simp [mem_Icc]; omega)
-      rw [show i + (n + 1) = i + n + 1 by ring]; linarith [h2.1, h2.2]
-  have hle : ∀ i i', 1 ≤ i → i ≤ i' → i' ≤ k → a i ≤ a i' := fun i i' h1 h2 h3 => by
-    have := hmono (i' - i) i h1 (by omega); rwa [Nat.add_sub_cancel' h2] at this
-  unfold resA
-  rw [← prod_filter_mul_prod_filter_not (Icc 1 k) (fun i => i ≤ j),
-    ← prod_filter_mul_prod_filter_not ((Icc 1 (k - 1)).erase j) (fun m => m < j)]
-  set N1 := ∏ i ∈ (Icc 1 k).filter (fun i => i ≤ j), (b j - a i)
-  rw [prod_neg_flip ((Icc 1 k).filter (fun i => ¬ i ≤ j)) a (b j),
-    prod_neg_flip (((Icc 1 (k - 1)).erase j).filter (fun m => ¬ m < j)) b (b j)]
-  have hc1 : ((Icc 1 k).filter (fun i => ¬ i ≤ j)).card = k - j := by
-    have : (Icc 1 k).filter (fun i => ¬ i ≤ j) = Ioc j k := by ext i; simp [mem_Ioc]; omega
-    rw [this, Nat.card_Ioc]
-  have hc2 : (((Icc 1 (k - 1)).erase j).filter (fun m => ¬ m < j)).card = k - 1 - j := by
-    have : ((Icc 1 (k - 1)).erase j).filter (fun m => ¬ m < j) = Ioc j (k - 1) := by ext i; simp [mem_Ioc]; omega
-    rw [this, Nat.card_Ioc]
-  rw [hc1, hc2]
-  have hN1 : 0 ≤ N1 := prod_nonneg fun i hi => by
-    have := mem_filter.1 hi; have h := mem_Icc.1 this.1
-    have := hle i j h.1 this.2 (by omega); linarith [(hab j hj).1]
-  have hN2 : 0 ≤ ∏ i ∈ (Icc 1 k).filter (fun i => ¬ i ≤ j), (a i - b j) := prod_nonneg fun i hi => by
-    have := mem_filter.1 hi; have h := mem_Icc.1 this.1
-    have := hle (j + 1) i (by omega) (by omega) h.2; linarith [(hab j hj).2]
-  have hP1 : 0 < ∏ m ∈ ((Icc 1 (k - 1)).erase j).filter (fun m => m < j), (b j - b m) := prod_pos fun m hm => by
-    have h := mem_filter.1 hm; have h2 := mem_erase.1 h.1
-    have := hbinc m h2.2 j hj h.2; linarith
-  have hP2 : 0 < ∏ m ∈ ((Icc 1 (k - 1)).erase j).filter (fun m => ¬ m < j), (b m - b j) := prod_pos fun m hm => by
-    have h := mem_filter.1 hm; have h2 := mem_erase.1 h.1
-    have := hbinc j hj m h2.2 (by omega); linarith
-  have hpow : ((-1 : ℝ) ^ (k - j)) = -((-1) ^ (k - 1 - j)) := by
-    rw [show k - j = k - 1 - j + 1 by omega, pow_succ]; ring
-  rw [hpow]
-  have hsq : ((-1 : ℝ) ^ (k - 1 - j)) * ((-1) ^ (k - 1 - j)) = 1 := by
-    rw [← mul_pow]; norm_num
-  have e : -(N1 * (-((-1 : ℝ) ^ (k - 1 - j)) * ∏ i ∈ (Icc 1 k).filter (fun i => ¬ i ≤ j), (a i - b j))) /
-      ((∏ m ∈ ((Icc 1 (k - 1)).erase j).filter (fun m => m < j), (b j - b m)) *
-        ((-1) ^ (k - 1 - j) * ∏ m ∈ ((Icc 1 (k - 1)).erase j).filter (fun m => ¬ m < j), (b m - b j))) =
-      (N1 * ∏ i ∈ (Icc 1 k).filter (fun i => ¬ i ≤ j), (a i - b j)) /
-      ((∏ m ∈ ((Icc 1 (k - 1)).erase j).filter (fun m => m < j), (b j - b m)) *
-        ∏ m ∈ ((Icc 1 (k - 1)).erase j).filter (fun m => ¬ m < j), (b m - b j)) := by
-    have hσ : ((-1 : ℝ) ^ (k - 1 - j)) ≠ 0 := pow_ne_zero _ (by norm_num)
-    field_simp
-  rw [e]
-  positivity
+  let t := Icc 1 (k - 1)
+  have hj' := mem_Icc.mp hj
+  have hmono : MonotoneOn b (t : Set ℕ) := (show StrictMonoOn b (t : Set ℕ) from hbinc).monotoneOn
+  have right_of_interlace (i : ℕ) (hi : j < i) (hik : i ≤ k) : b j ≤ a i := by
+    have hprev : i - 1 ∈ t := by simp [t, mem_Icc]; omega
+    have hle : b j ≤ b (i - 1) := hmono hj hprev (by omega)
+    simpa only [Nat.sub_add_cancel (show 1 ≤ i by omega)] using hle.trans (hab _ hprev).2
+  have ht : Icc 1 k = insert k t := by
+    ext i
+    simp [t, mem_Icc]
+    omega
+  have hkout : k ∉ t := by simp [t, mem_Icc]; omega
+  have hfactor : resA (Icc 1 k) t a b j =
+      (a k - b j) * (b j - a j) * ∏ i ∈ t.erase j, (b j - a i) / (b j - b i) := by
+    unfold resA
+    rw [ht, prod_insert hkout, ← prod_erase_mul t (fun i => b j - a i) hj, prod_div_distrib]
+    ring
+  rw [hfactor]
+  refine mul_nonneg (mul_nonneg (sub_nonneg.mpr (right_of_interlace k (by omega) le_rfl))
+    (sub_nonneg.mpr (hab j hj).1)) (prod_nonneg fun i hi => ?_)
+  obtain ⟨hne, hmem⟩ := mem_erase.mp hi
+  rcases lt_or_gt_of_ne hne with hij | hji
+  · have hlt := hbinc i hmem j hj hij
+    exact div_nonneg (sub_nonneg.mpr ((hab i hmem).1.trans hlt.le)) (sub_nonneg.mpr hlt.le)
+  · exact div_nonneg_of_nonpos
+      (sub_nonpos.mpr (right_of_interlace i hji (by have := (mem_Icc.mp hmem).2; omega)))
+      (sub_nonpos.mpr (hbinc j hj i hmem hji).le)
 
 end Formalism.FourierDecayAlt.P.MAx3.R
 
