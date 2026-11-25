@@ -81,7 +81,8 @@ theorem ae_mem_UWset_and_mem_Nset {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup
   exact (Measure.quasiMeasurePreserving_fst.ae hW).and (Measure.quasiMeasurePreserving_snd.ae hN)
 
 
-theorem quadB_of (hNI : NormInv) (hGS : GrowthS) (hGG : GrowthG) (hDD : DecDD) (hIn : Inputs) {k r : ℕ}
+/-- The quadratic bound needs matrix coefficient decay only on the given side. -/
+theorem quadB_of_decay (hNI : NormInv) (hGS : GrowthS) (hGG : GrowthG) {k r : ℕ}
     {Wp Wq : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
@@ -89,6 +90,9 @@ theorem quadB_of (hNI : NormInv) (hGS : GrowthS) (hGG : GrowthG) (hDD : DecDD) (
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx k r → (H →L[ℂ] H)} {w0 : H}
     {u : Fin k → ℝ} {νq : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hS1 : Side k r ε lam h σ w0 D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq)
+    (hDecay : ∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0, ∃ C : ℝ,
+      ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r),
+        ‖⟪y, σ g x⟫_ℂ‖ ≤ C * B.gN g ^ (-aOf r h))
     {l : H → Wp}
     (hbe : ∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0,
         be D.z Formalism.QuantumDeterminants.cStd D.π σ D.μW D.μN x y = (innerSL ℂ (l y)).smulRight (l x)) :
@@ -117,9 +121,9 @@ theorem quadB_of (hNI : NormInv) (hGS : GrowthS) (hGG : GrowthG) (hDD : DecDD) (
   obtain ⟨v, hv, hlv⟩ := hA
   obtain ⟨e0, he0, hee0⟩ := coef_ext hds w0 w0
   obtain ⟨e1, he1, hee1⟩ := coef_ext hds v w0
-  obtain ⟨C0, hC0⟩ := hDD hIn k r ε lam h H σ w0 Wp D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq hS1 w0 hw0DD
+  obtain ⟨C0, hC0⟩ := hDecay w0 hw0DD
     w0 hw0DD
-  obtain ⟨C1, hC1⟩ := hDD hIn k r ε lam h H σ w0 Wp D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq hS1 w0 hw0DD v hv
+  obtain ⟨C1, hC1⟩ := hDecay w0 hw0DD v hv
   have hb0e : ∀ y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ‖e0 y‖ ≤ C0 * B.gN y ^ (-aOf r h) :=
     fun y hy => by rw [hee0 y hy]; exact hC0 y hy
   have hb1 : ∀ y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ‖e1 y‖ ≤ C1 * B.gN y ^ (-aOf r h) :=
@@ -247,5 +251,23 @@ theorem quadB_of (hNI : NormInv) (hGS : GrowthS) (hGG : GrowthG) (hDD : DecDD) (
     _ = (K1 * K1) * (c * ((∫⁻ x, Fx x ∂D.μG) * ∫⁻ y, Fx y ∂D.μG)) := by rw [final2 Fx hFxm hc]
     _ < ⊤ := ENNReal.mul_lt_top (lt_top_iff_ne_top.mpr hK)
           (ENNReal.mul_lt_top (lt_top_iff_ne_top.mpr hc) (ENNReal.mul_lt_top hKg' hKg'))
+
+theorem quadB_of (hNI : NormInv) (hGS : GrowthS) (hGG : GrowthG) (hDD : DecDD) (hIn : Inputs) {k r : ℕ}
+    {Wp Wq : Type}
+    [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
+    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
+    (D : B.RealPlaceData k r Wp Wq) {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
+    {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx k r → (H →L[ℂ] H)} {w0 : H}
+    {u : Fin k → ℝ} {νq : Measure (Formalism.QuantumDeterminants.Mt k r)}
+    (hS1 : Side k r ε lam h σ w0 D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq)
+    {l : H → Wp}
+    (hbe : ∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0,
+        be D.z Formalism.QuantumDeterminants.cStd D.π σ D.μW D.μN x y = (innerSL ℂ (l y)).smulRight (l x)) :
+    ∫⁻ zz, ∫⁻ zz', ∫⁻ s,
+      ((‖⟪σ (Matrix.of zz) w0, σ (Matrix.of s) (σ (Matrix.of zz') w0)⟫_ℂ‖₊ : ℝ≥0) : ℝ≥0∞) *
+        ((‖l (σ (Matrix.of zz) w0)‖₊ : ℝ≥0) : ℝ≥0∞) * ((‖l (σ (Matrix.of zz') w0)‖₊ : ℝ≥0) : ℝ≥0∞)
+      ∂(muSof D.μW D.μN) ∂νq ∂νq < ⊤ := by
+  exact Formalism.FourierDecayAlt.P.S3dx4.quadB_of_decay hNI hGS hGG D hS1
+    (hDD hIn k r ε lam h H σ w0 Wp D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq hS1) hbe
 
 end Formalism.FourierDecayAlt.P.S3dx4

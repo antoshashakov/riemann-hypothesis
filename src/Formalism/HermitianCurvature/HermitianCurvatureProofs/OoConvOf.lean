@@ -115,8 +115,55 @@ theorem gN_Y_eq (hNI : NormInv) {P Q γ : Mx k r} (hP : P ∈ Formalism.QuantumD
   rw [← ((hNI k r).2 _ hx).1, hxinv]
 
 
-theorem ooConv_of (hSch : SchurH) (hNIs : NormIdSm) (hNI : NormInv) (hGG : GrowthG) (hDD : DecDD)
-    (hBC : BeConv) : More.OOConv := by
+/-- Decay of matrix coefficients of discrete-series vectors under a choice of inputs. -/
+def DDCoefficientDecay (I : Prop) : Prop :=
+  I → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
+    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
+    (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
+    (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (u : Fin k → ℝ) (π : Mx k r → (Wp →L[ℂ] Wp))
+    (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)),
+    Side k r ε lam h σ w0 z c u π μW μN μG νq →
+    ∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0, ∃ C : ℝ, ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r),
+      ‖⟪y, σ g x⟫_ℂ‖ ≤ C * Formalism.FourierDecayAlt.B.gN g ^ (-aOf r h)
+
+/-- Regularity of the Bessel maps under a choice of inputs. -/
+def BesselOrbitRegularity (I : Prop) : Prop :=
+  I → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
+    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
+    (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
+    (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (u : Fin k → ℝ) (π : Mx k r → (Wp →L[ℂ] Wp))
+    (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)),
+    Side k r ε lam h σ w0 z c u π μW μN μG νq →
+    ∀ l : H → Wp, (∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0,
+        be z c π σ μW μN x y = (innerSL ℂ (l y)).smulRight (l x)) →
+      ∀ x ∈ DDsp σ w0,
+        ContinuousOn (fun g => l (σ g x)) (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) ∧
+        ∫⁻ g, ((‖l (σ (Matrix.of g) x)‖₊ : ℝ≥0) : ℝ≥0∞) ∂νq < ⊤ ∧
+        PI.BesselPeriodGGP.l2SG νq (fun g => l (σ g x)) < ⊤
+
+/-- Integrability of the Bessel orbit convolution under a choice of inputs. -/
+def BesselOrbitConvolutionIntegrable (I : Prop) : Prop :=
+  I → ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
+    [FiniteDimensional ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq]
+    [FiniteDimensional ℂ Wq] (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq)
+    (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ)
+    (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
+    (u u' : Fin k → ℝ) (νq νq' : Measure (Formalism.QuantumDeterminants.Mt k r)),
+    Side k r ε lam h σ w0 D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq →
+    Side k r ε lam h σ w0 D.z' Formalism.QuantumDeterminants.cStd u' D.π' D.μW' D.μN D.μG νq' →
+    ∀ (l : H → Wp) (l' : H → Wq),
+      (∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0,
+        be D.z Formalism.QuantumDeterminants.cStd D.π σ D.μW D.μN x y = (innerSL ℂ (l y)).smulRight (l x)) →
+      (∀ x ∈ DDsp σ w0, ∀ y ∈ DDsp σ w0,
+        be D.z' Formalism.QuantumDeterminants.cStd D.π' σ D.μW' D.μN x y = (innerSL ℂ (l' y)).smulRight (l' x)) →
+      ∀ γ ∈ Formalism.FourierDecayAlt.JF.Om k r D.z D.z',
+        Integrable (fun x : Formalism.QuantumDeterminants.Mt k r =>
+          (innerSL ℂ (l' (σ (γ⁻¹ * Matrix.of x) w0))).smulRight (l (σ (Matrix.of x) w0))) D.μG
+
+/-- The orbit convolution uses regularity only through the two Bessel maps. -/
+theorem ooConv_of_regular {I : Prop} (hNI : NormInv) (hGG : GrowthG)
+    (hDD : DDCoefficientDecay I) (hReg : BesselOrbitRegularity I) :
+    BesselOrbitConvolutionIntegrable I := by
   intro hIn k r Wp Wq _ _ _ _ _ _ _ _ D ε lam h H _ _ _ σ w0 u u' νq νq' hS1 hS2 l l' hbe hbe' γ hγ
   have hS1' := hS1
   obtain ⟨hl, hds, -, hG, hw0, -, hT, -, hπ, hW, hN, hGm, hq⟩ := hS1'
@@ -131,9 +178,9 @@ theorem ooConv_of (hSch : SchurH) (hNIs : NormIdSm) (hNI : NormInv) (hGG : Growt
   have hγU : γ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := hγ.1
   obtain ⟨hγi, hγγ, hγγ'⟩ := MatrixMultiplicationContinuity.uh_inv hγU
   have hw0DD := cmHalfIntegralGenerator_mem_algebraicClosure hds w0
-  have hP1 := phiReg_of hSch hNIs hGG hDD hBC hIn k r ε lam h H σ w0 Wp D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN
+  have hP1 := hReg hIn k r ε lam h H σ w0 Wp D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN
     D.μG νq hS1 l hbe w0 hw0DD
-  have hP2 := phiReg_of hSch hNIs hGG hDD hBC hIn k r ε lam h H σ w0 Wq D.z' Formalism.QuantumDeterminants.cStd u' D.π' D.μW' D.μN
+  have hP2 := hReg hIn k r ε lam h H σ w0 Wq D.z' Formalism.QuantumDeterminants.cStd u' D.π' D.μW' D.μN
     D.μG νq' hS2 l' hbe' w0 hw0DD
   have cont2' : ContinuousOn (fun g : Mx k r => l' (σ (γ⁻¹ * g) w0)) (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :=
     hP2.1.comp (continuous_const.matrix_mul continuous_id).continuousOn (fun g hg => DDSmoothness.uh_mul hγi hg)
@@ -270,5 +317,10 @@ theorem ooConv_of (hSch : SchurH) (hNIs : NormIdSm) (hNI : NormInv) (hGG : Growt
     _ < ⊤ := by
         refine ENNReal.mul_lt_top (by simp [ENNReal.mul_lt_top]) (ENNReal.mul_lt_top ?_ hLa)
         exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hKg
+
+theorem ooConv_of (hSch : SchurH) (hNIs : NormIdSm) (hNI : NormInv) (hGG : GrowthG) (hDD : DecDD)
+    (hBC : BeConv) : More.OOConv :=
+  Formalism.FourierDecayAlt.P.S3dx4.ooConv_of_regular (I := Inputs) hNI hGG hDD
+    (phiReg_of hSch hNIs hGG hDD hBC)
 
 end Formalism.FourierDecayAlt.P.S3dx4
