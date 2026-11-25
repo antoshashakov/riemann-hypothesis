@@ -67,41 +67,20 @@ namespace OrderIdealIndexExtensionAlt
 
 theorem index_ne_zero_of_zsmul_mem {M : Type*} [AddCommGroup M] [Module.Finite ℤ M] (H : AddSubgroup M)
     {N : ℤ} (hN : N ≠ 0) (h : ∀ x : M, N • x ∈ H) : H.index ≠ 0 := by
-  have htor : Module.IsTorsion ℤ (M ⧸ H.toIntSubmodule) := by
-    intro x
-    induction x using Submodule.Quotient.induction_on with
-    | H x =>
-      refine ⟨⟨N, mem_nonZeroDivisors_of_ne_zero hN⟩, ?_⟩
-      rw [Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
-      exact h x
-  have : Finite (M ⧸ H.toIntSubmodule) := Module.finite_of_fg_torsion _ htor
-  have : Finite (M ⧸ H) := this
+  have htor := (Module.isTorsionBy_quotient_iff H.toIntSubmodule N).2 h
+  have : Finite (M ⧸ H) := Module.finite_of_fg_torsion (M ⧸ H.toIntSubmodule)
+    (fun x => ⟨⟨N, mem_nonZeroDivisors_of_ne_zero hN⟩, @htor x⟩)
   exact AddSubgroup.index_ne_zero_of_finite
 
 variable {L : Type} [Field L]
 
 theorem exists_int_eq_mul [CharZero L] {B : Subring L} [Module.Finite ℤ B] {a : B} (ha : a ≠ 0) :
     ∃ c : ℤ, c ≠ 0 ∧ ∃ q : B, (c : B) = a * q := by
-  have hi : IsIntegral ℤ a := IsIntegral.of_finite ℤ a
-  have h0 : (minpoly ℤ a).coeff 0 ≠ 0 := by
-    intro h0
-    obtain ⟨q, hq⟩ := Polynomial.X_dvd_iff.mpr h0
-    have hm := minpoly.monic hi
-    have hqm : q.Monic := Polynomial.Monic.of_mul_monic_left Polynomial.monic_X (hq ▸ hm)
-    have hqa : Polynomial.aeval a q = 0 := by
-      have h1 := minpoly.aeval ℤ a
-      rw [hq, map_mul, Polynomial.aeval_X] at h1
-      exact (mul_eq_zero.mp h1).resolve_left ha
-    have h2 := minpoly.min ℤ a hqm hqa
-    rw [hq, Polynomial.degree_mul, Polynomial.degree_X, Polynomial.degree_eq_natDegree hqm.ne_zero] at h2
-    norm_cast at h2
-    omega
-  refine ⟨(minpoly ℤ a).coeff 0, h0, ?_⟩
-  obtain ⟨q, hq⟩ := Polynomial.X_dvd_sub_C (p := minpoly ℤ a)
-  refine ⟨-(Polynomial.aeval a q), ?_⟩
-  have h := congrArg (Polynomial.aeval a) hq
-  simp only [map_sub, minpoly.aeval, map_mul, Polynomial.aeval_X, eq_intCast, map_intCast] at h
-  linear_combination -h
+  let I : Ideal B := Ideal.span {a}
+  have hI : I.under ℤ ≠ ⊥ :=
+    I.under_ne_bot_of_integral_mem ha (Ideal.mem_span_singleton_self a) (IsIntegral.of_finite ℤ a)
+  obtain ⟨c, hc, hc0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hI
+  exact ⟨c, hc0, Ideal.mem_span_singleton.mp hc⟩
 
 variable [NumberField L] {B : Subring L} [Module.Finite ℤ B]
 
@@ -131,35 +110,22 @@ theorem exists_family : ∃ S : Set (𝓞 L), S.Finite ∧ LinearIndepOn B (fun 
         ring
       rw [h1]
       exact F.smul_mem q hax
-  obtain ⟨T, hT⟩ := Module.Finite.fg_top (R := ℤ) (M := 𝓞 L)
-  choose c hc0 hcF using hone
-  set N := ∏ g ∈ T, c g with hN
-  refine ⟨N, Finset.prod_ne_zero_iff.mpr fun g _ => hc0 g, ?_⟩
-  have hgen : ∀ g ∈ T, (N : L) * (g : L) ∈ F := by
-    intro g hg
-    have h1 : (N : L) * (g : L) = (∏ h ∈ T.erase g, c h) • ((c g : L) * (g : L)) := by
-      rw [hN, ← Finset.mul_prod_erase T c hg, zsmul_eq_mul]
-      push_cast
-      ring
-    rw [h1]
-    exact F.toAddSubgroup.zsmul_mem (hcF g) _
-  intro x
-  have hx : x ∈ Submodule.span ℤ (T : Set (𝓞 L)) := hT ▸ Submodule.mem_top
-  induction hx using Submodule.span_induction with
-  | mem y hy => exact hgen y hy
-  | zero => simp
-  | add y z _ _ hy hz =>
-    have h1 : (N : L) * ((y + z : 𝓞 L) : L) = (N : L) * (y : L) + (N : L) * (z : L) := by
-      push_cast
-      ring
-    rw [h1]
-    exact F.add_mem hy hz
-  | smul n y _ hy =>
-    have h1 : (N : L) * ((n • y : 𝓞 L) : L) = n • ((N : L) * (y : L)) := by
-      have h2 : ((n • y : 𝓞 L) : L) = n • (y : L) := map_zsmul (algebraMap (𝓞 L) L) n y
-      rw [h2, mul_smul_comm]
-    rw [h1]
-    exact F.toAddSubgroup.zsmul_mem hy _
+  let P := (F.restrictScalars ℤ).comap (algebraMap (𝓞 L) L).toIntAlgHom.toLinearMap
+  have htor : Module.IsTorsion ℤ (𝓞 L ⧸ P) := by
+    intro x
+    induction x using Submodule.Quotient.induction_on with
+    | H x =>
+      obtain ⟨c, hc0, hc⟩ := hone x
+      refine ⟨⟨c, mem_nonZeroDivisors_of_ne_zero hc0⟩, ?_⟩
+      rw [Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
+      change (algebraMap (𝓞 L) L) (c • x) ∈ F
+      rwa [map_zsmul, zsmul_eq_mul]
+  obtain ⟨N, hN, hN0⟩ := Submodule.annihilator_top_inter_nonZeroDivisors htor
+  refine ⟨N, nonZeroDivisors.coe_ne_zero ⟨N, hN0⟩, fun x => ?_⟩
+  have hx := (Module.isTorsionBy_quotient_iff P N).mp
+    (fun y => Submodule.mem_annihilator.mp hN y Submodule.mem_top) x
+  change (algebraMap (𝓞 L) L) (N • x) ∈ F at hx
+  rwa [map_zsmul, zsmul_eq_mul] at hx
 
 end OrderIdealIndexExtensionAlt
 
@@ -198,10 +164,7 @@ theorem OrderIdealIndexExtension.proof : OrderIdealIndexExtension.Statement := b
     obtain ⟨x, rfl⟩ := hOmem y hy
     exact hNF x
 
-  let toO : 𝓞 L →+ O :=
-    { toFun := fun x => ⟨(x : L), hmemO x⟩
-      map_zero' := by ext; simp
-      map_add' := fun x y => by ext; simp }
+  let toO := (algebraMap (𝓞 L) L).toAddMonoidHom.codRestrict O hmemO
   have htoO : Function.Surjective toO := by
     intro y
     obtain ⟨x, hx⟩ := hOmem y y.2
@@ -216,27 +179,18 @@ theorem OrderIdealIndexExtension.proof : OrderIdealIndexExtension.Statement := b
     obtain ⟨x, hx⟩ := hOmem _ (hFO ((hrange _).2 ⟨β, rfl⟩))
     rw [← hx]
     exact x.isIntegral_coe
-  let g1 : (S → B) →+ 𝓞 L :=
-    { toFun := fun β => ⟨φ β, hint β⟩
-      map_zero' := RingOfIntegers.ext (by
-        show φ 0 = algebraMap (𝓞 L) L 0
-        rw [map_zero, map_zero])
-      map_add' := fun x y => RingOfIntegers.ext (by
-        show φ (x + y) = algebraMap (𝓞 L) L (_ + _)
-        rw [map_add (f := _)]
-        exact (map_add (algebraMap (𝓞 L) L) (⟨φ x, hint x⟩ : 𝓞 L) ⟨φ y, hint y⟩).symm) }
+  let g1 : (S → B) →ₗ[ℤ] 𝓞 L :=
+    (φ.restrictScalars ℤ).codRestrict (integralClosure ℤ L).toSubmodule hint
   have hg1 : Function.Injective g1 := fun a b h => hφinj (congrArg (fun x : 𝓞 L => (x : L)) h)
-  have hsurj : ∀ x : 𝓞 L, ∃ β, φ β = (N : L) * (x : L) := fun x => (hrange _).1 (hNF x)
-  choose g2 hg2 using hsurj
-  have hg2add : ∀ x y, g2 (x + y) = g2 x + g2 y := fun x y => hφinj (by
-    rw [map_add (f := _), hg2, hg2, hg2]; push_cast; ring)
-  let g2' : 𝓞 L →+ (S → B) := AddMonoidHom.mk' g2 hg2add
-  have hg2inj : Function.Injective g2' := fun x y h => by
-    have h1 := congrArg φ h
-    simp only [g2', AddMonoidHom.mk'_apply, hg2] at h1
-    exact RingOfIntegers.ext (mul_left_cancel₀ (Int.cast_ne_zero.mpr hN) h1)
-  have hr1 := LinearMap.finrank_le_finrank_of_injective (f := g1.toIntLinearMap) hg1
-  have hr2 := LinearMap.finrank_le_finrank_of_injective (f := g2'.toIntLinearMap) hg2inj
+  let scale := (LinearMap.mulLeft ℤ (N : L)).comp (algebraMap (𝓞 L) L).toIntAlgHom.toLinearMap
+  let g2 := scale.codRestrict ((LinearMap.range φ).restrictScalars ℤ)
+    (fun x => (hrange _).1 (hNF x))
+  have hg2 : Function.Injective g2 := fun x y h =>
+    RingOfIntegers.ext (mul_left_cancel₀ (Int.cast_ne_zero.mpr hN) (congrArg Subtype.val h))
+  have hr1 := LinearMap.finrank_le_finrank_of_injective hg1
+  let e := (LinearEquiv.ofInjective φ hφinj).restrictScalars ℤ
+  have hr2 := LinearMap.finrank_le_finrank_of_injective
+    (f := e.symm.toLinearMap.comp g2) (e.symm.injective.comp hg2)
   have hrank : Module.finrank ℚ L = Fintype.card S * Module.finrank ℤ B := by
     rw [← RingOfIntegers.rank, le_antisymm hr2 hr1, Module.finrank_pi_fintype]
     simp
@@ -344,31 +298,15 @@ theorem OrderIdealIndexExtension.proof : OrderIdealIndexExtension.Statement := b
     have hib : (i : L) + (b : L) * (N : L) = 1 := by
       have := congrArg (fun x : B => (x : L)) hiz
       simpa using this
-    have key : ∀ y ∈ Submodule.span (𝓞 L) ((fun y : B => (y : L)) '' (I : Set B)), ∀ o : 𝓞 L,
-        (N : L) * ((o : L) * y) ∈ IF := by
-      intro y hy
-      induction hy using Submodule.span_induction with
-      | mem y hy =>
-        obtain ⟨j, hj, rfl⟩ := hy
-        intro o
-        rw [show (N : L) * ((o : L) * (j : L)) = (j : L) * ((N : L) * (o : L)) by ring]
-        exact hIF_I j hj _ (hNO _ (hmemO o))
-      | zero =>
-        intro o
-        rw [mul_zero, mul_zero]
-        exact IF.zero_mem
-      | add y w _ _ hy hw =>
-        intro o
-        rw [mul_add, mul_add]
-        exact IF.add_mem (hy o) (hw o)
-      | smul a y _ hy =>
-        intro o
-        have h2 : (N : L) * ((o : L) * (a • y)) = (N : L) * (((o * a : 𝓞 L) : L) * y) := by
-          rw [Algebra.smul_def]
-          push_cast
-          ring_nf
-        rw [h2]
-        exact hy (o * a)
+    have key (y : L) (hy : y ∈ J) : (N : L) * y ∈ IF := by
+      change y ∈ Submodule.span (𝓞 L) ((fun j : B => (j : L)) '' (I : Set B)) at hy
+      rw [Set.image_eq_range] at hy
+      obtain ⟨c, rfl⟩ := Finsupp.mem_span_range_iff_exists_finsupp.mp hy
+      simp only [Finsupp.sum, Finset.mul_sum]
+      refine IF.sum_mem fun j _ => ?_
+      rw [Algebra.smul_def, show (N : L) * ((c j : L) * ((j : B) : L)) =
+        ((j : B) : L) * ((N : L) * (c j : L)) by ring]
+      exact hIF_I j j.2 _ (hNF (c j))
     have hsup : J ⊔ F = O := by
       refine le_antisymm (sup_le hJO hFO) fun x hx => ?_
       obtain ⟨o, rfl⟩ := hOmem x hx
@@ -386,7 +324,7 @@ theorem OrderIdealIndexExtension.proof : OrderIdealIndexExtension.Statement := b
         linear_combination (-y) * hib
       rw [h2]
       refine IF.add_mem (hIF_I i hi y hy.2) (hB_IF b _ ?_)
-      simpa using key y hy.1 1
+      exact key y hy.1
     calc J.relIndex O = J.relIndex (J ⊔ F) := by rw [hsup]
       _ = J.relIndex F := AddSubgroup.relIndex_sup_left _ _
       _ = (J ⊓ F).relIndex F := (AddSubgroup.inf_relIndex_right _ _).symm
