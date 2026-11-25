@@ -9,7 +9,12 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSt
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiltrationTransportEquivStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InductionReindexEquivStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothCompContinuousStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetModuleDeterminantTwistStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+public import GroundTheory.AutomorphicForms.InductionParabolic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetModuleDeterminantTwist
+public import GroundTheory.AutomorphicForms.FiniteBruhat
+public import GroundTheory.AutomorphicForms.GeometricLemmaJacquetCell
+public import GroundTheory.AutomorphicForms.GeometricLemmaNormal
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetModuleEquivStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetModuleLeviTransportStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviBlockHomeomorphStatement
@@ -123,7 +128,7 @@ theorem jacquetOfInducedFiltration : ∀ (k : Type) [Field k] [ValuativeRel k] [
   obtain ⟨hVmono, hV, hΨ⟩ := hF
   have e1' := GlobalTheory.T.induction_reindex_equiv k e e' ι ρ
   obtain ⟨e1⟩ := e1'
-  have e2' := GlobalTheory.T.jac_equiv_jacquetRep_comp_levi_equiv k E' γF hγ φ' hφ' (V := IndSp E ρ) (parInd E ρ)
+  have e2' := _root_.GlobalTheory.CompanionTheory.JacBridge.jac_equiv_jacquetRep k E' γF hγ φ' hφ' (V := IndSp E ρ) (parInd E ρ)
   obtain ⟨e2⟩ := e2'
   have e3' := GlobalTheory.T.parabolicInd_equiv_levi_transport k E βF hβ φ hφ ρ
   obtain ⟨e3⟩ := e3'

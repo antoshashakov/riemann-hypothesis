@@ -9,7 +9,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalG
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsLocalIdealStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialPullbackGivesUnitCocycleStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftMinimalGenerators
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftModuloMaximalStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftModuloMaximal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -73,7 +73,7 @@ theorem fewEq : FewEqSt := by
   have flat := GlobalTheory.T.minimal_generators_base_change
   have dep := GlobalTheory.T.dependency_statement
   have fibre := _root_.GlobalTheory.CompanionTheory.FewEq.FibreRed.dep_fibre
-  have cocycle := GlobalTheory.T.unit_cocycle_lift_modulo_maximal
+  have cocycle := _root_.GlobalTheory.CompanionTheory.FewEq.Cochain.exists_cochain
   have finish := _root_.GlobalTheory.CompanionTheory.FewEq.exists_correction
   intro R _ _ _ X s n hsm hpr hF M hM I hI hJ
   have hIm : I ≤ IsLocalRing.maximalIdeal R := IsLocalRing.le_maximalIdeal hI

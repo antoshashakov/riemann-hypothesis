@@ -2,7 +2,10 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeas
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IntegralConjInnerMulInnerOfIsEmptyEquiv
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactGroupDisintegrationStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactGroupDisintegration
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeasureCongruenceInvariantStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeasureDensityFormulaStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeMeasureLocallyFiniteStatement
@@ -316,7 +319,7 @@ theorem coneSt : ConeSt := by
     refine lt_of_le_of_lt (measure_mono_ae ?_) (cone_fin n _ hC hCc)
     filter_upwards [cone_ae n] with v hv hv'
     exact hsub ⟨hv', hv⟩
-  obtain ⟨c, hc, H⟩ := GlobalTheory.T.compact_group_disintegration (emb (n := n)) continuous_emb (coneMeas n) (sec σ₀ hσ) hms (cone_ne n) hact hfin μ
+  obtain ⟨c, hc, H⟩ := _root_.GlobalTheory.CompanionTheory.ConeHaar.leftInvariant_of_section (emb (n := n)) continuous_emb (coneMeas n) (sec σ₀ hσ) hms (cone_ne n) hact hfin μ
   refine ⟨c, hc, fun F hF ⟨R, hR⟩ hK => ?_⟩
   have h1 := H (fun y => F y.val) (hF.comp_continuous Units.continuous_val val_mem)
     (HasCompactSupport.intro (cone_cpt n R) fun y hy => hR _ (val_mem y) (not_le.1 hy))

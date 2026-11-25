@@ -3,7 +3,9 @@ module
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.InjectiveDecompositionAction
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsOrderedCreationList
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FiniteDimInvariantSubspaceAdjointPair
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundaryProdCreationLeviChainsStatement
+public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.FarRegularity.LKTExists
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwLMulSelf
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundaryProdCreationLeviChains
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteLeviStableChainsStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviAdjointOnChainsStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviCommuteUnipotentBoundaryStatement
@@ -226,7 +228,7 @@ theorem injUU_of_injRL : InjRL → InjUU := by
     refine le_antisymm (hm e.2.le) ?_
     by_contra h3
     exact h2 (Finset.mem_filter.2 ⟨Finset.mem_univ _, rfl, not_le.1 h3⟩)
-  have hbd := GlobalTheory.T.boundary_prod_creation_levi_chains n lev V E1 E2 l y' hlc hcl hy's
+  have hbd := _root_.GlobalTheory.CompanionTheory.LvChain.BdProdL.bd_prodL n lev V E1 E2 l y' hlc hcl hy's
     (fun e he => hy'0 ⟨e.1, e.2, hlc e he⟩)
   rw [bdL_inRR_eq E1 E2 hy's, hy'b, hb] at hbd
   set l' : List (Lt n) := l.map fun i => (false, i) with hl'

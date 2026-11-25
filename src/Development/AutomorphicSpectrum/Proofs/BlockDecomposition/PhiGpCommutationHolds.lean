@@ -20,7 +20,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Miraboli
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusParabolicProjFactorStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjEmbeddingCompatStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjUnipotentCharacterCompatStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapInducedSurjectiveIntertwinerStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapInducedSurjectiveIntertwiner
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapIntertwinesRestrictionStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -143,7 +143,7 @@ theorem coinv_cInd (H U : Subgroup G) (hUH : U ≤ H) (hUn : U.Normal) (θ : U �
     rfl
   have hsurj : Function.Surjective Tq := by
     intro F
-    obtain ⟨f, hf⟩ := GlobalTheory.T.quotient_map_induced_surjective_intertwiner H H' ι σ σ' q hι hσ hqs hH' hq hemb hbase F
+    obtain ⟨f, hf⟩ := _root_.GlobalTheory.CompanionTheory.LeibPhi.exists_cInd_restrict_eq H H' ι σ σ' q hι hσ hqs hH' hq hemb hbase F
     refine ⟨Submodule.Quotient.mk f, ?_⟩
     show Tl f = F
     exact hext _ _ fun x => by rw [hTl, hf]

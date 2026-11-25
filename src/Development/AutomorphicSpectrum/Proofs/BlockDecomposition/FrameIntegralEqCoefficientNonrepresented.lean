@@ -19,7 +19,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Nonrepre
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OfHermEBijective
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositiveOnSubspaceOpenStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PositivityPullsBackToSubspace
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TamagawaFourierIntegrableStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TamagawaFourierIntegrable
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
 import GroundTheory.GlobalFields.Adele.Topology
 import Mathlib.Algebra.Order.Floor.Extended
@@ -121,7 +121,7 @@ theorem vanish_generic (F : Type) [Field F] [NumberField F] (hF : NumberField.Is
   obtain ⟨Φ, hΦ, hΦ0, hΦN, hΦ1⟩ := _root_.GlobalTheory.CompanionTheory.AdelicBump.exists_bump F κ N' hN' z₁ hz₁
   obtain ⟨hΦc, -, hΦi⟩ := GlobalTheory.SplitSvN.schA_facts hF hΦ
   exact ⟨Φ, hΦc, hΦi μ hμ.1, hΦ0, hΦN, hΦ1,
-    GlobalTheory.T.tamagawa_fourier_integrable F hF ψ hψ κ μ hμ Y ν φ g hφ hg hJ Φ hΦ (fun y => hΦN _ fun h' => hgN y (hsub h'))⟩
+    _root_.GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.pair_vanish F hF ψ hψ κ μ hμ Y ν φ g hφ hg hJ Φ hΦ (fun y => hΦN _ fun h' => hgN y (hsub h'))⟩
 
 end GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 

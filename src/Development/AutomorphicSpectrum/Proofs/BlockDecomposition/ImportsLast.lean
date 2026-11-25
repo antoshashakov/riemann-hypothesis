@@ -3,7 +3,9 @@ module
 public import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.WeakApproximationFinitePlace
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbscissaConvergenceIdentityStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOrbitalIntegralUnipotentStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DetNeZeroOfGramNondegenerateStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSiegelTheta.BigCellDefs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DetNeZeroOfGramNondegenerate
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SphericalEisensteinSeriesOnGroup
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExtensionByZeroOrbitFormulaStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteOnCompactsOrbitMeasureStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FundamentalDomainPropertyStatement
@@ -79,7 +81,7 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
 theorem main : IdemEx → LatBound → QK → IkSch → ThetaSideMeasure := by
   intro _ hLat hQK hIk D n t B W d hn I θ hθ μ hμ b₀ hb x₀ hx
-  have hdx := GlobalTheory.T.det_ne_zero_of_gram_nondegenerate D W b₀ hb x₀ hx
+  have hdx := _root_.GlobalTheory.CompanionTheory.ColumnSplitting.Frame.det_ne_zero_of_gramQ D W b₀ hb x₀ hx
   have hDom := GlobalTheory.T.fundamental_domain_property
   have hOF := GlobalTheory.T.orbit_finiteness_of_lattice_bound hLat
   have hZ := GlobalTheory.T.zeta_polynomial_identity

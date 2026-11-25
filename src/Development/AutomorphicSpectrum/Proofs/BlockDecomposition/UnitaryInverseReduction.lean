@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiDeltaUConjLongSimpleReflectionUnitaryStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDepthPowerLastSimpleReflectionCell
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDiagonalConjLastSimpleReflectionCellStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralDiagonalConjLastSimpleReflectionCell
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralEqRankOneFactorSL2OfGeometricOnShellsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntertwiningLastEven
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemWeylCellUnitaryGroupLongSimpleReflectionIffStatement
@@ -204,7 +204,7 @@ theorem scale_cell (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val + 1
       chiDeltaU q (fun i => (α i : ℂ)) (y⁻¹ * t * y) * s = chiDeltaU q (fun i => (actU k α i : ℂ)) t := by
   by_cases hn : Even n
   · exact ⟨_, (conjScale' L ϖ σ q h n k hk hn y hyK hy μ hμ t ht).1, GlobalTheory.T.chiDeltaU_conj_longSimpleReflection_unitary L ϖ σ q h n k hk hn y hy α t ht⟩
-  · refine ⟨_, (GlobalTheory.T.integral_diagonal_conj_lastSimpleReflectionCell L ϖ σ q h n k hk hn y hyK hy μ hμ t ht).1, ?_⟩
+  · refine ⟨_, (_root_.GlobalTheory.WeylCell.WeylUnipotentShell.integral_conj_diag_cellU_last L ϖ σ q h n k hk hn y hyK hy μ hμ t ht).1, ?_⟩
     obtain ⟨Φ, hΦ, hΦ1, -⟩ := Formalism.UG.Final.SphericalExistsU L ϖ σ q n (n / 2) h (by omega) (by omega)
       (fun i => (α i : ℂ)) fun i => (α i).ne_zero
     have e := GlobalTheory.T.unitaryRankOne_sphericalIntegrand_diagonal_torus_factor L ϖ σ q h n k hk hn y hyK hy α Φ hΦ t ht 1 y

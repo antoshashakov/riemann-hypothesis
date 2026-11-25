@@ -8,7 +8,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexP
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicLiftGivesHolomorphicSectionStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypersurfaceComplexPointsMeasurableNullStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnderOfSameOrbitStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LogNormContinuousOffDivisorStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LogNormContinuousOffDivisor
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasureZeroSetAvoidedByHolomorphicMap
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyclePointDictionaryStatement
@@ -150,7 +150,7 @@ theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ}
   obtain ⟨N, W, b, a, d, hcov, hWb, hd, hf⟩ := _root_.GlobalTheory.CompanionTheory.MixZ.ArchRep.logNorm_finite_rep ψ hr
   set S := offSupp q σ (divOfRatSec ψ.isLB hr) with hSdef
   have hSo : IsOpen S := isOpen_offSupp _
-  have hgc := GlobalTheory.T.log_norm_continuous_off_divisor ψ hψ hr
+  have hgc := _root_.GlobalTheory.CompanionTheory.MixZ.ArchInt.continuousOn_logNorm_offSupp ψ hψ hr
   set g := GlobalTheory.Cartier.logNorm ψ r with hgdef
   set Z' : Set (GlobalTheory.CxPts q σ) := Z ∪ ⋃ l, {y | y ∈ ptsIn q σ (W l) ∧ ev q σ (W l) (d l) y = 0} with hZ'def
   have hpiece (l : Fin N) : MeasurableSet {y | y ∈ ptsIn q σ (W l) ∧ ev q σ (W l) (d l) y = 0} := by

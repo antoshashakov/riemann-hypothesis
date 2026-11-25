@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatiosEqOfSameOrbit
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArithmeticVarietyGenericallyEtaleCoordinatesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArithmeticVarietyGenericallyEtaleCoordinates
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BadProjectionLocusNullStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChernPartNullSetZeroStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointLiftsToMulticoneStatement
@@ -122,7 +123,7 @@ theorem exists_form_chart {X : Scheme.{0}} [IsIntegral X] (i : X ⟶ MP ℤ m n)
     ∃ (j : Pol n) (a : Fin (m + 1) → ℕ), IsMultiHomog j a ∧ j ∉ ptIdeal (i (genericPoint X)) ∧
       ∀ y z, Over i y z → eval z (map (Int.castRingHom ℂ) j) ≠ 0 →
         ∃ c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D, y ∈ c.e.source := by
-  obtain ⟨U, x, hU, hg, hx⟩ := GlobalTheory.T.arithmetic_variety_generically_etale_coordinates X (i ≫ mpStr ℤ m n) D hX
+  obtain ⟨U, x, hU, hg, hx⟩ := _root_.GlobalTheory.CompanionTheory.MixZ.GenericCoords.exists_etale_coords_int X (i ≫ mpStr ℤ m n) D hX
   obtain ⟨j, a, hj, hjP, hjU⟩ := GlobalTheory.T.exists_form_nonvanishing_on_chart m n X i U hg
   refine ⟨j, a, hj, hjP, fun y z hyz hz => ?_⟩
   obtain ⟨c, hc, -⟩ := GlobalTheory.AlgChart.exists_of_etale hU x hx (hjU y z hyz hz)

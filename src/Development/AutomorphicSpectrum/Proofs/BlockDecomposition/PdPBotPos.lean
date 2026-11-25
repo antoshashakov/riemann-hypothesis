@@ -7,7 +7,9 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartIsG
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartTensorBaseCompatStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsChartFromCoordinates
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsChartFromCoordinatesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedSplitRangeIsoOfIntervalStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SplittingFieldLattices.GrSplit
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedSplitRangeIsoOfInterval
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalarMultiplicationShiftsFiltrationStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationPropertyStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -195,7 +197,7 @@ theorem chart_tens : ∀ {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {I
         exact bot1 _ (by omega)) eO hiO
   choose θ hθ using fa
   obtain ⟨π, hs, hk, hπ⟩ := pi_ex (sFil (TS γ q l s {V}) (t - c)) (sFil (TS γ q l s {V}) t) ⟨cA.D, hD'⟩ eA (mA _) (mA _)
-  refine GlobalTheory.T.graded_split_range_iso_of_interval (O := O) (A := A) (G := Γ(X, V)) γ m S (t - c).toNat t.toNat θ ?_ π hs hk _ ?_ ?_
+  refine _root_.GlobalTheory.CompanionTheory.GrPiece.main (O := O) (A := A) (G := Γ(X, V)) γ m S (t - c).toNat t.toNat θ ?_ π hs hk _ ?_ ?_
   · intro i hi
     by_cases hu : (t - c).toNat ≤ (i : ℕ)
     · refine sub_of_top _ _ _ ?_

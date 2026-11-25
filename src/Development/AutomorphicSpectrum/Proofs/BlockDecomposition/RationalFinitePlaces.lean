@@ -2,7 +2,10 @@ module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.EulerFinOf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedGLMassFormula
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPositiveHermitianFormStatement
+public import Formalism.SatakeDualWeyl.Statement
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPositiveHermitianForm
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionCentralizerStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionLatticeCompactStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralPointsOpenCompactStatement
@@ -128,7 +131,7 @@ theorem factor (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (δ 
     {γ : GL (Fin n) (Af E) | γ ∈ gam1 E n δ ∧ IsOfFinOrder γ}.Finite := by
   have hs : (δ * thE E n δ).val.charpoly.Separable := hδ.2.2.1
   have hr : ∀ τ : E →+* ℂ, ∀ z ∈ ((δ * thE E n δ).val.charpoly.map τ).roots, ‖z‖ = 1 := hδ.2.2.2
-  obtain ⟨H, hu, hh, hN, hp⟩ := GlobalTheory.T.exists_positive_hermitian_form E n _ hs hr
+  obtain ⟨H, hu, hh, hN, hp⟩ := _root_.GlobalTheory.CompanionTheory.TraceHerm.exists_posDef_herm E n _ hs hr
   obtain ⟨⟨C₀, hC₀, hcov⟩, hfin⟩ := GlobalTheory.T.unitary_group_compact_quotient E n H hu hh hp
   have hc := GlobalTheory.T.twisted_centralizer_unitary_iff E n δ H hs hu hN
   set U := UJ (conjFin (IsCMField.complexConj E).toRingEquiv) (H.map (algebraMap E (Af E))) with hU

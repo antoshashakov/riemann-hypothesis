@@ -5,7 +5,8 @@ public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyBezoutSeparableDerivativeAdicIntegers
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyDefiniteUnitaryLocalPointMemMaxCompact
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertIntegralTwistedConjugatesTwistedCentralizerStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralConjEtaleMemCentralizerMulIntegralGLStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralConjEtaleMemCentralizerMulIntegralGL
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralProperties
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemMaxCompactGLOfCommuteEtaleCharpolyBoundedStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -90,7 +91,7 @@ theorem eventually_one (hU : Unr E) (n : ℕ) (δ : GL (Fin n) E)
       have hn1 : nrmL n w (locEl n w δ) = locEl n w δ := by unfold nrmL; rw [if_pos hs]
       rw [hn1] at hgood'
       rw [hθ1] at hg ⊢
-      obtain ⟨t, ht, k, hk, rfl⟩ := GlobalTheory.T.integral_conj_etale_mem_centralizer_mul_integralGL E n w _ g hy hgood' hg
+      obtain ⟨t, ht, k, hk, rfl⟩ := _root_.GlobalTheory.SplitUniq.splitUniq E n w _ g hy hgood' hg
       exact ⟨t, ht, by simpa using hk⟩
     · obtain ⟨t, ht, k, hk, rfl⟩ := GlobalTheory.T.inert_integral_twistedConjugates_twistedCentralizer_mul_maxCompact E hU n w hs _ g hy hgood' hg
       exact ⟨t, ht, by simpa using hk⟩

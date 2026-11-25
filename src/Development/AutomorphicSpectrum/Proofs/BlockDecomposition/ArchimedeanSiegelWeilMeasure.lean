@@ -15,7 +15,7 @@ public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanCompactSetDensityBoundedStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanHermitianScalingByUnits
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ModerateGrowthSchwartz
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMeasureScalingByUnitsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMeasureScalingByUnits
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexCoordinatesExistAtInfinityStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityBoundFromBoxVolumeGrowthStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisintegrationAlongContinuousQuotientMapStatement
@@ -363,7 +363,7 @@ theorem avgInf_tendsto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
       show (HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR (Ainf F) σ) g * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) * g) i j = _
       rw [h1]
       simp only [g, Matrix.mul_diagonal, Matrix.diagonal_mul]
-    have hμ' := GlobalTheory.T.archimedean_measure_scaling_by_units F E σ hCM n M 2 b lam hlam e he t ht
+    have hμ' := _root_.GlobalTheory.CompanionTheory.SW.Dil.coordW_map_units F E σ hCM n M 2 b lam hlam e he t ht
     have hν' := _root_.GlobalTheory.CompanionTheory.SW.DiagScale.coordHerm_map_diag_ainf F E σ hCM n 2 b lam hlam e he t ht (τg g) (hτm g) hτe
     set P : Fin n → ℝ≥0 := fun a => ∏ w, ‖e (t a) w‖₊ with hP
     have hP0 : ∀ a, P a ≠ 0 := by

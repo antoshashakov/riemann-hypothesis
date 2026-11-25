@@ -12,7 +12,10 @@ public import Mathlib.Topology.Algebra.Group.Defs
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSmallCompactOpenBetween
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarMeasureOpenNonemptyNeZeroStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsOpenFixedOfSubgroup
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LastRowUpdateNhdsGenerationStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.UnipApplyCastSuccLast
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LastRowUpdateNhdsGeneration
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCompactSupportUnipotentStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemSubmoduleOfBumpsStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCellStructureDataStatement
@@ -372,7 +375,7 @@ theorem forcing (i t : ℕ) (O : Set (Mir k (i + (t + 1)))) (hO : O ∈ 𝓝 (1 
         dEmb k i t d * wEl k i t * sO k i t m = h * wEl k i t * x →
         ∃ a ∈ HPG k i (t + 1), ∃ x' ∈ O, m = a * x' := by
   obtain ⟨Θ, hΘc, hΘ1, hΘ⟩ := GlobalTheory.T.continuous_open_cell_retraction k i t
-  obtain ⟨N, hN, hNf⟩ := GlobalTheory.T.last_row_update_nhds_generation k (i + (t + 1)) (parab k (ePG i (t + 1))) (by
+  obtain ⟨N, hN, hNf⟩ := _root_.GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement k (i + (t + 1)) (parab k (ePG i (t + 1))) (by
     intro r _ g hg
     rw [mem_parab_iff]
     intro a b u v hab

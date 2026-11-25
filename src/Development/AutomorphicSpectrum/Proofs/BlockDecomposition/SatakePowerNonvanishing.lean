@@ -3,7 +3,12 @@ module
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.UnitaryExtremality.SatPowNonvan
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsPermWOne
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BruhatWeightDecreasesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetRepsOfFactorizationStatement
+public import Mathlib.Algebra.Group.End
+public import Mathlib.Algebra.Group.Subgroup.Map
+public import Mathlib.Basic.Finite.Defs
+public import Mathlib.Data.Finset.Defs
+public import Mathlib.GroupTheory.Coset.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetRepsOfFactorization
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantConjugateUnipotentMemStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictDom
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalZeroOfInjectivePowerStatement
@@ -274,7 +279,7 @@ theorem satPowNonvan : PositivityTheory.SphericalProduct.SatPowNonvan := by
   have hq : (q : ℂ) ≠ 0 := by exact_mod_cast (show q ≠ 0 by omega)
   have hα : ∀ i, (fun i => (α i : ℂ)) i ≠ 0 := fun i => (α i).ne_zero
   obtain ⟨hKI, hYI⟩ := GlobalTheory.T.unitary_iwahori_index_finite L ϖ σ q n hU
-  obtain ⟨R, h1R, hRP, hR⟩ := GlobalTheory.T.coset_reps_of_factorization (GU σ n) (IwU σ n) t (fun u => u ∈ IwU σ n ∧ IsUnipU u)
+  obtain ⟨R, h1R, hRP, hR⟩ := _root_.GlobalTheory.CompanionTheory.SatPow.RepsGen.reps_of_quotient_with_property (GU σ n) (IwU σ n) t (fun u => u ∈ IwU σ n ∧ IsUnipU u)
     ⟨one_mem _, isBorelU_one, fun i => by simp⟩ (hYI t) (fun i hi => by
       obtain ⟨u, hu, hu', y, hy, hy', e⟩ := GlobalTheory.T.unitary_iwahori_factorization L σ n hσ hσv t htD htS i hi
       exact ⟨u, hu, ⟨hu, hu'⟩, y, hy, hy', e⟩)

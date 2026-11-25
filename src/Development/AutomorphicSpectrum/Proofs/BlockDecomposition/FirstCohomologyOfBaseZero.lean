@@ -4,7 +4,7 @@ public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.USt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsPullForm
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbelianSchemeBaseChangeExistsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClassZeroCocycleTensorCoboundaryStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClassZeroCocycleTensorCoboundary
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleOnProductFromSecondFactorStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleTensorCoboundaryClassZero
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteSemilatticeSystemStatement
@@ -143,7 +143,7 @@ theorem kunneth (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C] [
   obtain ⟨z, rfl⟩ := H1.mk_surjective F x
   have hg : ∀ b : C, ∃ g : ∀ T : C, F.obj T ⊗[R] F.obj b, ∀ (T T' : C) (φ : T ⟶ T'),
       (evZ F φ).rTensor _ (z ⊗ₜ[R] (1 : F.obj b) - t b) = g T' - (mp F φ).toLinearMap.rTensor _ (g T) := fun b ↦
-    GlobalTheory.T.class_zero_cocycle_tensor_coboundary R C F (F.obj b) _ (by
+    _root_.GlobalTheory.CompanionTheory.Axis.rTensor_cocycle_eq_coboundary_of_class_eq_zero R C F (F.obj b) _ (by
       rw [map_sub, LinearMap.rTensor_tmul, hx b, sub_self])
   choose g hg using hg
   let G : C0 (box F) := fun T ↦ g T.2 T.1
