@@ -3212,16 +3212,8 @@ theorem card_Ev (k n : ℕ) : (Ev k n).card = (k + n - 1).choose n := by
   rw [Finset.card_univ, Fintype.card_fin] at h
   rw [← h]
   symm
-  refine Finset.card_bij (fun f _ => (f : Fin k → ℕ)) ?_ ?_ ?_
-  · intro f hf
-    rw [mem_Ev]
-    exact (Finset.mem_finsuppAntidiag.1 hf).1
-  · intro f _ g _ hfg
-    exact DFunLike.coe_injective hfg
-  · intro e he
-    refine ⟨Finsupp.equivFunOnFinite.symm e, ?_, rfl⟩
-    rw [Finset.mem_finsuppAntidiag]
-    exact ⟨(mem_Ev e).1 he, Finset.subset_univ _⟩
+  refine Finset.card_equiv Finsupp.equivFunOnFinite fun f => ?_
+  simp [Finset.mem_finsuppAntidiag, mem_Ev]
 
 
 open Classical in
@@ -3232,53 +3224,40 @@ theorem card_Ev_digits (k a P : ℕ) (hP : 0 < P) :
     (t := Fintype.piFinset (fun _ : Fin k => range P))]
   · refine Finset.sum_congr rfl fun ρ hρ => ?_
     have hρ' : ∀ c, ρ c < P := fun c => Finset.mem_range.1 (Fintype.mem_piFinset.1 hρ c)
+    have hsum (e : Fin k → ℕ) (hm : (fun c => e c % P) = ρ) :
+        ∑ c, e c = ∑ c, ρ c + P * ∑ c, e c / P := by
+      rw [← hm, Finset.mul_sum, ← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun c _ => (Nat.mod_add_div _ _).symm
+    have hdecode (e' : Fin k → ℕ) (c : Fin k) :
+        (ρ c + P * e' c) / P = e' c ∧ (ρ c + P * e' c) % P = ρ c :=
+      (Nat.div_mod_unique hP).2 ⟨rfl, hρ' c⟩
     split_ifs with hok
     · obtain ⟨hle, hdvd⟩ := hok
       symm
-      refine Finset.card_bij (fun e' _ => fun c => ρ c + P * e' c) ?_ ?_ ?_
+      refine Finset.card_nbij' (fun e' c => ρ c + P * e' c) (fun e c => e c / P) ?_ ?_ ?_ ?_
       · intro e' he'
-        rw [Finset.mem_filter, mem_Ev]
-        constructor
-        · rw [Finset.sum_add_distrib, ← Finset.mul_sum, (mem_Ev e').1 he', Nat.mul_div_cancel' hdvd]
-          omega
-        · funext c
-          show (ρ c + P * e' c) % P = ρ c
-          rw [Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (hρ' c)]
-      · intro e1 _ e2 _ h
-        funext c
-        have := congrFun h c
-        have h2 : P * e1 c = P * e2 c := by omega
-        exact Nat.eq_of_mul_eq_mul_left hP h2
+        rw [Finset.mem_coe, Finset.mem_filter, mem_Ev]
+        refine ⟨?_, funext fun c => (hdecode e' c).2⟩
+        rw [Finset.sum_add_distrib, ← Finset.mul_sum, (mem_Ev e').1 he', Nat.mul_div_cancel' hdvd]
+        omega
       · intro e he
-        rw [Finset.mem_filter, mem_Ev] at he
-        obtain ⟨hs, hm⟩ := he
-        have hdec : ∀ c, e c = ρ c + P * (e c / P) := by
-          intro c
-          have h1 := congrFun hm c
-          rw [← h1]
-          exact (Nat.mod_add_div _ _).symm
-        refine ⟨fun c => e c / P, ?_, ?_⟩
-        · rw [mem_Ev]
-          have h3 : a = ∑ c, ρ c + P * ∑ c, e c / P := by
-            rw [← hs, Finset.mul_sum, ← Finset.sum_add_distrib]
-            exact Finset.sum_congr rfl fun c _ => hdec c
-          have h4 : a - ∑ c, ρ c = P * ∑ c, e c / P := by omega
-          rw [h4, Nat.mul_div_cancel_left _ hP]
-        · funext c
-          exact (hdec c).symm
+        rw [Finset.mem_coe, Finset.mem_filter, mem_Ev] at he
+        rw [Finset.mem_coe, mem_Ev]
+        have hd : a - ∑ c, ρ c = P * ∑ c, e c / P := by
+          have := hsum e he.2
+          omega
+        rw [hd, Nat.mul_div_cancel_left _ hP]
+      · intro e' _
+        exact funext fun c => (hdecode e' c).1
+      · intro e he
+        funext c
+        change ρ c + P * (e c / P) = e c
+        rw [← congrFun (Finset.mem_filter.1 he).2 c, Nat.mod_add_div]
     · rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
       intro e he hm
-      apply hok
-      have hs := (mem_Ev e).1 he
-      have hdec : ∀ c, e c = ρ c + P * (e c / P) := by
-        intro c
-        have h1 := congrFun hm c
-        rw [← h1]
-        exact (Nat.mod_add_div _ _).symm
-      have h3 : a = ∑ c, ρ c + P * ∑ c, e c / P := by
-        rw [← hs, Finset.mul_sum, ← Finset.sum_add_distrib]
-        exact Finset.sum_congr rfl fun c _ => hdec c
-      refine ⟨by omega, ⟨∑ c, e c / P, by omega⟩⟩
+      have := (mem_Ev e).1 he
+      have := hsum e hm
+      exact hok ⟨by omega, ⟨∑ c, e c / P, by omega⟩⟩
   · intro e _
     rw [Finset.mem_coe, Fintype.mem_piFinset]
     intro c
@@ -3314,42 +3293,23 @@ theorem symDim_digits (r a P : ℕ) (hP : 0 < P) :
 
 theorem choose_ratio (r x y : ℕ) (hx : 1 ≤ x) (hxy : x ≤ y) :
     (((y + r).choose r : ℕ) : ℝ) ≤ ((y : ℝ) / x) ^ r * (((x + r).choose r : ℕ) : ℝ) := by
+  let q : ℝ := (y : ℝ) / x
   have hx0 : (0 : ℝ) < x := by exact_mod_cast hx
-  have hq : (1 : ℝ) ≤ (y : ℝ) / x := by rw [le_div_iff₀ hx0, one_mul]; exact_mod_cast hxy
-  induction r with
-  | zero => simp
-  | succ r ih =>
-    have hy := Nat.add_one_mul_choose_eq (y + r) r
-    have hxx := Nat.add_one_mul_choose_eq (x + r) r
-    have hy' : ((y : ℝ) + r + 1) * ((y + r).choose r : ℝ) = ((y + (r + 1)).choose (r + 1) : ℝ) * ((r : ℝ) + 1) := by
-      have := congrArg (Nat.cast : ℕ → ℝ) hy
-      push_cast at this
-      rw [show y + (r + 1) = y + r + 1 by ring]
-      linarith
-    have hx' : ((x : ℝ) + r + 1) * ((x + r).choose r : ℝ) = ((x + (r + 1)).choose (r + 1) : ℝ) * ((r : ℝ) + 1) := by
-      have := congrArg (Nat.cast : ℕ → ℝ) hxx
-      push_cast at this
-      rw [show x + (r + 1) = x + r + 1 by ring]
-      linarith
-    have hr1 : (0 : ℝ) < (r : ℝ) + 1 := by positivity
-    have hstep : (y : ℝ) + r + 1 ≤ (y : ℝ) / x * ((x : ℝ) + r + 1) := by
-      have e : (y : ℝ) / x * ((x : ℝ) + r + 1) = y + (y : ℝ) / x * ((r : ℝ) + 1) := by
-        field_simp
-        ring
-      rw [e]
-      nlinarith
-    have hc0 : (0 : ℝ) ≤ ((x + r).choose r : ℝ) := Nat.cast_nonneg _
-    have hq0 : (0 : ℝ) ≤ ((y : ℝ) / x) ^ r := by positivity
-    have hmain : ((y + (r + 1)).choose (r + 1) : ℝ) * ((r : ℝ) + 1) ≤
-        (((y : ℝ) / x) ^ (r + 1) * ((x + (r + 1)).choose (r + 1) : ℝ)) * ((r : ℝ) + 1) := by
-      rw [← hy', mul_assoc, ← hx']
-      calc ((y : ℝ) + r + 1) * ((y + r).choose r : ℝ)
-          ≤ ((y : ℝ) + r + 1) * (((y : ℝ) / x) ^ r * ((x + r).choose r : ℝ)) :=
-            mul_le_mul_of_nonneg_left ih (by positivity)
-        _ ≤ ((y : ℝ) / x * ((x : ℝ) + r + 1)) * (((y : ℝ) / x) ^ r * ((x + r).choose r : ℝ)) :=
-            mul_le_mul_of_nonneg_right hstep (mul_nonneg hq0 hc0)
-        _ = ((y : ℝ) / x) ^ (r + 1) * (((x : ℝ) + r + 1) * ((x + r).choose r : ℝ)) := by ring
-    exact le_of_mul_le_mul_right hmain hr1
+  have hq : 1 ≤ q := by
+    rw [show q = (y : ℝ) / x from rfl, le_div_iff₀ hx0, one_mul]
+    exact_mod_cast hxy
+  have hqx : q * (x : ℝ) = y := div_mul_cancel₀ _ hx0.ne'
+  have hprod (n : ℕ) : (r.factorial : ℝ) * ((n+r).choose r : ℝ) =
+      ∏ i ∈ range r, ((n : ℝ) + 1 + i) := by
+    exact_mod_cast ((Nat.ascFactorial_eq_factorial_mul_choose n r).symm.trans
+      (Nat.ascFactorial_eq_prod_range (n+1) r))
+  change _ ≤ q ^ r * _
+  apply le_of_mul_le_mul_left ?_ (by positivity : 0 < (r.factorial : ℝ))
+  rw [hprod y, mul_left_comm (r.factorial : ℝ), hprod x]
+  have hqProd : (∏ _ ∈ range r, q) = q ^ r := by simp
+  rw [← hqProd, ← Finset.prod_mul_distrib]
+  refine Finset.prod_le_prod₀ (fun _ _ => by positivity) fun i _ => ?_
+  nlinarith [mul_nonneg (sub_nonneg.mpr hq) (show (0 : ℝ) ≤ 1 + i by positivity)]
 
 end Digits
 
