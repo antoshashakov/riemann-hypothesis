@@ -72,66 +72,42 @@ theorem isUnit_mk_of_formallyUnramified {k A : Type*} [CommRing k] [CommRing A] 
     IsUnit (Ideal.Quotient.mk (Ideal.span (Set.range f)) J) := by
   classical
   let _ : Algebra k A := α.toAlgebra
-  set I := Ideal.span (Set.range f) with hI
+  let I := Ideal.span (Set.range f)
   have _ : Algebra.FormallyUnramified k (A ⧸ I) := RingHom.formallyUnramified_algebraMap.1 hu
   have hsurj : Function.Surjective (algebraMap A (A ⧸ I)) := Ideal.Quotient.mk_surjective
-  let v : Fin D → TensorProduct A (A ⧸ I) Ω[A⁄k] := fun i => TensorProduct.tmul A (1 : A ⧸ I) (KaehlerDifferential.D k A (f i))
-  let S : Submodule (A ⧸ I) (TensorProduct A (A ⧸ I) Ω[A⁄k]) := Submodule.span (A ⧸ I) (Set.range v)
-  have hmem : ∀ x ∈ I, TensorProduct.tmul A (1 : A ⧸ I) (KaehlerDifferential.D k A x) ∈ S := by
-    intro x hx
-    induction hx using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨j, rfl⟩ := hx
-      exact Submodule.subset_span ⟨j, rfl⟩
-    | zero => simp
-    | add x y _ _ hx hy =>
-      rw [map_add (f := _), TensorProduct.tmul_add]
-      exact S.add_mem hx hy
-    | smul a x hx' hx =>
-      rw [smul_eq_mul, Derivation.leibniz, TensorProduct.tmul_add, TensorProduct.tmul_smul,
-        TensorProduct.tmul_smul]
-      have h0 : x • (TensorProduct.tmul A (1 : A ⧸ I) (KaehlerDifferential.D k A a)) = 0 := by
-        rw [TensorProduct.smul_tmul', Algebra.smul_def, mul_one,
-          show algebraMap A (A ⧸ I) x = 0 from (Ideal.Quotient.eq_zero_iff_mem (I := I)).2 hx', TensorProduct.zero_tmul]
-      rw [h0, add_zero]
-      exact S.smul_of_tower_mem a hx
-  have hS : S = ⊤ := by
-    refine eq_top_iff.2 fun z _ => ?_
-    obtain ⟨y, rfl⟩ := (KaehlerDifferential.exact_kerCotangentToTensor_mapBaseChange k A (A ⧸ I) hsurj z).1
-      (Subsingleton.elim _ _)
-    obtain ⟨⟨x, hx⟩, rfl⟩ := Ideal.toCotangent_surjective _ y
-    rw [KaehlerDifferential.kerCotangentToTensor_toCotangent]
-    exact hmem x ((Ideal.Quotient.eq_zero_iff_mem (I := I)).1 (RingHom.mem_ker.1 hx))
+  let q := KaehlerDifferential.kerToTensor k A (A ⧸ I)
+  have hq : Function.Surjective q := by
+    intro z
+    obtain ⟨y, hy⟩ := (KaehlerDifferential.exact_kerCotangentToTensor_mapBaseChange k A (A ⧸ I)
+      hsurj z).1 (Subsingleton.elim _ _)
+    obtain ⟨x, rfl⟩ := Ideal.toCotangent_surjective _ y
+    exact ⟨x, hy⟩
+  have hf (i : Fin D) : f i ∈ RingHom.ker (algebraMap A (A ⧸ I)) :=
+    (Ideal.Quotient.eq_zero_iff_mem (I := I)).2 (Ideal.subset_span (Set.mem_range_self i))
+  let u (i : Fin D) : RingHom.ker (algebraMap A (A ⧸ I)) := ⟨f i, hf i⟩
+  have huSpan : Submodule.span A (Set.range u) = ⊤ :=
+    (Submodule.span_range_subtype_eq_top_iff _ hf).2 Ideal.mk_ker.symm
+  let v : Fin D → TensorProduct A (A ⧸ I) Ω[A⁄k] := q ∘ u
+  have hS : Submodule.span (A ⧸ I) (Set.range v) = ⊤ := by
+    apply Submodule.span_eq_top_of_span_eq_top A
+    rw [show v = q ∘ u from rfl, Set.range_comp, ← Submodule.map_span, huSpan,
+      Submodule.map_top, LinearMap.range_eq_top.2 hq]
   have hW : Submodule.span (A ⧸ I) {exteriorPower.ιMulti (A ⧸ I) D v} = ⊤ := by
-    rw [eq_top_iff, ← exteriorPower.ιMulti_span_of_span (R := A ⧸ I) (n := D) (M := TensorProduct A (A ⧸ I) Ω[A⁄k]) (s := Set.range v) hS,
+    rw [eq_top_iff, ← exteriorPower.ιMulti_family_span_of_span (A ⧸ I) (n := D) hS,
       Submodule.span_le]
-    rintro _ ⟨a, ha, rfl⟩
-    choose σ hσ using fun i => ha ⟨i, rfl⟩
-    have ha' : a = v ∘ σ := funext fun i => (hσ i).symm
-    subst ha'
-    by_cases hinj : Function.Injective σ
-    · let e := Equiv.ofBijective σ (Finite.injective_iff_bijective.1 hinj)
-      have hp := (exteriorPower.ιMulti (A ⧸ I) D (M := TensorProduct A (A ⧸ I) Ω[A⁄k])).map_perm v e
-      change exteriorPower.ιMulti (A ⧸ I) D (v ∘ ⇑e) ∈ _
-      rw [hp, Units.smul_def]
-      exact SetLike.mem_coe.2 (zsmul_mem (Submodule.mem_span_singleton_self _) _)
-    · have hn : ¬ Function.Injective (v ∘ σ) := fun h => hinj h.of_comp
-      rw [(exteriorPower.ιMulti (A ⧸ I) D).map_eq_zero_of_not_injective _ hn]
-      exact SetLike.mem_coe.2 (Submodule.zero_mem _)
+    rintro _ ⟨s, rfl⟩
+    simp [exteriorPower.ιMulti_family, (Set.powersetCard.ofFinEmbEquiv.symm s).strictMono.eq_id]
   let ψ := exteriorPowerMapOver (A ⧸ I) D (TensorProduct.mk A (A ⧸ I) Ω[A⁄k] 1)
   have hgen : IsFreeGen (A ⧸ I) (ψ ω) :=
     hω.of_isBaseChange (isBaseChange_exteriorPower (TensorProduct.isBaseChange A Ω[A⁄k] (A ⧸ I)) D)
-  have hψJ : ψ (J • ω) = (Ideal.Quotient.mk I J) • ψ ω := by
-    rw [map_smul, ← algebraMap_smul (A ⧸ I) J (ψ ω)]
-    rfl
-  have hψd : ψ (dForm α f) = exteriorPower.ιMulti (A ⧸ I) D v := by
-    rw [dForm_eq]
+  have hψ : ψ (J • ω) = exteriorPower.ιMulti (A ⧸ I) D v := by
+    rw [hJ, dForm_eq]
     exact exteriorPowerMapOver_ιMulti (TensorProduct.mk A (A ⧸ I) Ω[A⁄k] 1) (fun i => dFun α (f i))
-  have hmemω : ψ ω ∈ Submodule.span (A ⧸ I) {exteriorPower.ιMulti (A ⧸ I) D v} := hW ▸ Submodule.mem_top
-  obtain ⟨c, hcoef⟩ := Submodule.mem_span_singleton.1 hmemω
-  rw [← hψd, ← hJ, hψJ, smul_smul] at hcoef
-  have h1 : c * Ideal.Quotient.mk I J = 1 := hgen.1 (hcoef.trans (one_smul _ _).symm)
-  exact isUnit_iff_exists_inv.2 ⟨c, by rw [mul_comm]; exact h1⟩
+  rw [map_smul, ← algebraMap_smul (A ⧸ I)] at hψ
+  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 (hW ▸ Submodule.mem_top (x := ψ ω))
+  change IsUnit (algebraMap A (A ⧸ I) J)
+  refine IsUnit.of_mul_eq_one c (hgen.1 ?_)
+  simpa only [← hψ, ← mul_smul, mul_comm c (algebraMap A (A ⧸ I) J), one_smul] using hc
 
 
 variable (p) in
