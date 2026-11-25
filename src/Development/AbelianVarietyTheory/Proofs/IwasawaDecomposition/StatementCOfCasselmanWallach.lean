@@ -19,7 +19,9 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Split
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TupTiedOfMuIsW
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistReadingInducesSideEmbeddingFixedFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypePlacesUnionRamifiedPlacesFiniteStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpperParahoricLowerDetUnitAndSuperdiagIntegralStatement
+public import Formalism.LocalToGlobal.GaloisLevelStructure.DefsLevel
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpperParahoricLowerDetUnitAndSuperdiagIntegral
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsReadsAtOfCover
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -170,7 +172,7 @@ theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal 
       ((Nat.coprime_self_sub_left hg.one_le).2 (Nat.coprime_one_left _)) hr0 hr1.le hθ hf0 hF0 a1 b1 a3 (b3 e' he') E1 E2
       fun κ hκ hU => let ⟨c, c', h1, h2, h3⟩ := j3 κ (j2 kk v s hs κ hκ hU); ⟨c, c', h1 y, h2 y', h3 kk v s hs hκ⟩
     refine fun κ hκ => ⟨(a3.mem κ hκ).trans ((b3 e he).mem κ hκ).symm, fun h h' => ?_⟩
-    obtain ⟨u1, u2⟩ := GlobalTheory.T.upperParahoric_lowerDet_unit_and_superdiag_integral _ _ _ s _ ((a3.mem κ hκ).1 h).1
+    obtain ⟨u1, u2⟩ := _root_.GlobalTheory.ParaUnit.detDD_unit_supDiag_int _ _ _ s _ ((a3.mem κ hκ).1 h).1
     have hne : NG.detDD s D.R.r (s.loc _ κ) ≠ 0 := fun h0 => by simp [h0] at u1
     apply Units.ext
     rw [a3.chr κ h hκ (Units.mk0 _ hne) rfl, (b3 e he).chr κ h' hκ (Units.mk0 _ hne) rfl, key _ u2]
@@ -189,7 +191,7 @@ theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal 
     subst hs
     obtain rfl := GlobalTheory.T.heckeCharacter_splitPlaceComponent_unique _ η s' ξ ξ' a2 b2
     refine fun κ hκ => ⟨(a3.mem κ hκ).trans (b3.mem κ hκ).symm, fun h h' => ?_⟩
-    obtain ⟨u1, -⟩ := GlobalTheory.T.upperParahoric_lowerDet_unit_and_superdiag_integral _ _ _ s' _ ((a3.mem κ hκ).1 h)
+    obtain ⟨u1, -⟩ := _root_.GlobalTheory.ParaUnit.detDD_unit_supDiag_int _ _ _ s' _ ((a3.mem κ hκ).1 h)
     have hne : NG.detDD s' D.R.r (s'.loc _ κ) ≠ 0 := fun h0 => by simp [h0] at u1
     rw [a3.chr κ h hκ (Units.mk0 _ hne) rfl, b3.chr κ h' hκ (Units.mk0 _ hne) rfl]
 

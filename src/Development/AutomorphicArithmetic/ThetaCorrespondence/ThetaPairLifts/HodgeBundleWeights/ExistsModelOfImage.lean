@@ -6,7 +6,8 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.GenRatios
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverMorphismRestrictOfRelAmple
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlatProjectiveModelOverRingOfIntegersStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralProjectiveClosureOfLinearSystemPoi
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalArithmeticVarietyModelProjectiveSpacStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalArithmeticVarietyModelProjectiveSpac
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameConjugateEmbeddingEqConjMulUnitaryStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FubiniStudyCoordinateCombinationsNoCommonZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackCoordinateCombinationRatioAndVanishStatement
@@ -86,7 +87,7 @@ theorem exists_model_of_image : _root_.GlobalTheory.CovTop.PublishedHodgeBundleT
     simpa using congrFun h0 k)
   obtain ⟨Y, _, q, B₀, hB₀, t, ψ₀, h1, h2, h3, h4, h5, h6⟩ := GlobalTheory.T.exists_integral_projective_closure_of_linearSystem_point K V Ω ev D m u hspan hR hD
   obtain ⟨X₀, _, p₀, g₀, ψ₁, e⟩ := GlobalTheory.T.exists_flat_projective_model_over_ringOfIntegers K Ω D m y Y q B₀ hB₀ t ψ₀ h1 h2 h3 h4 h5 h6
-  obtain ⟨X, _, p, g, ψ, hgp, har, hnorm, hbij, hbase, hrat⟩ := GlobalTheory.T.exists_normal_arithmeticVariety_model_projectiveSpace K Ω D m y X₀ p₀ g₀ ψ₁ e
+  obtain ⟨X, _, p, g, ψ, hgp, har, hnorm, hbij, hbase, hrat⟩ := _root_.GlobalTheory.NormalModel.exists_normal_model K Ω D m y X₀ p₀ g₀ ψ₁ e
   let B := (ProjSpace.O1 (𝓞 K) m).pull g
   have hB : B.IsLB := LB.isLB_pull (ProjSpace.O1_isLB _ m) g
   let sk : Fin (m + 1) → B.Sec := fun k => secPull (ProjSpace.coord (𝓞 K) m k) g

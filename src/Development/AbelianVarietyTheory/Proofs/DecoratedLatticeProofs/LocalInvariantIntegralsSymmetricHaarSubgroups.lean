@@ -8,7 +8,8 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.MeasurePreservin
 import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.EqSemiMeasOfCovolOne
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiProductMapHaarFiniteOnCompactsStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsMulLeftInvariantMapLevyProductMapToFourierJacoStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ProdRFJCoe
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsMulLeftInvariantMapLevyProductMapToFourierJaco
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapHaarFiniteOnCompactsStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapHaarIsMulLeftInvariantStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LevyProductMapPreimageIntegralGLStatement
@@ -169,7 +170,7 @@ theorem quot_int_haar : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
           ext g; simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]; exact fun a b => absurd ⟨a, b⟩ hrs
         rw [this]; exact isClosed_univ
     haveI : LocallyCompactSpace (RFJ k n c ρ) := hcl.locallyCompactSpace
-    haveI := GlobalTheory.T.isMulLeftInvariant_map_levyProductMapToFourierJacobi k n c ρ h1 h2 ν hν.1 m hm
+    haveI := _root_.GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ k n c ρ h1 h2 ν hν.1 m hm
     haveI := GlobalTheory.T.fourierJacobiProductMap_haar_finiteOnCompacts k n c ρ h1 h2 ν hν.1 m hm
     have hmeas : Measurable (prodRFJ (k := k) (n := n) (c := c) ρ) :=
       (Continuous.subtype_mk (((GlobalTheory.RootEx.QuotStep.continuous_embX.comp (continuous_fst.comp continuous_fst)).mul

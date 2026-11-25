@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CubicalProdu
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibreIsoCarriesSharpPointsToConjugates
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralFrameIdentityOfGenericPointStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDominantToUnitLeft
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitCoefficientOfThetaSquareIntegralTorsionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitCoefficientOfThetaSquareIntegralTorsion
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiSqGenericPointEqMonomialMulSymmetricStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiZeroMulRigidificationKEqOneStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFamilyCoefficientIntegralTorusPointStatement
@@ -203,7 +203,7 @@ theorem integral_sq_terms : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [
     have := key 0 c₀
     rw [hc₀, map_one, one_pow, hk0, _root_.mul_one] at this
     exact this.symm
-  obtain ⟨c₁, hc₁⟩ := GlobalTheory.T.isUnit_coefficient_of_thetaSquare_integralTorsion N₁ hN₁ V₁ hV hunit D θ hθ C b hcov
+  obtain ⟨c₁, hc₁⟩ := _root_.GlobalTheory.Poinc.Sep.CoefInt.isUnit_of_theta_sq N₁ hN₁ V₁ hV hunit D θ hθ C b hcov
   have hb1 : b c₁ * D.c (e 0) = b c₁ := by rw [map_zero, ThetaOne.c_zero, _root_.mul_one]
   have hG1 : IsUnit (G 0 c₁) := hc₁ (G 0 c₁) (fun Z r z J => val (t c₁) r z J ^ 2 * val (χt 0 c₁) r z J ^ 2 *
       val D.sym (r ≫ (D.c (e 0)).left) z J * (val (τ₀ (e 0) (-e 0)) r z J)⁻¹ * (rigV D r z J ^ 2)⁻¹)

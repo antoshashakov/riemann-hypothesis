@@ -8,7 +8,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Continuo
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteRestrictionVanishing
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTestFunctionProductStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictedProductEmbeddingsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictedProductIntegralStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RestrictedProductIntegral
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SlotEmbeddingsExistStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SlotLevelSubgroupsExistStatement
 import GroundTheory.GlobalFields.LocalFieldAtPlace
@@ -121,7 +122,7 @@ theorem finActOf : FinActOf := by
     exact (hV₀o i).inter (hLo i)
   let g : Hf E B.a B.b → ℂ := fun h => G (x * finH h)
   have hact := actS_eq φ₁ φ₂ e he₁ he₂
-  have hcore := GlobalTheory.T.restricted_product_integral p e K (fun i => K2 B.a B.b i.pl) V (sf φ₁ φ₂) hpe hpe' hsep hev hmem
+  have hcore := _root_.GlobalTheory.CompanionTheory.FinActCore.hint_prod_eq_foldr p e K (fun i => K2 B.a B.b i.pl) V (sf φ₁ φ₂) hpe hpe' hsep hev hmem
     (fun i => inf_le_left.trans (hV₀K i)) (fun i => relIndex_ne_zero_of_open (hVo i) (hKHc i))
     (by
       filter_upwards [hV₀e, hLe, hLu] with i a₁ a₂ a₃

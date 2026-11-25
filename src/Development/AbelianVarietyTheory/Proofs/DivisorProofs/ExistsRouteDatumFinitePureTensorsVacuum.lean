@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRelZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGridDatumPureTensorVacuaAEStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeVacuumEqSmulIndicatorSplitPlaceStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeVacuumEqSmulIndicatorSplitPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -78,7 +80,7 @@ theorem exists_datum_pure_linBar : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc :
   intro D T L sc G μ₀ hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv
   obtain ⟨ΦB, hD, m, f, φ, φ₀, hΦ, hSB, hvac, hv₁, h0, hne, L₁, L₂, θ, hθ, hfix, huniq⟩ :=
     GlobalTheory.T.exists_gridDatum_pureTensor_vacuaAE hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv
-  obtain ⟨ι, P, Λ, c, hι, hY⟩ := GlobalTheory.T.latticeVacuum_eq_smul_indicator_splitPlace Bs Γ X om om' hTr L₁ L₂ θ hθ φ₀ h0 hne hfix huniq
+  obtain ⟨ι, P, Λ, c, hι, hY⟩ := _root_.GlobalTheory.VacShape.vacuum_eq_smul_indicator Bs Γ X om om' hTr L₁ L₂ θ hθ φ₀ h0 hne hfix huniq
   exact ⟨ΦB, hD, m, f, φ, φ₀, hΦ, hSB, hvac, hv₁, ι, P, Λ, c, hι, hY⟩
 
 end GlobalTheory.SmallDatum

@@ -9,7 +9,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Hermitia
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScaledIntegralHermitianInOpenSubgroupStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableDenominatorPowerOfLtStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableOverLatticeQuotientLocallyConstantStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummablePeriodicBoundByDenominatorStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermOf
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummablePeriodicBoundByDenominator
 import Formalism.LocalRingCardinality.DataHost
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TensTop
 import Mathlib.Algebra.Order.Floor.Extended
@@ -94,7 +95,7 @@ theorem integrable_starLoc_fin : ∀ (F E : Type) [Field F] [NumberField F] [Fie
     have : ((2 * n : ℕ) : ℝ) < (M : ℝ) := by exact_mod_cast hn
     push_cast at this
     linarith
-  have hsum := GlobalTheory.T.summable_periodic_bound_by_denominator F E σ n (U.comap (hermIn (Af F) σ n)) t ht τ hτ hc
+  have hsum := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.summable_quot_of_le_delta_rpow F E σ n (U.comap (hermIn (Af F) σ n)) t ht τ hτ hc
     (fun c => ‖starLoc (Af F) σ J (psiFin F ψ) μ Q (hermIn (Af F) σ n c)‖) (fun _ => norm_nonneg _)
     (fun c l hl => by
       show ‖_‖ = ‖_‖

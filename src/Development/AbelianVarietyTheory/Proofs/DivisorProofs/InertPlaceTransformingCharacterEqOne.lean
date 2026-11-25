@@ -16,7 +16,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitar
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePlaceComponentAdeleNormEqLocalNormStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergDiagonalIntegralMemSchwartzBruhatStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergInvariantFormVanishesLagrangianTestStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentBlockUnipotentIdentityStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Mathlib.Analysis.CStarAlgebra.CStarMatrix
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentBlockUnipotentIdentity
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralInjectiveSubspaceCompactOpenConstNeZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramOfHermitianSelfDualLatticeSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsotropicIntegralInvariantHeisenbergFirstVarsStatement
@@ -312,7 +314,7 @@ theorem char_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
     rw [incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
     exact hJ.map _
   have hee : liftV v (1 : Fv F v) * liftV v (1 : Fv F v) = liftV v (1 : Fv F v) := smul_of_at (at_liftV v 1)
-  obtain ⟨p₁, p₂, t₁, t₂, hp₁, hp₂, ht₁, ht₂, hdec⟩ := GlobalTheory.T.idempotent_block_unipotent_identity (AF F) (AE F E) (cA σ) (Fin a') (incM F G.V'.J) hJA _ hee g k
+  obtain ⟨p₁, p₂, t₁, t₂, hp₁, hp₂, ht₁, ht₂, hdec⟩ := _root_.GlobalTheory.SiegelDiagDecomp.diag_decomp (AF F) (AE F E) (cA σ) (Fin a') (incM F G.V'.J) hJA _ hee g k
     (one_sub_smul_of_at hg) (one_sub_smul_of_at hk) α β (smul_of_at hα) (smul_of_at hβ) e1 e2 e3 e4 gd kd hgd hkd
   have hkk : mat k * mat k⁻¹ = 1 := Units.mul_inv k.1
   have hki : k⁻¹ ∈ UAt σ G.V' (evFin F v) := fun u hu => by

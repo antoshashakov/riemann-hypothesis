@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplitting
 public import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceAdeleRing
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDiagInt
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.SqNormIntegralFundamentalDomainEqL2NormSq
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalSiegelHeisenbergInvariantFormUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalSiegelHeisenbergInvariantFormUnique
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDiagonalSiegelParabolicRuleStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -100,7 +100,7 @@ theorem GlobalTheory.DblTargetSiegel.siegelRule_dblTarget : ∀ (D : D7) (ψ : A
     intro z Φ hΦ
     have h1 := hinv z Φ hΦ
     rwa [GlobalTheory.DblTargetSiegel.mul_diagCols_transpose] at h1
-  obtain ⟨c, hc⟩ := GlobalTheory.T.diagonalSiegel_heisenbergInvariant_form_unique D ψ hψ S T JB ξ hξ κ co hco ν 𝓕 hν l hl hinv'
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.DiagSiegelUniq.uniq D ψ hψ S T JB ξ hξ κ co hco ν 𝓕 hν l hl hinv'
   obtain ⟨hmem, hrule⟩ := GlobalTheory.T.thetaDiagonal_siegelParabolic_rule D ψ hψ S T JB ξ hξ κ co hco ν 𝓕 hν χS hS rS ωd hωd omp htr p t hpt φ hφ
   show l (omp (p, 1) φ) = _
   rw [hc _ hmem, hrule, hc _ hφ]

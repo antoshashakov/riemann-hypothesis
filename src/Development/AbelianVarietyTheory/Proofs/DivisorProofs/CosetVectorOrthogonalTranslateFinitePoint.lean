@@ -6,7 +6,12 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelI
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddCharTraceUnitBlockTrivialOfMovesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSmulConjSmul
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugatePlaceValuationCountUnderStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
+public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemSum
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugatePlaceValuationCountUnder
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalVolumeLift
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalZero
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IntegrandSZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecMemThetaSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseRationalHomPointsIdealCompletionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowIntegralCompletedHomLatticeStatement
@@ -301,7 +306,7 @@ theorem mem_of_char_eq {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {r : D.hos
       ← one_add_one_eq_two (R := D.host.E)]
     simp only [RingHom.map_mul, RingHom.map_add, RingHom.map_one]
     ring
-  have hc := GlobalTheory.T.unitaryFinitePoint_congr_one_of_inv_conj_congr (GlobalTheory.T.conjugatePlace_valuation_count_under D) 𝔪 Sf hG y (GlobalTheory.T.valued_finiteUnitary_le_one_off_openSubset S g y Sf gS hg hy) fun w hw => by
+  have hc := GlobalTheory.T.unitaryFinitePoint_congr_one_of_inv_conj_congr (_root_.GlobalTheory.ConjPlace.conj_place D) 𝔪 Sf hG y (GlobalTheory.T.valued_finiteUnitary_le_one_off_openSubset S g y Sf gS hg hy) fun w hw => by
     obtain ⟨h1, h2, h3⟩ := place_facts hG hw k
     exact GlobalTheory.T.valued_one_sub_le_of_moves_idealCompletion (skewId D 𝔪) w _ _ (finMat y⁻¹) h3 h1 h2 key
   refine ⟨(GlobalTheory.NormSum.mem_intG y).2 fun i j => ⟨?_, ?_⟩, fun i j => GlobalTheory.T.mem_idealIntegralFiniteAdeles_of_memCompletion 𝔪 hG.1 _ ?_⟩

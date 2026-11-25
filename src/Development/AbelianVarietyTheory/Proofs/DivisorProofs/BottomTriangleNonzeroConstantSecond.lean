@@ -10,7 +10,8 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Con
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDataLines
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ApplyAt0Smul
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTriangleLevelFixesVector
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjIdealIndicatorUnitBlockTranslateReadsWeilOpeStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjIdealIndicatorUnitBlockTranslateReadsWeilOpe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecMemThetaSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicThetaReadsCurveThetaFunctionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinitePartZeroNeOfIsVacuumOrientedModelStatement
@@ -395,7 +396,7 @@ theorem reads_datum (hI : GlobalTheory.NormSum.Inp D) {large₂ : SizeData₂ D}
   have hf := hall Tm hTm
   obtain ⟨ζ₁, z1, r1⟩ := GlobalTheory.T.level_indicator_reads_norm_power_unit_vector W.ψ W.θ A' WW hS hT δ hc hset _ _ hLS hLT hSd hTd _ _ (X.c s) he sb0 κ P'.e0 X.vac' P'.vac.1 hv
     hX.is.isVac'.2.lat Tm hTm
-  obtain ⟨ζ₂, z2, r2⟩ := GlobalTheory.T.conjIdealIndicator_unitBlockTranslate_reads_weilOperator W.ψ W.θ A' WW hS hT δ hc hset _ _ hLS hLT hSd hTd _ _ (X.c s) he sb0 κ P'.e0 X.vac' P'.vac.1 hv
+  obtain ⟨ζ₂, z2, r2⟩ := _root_.GlobalTheory.BotSmallTransl.reads_transl W.ψ W.θ A' WW hS hT δ hc hset _ _ hLS hLT hSd hTd _ _ (X.c s) he sb0 κ P'.e0 X.vac' P'.vac.1 hv
     hX.is.isVac'.2.lat Tm hTm _ A.rank r1
   have r3 : Reads W.ψ W.θ hS hT ⊤ δ 1 ((ζ₂ * (κ * ζ₁)) • cosetVec P' (D.host.conj • modul (locPl G s) (X.c s)) A.rank)
       (Tm (cosetFn (cA D (X.e s)) (D.host.conj • modul (locPl G s) (X.c s)) (unitPt A' WW (cA D (X.e s)) A.rank))) := by

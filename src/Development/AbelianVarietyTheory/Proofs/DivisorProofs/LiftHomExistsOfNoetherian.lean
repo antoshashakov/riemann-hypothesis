@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CanonicalOfAbelianDeRham
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianHomReductionDescendsFinitelyGeneratedStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushMemLiftFilOfInjectiveStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushMemLiftFilOfInjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,7 +70,7 @@ theorem liftHom_exists_of_noetherian : AbelianDeRham → (∀ (R : Type) [CommRi
     refine (Ideal.le_comap_pow _ 2).trans ?_
     rw [h, Ideal.zero_eq_bot, Ideal.comap_bot_of_injective _ Subtype.val_injective]
   haveI : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing ℤ S
-  have hfilS := GlobalTheory.T.push_mem_liftFil_of_injective_alt P R I h R₀ π hπ hker S S.subtype Subtype.val_injective (I.comap S.subtype) hS
+  have hfilS := _root_.GlobalTheory.SqLift.push_mem_liftFil_of_injective P R I h R₀ π hπ hker S S.subtype Subtype.val_injective (I.comap S.subtype) hS
     (S ⧸ I.comap S.subtype) (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective (Ideal.mk_ker) ι₀ hι
     g A₀ A i hA AS₀ AS iS hAS abA smA abAS smAS φA ψA pA qA cA
     g' B₀ B j hB BS₀ BS jS hBS abB smB abBS smBS φB ψB pB qB cB f₀ fS₀ cf hfil

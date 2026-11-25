@@ -4,7 +4,11 @@ public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsOneCo
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AddCharConductorIntegersContinuousNeOneStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleStepLocalWeilActionLineCharactersCancelStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalModelWeilOperatorTrivialAtPlaceIsModelStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RootExchangeEntriesMemSchwartzBruhatStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.StandardOrderExtendedBasisApplyLowBlock
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RootExchangeEntriesMemSchwartzBruhat
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FourierJacobiAverage
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ToOneSucc
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceDoubleStepTrilinearFormPropertiesStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLocalGroupClosedEmbeddingIntegralStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymmetricDoubleIntegralFiniteCombinationStatement
@@ -170,8 +174,8 @@ theorem valOne_all : ∀ D : D7, ValOne D := by
       (xi Q.ψk Q.ν Q.μ₂ Q.Φ₂.1 Q.L₂.J 1 γ.1 β.1) (τ b F)) =
       S.val (aconv [c₁, Q.d₁ γ]) (aconv [c₂, Q.d₂ γ β]) (T₁ O₁) (T₂ O₂) φ (trc ((Q.e₂ β).mapDomain Q.gl₂) f) g h₁ h₂ := by
     intro γ β
-    have s1 := GlobalTheory.T.rootExchange_entries_mem_schwartzBruhat Q.k Q.n₁ Q.n₀ (Q.c + 1 + 1) Q.ψk hψc Q.ν Q.unitVol.1 Q.μ₁ Q.Φ₁ Q.L₁.J 1 Q.α γ.1
-    have s2 := GlobalTheory.T.rootExchange_entries_mem_schwartzBruhat Q.k Q.n₂ Q.n₁ (Q.c + 1) Q.ψk hψc Q.ν Q.unitVol.1 Q.μ₂ Q.Φ₂ Q.L₂.J 1 γ.1 β.1
+    have s1 := _root_.GlobalTheory.StepData.xi_mem_SB Q.k Q.n₁ Q.n₀ (Q.c + 1 + 1) Q.ψk hψc Q.ν Q.unitVol.1 Q.μ₁ Q.Φ₁ Q.L₁.J 1 Q.α γ.1
+    have s2 := _root_.GlobalTheory.StepData.xi_mem_SB Q.k Q.n₂ Q.n₁ (Q.c + 1) Q.ψk hψc Q.ν Q.unitVol.1 Q.μ₂ Q.Φ₂ Q.L₂.J 1 γ.1 β.1
     rw [show xi Q.ψk Q.ν Q.μ₁ Q.Φ₁.1 Q.L₁.J 1 Q.α γ.1 = ((⟨_, s1⟩ : SB _) : _ → ℂ) from rfl, GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe,
       show xi Q.ψk Q.ν Q.μ₂ Q.Φ₂.1 Q.L₂.J 1 γ.1 β.1 = ((⟨_, s2⟩ : SB _) : _ → ℂ) from rfl, GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe]
     have hl := hlast ⟨_, s1⟩ ⟨_, s2⟩ (Q.d₁ γ) (Q.d₂ γ β) (Q.ent₁ γ) (Q.ent₂ γ β) O₁ O₂ hO₁ hO₂

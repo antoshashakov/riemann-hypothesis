@@ -9,7 +9,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Holomorp
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypersurfaceComplexPointsMeasurableNullStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnderOfSameOrbitStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LogNormContinuousOffDivisorStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasureZeroSetAvoidedByHolomorphicMapStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasureZeroSetAvoidedByHolomorphicMap
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MixedCyclePointDictionaryStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MulticonePointDescendsToSubvarietyStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PointsEqIffSameTorusOrbitStatement
@@ -180,7 +181,7 @@ theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ}
       simp [h] at this
     have hx : x ∈ tsupport (Pt.χ j) := subset_tsupport _ hj
     exact ⟨j, _, ⟨x, hx, rfl⟩, (A.chart j).left_inv (Pt.tsupport_subset j hx)⟩
-  have hle := GlobalTheory.T.measure_zero_set_avoided_by_holomorphic_map A F hF H Z' hZ'm hZ'0 (fun y hy => hs y fun h => hy (Or.inl h))
+  have hle := _root_.GlobalTheory.CompanionTheory.ArchDom.chernPart_le_sum_map A F hF H Z' hZ'm hZ'0 (fun y hy => hs y fun h => hy (Or.inl h))
     (fun x x' hx => hi x x' fun h => hx (Or.inl h)) φ hφ ε (fun j => (A.chart j) '' tsupport (Pt.χ j))
     (fun j => (hKK j).1) (fun j => (hKK j).2) hcovK
   have hfin (j : Fin A.n) := GlobalTheory.T.lintegral_indicator_mul_locDens_pullback_lt_top A F hF H φ hφ ψ hψ g S Z' W b a d hcov hWb

@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GalLiftOfOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralShiftPhaseConjReadingsFiveClausesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoefMapNormEquivariantBasisOfFive
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateCharactersEmbeddingsOfCharacterisationStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateLiftOfCharacterisationClausesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.OfCore
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadingsExistRow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateLiftOfCharacterisationClauses
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjugateLiftUniqueAndBaseDatumStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIoConjOfFive
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPsiOfOverK
@@ -163,7 +165,7 @@ theorem conj_lift5 (hR : GlobalTheory.Core5 R F) (fw : FWTie T R κw v₀) (i : 
     have h1 := hx x
     obtain ⟨n, a, fs, hc, -⟩ := h1
     exact exists_ev ev hκ _ _ _ (hS x n a fs hc)
-  have h2 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.2.2 R F hR i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hF ω f₀ f B io thP hL v (fw.hv₀ i σ).1 hex
+  have h2 := (_root_.GlobalTheory.GalLift.conjLift_five).2.2.2.2.2 R F hR i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hF ω f₀ f B io thP hL v (fw.hv₀ i σ).1 hex
   obtain ⟨th, hth⟩ := h2
   refine ⟨th, u, U, z₀ * z⁻¹, σ ze * σ (((R.FW i).chi z₀ : D.what₂.LLˣ) : D.what₂.LL) *
     (σ (((R.FW i).chi z : D.what₂.LLˣ) : D.what₂.LL))⁻¹ * κ, hth, hU, mul_mem hz₀ (inv_mem hz), ?_, fun x y hy => ?_⟩
@@ -242,22 +244,22 @@ theorem conjugateRationalLift_at_nonBaseEmbedding (hR : GlobalTheory.Core5 R F) 
   have h1 := (GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.2.1 R F hR i ((GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.1 R F hR i) σ hσ
   obtain ⟨η', hη⟩ := h1
   have hH := hypConj5 hR i hσ hμ hη
-  have h2 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).1 R F hR i gramR' c0R' c0L' hT' σ hσ
+  have h2 := (_root_.GlobalTheory.GalLift.conjLift_five).1 R F hR i gramR' c0R' c0L' hT' σ hσ
   obtain ⟨c, c₁, hc⟩ := h2
-  have h3 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.1 R F hR i gramR' c0R' c0L' hT' σ c c₁ hc
+  have h3 := (_root_.GlobalTheory.GalLift.conjLift_five).2.1 R F hR i gramR' c0R' c0L' hT' σ c c₁ hc
   obtain ⟨H, j, hF⟩ := h3
   have h4 := (GlobalTheory.T.conjugateCharacters_embeddings_of_characterisation).2.2.2.2.2.2.1 R F hR i σ _ η' hμ hη hH
   obtain ⟨ω, hω⟩ := h4
-  have h5 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.1 R F hR i σ hσ
+  have h5 := (_root_.GlobalTheory.GalLift.conjLift_five).2.2.2.1 R F hR i σ hσ
   obtain ⟨f₀, f, B, hv⟩ := h5
   have h6 := GlobalTheory.MovedWeights.exists_io_conj_ofFive R F hR i σ hσ _ η' hμ hH c c₁ hc ω f₀ f B hω hv
   obtain ⟨io, hio⟩ := h6
-  have h7 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.2.2.1 R F hR i σ _ η' _ c c₁ H j hF ω f₀ f B io hω hv
+  have h7 := (_root_.GlobalTheory.GalLift.conjLift_five).2.2.2.2.1 R F hR i σ _ η' _ c c₁ H j hF ω f₀ f B io hω hv
   obtain ⟨thP, hth⟩ := h7
   have hL : LiftData R i σ _ η' c H ω f₀ f B io thP := ⟨hω, hv, hio, hth⟩
   have h8 := conj_lift5 hR fw i hE hI hinj O ph hP hO hT' hC σ hσ hμ hη hF hL
   obtain ⟨th, u, U, z, κ, hp, hU, hz, hκ, he⟩ := h8
-  have h9 := (GlobalTheory.T.conjugateLift_of_characterisationClauses).2.2.1 R F hR i gramR c0R c0L hT gramR' c0R' c0L' hT' σ c c₁ H j hF
+  have h9 := (_root_.GlobalTheory.GalLift.conjLift_five).2.2.1 R F hR i gramR c0R c0L hT gramR' c0R' c0L' hT' σ c c₁ H j hF
   obtain ⟨c₁', hF'⟩ := h9
   exact conjugateRationalLift_at_embedding_of_datum hR fw hI i hT hσ ph ⟨hμ, hη, hF', (isConjLift_iff R i σ _ _ _ _ _).2 ⟨ω, f₀, f, B, io, thP, hL, hp⟩⟩ hU
     (fun h => absurd h hne) hz hκ he

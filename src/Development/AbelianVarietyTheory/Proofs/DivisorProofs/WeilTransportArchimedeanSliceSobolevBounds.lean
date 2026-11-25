@@ -9,7 +9,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinite
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalFiniteDimFinitePartsWeilOperatorsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteAdelicDualBasisIntegralStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStandardArchimedeanAddCharOfStandardCharStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.L2ATransportGramTransposeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.L2ATransportGramTranspose
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedArchHeisenbergDirectionsContinuousStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepDerivativeLawOfL2IsometricStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -207,6 +207,6 @@ theorem GlobalTheory.WeilL2Words.weilTransport_archimedeanSlice_sobolev_bounds_a
   intro D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ _ co hco ω hω om hom Φ hΦ y p0 i j
   have hI := GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom
   obtain ⟨M, himpl, hM⟩ := GlobalTheory.T.transported_archHeisenbergDirections_continuous D ψ _ _ JA JB ξ κ co om hI.2
-  obtain ⟨μ, hμ, hiso⟩ := GlobalTheory.T.l2A_transport_gram_transpose D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom
+  obtain ⟨μ, hμ, hiso⟩ := _root_.GlobalTheory.WeilL2Transport.l2A_transport D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom
   exact GlobalTheory.WeilL2Words.slice_l2_of (GlobalTheory.T.isStandardArchimedeanAddChar_of_standardChar D ψ hψ) om hI.1 M himpl hM μ hμ hiso hΦ p0
     (GlobalTheory.T.exists_local_finiteDim_finiteParts_weilOperators D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom Φ hΦ p0) y i j

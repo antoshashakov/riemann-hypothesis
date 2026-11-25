@@ -8,7 +8,10 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlacesInjective
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompAtBaseCharacterMulUnramifiedEqTypeCharacterStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexTypePlaceCharacterEqSuperdiagAddCharMulLo
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAddCharCompletionOfResidueAddCharStatement
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAddCharCompletionOfResidueAddChar
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNontrivialAddCharZmodEqOfNeOneStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeneratorNotMemTwistPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelCharacterEqLocalFactorAtTypePlaceStatement
@@ -111,7 +114,7 @@ theorem level_uniformity_transfer_alt : _root_.GlobalTheory.HeightCounting.Up.Pu
   let ψ' := hex.choose
   have hψ'1 : ψ' ≠ 1 := hex.choose_spec.1
   have hψ'φ : 2 ≤ (Dof x).R.r → ψ' = φ := hex.choose_spec.2
-  have hex0 := GlobalTheory.T.exists_addChar_completion_of_residue_addChar (maximalRealSubfield (Dof x).host.E)
+  have hex0 := _root_.GlobalTheory.ResidueChar.exists_addChar_completion_lift_residue (maximalRealSubfield (Dof x).host.E)
     ((cell (D := Dof x) l.b.Bs.exp b hA j).sp (NX.pG (Dof x) kv0)).v ((Dof x).host.g kv0.1)
     ((cell (D := Dof x) l.b.Bs.exp b hA j).redG kv0) ψ' hψ'1
   let ψ₀ := hex0.choose

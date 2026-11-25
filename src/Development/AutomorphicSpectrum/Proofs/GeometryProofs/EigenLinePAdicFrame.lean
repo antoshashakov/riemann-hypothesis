@@ -19,7 +19,8 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIf
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FractionFieldEigenBasisDescendsStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointComponentLocalRingStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeEigenDecompositionLocalStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeExtendScalarsStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeAt
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeExtendScalars
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeStableUnderActionStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiLinearCombinationDetStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombTangentIffLinearSumStatement
@@ -163,10 +164,10 @@ theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   have hmemK : ∀ r : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₂⟩, ψ ⟨r, hle r.2⟩ ∈ (algebraMap V K).range :=
     fun r => hVr r (hle r.2) r.2
   obtain ⟨ρC, ρHC, ev, HV, hC1, hC2, hTC, hEC, hHV1, hHV2, hFC⟩ :=
-    GlobalTheory.T.hodge_lattice_extend_scalars E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ hle _ _ ℓ t (𝓗.HL ⟨_, h₂⟩) (𝓗.HL ⟨_, h₁⟩) ℂ_[p] (OCp p) (j.comp ψ)
+    _root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalExists.exists_eval E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ hle _ _ ℓ t (𝓗.HL ⟨_, h₂⟩) (𝓗.HL ⟨_, h₁⟩) ℂ_[p] (OCp p) (j.comp ψ)
       𝓗.act_fst 𝓗.act_inr hLI hℓs hHx hHy hmemC
   obtain ⟨ρK, -, -, -, -, -, hTK, -, -, -, -⟩ :=
-    (GlobalTheory.T.hodge_lattice_extend_scalars E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ hle _ _ ℓ t (𝓗.HL ⟨_, h₂⟩) (𝓗.HL ⟨_, h₁⟩) K V ψ
+    (_root_.GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalExists.exists_eval E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ hle _ _ ℓ t (𝓗.HL ⟨_, h₂⟩) (𝓗.HL ⟨_, h₁⟩) K V ψ
       𝓗.act_fst 𝓗.act_inr hLI hℓs hHx hHy hmemK)
 
   haveI : IsLocalRing (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) := GlobalTheory.T.generic_point_component_local_ring _ _ _ Z.gen _

@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrT
 public import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClassAt
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryPairMapsCompletedHomLatticeOntoTranslate
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePartEqIntegralCombinationOfMemCompletedLatStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinitePartEqIntegralCombinationOfMemCompletedLat
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionOMemLatticeOOfIntegralCombinationsStatement
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
@@ -162,7 +164,7 @@ theorem actO_latO_le (S T : HSp D) (g : GA D S) (h : GA D T)
       Formalism.L2.Herm.hatL (F := D.host.F) BT) :
     ∀ w ∈ latO S T (AS : Set (Fin S.rank → D.host.E)) (AT : Set (Fin T.rank → D.host.E)) (fun _ => True),
       actO S T g h w ∈ latO S T (BS : Set (Fin S.rank → D.host.E)) (BT : Set (Fin T.rank → D.host.E)) (fun _ => True) :=
-  GlobalTheory.T.weilActionO_mem_latticeO_of_integralCombinations S T g h AS BS AT BT (fun s hs => GlobalTheory.T.finitePart_eq_integralCombination_of_mem_completedLattice BS _ (hS s hs)) (fun t ht => GlobalTheory.T.finitePart_eq_integralCombination_of_mem_completedLattice BT _ (hT t ht))
+  GlobalTheory.T.weilActionO_mem_latticeO_of_integralCombinations S T g h AS BS AT BT (fun s hs => _root_.GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL BS _ (hS s hs)) (fun t ht => _root_.GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL BT _ (hT t ht))
 
 theorem actO_actO_inv (S T : HSp D) (g : GA D S) (h : GA D T) (w : WO S T) : actO S T g h (actO S T g⁻¹ h⁻¹ w) = w := by
   simp only [actO]

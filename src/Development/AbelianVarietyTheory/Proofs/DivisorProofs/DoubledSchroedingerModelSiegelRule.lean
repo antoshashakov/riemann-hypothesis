@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Proofs.HeightProofs.EmbeddingXiZe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDoubledPairWeilDatumSchrodingerTransportStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitarySplittingTransportedDoubledWeilDatumStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealGramHermitianSpaceDoubledBlockDiagonalStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelRuleDiagonalDoubledSchroedingerModelStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDblCoordDblD
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelRuleDiagonalDoubledSchroedingerModel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -84,7 +85,7 @@ theorem doubledModel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar 
   obtain ⟨ωd, hωd, omd₀, homd⟩ := GlobalTheory.T.exists_doubledPairWeilDatum_schrodingerTransport D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco
   refine ⟨dblD _ co, omdOf omd₀, isDblCoord_dblD _ co,
     ⟨GlobalTheory.WeilM.isLagr_diagCols _ _, GlobalTheory.T.isUnitarySplitting_transportedDoubledWeilDatum D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ωd hωd omd₀ homd,
-      GlobalTheory.T.siegelRule_diagonal_doubledSchroedingerModel D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ωd hωd omd₀ homd⟩,
+      _root_.GlobalTheory.DiagSiegel.siegelRule_ddr D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ωd hωd omd₀ homd⟩,
     GlobalTheory.T.realGram_hermitianSpaceDoubled_blockDiagonal D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om hom ωd hωd omd₀ homd⟩
 
 end GlobalTheory.DblSchr

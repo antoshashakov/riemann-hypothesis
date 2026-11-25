@@ -6,7 +6,8 @@ public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermCut
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.WchartLePreimage
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaValueExistsUniqueOfChartIndependence
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarmonicValueIntegralGermFramePowerCharZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarmonicValueTranslateDivisorLevelIntegralChartStatement
+public import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarmonicValueTranslateDivisorLevelIntegralChart
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetsOnCopiesAny
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ChartIndependenceUnconditional
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCombinationIntegers
@@ -150,7 +151,7 @@ theorem iInf_thRule_le_nuLocOf_charZero : ∀ (E : Type) [Field E] [NumberField 
       (fun _ => algebraMap T.Fr F (algebraMap T.V T.Fr 1)) (fun _ => val_algebraMap_nonneg T v hvx _)
       (by rw [hmap]; exact hdeg) f' hf' ((vV T.V x0 : ℤ) : ℚ)
       (by rw [hmap, Nat.one_mul, hval, ← hx0']; exact hvx x0 hx0)
-  obtain ⟨xx, u, hu0, hrel⟩ := GlobalTheory.T.harmonicValue_translate_divisor_level_integral_chart E H Dw l Xo c nab hnab T io y C hTr P hP hchar ϖ hϖ Q hQ
+  obtain ⟨xx, u, hu0, hrel⟩ := _root_.GlobalTheory.DivLevel.harmonicValue_translate_dvd E H Dw l Xo c nab hnab T io y C hTr P hP hchar ϖ hϖ Q hQ
     F v hv n D' A' G' pD pA pG U' PU oD' hx hact α q hqM hα hMb θ θα hθ2 hθ3 p w ζ x t₀ t σ' h
     h1 h2 h3 h4' h6 h7 h8 h9 h5 a P₁ hP₁
   obtain ⟨g, hg, -⟩ := existsUnique_thRule Xo c nab hth xx hP₁

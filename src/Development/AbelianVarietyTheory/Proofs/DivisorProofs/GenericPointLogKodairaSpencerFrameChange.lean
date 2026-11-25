@@ -4,7 +4,13 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatFrameApp
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopPairDForm
 public import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenToFunctionFieldInjectiveAndFractionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogDerivationExtensionBasicOpenStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLogDerivationExtensionBasicOpen
+public import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LevelCarrying
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsCoprimeOfNatCast
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCmOrderActionMatrixOnAffineOpenStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericTangentCoefficientsUniqueAffineOpenBasisStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombAtZeroSectionEigenBlockFlattenedFrameStatement
@@ -206,9 +212,9 @@ theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   obtain ⟨hfu, hfloc⟩ := basic_loc U W hWU f hWf
   obtain ⟨hfu', hfloc'⟩ := basic_loc U' W hWU' f' hWf'
   have hv'WB := GlobalTheory.T.tangentBasis_affineOpen_restrict_basicOpen E H TF.Y.X TF.Y.t U' W hWU' f' hWf' n' v' hvT' hvB'
-  choose DlW hDlW hDlWc using fun j => GlobalTheory.T.exists_logDerivation_extension_basicOpen TF.Y.X c.F TF.Y.s
+  choose DlW hDlW hDlWc using fun j => _root_.GlobalTheory.LogDerLoc.exists_logDer_basicOpen TF.Y.X c.F TF.Y.s
     (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U W hWU f hWf (Dl j).1 (Dl j).2
-  choose Dl'W hDl'W hDl'Wc using fun k => GlobalTheory.T.exists_logDerivation_extension_basicOpen TF.Y.X c.F TF.Y.s
+  choose Dl'W hDl'W hDl'Wc using fun k => _root_.GlobalTheory.LogDerLoc.exists_logDer_basicOpen TF.Y.X c.F TF.Y.s
     (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U' W hWU' f' hWf' (Dl' k).1 (Dl' k).2
   have hKS0 := fun j => GlobalTheory.T.kodairaSpencer_condition_restrict_basicOpen_of_affine E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) U W hWU f hWf n v (Dl j).1 (DlW j)
     (symPair e (ε j)) (hDlWc j) (hKS j)

@@ -16,7 +16,11 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KawamataLogT
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleValueAtPointNeZeroIffMemNonzeroLocusStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundary
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowMulIntersectionLeOfNefClassOnClosed
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionOverFieldEqOfClosedPointImageEqStatement
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionOverFieldEqOfClosedPointImageEq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -186,7 +190,7 @@ theorem sections_separate_fibre : GlobalTheory.Published.NadelVanishingAndNonKlt
     rw [hfz j]; exact ⟨hx₀U, hxU'⟩
   have hzp : ∀ j, z j ≫ f ≫ p = 𝟙 _ := fun j => by rw [← Category.assoc, hz j, hxp]
   have hzne : ∀ i j, i ≠ j → z i pt ≠ z j pt := fun i j hij e =>
-    hij (hzi (GlobalTheory.T.section_over_field_eq_of_closedPoint_image_eq ℂ M (f ≫ p) (z i) (z j) (hzp i) (hzp j) e))
+    hij (hzi (_root_.GlobalTheory.section_eq_of_point_eq ℂ M (f ≫ p) (z i) (z j) (hzp i) (hzp j) e))
   funext j
   show a j = 0
   obtain ⟨V, hzV, hV⟩ := GlobalTheory.T.isolated_in_fibre_of_etale_restriction M W f U hEt (z j pt) (by rw [hfz j]; exact hx₀U)

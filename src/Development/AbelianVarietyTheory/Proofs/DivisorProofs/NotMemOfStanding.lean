@@ -14,7 +14,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrientedHermitianFo
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimitiveFrameDatumZetaIntegralEqSmallerStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfDualLocalSubgroupFirstProjEqAnnihilator
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceHalvesEqLinearModelLagrangiansStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStandingTripleThetaFirstStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareStandingTripleThetaFirst
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairMemSchwartzBruhatOfConductorExponentStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnderMemAndPlaceAboveEqOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem
@@ -192,7 +192,7 @@ theorem local_charts (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (i j 
   have hcc : (Γ.W.bas v).val.map jj * (cj⁻¹ * C0).val = basCols B e w := congrArg Units.val (mul_inv_cancel_left cj C0)
   generalize cj⁻¹ * C0 = cc at hcc
   obtain ⟨g, hg, cA', lA⟩ := GlobalTheory.T.exists_mixed_chart_through_W_coordinate hL W B t i j M hst e Bs Γ X om om' h hT hti.1 v' w hτ jj j1 j2 cc hcc
-  obtain ⟨g', cB, lB⟩ := GlobalTheory.T.square_standing_triple_theta_first hL W B t i j M hst e Bs Γ X om om' h hT hti v' w hτ jj j1 j2 cc hcc
+  obtain ⟨g', cB, lB⟩ := _root_.GlobalTheory.TopFlip.ChartB.exists_mixChart_linB hL W B t i j M hst e Bs Γ X om om' h hT hti v' w hτ jj j1 j2 cc hcc
   have hb := notMem_of_standing hst hw
   have hS := (Good.isGood_of_notMem hL W hw hb).square i i.2 j j.2
   have hξ : (xiAt w)⁻¹ ≠ 0 := inv_ne_zero ((_root_.map_ne_zero _).2 GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero)
