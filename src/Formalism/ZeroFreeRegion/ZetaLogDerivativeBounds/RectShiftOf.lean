@@ -43,6 +43,8 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.PNTExplRectF
+
 @[expose] public section
 
 open Complex Filter Topology
@@ -74,62 +76,38 @@ lemma rso_Fy_diff (y : ℝ) (hy : 0 < y) {w : ℂ} (h0 : w ≠ 0) (h1 : w ≠ 1)
   unfold Fy
   exact (((hd1.div hd2 hz).neg).mul hd3).div (differentiableAt_id.mul (differentiableAt_id.sub_const 1)) hden
 
+open Formalism.HermitianLattices.Ext.PrimesInProgressions Formalism.ZeroFreeDirichlet in
 theorem rectangleShiftOfResidue : RectShiftOf := by
-  intro hRDP hLA y hy σ₁ σ₀ T h1 h2 h3 hT hz
-  obtain ⟨A, hA1, hAev⟩ := hLA y hy
-  set a : ℂ := (y : ℂ) with ha
-  set b : ℂ := (y : ℂ) * Real.log y - (1 + Real.eulerMascheroniConstant) * y with hb
-  let H : ℂ → ℂ := fun w => Fy y w - a / (w - 1) ^ 2 - b / (w - 1)
-  let G : ℂ → ℂ := fun w => if w = 1 then A 1 else H w
-  have hH : ∀ z : ℂ, z ≠ 0 → z ≠ 1 → riemannZeta z ≠ 0 → DifferentiableAt ℂ H z := by
-    intro z hz0 hz1 hzz
-    have hzm : z - 1 ≠ 0 := sub_ne_zero.2 hz1
-    exact ((rso_Fy_diff y hy hz0 hz1 hzz).sub
-      ((differentiableAt_const a).div ((differentiableAt_id.sub_const 1).pow 2) (pow_ne_zero 2 hzm))).sub
-      ((differentiableAt_const b).div (differentiableAt_id.sub_const 1) hzm)
-  have hG : ∀ z : ℂ, z ≠ 0 → z ≠ 1 → riemannZeta z ≠ 0 → DifferentiableAt ℂ G z := by
-    intro z hz0 hz1 hzz
-    refine (hH z hz0 hz1 hzz).congr_of_eventuallyEq ?_
-    filter_upwards [isOpen_ne.mem_nhds hz1] with w hw
-    simp [G, hw]
-  have hev := hAev
-  rw [eventually_nhdsWithin_iff] at hev
-  have hG1 : DifferentiableAt ℂ G 1 := by
-    refine hA1.congr_of_eventuallyEq ?_
-    filter_upwards [hev] with w hw
-    by_cases hw1 : w = 1
-    · subst hw1; simp [G]
-    · have hw' := hw hw1
-      simp only [G, H, if_neg hw1]
-      rw [hw']
-      ring
-  set U : Set ℂ := {w | ∀ᶠ z in 𝓝 w, DifferentiableAt ℂ G z} with hU
-  have hUo : IsOpen U := isOpen_setOf_eventually_nhds
-  have hUd : DifferentiableOn ℂ G U := fun w hw => (hw.self_of_nhds).differentiableWithinAt
-  have h01 : ∀ᶠ z in 𝓝 (1 : ℂ), z ≠ 0 := eventually_ne_nhds one_ne_zero
-  have hsub : (Set.uIcc σ₁ σ₀ ×ℂ Set.uIcc (-T) T) ⊆ U := by
-    intro w hw
-    rw [Complex.mem_reProdIm, Set.uIcc_of_le (by linarith), Set.uIcc_of_le (by linarith)] at hw
-    obtain ⟨⟨hr1, hr2⟩, hi1, hi2⟩ := hw
-    have hw0 : w ≠ 0 := by
-      intro h; rw [h] at hr1; simp at hr1; linarith
-    by_cases hw1 : w = 1
-    · subst hw1
-      show ∀ᶠ z in 𝓝 (1 : ℂ), DifferentiableAt ℂ G z
-      filter_upwards [rso_zeta_ne_near_one, h01] with z hz1 hz0
-      by_cases hz1' : z = 1
-      · subst hz1'; exact hG1
-      · exact hG z hz0 hz1' (hz1 hz1')
-    · have hzw : riemannZeta w ≠ 0 := hz w hr1 hr2 (abs_le.2 ⟨hi1, hi2⟩) hw1
-      have hc : ContinuousAt riemannZeta w := (differentiableAt_riemannZeta hw1).continuousAt
-      show ∀ᶠ z in 𝓝 w, DifferentiableAt ℂ G z
-      filter_upwards [hc.eventually_ne hzw, isOpen_ne.mem_nhds hw1, isOpen_ne.mem_nhds hw0]
-        with z hzz hz1 hz0
-      exact hG z hz0 hz1 hzz
-  refine hRDP (Fy y) G a b 1 σ₁ σ₀ (-T) T (by simpa using h2) (by simpa using h3)
-    (by simp; linarith) (by simpa using hT) ⟨U, hUo, hsub, hUd⟩ ?_
-  intro w hw
-  simp only [G, H, if_neg hw]
-  ring
+  intro _ _ y hy σ₁ σ₀ T hσ₁ hσ₁1 hσ₀ hT hzero
+  let χ : DirichletCharacter ℂ 1 := 1
+  have hL : DirichletCharacter.LFunction χ = riemannZeta := DirichletCharacter.LFunction_modOne_eq
+  have hn (w : ℂ) (hw₁ : σ₁ ≤ w.re) (hw₂ : w.re ≤ σ₀) (hwT : |w.im| ≤ T) : exLF χ w ≠ 0 := by
+    intro hw
+    have hwne : w ≠ 1 := fun he => exLF_one_ne_zero χ (he ▸ hw)
+    exact hzero w hw₁ hw₂ hwT hwne (by simpa only [hL] using (exLF_eq_zero_iff χ hwne).mp hw)
+  have hmem (w : ℂ) : w ∈ (∅ : Finset ℂ) ↔ exLF χ w = 0 ∧ σ₁ < w.re ∧ |w.im| < T := by
+    refine ⟨fun h => (Finset.notMem_empty _ h).elim, ?_⟩
+    rintro ⟨hz, hr, hi⟩
+    exact (hn w hr.le ((exLF_re_lt_one χ hz).trans hσ₀).le hi.le hz).elim
+  have hedge (w : ℂ) (hw₁ : σ₁ ≤ w.re) (hw₂ : w.re ≤ σ₀) (hwT : |w.im| ≤ T)
+      (hw : exLF χ w = 0) : σ₁ < w.re ∧ |w.im| < T :=
+    (hn w hw₁ hw₂ hwT hw).elim
+  have hex : exLF χ = riemannZeta₁ := by
+    funext z
+    change exLF (1 : DirichletCharacter ℂ 1) z = _
+    by_cases hz : z = 1
+    · simp [hz, exLF_one_char, DirichletCharacter.LFunctionTrivChar₁]
+    · rw [exLF_one_char_apply hz, DirichletCharacter.LFunction_modOne_eq,
+        riemannZeta_eq_inv_sub_mul hz, mul_inv_cancel_left₀ (sub_ne_zero.mpr hz)]
+  have hk : Fchi χ y = Fy y := by
+    funext z
+    unfold Fchi Fy negLD
+    rw [hL]
+  have hc : explicitFormulaConstant χ = -(Real.eulerMascheroniConstant : ℂ) := by
+    unfold explicitFormulaConstant
+    rw [hex, deriv_riemannZeta₁_one, riemannZeta₁_one, div_one]
+  have h := ex_rect_Fchi χ y hy σ₁ σ₀ T hσ₁ hσ₁1 hσ₀ hT ∅ hmem hedge
+  rw [hk, hc, ite_eq_left (show χ = 1 from rfl), Finset.sum_empty, sub_zero] at h
+  linear_combination h
 
 end Formalism.ZF
