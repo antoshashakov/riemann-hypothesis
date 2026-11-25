@@ -251,16 +251,16 @@ end PositivityTheory.ThKW.LeviParabolicGL
 
 
 open PositivityTheory.ThKW.LeviParabolicGL in
-theorem PositivityTheory.ThKW.PhaseFourierInjectivity.levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E), IsHermND σ JT →
+theorem PositivityTheory.ThKW.PhaseFourierInjectivity.levi_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    IsCMExt F E σ → ∀ (nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E), IsHermND σ JT →
     ∃ m : GL (Fin nT) (AF F ⊗[F] E) →* GAF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT), Continuous m ∧
       (∀ t, mtF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) (m t) * PositivityTheory.ThKW.ModulusFactorDefinition.dC (AF F ⊗[F] E) nT =
         PositivityTheory.ThKW.ModulusFactorDefinition.dC (AF F ⊗[F] E) nT * t.1) ∧
       ∀ a : GL (Fin nT) E, m (Matrix.GeneralLinearGroup.map (incAF F E) a) ∈
         GQF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) := by
-  intro F E _ _ _ _ _ σ B hB n JT hT
+  intro F E _ _ _ _ _ σ B hB_cm n JT hT
   classical
-  have hc : IsCMExt F E σ := hB.cm
+  have hc : IsCMExt F E σ := hB_cm
   have hcc := GlobalTheory.SplitLagrF.cAF_invol hc
   have hccE : ∀ x : E, (σ : E →+* E) ((σ : E →+* E) x) = x := fun x => GlobalTheory.SplitDetCharF.sig_invol hc x
   set rE : E := (2 : E)⁻¹ with hrE
@@ -338,3 +338,13 @@ theorem PositivityTheory.ThKW.PhaseFourierInjectivity.levi : ∀ (F E : Type) [F
       rw [← eJE] at h
       exact h
     · exact leviGL_map (inclR (F := F) (AF F)) (σ : E →+* E) (cAF σ) (fun x => rfl) hrE2 hr huE hu a
+
+theorem PositivityTheory.ThKW.PhaseFourierInjectivity.levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ (nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E), IsHermND σ JT →
+    ∃ m : GL (Fin nT) (AF F ⊗[F] E) →* GAF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT), Continuous m ∧
+      (∀ t, mtF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) (m t) * PositivityTheory.ThKW.ModulusFactorDefinition.dC (AF F ⊗[F] E) nT =
+        PositivityTheory.ThKW.ModulusFactorDefinition.dC (AF F ⊗[F] E) nT * t.1) ∧
+      ∀ a : GL (Fin nT) E, m (Matrix.GeneralLinearGroup.map (incAF F E) a) ∈
+        GQF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) := by
+  intro F E _ _ _ _ _ σ B hB
+  exact PositivityTheory.ThKW.PhaseFourierInjectivity.levi_c F E σ B hB.cm

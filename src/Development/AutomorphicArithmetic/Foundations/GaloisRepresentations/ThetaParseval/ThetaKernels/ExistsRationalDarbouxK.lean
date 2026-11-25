@@ -66,22 +66,7 @@ theorem Tw.RatDarboux.exists_rational_darboux_k : ∀ {F E : Type} [Field F] [Nu
     ∃ co : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp (R := AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J)) (Fin n × Fin d),
       ∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F,
         co.e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F x) = (fun k => algebraMap F (AF F) (y k), fun k => algebraMap F (AF F) (z k)) := by
-  intro F E _ _ _ _ _ σ B n d X Y r s r' s' hB hX hY
-  obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
-  have hσ : ∀ x, σ (σ x) = x := fun x => by
-    apply ((B.emb w).1 : E →+* ℂ).injective
-    rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star]
-  have hX' : X.J.det ≠ 0 := fun h0 => by
-    apply Tw.RatDarboux.det_ne_zero_of_isCartan (hX.cartan w)
-    have := ((B.emb w).1 : E →+* ℂ).map_det X.J
-    rw [h0, map_zero] at this
-    exact this.symm
-  have hY' : Y.J.det ≠ 0 := fun h0 => by
-    apply Tw.RatDarboux.det_ne_zero_of_isCartan (hY.cartan w)
-    have := ((B.emb w).1 : E →+* ℂ).map_det Y.J
-    rw [h0, map_zero] at this
-    rw [Matrix.det_smul]
-    exact mul_eq_zero_of_right _ this.symm
-  exact Tw.RatDarboux.exists_darboux (AF F) hB.cm.2.2.1 σ hσ hX.herm hY.skew hX' hY'
+  intro F E _ _ _ _ _ σ B n d X Y r s r' s' hB
+  exact _root_.Tw.RatDarboux.exists_rational_darboux_c σ B X Y r s r' s' hB.cm
 end
 end
