@@ -53,6 +53,7 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.NoncompactGapAtLeastRange
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsFinsetSeparating
 
 @[expose] public section
 
@@ -64,23 +65,8 @@ namespace GlobalTheory
 
 theorem exists_finset_eval_injective {Z : Type} (T : Submodule ℂ (Z → ℂ))
     [FiniteDimensional ℂ T] :
-    ∃ Y : Finset Z, ∀ g ∈ T, (∀ y ∈ Y, g y = 0) → g = 0 := by
-  classical
-  let φ : Z → Module.Dual ℂ T := fun z => (LinearMap.proj z).comp T.subtype
-  have hfg : (Submodule.span ℂ (Set.range φ)).FG := IsNoetherian.noetherian _
-  obtain ⟨s', hs', hspan⟩ := (Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg
-  rw [← Set.image_univ] at hs'
-  obtain ⟨Y, -, rfl⟩ := Finset.subset_set_image_iff.1 hs'
-  refine ⟨Y, fun g hg hY => ?_⟩
-  have hle : Submodule.span ℂ (Set.range φ) ≤ LinearMap.ker (Module.Dual.eval ℂ T ⟨g, hg⟩) := by
-    rw [hspan, Submodule.span_le]
-    intro ψ hψ
-    simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hψ
-    obtain ⟨y, hy, rfl⟩ := hψ
-    simp [φ, hY y hy]
-  funext z
-  have hz := hle (Submodule.subset_span ⟨z, rfl⟩)
-  simpa [φ] using hz
+    ∃ Y : Finset Z, ∀ g ∈ T, (∀ y ∈ Y, g y = 0) → g = 0 :=
+  _root_.UpperTheory.Reformulated.B.Qp2.exists_finset_separating T
 
 theorem finiteDimensional_span_separately (ι : Type) [Fintype ι] [DecidableEq ι] (X : ι → Type)
     (S : ∀ i, Submodule ℂ (X i → ℂ)) (hS : ∀ i, FiniteDimensional ℂ (S i)) :
