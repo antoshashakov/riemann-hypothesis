@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricR
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPullDegIdentitySelfAdmissibleStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSelfPullbackDegenerationDataRingAutOverStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationPullbackToPullDegStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackUniformisationCompIdPullbackStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifBaseChangeSt
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackUniformisationCompIdPullback
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisationDeterminedByDegenerationDataNormalStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -73,7 +74,7 @@ theorem exists_galMap : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
   have hsa : IsSemiAbelian ((Over.pullback (specOf (Gal.hom σ))).obj G') := IsSemiAbelian.pullback _ G' hG'
   obtain ⟨-, bc1, -, -, mbc1, -, hU1, -⟩ :=
     GlobalTheory.T.uniformisation_determined_by_degenerationData_normal R' hR' D' A'' ((Over.pullback (specOf (Gal.hom σ))).obj G') hsa U'' D' A' G' hG' U' hid
-  obtain ⟨h', bc, hU, hxe', hem', -, hmon⟩ := GlobalTheory.T.isPullbackUniformisation_comp_id_pullback R' R' _ _ (Gal.hom σ) D' D' D' h hid A' A'' A' G'
+  obtain ⟨h', bc, hU, hxe', hem', -, hmon⟩ := _root_.GlobalTheory.PullUnifId.isPullUnif_comp_id R' R' _ _ (Gal.hom σ) D' D' D' h hid A' A'' A' G'
     ((Over.pullback (specOf (Gal.hom σ))).obj G') G' (Iso.refl _) bc1 U' U'' U' hU'' hU1
   haveI : IsMonHom bc.hom := hmon (by show IsMonHom (𝟙 _); infer_instance) mbc1
   refine ⟨bc.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ)), ?_, h', bc, rfl, hU, ?_⟩

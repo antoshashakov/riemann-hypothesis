@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvatureMat
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarChernConnectionEntryEqCurvatureStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarOperatorLocalCalculusComplexFormsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothCoefficientFormsClosedUnderOperationsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTracePowMulSubMulPowTelescopeStatement
+public import Mathlib.LinearAlgebra.Matrix.Trace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTracePowMulSubMulPowTelescope
+public import ReciprocityTheory.L2DbarEstimates.IsLocalHomeomorph
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -137,7 +139,7 @@ theorem dbarAt_transAt (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G G' : 
 
   have alg : ∑ i ∈ Finset.range k, ∑ p, ∑ q, W i v q p * (curvEv G v p q - curvEv G' v p q) =
       powAt G v k - powAt G' v k := by
-    refine Eq.trans ?_ (GlobalTheory.T.sum_trace_pow_mul_sub_mul_pow_telescope (Ev n) r (curvEv G v) (curvEv G' v) k)
+    refine Eq.trans ?_ (_root_.GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow (Ev n) r (curvEv G v) (curvEv G' v) k)
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [Matrix.trace_mul_cycle, Matrix.trace, Finset.sum_comm, hW]
     exact Finset.sum_congr rfl fun q _ => by rw [Matrix.diag_apply, Matrix.mul_apply]; rfl

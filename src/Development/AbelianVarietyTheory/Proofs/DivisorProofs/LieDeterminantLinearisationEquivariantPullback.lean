@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExOfHodgeWt
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DualGramInterpGram
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenFrameTransportCartesianAutomorphismStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorDominantPullbackWithClassStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnIffGeneratesAtInv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorDominantPullbackWithClass
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuationSubringDominatingSubring
 public import Mathlib.AlgebraicGeometry.Morphisms.Proper
 public import Mathlib.AlgebraicGeometry.Morphisms.SchemeTheoreticallyDominant
@@ -129,7 +130,7 @@ theorem ratLin_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   have hdom : ∀ γ, IsDominant (ρ' γ).asIso.hom := fun γ => by
     haveI : IsIso (ρ' γ).asIso.hom := Iso.isIso_hom (ρ' γ).asIso
     infer_instance
-  obtain ⟨D', hcls, hD'⟩ := GlobalTheory.T.exists_cartierDivisor_dominant_pullback_with_class (X₀ TF.Y Z) X' φ D
+  obtain ⟨D', hcls, hD'⟩ := _root_.GlobalTheory.Cartier.exists_pullback_cartierDiv (X₀ TF.Y Z) X' φ D
 
   have hη : genericFieldPoint X' ≫ φ ≫ (barComp TF.Y Z).ι = spMap (functionFieldMap φ) ≫
       ((show Sp (X₀ TF.Y Z).functionField ⟶ X₀ TF.Y Z from

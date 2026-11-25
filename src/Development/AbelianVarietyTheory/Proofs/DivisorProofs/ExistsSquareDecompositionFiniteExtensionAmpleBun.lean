@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarie
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexSymmetricAmpleSquareDecompositionStatement
 public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFiniteExtensionCompatibleEmbedding
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyRingHomComplexOfFgStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyRingHomComplexOfFg
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareDecompositionDescendsToFiniteExtensionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportPowerDecompositionFieldExtensionStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -65,7 +67,7 @@ theorem sqDec_of_finite_extension : ∀ (K : Type) [Field K] [CharZero K] (A : O
   intro K _ _ A _ hA L M hL hM aL aM sL sM
   obtain ⟨k₀, A₀, _, π, L₀, M₀, hfg, hA₀, hπ, hL₀, hM₀, aL₀, aM₀, sL₀, sM₀, eL, eM⟩ :=
     GlobalTheory.T.abelianVariety_ampleBundles_descend_fg_subfield K A hA L M hL hM aL aM sL sM
-  obtain ⟨σ⟩ := GlobalTheory.T.nonempty_ringHom_complex_of_fg' K k₀ hfg
+  obtain ⟨σ⟩ := _root_.GlobalTheory.FGFieldEmb.nonempty_ringHom_complex_of_fg K k₀ hfg
   obtain ⟨hC, aLC, sLC⟩ := GlobalTheory.T.abelian_ample_symm_preserved_field_baseChange k₀ ℂ σ A₀ hA₀ L₀ hL₀ aL₀ sL₀
   obtain ⟨-, aMC, sMC⟩ := GlobalTheory.T.abelian_ample_symm_preserved_field_baseChange k₀ ℂ σ A₀ hA₀ M₀ hM₀ aM₀ sM₀
   have hsq := GlobalTheory.T.complex_symmetricAmple_square_decomposition ((Over.pullback (spMap σ)).obj A₀) hC _ _ (pull_isLB hL₀ _) (pull_isLB hM₀ _) aLC aMC sLC sMC

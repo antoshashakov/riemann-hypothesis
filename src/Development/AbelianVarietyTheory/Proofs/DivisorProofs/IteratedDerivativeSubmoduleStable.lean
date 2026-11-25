@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFounda
 public import Development.AbelianVarietyTheory.Definitions.Divisors.KerDatTuple
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FactTypePrime
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicFormEqRationalPhaseKernelSeries
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitModulusRationalPhaseMemCoefficientFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitModulusRationalPhaseMemCoefficientField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -119,7 +119,7 @@ theorem kerRat_framed (hP : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalT
     have e := congrFun hx.symm g
     have e2 : ph * singleSeries Rl.toRealDat j ω φ h (c0L j P) u g = 0 := e
     exact ((mul_eq_zero.1 e2).resolve_left hph0).symm
-  · obtain ⟨c, hcph⟩ := GlobalTheory.T.unit_modulus_rational_phase_mem_coefficient_field hP hA hR D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O t j hV hH gramR c0R c0L hFT u hu hph hc ph
+  · obtain ⟨c, hcph⟩ := _root_.GlobalTheory.PhaseOneOnto.phase_mem_coefField hP hA hR D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O t j hV hH gramR c0R c0L hFT u hu hph hc ph
       hph1 hRP
     refine ⟨c⁻¹ • x, ?_⟩
     rw [adForm_smul]

@@ -24,7 +24,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocPart
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairMemSchwartzBruhatOfConductorExponent
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnderMemAndPlaceAboveEqOfMem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaIntegralStandardPairFirstEqSecondStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaIntegralStandardPairFirstEqSecond
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlaceIsoReadingComponentsCharactersStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergOperatorIsotropicTranslationCharSplitStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemSBOfIsNatDatum
@@ -292,7 +292,7 @@ theorem zeta_std (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) {i j : Fin D.R.m}
     obtain ⟨x, hx, hz⟩ := _root_.GlobalTheory.TopFlip.ZMatQ.bigZeta_eq_smul_smallZeta_change (Kw w) _ _ _ _ (ordX G t₀ i j w) (stdSplit ((locGrid G t₀ w).rank_square i j)) finSumFinEquiv
       _ _ _ a1 a2 a3
     exact ⟨x, fun t _ => ⟨hx, hz (unifAt w) ((locGrid G t w).nu i j) 1 _ _
-      (GlobalTheory.T.zetaIntegral_standardPair_first_eq_second (Kw w) ((locGrid G t w).nu i j) 1 (unifAt w) (X.c t w) _ _ (isUnif_unifAt w))⟩⟩
+      (_root_.GlobalTheory.StdZetaAgree.bigZetaIntegral_stdA_eq_smallZetaIntegral_stdB (Kw w) ((locGrid G t w).nu i j) 1 (unifAt w) (X.c t w) _ _ (isUnif_unifAt w))⟩⟩
   choose x hx using H
   refine ⟨x, fun t w hw => ?_⟩
   have hS := (Good.isGood_of_notMem hL W hw (notMem_of_standing (hst t) hw)).square i i.2 j j.2

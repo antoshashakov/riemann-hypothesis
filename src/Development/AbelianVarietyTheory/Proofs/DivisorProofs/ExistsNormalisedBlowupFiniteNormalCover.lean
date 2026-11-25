@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepAtBIff
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfSpecializesSameFibreIsIntegralHomStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Integral
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfSpecializesSameFibreIsIntegralHom
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalisationBlowupPullbackFiniteCoverStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatIntOfIntegralSchemeGenericPointStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointDefinedOverSubfieldOfIsIntegralHomStatement
@@ -186,7 +188,7 @@ theorem exists_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     refine ⟨fun p => ?_, ?_⟩
     · have e1 : ∀ t, ν₁ (ξ₁ t) = ψU (ν (a t)) := fun t => by
         rw [← Scheme.Hom.comp_apply, hξν]; rfl
-      apply GlobalTheory.T.eq_of_specializes_same_fibre_isIntegralHom ν₁
+      apply _root_.GlobalTheory.eq_of_specializes_of_isIntegralHom ν₁
       · exact (IsLocalRing.specializes_closedPoint _).map ξ₁.continuous
       · have e2 := e1 (closedPoint R)
         have e3 : a ((spMap ev') p) = a (closedPoint R) := hcl p

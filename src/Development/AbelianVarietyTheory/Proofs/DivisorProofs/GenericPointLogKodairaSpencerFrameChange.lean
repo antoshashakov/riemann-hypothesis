@@ -11,7 +11,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.IsCoprimeOfN
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
 public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCmOrderActionMatrixOnAffineOpenStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCmOrderActionMatrixOnAffineOpen
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericTangentCoefficientsUniqueAffineOpenBasisStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombAtZeroSectionEigenBlockFlattenedFrameStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerChangeOfTangentFrame
@@ -267,7 +267,7 @@ theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   let LW : Matrix (Fin Dw.dim) (Fin Dw.dim) Γ(TF.Y.X, W.1) := Matrix.of fun k j => cfs j k
   have hKSW := fun j =>
     _root_.GlobalTheory.KSFrameChange.isKS_frame_change E H TF.Y.X TF.Y.t (LogKS.interior TF.Y) W n n' vW v'W B (DlW j) _ hvWT hv'WT hB (hKS0 j)
-  obtain ⟨Aact, hAact⟩ := GlobalTheory.T.existsUnique_cmOrderActionMatrix_on_affineOpen E H TF.Y.X TF.Y.t W n' v'W hv'WT hv'WB
+  obtain ⟨Aact, hAact⟩ := _root_.GlobalTheory.ActMatrix.actMatrix E H TF.Y.X TF.Y.t W n' v'W hv'WT hv'WB
   obtain ⟨eW, heW⟩ := TF.logKS W n' v'W Aact hv'WT hv'WB hAact
   have hrel : ∀ j, DlW j = ∑ k, LW k j • Dl'W k := by
     intro j

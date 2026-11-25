@@ -7,7 +7,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinear
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticePairingTrivialMatricesSubMemStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatInvariantSupportedEqSmulVacuum
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatMatricesInvariantSupportedEqSmulStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzBruhatMatricesInvariantSupportedEqSmul
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraceSymplecticSelfZeroSplitSupportedStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -103,7 +105,7 @@ theorem vacuum_eq_smul_indicator : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.
     have hm := hι.mult u hat hu0 φ₀ h0 φ₀ h0 hB x hx hx0
     by_contra h
     exact hne1 ((mul_eq_right₀ h).mp hm.symm)
-  obtain ⟨c, hc, hop, hcp⟩ := GlobalTheory.T.schwartzBruhat_matrices_invariant_supported_eq_smul Bs.v₁ _ _ (GlobalTheory.T.latticePairingTrivialMatrices_sub_mem Bs Γ X om om' hTr L₁ L₂) (ι φ₀) hfSB hf0 hinv hsupp
+  obtain ⟨c, hc, hop, hcp⟩ := _root_.GlobalTheory.SBClosure.main Bs.v₁ _ _ (GlobalTheory.T.latticePairingTrivialMatrices_sub_mem Bs Γ X om om' hTr L₁ L₂) (ι φ₀) hfSB hf0 hinv hsupp
     (_root_.GlobalTheory.VacUniq.sa_bd_uniq Bs Γ X om om' hTr L₁ L₂ θ hθ ι hι φ₀ h0 hne hfix huniq)
   obtain ⟨P, Λ, hPΛ⟩ := GlobalTheory.T.closure_vanishing_lattice_eq_row_lattice_matrices Bs Γ X om om' hTr L₁ L₂ hop hcp
   refine ⟨ι, P, Λ, c, hι, fun Y => ?_⟩
