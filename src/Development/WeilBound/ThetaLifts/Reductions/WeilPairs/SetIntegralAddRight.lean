@@ -112,8 +112,8 @@ theorem setIntegral_add_right {nS nT : ℕ} (ν : Measure (WOF F E nS nT)) (𝓕
 
 end aux
 
-theorem lagrInt_heis_dC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+theorem lagrInt_heis_dC_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+     ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
       ∀ (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT)), ν.IsAddHaarMeasure →
         IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν →
@@ -121,7 +121,7 @@ theorem lagrInt_heis_dC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
         GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC F E nT)
                      (heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC F E nT * v) f) =
           GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC F E nT) f := by
-  intro F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ ν 𝓕 _ h𝓕 f hf u
+  intro F E _ _ _ _ _ σ B nS nT JS JT _ _ ξ₀ _ _ ν 𝓕 _ h𝓕 f hf u
   set g : WOF F E nS nT → ℂ := fun v => f (dC F E nT * v) with hg
   have h1 : ∀ v : WOF F E nS nT, heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC F E nT * u) f
       (dC F E nT * v) = g (v + u) := by
@@ -137,6 +137,19 @@ theorem lagrInt_heis_dC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
   unfold GlobalTheory.LagrTheta.lagrInt
   simp_rw [h1]
   exact setIntegral_add_right ν 𝓕 h𝓕 g h2 u
+
+theorem lagrInt_heis_dC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
+      ∀ (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT)), ν.IsAddHaarMeasure →
+        IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν →
+      ∀ f, IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ f →
+          ∀ v : WOF F E nS nT,
+        GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC F E nT)
+                     (heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC F E nT * v) f) =
+          GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC F E nT) f := by
+  intro F E _ _ _ _ _ σ B hB_anon_
+  exact lagrInt_heis_dC_c F E σ B
 
 end GlobalTheory.SplitLagrF
 

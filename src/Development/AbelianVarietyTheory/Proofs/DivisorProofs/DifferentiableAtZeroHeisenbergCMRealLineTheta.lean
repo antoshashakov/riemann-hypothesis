@@ -155,13 +155,13 @@ end GlobalTheory.HeisLineDiffF
 
 
 open Formalism.IndefR.DatumF in
-theorem GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+theorem GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+     ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
       Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
       ∀ f : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ, Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f → ∀ L : ℝ →+ Formalism.IndefR.DatumF.WOF F E nS nT, Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
       ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT, DifferentiableAt ℝ (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f w) 0 := by
-  intro F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ hψ f hf L hL hL0 w
+  intro F E _ _ _ _ _ σ B nS nT JS JT _ _ ξ₀ _ _ hψ f hf L hL hL0 w
   obtain ⟨lam, hl, hlam⟩ := GlobalTheory.HeisLineDiffF.exists_log hψ
   let φ : ℝ →+ ℂ :=
     { toFun := fun t => lam (symplOHF σ JS JT ξ₀ w (L t))
@@ -182,3 +182,16 @@ theorem GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line : ∀ (F E : Typ
   have hd1 : DifferentiableAt ℝ (fun t : ℝ => Complex.exp (φ t)) 0 :=
     ((φ.toRealLinearMap hφ).differentiableAt).cexp
   exact hd1.mul ((hg.differentiable (by simp)) 0)
+
+theorem GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
+      Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
+      ∀ f : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ,
+          Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f →
+              ∀ L : ℝ →+ Formalism.IndefR.DatumF.WOF F E nS nT, Continuous L → (∀ t,
+                  (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
+      ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT,
+          DifferentiableAt ℝ (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f w) 0 := by
+  intro F E _ _ _ _ _ σ B hB_anon_
+  exact GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line_c F E σ B

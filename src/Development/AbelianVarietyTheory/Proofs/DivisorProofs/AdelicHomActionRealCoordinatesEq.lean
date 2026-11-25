@@ -47,13 +47,13 @@ open Classical
 
 namespace GlobalTheory.RealWeilF
 
-theorem actOF_iotaVF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
-    (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+theorem actOF_iotaVF_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
+    (B : Base F E),  ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∀ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι →
       ∀ (g : GAF σ JS) (h : GAF σ JT) (v : IxF F nS nT → ℂ),
         actOF σ JS JT g h (iotaVF ι v) = iotaVF ι (mMF σ JS JT θ (g, h) *ᵥ v) := by
-  intro F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ θ _ ι hι g h v
+  intro F E _ _ _ _ _ σ B nS nT JS JT _ _ ξ₀ _ _ θ _ ι hι g h v
   have hfin : ∀ u : IxF F nS nT → ℂ, (iotaVF ι u).map (finPartF F E) = 0 := fun u => real_iotaVF hι u
   have hL : (actOF σ JS JT g h (iotaVF ι v)).map (finPartF F E) = 0 := by
     unfold actOF
@@ -79,5 +79,16 @@ theorem actOF_iotaVF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   · have h3 := congrFun (congrFun (hC w) i) j
     simp only [compAtF, Matrix.map_apply, RingHom.comp_apply] at h3
     rw [RingHom.map_sub, RingHom.map_sub, h3, sub_self]
+
+theorem actOF_iotaVF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
+    (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → ∀ θ : InfinitePlace F →
+          (Ainf F ⊗[F] E →+* ℂ),
+      IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∀ ι : (InfinitePlace F →
+          ℂ) →+ AEF F E, IsChartF θ ι →
+      ∀ (g : GAF σ JS) (h : GAF σ JT) (v : IxF F nS nT → ℂ),
+        actOF σ JS JT g h (iotaVF ι v) = iotaVF ι (mMF σ JS JT θ (g, h) *ᵥ v) := by
+  intro F E _ _ _ _ _ σ B hB_anon_
+  exact actOF_iotaVF_c F E σ B
 
 end GlobalTheory.RealWeilF

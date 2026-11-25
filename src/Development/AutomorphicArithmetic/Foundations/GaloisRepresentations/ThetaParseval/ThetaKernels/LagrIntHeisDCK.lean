@@ -64,22 +64,8 @@ theorem lagrInt_heis_dC_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
         GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC F E nT)
                      (heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC F E nT * v) f) =
           GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC F E nT) f := by
-  intro F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ ν 𝓕 _ h𝓕 f hf u
-  set g : WOF F E nS nT → ℂ := fun v => f (dC F E nT * v) with hg
-  have h1 : ∀ v : WOF F E nS nT, heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC F E nT * u) f
-      (dC F E nT * v) = g (v + u) := by
-    intro v
-    simp only [hg, heisOF]
-    rw [symplOHF_dC, AddChar.map_zero_eq_one, one_mul, Matrix.mul_add]
-  have h2 : ∀ (r : ratLF F E nS nT) (v : WOF F E nS nT), g (r +ᵥ v) = g v := by
-    rintro ⟨r, γ, rfl⟩ v
-    show f (dC F E nT * ((ratWF γ : WOF F E nS nT) + v)) = f (dC F E nT * v)
-    have hq := hf.quasi (GlobalTheory.LagrThetaInv.dC E nT * γ) (dC F E nT * v)
-    rw [← dC_mul_ratWF, symplOHF_dC, neg_zero, AddChar.map_zero_eq_one, one_mul] at hq
-    rw [Matrix.mul_add, hq]
-  unfold GlobalTheory.LagrTheta.lagrInt
-  simp_rw [h1]
-  exact setIntegral_add_right ν 𝓕 h𝓕 g h2 u
+  intro F E _ _ _ _ _ σ B hB_anon_
+  exact _root_.GlobalTheory.SplitLagrF.lagrInt_heis_dC_c F E σ B
 end GlobalTheory.SplitLagrF
 end
 end
