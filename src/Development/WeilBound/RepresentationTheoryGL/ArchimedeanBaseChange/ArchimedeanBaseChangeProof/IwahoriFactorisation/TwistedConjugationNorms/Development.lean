@@ -5,9 +5,12 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinea
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmFieldStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThLInvolutive
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedThetaSub
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactElementEigenvaluesUnitsStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactElementEigenvaluesUnits
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IwahoriAndMaximalCompactCriteriaStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RootsEqOfDistinctValuationsStatement
+public import Formalism.SatakeDualWeyl.StatementF
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RootsEqOfDistinctValuations
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeightExponentStrictlyAntitoneStatement
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.TwistedConjugationNorms.CharpolyConjDiagT
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.TwistedConjugationNorms.ContrId
@@ -440,7 +443,7 @@ theorem s1 (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (ϖ : (w.adicCompletion
     have htc : t = (p * m) * GlobalTheory.SmGL.diagT _ (Fin a) (fun i => Units.mk0 (c.val i i) (diag_entry_ne hcd i)) *
         (p * m)⁻¹ := by
       rw [← eq_diagT hcd, hcdef]; group
-    have hu := GlobalTheory.T.compact_element_eigenvalues_units E w a ⊤ ⟨t, Subgroup.mem_top t⟩ (p * m) _ htc (cpt_top t hcpt)
+    have hu := _root_.GlobalTheory.CompanionTheory.DiagBd.valued_eq_one_of_isCompact_closure_zpowers E w a ⊤ ⟨t, Subgroup.mem_top t⟩ (p * m) _ htc (cpt_top t hcpt)
     have hcTO : c ∈ TO a w := ⟨hcd, fun i => by simpa using hu i⟩
     refine Subgroup.mem_map.2 ⟨c, hTI c hcTO, ?_⟩
     simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, hcdef]
@@ -1027,7 +1030,7 @@ theorem uniqR (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (n : ℕ) (b : GLw n
   obtain ⟨p₁, u', hu', hγ', -, -, hQγ'⟩ := s2raw hU w hw n b hb ϖ hϖ l hl γ' hP'
   have hinj : Function.Injective (wexp n l) := (GlobalTheory.T.weight_exponent_strictly_antitone n l hl).1.injective
   have huu : (fun i => (u i : w.adicCompletion E)) = fun i => (u' i : w.adicCompletion E) :=
-    GlobalTheory.T.roots_eq_of_distinct_valuations (w.adicCompletion E) n (wexp n l) hinj (fun i => (u i : w.adicCompletion E))
+    _root_.GlobalTheory.CompanionTheory.RootsDistinctVal.roots_eq_of_distinct_ord (w.adicCompletion E) n (wexp n l) hinj (fun i => (u i : w.adicCompletion E))
       (fun i => (u' i : w.adicCompletion E)) hu hu' (by rw [← hQγ, ← hQγ', hQ])
   have hu_eq : u = u' := funext fun i => Units.ext (congrFun huu i)
   subst hu_eq

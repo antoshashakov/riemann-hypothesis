@@ -1,14 +1,15 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.UnitaryExtremality.IsStrictDom
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryChamberDecompositionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryCharacterFactsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryEquivariantFormStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryFrobeniusReciprocityStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryInverseReductionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryJacquetEigenvectorExistsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryJacquetNonzeroStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitarySwapReductionStatement
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.UnitaryExtremality.SatPowNonvan
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryChamberDecomposition
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryCharacterFacts
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryEquivariantForm
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryFrobeniusReciprocity
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryInverseReduction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryJacquetEigenvectorExists
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryJacquetNonzero
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitarySwapReduction
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,13 +60,13 @@ namespace PositivityTheory.SphericalProduct
 
 theorem extremeU : ExtremeU := by
   intro L _ _ _ ϖ σ q n V _ _ ρ α hU hA hI hS
-  obtain ⟨y, hy, hy1⟩ := GlobalTheory.T.unitary_jacquet_nonzero L ϖ σ q n V ρ α hU hA hI hS
-  obtain ⟨y', ξ, hy', heig, h1⟩ := GlobalTheory.T.unitary_jacquet_eigenvector_exists L ϖ σ q n V ρ hU hA y hy hy1
-  obtain ⟨lam, hlam0, hne, hlam⟩ := GlobalTheory.T.unitary_equivariant_form L ϖ σ q n V ρ hU hA ξ y' hy' heig h1
-  obtain ⟨β, hβ⟩ := GlobalTheory.T.unitary_character_facts L ϖ σ q n V ρ hU ξ y' hy' heig h1
-  obtain ⟨hW, f, hf, hfe⟩ := GlobalTheory.T.unitary_frobenius_reciprocity L ϖ σ q n V ρ α hU hA hI hS β lam hlam0 hne
+  obtain ⟨y, hy, hy1⟩ := _root_.GlobalTheory.CompanionTheory.JacSph.jacNeU L ϖ σ q n V ρ α hU hA hI hS
+  obtain ⟨y', ξ, hy', heig, h1⟩ := _root_.GlobalTheory.CompanionTheory.EigTorus.eigU_complete L ϖ σ q n V ρ hU hA y hy hy1
+  obtain ⟨lam, hlam0, hne, hlam⟩ := _root_.GlobalTheory.CompanionTheory.EqForm.eqFormU L ϖ σ q n V ρ hU hA ξ y' hy' heig h1
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.CompanionTheory.TorusChar.charU L ϖ σ q n V ρ hU ξ y' hy' heig h1
+  obtain ⟨hW, f, hf, hfe⟩ := _root_.GlobalTheory.CompanionTheory.FrobRec.frobU L ϖ σ q n V ρ α hU hA hI hS β lam hlam0 hne
     (fun t ht v => by rw [← hβ t ht]; exact hlam t ht v)
-  exact GlobalTheory.T.unitary_chamber_decomposition GlobalTheory.T.unitary_swap_reduction GlobalTheory.T.unitary_inverse_reduction L ϖ σ q n hU V ρ hA hI hS.1 α β hW f hf hfe
+  exact _root_.GlobalTheory.CompanionTheory.ChamberInd.chamberU _root_.GlobalTheory.CompanionTheory.SwapRoot.swapStepU _root_.GlobalTheory.CompanionTheory.InvStep.invStepU L ϖ σ q n hU V ρ hA hI hS.1 α β hW f hf hfe
 
 end PositivityTheory.SphericalProduct
 
