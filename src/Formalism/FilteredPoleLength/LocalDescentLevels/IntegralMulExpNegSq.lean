@@ -49,6 +49,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Development.AbelianVarietyTheory.Proofs.TorusSplitting.GaussTailOfCardLe
 
 @[expose] public section
 
@@ -156,67 +157,7 @@ private theorem gaussian_tail_pow_mul_exp_le {g : ℕ} {R0 s t : ℝ} (hR0 : 0 <
   rw [hfs]
   nlinarith [mul_le_mul_of_nonneg_right hBt hft, mul_nonneg (mul_nonneg hBs hft) (sq_nonneg (E - 1))]
 
-theorem gaussian_tail_bound : GaussianTailBound := by
-  intro ι h g R0 hR0 hg hlow hcount
-  classical
-  have claim : ∀ S : Finset ι, ∀ M : ℝ, R0 ≤ M → (∀ i ∈ S, h i ≤ M) →
-      ∑ i ∈ S, Real.exp (-(h i) ^ 2 / 16) ≤
-        2 * (3 * R0 / R0) ^ (2 * g) * Real.exp (-R0 ^ 2 / 16)
-          - 2 * (3 * M / R0) ^ (2 * g) * Real.exp (-M ^ 2 / 16)
-          + (S.card : ℝ) * Real.exp (-M ^ 2 / 16) := by
-    intro S
-    refine Finset.induction_on_max_value h S ?_ ?_
-    · intro M hM _
-      have k := gaussian_tail_pow_mul_exp_le hR0 hg le_rfl hM
-      have hfa : Real.exp (-M ^ 2 / 16) ≤ Real.exp (-R0 ^ 2 / 16) :=
-        exp_neg_sq_div_sixteen_antitone hR0.le hM
-      have hB0 : 0 ≤ (3 * R0 / R0) ^ (2 * g) :=
-        pow_nonneg (div_nonneg (by linarith) hR0.le) _
-      simp only [Finset.sum_empty, Finset.card_empty, Nat.cast_zero, zero_mul, add_zero]
-      nlinarith [mul_le_mul_of_nonneg_left hfa hB0]
-    · intro a S haS hmax ih M hM hSM
-      have hxR : R0 ≤ h a := hlow a
-      have hxM : h a ≤ M := hSM a (Finset.mem_insert_self a S)
-      have ih' := ih (h a) hxR hmax
-      have hins : ∀ i ∈ insert a S, h i ≤ h a := by
-        intro i hi
-        rcases Finset.mem_insert.mp hi with hia | hi'
-        · rw [hia]
-        · exact hmax i hi'
-      have hcard := hcount (h a) hxR (insert a S) hins
-      have hc : (insert a S).card = S.card + 1 := by
-        first
-          | exact Finset.card_insert_of_notMem haS
-          | exact Finset.card_insert_of_not_mem haS
-          | simp [haS]
-      rw [hc] at hcard
-      rw [Finset.sum_insert haS, hc]
-      push_cast at hcard ⊢
-      have k := gaussian_tail_pow_mul_exp_le hR0 hg hxR hxM
-      have hfa : Real.exp (-M ^ 2 / 16) ≤ Real.exp (-(h a) ^ 2 / 16) :=
-        exp_neg_sq_div_sixteen_antitone (hR0.le.trans hxR) hxM
-      nlinarith [mul_le_mul_of_nonneg_right hcard (sub_nonneg.mpr hfa)]
-  have hG0 : (3 * R0 / R0) ^ (2 * g) = (9 : ℝ) ^ g := by
-    rw [show 3 * R0 / R0 = (3 : ℝ) by field_simp, pow_mul]
-    norm_num
-  have hpos : ∀ i, 0 ≤ h i := fun i => hR0.le.trans (hlow i)
-  have hsum : ∀ S : Finset ι, ∑ i ∈ S, Real.exp (-(h i) ^ 2 / 16) ≤
-      2 * 9 ^ g * Real.exp (-R0 ^ 2 / 16) := by
-    intro S
-    have hM0 : R0 ≤ R0 + ∑ j ∈ S, h j :=
-      le_add_of_nonneg_right (Finset.sum_nonneg fun j _ => hpos j)
-    have hMi : ∀ i ∈ S, h i ≤ R0 + ∑ j ∈ S, h j := fun i hi =>
-      (Finset.single_le_sum (fun j _ => hpos j) hi).trans (le_add_of_nonneg_left hR0.le)
-    have c1 := claim S _ hM0 hMi
-    have c2 := hcount _ hM0 S hMi
-    have hBM : 0 ≤ (3 * (R0 + ∑ j ∈ S, h j) / R0) ^ (2 * g) :=
-      pow_nonneg (div_nonneg (by linarith) hR0.le) _
-    have hfM := (Real.exp_pos (-(R0 + ∑ j ∈ S, h j) ^ 2 / 16)).le
-    rw [hG0] at c1
-    nlinarith [mul_le_mul_of_nonneg_right c2 hfM, mul_nonneg hBM hfM]
-  have hnn : ∀ i, 0 ≤ Real.exp (-(h i) ^ 2 / 16) := fun i => (Real.exp_pos _).le
-  have hsm : Summable (fun i => Real.exp (-(h i) ^ 2 / 16)) := summable_of_sum_le hnn hsum
-  refine ⟨hsm, ?_⟩
-  exact Real.tsum_le_of_sum_le hnn hsum
+theorem gaussian_tail_bound : GaussianTailBound :=
+  _root_.GlobalTheory.gaussTail_of_card_le
 
 end Formalism.LatticeBaseChangeAlt
