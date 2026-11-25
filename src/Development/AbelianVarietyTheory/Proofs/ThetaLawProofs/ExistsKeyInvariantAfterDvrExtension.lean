@@ -57,6 +57,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExistsRosatiGen
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyViaIsPullback
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -71,13 +72,8 @@ namespace GlobalTheory.KaLift
 
 section Points
 
-theorem epi_spMap {k Ω : Type} [Field k] [Field Ω] (σ : k →+* Ω) : Epi (spMap σ) := by
-  letI := σ.toAlgebra
-  haveI : Flat (spMap σ) := by
-    rw [HasRingHomProperty.Spec_iff (P := @Flat)]
-    exact RingHom.flat_algebraMap_iff.2 inferInstance
-  haveI : Surjective (spMap σ) := ⟨fun p => ⟨IsLocalRing.closedPoint Ω, Subsingleton.elim _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap {k Ω : Type} [Field k] [Field Ω] (σ : k →+* Ω) : Epi (spMap σ) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ σ
 
 theorem exists_finset_descend {O Ω : Type} [CommRing O] [Field Ω] {X : Scheme.{0}} (p : X ⟶ Sp O)
     [LocallyOfFiniteType p] (r : O →+* Ω) (q : Sp Ω ⟶ X) (hq : q ≫ p = spMap r) :

@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -73,12 +74,8 @@ theorem exists_mulEquiv_points {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G
       Over.OverMorphism.ext ((hm _).trans (hF.1.lift_fst _ _ _))⟩
   exact ⟨MulEquiv.ofBijective (MonoidHom.mk' m hmul) ⟨hinj, hsurj⟩, hm⟩
 
-theorem epi_spMap_of_field {K L : Type} [Field K] [Field L] (f : K →+* L) : Epi (spMap f) := by
-  have f₁ : Flat (spMap f) := by
-    rw [HasRingHomProperty.Spec_iff (P := @Flat)]
-    exact RingHom.Flat.of_isField (Field.toIsField K) f
-  have f₂ : Surjective (spMap f) := ⟨fun y => ⟨(default : PrimeSpectrum L), Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap_of_field {K L : Type} [Field K] [Field L] (f : K →+* L) : Epi (spMap f) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ f
 
 theorem eq_id_of_frac {A K : Type} [CommRing A] [Field K] (φ : A →+* K) (h : ∀ x, ∃ a b, x = φ a / φ b)
     (u : Sp K ⟶ Sp K) (hu : u ≫ spMap φ = spMap φ) : u = 𝟙 _ := by

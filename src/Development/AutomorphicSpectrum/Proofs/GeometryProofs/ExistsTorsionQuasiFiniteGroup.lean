@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -63,16 +64,8 @@ theorem pow_eq_one_of_res {A B : Scheme.{0}} (u : A ⟶ B) [Epi u] (ξ : B ⟶ X
   simp only [Over.comp_left] at h2
   exact (cancel_epi u).1 h2
 
-theorem epi_spMap {K L : Type} [Field K] [Field L] (a : K →+* L) : Epi (spMap a) := by
-  have : Flat (spMap a) := by
-    rw [spMap, Flat.SpecMap_iff]
-    letI := a.toAlgebra
-    exact (RingHom.flat_algebraMap_iff (R := K) (S := L)).2 inferInstance
-  have : Surjective (spMap a) := by
-    refine ⟨fun y => ?_⟩
-    obtain ⟨z⟩ : Nonempty (Spec (CommRingCat.of L)) := inferInstance
-    exact ⟨z, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap {K L : Type} [Field K] [Field L] (a : K →+* L) : Epi (spMap a) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ a
 
 theorem torsion_qfGroup : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CharZero R] (X : Scheme.{0})
     (G : Over X) [GrpObj G] (x : Sp R ⟶ X) (n : ℕ), IsSemiAbelian G → 0 < n →

@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -57,10 +58,8 @@ namespace PositivityTheory.HtPt.Mg
 abbrev extPt {X : Scheme.{0}} {k K : Type} [Field k] [Field K] (i : k →+* K) (x : Sp k ⟶ X) :
     Over.mk (spMap i ≫ x) ⟶ Over.mk x := Over.homMk (spMap i) rfl
 
-theorem epi_spMap {k K : Type} [Field k] [Field K] (i : k →+* K) : Epi (spMap i) := by
-  have : Surjective (spMap i) :=
-    ⟨fun z => ⟨(default : PrimeSpectrum K), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap {k K : Type} [Field k] [Field K] (i : k →+* K) : Epi (spMap i) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ i
 
 theorem extPt_inj {X : Scheme.{0}} {k K : Type} [Field k] [Field K] (i : k →+* K) (x : Sp k ⟶ X) {G : Over X}
     {a b : Over.mk x ⟶ G} (h : extPt i x ≫ a = extPt i x ≫ b) : a = b := by

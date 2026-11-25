@@ -52,6 +52,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGapsGE
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -79,28 +80,8 @@ theorem normalCpt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec
     (hξ : IsCptGen ξ) (hX : IsNormalScheme X) : Flat.NormalCpt ξ := by
   apply GlobalTheory.CompanionTheory.Ar.XR.normalCpt_of_isCptGen <;> assumption
 
-theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a) := by
-  constructor
-  intro Y g h hgh
-  have key : ∀ (x : Y) (φ : Y.residueField x ⟶ CommRingCat.of Ω),
-      spMap a ≫ (Scheme.SpecToEquivOfField Ω Y).symm ⟨x, φ⟩ =
-        (Scheme.SpecToEquivOfField K Y).symm ⟨x, φ ≫ CommRingCat.ofHom a⟩ := by
-    intro x φ
-    simp only [Scheme.SpecToEquivOfField, Equiv.coe_fn_symm_mk, spMap, Spec.map_comp, Category.assoc]
-  obtain ⟨⟨x, φ⟩, rfl⟩ := (Scheme.SpecToEquivOfField Ω Y).symm.surjective g
-  obtain ⟨⟨x', ψ⟩, rfl⟩ := (Scheme.SpecToEquivOfField Ω Y).symm.surjective h
-  rw [key, key] at hgh
-  have h2 := (Scheme.SpecToEquivOfField K Y).symm.injective hgh
-  rw [Scheme.SpecToEquivOfField_eq_iff] at h2
-  obtain ⟨e, he⟩ := h2
-  have : Mono (CommRingCat.ofHom a) := ConcreteCategory.mono_of_injective _ a.injective
-  apply congrArg
-  rw [Scheme.SpecToEquivOfField_eq_iff]
-  refine ⟨e, ?_⟩
-  dsimp only at he ⊢
-  apply (cancel_mono (CommRingCat.ofHom a)).1
-  rw [Category.assoc]
-  exact he
+theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ a
 
 theorem pow_descend {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω K : Type} [Field Ω] [Field K]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {N : ℕ} (a : Ω →+* K)

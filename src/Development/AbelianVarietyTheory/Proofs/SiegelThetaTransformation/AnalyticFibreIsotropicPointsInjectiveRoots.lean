@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -62,13 +63,8 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r} {e : Fin g ≃ Lt1 Dw} {x : Frame X.Ψ r}
   {L : Lt E r} {y : FrPt Xo c ℂ} (A : AnFib X bas idx e x L y)
 
-theorem epi_spMap {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap β) := by
-  have hff : (CommRingCat.ofHom β).hom.FaithfullyFlat := by
-    letI := β.toAlgebra
-    show Module.FaithfullyFlat K k
-    infer_instance
-  obtain ⟨h1, h2⟩ := (AlgebraicGeometry.flat_and_surjective_SpecMap_iff (CommRingCat.ofHom β)).2 hff
-  exact AlgebraicGeometry.Flat.epi_of_flat_of_surjective _
+theorem epi_spMap {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap β) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ β
 
 theorem ex_add (u v : Fin r → E) : A.ex (pv X idx x (u + v)) = A.ex (pv X idx x u) * A.ex (pv X idx x v) := by
   have h : pv X idx x (u + v) = pv X idx x u + pv X idx x v := by

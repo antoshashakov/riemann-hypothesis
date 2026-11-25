@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -71,10 +72,8 @@ theorem stalkMap_inj {Y Z : Scheme.{0}} (r : Z ⟶ Y) [Flat r] (z : Z) : Functio
 theorem surjective_spMap {K k : Type} [Field K] [Field k] (β : K →+* k) : Surjective (spMap β) :=
   ⟨fun _ => ⟨default, Subsingleton.elim _ _⟩⟩
 
-theorem epi_spMap {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap β) := by
-  have : Flat (spMap β) := inferInstance
-  have := surjective_spMap β
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap β) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ β
 
 theorem val_descend {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (t : LB.Gen (LB.LinComb L φ ε))

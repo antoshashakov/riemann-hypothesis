@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -63,10 +64,7 @@ open GlobalTheory.TorusExt
 section Val
 variable {F F' : Type} [Field F] [Field F'] (f : F →+* F') {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
-theorem epi_spMap : Epi (spMap f) := by
-  have : Flat (spMap f) := inferInstance
-  have : Surjective (spMap f) := ⟨fun y => ⟨default, Subsingleton.elim _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap : Epi (spMap f) := GlobalTheory.FinEtPoints.epi_spMap_field _ _ f
 
 theorem valF_ext (t : Sp F ⟶ X) (U : X.Opens) (ht : ⊤ ≤ t ⁻¹ᵁ U) (a : Γ(X, U)) :
     valF (spMap f ≫ t) U a = f (valF t U a) := by

@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -55,12 +56,8 @@ open GlobalTheory.PlaceInt
 
 namespace GlobalTheory.RatData
 
-theorem epi_spMap_fields {K L : Type} [Field K] [Field L] (i : K →+* L) : Epi (spMap i) := by
-  have : Flat (spMap i) := by
-    rw [spMap, Flat.SpecMap_iff]
-    exact RingHom.Flat.of_isField (Field.toIsField K) _
-  have : Surjective (spMap i) := ⟨Function.surjective_to_subsingleton _⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap_fields {K L : Type} [Field K] [Field L] (i : K →+* L) : Epi (spMap i) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ i
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 

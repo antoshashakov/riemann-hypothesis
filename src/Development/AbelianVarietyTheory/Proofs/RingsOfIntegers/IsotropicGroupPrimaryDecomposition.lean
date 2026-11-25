@@ -49,6 +49,7 @@ import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndSt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -89,13 +90,8 @@ theorem exists_primary_complement (Z : Type) [CommGroup Z] [Finite Z] (ℓ : ℕ
   · rw [← hQ.symm.index_eq_card]
     exact Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hℓ).2 S.not_dvd_index)
 
-theorem epi_spMap_of_fields {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap β) := by
-  letI : Algebra K k := β.toAlgebra
-  have hff : (CommRingCat.ofHom β).hom.FaithfullyFlat := by
-    change Module.FaithfullyFlat K k
-    infer_instance
-  obtain ⟨h1, h2⟩ := (flat_and_surjective_SpecMap_iff (CommRingCat.ofHom β)).2 hff
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap_of_fields {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap β) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ β
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 

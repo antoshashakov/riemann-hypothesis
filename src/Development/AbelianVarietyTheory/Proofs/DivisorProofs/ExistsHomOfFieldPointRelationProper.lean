@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -55,13 +56,8 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits ReciprocityTheory.
 
 namespace GlobalTheory.FieldPointGraph
 
-theorem epi_spMap {K K' : Type} [Field K] [Field K'] (ι : K →+* K') : Epi (spMap ι) := by
-  have : Flat (spMap ι) := by
-    rw [HasRingHomProperty.Spec_iff (P := @Flat)]
-    letI := ι.toAlgebra
-    exact (inferInstance : Module.Flat K K')
-  have : Surjective (spMap ι) := ⟨fun y => ⟨IsLocalRing.closedPoint K', Subsingleton.elim _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_spMap {K K' : Type} [Field K] [Field K'] (ι : K →+* K') : Epi (spMap ι) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ ι
 
 noncomputable def pt (K : Type) [Field K] : Sp K := IsLocalRing.closedPoint K
 

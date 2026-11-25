@@ -53,6 +53,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -147,13 +148,8 @@ theorem fullTorsion_of_equiv {X : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field 
   · simp only [Over.homMk_left]
     rw [← hl, hx, h2, Category.assoc]
 
-theorem epi_sp {K k : Type} [Field K] [Field k] (f : K →+* k) : Epi (spMap f) := by
-  have h1 : Flat (spMap f) := by
-    let _ := f.toAlgebra
-    exact HasRingHomProperty.Spec_iff.2 (show (algebraMap K k).Flat from
-      RingHom.flat_algebraMap_iff.2 inferInstance)
-  have h2 : Surjective (spMap f) := ⟨fun x => ⟨IsLocalRing.closedPoint k, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
+theorem epi_sp {K k : Type} [Field K] [Field k] (f : K →+* k) : Epi (spMap f) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ f
 
 section desc
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {G' : Over (Sp Ω)} {G : Over X} [GrpObj G'] [GrpObj G]

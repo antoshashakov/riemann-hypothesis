@@ -55,6 +55,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
 public import Mathlib.Topology.Algebra.Valued.NormedValued
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -273,11 +274,8 @@ theorem exists_split (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRi
     rfl
   · exact ⟨IsLocalRing.residue W ⟨r x, hW _ (Finset.mem_image.2 ⟨x, hs.mem_toFinset.2 hx, rfl⟩) (r x).2⟩, hr x⟩
 
-theorem epi_spMap {K L : Type} [Field K] [Field L] (σ : K →+* L) : Epi (spMap σ) := by
-  have : Flat (Spec.map (CommRingCat.ofHom σ)) := inferInstance
-  have : Surjective (Spec.map (CommRingCat.ofHom σ)) :=
-    ⟨fun u => ⟨IsLocalRing.closedPoint L, Subsingleton.elim _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective (Spec.map (CommRingCat.ofHom σ))
+theorem epi_spMap {K L : Type} [Field K] [Field L] (σ : K →+* L) : Epi (spMap σ) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ σ
 
 section Main
 

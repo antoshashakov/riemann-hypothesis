@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigIsoCongr
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -130,8 +131,7 @@ theorem admissibleBase_maximalIdeal_completeDVR {V : Type} [CommRing V] [IsDomai
   exact ⟨inferInstance, inferInstance, inferInstance, hc⟩
 
 theorem epi_spMap {K L : Type} [Field K] [Field L] (i : K →+* L) : Epi (spMap i) :=
-  letI := i.toAlgebra
-  GlobalTheory.FixedPoint.epi_specAlg (K₀ := K) (K₁ := L)
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ i
 
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {f : A →+* B} {g : B →+* C} {h : A →+* C}
     (e : ∀ a, g (f a) = h a) : spMap g ≫ spMap f = spMap h := by

@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -58,8 +59,8 @@ open scoped ComplexOrder
 
 namespace PositivityTheory.Xgf.EigenspaceComposition
 
-theorem epi_spMap {K L : Type} [Field K] [Field L] (a : K →+* L) : Epi (spMap a) := by
-  apply GlobalTheory.CompanionTheory.Ar.HtEnd.epiSp <;> assumption
+theorem epi_spMap {K L : Type} [Field K] [Field L] (a : K →+* L) : Epi (spMap a) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ a
 
 theorem one_left' {S : Scheme.{0}} (G : Over S) [GrpObj G] (Y : Over S) :
     (1 : Y ⟶ G).left = Y.hom ≫ (η[G] : 𝟙_ (Over S) ⟶ G).left := by

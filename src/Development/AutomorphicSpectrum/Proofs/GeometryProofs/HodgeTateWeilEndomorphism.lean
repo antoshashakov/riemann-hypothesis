@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -66,16 +67,8 @@ theorem homPow {X : Scheme.{0}} {G : Over X} [GrpObj G] {Z : Over X} (a : G ⟶ 
   | zero => simp only [pow_zero, CategoryTheory.MonObj.one_comp]
   | succ n ih => rw [pow_succ, pow_succ, CategoryTheory.MonObj.mul_comp, ih]
 
-theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a) := by
-  letI := a.toAlgebra
-  haveI : AlgebraicGeometry.Flat (Spec.map (CommRingCat.ofHom a)) := by
-    rw [HasRingHomProperty.Spec_iff (P := @AlgebraicGeometry.Flat)]
-    exact RingHom.flat_algebraMap_iff.mpr inferInstance
-  haveI : AlgebraicGeometry.Surjective (Spec.map (CommRingCat.ofHom a)) := by
-    rw [AlgebraicGeometry.surjective_iff]
-    intro y
-    exact ⟨(default : PrimeSpectrum K), Subsingleton.elim (α := PrimeSpectrum Ω) _ _⟩
-  exact AlgebraicGeometry.Flat.epi_of_flat_of_surjective _
+theorem epiSp {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (spMap a) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ a
 
 theorem powDescend {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω K : Type} [Field Ω] [Field K]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {N : ℕ} (a : Ω →+* K)

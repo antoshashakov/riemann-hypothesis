@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
+import Formalism.SharedLemmas.EpiSpMap
 
 @[expose] public section
 
@@ -120,10 +121,8 @@ theorem unitS_spMap {o R : Type} [CommRing o] [CommRing R] (β : o →+* R) (u :
   simp only [Units.coe_map]
   exact (congrArg (fun g => CommRingCat.Hom.hom g ((u ^ n : oˣ) : o)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm
 
-theorem epi_spMap {K Ω : Type} [Field K] [Field Ω] (j : K →+* Ω) : Epi (spMap j) := by
-  have := (GlobalTheory.FieldBaseChange.epi_and_isMonHom_iff K Ω j).1 (Sp K) (Sp Ω) (𝟙 _) (𝟙 _) (spMap j)
-    (IsPullback.of_vert_isIso ⟨by simp⟩)
-  exact this.1
+theorem epi_spMap {K Ω : Type} [Field K] [Field Ω] (j : K →+* Ω) : Epi (spMap j) :=
+  GlobalTheory.FinEtPoints.epi_spMap_field _ _ j
 
 end GlobalTheory.ThetaDescent
 
