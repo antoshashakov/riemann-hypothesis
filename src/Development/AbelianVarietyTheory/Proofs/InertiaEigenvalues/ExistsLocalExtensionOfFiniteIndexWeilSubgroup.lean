@@ -1,17 +1,25 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionGroupOrbitRootSameStabilizerStatement
+public import ReciprocityTheory.GaloisValuations.Global
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionGroupOrbitRootSameStabilizer
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Dorbit
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBaseNearOfDecompositionFixedStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinsetFixingIffPreservesSubgroupOrbitStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinsetFixingLeFiniteIndexWeilSubgroupStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinsetFixingSubsetOpenInertiaSubgroupStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMonicBasePolynomialRootNearDecompositionStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPosPowGaloisFixingFinsetStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveElementStabilizerFinsetStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBaseNearOfDecompositionFixed
+public import Formalism.ConjugateSelfDual.Statement
+public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinsetFixingIffPreservesSubgroupOrbit
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinsetFixingLeFiniteIndexWeilSubgroup
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinsetFixingSubsetOpenInertiaSubgroup
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMonicBasePolynomialRootNearDecomposition
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPosPowGaloisFixingFinset
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveElementStabilizerFinset
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRootOfUnityFixedDvdWeilGroupDegreeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KrasnerLemmaDecompositionGroupStabilizerVersionStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.KrasnerLemmaDecompositionGroupStabilizerVersion
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilGroupAtPlaceDenseInDecompositionGroupStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -64,11 +72,11 @@ namespace GlobalTheory.LocalExtField
 theorem exists_localExt_of_finiteIndex : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (H : Subgroup (Weil h)), H.FiniteIndex → IsOpen {σ : Ine (F := E) A | ineIncl h σ ∈ H} → ∃ (L : IntermediateField E Ω), FiniteDimensional E L ∧ IsLocalExt L h ∧ ∀ σ : Weil h, σ ∈ H ↔ ∀ x : L, (σ : G E Ω) (x : Ω) = x := by
   intro E Ω _ _ _ _ _ A w h H hH hO
   classical
-  obtain ⟨s, hs⟩ := GlobalTheory.T.exists_finset_fixing_le_finiteIndex_weilSubgroup E Ω A w h (GlobalTheory.T.exists_pos_pow_galois_fixing_finset E Ω) (GlobalTheory.T.exists_rootOfUnity_fixed_dvd_weilGroupDegree E Ω A w h) (GlobalTheory.T.exists_finset_fixing_subset_open_inertia_subgroup E Ω A) H hH hO
-  obtain ⟨y, hy⟩ := GlobalTheory.T.exists_primitive_element_stabilizer_finset E Ω s
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.WeilOpenFin.exists_finset_fix_le E Ω A w h (_root_.GlobalTheory.PowFix.exists_pos_pow_fix E Ω) (GlobalTheory.T.exists_rootOfUnity_fixed_dvd_weilGroupDegree E Ω A w h) (_root_.GlobalTheory.WeilDeligne.exists_finset_fix_subset_of_isOpen E Ω A) H hH hO
+  obtain ⟨y, hy⟩ := _root_.GlobalTheory.stab_finset_eq_stab_primitive E Ω s
   have hyH : ∀ σ : Weil h, (σ : G E Ω) y = y → σ ∈ H := fun σ hσ => hs σ ((hy σ).1 hσ)
-  obtain ⟨s', hs'⟩ := GlobalTheory.T.exists_finset_fixing_iff_preserves_subgroup_orbit E Ω (H.map (Weil h).subtype) y
-  obtain ⟨β, hβ⟩ := GlobalTheory.T.exists_primitive_element_stabilizer_finset E Ω s'
+  obtain ⟨s', hs'⟩ := _root_.GlobalTheory.orbit_stab_cut_finite E Ω (H.map (Weil h).subtype) y
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.stab_finset_eq_stab_primitive E Ω s'
   have hβH : ∀ σ : Weil h, (σ : G E Ω) β = β ↔ σ ∈ H := by
     intro σ
     rw [hβ, hs']
@@ -95,9 +103,9 @@ theorem exists_localExt_of_finiteIndex : ∀ (E Ω : Type) [Field E] [NumberFiel
     · exact ⟨1, one_ne_zero, fun d hd hdβ =>
         absurd ⟨d β, Finset.mem_erase.mpr ⟨hdβ, (hS _).mpr ⟨d, hd, rfl⟩⟩⟩ hne⟩
   obtain ⟨g, hgm, hgdeg, β', hβ'g, hβ'⟩ :=
-    GlobalTheory.T.exists_monic_base_polynomial_root_near_decomposition E Ω A (GlobalTheory.T.exists_base_near_of_decomposition_fixed E Ω A w h) f hfm hfinv β hfβ r hr0
-  have hkr := GlobalTheory.T.krasnerLemma_decompositionGroup_stabilizer_version E Ω A β β' (fun d hd hdβ => lt_of_lt_of_le hβ' (hr d hd hdβ))
-  obtain ⟨hall, hback⟩ := GlobalTheory.T.decompositionGroup_orbit_root_same_stabilizer E Ω A β β' S hS g hgm (hgdeg.trans hfdeg) hβ'g hkr
+    _root_.GlobalTheory.WeilDeligne.exists_monic_base_root_near E Ω A (_root_.GlobalTheory.exists_base_near_of_dec_fixed E Ω A w h) f hfm hfinv β hfβ r hr0
+  have hkr := _root_.GlobalTheory.krasner_stabiliser E Ω A β β' (fun d hd hdβ => lt_of_lt_of_le hβ' (hr d hd hdβ))
+  obtain ⟨hall, hback⟩ := _root_.GlobalTheory.Count.decOrbit_root_count E Ω A β β' S hS g hgm (hgdeg.trans hfdeg) hβ'g hkr
   have hint : IsIntegral E β' := Algebra.IsIntegral.isIntegral β'
   have agree : ∀ σ τ : G E Ω, σ β' = τ β' → ∀ x ∈ IntermediateField.adjoin E {β'}, σ x = τ x := by
     intro σ τ e x hx

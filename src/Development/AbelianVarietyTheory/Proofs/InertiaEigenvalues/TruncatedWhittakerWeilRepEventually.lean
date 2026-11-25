@@ -1,18 +1,18 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsKMultiplicativeUnitOneHaarScalingStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsKMultiplicativeUnitOneHaarScaling
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFactsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNhdsOneEtaleAlgebraMulInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenCompactAnnihilatorScaledIntegersKStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteEtaleExistsSqRootNearOneStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteEtaleHermitianPairNormPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralPsiKOverScaledIntegersEqVolumeIndicatorStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ScaledIntegersKAnnihilatorSmallNearZeroStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNhdsOneEtaleAlgebraMulInvariant
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsOpenCompactAnnihilatorScaledIntegersK
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteEtaleExistsSqRootNearOne
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteEtaleHermitianPairNormProperties
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralPsiKOverScaledIntegersEqVolumeIndicator
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ScaledIntegersKAnnihilatorSmallNearZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualIffLatticeVolumeAndPlancherelStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedIntegralEqVolMulOrbitalIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedSetEmptyOutsideNormCosetStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerSwapStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedIntegralEqVolMulOrbitalIntegral
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TruncatedSetEmptyOutsideNormCoset
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerSwap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -107,28 +107,28 @@ theorem lam_weil_eventually : ∀ (F E : Type) [NontriviallyNormedField F] [Nont
     intro c hc
     unfold Et.abelian₂
     simp_rw [u_formula F E A ψ x A.etaK (m.μL x) γ W hW φ hφ, mul_assoc γ]
-    rw [integral_const_mul, GlobalTheory.T.setIntegral_integral_psiK_swap F E A ψ hψ m.μK inferInstance (m.μL x) inferInstance φ hφ x a c hc]
-    simp_rw [GlobalTheory.T.integral_psiK_over_scaled_integers_eq_volume_indicator F E A ψ hψ m.μK inferInstance c hc]
+    rw [integral_const_mul, _root_.GlobalTheory.JR.Et.whittaker_swap F E A ψ hψ m.μK inferInstance (m.μL x) inferInstance φ hφ x a c hc]
+    simp_rw [_root_.GlobalTheory.JR.charIntegral_inv_OK F E A ψ hψ m.μK inferInstance c hc]
     congr 1
     rw [← integral_const_mul]
     congr 1; funext y
     simp only [Set.indicator]
     split_ifs <;> ring
-  obtain ⟨U1, hU1, hinv⟩ := GlobalTheory.T.exists_nhds_one_etaleAlgebra_mul_invariant F E A φ hφ
+  obtain ⟨U1, hU1, hinv⟩ := _root_.GlobalTheory.JR.MulInv.exists_nhds_one_mul_invariant F E A φ hφ
   have hOK1 : A.OK ∈ 𝓝 (1 : A.K) := hOo.mem_nhds (by rw [← hR]; exact R.one_mem)
-  have hsq := GlobalTheory.T.finiteEtale_exists_sq_root_near_one F E A (U1 ∩ A.OK) (inter_mem hU1 hOK1)
+  have hsq := _root_.GlobalTheory.JR.SqrtNearOne.exists_sq_eq_inv_near_one F E A (U1 ∩ A.OK) (inter_mem hU1 hOK1)
   have hcont : Tendsto (fun b : A.K => 1 + Ring.inverse a * b) (𝓝 0) (𝓝 1) := by
     have : Continuous (fun b : A.K => 1 + Ring.inverse a * b) := by fun_prop
     simpa using this.tendsto 0
   have hU : {b : A.K | ∃ s ∈ U1 ∩ A.OK, ∃ s' ∈ U1 ∩ A.OK, s * s' = 1 ∧ s ^ 2 = 1 + Ring.inverse a * b} ∈ 𝓝 (0 : A.K) :=
     hcont hsq
-  have hev := GlobalTheory.T.scaledIntegersK_annihilator_small_near_zero F E A ψ hψ _ hU
+  have hev := _root_.GlobalTheory.JR.annihilator_small F E A ψ hψ _ hU
   have hne : ∀ᶠ c in 𝓝[≠] (0 : F), c ≠ 0 := self_mem_nhdsWithin
   constructor
   · intro y hy hay
     filter_upwards [hev, hne] with c hc hc0
     rw [key c hc0]
-    obtain ⟨D, hDset, hDo, hDc⟩ := GlobalTheory.T.exists_openCompact_annihilator_scaled_integersK F E A ψ hψ c hc0
+    obtain ⟨D, hDset, hDo, hDc⟩ := _root_.GlobalTheory.JR.DualScaledIntegers.exists_open_compact_annihilator F E A ψ hψ c hc0
     obtain ⟨M, hMset, hMo, hMc⟩ := M_sub F E A c hc0
     have hMD : m.μK M * m.μK D = 1 := by
       have h := ((GlobalTheory.T.selfDual_iff_lattice_volume_and_plancherel_alt F E ψ hψ A.K (Algebra.traceForm F A.K) (Algebra.traceForm_isSymm F) hnd m.μK
@@ -141,7 +141,7 @@ theorem lam_weil_eventually : ∀ (F E : Type) [NontriviallyNormedField F] [Nont
       rw [hDeq]; exact h.1 hsd
     rw [← hDset, ← hMset]
     subst hay
-    rw [GlobalTheory.T.truncatedIntegral_eq_vol_mul_orbitalIntegral F E A (GlobalTheory.T.finiteEtaleHermitianPair_norm_properties F E A) (GlobalTheory.T.absK_multiplicative_unitOne_haarScaling F E A) ψ hψ m x y hy D hDo hDc φ hφ ?_]
+    rw [_root_.GlobalTheory.JR.truncated_integral_eq_vol_mul_orbL F E A (_root_.GlobalTheory.JR.Et.norm_facts F E A) (_root_.GlobalTheory.JR.Et.absK_facts F E A) ψ hψ m x y hy D hDo hDc φ hφ ?_]
     · have : (m.μK M).toReal * (m.μK D).toReal = 1 := by rw [← ENNReal.toReal_mul, hMD]; simp
       have : ((m.μK M).toReal : ℂ) * ((m.μK D).toReal : ℂ) = 1 := by exact_mod_cast this
       linear_combination (γ * A.orbL m.ν φ y) * this
@@ -152,7 +152,7 @@ theorem lam_weil_eventually : ∀ (F E : Type) [NontriviallyNormedField F] [Nont
   · intro hno
     filter_upwards [hev, hne] with c hc hc0
     rw [key c hc0]
-    have hz := GlobalTheory.T.truncated_set_empty_outside_norm_coset F E A (GlobalTheory.T.finiteEtaleHermitianPair_norm_properties F E A) x a {b : A.K | ∀ z : A.K, c • z ∈ A.OK → A.psiK ψ (z * b) = 1}
+    have hz := _root_.GlobalTheory.JR.norm_sub_notMem_of_not_norm F E A (_root_.GlobalTheory.JR.Et.norm_facts F E A) x a {b : A.K | ∀ z : A.K, c • z ∈ A.OK → A.psiK ψ (z * b) = 1}
       (fun b hb => by
         obtain ⟨s, -, s', -, hss, hs2⟩ := hc b hb
         exact ⟨s, s', hss, hs2⟩) ha hno
