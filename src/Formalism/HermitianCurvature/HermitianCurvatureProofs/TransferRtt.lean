@@ -96,6 +96,46 @@ variable (P : Par)
 theorem kap_eq (f : Ty P → ℂ) :
     kap P f = Matrix.diagonal fun π => algebraMap ℂ (Pr P.r) (f π) := rfl
 
+open Formalism.FourierDecayAlt in
+private theorem hahnRTT (P : Par) :
+    let E := fun u v : ℂ => ∀ i j k l : Fin 2,
+      (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) =
+        QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l
+    let G := fun u v : ℂ => Good P u → Good P v → u - v ≠ 0 → u - v ≠ 1 → u - v ≠ -1 → E u v
+    (P.OK → ∀ u v, G u v) ∧ ((∀ u v, G u v) → ∀ u v, E u v) ∧
+      (P.OK → ∀ u v, Good P u → Good P v →
+        (u - v) • (t22 P v * mt P u * lA P v * t22 P u - t22 P v * lA P v * mt P u * t22 P u) =
+          dA P v * t22 P u - t22 P v * dA P u) := by
+  let D : MA.DAlg P.r := { R := Fn P.r, cr := inferInstance, alg := inferInstance,
+                            x := coord, ev := euler }
+  letI : Fact (D.Laws P.TT) :=
+    ⟨{ leibniz := Mx4.eulerLeibniz P.r, coord := Mx4.ec, comm := Mx4.eulerComm P.r,
+       unit_alt_bis := fun v => isUnit_iff_ne_zero.mpr (Mx4.coord_ne P.r v),
+       unit_gg := isUnit_iff_ne_zero.mpr (Mx4.gg_ne (r := P.r) P.TT),
+       nontrivial := inferInstanceAs (Nontrivial (Fn P.r)) }⟩
+  have inv (f : Fn P.r) : D.inv f = f⁻¹ := Ring.inverse_eq_inv f
+  have gi : D.ggiP P.TT = ggiP (r := P.r) P.TT := by simp only [MA.DAlg.ggiP, inv] <;> rfl
+  have dz : D.dzP = dzP (r := P.r) := by simp only [MA.DAlg.dzP, inv] <;> rfl
+  have dzb : D.dzbP = dzbP (r := P.r) := by simp only [MA.DAlg.dzbP, inv] <;> rfl
+  have Q (y : ℂ) : MA.QQr P D y = QQr P y := by
+    simp only [MA.QQr, MA.t11, MA.t12, MA.t21, MA.l0A, MA.m0A, MA.nabA, MA.nabsA,
+      MA.ggiA, gi, dz, dzb] <;> rfl
+  refine ⟨?_, ?_, ?_⟩
+  · intro hP u v hu hv h0 h1 h2 i j k l
+    simpa only [Q] using! MAx1.ModelAlgebraRelations.generic P D MAx1.sSNorm MAx1.sSComm
+      MAx1.sSMixed MAx1.nabSS MAx1.curvature hP u v hu hv h0 h1 h2 i j k l
+  · intro h u v i j k l
+    have e := MAx1.ModelAlgebraRelations.PC.entries_of_generic P D
+      (fun u v hu hv h0 h1 h2 i j k l => by
+        simpa only [Q] using! h u v hu hv h0 h1 h2 i j k l) u v i j k l
+    simpa only [Q] using! e
+  · intro hP u v hu hv
+    have e := MAx1.ModelAlgebraRelations.mixed_relation_diagonal_four P D
+      MAx1.sSNorm MAx1.sSMixed MAx1.nabSS MAx1.curvature hP u v hu hv
+    simpa only [MAx1.ModelAlgebraRelations.mt, MAx1.ModelAlgebraRelations.dA,
+      MAx1.lA, MAx1.mA, MA.l0A, MA.m0A, MA.nabA, MA.nabsA, MA.ggiA, gi, dz, dzb,
+      mt, dA, lA, mA, l0A, m0A, nabA, nabsA, ggiA] using! e
+
 theorem kap_mul (f g : Ty P → ℂ) : kap P f * kap P g = kap P (f * g) := (map_mul _ _ _).symm
 
 theorem kap_comm (f g : Ty P → ℂ) : kap P f * kap P g = kap P g * kap P f := by
@@ -763,32 +803,8 @@ theorem entries_of_generic
         QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l)
     (u v : ℂ) (i j k l : Fin 2) :
     (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) =
-      QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l := by
-  set F : ℂ → ℂ → A P := fun u v => (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) -
-    (QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l) with hF
-  have hu : ∀ v, IsPoly fun u => F u v := fun v =>
-    (IsPoly.smul (IsPolyS.id.sub (IsPolyS.const v))
-      (((isPoly_QQr P i j).mul (IsPoly.const _)).sub ((IsPoly.const _).mul (isPoly_QQr P i j)))).sub
-      (((isPoly_QQr P k j).mul (IsPoly.const _)).sub ((IsPoly.const _).mul (isPoly_QQr P i l)))
-  have hv : ∀ u, IsPoly fun v => F u v := fun u =>
-    (IsPoly.smul ((IsPolyS.const u).sub IsPolyS.id)
-      (((IsPoly.const _).mul (isPoly_QQr P k l)).sub ((isPoly_QQr P k l).mul (IsPoly.const _)))).sub
-      (((IsPoly.const _).mul (isPoly_QQr P i l)).sub ((isPoly_QQr P k j).mul (IsPoly.const _)))
-  have h1 : ∀ v, Good P v → ∀ u, F u v = 0 := by
-    intro v gv
-    refine (hu v).eq_zero ({Y : ℂ | ¬ Good P Y} ∪ {v, v + 1, v - 1})
-      ((bad_finite P).union (by simp)) ?_
-    intro u hu'
-    simp only [Set.mem_union, Set.mem_ofPred_eq, Set.mem_insert_iff, Set.mem_singleton_iff, not_or, not_not] at hu'
-    obtain ⟨gu, a0, a1, a2⟩ := hu'
-    exact sub_eq_zero.mpr (h u v gu gv (fun e => a0 (by linear_combination e)) (fun e => a1 (by linear_combination e))
-      (fun e => a2 (by linear_combination e)) i j k l)
-  have h2 : F u v = 0 := by
-    refine (hv u).eq_zero {Y : ℂ | ¬ Good P Y} (bad_finite P) ?_ v
-    intro v' hv'
-    simp only [Set.mem_ofPred_eq, not_not] at hv'
-    exact h1 v' hv' u
-  exact sub_eq_zero.mp h2
+      QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l :=
+  (hahnRTT P).2.1 h u v i j k l
 
 section Entries
 
@@ -1433,31 +1449,8 @@ theorem relD4core (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) (hP
 theorem mixed_relation_diagonal_four (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) (hP : P.OK)
     (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (t22 P v * mt P u * lA P v * t22 P u - t22 P v * lA P v * mt P u * t22 P u) =
-      dA P v * t22 P u - t22 P v * dA P u := by
-  have h := relD4core P hN hM hS hK hP u v hu hv
-  have e : (u - v) • (t22 P v * mt P u * lA P v * t22 P u - t22 P v * lA P v * mt P u * t22 P u) =
-      t22 P v * ((u - v) • (mt P u * lA P v - lA P v * mt P u)) * t22 P u := by
-    simp only [mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, mul_assoc]
-  rw [e, h, t22, t22, xA, xA, absSand _ _ _ _ _ (gG P) (Gg P) (kap_sc P _ _) (kap_sc P _ _) (kap_sc P _ _) (kap_sc P _ _)]
-  have e3 : dA P v * (ggA P * kap P fun π => xC P π u) = kap P fun π => qC P v * (xC P π (v + 1))⁻¹ * xC P π u := by
-    rw [dA, smul_mul_assoc, mul_assoc, lc (kap_g P _), lc1 (Gg P), kap_mul, ← map_smul]
-    congr 1
-    funext π
-    simp only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul, mul_assoc]
-  have e4 : (ggA P * kap P fun π => xC P π v) * dA P u = kap P fun π => xC P π v * (qC P u * (xC P π (u + 1))⁻¹) := by
-    rw [dA, mul_smul_comm, mul_assoc, lc (kap_G P _), lc1 (gG P), kap_mul, ← map_smul]
-    congr 1
-    funext π
-    simp only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul, mul_left_comm]
-  rw [e3, e4, kap_mul, kap_mul, ← map_sub]
-  congr 1
-  funext π
-  have h1 := xC_ne P hu π
-  have h2 := xC_ne P hv π
-  have h3 := coordinate_shift_ne_zero P hu π
-  have h4 := coordinate_shift_ne_zero P hv π
-  simp only [Pi.mul_apply, Pi.sub_apply, hh]
-  field_simp
+      dA P v * t22 P u - t22 P v * dA P u :=
+  (hahnRTT P).2.2 hP u v hu hv
 
 end
 
@@ -1579,36 +1572,8 @@ theorem generic (hN : SSNorm) (hC : SSComm) (hM : SSMixed) (hS : NabSS) (hK : Cu
     (u v : ℂ) (hu : Good P u) (hv : Good P v) (h0 : u - v ≠ 0) (h1 : u - v ≠ 1) (h2 : u - v ≠ -1)
     (i j k l : Fin 2) :
     (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) =
-      QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l := by
-  have eU : ∀ {y : ℂ}, Good P y → QQr P y =
-      !![dA P y + mt P y * t22 P y * lA P y, mt P y * t22 P y; t22 P y * lA P y, t22 P y] := fun {y} hy => by
-    rw [QQr, nf11 P hN hP hy, nf12 P hy, nf21 P hy]
-  have e : v - u = -(u - v) := by ring
-  rw [eU hu, eU hv]
-  refine GA.gauss_rtt (u - v) h0 h1 h2 (t22 P u) (t22 P v) (dA P u) (dA P v) (lA P u) (lA P v) (mt P u) (mt P v)
-    (comm_tt P u v) (comm_dd P u v) (comm_dt P u v) (comm_dt P v u)
-    (lowering_relation_diagonal_left P u v hu hv) ?_ (lowering_relation_diagonal_right P u v hu hv) ?_ (commutator_t22_m P u v hu hv) ?_ (commutator_d_m P u v hu hv) ?_
-    (commutator_l_sq P hC hS hP u v hu hv) (raising_relation_self P hC hS hP u v hu hv) (mixed_relation_diagonal_four P hN hM hS hK hP u v hu hv) ?_ i j k l
-  · have h := lowering_relation_diagonal_left P v u hv hu
-    rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
-    linear_combination (norm := module) (-1 : ℂ) • h
-  · have h := lowering_relation_diagonal_right P v u hv hu
-    rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
-    linear_combination (norm := module) (-1 : ℂ) • h
-  · have h := commutator_t22_m P v u hv hu
-    rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
-    linear_combination (norm := module) (-1 : ℂ) • h
-  · have h := commutator_d_m P v u hv hu
-    rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
-    linear_combination (norm := module) (-1 : ℂ) • h
-  · have h := mixed_relation_diagonal_four P hN hM hS hK hP v u hv hu
-    rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
-    linear_combination (norm := module) (-1 : ℂ) • h
+      QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l :=
+  (hahnRTT P).1 hP u v hu hv h0 h1 h2 i j k l
 
 theorem entries_of (hN : SSNorm) (hC : SSComm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) : QQRTTEntries :=
   fun P hP => PC.entries_of_generic P fun u v hu hv h0 h1 h2 i j k l =>
