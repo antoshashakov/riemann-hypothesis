@@ -826,70 +826,48 @@ theorem first_columns_card {r k : ℕ} (h : r ≤ k) : (Ifirst r k).card = r := 
   rw [this, Finset.card_image_of_injective _ (Fin.castLE_injective h), Finset.card_univ, Fintype.card_fin]
 
 theorem card_complement_index_set {r k : ℕ} (h : r ≤ k) (hr : 1 ≤ r) : (II r k).card = r * (k - r) := by
-  have hAc : (Ifirst r k).card = r := first_columns_card h
-  have hbij : (II r k).card =
-      ((powersetCard (r - 1) (Ifirst r k)) ×ˢ (powersetCard 1 (Ifirst r k)ᶜ)).card := by
-    refine Finset.card_nbij' (fun I => (I ∩ Ifirst r k, I \ Ifirst r k)) (fun ST => ST.1 ∪ ST.2) ?_ ?_ ?_ ?_
+  let A := Ifirst r k
+  have hA : A.card = r := first_columns_card h
+  have split_union {S T : Finset (Fin k)} (hS : S ⊆ A) (hT : T ⊆ Aᶜ) :
+      ((S ∪ T) ∩ A, (S ∪ T) \ A) = (S, T) := by
+    have hd : Disjoint T A := by
+      simpa using (disjoint_compl_right_iff.mpr (show T ≤ Aᶜ from hT))
+    refine Prod.ext ?_ ?_
+    · rw [Finset.union_inter_distrib_right, Finset.inter_eq_left.mpr hS,
+        Finset.disjoint_iff_inter_eq_empty.mp hd, Finset.union_empty]
+    · rw [Finset.union_sdiff_distrib, Finset.sdiff_eq_empty_iff_subset.mpr hS,
+        Finset.sdiff_eq_self_of_disjoint hd, Finset.empty_union]
+  have hbij : (II r k).card = ((A.powersetCard (r - 1)) ×ˢ (Aᶜ.powersetCard 1)).card := by
+    refine Finset.card_nbij' (fun I => (I ∩ A, I \ A)) (fun ST => ST.1 ∪ ST.2) ?_ ?_ ?_ ?_
     · intro I hI
-      have hI' := Finset.mem_coe.1 hI
-      rw [II, Finset.mem_filter] at hI'
-      refine Finset.mem_coe.2 (Finset.mem_product.2 ⟨Finset.mem_powersetCard.2 ⟨Finset.inter_subset_right, hI'.2.2⟩,
-        Finset.mem_powersetCard.2 ⟨?_, ?_⟩⟩)
-      · intro x hx
-        exact Finset.mem_compl.2 (Finset.mem_sdiff.1 hx).2
-      · have := Finset.card_inter_add_card_sdiff I (Ifirst r k)
-        show (I \ Ifirst r k).card = 1
-        omega
+      rcases Finset.mem_filter.mp (Finset.mem_coe.mp hI) with ⟨_, hcard, hinter⟩
+      change I.card = r at hcard
+      change (I ∩ A).card = r - 1 at hinter
+      have hsum : (I ∩ A).card + (I \ A).card = I.card := Finset.card_inter_add_card_sdiff I A
+      have houtside : (I \ A).card = 1 := by omega
+      exact Finset.mem_product.mpr ⟨Finset.mem_powersetCard.mpr ⟨Finset.inter_subset_right, hinter⟩,
+        Finset.mem_powersetCard.mpr ⟨fun _ hx => Finset.mem_compl.mpr (Finset.mem_sdiff.mp hx).2,
+          houtside⟩⟩
     · intro ST hST
-      have hST' := Finset.mem_product.1 (Finset.mem_coe.1 hST)
-      obtain ⟨h1, h2⟩ := Finset.mem_powersetCard.1 hST'.1
-      obtain ⟨h3, h4⟩ := Finset.mem_powersetCard.1 hST'.2
-      have hdisj : Disjoint ST.1 ST.2 := by
-        rw [Finset.disjoint_left]
-        intro x hx hx2
-        exact (Finset.mem_compl.1 (h3 hx2)) (h1 hx)
-      have hint : (ST.1 ∪ ST.2) ∩ Ifirst r k = ST.1 := by
-        ext x
-        simp only [Finset.mem_inter, Finset.mem_union]
-        constructor
-        · rintro ⟨hx | hx, hxA⟩
-          · exact hx
-          · exact absurd hxA (Finset.mem_compl.1 (h3 hx))
-        · intro hx; exact ⟨Or.inl hx, h1 hx⟩
-      refine Finset.mem_coe.2 ?_
-      rw [II, Finset.mem_filter]
-      refine ⟨Finset.mem_univ _, ?_, ?_⟩
-      · show (ST.1 ∪ ST.2).card = r
-        rw [Finset.card_union_of_disjoint hdisj]; omega
-      · show ((ST.1 ∪ ST.2) ∩ Ifirst r k).card = r - 1
-        rw [hint, h2]
+      obtain ⟨hS, hs⟩ := Finset.mem_powersetCard.mp (Finset.mem_product.mp hST).1
+      obtain ⟨hT, ht⟩ := Finset.mem_powersetCard.mp (Finset.mem_product.mp hST).2
+      have hd : Disjoint ST.1 ST.2 :=
+        (disjoint_compl_right_iff.mpr (show ST.1 ≤ A from hS)).mono_right hT
+      refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_, ?_⟩
+      · rw [Finset.card_union_of_disjoint hd, hs, ht]
+        omega
+      · change ((ST.1 ∪ ST.2) ∩ A).card = r - 1
+        have hi : (ST.1 ∪ ST.2) ∩ A = ST.1 := congrArg Prod.fst (split_union hS hT)
+        rw [hi, hs]
     · intro I _
-      show (I ∩ Ifirst r k) ∪ (I \ Ifirst r k) = I
       ext x
       simp only [Finset.mem_inter, Finset.mem_union, Finset.mem_sdiff]
       tauto
     · intro ST hST
-      have hST' := Finset.mem_product.1 (Finset.mem_coe.1 hST)
-      obtain ⟨h1, h2⟩ := Finset.mem_powersetCard.1 hST'.1
-      obtain ⟨h3, h4⟩ := Finset.mem_powersetCard.1 hST'.2
-      show ((ST.1 ∪ ST.2) ∩ Ifirst r k, (ST.1 ∪ ST.2) \ Ifirst r k) = ST
-      refine Prod.ext ?_ ?_
-      · ext x
-        simp only [Finset.mem_inter, Finset.mem_union]
-        constructor
-        · rintro ⟨hx | hx, hxA⟩
-          · exact hx
-          · exact absurd hxA (Finset.mem_compl.1 (h3 hx))
-        · intro hx; exact ⟨Or.inl hx, h1 hx⟩
-      · ext x
-        simp only [Finset.mem_sdiff, Finset.mem_union]
-        constructor
-        · rintro ⟨hx | hx, hxA⟩
-          · exact absurd (h1 hx) hxA
-          · exact hx
-        · intro hx; exact ⟨Or.inr hx, Finset.mem_compl.1 (h3 hx)⟩
-  rw [hbij, Finset.card_product, Finset.card_powersetCard, Finset.card_powersetCard, hAc, Finset.card_compl,
-    Fintype.card_fin, hAc, Nat.choose_one_right]
+      exact split_union (Finset.mem_powersetCard.mp (Finset.mem_product.mp hST).1).1
+        (Finset.mem_powersetCard.mp (Finset.mem_product.mp hST).2).1
+  rw [hbij, Finset.card_product, Finset.card_powersetCard, Finset.card_powersetCard,
+    Finset.card_compl, Fintype.card_fin, hA, Nat.choose_one_right]
   congr 1
   obtain ⟨m, rfl⟩ : ∃ m, r = m + 1 := ⟨r - 1, by omega⟩
   simp [Nat.choose_succ_self_right]
@@ -1868,55 +1846,22 @@ theorem bd_unfold_card {n' : ℕ} [NeZero n'] (TT : Finset (Fin n')) (y : ℤ) (
   have hn : (0 : ℤ) < n' := by exact_mod_cast NeZero.pos n'
   apply Finset.card_le_card_of_injOn (fun t => (posOf n' t).val)
   · intro t ht
-    simp only [Finset.coe_filter, Finset.mem_Ico, Set.mem_ofPred_eq] at ht
-    obtain ⟨⟨h1, h2⟩, h3⟩ := ht
-    simp only [Finset.coe_inter, Set.mem_inter_iff, Finset.mem_coe]
-    refine ⟨Finset.mem_map.mpr ⟨_, h3, rfl⟩, ?_⟩
-    unfold Formalism.G0.window
+    obtain ⟨hI, htop⟩ := Finset.mem_filter.mp (Finset.mem_coe.mp ht)
+    obtain ⟨hlo, hhi⟩ := Finset.mem_Ico.mp hI
+    refine Finset.mem_inter.mpr ⟨Finset.mem_map.mpr ⟨_, htop, rfl⟩, ?_⟩
     refine Finset.mem_image.mpr ⟨(t - y).toNat, Finset.mem_range.mpr (by omega), ?_⟩
-    unfold posOf
-    simp only
-    have e1 : (((y % (n' : ℤ)).toNat + (t - y).toNat : ℕ) : ℤ) = y % n' + (t - y) := by
-      have := Int.emod_nonneg y hn.ne'
-      push_cast
-      rw [Int.toNat_of_nonneg this, Int.toNat_of_nonneg (by omega)]
-    have e2 : ((((y % (n' : ℤ)).toNat + (t - y).toNat) % n' : ℕ) : ℤ) = t % n' := by
-      push_cast [e1] at e1 ⊢
-      rw [e1]
-      have : y % (n' : ℤ) + (t - y) = t - (n' : ℤ) * (y / n') := by
-        have := Int.emod_add_mul_ediv y n'
-        linarith
-      rw [this, Int.sub_mul_emod_self_left]
-    have e3 : (((t % (n' : ℤ)).toNat % n' : ℕ) : ℤ) = t % n' := by
-      have h0 := Int.emod_nonneg t hn.ne'
-      have h1 := Int.emod_lt_of_pos t hn
-      push_cast
-      rw [Int.toNat_of_nonneg h0, Int.emod_emod_of_dvd _ (dvd_refl _)]
-    exact_mod_cast e2.trans e3.symm
+    apply Int.ofNat_inj.mp
+    simp only [Int.natCast_emod, Nat.cast_add, posOf_val, Int.toNat_of_nonneg (sub_nonneg.mpr hlo),
+      Int.toNat_of_nonneg (Int.emod_nonneg y hn.ne'), Int.emod_add_emod]
+    congr 1
+    omega
   · intro a ha b hb hab
-    simp only [Finset.coe_filter, Finset.mem_Ico, Set.mem_ofPred_eq] at ha hb
-    unfold posOf at hab
-    simp only at hab
-    have ea : (((a % (n' : ℤ)).toNat % n' : ℕ) : ℤ) = a % n' := by
-      have h0 := Int.emod_nonneg a hn.ne'
-      push_cast
-      rw [Int.toNat_of_nonneg h0, Int.emod_emod_of_dvd _ (dvd_refl _)]
-    have eb : (((b % (n' : ℤ)).toNat % n' : ℕ) : ℤ) = b % n' := by
-      have h0 := Int.emod_nonneg b hn.ne'
-      push_cast
-      rw [Int.toNat_of_nonneg h0, Int.emod_emod_of_dvd _ (dvd_refl _)]
-    have hm : a % (n' : ℤ) = b % n' := by rw [← ea, ← eb, hab]
-    have hd : (n' : ℤ) ∣ a - b := Int.ModEq.dvd (show b ≡ a [ZMOD (n' : ℤ)] from hm.symm)
-    obtain ⟨c, hc⟩ := hd
-    have hLz : (L : ℤ) ≤ n' := by exact_mod_cast hL
-    have : c = 0 := by
-      by_contra hc0
-      rcases lt_or_gt_of_ne hc0 with h | h
-      · have : (n' : ℤ) * c ≤ -(n' : ℤ) := by nlinarith
-        omega
-      · have : (n' : ℤ) ≤ (n' : ℤ) * c := by nlinarith
-        omega
-    subst this
+    have ha' := Finset.mem_Ico.mp (Finset.mem_filter.mp (Finset.mem_coe.mp ha)).1
+    have hb' := Finset.mem_Ico.mp (Finset.mem_filter.mp (Finset.mem_coe.mp hb)).1
+    have hm : a % (n' : ℤ) = b % (n' : ℤ) := by
+      have hc : ((posOf n' a).val : ℤ) = ((posOf n' b).val : ℤ) := congrArg Int.ofNat hab
+      rwa [posOf_val, posOf_val] at hc
+    apply sub_eq_zero.mp (Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (Int.ModEq.dvd hm.symm) ?_)
     omega
 
 theorem bd_core_hyps {n' : ℕ} (TT : Finset (Fin n')) (r : ℕ) (de h x : ℝ) (h3 : 3 * goodG' r de h x ≤ n') :
@@ -2865,107 +2810,70 @@ variable {n' : ℕ} [NeZero n']
 theorem bf_seq (TT : Finset (Fin n')) (r u M : ℕ) (hn : Even n') (hu : 1 ≤ u)
     (hcond : Formalism.G0.CondTiles n' (TT.map Fin.valEmbedding) r u M) (hMt : M + 1 < n' / ((6 * r + 1) * u)) :
     ∃ (J : ℕ) (B : ℤ → ℤ) (sidx : ℤ → ℕ), bf_Seq TT r u M J B sidx := by
-  have hJ : 1 ≤ (bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card := by
-    obtain ⟨j', _, hM⟩ := hcond 0 (by omega)
-    exact card_pos.2 ⟨_, mem_filter.2 ⟨mem_range.2 (Nat.mod_lt _ (by omega)), hM⟩⟩
-  have hJ' : (0 : ℤ) < ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ) := by
-    exact_mod_cast hJ
-  have ha : ∀ j : ℤ, (j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat <
-      (bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card := by
-    intro j
-    have h1 := Int.emod_nonneg j hJ'.ne'
-    have h2 := Int.emod_lt_of_pos j hJ'
+  let T := TT.map Fin.valEmbedding
+  let d := (6 * r + 1) * u
+  let t := n' / d
+  let J := (bf_MS T r u t).card
+  let s := bf_ms T r u t
+  let a (j : ℤ) := (j % (J : ℤ)).toNat
+  let E : ℤ := ((6 * r + 1 : ℕ) : ℤ) * u
+  let B (j : ℤ) := (n' : ℤ) * (j / J) + (s (a j) : ℤ) * E
+  change M + 1 < t at hMt
+  have hJ : 1 ≤ J := by
+    obtain ⟨_, _, hM⟩ := hcond 0 (show 0 < t by omega)
+    exact card_pos.2 ⟨_, mem_filter.2 ⟨mem_range.2 (Nat.mod_lt _ (show 0 < t by omega)), hM⟩⟩
+  have hJ' : (0 : ℤ) < J := by exact_mod_cast hJ
+  have ha (j : ℤ) : a j < J := by
+    have := Int.emod_lt_of_pos j hJ'
+    dsimp [a]
     omega
-  have hE0 : (0 : ℤ) < ((6 * r + 1 : ℕ) : ℤ) * u := by
-    have : 0 < (6 * r + 1) * u := Nat.mul_pos (by omega) hu
-    exact_mod_cast this
-  have hsn : ∀ s : ℕ, s < n' / ((6 * r + 1) * u) →
-      (s : ℤ) * (((6 * r + 1 : ℕ) : ℤ) * u) + ((6 * r + 1 : ℕ) : ℤ) * u ≤ n' := by
-    intro s hs
-    have h1 : (s + 1) * ((6 * r + 1) * u) ≤ n' :=
-      le_trans (Nat.mul_le_mul_right _ hs) (Nat.div_mul_le_self _ _)
-    have := (Nat.cast_le (α := ℤ)).2 h1
-    push_cast at this ⊢
-    linarith
-  have hnlt : (n' : ℤ) < ((n' / ((6 * r + 1) * u) : ℕ) : ℤ) * (((6 * r + 1 : ℕ) : ℤ) * u) +
-      ((6 * r + 1 : ℕ) : ℤ) * u := by
-    have h1 := Nat.lt_mul_div_succ n' (Nat.mul_pos (show 0 < 6 * r + 1 by omega) hu)
-    have := (Nat.cast_lt (α := ℤ)).2 h1
-    push_cast at this ⊢
-    linarith
-  refine ⟨(bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card,
-    fun j => (n' : ℤ) * (j / ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)) +
-      (bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))
-        (j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat : ℤ) *
-        (((6 * r + 1 : ℕ) : ℤ) * u),
-    fun j => bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))
-        (j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat,
-    hJ, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  have hmarked (j : ℤ) := mem_filter.1 (bf_ms_mem (ha j))
+  have hE : 0 < E := by
+    dsimp [E]
+    positivity
+  have hwidth (v : ℕ) (hv : v < t) : ((v : ℤ) + 1) * E ≤ n' := by
+    have hbound : (v + 1) * d ≤ n' := (Nat.mul_le_mul_right d hv).trans (Nat.div_mul_le_self n' d)
+    simpa only [E, d, Nat.cast_mul, Nat.cast_add, Nat.cast_one] using Int.ofNat_le.mpr hbound
+  have hnwidth : (n' : ℤ) < ((t : ℤ) + 1) * E := by
+    have hbound : n' < (t + 1) * d := by
+      rw [mul_comm]
+      exact Nat.lt_mul_div_succ n' (show 0 < d from Nat.mul_pos (by omega) hu)
+    simpa only [E, d, Nat.cast_mul, Nat.cast_add, Nat.cast_one] using Int.ofNat_lt.mpr hbound
+  have hstep (j : ℤ) : B j + E ≤ B (j + 1) ∧ B (j + 1) - B j < ((M + 2 : ℕ) : ℤ) * E := by
+    obtain ⟨hnext, hwrap⟩ := bf_next hcond hMt (ha j)
+    rcases bf_succ J hJ j with ⟨hq, ha', hlt⟩ | ⟨hq, ha', heq⟩
+    · change a (j + 1) = a j + 1 at ha'
+      have hlo : (s (a j) : ℤ) + 1 ≤ s (a j + 1) := by
+        exact_mod_cast bf_ms_lt (Nat.lt_succ_self (a j)) hlt
+      have hhi : (s (a j + 1) : ℤ) ≤ (s (a j) : ℤ) + M + 1 := by exact_mod_cast hnext hlt
+      have hlo' := mul_le_mul_of_nonneg_right hlo hE.le
+      have hhi' := mul_le_mul_of_nonneg_right hhi hE.le
+      dsimp only [B]
+      rw [hq, ha']
+      push_cast
+      constructor <;> linarith
+    · change a (j + 1) = 0 at ha'
+      have hlo := hwidth _ (mem_range.1 (hmarked j).1)
+      have hhi : (s 0 : ℤ) + t ≤ (s (a j) : ℤ) + M + 1 := by exact_mod_cast hwrap heq
+      have hhi' := mul_le_mul_of_nonneg_right hhi hE.le
+      have hs0 : 0 ≤ (s 0 : ℤ) * E := by positivity
+      dsimp only [B]
+      rw [hq, ha']
+      push_cast
+      constructor <;> linarith
+  refine ⟨J, B, fun j => s (a j), hJ, ?_, ?_, fun j => (hstep j).1, fun j => (hstep j).2, ?_, ?_⟩
   · intro j
-    obtain ⟨h1, h2, h3⟩ := (Int.ediv_emod_unique (a := j) hJ').1 ⟨rfl, rfl⟩
-    obtain ⟨e1, e2⟩ := (Int.ediv_emod_unique
-      (a := j + ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ))
-      (q := j / ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ) + 1)
-      (r := j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)) hJ').2
-      ⟨by linarith, h2, h3⟩
-    simp only [e1, e2]
+    simp [B, a, Int.add_ediv_of_dvd_right (dvd_refl (J : ℤ))]
+    rw [Int.ediv_self hJ'.ne']
     ring
   · intro j
-    have hm := mem_filter.1 (bf_ms_mem (ha j))
-    exact bf_MT_of_marked TT r u hn _ (mem_range.1 hm.1) hm.2 _
+    exact bf_MT_of_marked TT r u hn _ (mem_range.1 (hmarked j).1) (hmarked j).2 _
   · intro j
-    have hm := mem_range.1 (mem_filter.1 (bf_ms_mem (ha j))).1
-    rcases bf_succ _ hJ j with ⟨e1, e2, e3⟩ | ⟨e1, e2, e3⟩
-    · simp only [e1, e2]
-      have h1 := bf_ms_lt (Nat.lt_succ_self _) e3
-      have h2 : ((bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))
-          (j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat : ℤ) + 1) ≤
-          (bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))
-          ((j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat + 1) : ℤ) := by
-        exact_mod_cast h1
-      have h3 := mul_le_mul_of_nonneg_right h2 hE0.le
-      linarith
-    · simp only [e1, e2]
-      have h1 := hsn _ hm
-      have h2 : (0 : ℤ) ≤ (bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u)) 0 : ℤ) *
-          (((6 * r + 1 : ℕ) : ℤ) * u) := by positivity
-      linarith
-  · intro j
-    obtain ⟨n1, n2⟩ := bf_next hcond hMt (ha j)
-    rcases bf_succ _ hJ j with ⟨e1, e2, e3⟩ | ⟨e1, e2, e3⟩
-    · simp only [e1, e2]
-      have h1 := n1 e3
-      have h2 : (bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))
-          ((j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat + 1) : ℤ) ≤
-          (bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))
-          (j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat : ℤ) + M + 1 := by
-        exact_mod_cast h1
-      have h3 := mul_le_mul_of_nonneg_right h2 hE0.le
-      push_cast
-      push_cast at h3 hE0
-      linarith
-    · simp only [e1, e2]
-      have h1 := n2 e3
-      have h2 : (bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u)) 0 : ℤ) +
-          ((n' / ((6 * r + 1) * u) : ℕ) : ℤ) ≤
-          (bf_ms (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))
-          (j % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat : ℤ) + M + 1 := by
-        exact_mod_cast h1
-      have h3 := mul_le_mul_of_nonneg_right h2 hE0.le
-      have h4 : ((M + 2 : ℕ) : ℤ) = (M : ℤ) + 2 := by push_cast; ring
-      rw [h4]
-      linarith
-  · intro j
-    have hm := mem_filter.1 (bf_ms_mem (ha j))
-    exact ⟨mem_range.1 hm.1, hm.2, _, rfl⟩
-  · intro s hs hM
-    obtain ⟨a, ha1, ha2⟩ := bf_ms_surj (mem_filter.2 ⟨mem_range.2 hs, hM⟩)
-    refine ⟨(a : ℤ), ?_⟩
-    have : ((a : ℤ) % ((bf_MS (TT.map Fin.valEmbedding) r u (n' / ((6 * r + 1) * u))).card : ℤ)).toNat = a := by
-      rw [Int.emod_eq_of_lt (by positivity) (by exact_mod_cast ha1)]
-      rfl
-    simp only [this]
-    exact ha2
+    exact ⟨mem_range.1 (hmarked j).1, (hmarked j).2, _, rfl⟩
+  · intro v hv hM
+    obtain ⟨i, hi, rfl⟩ := bf_ms_surj (mem_filter.2 ⟨mem_range.2 hv, hM⟩)
+    refine ⟨(i : ℤ), congrArg s ?_⟩
+    simp [a, Int.emod_eq_of_lt (by positivity) (show (i : ℤ) < J by exact_mod_cast hi)]
 
 end Enum3
 
