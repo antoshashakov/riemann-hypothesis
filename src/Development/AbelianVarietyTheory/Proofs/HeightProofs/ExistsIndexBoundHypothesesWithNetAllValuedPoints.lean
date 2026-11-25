@@ -2,18 +2,24 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.HeightFunctions.ConclOfInputs4
 public import Formalism.LocalToGlobal.ProjectiveLattices.IntegralExtensionOfRegR1
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IntegralFormsLogSupNormLowerBoundAbsoluteStatement
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsAdmissibleThetaLatticeGeneratorsStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
+public import Formalism.LocalToGlobal.ProjectiveLattices.XcLat
+public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.WeightedPrimeSumBound
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IntegralFormsLogSupNormLowerBoundAbsolute
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsAdmissibleThetaLatticeGenerators
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.RunHypothesesFormsScalarsOfParameterConditionsStatement
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaNetDimensionAndPointCountBound
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsPrimeDataCurveLiftingHeightBoundsStatement
+public import Development.AbelianVarietyTheory.Definitions.HeightFunctions.GrowthConstantBoundGcR
+public import Formalism.LocalToGlobal.ProjectiveLattices.IntAtExtExtAll
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsPrimeDataCurveLiftingHeightBounds
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.PageBoundPolynomialDomination
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CombinedBoundForRunScalarsStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RecursivePageLatticeBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.CuspFormBasisSharesDefiniteLiftIndexStatement
-public import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.CuspFormBasisSharesIndefiniteLiftIndexStatement
-public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsScalarWeightAuxiliaryFormOfRunConditionsStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HodgeTateInclusionChartCharactersStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CombinedBoundForRunScalars
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RecursivePageLatticeBound
+public import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.CuspFormBasisSharesDefiniteLiftIndex
+public import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.CuspFormBasisSharesIndefiniteLiftIndex
+public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsScalarWeightAuxiliaryFormOfRunConditions
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HodgeTateInclusionChartCharacters
 import Formalism.LocalToGlobal.ProjectiveLattices.RegXInst
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -94,9 +100,9 @@ theorem exists_gen_eta (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injec
     ∃ G : GlobalFamilyData (recPJ h j hj) ka wL wF,
       GenOK h j hj large₂ G (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) (cc D large₂ C2 A2 7 wL) ∧
       (j < D.R.m → EtaOK h j hj large₂ wL G.iet G.et) := by
-  obtain ⟨G, hG⟩ := GlobalTheory.T.exists_admissible_thetaLatticeGenerators D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hO hP
+  obtain ⟨G, hG⟩ := _root_.GlobalTheory.RunJoin.exists_genOK D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hO hP
   by_cases hlt : j < D.R.m
-  · obtain ⟨i, et, hE⟩ := GlobalTheory.T.exists_scalarWeight_auxiliaryForm_of_runConditions D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hP hlt
+  · obtain ⟨i, et, hE⟩ := _root_.GlobalTheory.EtaBoundForm.exists_etaOK D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hP hlt
     exact ⟨FamilyHypotheses.refill G G.del G.th' G.rz G.alz G.th0 G.zc G.rq G.th i et,
       genOK_refill h j hj large₂ G _ _ hG _ _ _ _ _ _ _ _ _ _, fun _ => hE⟩
   · exact ⟨G, hG, fun h' => absurd h' hlt⟩
@@ -110,13 +116,13 @@ theorem sharesAt_all (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j)
     (hE : j < D.R.m → EtaOK h j hj large₂ wL G.iet G.et) (Sh : Set ((recB h.toLawsCore).Cusp j wF))
     (hSh : Submodule.span (recB h.toLawsCore).KO Sh = ⊤) : SharesAt G S Tn (cc D large₂ C2 A2 7 wL) Sh := by
   rcases lt_or_eq_of_le hj.2 with hlt | heq
-  · exact GlobalTheory.T.cuspFormBasisShares_indefinite_liftIndex D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p S nus hPar hP hH hLat hlt G hG (hE hlt) Sh hSh
+  · exact _root_.GlobalTheory.RunJoin.sharesAt_of_lt D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p S nus hPar hP hH hLat hlt G hG (hE hlt) Sh hSh
   · subst heq
-    exact GlobalTheory.T.cuspFormBasisShares_definite_liftIndex D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hP hH hLat G hG.2.2.2.1 Sh hSh
+    exact _root_.GlobalTheory.SharesDefinite.sharesDef D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hP hH hLat G hG.2.2.2.1 Sh hSh
 
 theorem inputsNet_recPlus : ∃ (CL : ℝ) (Cq Z₀ : ℝ → ℝ → ℝ), ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), ParOK T EX p j → PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → Z₀ H.CA H.CK ≤ zBase large₂ → InputsNet large₂ (recPlus h j hj) (kR CL) H 1 4 (Cq H.CA H.CK) 4 C2 A2 7 CT (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) ka wL wF Tn nP nW h0 (nusR h j wL) ∧ PageSupp D large₂ (recB h.toLawsCore) C2 A2 nW (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) wL := by
-  obtain ⟨CL, hCL, hLam⟩ := GlobalTheory.T.integralForms_logSupNorm_lower_bound_absolute
-  obtain ⟨Cq, hQ⟩ := GlobalTheory.T.recursive_page_lattice_bound
+  obtain ⟨CL, hCL, hLam⟩ := _root_.GlobalTheory.RunJoin.lamwAt_absolute
+  obtain ⟨Cq, hQ⟩ := _root_.GlobalTheory.RunJoin.qAt_run
   obtain ⟨Z₀, hZ⟩ := GlobalTheory.RunNum.polyDom_of_pageOK CL Cq hCL
   refine ⟨CL, Cq, Z₀, ?_⟩
   intro D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hPar hP hZ0
@@ -133,11 +139,11 @@ theorem inputsNet_recPlus : ∃ (CL : ℝ) (Cq Z₀ : ℝ → ℝ → ℝ), ∀ 
   have hTh' := hTh G (by subst hGdef; exact hth')
   have hdel : G.del = del := by subst hGdef; rfl
   rw [← hdel] at hRd
-  obtain ⟨hComb, hc⟩ := GlobalTheory.T.combinedBound_for_runScalars GlobalTheory.T.hodgeTate_inclusion_chart_characters D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hPar.orient hP G hE
+  obtain ⟨hComb, hc⟩ := _root_.GlobalTheory.RunJoin.combBound_run _root_.GlobalTheory.ChF.hodgeTate_inclusion_chart D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hPar.orient hP G hE
   obtain ⟨Nt, σ₀, hMax, hSup, hPG, hInj, hCard, hSub, -, hlog⟩ :=
     GlobalTheory.RunJoin.net_at_run D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hP
   have hLam' := hLam D T h large₂ H.CA hP.hyp.1 j
-  have hQf := GlobalTheory.T.exists_primeData_curve_lifting_heightBounds D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 _ _ CL hPar.alg hP hH hCL hLam' G hG hE hTh' hBas
+  have hQf := _root_.GlobalTheory.RunPrimeData.exists_primeData_heights D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 _ _ CL hPar.alg hP hH hCL hLam' G hG hE hTh' hBas
     (hlog G.del hLat hRd) hComb
   obtain ⟨hGq, hPoly⟩ := hZ D _ _ j (recPJ h j hj) large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hj hP hZ0
   have hBase : BaseIn large₂ (recPJ h j hj) (kR CL) H 1 4 (Cq H.CA H.CK) 4 C2 A2 7 CT
