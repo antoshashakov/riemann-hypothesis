@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CrdOver
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCastMap
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBcStages
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCoefficientMapExtensionOverEnlargedBaseStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOmPinsLev
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCoefficientMapExtensionOverEnlargedBase
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -79,7 +80,7 @@ theorem exists_omPins_enl : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre
             (∀ x : (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.fam.amb.FL i
               (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0, x = 0) := by
   intro B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hf hp hS core' alg' eH el ec eD eX ex eι Xg tr R' cG' hP hL hB hW κ' v₀' ht
-  have hc := GlobalTheory.T.exists_coefficientMap_extension_over_enlarged_base z hE hf hp hS R' cG' hP hL hB hW
+  have hc := _root_.GlobalTheory.Mem.R3.Rw.OmCoef.exists_coefFam_ext z hE hf hp hS R' cG' hP hL hB hW
   have a1 : HEq R'.C.mu0 f'.mu0 ∧ HEq R'.C.eta f'.eta := by
     have e := hL.C
     rw [w'.C_eq] at e

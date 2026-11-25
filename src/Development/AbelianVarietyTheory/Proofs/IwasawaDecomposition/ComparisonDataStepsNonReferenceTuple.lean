@@ -5,7 +5,7 @@ public import Formalism.SharpRestriction.GrowthBounds.TwistedLevelAgreement.Step
 public import Formalism.SharpRestriction.GrowthBounds.ChartComparison
 public import Formalism.SharpRestriction.GrowthBounds.ChartComparison.WtTieOf
 public import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ExistsIsCGBases
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsChainChartLocalUnitCharacterCompatibleLeveStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsChainChartLocalUnitCharacterCompatibleLeve
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelsTwG
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOrthonormalStepBasisBaseLatticeCharts
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ServedPlaceNoChainPlaceOrTypePrimeOverStatement
@@ -132,7 +132,7 @@ theorem cmpJ_data_ne : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (
   have hpl := GlobalTheory.T.served_place_no_chain_place_or_type_prime_over w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
   obtain ⟨dt, hdt⟩ := _root_.GlobalTheory.Mem.Top.KerTwDet.detTie_vals w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
   have hB := _root_.GlobalTheory.Mem.Top.KerTwLv.stepBasis_std w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
-  have hψ := GlobalTheory.T.exists_chainChart_localUnitCharacter_compatible_level w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
+  have hψ := _root_.GlobalTheory.Mem.Top.KerTwPsi.psi_tied w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
   have hfin := fin_of w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt
   have hfill := fill_of w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg
   let Cd : GlobalTheory.Mem.Top.KerTwLv.ChData tt.ch t.g.herm u ((w.D Z).what₂.muAt v) v hg :=

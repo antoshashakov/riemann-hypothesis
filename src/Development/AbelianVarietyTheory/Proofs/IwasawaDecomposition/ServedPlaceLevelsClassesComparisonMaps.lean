@@ -5,7 +5,7 @@ public import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ComparisonZer
 public import Formalism.SharpRestriction.GrowthBounds.ChartComparison
 public import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ExistsIsCGBases
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComparisonDataStepsNonReferenceTuple
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsComparisonDataStepsUpToRankStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsComparisonDataStepsUpToRank
 public import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.ChainFirstChainKMem
 import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ClsChartedLabAt
 import Mathlib.Algebra.Order.Floor.Extended
@@ -77,7 +77,7 @@ theorem levels_cls_cmp_at_served : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T 
         (∀ j hj, Formalism.MainNotions.G.KAat.ChX (I.at' j hj).st) ∧
         (∀ j, (w.D Z).R.m ≤ j → IsEmpty (Lv.compS j)) := by
     by_cases hμ : (w.D Z).what₂.muAt v = (w.D Z).what₂.mu0
-    · exact GlobalTheory.T.exists_comparisonData_steps_upTo_rank w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ
+    · exact _root_.GlobalTheory.Mem.Top.KerOne.CertEq.exists_comparisonData_steps_at_baseCharacter w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ
     · exact _root_.GlobalTheory.Mem.Top.KerTwLv.cmpJ_data_ne w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ
   classical
   let S := Formalism.MainNotions.G.CmpJ.stepsMu H Formalism.L2.G.RelativeIndexFlags.blockRationality_holds t.Gt

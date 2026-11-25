@@ -17,7 +17,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Hecke
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProductLevelDefiniteFormsRealisationAtTwistStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemParahoricOfScalarActionOnRamifiedParahoricForStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ProductLevelEqOfLocalAgreementStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingClassGroupDescentsDifferByPowerPrimeToLStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingClassGroupDescentsDifferByPowerPrimeToL
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceEqOfAutomorphismMapsParahoricStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TupTiedOfMuIsW
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistReadingInducesSideEmbeddingFixedFieldStatement
@@ -215,7 +215,7 @@ theorem pack_pow {i i' : D.ntw.Tw} {k k' : ℕ} {b b' : Bool} {v v' : D.what₂.
     (hp' : ρ'.Pulls ψ' ψ₀') :
     ∃ a : ℤ, Nat.Coprime a.natAbs (D.ntw.l i) ∧ twPack D i' b' Q' k' ψ' = GlobalTheory.HeightCounting.twPackPow D a (twPack D i b Q k ψ) := by
   subst h1 h2 h3 h4
-  obtain ⟨a, ha, rfl⟩ := GlobalTheory.T.ringClassGroup_descents_differ_by_power_prime_to_l D _ _ b b' v v' ρ ρ' _ ψ ψ' _ hz ho hp hp'
+  obtain ⟨a, ha, rfl⟩ := _root_.GlobalTheory.LevCmp.pulls_eq_zpow D _ _ b b' v v' ρ ρ' _ ψ ψ' _ hz ho hp hp'
   refine ⟨if b = b' then a else -a, by split_ifs <;> simpa using ha, ?_⟩
   refine congrArg (fun ψ => (⟨i', Q', k', ψ⟩ : TwPack D)) ?_
   cases b <;> cases b'

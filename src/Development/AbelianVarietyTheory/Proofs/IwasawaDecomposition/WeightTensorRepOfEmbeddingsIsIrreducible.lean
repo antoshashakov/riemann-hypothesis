@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Coeff
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DualWeylModuleSimpleCharZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryExtensionOfCmTypeFamily
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NablaSqEndomorphismEqSumGLOperatorsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NontrivialWeylCoefficientSpaceStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NontrivialWeylCoefficientSpace
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryRationalPointMatrixHomSurjectiveOntoStatement
 public import Formalism.LocalToGlobal.Divisibility.CoefMod
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightActionMatrixCoeffPolynomialInEntries
@@ -115,7 +115,7 @@ theorem GlobalTheory.AlgWtF.tenRepF_isIrreducible : ∀ (L : Type) [Field L] [Nu
   have hsimple : ∀ W : Submodule K (Formalism.L2.DIV.VV K lam),
       (∀ g : ι → GL (Fin n) K, ∀ w ∈ W, Formalism.L2.DIV.rhoK lam g w ∈ W) → W = ⊥ ∨ W = ⊤ :=
     GlobalTheory.T.coefficientSpace_stable_eq_bot_or_top K ι n lam (fun τ => GlobalTheory.T.nablaSq_endomorphism_eq_sum_GL_operators K n (lam τ) (GlobalTheory.T.dualWeylModule_simple_charZero K n (lam τ)))
-  haveI hnt : Nontrivial (Formalism.L2.DIV.VV K lam) := GlobalTheory.T.nontrivial_weylCoefficientSpace K ι n lam
+  haveI hnt : Nontrivial (Formalism.L2.DIV.VV K lam) := _root_.GlobalTheory.CoeffSpace.nontrivial_VV K ι n lam
   haveI : Nontrivial (Subrepresentation (GlobalTheory.AlgWtF.tenRepF emb lam)) := by
     refine ⟨⟨⊥, ⊤, fun h => ?_⟩⟩
     have h' := congrArg Subrepresentation.toSubmodule h
