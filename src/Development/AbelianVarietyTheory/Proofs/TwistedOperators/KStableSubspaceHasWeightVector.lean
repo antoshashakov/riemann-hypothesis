@@ -52,6 +52,7 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForm
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsStandardIndModule
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsAdmissibleSubOfFiniteDimensional
 import Formalism.LocalToGlobal.BesselHermitianTheta.NoncompactGapAtLeastRange
+import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.WeightedSumBis
 
 @[expose] public section
 
@@ -66,67 +67,7 @@ namespace GlobalTheory.TorusWtExist
 
 theorem charR_eq_exp (χ : ℝ → ℂ) (hc : Continuous χ) (hm : ∀ s t, χ (s + t) = χ s * χ t)
     (h0 : χ 0 = 1) (h2 : χ (2 * Real.pi) = 1) : ∃ m : ℤ, ∀ t : ℝ, χ t = Complex.exp (((m * t : ℝ) : ℂ) * Complex.I) := by
-  obtain ⟨δ, hδ, hδc⟩ : ∃ δ > 0, ∀ s, |s| ≤ δ → ‖χ s - 1‖ ≤ 1 / 2 := by
-    have := Metric.continuous_iff.mp hc 0 (1 / 2) (by norm_num)
-    obtain ⟨δ, hδ, h⟩ := this
-    refine ⟨δ / 2, by positivity, fun s hs => ?_⟩
-    have := h s (by rw [Real.dist_eq, sub_zero]; linarith)
-    rw [dist_eq_norm, h0] at this
-    exact this.le
-  set c : ℂ := ∫ s in (0 : ℝ)..δ, χ s with hcdef
-  have hint : ∀ a b : ℝ, IntervalIntegrable χ MeasureTheory.volume a b := fun a b => hc.intervalIntegrable a b
-  have hc0 : c ≠ 0 := by
-    intro h
-    have h1 : ‖∫ s in (0 : ℝ)..δ, (χ s - 1)‖ ≤ 1 / 2 * |δ - 0| := by
-      apply intervalIntegral.norm_integral_le_of_norm_le_const
-      intro s hs
-      rw [Set.uIoc_of_le hδ.le] at hs
-      exact hδc s (by rw [abs_le]; constructor <;> linarith [hs.1, hs.2])
-    rw [intervalIntegral.integral_sub (hint 0 δ) intervalIntegrable_const, ← hcdef, h] at h1
-    simp only [intervalIntegral.integral_const, sub_zero, zero_sub, norm_neg, Complex.real_smul, mul_one] at h1
-    rw [Complex.norm_real, Real.norm_eq_abs, abs_of_pos hδ] at h1
-    linarith
-  set F : ℝ → ℂ := fun u => ∫ s in (0 : ℝ)..u, χ s with hF
-  have hFd : ∀ t, HasDerivAt F (χ t) t := fun t => (hc.integral_hasStrictDerivAt 0 t).hasDerivAt
-  have hid : ∀ t, χ t = (F (t + δ) - F t) / c := by
-    intro t
-    rw [eq_div_iff hc0]
-    have h1 : ∫ s in (0 : ℝ)..δ, χ (t + s) = F (t + δ) - F t := by
-      rw [intervalIntegral.integral_comp_add_left (fun x => χ x) t, add_zero, hF]
-      simp only
-      rw [intervalIntegral.integral_interval_sub_left (hint 0 _) (hint 0 _)]
-    rw [← h1, hcdef, ← intervalIntegral.integral_const_mul]
-    congr 1; funext s; rw [hm]
-  set a : ℂ := (χ δ - 1) / c with ha
-  have hd : ∀ t : ℝ, HasDerivAt χ (χ t * a) t := by
-    intro t
-    have h1 : HasDerivAt (fun t => (F (t + δ) - F t) / c) ((χ (t + δ) - χ t) / c) t := by
-      have := ((hFd (t + δ)).comp_add_const t δ).sub (hFd t)
-      exact this.div_const c
-    have hfun : χ = fun t => (F (t + δ) - F t) / c := funext hid
-    have h3 : (χ (t + δ) - χ t) / c = χ t * a := by rw [hm, ha]; ring
-    rw [h3, ← hfun] at h1
-    exact h1
-  have hg : ∀ t : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (-(a * t)) * χ t) 0 t := by
-    intro t
-    have h1 : HasDerivAt (fun t : ℝ => Complex.exp (-(a * t))) (Complex.exp (-(a * t)) * (-a)) t := by
-      have : HasDerivAt (fun t : ℝ => -(a * (t : ℂ))) (-a) t := by
-        simpa using ((Complex.ofRealCLM.hasDerivAt (x := t)).const_mul a).fun_neg
-      exact this.cexp
-    have h2 := h1.mul (hd t)
-    have h3 : Complex.exp (-(a * t)) * (-a) * χ t + Complex.exp (-(a * t)) * (χ t * a) = 0 := by ring
-    rw [h3] at h2
-    exact h2
-  have hconst : ∀ t : ℝ, Complex.exp (-(a * t)) * χ t = 1 := by
-    intro t
-    have := is_const_of_deriv_eq_zero (fun t => (hg t).differentiableAt) (fun t => (hg t).deriv) t 0
-    rw [this]; simp [h0]
-  have hexp : ∀ t : ℝ, χ t = Complex.exp (a * t) := by
-    intro t
-    have h := hconst t
-    rw [Complex.exp_neg] at h
-    field_simp at h
-    exact h
+  obtain ⟨a, hexp⟩ := UpperTheory.Reformulated.B.weightedSumBis.exists_eq_exp χ hc h0 hm
   have h2' := h2
   rw [hexp, Complex.exp_eq_one_iff] at h2'
   obtain ⟨k, hk⟩ := h2'
