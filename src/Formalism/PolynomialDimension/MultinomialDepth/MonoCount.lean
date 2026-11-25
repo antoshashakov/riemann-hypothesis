@@ -1400,18 +1400,11 @@ theorem basis_chain {K V : Type} [Field K] [AddCommGroup V] [Module K V] (A B : 
     have := h1.finite
     exact Set.toFinite b
   have hbA' : b ∩ (A : Set V) = bA := by
-    apply Set.Subset.antisymm
-    · rintro x ⟨hxb, hxA⟩
-      by_contra hx
-      have h2 : LinearIndependent K (fun x : b => (x : V)) := hli
-      have h3 := h2.notMem_span_image (s := {y : b | (y : V) ∈ bA}) (x := ⟨x, hxb⟩) (by simpa using hx)
-      apply h3
-      have e1 : (fun x : b => (x : V)) '' {y : b | (y : V) ∈ bA} = bA := by
-        ext z; constructor
-        · rintro ⟨y, hy, rfl⟩; exact hy
-        · intro hz; exact ⟨⟨z, hbAb hz⟩, hz, rfl⟩
-      rw [e1]; exact hAsp hxA
-    · intro x hx; exact ⟨hbAb hx, hbA hx⟩
+    refine Set.Subset.antisymm ?_ ?_
+    · exact le_of_span_le_span hli Set.inter_subset_left hbAb
+        (Submodule.span_le.mpr (Set.inter_subset_right.trans hAsp))
+    · intro x hx
+      exact ⟨hbAb hx, hbA hx⟩
   refine ⟨hfin.toFinset, by simpa using hbB, by simpa using hli, by simpa using hBsp,
     fun h0 => by simpa using hbAb (hsbA ⟨rfl, h0⟩), by simpa [hbA'] using hAsp, ?_⟩
   intro _
@@ -1467,32 +1460,12 @@ theorem count_HW [NeZero r] (L : Letters N) (j0 : ℕ) {q : ℕ} (J : Fin q → 
   let h : ((μ : {μ // μ ∈ S}) × {x // x ∈ b μ.1}) → MvPolynomial (Fin N × Fin r) ℚ_[p] := fun i => i.2.1
   let la : ((μ : {μ // μ ∈ S}) × {x // x ∈ b μ.1}) → Fin r → ℤ := fun i => i.1.1
   have hli : LinearIndependent ℚ_[p] h := by
-    rw [Fintype.linearIndependent_iff]
-    rintro g hg ⟨ν, x⟩
-    have h1 : ∑ y : {y // y ∈ b ν.1}, g ⟨ν, y⟩ • (y.1 : MvPolynomial (Fin N × Fin r) ℚ_[p]) = 0 := by
-      have h0 := congrArg ((GA p L j0).comp ν.1) hg
-
-      rw [map_zero, Fintype.sum_sigma, map_sum, Finset.sum_eq_single ν] at h0
-      · set_option synthInstance.maxHeartbeats 100000 in
-          rw [map_sum] at h0
-        rw [← h0]
-        refine Finset.sum_congr rfl fun y _ => ?_
-        rw [map_smul]
-        show _ = g ⟨ν, y⟩ • (GA p L j0).comp ν.1 y.1
-        rw [(hbHW ν.1 y.1 y.2).1]
-      · intro μ _ hμ
-
-        rw [map_sum]
-        refine Finset.sum_eq_zero fun y _ => ?_
-        rw [map_smul]
-        show g ⟨μ, y⟩ • (GA p L j0).comp ν.1 y.1 = 0
-        rw [(GA p L j0).comp_of_isWt (hbHW μ.1 y.1 y.2).1, if_neg (fun hh => hμ (Subtype.ext hh.symm)), smul_zero]
-      · simp
-    have h2 := (linearIndepOn_finset_iff.mp (hbli ν.1)) (fun y => if hy : y ∈ b ν.1 then g ⟨ν, ⟨y, hy⟩⟩ else 0) (by
-      rw [← Finset.sum_attach, ← h1, Finset.univ_eq_attach]
-      refine Finset.sum_congr rfl fun y _ => ?_
-      rw [dite_eq_left y.2]; rfl) x.1 x.2
-    simpa [x.2] using h2
+    apply LinearIndependent.of_comp (LinearMap.pi fun ν : {ν // ν ∈ S} => (GA p L j0).comp ν.1)
+    convert Pi.linearIndependent_single (fun ν : {ν // ν ∈ S} => fun x : {x // x ∈ b ν.1} => x.1)
+      (fun ν => hbli ν.1) using 1
+    funext i ν
+    simp only [Function.comp_apply, LinearMap.pi_apply, h,
+      (GA p L j0).comp_of_isWt (hbHW _ _ i.2.2).1, Pi.single_apply, Subtype.ext_iff]
   obtain ⟨k1, k2, k3⟩ := count_Y L j0 J M h la (fun i => hbHW _ _ i.2.2) (fun i => hbP _ _ i.2.2) hli
     (by
       intro μ v hv hvh
