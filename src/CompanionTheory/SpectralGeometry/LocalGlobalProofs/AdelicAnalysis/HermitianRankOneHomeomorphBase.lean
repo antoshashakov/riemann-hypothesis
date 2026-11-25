@@ -52,6 +52,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -73,19 +74,8 @@ theorem sig_sig (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   apply τ.injective
   rw [h τ, h τ, star_star]
 
-theorem exists_sig_ne (hcm : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
-  obtain ⟨-, htc, -, h⟩ := hcm
-  let τ : E →+* ℂ := (inferInstance : Nonempty (E →+* ℂ)).some
-  have hc : (InfinitePlace.mk τ).IsComplex := htc.isComplex _
-  rw [InfinitePlace.isComplex_mk_iff] at hc
-  by_contra hall
-  push_neg at hall
-  apply hc
-  rw [ComplexEmbedding.isReal_iff]
-  ext x
-  have := h τ x
-  rw [hall x] at this
-  simpa using this.symm
+theorem exists_sig_ne (hcm : IsCMExt F E σ) : ∃ x : E, σ x ≠ x :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne hcm
 
 theorem trace_sig (hcm : IsCMExt F E σ) (y : E) :
     Algebra.trace F E (σ y) = Algebra.trace F E y := by

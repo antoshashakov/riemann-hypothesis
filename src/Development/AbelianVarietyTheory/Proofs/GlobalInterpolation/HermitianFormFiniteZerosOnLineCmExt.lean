@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -102,18 +103,8 @@ open scoped TensorProduct in
 open NumberField IsDedekindDomain MeasureTheory Topology in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} in
-theorem _root_.GlobalTheory.HermLineZeros.exists_conj_ne (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) : ∃ d, σ d ≠ d := by
-  by_contra! hσ
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have hreal : ComplexEmbedding.IsReal τ := by
-    rw [ComplexEmbedding.isReal_iff]
-    ext x
-    have hx := h.2.2.2 τ x
-    rw [hσ x] at hx
-    simpa [ComplexEmbedding.conjugate_coe_eq] using hx.symm
-  have hcx := (h.2.1).isComplex (InfinitePlace.mk τ)
-  rw [InfinitePlace.isComplex_mk_iff] at hcx
-  exact hcx hreal
+theorem _root_.GlobalTheory.HermLineZeros.exists_conj_ne (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) : ∃ d, σ d ≠ d :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne h
 
 open scoped TensorProduct in
 open NumberField IsDedekindDomain MeasureTheory Topology in

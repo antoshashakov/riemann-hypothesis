@@ -61,6 +61,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -74,20 +75,8 @@ section Alg
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E}
 
-theorem exists_moved (hcm : IsCMExt F E σ) : ∃ c : E, σ c ≠ c := by
-  by_contra h
-  push_neg at h
-  obtain ⟨-, htc, -, hconj⟩ := hcm
-  obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
-  have hc : w.IsComplex := htc.isComplex w
-  have hr : w.IsReal := by
-    rw [InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]
-    ext x
-    have := hconj w.embedding x
-    rw [h x] at this
-    simp only [ComplexEmbedding.conjugate_coe_eq]
-    exact this.symm
-  exact InfinitePlace.not_isReal_iff_isComplex.2 hc hr
+theorem exists_moved (hcm : IsCMExt F E σ) : ∃ c : E, σ c ≠ c :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne hcm
 
 theorem fixed_mem (hcm : IsCMExt F E σ) (x : E) (hx : σ x = x) : ∃ t : F, algebraMap F E t = x := by
   obtain ⟨c, hc⟩ := exists_moved hcm

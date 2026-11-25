@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -54,19 +55,8 @@ open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNo
 namespace IdxHW
 
 theorem sigma_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
-  obtain ⟨-, hC, -, hst⟩ := hCM
-  by_contra h
-  push_neg at h
-  obtain ⟨w⟩ := (inferInstance : Nonempty (InfinitePlace E))
-  have hw : w.IsReal := by
-    rw [InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]
-    ext x
-    have := hst w.embedding x
-    rw [h x] at this
-    simp only [ComplexEmbedding.conjugate_coe_eq]
-    exact this.symm
-  exact (InfinitePlace.not_isReal_iff_isComplex.mpr (hC.isComplex w)) hw
+    (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) : ∃ x : E, σ x ≠ x :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne hCM
 
 section Main
 

@@ -41,6 +41,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.HRSumSmulRight
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -180,21 +181,8 @@ theorem b_sig_sig (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) 
   apply τ.injective
   rw [h4, h4, star_star]
 
-theorem b_sig_nt (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
-  by_contra hn
-  push Not at hn
-  have hs : σ = AlgHom.id F E := AlgHom.ext hn
-  obtain ⟨-, htc, -, h4⟩ := h
-  let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom
-  have hr : ComplexEmbedding.IsReal τ := by
-    rw [ComplexEmbedding.isReal_iff]
-    ext x
-    rw [ComplexEmbedding.conjugate_coe_eq]
-    have := h4 τ x
-    rw [hs, AlgHom.id_apply] at this
-    rw [starRingEnd_apply]; exact this.symm
-  exact InfinitePlace.not_isReal_iff_isComplex.2 (htc.isComplex (InfinitePlace.mk τ))
-    (InfinitePlace.isReal_mk_iff.2 hr)
+theorem b_sig_nt (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ x, σ x ≠ x :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne h
 
 end Gen
 

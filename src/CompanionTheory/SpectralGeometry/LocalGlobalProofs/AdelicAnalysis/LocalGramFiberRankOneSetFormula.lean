@@ -57,6 +57,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -77,17 +78,8 @@ theorem conj_invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
-theorem exists_conj_ne (h : IsCMExt F E σ) : ∃ e : E, σ e ≠ e := by
-  by_contra hσ
-  push_neg at hσ
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have := h.2.1
-  apply IsTotallyComplex.complexEmbedding_not_isReal τ
-  rw [ComplexEmbedding.isReal_iff]
-  ext x
-  have := h.2.2.2 τ x
-  rw [hσ] at this
-  simpa [ComplexEmbedding.conjugate_coe_eq] using this.symm
+theorem exists_conj_ne (h : IsCMExt F E σ) : ∃ e : E, σ e ≠ e :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne h
 
 theorem exists_imag (h : IsCMExt F E σ) :
     ∃ w : E, σ w = -w ∧ ∀ e : E, ∃ a c : F, a • (1 : E) + c • w = e := by

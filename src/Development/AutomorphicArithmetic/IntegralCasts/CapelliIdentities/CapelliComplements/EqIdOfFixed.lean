@@ -9,26 +9,15 @@ import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
 namespace Bl.EqIdOfFixed
 
 private lemma ne_id_of_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E) (h : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) : ∃ y : E, σ y ≠ y := by
-  unfold HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt at h
-  obtain ⟨-, hc, -, hs⟩ := h
-  by_contra hne0
-  have hne : ∀ z : E, σ z = z := fun z => by_contra fun hz => hne0 ⟨z, hz⟩
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have := hc
-  apply NumberField.IsTotallyComplex.complexEmbedding_not_isReal τ
-  rw [NumberField.ComplexEmbedding.isReal_iff]
-  ext z
-  rw [NumberField.ComplexEmbedding.conjugate_coe_eq]
-  have := hs τ z
-  rw [hne z] at this
-  exact this.symm
+    (σ : E →ₐ[F] E) (h : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) : ∃ y : E, σ y ≠ y :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne h
 
 private lemma eq_id_of_fix {F E : Type} [Field F] [Field E] [Algebra F E]
     (hd : Module.finrank F E = 2) (σ : E →ₐ[F] E) {x : E} (hx : σ x = x)

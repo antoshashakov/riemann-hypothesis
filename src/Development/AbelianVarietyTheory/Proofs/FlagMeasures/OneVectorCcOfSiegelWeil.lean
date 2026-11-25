@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -126,16 +127,8 @@ theorem sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
-private theorem exists_not_fixed_of_isCMExt (h : IsCMExt F E σ) : ∃ y : E, σ y ≠ y := by
-  by_contra hno
-  push Not at hno
-  obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
-  have hc := h.2.1.isComplex w
-  rw [InfinitePlace.isComplex_iff] at hc
-  apply hc
-  rw [ComplexEmbedding.isReal_iff]
-  ext x
-  rw [ComplexEmbedding.conjugate_coe_eq, starRingEnd_apply, ← h.2.2.2, hno]
+private theorem exists_not_fixed_of_isCMExt (h : IsCMExt F E σ) : ∃ y : E, σ y ≠ y :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne h
 
 private theorem exists_witt_eq_teich_add_p_teich_frob_symm_add_p_sq_mul (h : IsCMExt F E σ) :
     ∃ w : E, σ w = -w ∧ ∀ x : E, ∃ a b : F, x = algebraMap F E a + algebraMap F E b * w := by

@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -183,19 +184,8 @@ theorem sigma_invol (hCM : IsCMExt F E σ) (y : E) : σ (σ y) = y := by
   apply τ.injective
   rw [hCM.2.2.2 τ (σ y), hCM.2.2.2 τ y, star_star]
 
-theorem sigma_ne_id (hCM : IsCMExt F E σ) : ∃ y, σ y ≠ y := by
-  by_contra hcon
-  push_neg at hcon
-  obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
-  have hR : ComplexEmbedding.IsReal τ := by
-    rw [ComplexEmbedding.isReal_iff]
-    ext x
-    rw [ComplexEmbedding.conjugate_coe_eq]
-    have := hCM.2.2.2 τ x
-    rw [hcon x] at this
-    exact this.symm
-  have hc := hCM.2.1.isComplex (InfinitePlace.mk τ)
-  exact (InfinitePlace.not_isReal_iff_isComplex.2 hc) ⟨τ, hR, rfl⟩
+theorem sigma_ne_id (hCM : IsCMExt F E σ) : ∃ y, σ y ≠ y :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne hCM
 
 theorem oev_one : (1 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
   have := PI.LocMassTypU.inclR_mem (E := E) v 1

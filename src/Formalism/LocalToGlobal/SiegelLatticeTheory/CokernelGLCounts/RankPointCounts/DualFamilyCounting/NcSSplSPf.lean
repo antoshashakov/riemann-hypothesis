@@ -50,6 +50,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.RingTheory.Adjoin.PowerBasis
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -72,17 +73,8 @@ theorem sigma_sq_of_cm (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (�
   apply τ.injective
   rw [hτ, hτ, star_star]
 
-theorem exists_moved_of_cm (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ y, σ y ≠ y := by
-  obtain ⟨-, hC, -, hτ⟩ := h
-  by_contra hno
-  push Not at hno
-  let τ : E →+* ℂ := Classical.arbitrary _
-  have hR : ComplexEmbedding.IsReal τ := by
-    rw [ComplexEmbedding.isReal_iff]
-    ext x
-    exact ((hτ τ x).symm.trans (congrArg τ (hno x)) : _)
-  exact (InfinitePlace.not_isReal_iff_isComplex.2 (hC.isComplex (InfinitePlace.mk τ)))
-    (InfinitePlace.isReal_mk_iff.2 hR)
+theorem exists_moved_of_cm (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ y, σ y ≠ y :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne h
 
 end CM
 

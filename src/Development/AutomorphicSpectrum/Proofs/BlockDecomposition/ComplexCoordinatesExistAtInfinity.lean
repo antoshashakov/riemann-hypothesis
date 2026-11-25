@@ -55,6 +55,7 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSie
 import Formalism.LocalToGlobal.BesselHermitianTheta.NoncompactGapAtLeastRange
 import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
 import Formalism.LocalToGlobal.ProjectiveLattices.ErealAddIInf
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 
 @[expose] public section
 
@@ -74,17 +75,8 @@ section Field
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-theorem exists_moved (h : IsCMExt F E σ) : ∃ θ : E, σ θ ≠ θ := by
-  by_contra hc
-  push_neg at hc
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have hc' := h.2.1
-  refine IsTotallyComplex.complexEmbedding_not_isReal τ ?_
-  rw [ComplexEmbedding.isReal_iff]
-  ext y
-  have := h.2.2.2 τ y
-  rw [hc y] at this
-  simpa using this.symm
+theorem exists_moved (h : IsCMExt F E σ) : ∃ θ : E, σ θ ≠ θ :=
+  _root_.GlobalTheory.CompanionTheory.SW.HermOne.exists_ne h
 
 theorem im_ne_zero (h : IsCMExt F E σ) {θ : E} (hθ : σ θ ≠ θ) (τ : E →+* ℂ) : (τ θ).im ≠ 0 := by
   intro h0
