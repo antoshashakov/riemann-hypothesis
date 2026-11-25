@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.UnitFram
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeKernelSchemeGeometricPointsEqKernels
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyAppellHumbertFramePullEqTransitionMuStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyLiftsToLatticeMapScalingForms
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeThetaTraceValuesAtComplexPointsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeThetaTraceValuesAtComplexPoints
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsPeriodCompIsometry
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThetaPointsChangeLevelIsometryLinearMap
 import Mathlib.Algebra.Order.Floor.Extended
@@ -257,7 +257,7 @@ theorem hecke_theta_value_identity : ∀ (E : Type) [Field E] [NumberField E] [I
         ∑ m, θ ((p : ℂ) • (w + wm m)) * fr' j (h w + h (wm m)) := by
   intro E _ _ _ H Dw l Xo c σ r U _ _ P p i k k' x x' C z t hA hK hz hb g e F ik Pm Pm' hP hP' hu hu'
     Hm χl fr θ hH _ him hd hn hc h0 ha hv Hm' χl' fr' θ' _ _ him' hd' _ hc' h0' ha' hv'
-  obtain ⟨ψ, ψp, n, cr, b, hk, hr, hb0, hbt, hbr, hbh, hbv⟩ := GlobalTheory.T.heckeThetaTrace_values_at_complexPoints E H Dw l Xo c σ p (U.un k x) z C hz
+  obtain ⟨ψ, ψp, n, cr, b, hk, hr, hb0, hbt, hbr, hbh, hbv⟩ := _root_.GlobalTheory.HeckeValues.hkPtC_values E H Dw l Xo c σ p (U.un k x) z C hz
   have hcard : n = Ideal.absNorm P ^ i := by
     letI := fieldCAt σ
     haveI := algClosedCAt σ

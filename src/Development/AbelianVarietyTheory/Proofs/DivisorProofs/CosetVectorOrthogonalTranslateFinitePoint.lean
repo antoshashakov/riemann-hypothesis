@@ -21,7 +21,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOfCo
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeIntertwinerStandardToSkewMemThetaSpace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemIdealIntegralFiniteAdelesOfMemCompletionStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryFinitePointCongrOneOfInvConjCongrStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryFinitePointCongrOneOfInvConjCongr
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuedFiniteUnitaryLeOneOffOpenSubsetStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuedOneSubLeOfMovesIdealCompletionStatement
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SelfDualCLatP
@@ -306,7 +306,7 @@ theorem mem_of_char_eq {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {r : D.hos
       ← one_add_one_eq_two (R := D.host.E)]
     simp only [RingHom.map_mul, RingHom.map_add, RingHom.map_one]
     ring
-  have hc := GlobalTheory.T.unitaryFinitePoint_congr_one_of_inv_conj_congr (_root_.GlobalTheory.ConjPlace.conj_place D) 𝔪 Sf hG y (GlobalTheory.T.valued_finiteUnitary_le_one_off_openSubset S g y Sf gS hg hy) fun w hw => by
+  have hc := _root_.GlobalTheory.CosetOrth.Cong.inHat_of_inv_cong (_root_.GlobalTheory.ConjPlace.conj_place D) 𝔪 Sf hG y (GlobalTheory.T.valued_finiteUnitary_le_one_off_openSubset S g y Sf gS hg hy) fun w hw => by
     obtain ⟨h1, h2, h3⟩ := place_facts hG hw k
     exact GlobalTheory.T.valued_one_sub_le_of_moves_idealCompletion (skewId D 𝔪) w _ _ (finMat y⁻¹) h3 h1 h2 key
   refine ⟨(GlobalTheory.NormSum.mem_intG y).2 fun i j => ⟨?_, ?_⟩, fun i j => GlobalTheory.T.mem_idealIntegralFiniteAdeles_of_memCompletion 𝔪 hG.1 _ ?_⟩

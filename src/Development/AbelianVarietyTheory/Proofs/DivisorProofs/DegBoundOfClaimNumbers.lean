@@ -1,7 +1,11 @@
 module
 
 public import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.RealCubicMeans.LogMeanShares.LogMeanStatements.HSClaim
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertSamuelDegreeRatioLowerBoundRearrangedStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HilbertSamuelDegreeRatioLowerBoundRearranged
+public import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.LevelCarrying
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsCoprimeOfNatCast
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenIffTransl
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -109,7 +113,7 @@ theorem deg_bound_of_claim_numbers : ∀ (T D : ℕ) (PP kap b z ρ n Λ β ΛD 
   have hl0 : Real.log Λ + 26 * Real.log (n * D * δ * (1 + Real.log Λ)) ≤
       27 * (PP * (q + 1)) + 65 * PP := by
     rw [hprod]; linarith
-  have key := GlobalTheory.T.hilbertSamuel_degree_ratio_lower_bound_rearranged T D n Λ β ΛD ΛT J δ h d deg z (27 * (PP * (q + 1)) + 65 * PP)
+  have key := _root_.GlobalTheory.CovNum.deg_lower_of_claim T D n Λ β ΛD ΛT J δ h d deg z (27 * (PP * (q + 1)) + 65 * PP)
     (by omega) hD1 hn hΛ hβ hΛD hΛT hδ hd hz0 hz2 hcmp hl0 hclaim
 
   have hPPq : 0 ≤ PP * q := mul_nonneg (by linarith) hq0

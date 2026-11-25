@@ -10,7 +10,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDominantToUnitLef
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitCoefficientOfThetaSquareIntegralTorsion
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiSqGenericPointEqMonomialMulSymmetricStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PsiZeroMulRigidificationKEqOneStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFamilyCoefficientIntegralTorusPointStatement
+public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFamilyCoefficientIntegralTorusPoint
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaSquareProductIsFunctionOnSpecStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFrameRatio
 import Mathlib.Algebra.Order.Floor.Extended
@@ -178,7 +179,7 @@ theorem integral_sq_terms : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [
   have key : ∀ mu c, algebraMap V₁ (FractionRing V₁) (u mu c * mo mu) ^ 2 =
       lam ^ 2 * (k mu : FractionRing V₁) * algebraMap V₁ (FractionRing V₁) (G mu c) := by
     intro mu c
-    have E1 := GlobalTheory.T.thetaFamily_coefficient_integral_torusPoint V₁ D θ lam th hlam hψ0 (e mu) (g c) (b c) (hgb c) (w c) _ (hcoef mu c) z J hJ
+    have E1 := _root_.GlobalTheory.UT.CoefInt.coef_int V₁ D θ lam th hlam hψ0 (e mu) (g c) (b c) (hgb c) (w c) _ (hcoef mu c) z J hJ
     have E2 := hkψ mu z J hJ
     have E3 := hGv mu c _ (toUnit (TF (R := V₁) (FractionRing V₁))).left z J hJ
     rw [gs_top, htv c z J hJ, hχv mu c z J hJ] at E3

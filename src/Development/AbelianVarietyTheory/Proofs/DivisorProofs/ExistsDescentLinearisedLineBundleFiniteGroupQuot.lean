@@ -13,7 +13,12 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenI
 public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldMapEqOfGroupInvariantStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantLocalEquationCartierFiniteQuotienStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitOfCocycleRightActionCharZeroStatement
+public import Mathlib.Algebra.CharZero.Defs
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.Algebra.Group.Units.Defs
+public import Mathlib.Algebra.Ring.Hom.Defs
+public import Mathlib.Basic.Finite.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitOfCocycleRightActionCharZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -175,7 +180,7 @@ theorem descent : ∀ (F : Type) [Field F] [NumberField F] (X W : Scheme.{0}) [I
       exact (zeroAt_iff.1 h0).2 (unitAt_genericPoint hne)
     rw [map_one, one_mul, inv_one, mul_one, sub_eq_zero, ← Units.val_one, Units.val_inj, inv_eq_one] at h1
     exact h1
-  obtain ⟨f, hf⟩ := GlobalTheory.T.hilbert90_finite_rightAction_charZero_field _ Γ σ hσ c hcoc' htriv
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.exists_unit_of_cocycle_rightAction_charZero _ Γ σ hσ c hcoc' htriv
   have hfu : ∀ γ, fnAct ρ γ f = c γ * f := fun γ => Units.ext (by rw [hσu, Units.val_mul]; exact hf γ)
   set D' := D - CartierDiv.principal f with hD'
   have hD : D' + CartierDiv.principal f = D := sub_add_cancel _ _

@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.LevChiE
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TwTrans
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BaseChartDecorationLevelPrimeFunctionalEqConjMulStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PhiOneEqOneIffColumnConditionStatement
+public import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PhiOneEqOneIffColumnCondition
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLevelPrimePhiOneEqOneIffColumnsStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -77,7 +78,7 @@ theorem phiT_base_eq_prod : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok
   obtain ⟨⟨e, he⟩, hS2⟩ := hS
   obtain ⟨hLj, hSj⟩ := hS2 j hj0
   obtain ⟨hLj', hSj'⟩ := hS2 (j + 1) hj
-  have hG := GlobalTheory.T.phi_one_eq_one_iff_column_condition B.LL (A.p0 j α).1.1.deco.1 (A.p0 (j + 1) γ).1.1.deco.1 (B.fields.conjO (X.piT u))
+  have hG := _root_.GlobalTheory.PhiOneVal.phiT_eq_one_iff_colCond B.LL (A.p0 j α).1.1.deco.1 (A.p0 (j + 1) γ).1.1.deco.1 (B.fields.conjO (X.piT u))
     (A.p0 j α).1.1.deco.2 (A.p0 (j + 1) γ).1.1.deco.2 (hA.base j hj0 α).2 (hA.base (j + 1) hj γ).2
     (fun P x hx r hr c hc => GlobalTheory.T.baseChartDecoration_levelPrimeFunctional_eq_conj_mul I l Z u a Ch A hA j hj0 α P x hx r hr c hc)
     (fun P x hx r hr c hc => GlobalTheory.T.baseChartDecoration_levelPrimeFunctional_eq_conj_mul I l Z u a Ch A hA (j + 1) hj γ P x hx r hr c hc)

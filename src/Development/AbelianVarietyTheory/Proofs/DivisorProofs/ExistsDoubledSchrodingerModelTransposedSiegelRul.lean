@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryPartnerDiagStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumTransportAdelicSchwartzThetaTransStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelRuleTransportedWeilDatumDoubledTargetStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumDoubledTargetRestrictBoxTensStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumDoubledTargetRestrictBoxTens
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumIsUnitaryAdelicSchwartzStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumKeepsAdmissibleFormsStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -120,7 +120,7 @@ theorem exists_dbl_target : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStd
     siegelRule_reindex finSumFinEquiv (dblRows co) _ (reindex_dbl_incM T hA) χS _ hsg
   refine ⟨_, _, t1, ⟨t2, t4, t5⟩, ?_⟩
   intro g gd hgd φ₁ hφ₁ φ₂ hφ₂
-  have key := GlobalTheory.T.transportedWeilDatum_doubledTarget_restrict_boxTensor D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom ωd hωd omp hmp
+  have key := _root_.GlobalTheory.WeilSchrodinger.DblRestrict.omp_diag_boxFun D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom ωd hωd omp hmp
     g (ugDbl T hA gd) (by rw [ugDbl_coe, hgd]) φ₁ hφ₁ φ₂ hφ₂
   rw [MonoidHom.comp_apply, MonoidHom.comp_apply, MonoidHom.inl_apply]
   exact key

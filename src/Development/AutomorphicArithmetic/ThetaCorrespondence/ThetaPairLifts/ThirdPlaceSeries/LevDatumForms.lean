@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Expon
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitPlOfNotIsConjPl
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AuxiliaryPrimePlacesNonemptyStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChosenHalfSplitPlacesMeetsConjugatePairOnceStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLevelGroupWithCharacterAtTypePlacesStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLevelGroupWithCharacterAtTypePlaces
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsResidueHomZmodAtTypePlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSplitPlaceOfIsSplitPlaceCmFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FifteenNotMemAndDeltaInertiaOrderDividesFifteenPStatement
@@ -105,7 +105,7 @@ theorem levDatum_forms_alt : GlobalTheory.Published.GlobalArtinReciprocity → �
   have hδt := fun P (hP : P ∈ qpOf D Pq (T.pD i)) =>
     GlobalTheory.T.tameValues_galoisChar_form_residue_unit_character (T.delta i) P (if b then 1 else -1) 15 (T.delta_open i) (GlobalTheory.T.fifteen_not_mem_and_delta_inertia_order_divides_fifteen_pow D T i P (qpOf_sub D Pq _ hP)).1
       (GlobalTheory.T.fifteen_not_mem_and_delta_inertia_order_divides_fifteen_pow D T i P (qpOf_sub D Pq _ hP)).2
-  obtain ⟨J, χ, hJo, hhyp, hJm, hchi⟩ := GlobalTheory.T.exists_levelGroup_with_character_at_type_places D T In.θ i j b k Q ψ (qpOf D Pq Q) (qpOf D Pq (T.pD i)) sp redG
+  obtain ⟨J, χ, hJo, hhyp, hJm, hchi⟩ := _root_.GlobalTheory.LevGChar.levGroup_exists D T In.θ i j b k Q ψ (qpOf D Pq Q) (qpOf D Pq (T.pD i)) sp redG
     hspw hv hdisj1 hdisj2 hpG (qpOf_sub D Pq Q) (qpOf_sub D Pq _) hψt hδt
   obtain ⟨hQc, hQn⟩ := GlobalTheory.T.chosenHalf_splitPlaces_meets_conjugatePair_once D Pq hPq Q hQs
   obtain ⟨hDc, hDn⟩ := GlobalTheory.T.chosenHalf_splitPlaces_meets_conjugatePair_once D Pq hPq (T.pD i) hDs

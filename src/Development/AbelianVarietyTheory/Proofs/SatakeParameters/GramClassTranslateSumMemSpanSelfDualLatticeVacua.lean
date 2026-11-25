@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsGramClassRepsSelfDualLatticeGroupStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsGramClassRepsSelfDualLatticeGroup
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualLatticeOfIntegralGramMatrixStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.VacuumTranslateSumSelfDualLatticeFixedStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -116,7 +116,7 @@ theorem gramClass_sum_mem_span_selfDual_vac : ∀ (L : Type) [Field L] [CharZero
   obtain ⟨hU, hodd, hSint, hTint, hS, hT, hδ, hpsi_int, hpsi_ne, -, hρ, -, -, -⟩ := hP'
   obtain ⟨a, ha1, ha2, ha3, ha4⟩ := GlobalTheory.T.selfDual_lattice_of_integral_gramMatrix L ϖ σ q n n' JS JT hU hodd hSint hTint hS hT x hx
   obtain ⟨Y, hxY, hYA, hYd, B, _, _, b0, l, hb0, hl, hcov, hmul, hsep⟩ :=
-    GlobalTheory.T.exists_gramClass_reps_selfDualLattice_group L ϖ σ q δ n n' JS JT ψ hU hodd hSint hTint hS hT hδ hpsi_int hpsi_ne x hx a ⟨ha1, ha2, ha3, ha4⟩
+    _root_.GlobalTheory.Hk3.GramSep.gram_class_family L ϖ σ q δ n n' JS JT ψ hU hodd hSint hTint hS hT hδ hpsi_int hpsi_ne x hx a ⟨ha1, ha2, ha3, ha4⟩
   have hψinv : ∀ a, ψ a * ψ (-a) = 1 := fun a => by
     rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]
   have hshift : ∀ y u, u ∈ HoweDuality.intMat L n' n →
