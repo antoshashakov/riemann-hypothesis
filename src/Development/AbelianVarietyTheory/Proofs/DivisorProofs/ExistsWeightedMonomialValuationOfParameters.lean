@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomolo
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsBasisKaehlerOfAlgebraicIndependent
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsWeaklyRegularIffIsQuasiRegularSeqOfIsLocalRing
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResidueCoordinatesOfLocalModelBelowPlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsResidueCoordinatesOfLocalModelBelowPlace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeightedMonomialPlace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeGeneratorTopForm
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SpanFinrankMaximalIdealLeNcardOfLeSupSq
@@ -185,7 +185,7 @@ theorem monomial_place : ∀ {L : Type} [Field L] (c : ℂ →+* L) (Q : Subring
 
   · intro y hy
     obtain ⟨xT, hxT⟩ := hx
-    obtain ⟨j, s, hjN, hsu⟩ := GlobalTheory.T.exists_residue_coordinates_of_localModel_below_place c Q hQ N r V hC u ⟨xT, hxT⟩ hmV hunit hloc
+    obtain ⟨j, s, hjN, hsu⟩ := _root_.GlobalTheory.FieldPair.exists_residue_coords_of_locModel c Q hQ N r V hC u ⟨xT, hxT⟩ hmV hunit hloc
     subst hjN
     obtain ⟨w, hw⟩ : ∃ w : Fin (r + j) → V.ring,
         w = Fin.append u fun i => (⟨s i, hC _ (s i).2⟩ : V.ring) := ⟨_, rfl⟩
