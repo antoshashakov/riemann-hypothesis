@@ -1,12 +1,13 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.LeibnizOrd
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeibnizOrderOfExactSequencesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiGpCommutationHoldsStatement
+public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.PhiPG0
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeibnizOrderOfExactSequences
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiGpCommutationHolds
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiPgCommutationHolds
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiPgRankZeroHoldsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PsiGpCommutationHoldsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueSequenceHoldsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PhiPgRankZeroHolds
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PsiGpCommutationHolds
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResidueSequenceHolds
 public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.ComplementarySeries.HighestDerivativeProducts.IsSmoothCharDpowM
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -52,7 +53,7 @@ namespace GlobalTheory.RgGu.Leib.Hand
 
 theorem leibnizOrd (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     LeibnizOrd k :=
-  GlobalTheory.T.leibniz_order_of_exact_sequences k (GlobalTheory.T.residue_sequence_holds k) (GlobalTheory.T.psi_gp_commutation_holds k) (GlobalTheory.T.phi_gp_commutation_holds k) (GlobalTheory.CompanionTheory.BZPsiPG.Hand.psiPG k) (GlobalTheory.CompanionTheory.BZPhiPG.phiPG k)
-    (GlobalTheory.T.phi_pg_rank_zero_holds k)
+  _root_.GlobalTheory.CompanionTheory.LeibOrd.Main.leibnizOrd_of_parts k (_root_.GlobalTheory.CompanionTheory.BZRes.resSeq k) (_root_.GlobalTheory.CompanionTheory.RgGu.PsiGP.psiGP k) (_root_.GlobalTheory.CompanionTheory.LeibPhi.phiGP k) (GlobalTheory.CompanionTheory.BZPsiPG.Hand.psiPG k) (GlobalTheory.CompanionTheory.BZPhiPG.phiPG k)
+    (_root_.GlobalTheory.CompanionTheory.MirLevi.phiPG0_holds k)
 
 end GlobalTheory.RgGu.Leib.Hand

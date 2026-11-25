@@ -2,11 +2,14 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TranslDiffEq
 public import Mathlib.Tactic.ENatToNat
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArtinSchreierCocycleRootStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleCocyclePullbackTransformStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowerSeriesExpansionInDeltaUniqueStatement
+public import Mathlib.AlgebraicGeometry.FunctionField
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ArtinSchreierCocycleRoot
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LineBundleCocyclePullbackTransform
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PowerSeriesExpansionInDeltaUnique
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TruncatedExpansionPthPowerCoeffStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ZeroSectionSurjectiveStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ZeroSectionSurjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -230,7 +233,7 @@ theorem cast_p (m : ℕ) (V : (Ym G x m).Opens) (p : ℕ) [CharP k p] : ((p : �
 
 theorem base_eq (p : ℕ) (a : Ym G x p ⟶ G.left) (ha : secZ G x p ≫ a = pullback.fst G.hom x)
     (y : Ym G x p) : a y = (prZ G x p ≫ pullback.fst G.hom x) y := by
-  obtain ⟨z, rfl⟩ := GlobalTheory.T.zero_section_surjective X0 G k x p y
+  obtain ⟨z, rfl⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Coc.secZ_surj X0 G k x p y
   have e : secZ G x p ≫ prZ G x p ≫ pullback.fst G.hom x = pullback.fst G.hom x := by
     rw [← Category.assoc, secZ_prZ, Category.id_comp]
   have h1 := congrArg (fun q : pullback G.hom x ⟶ G.left => q z) (ha.trans e.symm)
@@ -272,7 +275,7 @@ theorem chart_coef (ha : secZ G x p ≫ a = pullback.fst G.hom x)
     ∃ c : Fin (p + 1) → Γ(pullback G.hom x, pullback.fst G.hom x ⁻¹ᵁ L.U j),
       ((Ym G x p).presheaf.map (homOfLE (le_chart G x p L a ha (p : ℤ) j)).op).hom (C.s fun _ => j).val =
         ∑ i, ((prZ G x p).app _).hom (c i) * dltOn G x p _ ^ (i : ℕ) ∧ c 0 = 1 := by
-  obtain ⟨c, hc, -⟩ := GlobalTheory.T.power_series_expansion_in_delta_unique X0 G k x p _
+  obtain ⟨c, hc, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Coc.Thick.sections_thick X0 G k x p _
     (((Ym G x p).presheaf.map (homOfLE (le_chart G x p L a ha (p : ℤ) j)).op).hom (C.s fun _ => j).val)
   refine ⟨c, hc, ?_⟩
   have hs := le_sec G x p (pullback.fst G.hom x ⁻¹ᵁ L.U j)
@@ -287,7 +290,7 @@ theorem tr_coef (ha : secZ G x p ≫ a = pullback.fst G.hom x) (j j' : L.ι)
     ∃ u : Fin (p + 1) → Γ(pullback G.hom x, pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j'),
       (trU L a (prZ G x p ≫ pullback.fst G.hom x) j j' _ hA hB).val =
         ∑ i, ((prZ G x p).app _).hom (u i) * dltOn G x p _ ^ (i : ℕ) ∧ u 0 = 1 := by
-  obtain ⟨u, hu, -⟩ := GlobalTheory.T.power_series_expansion_in_delta_unique X0 G k x p _ (trU L a (prZ G x p ≫ pullback.fst G.hom x) j j' _ hA hB).val
+  obtain ⟨u, hu, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Coc.Thick.sections_thick X0 G k x p _ (trU L a (prZ G x p ≫ pullback.fst G.hom x) j j' _ hA hB).val
   refine ⟨u, hu, ?_⟩
   have hs := le_sec G x p (pullback.fst G.hom x ⁻¹ᵁ L.U j ⊓ pullback.fst G.hom x ⁻¹ᵁ L.U j')
   rw [← sec_sum G x p _ hs u, ← hu]
@@ -330,7 +333,7 @@ theorem overlap [Fact p.Prime] [CharP k p] (ha : secZ G x p ≫ a = pullback.fst
   refine GlobalTheory.T.truncated_expansion_pth_power_coeff _ _ ((prZ G x p).app _).hom (dltOn G x p _) p (cast_p G x _ _ p) (dltOn_pow G x p _)
     ?_ u _ _ u₀ ?_ ?_ hg'
   · intro c c' e
-    exact (GlobalTheory.T.power_series_expansion_in_delta_unique X0 G k x p _ _).unique rfl e
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.Coc.Thick.sections_thick X0 G k x p _ _).unique rfl e
   · rw [e₁, map_one]
   · rw [e₂, map_one]
 
@@ -379,7 +382,7 @@ theorem second (hp : 1 ≤ p) (hL : L.IsLB) (ha : secZ G x p ≫ a = pullback.fs
   have e : trY G x p hp ≫ prZ G x p ≫ pullback.fst G.hom x = prZ G x 1 ≫ pullback.fst G.hom x := by
     rw [← Category.assoc, trY_prZ]
   rw [e]
-  refine GlobalTheory.T.line_bundle_cocycle_pullback_transform _ _ L hL _ _ ?_ (fun j => tU G x _ (s j)) ?_
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Coc.exists_gen_of_units _ _ L hL _ _ ?_ (fun j => tU G x _ (s j)) ?_
   · intro y
     have h := base_eq G x p a ha (trY G x p hp y)
     have h' := congrArg (fun q : Ym G x 1 ⟶ G.left => q y) e
@@ -437,7 +440,7 @@ theorem core_firstOrder : ∀ (X0 : Scheme.{0}) (G : Over X0) (k : Type) [Field 
       (cu j j') (hcu j j') (hcu0 j j')]
     ring
   obtain ⟨r, hr'⟩ := hr (cf j₀) (CoreP.le_chart G x p L a ha (p : ℤ) j₀) (hcf j₀)
-  obtain ⟨s, hs⟩ := GlobalTheory.T.artin_schreier_cocycle_root (pullback G.hom x) p hZ L.ι (fun j => pullback.fst G.hom x ⁻¹ᵁ L.U j)
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.CechP.coboundary_of_pow_coboundary (pullback G.hom x) p hZ L.ι (fun j => pullback.fst G.hom x ⁻¹ᵁ L.U j)
     (fun j j' => cu j j' ⟨1, Nat.succ_lt_succ (Nat.Prime.pos Fact.out)⟩) (fun j => cf j (Fin.last p)) j₀ hnp ⟨r, hr'⟩
   exact CoreP.second G x p L a hp hL ha s cu hA hB hcu hcu0 hs
 

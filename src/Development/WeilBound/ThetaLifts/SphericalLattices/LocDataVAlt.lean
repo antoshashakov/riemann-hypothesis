@@ -1,16 +1,18 @@
 module
 
 public import Development.WeilBound.ThetaLifts.SphericalLattices.HoweDefs
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceLocalHeisenbergEndomorphismStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearModelOppositeLagrangianUnitaryOpStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalChartInertPlaceUnitaryPairStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalWeilHomFinitePlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceIntegralUnitaryPointsFixVacuumStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceLocalHeisenbergOperatorsLawStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceVacuumIsLocalVacuumChartStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertPlaceLocalHeisenbergEndomorphism
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearModelOppositeLagrangianUnitaryOp
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalChartInertPlaceUnitaryPair
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalWeilHomFinitePlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInertLocalUniformizerImports
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceIntegralUnitaryPointsFixVacuum
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceLocalHeisenbergOperatorsLaw
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceVacuumIsLocalVacuumChart
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceWeilNormalisesHeisenbergStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfDualLocalSubgroupFirstProjEqAnnihilator
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanHeisenbergTranslatesVacuumInertPlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanHeisenbergTranslatesVacuumInertPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -60,17 +62,17 @@ theorem locDataV' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
     {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
     (hTr : IsTriple B G X om om') {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w)
     (hv : v ∉ X.T) : LocData G.M' om' v := by
-  obtain ⟨ϖ, σL, q, δ, JS, JT, ψL, κ, ιS, ιT, hC⟩ := GlobalTheory.T.exists_localChart_inertPlace_unitaryPair F E σ B a a' G X om om' hTr v w hw hv
+  obtain ⟨ϖ, σL, q, δ, JS, JT, ψL, κ, ιS, ιT, hC⟩ := _root_.GlobalTheory.InertBridge.exists_chart F E σ B a a' G X om om' hTr v w hw hv
   have hC' := hC
   obtain ⟨unr, hodd, intS, intT, hS, hT, hδ, p1, p2, -, -, -, -, -, hιS, hιT, hKS, hKT⟩ := hC'
-  obtain ⟨ρ, hρ⟩ := GlobalTheory.T.exists_inertPlace_local_heisenbergEndomorphism F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC
-  obtain ⟨ω, hω⟩ := GlobalTheory.T.exists_localWeilHom_finitePlace F E σ B a a' G X om om' hTr v w hw hv σL JS JT ιS ιT hιS hιT
-  obtain ⟨r0, rmul⟩ := GlobalTheory.T.inertPlace_localHeisenbergOperators_law F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ
-  obtain ⟨s, hs, hs0, hsv⟩ := GlobalTheory.T.inertPlace_vacuum_isLocalVacuum_chart F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ
-  have hline := GlobalTheory.T.exists_smul_vac_eq_of_localVacuum_linearModel F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ s
-  have hspan := GlobalTheory.T.span_heisenbergTranslates_vacuum_inertPlace F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ s hs
+  obtain ⟨ρ, hρ⟩ := _root_.GlobalTheory.InertRho.exists_rho F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC
+  obtain ⟨ω, hω⟩ := _root_.GlobalTheory.LocalWeilHom.local_weil_hom F E σ B a a' G X om om' hTr v w hw hv σL JS JT ιS ιT hιS hιT
+  obtain ⟨r0, rmul⟩ := _root_.GlobalTheory.InertRhoLaw.rho_law F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ
+  obtain ⟨s, hs, hs0, hsv⟩ := _root_.GlobalTheory.InertBridgeVac.vac_locVac F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ
+  have hline := _root_.GlobalTheory.InertBridgeLine.locVac_line F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ s
+  have hspan := _root_.GlobalTheory.InertSpan.span_translates_vac F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ s hs
   have hnorm := GlobalTheory.T.inertPlace_weil_normalises_heisenberg F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ ω hω
-  have hfix := GlobalTheory.T.inertPlace_integralUnitaryPoints_fix_vacuum F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ω hω s hs
+  have hfix := _root_.GlobalTheory.InertBridge.fix_vac F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ω hω s hs
   refine ⟨w.adicCompletion E, inferInstance, inferInstance, inferInstance, inferInstance, ϖ, σL, q, δ, JS, JT, ψL, ρ, ω,
     ιS, ιT, s, ⟨unr, hodd, intS, intT, hS, hT, hδ, p1, p2, r0, rmul, ?_, hnorm, ?_⟩, hs0, hsv, hspan, hs,
     hιS, hιT, hKS, hKT, fun g h m φ₁ hφ₁ => hω g h m φ₁ hφ₁⟩

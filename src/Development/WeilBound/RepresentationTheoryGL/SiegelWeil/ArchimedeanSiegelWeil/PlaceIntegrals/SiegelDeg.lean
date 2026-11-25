@@ -3,11 +3,11 @@ module
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSiegelTheta.BigCellDefs
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsBlockNFZeroOne
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameIntegralCongruenceInvariant
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameIntegralEqCoefficientNonrepresentedStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypothesesPreservedByLinearPullbackStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SingularHermitianCongruentBlockNormalFormStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerCoefficientCongruencePullbackStatement
-public import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.SiegelWeilRankCoefficientStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameIntegralEqCoefficientNonrepresented
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HypothesesPreservedByLinearPullback
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SingularHermitianCongruentBlockNormalForm
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerCoefficientCongruencePullback
+public import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.SiegelWeilRankCoefficient
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,11 +56,11 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.Deg
 
 theorem siegelDeg : PositivityTheory.GramSchwartzFunctions.BC.SiegelDeg := by
   intro D r V ψ θ μ lam ν φ hH β hβ
-  obtain ⟨a, t, γ, ha, hγ, rfl⟩ := GlobalTheory.T.singular_hermitian_congruent_block_normal_form D r β hβ
-  rw [_root_.GlobalTheory.CompanionTheory.WeilSiegel.Deg.ifrB_congrH D V ν r φ γ a ha, ← GlobalTheory.T.whittaker_coefficient_congruence_pullback D r V ψ μ lam φ γ a ha hH.2.2.2.1 hH.2.2.2.2.1]
-  have hH' := GlobalTheory.T.hypotheses_preserved_by_linear_pullback D r V ψ θ μ lam ν φ a ha hH
+  obtain ⟨a, t, γ, ha, hγ, rfl⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.Deg.exists_congrH_isBlockNF D r β hβ
+  rw [_root_.GlobalTheory.CompanionTheory.WeilSiegel.Deg.ifrB_congrH D V ν r φ γ a ha, ← _root_.GlobalTheory.CompanionTheory.WeilSiegel.Deg.W_congr D r V ψ μ lam φ γ a ha hH.2.2.2.1 hH.2.2.2.2.1]
+  have hH' := _root_.GlobalTheory.CompanionTheory.WeilSiegel.Deg.hyp_pull D r V ψ θ μ lam ν φ a ha hH
   by_cases hx : ∃ x : Matrix (Fin V.rank) (Fin r) D.host.E, x.rank = r ∧ gramQ V x = γ.1
-  · exact GlobalTheory.T.siegel_weil_rank_coefficient D r V ψ θ μ lam ν (pull a φ) hH' t γ hγ hx
-  · exact GlobalTheory.T.frame_integral_eq_coefficient_nonrepresented D r V ψ θ μ lam ν (pull a φ) hH' t γ hγ hx
+  · exact _root_.GlobalTheory.CompanionTheory.WeilSiegel.Frame.siegel_frame D r V ψ θ μ lam ν (pull a φ) hH' t γ hγ hx
+  · exact _root_.GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.noFrame D r V ψ θ μ lam ν (pull a φ) hH' t γ hγ hx
 
 end GlobalTheory.CompanionTheory.WeilSiegel.Deg

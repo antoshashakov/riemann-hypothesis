@@ -1,11 +1,12 @@
 module
 
 public import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.QiDefs
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EpiOfFiniteFlatStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorThroughFiniteFlatStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteOfFiniteFibresStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatOfFibresFiniteStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelFiniteFlatStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZarhinDualPolarisation.FlatFiniteFibres.FlatOfFibresFinite
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EpiOfFiniteFlat
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FactorThroughFiniteFlat
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteOfFiniteFibres
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatOfFibresFinite
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelFiniteFlat
 public import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.KilledAnyOf
 public import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.PolFibreIsogAny
 public import Development.WeilBound.CoreStatements.AbelianHeightsDuality.ZarhinTrick.QiCore
@@ -76,20 +77,20 @@ theorem quasiInverseR_of (h1 : PolFibreIsogAny) (h5 : KilledAny) : QuasiInverseR
   intro C _ _ v R _ _ hv A B _ _ P l g hA hB hgA hgB h₁ h₂ hp
   have hm : IsMonHom l := hp.1
   have fib := h1 C v R hv A B P l g hA hB hgA hgB h₁ h₂ hp
-  obtain ⟨hf, hs⟩ := GlobalTheory.T.finite_of_finite_fibres R A B l hA hB hm fun Ω _ _ s => ⟨(fib Ω s).1, (fib Ω s).2.2⟩
+  obtain ⟨hf, hs⟩ := _root_.GlobalTheory.CompanionTheory.AbFibre.finiteOfFibres R A B l hA hB hm fun Ω _ _ s => ⟨(fib Ω s).1, (fib Ω s).2.2⟩
   have := hA.comm
   have := hA.smooth
   have := hB.smooth
-  have hfl : Flat l.left := GlobalTheory.T.flat_of_fibres_finite R A B l inferInstance inferInstance inferInstance hf
+  have hfl : Flat l.left := _root_.GlobalTheory.CompanionTheory.FlatFib.flatOfFibresFinite R A B l inferInstance inferInstance inferInstance hf
     fun Ω _ _ s => (fib Ω s).2.1
-  obtain ⟨F, _, _, h, hsub, hker⟩ := GlobalTheory.T.kernel_finite_flat R A B l hA hB hm hf hfl
+  obtain ⟨F, _, _, h, hsub, hker⟩ := _root_.GlobalTheory.CompanionTheory.Ar.KerFF.kernelFinFlat R A B l hA hB hm hf hfl
   obtain ⟨n, hn, hk⟩ := h5 C v R hv A F h hsub
-  obtain ⟨g, hg, e⟩ := GlobalTheory.T.factor_through_finite_flat R A B A l (𝟙 A ^ n) hm (qi_isMonHom_id_pow A n) hfl hs inferInstance
+  obtain ⟨g, hg, e⟩ := _root_.GlobalTheory.CompanionTheory.FlatFactor.factorThroughFF R A B A l (𝟙 A ^ n) hm (qi_isMonHom_id_pow A n) hfl hs inferInstance
     fun S _ _ z hz => by
       obtain ⟨φ, rfl⟩ := (hker S z).1 hz
       rw [MonObj.comp_pow, Category.comp_id]
       exact hk S φ
-  refine ⟨n, g, hn, hg, e, GlobalTheory.T.epi_of_finite_flat R A B B l hfl hs inferInstance _ _ ?_⟩
+  refine ⟨n, g, hn, hg, e, _root_.GlobalTheory.CompanionTheory.Dblock.epiOfFF R A B B l hfl hs inferInstance _ _ ?_⟩
   rw [← Category.assoc, e, MonObj.comp_pow, MonObj.pow_comp, Category.id_comp, Category.comp_id]
 
 theorem polFibreIsogAny : PolFibreIsogAny := Z2.polFibreIsogAny
