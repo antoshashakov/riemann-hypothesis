@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCon
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqOneOfApproxByCongruentGlobalUnits
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGlobalApproxOfArtinTrivial
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationEqOneOfCongruentGlobalApproxStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationEqOneOfCongruentGlobalApprox
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,11 +67,11 @@ theorem artin_localIdele_injective : ChevalleyUnits → ∀ (E Ω : Type) [Field
     have hx' : art (Neutral.B1.localIdele E w x⁻¹) = 1 := by rw [map_inv, map_inv, hx, inv_one]
     have hv : Valued.v (x : w.adicCompletion E) = 1 := by
       rcases le_total (Valued.v (x : w.adicCompletion E)) 1 with h | h
-      · exact GlobalTheory.T.valuation_eq_one_of_congruent_global_approx E w x x.ne_zero h (_root_.GlobalTheory.ArtinApprox.exists_global_approx E Ω art ha w x hx)
+      · exact _root_.GlobalTheory.OrdZeroUnit.valuation_eq_one_of_approx E w x x.ne_zero h (_root_.GlobalTheory.ArtinApprox.exists_global_approx E Ω art ha w x hx)
       · have h2 : Valued.v ((x⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≤ 1 := by
           rw [Units.val_inv_eq_inv_val, map_inv₀]
           exact inv_le_one_of_one_le₀ h
-        have h3 := GlobalTheory.T.valuation_eq_one_of_congruent_global_approx E w _ (x⁻¹).ne_zero h2 (_root_.GlobalTheory.ArtinApprox.exists_global_approx E Ω art ha w x⁻¹ hx')
+        have h3 := _root_.GlobalTheory.OrdZeroUnit.valuation_eq_one_of_approx E w _ (x⁻¹).ne_zero h2 (_root_.GlobalTheory.ArtinApprox.exists_global_approx E Ω art ha w x⁻¹ hx')
         rw [Units.val_inv_eq_inv_val, map_inv₀, inv_eq_one] at h3
         exact h3
     exact Units.ext (_root_.GlobalTheory.eq_one_of_approx_by_congruent_units hC E w x hv (_root_.GlobalTheory.ArtinApprox.exists_global_approx E Ω art ha w x hx))

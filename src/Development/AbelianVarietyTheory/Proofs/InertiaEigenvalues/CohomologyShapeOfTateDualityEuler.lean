@@ -2,27 +2,37 @@ module
 
 public import Formalism.GaloisCohomology.LocalTateDualityK
 public import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH0LevelRepEqStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH1LevelRepFormulaStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH2LevelRepOneLeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContActionTorsionLevelZModOfIsLocallyConstantStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharacterIsLocallyConstantModPowStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharacterPowNeOneOfMovesRootStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivFractionRingQuotPiProdFiniteStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisPowMovesPadicRootOfUnityStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH0LevelRepEq
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH1LevelRepFormula
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardH2LevelRepOneLe
+public import Mathlib.Topology.LocallyConstant.Basic
+public import ReciprocityTheory.GaloisValuations.SeparatedDvrSecondCohomologyMem
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContActionTorsionLevelZModOfIsLocallyConstant
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharacterIsLocallyConstantModPow
+public import Formalism.GaloisCohomology.StatementLoc
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharacterPowNeOneOfMovesRoot
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivFractionRingQuotPiProdFinite
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisPowMovesPadicRootOfUnity
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteCardTorsionLevelFractionRingQuotStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2Local
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteInvariantsOfScalarNeOneTwistStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteResidueFieldOfCompactIsAdicDvrStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FractionRingQuotDivisibleByUniformizerStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FractionRingQuotKilledByPowUniformizerStatement
+public import Mathlib.RepresentationTheory.Invariants
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteInvariantsOfScalarNeOneTwist
+public import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteResidueFieldOfCompactIsAdicDvr
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FractionRingQuotDivisibleByUniformizer
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FractionRingQuotKilledByPowUniformizer
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LevRepZApply
 public import Formalism.CharacterColumnKernels.Statement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.H2BoundedTwist
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HcLCExistsPowSmulEqZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocallyConstantOrbitOfInvPowCharacterStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorsionShapeOfTorsionCountsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransferCardH0H1EqStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HcLCExistsPowSmulEqZero
+public import Mathlib.RepresentationTheory.Basic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLocallyConstantOrbitOfInvPowCharacter
+public import Formalism.WachLatticeTwists.CharacterSplitJumps.Statement
+public import Mathlib.RingTheory.LocalRing.ResidueField.Defs
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorsionShapeOfTorsionCounts
+public import ReciprocityTheory.Hypotheses.GalCohDefs
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransferCardH0H1Eq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -77,7 +87,7 @@ theorem shapeG_of_localDuality (hT : Formalism.GaloisCohomology.LocalTateDuality
   haveI := hO.ring
   haveI := hO.compact
   haveI : CompactSpace G := i.symm.toHomeomorph.compactSpace
-  haveI hres : Finite (IsLocalRing.ResidueField O) := GlobalTheory.T.finite_residueField_of_compact_isAdic_dvr hO.adic
+  haveI hres : Finite (IsLocalRing.ResidueField O) := _root_.GlobalTheory.ShapeNeg.finite_residueField_of_compact_isAdic hO.adic
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
   have hpϖ : (p : O) ∈ Ideal.span {ϖ} := by
     rw [← (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ]; exact hO.p_mem
@@ -91,41 +101,41 @@ theorem shapeG_of_localDuality (hT : Formalism.GaloisCohomology.LocalTateDuality
   have hlcε : ∀ N : ℕ, IsLocallyConstant
       (fun g : G => Ideal.Quotient.mk (Ideal.span {(p : O) ^ N}) ((ε g : Oˣ) : O)) := by
     intro N
-    have h := (GlobalTheory.T.cyclotomic_character_isLocallyConstant_mod_pow ε' hcyc' N).comp_continuous i.continuous
+    have h := (_root_.GlobalTheory.ShapeNeg.cyclotomic_isLocallyConstant_mod ε' hcyc' N).comp_continuous i.continuous
     convert h using 1
     funext g
     change Ideal.Quotient.mk _ ((ε g : Oˣ) : O) =
       Ideal.Quotient.mk _ ((ε (i.symm (i g)) : Oˣ) : O)
     rw [i.symm_apply_apply]
   have hMt : ∀ m : M, ∃ n : ℕ, ϖ ^ n • m = 0 := fun m => by
-    obtain ⟨n, hn⟩ := GlobalTheory.T.fractionRingQuot_killed_by_pow_uniformizer hϖ (u m)
+    obtain ⟨n, hn⟩ := _root_.GlobalTheory.ShapeNeg.ko_killed_by_pow_uniformizer hϖ (u m)
     exact ⟨n, u.injective (by rw [map_smul, hn, map_zero])⟩
   have hMp : ∀ m : M, ∃ N : ℕ, (p : O) ^ N • m = 0 := fun m => by
     obtain ⟨n, hn⟩ := hMt m
     obtain ⟨b, hb⟩ := Ideal.mem_span_singleton'.1 (hpn n)
     exact ⟨n, by rw [← hb, mul_smul, hn, smul_zero]⟩
   have hdiv : ∀ m : M, ∃ m' : M, ϖ • m' = m := fun m => by
-    obtain ⟨y, hy⟩ := GlobalTheory.T.fractionRingQuot_divisible_by_uniformizer hϖ (u m)
+    obtain ⟨y, hy⟩ := _root_.GlobalTheory.KO_divisible_by_uniformiser hϖ (u m)
     exact ⟨u.symm y, u.injective (by rw [map_smul, LinearEquiv.apply_symm_apply, hy])⟩
   have hlc : ∀ m : M, IsLocallyConstant (fun g => ρ g m) := fun m => by
     obtain ⟨N, hN⟩ := hMp m
-    exact GlobalTheory.T.isLocallyConstant_orbit_of_inv_pow_character' ε hlcε e ρ hρ m N hN
+    exact _root_.GlobalTheory.ShapeNeg.isLocallyConstant_orbit_of_inv_pow_character ε hlcε e ρ hρ m N hN
   set ρ' : Representation O (Formalism.GaloisCohomology.GK p K) M := ρ.comp i.symm.toMulEquiv.toMonoidHom with hρ'def
   have hρ' : ∀ g m, ρ' g m = ((((ε' g) ^ e)⁻¹ : Oˣ) : O) • m := fun g m => hρ _ m
   have hcont : ∀ (n : ℕ) (h : ((p : O) ^ n) ∈ Ideal.span {ϖ ^ n}),
       letI := GlobalTheory.ShapeNeg.levZ (M := M) p n h
       ReciprocityTheory.Gal.ContAction (GlobalTheory.ShapeNeg.levRepZ p n h ρ') := fun n h =>
-    GlobalTheory.T.contAction_torsionLevelZMod_of_isLocallyConstant ρ' p n (ϖ ^ n) h (fun m _ => (hlc m).comp_continuous i.symm.continuous)
-  obtain ⟨σ1, hσ1⟩ := GlobalTheory.T.cyclotomic_character_pow_ne_one_of_moves_root hO.p_mem hO.p_ne ε' hcyc' e (GlobalTheory.T.exists_galois_pow_moves_padic_rootOfUnity hK e he)
-  obtain ⟨σ2, hσ2⟩ := GlobalTheory.T.cyclotomic_character_pow_ne_one_of_moves_root hO.p_mem hO.p_ne ε' hcyc' (e + 1) (GlobalTheory.T.exists_galois_pow_moves_padic_rootOfUnity hK (e + 1) (Nat.succ_pos e))
+    _root_.GlobalTheory.ShapeNeg.contAction_levRepZ_of_isLocallyConstant ρ' p n (ϖ ^ n) h (fun m _ => (hlc m).comp_continuous i.symm.continuous)
+  obtain ⟨σ1, hσ1⟩ := _root_.GlobalTheory.ShapeNeg.cyc_char_pow_ne_one hO.p_mem hO.p_ne ε' hcyc' e (_root_.GlobalTheory.ShapeNeg.exists_pow_ne_rootOfUnity hK e he)
+  obtain ⟨σ2, hσ2⟩ := _root_.GlobalTheory.ShapeNeg.cyc_char_pow_ne_one hO.p_mem hO.p_ne ε' hcyc' (e + 1) (_root_.GlobalTheory.ShapeNeg.exists_pow_ne_rootOfUnity hK (e + 1) (Nat.succ_pos e))
   have hNfin : Finite ρ.invariants := by
-    refine GlobalTheory.T.finite_invariants_of_scalar_ne_one_twist u ρ (i.symm σ1) ((((ε (i.symm σ1)) ^ e)⁻¹ : Oˣ) : O) ?_ (hρ _)
+    refine _root_.GlobalTheory.ShapeNeg.finite_invariants_of_smul_ne_one u ρ (i.symm σ1) ((((ε (i.symm σ1)) ^ e)⁻¹ : Oˣ) : O) ?_ (hρ _)
     intro h1
     apply hσ1
     have h2 : ((ε (i.symm σ1)) ^ e)⁻¹ = 1 := Units.ext h1
     exact inv_eq_one.1 h2
   obtain ⟨C, hC⟩ := _root_.GlobalTheory.CyclotomicH2Bound.h2_bounded_cyclotomic hT hK hϖ hpϖ ε' hcyc' e u ρ' hρ' σ2 hσ2 hcont
-  have hone2 := GlobalTheory.T.card_H2_level_rep_one_le hT hK hϖ u ρ' (hpn 1) (hcont 1 (hpn 1))
+  have hone2 := _root_.GlobalTheory.ShapeNeg.card_H2_level_rep_le hT hK hϖ u ρ' (hpn 1) (hcont 1 (hpn 1))
   have key : ∀ n : ℕ, 0 < n →
       Finite (LinearMap.ker (ϖ ^ n • LinearMap.id : ReciprocityTheory.ChartRestriction.T2.HcLC ρ →ₗ[O] ReciprocityTheory.ChartRestriction.T2.HcLC ρ)) ∧
       (letI := GlobalTheory.ShapeNeg.levZ (M := M) p n (hpn n)
@@ -138,11 +148,11 @@ theorem shapeG_of_localDuality (hT : Formalism.GaloisCohomology.LocalTateDuality
       (GlobalTheory.ShapeNeg.levRepZ p n (hpn n) ρ') hn (hcont n (hpn n))
     have hEu := hE p K hK n (GlobalTheory.ShapeNeg.Lev M (ϖ ^ n)) (GlobalTheory.ShapeNeg.levRepZ p n (hpn n) ρ') hn
       (hcont n (hpn n))
-    obtain ⟨t0, t1⟩ := GlobalTheory.T.transfer_card_H0_H1_eq i ρ p n (ϖ ^ n) (hpn n)
+    obtain ⟨t0, t1⟩ := _root_.GlobalTheory.ShapeNeg.transfer_card_H0_H1 i ρ p n (ϖ ^ n) (hpn n)
     have hH1O : Finite (ReciprocityTheory.Gal.H1 (GlobalTheory.ShapeNeg.levRep ρ (ϖ ^ n))) :=
       Nat.finite_of_card_ne_zero (by rw [t1]; exact Nat.card_pos.ne')
-    obtain ⟨hXf, hX⟩ := GlobalTheory.T.card_H1_level_rep_formula ρ ϖ n hdiv hlc hH1O
-    have h0c := GlobalTheory.T.card_H0_level_rep_eq ρ (ϖ ^ n) hNfin
+    obtain ⟨hXf, hX⟩ := _root_.GlobalTheory.ShapeNeg.SeqCount.card_H1_level_rep_eq ρ ϖ n hdiv hlc hH1O
+    have h0c := _root_.GlobalTheory.ShapeNeg.card_H0_level_rep ρ (ϖ ^ n) hNfin
     set Nq := Nat.card (ρ.invariants ⧸
       LinearMap.range (ϖ ^ n • LinearMap.id : ρ.invariants →ₗ[O] ρ.invariants)) with hNq
     haveI : Finite (ρ.invariants ⧸
@@ -154,14 +164,14 @@ theorem shapeG_of_localDuality (hT : Formalism.GaloisCohomology.LocalTateDuality
         (Nat.card (ReciprocityTheory.Gal.H2 (GlobalTheory.ShapeNeg.levRepZ p n (hpn n) ρ')) * q ^ (n * d)) * Nq := by
       rw [← hX, t1, hEu, ← t0, h0c, hLc, ← pow_mul]; ring
     exact Nat.eq_of_mul_eq_mul_right hpos e1
-  have htors := GlobalTheory.T.exists_pow_smul_eq_zero_of_mem_HcLC_of_torsion ρ ϖ hMt
+  have htors := _root_.GlobalTheory.hcLC_exists_pow_smul_eq_zero ρ ϖ hMt
   have hfin1 : Finite (LinearMap.ker (ϖ • LinearMap.id : ReciprocityTheory.ChartRestriction.T2.HcLC ρ →ₗ[O] ReciprocityTheory.ChartRestriction.T2.HcLC ρ)) := by
     have h1 := (key 1 one_pos).1
     simpa only [pow_one] using h1
-  obtain ⟨a, F, _, _, hFf, ⟨φ⟩⟩ := GlobalTheory.T.exists_equiv_fractionRingQuot_pi_prod_finite hϖ (Y := ReciprocityTheory.ChartRestriction.T2.HcLC ρ)
+  obtain ⟨a, F, _, _, hFf, ⟨φ⟩⟩ := _root_.GlobalTheory.CofinGen.exists_equiv_pi_prod_finite hϖ (Y := ReciprocityTheory.ChartRestriction.T2.HcLC ρ)
     (fun y => (htors y.1 y.2).imp fun n hn => Subtype.ext (by simpa using hn)) hfin1
   haveI := hFf
-  refine GlobalTheory.T.torsion_shape_of_torsion_counts hϖ (ReciprocityTheory.ChartRestriction.T2.HcLC ρ) d a φ ⟨C, fun n hn => ?_⟩ ?_
+  refine _root_.GlobalTheory.ShapeNeg.Shape.quotShape_of_counts hϖ (ReciprocityTheory.ChartRestriction.T2.HcLC ρ) d a φ ⟨C, fun n hn => ?_⟩ ?_
   · obtain ⟨hXf, hX⟩ := key n hn
     try dsimp only at hX
     have hXpos : 0 < Nat.card (LinearMap.ker (ϖ ^ n • LinearMap.id : ReciprocityTheory.ChartRestriction.T2.HcLC ρ →ₗ[O] ReciprocityTheory.ChartRestriction.T2.HcLC ρ)) :=
