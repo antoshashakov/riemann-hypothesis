@@ -5,7 +5,10 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Supported
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemSum
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjPlEqCP
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeckeCharUnramifiedAtQuotientSameResidualStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedConjugatePlaceInverseUniformizerValueStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedConjugatePlaceInverseUniformizerValue
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HalfLinearCocycle
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.VolumeFlatSection
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOverBoth
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOfBasis
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
@@ -160,7 +163,7 @@ theorem GlobalTheory.ChainTw.twist_places : ∀ (D : D7) (c : Com D) (w : Twist 
     · rintro (rfl | rfl)
       · rfl
       · exact hu
-    · exact (GlobalTheory.T.unramified_conjugate_place_inverse_uniformizer_value D _ (hre i hi j hj) PP _ hu.symm hne.symm (hres PP hPP i hi j hj)).2
+    · exact (_root_.GlobalTheory.SplitUnr.unrAt_and_val_inv D _ (hre i hi j hj) PP _ hu.symm hne.symm (hres PP hPP i hi j hj)).2
   · intro i hi j hj W hW
     by_cases hWS : W.under (𝓞 D.host.F) ∈ c.S
     · rcases (hS _).1 hWS with h | ⟨PP, hPP, hPPW⟩
@@ -169,7 +172,7 @@ theorem GlobalTheory.ChainTw.twist_places : ∀ (D : D7) (c : Com D) (w : Twist 
         · rw [h1]; exact hres PP hPP i hi j hj
         · have hne := hsplit PP (hQ PP hPP)
           rw [h1, ParInv.conjP_eq_conjPl']
-          exact (GlobalTheory.T.unramified_conjugate_place_inverse_uniformizer_value D _ (hre i hi j hj) PP _ (ParInv.under_conjPl PP).symm hne.symm
+          exact (_root_.GlobalTheory.SplitUnr.unrAt_and_val_inv D _ (hre i hi j hj) PP _ (ParInv.under_conjPl PP).symm hne.symm
             (hres PP hPP i hi j hj)).1
     · obtain ⟨a, rfl⟩ := exists_fin_of_mem hi
       obtain ⟨b, rfl⟩ := exists_fin_of_mem hj

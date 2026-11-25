@@ -4,7 +4,9 @@ public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ThetaId
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselGroupQuotientFundamentalDomainCocompactStatement
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselGroupSemidirectProductRational
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousIntegrand
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CuspFormMapValuesCompactSobolevBoundStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+public import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CuspFormMapValuesCompactSobolevBound
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiInvariantFunctionIntegrable
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HandBFSmul
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentBesselCharacterLaws
@@ -185,7 +187,7 @@ theorem mult_bound (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} {S : D.what�
       ∀ w : M.sm τ, ∀ g ∈ Ω, ‖T (Function.update v τ w) g‖ ≤
         C * (L.map fun l => ‖l.foldr (dRep (M.rep τ)) (w : M.H τ)‖).sum := by
   induction hT using Submodule.span_induction with
-  | mem T hT => exact GlobalTheory.T.cuspFormMap_values_compact_sobolev_bound D θ V S M J χ hθ T hT Ω hΩ τ v
+  | mem T hT => exact _root_.GlobalTheory.Core.Mi.sobolev_unif_bound D θ V S M J χ hθ T hT Ω hΩ τ v
   | zero => exact ⟨[], 0, by simp, fun w g _ => by simp⟩
   | add T₁ T₂ _ _ h₁ h₂ =>
     obtain ⟨L₁, C₁, hL₁, hb₁⟩ := h₁

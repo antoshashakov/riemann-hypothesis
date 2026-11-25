@@ -15,7 +15,8 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralB
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalizedAbsCharacterization
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SupportParahoricBiTransformingDoubleCosetsStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TwistedPlaceDoubleCosetVolumeAndDisjointStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedDoublingSumGLConvergentLValueStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnramifiedDoublingSumGLConvergentLValue
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilRepChainStepMatrixCoefficientTwistedStatement
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasSumBilateral
 import Mathlib.Algebra.Order.Floor.Extended
@@ -356,7 +357,7 @@ theorem local_zeta_twisted : GlobalTheory.Published.UnramifiedDoublingGL → ∀
     rw [cellFun_of_mem w hdisj ⟨0, fun _ _ _ => le_refl _⟩ h0, hw]
     simp [sumAbs, torusElt_zero, zonalInt_one μK hμK hψB]
   · intro s hs
-    obtain ⟨hsum, hhas⟩ := GlobalTheory.T.unramified_doubling_sum_GL_convergent_L_value hUD k (l * t) μK hμK ϖ hϖ α ρ hαρ ψ hψB s hs
+    obtain ⟨hsum, hhas⟩ := _root_.GlobalTheory.DoublingSeries.unramified_doubling_sum hUD k (l * t) μK hμK ϖ hϖ α ρ hαρ ψ hψB s hs
     have hHtor : ∀ e : Fin (l * t) → ℤ, H (mtor ϖ (e ∘ (blkEquiv l t).symm)) = (resCard k : ℝ) ^ (-(sumAbs e)) := by
       intro e; rw [mtor, hH.2, sumAbs_elim, sumAbs_comp]
     have hqC : ((resCard k : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hq.ne'
