@@ -69,30 +69,8 @@ theorem contDiff_heis_iota_k (σ : E →ₐ[F] E) (B : Base F E) (hB : _root_.Up
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E)
     {θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)} {ι : (InfinitePlace F → ℂ) →+ AEF F E} (hι : IsChartF θ ι)
     {f : WOF F E nS nT → ℂ} (hf : IsThetaFunOF σ JS JT ξ₀ B.ψ f) (x : WOF F E nS nT) :
-    ContDiff ℝ ∞ fun v : IxF F nS nT → ℂ => heisOF σ JS JT ξ₀ B.ψ (iotaVF ι v) f x := by
-  obtain ⟨lam, hl, hlam⟩ := GlobalTheory.HeisLineDiffF.exists_log (_root_.GlobalTheory.T.standard_additive_character_sign F E σ B hB)
-  let φ : (IxF F nS nT → ℂ) →+ ℂ :=
-    { toFun := fun v => lam (symplOHF σ JS JT ξ₀ x (iotaVF ι v))
-      map_zero' := by rw [iotaVF_zero, GlobalTheory.HeisLineDiffF.symplOHF_zero_right, map_zero]
-      map_add' := fun u v => by rw [iotaVF_add, GlobalTheory.HeisLineDiffF.symplOHF_add_right, map_add (f := _)] }
-  have hφ : Continuous φ := hl.comp (GlobalTheory.HeisLineDiffF.continuous_symplOHF σ JS JT ξ₀ x (continuous_iotaVF hι))
-  let eqv := (Module.finBasis ℝ (IxF F nS nT → ℂ)).equivFunL
-  let L' : (Fin (Module.finrank ℝ (IxF F nS nT → ℂ)) → ℝ) →+ WOF F E nS nT :=
-    (iotaHom ι).comp eqv.symm.toLinearEquiv.toAddMonoidHom
-  have hL' : Continuous L' := (continuous_iotaVF hι).comp eqv.symm.continuous
-  have hsm := hf.smooth _ L' hL' (fun t => real_iotaVF hι _) x
-  have hg : ContDiff ℝ ∞ fun v : IxF F nS nT → ℂ => f (x + iotaVF ι v) := by
-    have h1 := hsm.comp eqv.contDiff
-    convert h1 using 1
-    funext v
-    simp [L', iotaHom]
-  have e : (fun v : IxF F nS nT → ℂ => heisOF σ JS JT ξ₀ B.ψ (iotaVF ι v) f x) =
-      fun v => Complex.exp (φ.toRealLinearMap hφ v) * f (x + iotaVF ι v) := by
-    funext v
-    rw [heisOF, hlam _ (GlobalTheory.HeisLineDiffF.sndA_symplOHF σ JS JT ξ₀ x _ (real_iotaVF hι v))]
-    rfl
-  rw [e]
-  exact ((φ.toRealLinearMap hφ).contDiff.cexp).mul hg
+    ContDiff ℝ ∞ fun v : IxF F nS nT → ℂ => heisOF σ JS JT ξ₀ B.ψ (iotaVF ι v) f x :=
+  _root_.GlobalTheory.ThetaSmoothF.contDiff_heis_iota_c σ B hB.cm hB.std JS JT ξ₀ hι hf x
 end GlobalTheory.ThetaSmoothF
 open GlobalTheory.ThetaSmoothF in
 theorem GlobalTheory.ThetaSmoothF.sm_of_thetaF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)

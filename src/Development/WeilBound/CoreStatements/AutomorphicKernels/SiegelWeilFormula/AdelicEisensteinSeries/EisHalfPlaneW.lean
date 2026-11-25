@@ -220,13 +220,13 @@ theorem eis_half_mod_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin 
           ‖Ê s x‖ ≤ C * (ht2 x : ℝ) ^ N :=
   eis_half_mod_w_c hB.cm hb hK ha χ s₁ f hf
 
-theorem eisHalf_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
+theorem eisHalf_w_c {B : Base F E} (hB_cm : IsCMExt F E σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
     {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) (χ : Chr F E) (s₁ : ℂ)
     (f : G2 σ Y → ℂ) (hf : IsSec K χ s₁ f) :
     ∃ (t : ℝ) (v : ℂ → modFun σ Y), (∀ s : ℂ, t < s.re → ∀ x, HasSum (eisTerm (flat a f s₁ s) x) ((v s).1 x)) ∧
       WHolo (growForms σ Y) v {s | t < s.re} := by
-  obtain ⟨Ê, t, hsum, hhol⟩ := eis_half_plane_w hB hb hK ha χ s₁ f hf
-  obtain ⟨t₀, hmod⟩ := eis_half_mod_w hB hb hK ha χ s₁ f hf
+  obtain ⟨Ê, t, hsum, hhol⟩ := eis_half_plane_w_c hB_cm hb hK ha χ s₁ f hf
+  obtain ⟨t₀, hmod⟩ := eis_half_mod_w_c hB_cm hb hK ha χ s₁ f hf
   obtain ⟨t', ht, ht₀⟩ : ∃ t' : ℝ, t ≤ t' ∧ t₀ ≤ t' := ⟨max t t₀, le_max_left _ _, le_max_right _ _⟩
   have hsum' : ∀ s : ℂ, t' < s.re → ∀ x, HasSum (eisTerm (flat a f s₁ s) x) (Ê s x) :=
     fun s hs => hsum s (lt_of_le_of_lt ht hs)
@@ -253,6 +253,14 @@ theorem eisHalf_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E}
     refine ⟨C, N, fun s hs x => ?_⟩
     rw [hv s (hQ hs) x]
     exact h s (hmin hs) (hmax hs) x
+
+theorem eisHalf_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
+    {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) (χ : Chr F E) (s₁ : ℂ)
+    (f : G2 σ Y → ℂ) (hf : IsSec K χ s₁ f) :
+    ∃ (t : ℝ) (v : ℂ → modFun σ Y), (∀ s : ℂ, t < s.re → ∀ x,
+        HasSum (eisTerm (flat a f s₁ s) x) ((v s).1 x)) ∧
+      WHolo (growForms σ Y) v {s | t < s.re} :=
+  eisHalf_w_c hB.cm hb hK ha χ s₁ f hf
 
 end PositivityTheory.SiegelWeilFormula.Aeis
 
