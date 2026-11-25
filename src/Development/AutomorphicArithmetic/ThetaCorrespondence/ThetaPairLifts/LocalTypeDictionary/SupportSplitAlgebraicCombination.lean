@@ -6,7 +6,10 @@ public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.C
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MemHalfCosetSelf
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsAlgebraicStdCharHalfSymplecticRealPartZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryInductionOnSplitPlaceSupportStatement
+public import Formalism.LocalToGlobal.Divisibility.DefGroup
+public import Formalism.LocalToGlobal.HeckeThetaElements.IsHeckeElt
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryInductionOnSplitPlaceSupport
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.SplitSourceAlgebraicCombination
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.SplitVacuumAlgebraicCombination
 import Mathlib.Algebra.Order.Floor.Extended
@@ -80,11 +83,11 @@ theorem support_split_algebraic_combination : ∀ {D : D7} {T : Type} [Finite T]
     refine ⟨1, fun _ => 1, fun _ => 0, fun _ => isAlgebraic_one, fun _ => by simp, ?_⟩
     simp [GlobalTheory.SplitScalar.heisO_zero]
   have hW : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (1, g') X.vac) :=
-    GlobalTheory.T.unitary_induction_on_splitPlaceSupport WW N (fun h => IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (1, h) X.vac)) hone
+    _root_.GlobalTheory.SplitInduct.induct_suppSplit WW N (fun h => IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (1, h) X.vac)) hone
       (fun x y hx hy => by simpa using hmul _ _ hx hy)
       (fun e P hP' hN' x hx hsx => _root_.GlobalTheory.T.split_place_vacuum_algebraic hP hI hL hX t N e P hP' hN' x hx hsx) g' hg' hs'
   have hA : IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (g, 1) X.vac) :=
-    GlobalTheory.T.unitary_induction_on_splitPlaceSupport A N (fun x => IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (x, 1) X.vac)) hone
+    _root_.GlobalTheory.SplitInduct.induct_suppSplit A N (fun x => IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (x, 1) X.vac)) hone
       (fun x y hx hy => by simpa using hmul _ _ hx hy)
       (fun e P hP' hN' x hx hsx => _root_.GlobalTheory.T.split_source_vector_algebraic hP hI hL hX t N e P hP' hN' x hx hsx) g hg hs
   have := hmul _ _ hA hW

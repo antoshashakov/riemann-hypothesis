@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExp
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsPairReading
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqOfTensEq
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictionTransfer
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SkewSpaceLineOneParamFockDerivativeStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsReading
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SkewSpaceLineOneParamFockDerivative
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThOInjective
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilModelFiniteExponent
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.HasDerivAtThetaIntegralInterchange
@@ -77,7 +78,7 @@ theorem line_derivative_mem_fock_image : _root_.GlobalTheory.FunPr.ThetaLocalInp
   subst hψ
   obtain ⟨P, hPN, rfl⟩ := Submodule.mem_map.1 hf
   obtain ⟨f₀, r, hvac, hf0, hΦ⟩ := hFock
-  obtain ⟨h, Y, hY, hγh, hder⟩ := GlobalTheory.T.skewSpaceLine_oneParam_fockDerivative D ψ θ ε M X A B χS χT ω eS eT hθ hW hExp Ws hPR.JW γ hγ
+  obtain ⟨h, Y, hY, hγh, hder⟩ := _root_.GlobalTheory.LieLines.line_deriv D ψ θ ε M X A B χS χT ω eS eT hθ hW hExp Ws hPR.JW γ hγ
   set Q := ∑ t, GlobalTheory.RealQuot.actT ε A B eS t (Y t) P with hQ
   have hQN : Q ∈ N := Submodule.sum_mem _ fun t _ => hN ⟨(t, Y t), hY t⟩ P hPN
   have hne : ∃ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ 1) r x ≠ 0 := by

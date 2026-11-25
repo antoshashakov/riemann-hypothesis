@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.N
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ApplyAt0Smul
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTriangleNonzeroPeriod
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTripleThetaKernelMinorsEqConstConjJetStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SplitPart
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MemHalfCosetSelf
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BottomTripleThetaKernelMinorsEqConstConjJet
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasInfOfChars
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.BottomLayerParametersMatch
 import Mathlib.Algebra.Order.Floor.Extended
@@ -68,7 +70,7 @@ theorem bottomTheta_kernel_finite : _root_.GlobalTheory.FunPr.ThetaLocalInputs �
   intro D T Lc sc G μ₀ C x b q2 q3 W hW i j A A' WW X δ t0 hX hβ
   obtain ⟨r, rc, κ, hr, hrc, hκ, H2⟩ := q2 W hW i j A A' WW X δ t0 hX hβ
   obtain ⟨n₀, H3⟩ := q3 i j δ t0
-  obtain ⟨Ω, hΩ, H1⟩ := GlobalTheory.T.bottomTriple_thetaKernel_minors_eq_const_conjJet G W hW i j A A' WW X hX r rc hr hrc n₀
+  obtain ⟨Ω, hΩ, H1⟩ := _root_.GlobalTheory.BotFormula.ConjJet.ker_minorF_eq_conj_jet G W hW i j A A' WW X hX r rc hr hrc n₀
   refine ⟨Ω * starRingEnd ℂ κ, mul_ne_zero hΩ ((map_ne_zero _).2 hκ), fun s Q P P' hB => ?_⟩
   obtain ⟨u, hu0, huQ, huU, hEq⟩ := H2 s Q P P' hB
   refine ⟨u, hu0, huQ, huU, fun ea ed h g x y hg hy Tu => ?_⟩

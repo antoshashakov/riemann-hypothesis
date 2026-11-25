@@ -12,7 +12,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelR
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DarbouxModelAlgebraicVectorsLeAdelicSchwartzStatement
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RankSchwartzBruhatAdicCompletionPiLeAleph0
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorProductIrreducibleCountableDimenStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotForallNonemptyLocP
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorProductIrreducibleCountableDimen
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawFramesWeilEquivalence
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SeesawWeilGlobalFactor
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorIrreducibleOfCountableDimensionIrreducibleStatement
@@ -266,7 +267,7 @@ theorem theta_triple_piT_irreducible : GlobalTheory.Published.HoweDualityReal �
   have rkv : ∀ v, Module.rank ℂ (Rf.Pi v) ≤ Cardinal.aleph0 := fun v => by
     rw [← rank_top ℂ (Rf.Pi v), ← hm.fin.onto v]
     exact (rank_map_le _ _).trans (_root_.GlobalTheory.TripleAssembly.rank_SB_adicCompletion_le _ _ v)
-  have irrF := GlobalTheory.T.restrictedTensorProduct_irreducible_countable_dimension Rf.Pi (vacIm Γ Rf) hfin0 rkv hm.fin.nontriv Sv irrv Op fun v a _ => hOp' v a
+  have irrF := _root_.GlobalTheory.rtens_irreducible Rf.Pi (vacIm Γ Rf) hfin0 rkv hm.fin.nontriv Sv irrv Op fun v a _ => hOp' v a
   have rkR : Module.rank ℂ R.Pi ≤ Cardinal.aleph0 := by
     rw [← rank_top ℂ R.Pi, ← hm.real.quot.onto]
     exact (rank_map_le _ _).trans hrank
