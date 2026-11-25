@@ -190,30 +190,7 @@ end AdicCompl
 
 
 open AdicCompl in
-theorem locFld : Formalism.L2.PjFree.LocFld := by
-  intro K L _ _ _ _ j la
-  let : Algebra K L := j.toAlgebra
-  have := la.isMaximal
-  obtain ⟨Q, hQ, hQl⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) la.asIdeal
-  have hQ0 : Q ≠ ⊥ := Ideal.ne_bot_of_liesOver_of_ne_bot la.ne_bot Q
-  let w : HeightOneSpectrum (𝓞 L) := ⟨Q, hQ.isPrime, hQ0⟩
-  have : w.asIdeal.LiesOver la.asIdeal := hQl
-  have : Finite (𝓞 L ⧸ w.asIdeal) := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot
-  have : CharZero (adicCompletionIntegers L w) :=
-    charZero_of_injective_algebraMap
-      (FaithfulSMul.algebraMap_injective (𝓞 L) (adicCompletionIntegers L w))
-  obtain ⟨e1, he1, h1⟩ := exists_e (L := L) w
-  let T : CDVR := { V := adicCompletionIntegers L w, cpl := isAdicComplete w }
-  have he2 : la.asIdeal.ramificationIdx' w.asIdeal ≠ 0 :=
-    Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal la.ne_bot
-  refine ⟨T, kMap w, la.asIdeal.ramificationIdx' w.asIdeal * e1,
-    ⟨Nat.mul_pos (Nat.pos_of_ne_zero he2) he1, fun a => ?_⟩, finite_res w⟩
-  show vV (adicCompletionIntegers L w) (kMap w (j a)) = _
-  simp only [vV, vLa]
-  rw [h1, show j a = algebraMap K L a from rfl, ← valuation_liesOver L la w a,
-    ← Ideal.ramificationIdx'_eq_ramificationIdx la.asIdeal w.asIdeal la.ne_bot, ← pow_mul,
-    WithZero.log_pow]
-  push_cast
-  simp
+theorem locFld : Formalism.L2.PjFree.LocFld :=
+  _root_.Formalism.L2.Pj.locFld
 
 end GlobalTheory
