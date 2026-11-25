@@ -5,7 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NotInSu
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContraMapInjective
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParabolicProductHasFiniteLengthGL
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ZelevinskySegmentClassExistsForEveryPlacing
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLengthExistsCoatomStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnitarisableOfCharIff
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLengthExistsCoatom
 import GroundTheory.LocalFields.PadicLogSeries
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -127,7 +128,7 @@ theorem mid_sub {V : Type} [AddCommGroup V] [Module ℂ V] {P : Representation �
       hinj (hinj (((hex (F w)).2 ⟨w, rfl⟩).trans ((congrArg F (map_zero F)).trans (map_zero F)).symm))
     obtain ⟨v, hv⟩ := exists_ne (0 : x.rep.V)
     exact hv (hf ((h0 (f v)).trans (h0 (f 0)).symm))
-  obtain ⟨C, hC⟩ := GlobalTheory.T.finite_length_exists_coatom S.toRepresentation hSf hnt
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.FiniteLengthQuot.exists_isCoatom_subrepresentation S.toRepresentation hSf hnt
   let q := Tm (quotMk C)
   by_cases h0 : ∀ v, q (f v) = 0
   ·

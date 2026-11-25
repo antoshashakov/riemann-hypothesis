@@ -9,12 +9,12 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureIntegralStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureZeroStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarFundamentalDomainRankOneDensityStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarFundamentalDomainRankOneDensity
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalarStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeStableAlmostEverywhereStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensitiesProductConvergesStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilFormulaRangeStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensitiesProductConverges
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilFormulaRange
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TensTop
 import Mathlib.Algebra.Order.Floor.Extended
@@ -77,7 +77,7 @@ namespace CompanionTheory.PlacePermOperatorBicommutantSpan
 theorem sw_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (T : Matrix (Fin 1) (Fin 1) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → SWMeas σ J T hT := by
   intro F E _ _ _ _ _ σ hcm M J hJ hM T hT hd d b li lam hli hlam μ 𝓕 hμ h𝓕 mi m hmi hm
   obtain ⟨t1, t2⟩ := theta_inv F E σ hcm M J hJ μ 𝓕 hμ h𝓕 1 T
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_isEulerProd_of_invariant_of_fiber_supported F E σ hcm M J hJ 1 (Or.inr hM) T hT hd d b li lam hli hlam mi hmi m hm _
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.SW.Fact.exists_isEulerProd F E σ hcm M J hJ 1 (Or.inr hM) T hT hd d b li lam hli hlam mi hmi m hm _
     (theta_measure_locally_finite F E σ hcm M J hJ hM μ 𝓕 hμ h𝓕 T hT hd) t1 t2
   by_cases h0 : mi (hermOf (Ainf F) σ T hT) = 0 ∨ ∃ v, m v (hermOf (Fv F v) σ T hT) = 0
   · rw [(GlobalTheory.T.euler_product_measure_zero F E σ hcm d b 1 M _ c _ _).2.1 hc h0]
@@ -86,8 +86,8 @@ theorem sw_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   obtain ⟨β, rfl, hβ, he⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT
   simp only [he] at hc h0
   push Not at h0
-  obtain ⟨φ, C, φc, φp, φf, hb⟩ := GlobalTheory.T.thetaMeas_rank_one_sub_density_product_le F E σ hcm M J hJ hM d b li lam hli hlam μ 𝓕 hμ h𝓕 mi hmi m hm β (hβ hd)
-  obtain ⟨κ, hκ, hg⟩ := GlobalTheory.T.exists_frequently_mul_pow_le_tprod_rank_one_local_density F E σ hcm M J hJ hM d b lam hlam m hm β (hβ hd) h0.2
+  obtain ⟨φ, C, φc, φp, φf, hb⟩ := _root_.GlobalTheory.CompanionTheory.SW.BB.bound_hermitian F E σ hcm M J hJ hM d b li lam hli hlam μ 𝓕 hμ h𝓕 mi hmi m hm β (hβ hd)
+  obtain ⟨κ, hκ, hg⟩ := _root_.GlobalTheory.CompanionTheory.SW.Growth.growth F E σ hcm M J hJ hM d b lam hlam m hm β (hβ hd) h0.2
   have : BorelSpace (Fin 1 → Fin M → Ainf F ⊗[F] E) := by
     have : BorelSpace (Ainf F ⊗[F] E) := ⟨rfl⟩
     obtain ⟨_, _, _, _, -⟩ := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1

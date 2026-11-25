@@ -9,7 +9,8 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitsDecompositionFlowCompactStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarFundamentalDomainExistsUnitaryStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarMeasureIwasawaDecompositionStatement
+public import Mathlib.MeasureTheory.Measure.WithDensity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarMeasureIwasawaDecomposition
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HyperbolicAndBlockOneNondegenerateStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ModulusCharacterUnitActionProductStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalTuplesDiscreteCocompactAdelicStatement
@@ -122,7 +123,7 @@ theorem nu : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E
     fun _ => Iff.rfl, inferInstance, ?_, fun U hU h0 => ?_, hω, ?_, fun j => ?_, fun j => ?_, ?_, ?_⟩
   · rintro g ⟨a, ha⟩
     obtain ⟨p, u, rfl⟩ := hdec g a ha
-    refine GlobalTheory.T.triple_product_measure_map_mul_left_invariant _ _ _ _ (μW.prod μA) μ₁ μT nn ι mm χ cn.measurable ci.measurable cm.measurable
+    refine _root_.GlobalTheory.CompanionTheory.Adelic.tripleProduct_map_leftInvariant _ _ _ _ (μW.prod μA) μ₁ μT nn ι mm χ cn.measurable ci.measurable cm.measurable
       χc.measurable (fun p => ⟨fun x => (p.1 + x.1, p.2 + x.2 + c p.1 x.1), ?_, fun x => nmul _ _ _ _⟩)
       (fun u => ⟨Prod.map (actW (AF F) σ J u) id, ?_, fun x => hin u _ _⟩)
       (fun t => ⟨_, ?_, χ1 t, fun x => hmn t _ _⟩) hmi p u a

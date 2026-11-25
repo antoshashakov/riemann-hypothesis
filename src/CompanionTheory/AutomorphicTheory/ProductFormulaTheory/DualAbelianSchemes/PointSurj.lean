@@ -2,10 +2,11 @@ module
 
 public import CompanionTheory.AutomorphicTheory.TemperedLocalSpectra.ObstructionLifting.H1StructureDimLe
 public import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechComplexTrivialLineBundleNotAcyclicStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FibreAcyclicityOfSectionsStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FibreAcyclicityOutsideFiniteSetStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.PicardGroupOfFieldTrivialStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechComplexTrivialLineBundleNotAcyclic
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FibreAcyclicityOfSections
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FibreAcyclicityOutsideFiniteSet
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.PicardGroupOfFieldTrivial
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProjectiveOverRingByChartsAbelianVarietyStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -106,7 +107,7 @@ theorem pointSurj_pf : (∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k
     rw [cls_pull hG, eG, map_sub, ← pull_comp, ← Over.comp_left, comp_lift, lift_fst, comp_toUnit]
     have e₁ : GlobalTheory.CechPic.pull (lift (toUnit B ≫ x') (toUnit B)).left (cls M hM) = 0 := by
       have e := pull_evc hM (toUnit B) x' (𝟙 _)
-      rw [Category.comp_id, GlobalTheory.T.picard_group_of_field_trivial k (evc hM x' (𝟙 _)), map_zero] at e
+      rw [Category.comp_id, _root_.GlobalTheory.CompanionTheory.PicField.pic_eq_zero k (evc hM x' (𝟙 _)), map_zero] at e
       exact e.symm
     rw [e₁, zero_sub, evc_swap hP hsw]
     rfl
@@ -135,7 +136,7 @@ theorem pointSurj_pf : (∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k
       refine Eq.trans ?_ (e.trans (cls_ev hP _ _ _).symm)
       rw [evc, lift_fst_snd, Over.id_left, pull_id]
   have htot : FibAc ((fst A B).left ≫ A.hom) G :=
-    GlobalTheory.T.fibre_acyclicity_of_sections A.hom B.hom (fst A B).left (snd A B).left hpq hpA G hG fibB
+    _root_.GlobalTheory.CompanionTheory.PointSurjTotal.fibAc_comp_of_fibres A.hom B.hom (fst A B).left (snd A B).left hpq hpA G hG fibB
   let F' : Set (Sp k ⟶ A.left) :=
     (fun x : 𝟙_ (Over (Sp k)) ⟶ A => x.left) '' {x | Triv (ev P (toUnit B ≫ x) (𝟙 B))}
   have fibA : ∀ (y : Sp k ⟶ A.left) (σ : B.left ⟶ (A ⊗ B).left), y ≫ A.hom = 𝟙 _ →
@@ -158,11 +159,11 @@ theorem pointSurj_pf : (∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k
       exact hyF ⟨x', (triv_ev_iff hP _ _).2 h0, rfl⟩
   have htot' : FibAc ((snd A B).left ≫ B.hom) G := hpq.w ▸ htot
   have hη : η[A].left ≫ A.hom = 𝟙 _ := Over.w η[A]
-  obtain ⟨m, D, hD, hc, hac⟩ := GlobalTheory.T.exists_affine_cover_cech_acyclic_of_fibAc_off_finite B.hom A.hom (snd A B).left (fst A B).left hpq.flip hpB G hG F'
+  obtain ⟨m, D, hD, hc, hac⟩ := _root_.GlobalTheory.CompanionTheory.PointSurjectivity.exists_acyclic_cechLB_fibre B.hom A.hom (snd A B).left (fst A B).left hpq.flip hpB G hG F'
     (hfin.image _) fibA htot' η[A].left (lift (toUnit B ≫ η[A]) (𝟙 B)).left hη
     (by rw [← Over.comp_left, lift_snd]; rfl) (by rw [← Over.comp_left, lift_fst, cst])
   have : Nonempty B.left := ⟨η[B].left (IsLocalRing.closedPoint k)⟩
-  refine GlobalTheory.T.cech_complex_trivial_line_bundle_not_acyclic B.hom _ (pull_isLB hG _) ?_ (Fin m) D hc hac
+  refine _root_.GlobalTheory.CompanionTheory.PointSurjectivity.not_acyclic_cechLB_of_triv B.hom _ (pull_isLB hG _) ?_ (Fin m) D hc hac
   refine (cls_eq_zero_iff (pull_isLB hG _)).1 ?_
   rw [sl₂, evc_swap hP hsw, ← Hom.one_def, IsAdditive.evc_one hP hadd, neg_zero]
 

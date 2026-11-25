@@ -6,7 +6,7 @@ public import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.DualAbelian
 public import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.DualAbelianSchemes.FewEqBridge
 public import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.DualAbelianSchemes.PointSurj
 public import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.DualAbelianSchemes.TrivLocus
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechFlatComplexStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CechFlatComplex
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ExistsPointOfIsAffine
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.IsIsoOfClosedImmersion
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.KTrivModelOfTrivLocus
@@ -69,7 +69,7 @@ theorem trivLocus : TrivLocus := trivLocus_pf
 
 theorem fewEquations : FewEquations := fewEquations_pf h1Le
 
-theorem ciFlat : CIFlat := GlobalTheory.T.CechFlatComplex
+theorem ciFlat : CIFlat := _root_.GlobalTheory.CompanionTheory.CIFlatPf.ciFlat
 
 theorem trivLocusFlat : TrivLocusFlat := @GlobalTheory.CompanionTheory.TrivFlat.trivLocusFlat fewEquations ciFlat
 

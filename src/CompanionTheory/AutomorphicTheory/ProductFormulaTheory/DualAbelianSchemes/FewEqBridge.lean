@@ -2,7 +2,7 @@ module
 
 public import CompanionTheory.AutomorphicTheory.TemperedLocalSpectra.ObstructionLifting.H1StructureDimLe
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.AbelianDeRham.AbelianHodgeDeRham.H1DimGeAbelianDim
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FewEquationsStatementStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FewEquationsStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneFormMapEqKaehlerDifferentialMap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -60,6 +60,6 @@ theorem fewEquations_of_fewEqSt (hF : FewEqSt) (hLe : H1StructureDimLe) : FewEqu
   obtain ⟨_, hab', hsm'⟩ := GlobalTheory.CompanionTheory.Hodge.FormBC.exists_grp A g hab hsm s' φ hP
   exact hLe _ (Over.mk s') g hab' hsm'
 
-theorem fewEquations_pf : H1StructureDimLe → FewEquations := fun hLe => fewEquations_of_fewEqSt GlobalTheory.T.FewEquationsStatement hLe
+theorem fewEquations_pf : H1StructureDimLe → FewEquations := fun hLe => fewEquations_of_fewEqSt _root_.GlobalTheory.CompanionTheory.FewEq.fewEq hLe
 
 end CompanionTheory.PfDual
