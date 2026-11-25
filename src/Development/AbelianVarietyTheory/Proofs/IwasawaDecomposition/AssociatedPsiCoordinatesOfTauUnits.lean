@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.GeneratorValues
 public import Formalism.LocalToGlobal.ProjectiveLattices.BetaAtSymm
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PsiCoordinateEqUnitMulTauCoordinateStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PsiCoordinateEqUnitMulTauCoordinate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -102,8 +102,8 @@ theorem associated_of_tau : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   obtain ⟨x', hx'⟩ := exists_isTauCoord W P'.D.toPre (ρ y) (H.w0 • ρ y)
   have hx'' : GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.IsTauCoord P'.D.toPre (ρ y) (ρ (H.w0 • y)) x' := by rwa [ρ.map_smul]
   obtain ⟨u, hu⟩ := hρ y (H.w0 • y) x x' hx hx''
-  obtain ⟨u1, hu1⟩ := GlobalTheory.T.psiCoordinate_eq_unit_mul_tauCoordinate R P.D.toPre (𝓞 E) P.oD H.w0 P.w0 y r x hr hx
-  obtain ⟨u2, hu2⟩ := GlobalTheory.T.psiCoordinate_eq_unit_mul_tauCoordinate W P'.D.toPre (𝓞 E) P'.oD H.w0 P'.w0 (ρ y) r' x' hr' hx'
+  obtain ⟨u1, hu1⟩ := _root_.GlobalTheory.PsiTauCoordRel.main R P.D.toPre (𝓞 E) P.oD H.w0 P.w0 y r x hr hx
+  obtain ⟨u2, hu2⟩ := _root_.GlobalTheory.PsiTauCoordRel.main W P'.D.toPre (𝓞 E) P'.oD H.w0 P'.w0 (ρ y) r' x' hr' hx'
   set φ := IsFractionRing.lift (A := R) (K := FractionRing R)
     (g := (algebraMap W (FractionRing W)).comp g) ((IsFractionRing.injective W (FractionRing W)).comp hg) with hφ
   have hφa : ∀ s : R, φ (algebraMap R (FractionRing R) s) = algebraMap W (FractionRing W) (g s) := fun s =>

@@ -10,7 +10,9 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Coiso
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexMatrixEqOfHermFormImEqRealSpanStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetNeZeroOfImHermFormIntegralRealBasis
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOnRationalFramePeriodMatrixLogCoveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonDenominatorRatMatricesStatement
+public import Mathlib.Data.Rat.Init
+public import Mathlib.LinearAlgebra.Matrix.Defs
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonDenominatorRatMatrices
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConstIntegralCoordsLatticeSection
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRationalSymplecticBasisAdaptedCoisotropicStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormImIntCombinationDotProductStatement
@@ -139,7 +141,7 @@ theorem GlobalTheory.PeriodFrame.exists_frame_of_latFam : ∀ (n a g r₀ r : �
     exact ⟨m, by exact_mod_cast hm⟩)
   obtain ⟨rk, α, φ, β, gm, dl, hrk, hN1, hN2, hN3, hN4, hN5, hN6, hN7⟩ := GlobalTheory.T.exists_rational_symplecticBasis_adapted_coisotropic g r r₀ M c hr hMa hMd hcLI hco
   choose b hb using fun k => GlobalTheory.T.intIsometry_fixing_rowSpace_symplectic_shift g r r₀ rk M (T k) c α φ β hr hMa (hTM k) (hcT k) hN1 hN2 hN3 hN5
-  obtain ⟨D, Bz, hD, hBz⟩ := GlobalTheory.T.exists_common_denominator_rat_matrices a g b
+  obtain ⟨D, Bz, hD, hBz⟩ := _root_.GlobalTheory.rat_matrix_common_denom a g b
   have hBzs : ∀ k (j l : Fin g), (rk ≤ j.val ∨ rk ≤ l.val) → Bz k j l = 0 := by
     intro k j l h
     have h1 := hBz k j l

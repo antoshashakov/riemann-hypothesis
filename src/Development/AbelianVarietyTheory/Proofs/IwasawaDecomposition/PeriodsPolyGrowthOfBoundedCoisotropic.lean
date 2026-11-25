@@ -5,7 +5,10 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetNe
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLagrangianDualPairInCoisotropicStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormImRealCombinationEqDotProductStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermFormPeriodsAlternatingNondegRankEqTwoMulStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotropicDualFamilyLinearIndependentRankEqTwoMulStatement
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsotropicDualFamilyLinearIndependentRankEqTwoMul
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinearIndependentRealCombinationsOfIndependentStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodMatrixPolynomialGrowthPuncturedPolydiscStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolynomialGrowthMatrixMulBoundedVectorsStatement
@@ -96,7 +99,7 @@ theorem lam_polyGrowth_of_coisotropic : ∀ (n a g r : ℕ) (lam : (Fin n → �
   obtain ⟨hli0, hsp0, Hm0, hH0, hP0, hM0⟩ := hs s0 hs0
   obtain ⟨hMa, hMd, hr⟩ := GlobalTheory.T.hermForm_periods_alternating_nondeg_rank_eq_two_mul g r (lam s0) M Hm0 hli0 hsp0 hH0 hP0 hM0
   obtain ⟨d, e, f, heW, hee, hfe, hsp⟩ := GlobalTheory.T.exists_lagrangian_dual_pair_in_coisotropic r M W hMa hMd hW
-  obtain ⟨hli, hrd⟩ := GlobalTheory.T.isotropicDual_family_linearIndependent_rank_eq_two_mul r d M e f hee hfe hsp
+  obtain ⟨hli, hrd⟩ := _root_.GlobalTheory.familyIsotropicDual_linearIndependent_and_card r d M e f hee hfe hsp
   obtain rfl : d = g := by omega
   obtain ⟨E, hE⟩ : ∃ E : (Fin n → ℂ) → Fin d → Fin d → ℂ, E = fun s i => ∑ m, (e i m : ℂ) • lam s m := ⟨_, rfl⟩
   obtain ⟨F, hF⟩ : ∃ F : (Fin n → ℂ) → Fin d → Fin d → ℂ, F = fun s j => ∑ m, (f j m : ℂ) • lam s m := ⟨_, rfl⟩

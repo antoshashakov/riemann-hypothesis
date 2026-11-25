@@ -7,7 +7,10 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOk
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevelReadingRationalAtTwistExtendsIntegralUnitarStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemCutQGrp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoords
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistPrimeLevelIffReductionLevelConjugateCharactStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RdLevOn
+public import Formalism.LocalToGlobal.Columns.RecLevel
+public import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistPrimeLevelIffReductionLevelConjugateCharact
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedTupleReadingLevelCharacterStatement
 import Formalism.LocalToGlobal.Columns.RecLevelDiv
 import Mathlib.Algebra.Order.Floor.Extended
@@ -106,7 +109,7 @@ theorem levIs_reads_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I
   obtain ⟨c⟩ := cl_nonempty I a
   have hR := GlobalTheory.T.levelReading_rationalAtTwist_extends_integralUnitary (Q := I.Q a) B.sp.cm gP S (rowTyG I.Ch I.Ps) B.embLL _ _ (GlobalTheory.Mem.Col2.ChEx.q_conj I hOk a)
     (q_inj I hOk a) hO (GlobalTheory.T.twistedTuple_reading_level_character I hOk hPins l Z a S hK c ξ hξ)
-  have key := @GlobalTheory.T.twistPrimeLevel_iff_reductionLevel_conjugateCharacter B.fields.F B.fields.E B.fields.K _ _ _ _ (GlobalTheory.Mem.Col2.starE B) _ _ B.sp.cm (B.R.N B.R.m - 1) _
+  have key := @_root_.GlobalTheory.SeeSaw.TwLev.lev_iffQ B.fields.F B.fields.E B.fields.K _ _ _ _ (GlobalTheory.Mem.Col2.starE B) _ _ B.sp.cm (B.R.N B.R.m - 1) _
     (rankP (I.rec7 l Z)) _ _ _ gX gP _ _ _ S hLb B.R.r B.R.t B.R.m (Formalism.L2.Col.r_le_X' B.R) hr
     (Formalism.L2.Col.t_pos B.R) (Formalism.L2.Col.rank_X'_eq B.R) (B.primes X).vGs (I.Q a) I.Ps (Formalism.L2.Col.chiAt I.Ch) B.embLL ξ hR
     P' cg hH hchi hcg

@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncludeLInjective
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.RingHomOfBaseOrderToFraction
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSpecialisationCoefficientSpaceToDualWeylStatement
+public import Formalism.LocalToGlobal.Divisibility.CoefMod
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSpecialisationCoefficientSpaceToDualWeyl
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HighestWeightDoubleDualUpperTriangularEigenvectoStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NablaSqUpperEigenvectorWeightEqHighestStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -60,7 +61,7 @@ theorem dd_hw_unique : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n
   classical
   haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective
   obtain ⟨w, hwV, hw0, hB⟩ := GlobalTheory.T.highestWeight_doubleDual_upperTriangular_eigenvector L n ι K emb lam hd τ₀ mu h
-  obtain ⟨φ, hφ0, hφV, hφA⟩ := GlobalTheory.T.exists_specialisation_coefficientSpace_to_dualWeyl K n ι lam τ₀ w hwV hw0
+  obtain ⟨φ, hφ0, hφV, hφA⟩ := _root_.GlobalTheory.specialise_factor K n ι lam τ₀ w hwV hw0
   refine GlobalTheory.T.nablaSq_upperEigenvector_weight_eq_highest K n (lam τ₀) mu (φ w) (hφV w hwV) hφ0 fun B hBt => ?_
   have hc0 : detPow K n B (lam τ₀).detShift ≠ 0 := by
     rw [detPow]; exact Units.ne_zero _

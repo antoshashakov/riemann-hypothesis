@@ -8,7 +8,8 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Exist
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NablaSqEndomorphismEqSumGLOperatorsStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NontrivialWeylCoefficientSpaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryRationalPointMatrixHomSurjectiveOntoStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightActionMatrixCoeffPolynomialInEntriesStatement
+public import Formalism.LocalToGlobal.Divisibility.CoefMod
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightActionMatrixCoeffPolynomialInEntries
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ZariskiDenseRationalPointsDefiniteUnitaryCharZerStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -76,7 +77,7 @@ theorem GlobalTheory.AlgWtF.tenRepF_isIrreducible : ∀ (L : Type) [Field L] [Nu
       rintro ⟨y, hy, hyx⟩
       exact hnot (by rw [show Formalism.L2.DIV.rhoK lam g w = y from Subtype.ext hyx.symm]; exact hy)
     obtain ⟨ψ, hψx, hψW⟩ := Submodule.exists_le_ker_of_notMem hx
-    obtain ⟨P, hP⟩ := GlobalTheory.T.weightAction_matrixCoeff_polynomial_in_entries K ι n lam (w : Formalism.L2.DIV.Pol K ι n) ψ
+    obtain ⟨P, hP⟩ := _root_.GlobalTheory.ActPolyCoeff.polyAction_coeff_poly K ι n lam (w : Formalism.L2.DIV.Pol K ι n) ψ
     let f : (ι ⊕ ι) × Fin n × Fin n → (L →+* K) × Fin n × Fin n :=
       fun v => (Sum.elim emb (fun τ => (emb τ).comp (IsCMField.complexConj L : L →+* L)) v.1, v.2)
     have hzero := GlobalTheory.T.zariskiDense_rationalPoints_definiteUnitary_charZero L n K (MvPolynomial.rename f P) ?_

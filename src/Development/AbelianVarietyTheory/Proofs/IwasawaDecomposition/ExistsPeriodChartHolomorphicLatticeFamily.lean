@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOnB
 public import Mathlib.LinearAlgebra.Matrix.PosDef
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCommonIntKernelPsdBlockNotPosDef
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPeriodFrameOfHolomorphicLatticeFamilyStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodChartRescaleBallToUnitPolydiscStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodChartRescaleBallToUnitPolydisc
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodMatrixBoundaryExtensionMonodromyPosSemidefStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -99,7 +99,7 @@ theorem GlobalTheory.ShFam.Hor.LogCh.exists_periodChart_of_latFam : ∀ (n a g r
     have h1 := hΔp z hz
     rw [← heq z hz] at h1
     exact h1
-  obtain ⟨hPC, hY⟩ := GlobalTheory.T.periodChart_rescale_ball_to_unitPolydisc n a g rk ha ρ τ₀ B hρ hρ1 hrk hτ₀d hτ₀s hpsd hB htoric habel
+  obtain ⟨hPC, hY⟩ := _root_.GlobalTheory.LieBase.HodgeChart.periodChart_rescale_ball n a g rk ha ρ τ₀ B hρ hρ1 hrk hτ₀d hτ₀s hpsd hB htoric habel
   refine ⟨rk, _, B, P, ρ, d, hρ, hρ1, hd, hPC, hP, hPdet, ?_⟩
   intro s hs hz Hm hHm
   have hnz : ∀ i : Fin a, logExp a s (Fin.castLE ha i) ≠ 0 := by

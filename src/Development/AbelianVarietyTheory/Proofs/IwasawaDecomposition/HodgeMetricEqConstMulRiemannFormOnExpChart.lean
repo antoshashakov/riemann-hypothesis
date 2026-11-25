@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLieBase
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDiagonalRiemannFormOrthonormalFrameStatement
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsThetaL2NormSquared
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.IsOrth
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsDiagonalRiemannFormOrthonormalFrame
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HodgeMetricFrameEqRiemannFormAtInteriorPointStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HodgeMetricUniformisationSmoothOnInterior
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPreconnectedPolydiscFirstCoordsNeZeroStatement
@@ -85,7 +87,7 @@ theorem hodgeMet_eq_riem_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   set U' := unfFam U σ with hU'def
   have hU' : Formalism.L2.PjFree.IsUnf U' := by rw [hU'def, unfFam_self]; exact hU
   obtain ⟨W, hinj⟩ := exists_unfWit_inj hσ hU' h1
-  obtain ⟨d, hdpos, hd⟩ := GlobalTheory.T.exists_diagonal_riemannForm_orthonormalFrame E H Dw l Xo c σ _ U' hσ hU' W
+  obtain ⟨d, hdpos, hd⟩ := _root_.GlobalTheory.HodgeSmooth.exists_diag_riem_orth E H Dw l Xo c σ _ U' hσ hU' W
   have hreach : ∀ z ∈ Ω, ∃ (k : U'.Comp) (x : (U'.X k).dom), IsOrth (U'.X k) x.1 ∧
       cxPt T.Z (U'.un k x) = ch₀.symm z :=
     fun z hz => exists_orth (Z := T.Z) hσ hU' (hΩin z hz)

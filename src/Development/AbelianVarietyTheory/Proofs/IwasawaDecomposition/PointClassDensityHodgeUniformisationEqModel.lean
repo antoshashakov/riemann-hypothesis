@@ -4,7 +4,9 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Point
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurePreservingCompEquiv
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniformisationComponentEqOfSameModulusPoint
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.InterPolyProdSum
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BoundedDomainModelMetricContDiffAtAndIsUnitStatement
+public import Formalism.DegreeFormula.Statement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExtFormAdjEqNegSecondForm
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BoundedDomainModelMetricContDiffAtAndIsUnit
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HodgeMetricUniformisationGramLocalHolomorphicStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TopChernDensityInvariantHolomorphicFrameChange
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
@@ -113,6 +115,6 @@ theorem chernTop_pointPoly_transport : ∀ (E : Type) [Field E] [NumberField E] 
   rw [chernTop_pointPoly_eq, ← chernTop_reindex _ (letter_bijective hσ hU k)]
   choose cc hcc g hg hgu hG using GlobalTheory.T.hodge_metric_uniformisation_gram_local_holomorphic E H Dw l Xo c O β Y T F e σ U hσ hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ h v hv A hA
   exact GlobalTheory.PointChern.chernTop_changeFrame _ _ _ (fun w τ => g τ w) cc v hcc hg hgu
-    (fun τ => (GlobalTheory.T.boundedDomainModelMetric_contDiffAt_and_isUnit _ _ _ _ h v hv _).1) (fun τ => (GlobalTheory.T.boundedDomainModelMetric_contDiffAt_and_isUnit _ _ _ _ h v hv _).2) (Filter.eventually_all.2 hG)
+    (fun τ => (_root_.GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit _ _ _ _ h v hv _).1) (fun τ => (_root_.GlobalTheory.ModelMetricReg.invT_contDiffAt_and_isUnit _ _ _ _ h v hv _).2) (Filter.eventually_all.2 hG)
 
 end GlobalTheory.UnifDensTransport

@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsLatBasisZero
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BoundedCombinationOfSpanCoordinateRowsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoisotropicSublatticeOfTorsionCountStatement
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoisotropicSublatticeOfTorsionCount
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DetNeZeroOfImHermFormIntegralRealBasisStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAnalyticLocalLatticeBasisStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConstIntegralCoordsLatticeSectionStatement
@@ -253,7 +255,7 @@ theorem core : ∀ (n a g r₀ : ℕ) (K : (Fin n → ℂ) → Set (Fin g → �
     det_ne_zero_of_herm g (2 * g) Hm₀ (lam s₀) M hpos₀ (hlamB s₀ hs₀).1
       (span_top_of_isLatBasis (hlamB s₀ hs₀) hspan₀) hM₀
   have hlinQ := linIndep_rows g (2 * g) r₀ (lam s₀) (ζ (logExp a s₀)) A (hζli _ hz₁) (fun i => hA i s₀ hs₀)
-  have hco := GlobalTheory.T.coisotropic_sublattice_of_torsion_count (2 * g) r₀ M A hdet hlinQ hdvd
+  have hco := _root_.GlobalTheory.CoisoCount.coisotropic_of_torsion_count (2 * g) r₀ M A hdet hlinQ hdvd
 
   obtain ⟨C, hC⟩ := hζbd
   have hgr := GlobalTheory.T.periods_polyGrowth_of_bounded_coisotropic n a g (2 * g) lam ((M : Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ).map (Int.cast : ℤ → ℝ))

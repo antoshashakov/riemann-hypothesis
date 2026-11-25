@@ -10,7 +10,8 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Level
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOrthonormalStepBasisBaseLatticeCharts
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ServedPlaceNoChainPlaceOrTypePrimeOverStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnChoiceExistsStandardChainDataStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedChainChartsHyperspecialStabiliseLatticeStatement
+public import Formalism.SharpRestriction.GrowthBounds.ChartComparison.PStabEq
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedChainChartsHyperspecialStabiliseLattice
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistedChartLevelsDeterminantMapsValuesStatement
 public import Formalism.SharpRestriction.GrowthBounds.ChartRank.SiteGoodPrimeTorsion
 public import Formalism.SharpRestriction.GrowthBounds.ChartedClasses.ClsCharted1AtInTw
@@ -139,7 +140,7 @@ theorem cmpJ_data_ne : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (
       fr_lat := fun j hj β => (hB j hj).choose_spec.2 β
       ψ := fun j hj β => (hψ j hj β).choose
       fin := hfin }
-  have hhyp := GlobalTheory.T.twisted_chain_charts_hyperspecial_stabilise_lattice w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt hpl Cd
+  have hhyp := _root_.GlobalTheory.Mem.Top.KerTwLv.hyp_charts_tw w hO hF hP Z t Wt nch n Y hmu hQ O hO' hU E hE Fl hfl hw u v hg hμ tt htt hpl Cd
   let Zt := Formalism.MainNotions.G.KAat.atInTw (X0 := t.g.herm) tt.forms u ((w.D Z).what₂.muAt v) hμ dt (Cd.Lc t.Gt (Fl u v hg) (hfl u v hg).1)
   have A : Formalism.MainNotions.G.ChF.HypTies Zt t.Gt t.cmp :=
     { fl_t := (hfl u v hg).1

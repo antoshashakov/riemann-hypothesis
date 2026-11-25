@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsT
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ThirdLevelOfGoodTwists
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceHeckeOperatorScalarOnSpherical
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdditiveCharacterEqOfCommonUnipotentLevelEigenveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsClassTrivialStabiliserAtTypePlaceStatement
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsClassTrivialStabiliserAtTypePlace
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.ExpDefs
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNeZeroAlgebraicModularFormOfTrivialStabili
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExpectedShapeLevelIntegralAndUnipotentAtTypePlacStatement
@@ -87,7 +89,7 @@ theorem exists_form {η : HChar D.host.E} {J : Subgroup (GAf D.host.E D.R.nV)} (
     (hρ : ρ.IsIrreducible) (χ : J →* Kˣ) : ∃ f ∈ NX.TypeSpF D.host.E D.R.nV K ρ J χ, f ≠ 0 := by
   obtain ⟨k, ⟨v⟩⟩ := hG.2.2
   obtain ⟨h1, s, hs⟩ := hG.1 k v
-  obtain ⟨g, hg⟩ := GlobalTheory.T.exists_class_trivial_stabiliser_at_typePlace D k s (hs ▸ h1)
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.NeatUni.exists_trivial_stabiliser D k s (hs ▸ h1)
   haveI : Nontrivial W := by
     by_contra hn
     rw [not_nontrivial_iff_subsingleton] at hn
