@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.InertiaQuadraticRamification.InertSplitAlt
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameKummerInertiaSurjective
 import GroundTheory.GlobalFields.ExistenceTheorem.ExistsIsAbelianGaloisRangeIdeleClassNormEqOfFini
@@ -91,26 +92,12 @@ private theorem normV_mem {F : Type} [Field F] [NumberField F] (t : HeightOneSpe
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   simpa [normV, nsmul_eq_mul] using card_nsmul_eq_zero' (G := 𝓞 F ⧸ t.asIdeal) (x := 1)
 
-private theorem exists_place_of_prime {K : Type} [Field K] [NumberField K] {q : ℕ} (hq : q.Prime) :
-    ∃ u : HeightOneSpectrum (𝓞 K), ((q : ℕ) : 𝓞 K) ∈ u.asIdeal := by
-  have hne : Ideal.span {((q : ℕ) : 𝓞 K)} ≠ ⊤ := by
-    rw [Ne, Ideal.span_singleton_eq_top]
-    intro h
-    have h2 := h.map (Algebra.norm ℤ (S := 𝓞 K))
-    rw [show ((q : ℕ) : 𝓞 K) = algebraMap ℤ (𝓞 K) (q : ℤ) by simp, Algebra.norm_algebraMap,
-      isUnit_pow_iff Module.finrank_pos.ne'] at h2
-    exact (Nat.prime_iff_prime_int.1 hq).not_unit h2
-  obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal _ hne
-  have hq0 : ((q : ℕ) : 𝓞 K) ≠ 0 := Nat.cast_ne_zero.2 hq.ne_zero
-  have hmem := hle (Ideal.mem_span_singleton_self ((q : ℕ) : 𝓞 K))
-  exact ⟨⟨M, hM.isPrime, fun h => hq0 (by rwa [h, Ideal.mem_bot] at hmem)⟩, hmem⟩
-
 private theorem exists_moves {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     {q : ℕ} (hq : q.Prime) (h2 : 2 < q) (hB : ∀ w : HeightOneSpectrum (𝓞 K), ((q : ℕ) : 𝓞 K) ∉ w.asIdeal ^ 2)
     {x : Ω} (hx : x ^ 2 = ((q : ℕ) : Ω)) :
     ∃ (u : HeightOneSpectrum (𝓞 K)) (A : ValuationSubring Ω), ((q : ℕ) : 𝓞 K) ∈ u.asIdeal ∧ IsPlaceOver A u ∧
       ∃ σ ∈ Ine (F := K) A, σ x = -x := by
-  obtain ⟨u, hu⟩ := exists_place_of_prime (K := K) hq
+  obtain ⟨u, hu⟩ := _root_.Bl.general_b_fact_left_tail.goal1 (F := K) q hq
   obtain ⟨A, hA⟩ := ReciprocityTheory.Gal.exists_isPlaceOver Ω u
   haveI : Fact q.Prime := ⟨hq⟩
   obtain ⟨σ, hσ, h⟩ := GlobalTheory.TameKummerInertia.tame_kummer_surj K Ω A u hA q hu (hB u) 2 two_pos

@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Formalism.LocalRingCardinality.DataHost
 public import Development.AutomorphicArithmetic.PrimeDiscriminants.SmallRam
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
@@ -84,20 +85,8 @@ theorem mem_sq_of_dvd_condN {p : ℕ} (hp : p.Prime) (h : p ∣ H.QS * H.q * H.d
   · exact mem_sq_of_sqrt H.sqd_sq P hP hv
 
 theorem exists_place_over (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
-    ∃ w : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ w.asIdeal := by
-  haveI : Fact p.Prime := ⟨hp⟩
-  set pZ : Ideal ℤ := Ideal.span {((p : ℕ) : ℤ)}
-  haveI : pZ.IsMaximal := Int.ideal_span_isMaximal_of_prime p
-  obtain ⟨⟨P, hP, hl⟩⟩ := (inferInstance : Nonempty (pZ.primesOver (𝓞 E)))
-  have hz : ((p : ℕ) : ℤ) ∈ Ideal.under ℤ P := by
-    rw [← (Ideal.liesOver_iff P pZ).1 hl]
-    exact Ideal.subset_span rfl
-  have hmem : ((p : ℕ) : 𝓞 E) ∈ P := by simpa [Ideal.under] using hz
-  have hnb : P ≠ ⊥ := by
-    intro hb
-    rw [hb, Ideal.mem_bot] at hmem
-    exact hp.ne_zero (by exact_mod_cast hmem)
-  exact ⟨⟨P, hP, hnb⟩, hmem⟩
+    ∃ w : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ w.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 theorem not_dvd_condN_of_unram {p : ℕ} (hp : p.Prime)
     (h : ∀ w : HeightOneSpectrum (𝓞 H.E), (p : 𝓞 H.E) ∈ w.asIdeal → (p : 𝓞 H.E) ∉ w.asIdeal ^ 2) :

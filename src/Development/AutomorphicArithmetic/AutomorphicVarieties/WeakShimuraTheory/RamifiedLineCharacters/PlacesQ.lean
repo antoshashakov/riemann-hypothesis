@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.NearSplit
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.Mk0IdMapCongr
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.GalEmbTop
@@ -45,29 +46,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
-private theorem ex_place (K : Type) [Field K] [NumberField K] {w : ℕ} (hw : w.Prime) :
-    ∃ v : HeightOneSpectrum (𝓞 K), (w : 𝓞 K) ∈ v.asIdeal := by
-  have hwZ : Prime (w : ℤ) := Nat.prime_iff_prime_int.mp hw
-  haveI hPm : (Ideal.span {(w : ℤ)}).IsMaximal :=
-    PrincipalIdealRing.isMaximal_of_irreducible hwZ.irreducible
-  obtain ⟨Q, hQm, hQ⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 K)
-    (Ideal.span {(w : ℤ)}) (by
-      intro x hx
-      rw [RingHom.mem_ker] at hx
-      have hx0 : x = 0 := (algebraMap ℤ (𝓞 K)).injective_int (by rw [hx, map_zero])
-      rw [hx0]
-      exact Ideal.zero_mem _)
-  have hmem : (w : 𝓞 K) ∈ Q := by
-    have hc : (w : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K)) := by
-      change (w : ℤ) ∈ Ideal.under ℤ Q
-      rw [hQ]
-      exact Ideal.mem_span_singleton_self _
-    simpa using hc
-  refine ⟨⟨Q, hQm.isPrime, ?_⟩, hmem⟩
-  intro hbot
-  rw [hbot, Ideal.mem_bot] at hmem
-  exact hw.ne_zero (by exact_mod_cast hmem)
-
 private theorem prime_eq {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {p q : ℕ} (hp : p.Prime)
     (hq : q.Prime) (h1 : (p : 𝓞 K) ∈ v.asIdeal) (h2 : (q : 𝓞 K) ∈ v.asIdeal) : p = q := by
   by_contra hne
@@ -101,12 +79,13 @@ theorem UpperTheory.V.Ws.Gys.placesQ :
   let H : Subgroup (G ℚ Ω) := U.map (resQ T.F) ⊓ D.rbar.ker ⊓ D.om.ker
   have hHo : IsOpen (H : Set (G ℚ Ω)) := IsOpen.inter (IsOpen.inter hmo hr) ho
   have hinf := Gys.splitPrimes Ω H hHo
-  obtain ⟨v0, -⟩ := ex_place T.F Nat.prime_two
-  let f : ℕ → HeightOneSpectrum (𝓞 T.F) := fun w => if hw : w.Prime then (ex_place T.F hw).choose else v0
+  obtain ⟨v0, -⟩ := _root_.Bl.general_b_fact_left_tail.goal1 (F := T.F) 2 Nat.prime_two
+  let f : ℕ → HeightOneSpectrum (𝓞 T.F) := fun w =>
+    if hw : w.Prime then (_root_.Bl.general_b_fact_left_tail.goal1 (F := T.F) w hw).choose else v0
   have hf : ∀ w (hw : w.Prime), (w : 𝓞 T.F) ∈ (f w).asIdeal := by
     intro w hw
     simp only [f, dif_pos hw]
-    exact (ex_place T.F hw).choose_spec
+    exact (_root_.Bl.general_b_fact_left_tail.goal1 (F := T.F) w hw).choose_spec
   have himg := hinf.image (f := f) (by
     intro a ha b hb hab
     exact prime_eq (f a) ha.1 hb.1 (hf a ha.1) (by rw [hab]; exact hf b hb.1))

@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTameInertiaElementAtTwistPrime
 import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -108,21 +109,8 @@ theorem isUnit_sub_one {O : Type*} [CommRing O] [IsDomain O] {n : ℕ} {ζ : O} 
   simpa using hu.neg
 
 theorem exists_place_mem (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
-    ∃ v : HeightOneSpectrum (𝓞 E), ((p : ℕ) : 𝓞 E) ∈ v.asIdeal := by
-  have hnu : ¬ IsUnit ((p : ℕ) : 𝓞 E) := by
-    intro h
-    have h2 : IsUnit (Algebra.norm ℤ ((p : ℕ) : 𝓞 E)) := h.map _
-    have e : Algebra.norm ℤ ((p : ℕ) : 𝓞 E) = (p : ℤ) ^ Module.finrank ℤ (𝓞 E) := by
-      rw [← Algebra.norm_algebraMap]
-      simp
-    rw [e, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast] at h2
-    exact hp.one_lt.ne' h2
-  obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 E)}) (by
-    rwa [Ne, Ideal.span_singleton_eq_top])
-  have hmem : ((p : ℕ) : 𝓞 E) ∈ M := hle (Ideal.mem_span_singleton_self _)
-  refine ⟨⟨M, hM.isPrime, ?_⟩, hmem⟩
-  rintro rfl
-  exact hp.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hmem))
+    ∃ v : HeightOneSpectrum (𝓞 E), ((p : ℕ) : 𝓞 E) ∈ v.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 end GlobalTheory.TwSys.InertiaElt
 

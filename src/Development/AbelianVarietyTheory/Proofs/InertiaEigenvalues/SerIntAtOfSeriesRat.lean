@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValRingLocRing
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.TwistSeries
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BddGood
@@ -285,14 +286,8 @@ theorem series_bound {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {
     ring
 
 theorem exists_place_over (k : Type) [Field k] [NumberField k] {l : ℕ} (hl : l.Prime) :
-    ∃ la : HeightOneSpectrum (𝓞 k), ((l : ℕ) : 𝓞 k) ∈ la.asIdeal := by
-  have h1 : Ideal.span {((l : ℕ) : 𝓞 k)} ≠ ⊤ := fun h => by
-    have h2 := Ideal.absNorm_span_natCast (S := 𝓞 k) l
-    rw [h, Ideal.absNorm_top] at h2
-    exact hl.one_lt.ne' ((pow_eq_one_iff_of_nonneg (Nat.zero_le _) Module.finrank_pos.ne').1 h2.symm)
-  obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal _ h1
-  have h3 : ((l : ℕ) : 𝓞 k) ∈ m := hle (Ideal.mem_span_singleton_self _)
-  exact ⟨⟨m, hm.isPrime, fun h => by rw [h, Ideal.mem_bot] at h3; exact Nat.cast_ne_zero.2 hl.ne_zero h3⟩, h3⟩
+    ∃ la : HeightOneSpectrum (𝓞 k), ((l : ℕ) : 𝓞 k) ∈ la.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 l hl
 
 theorem goodAt_of_dvd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {l₁ l₂ : Geo.Tor.Level H}
     {pd p : ℕ} (hp : p.Prime) (hM : l₂.M = l₁.M * pd) (hc : Nat.Coprime pd p) (h : l₁.GoodAt p) : l₂.GoodAt p := by

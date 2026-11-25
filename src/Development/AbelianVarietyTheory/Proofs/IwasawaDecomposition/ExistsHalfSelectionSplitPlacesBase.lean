@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TiedColumnData
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMemPvSet
 import Mathlib.Algebra.Order.Floor.Extended
@@ -58,20 +59,8 @@ theorem exists_ratPrime_mem {L : Type} [Field L] [NumberField L] (w : HeightOneS
   exact CharP.cast_eq_zero _ p
 
 theorem exists_mem_of_prime (L : Type) [Field L] [NumberField L] {p : ℕ} (hp : p.Prime) :
-    ∃ P : HeightOneSpectrum (𝓞 L), ((p : ℕ) : 𝓞 L) ∈ P.asIdeal := by
-  haveI : Fact p.Prime := ⟨hp⟩
-  have hmax : (Ideal.span {(p : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime p
-  obtain ⟨Q, hQ, hQ'⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 L) (Ideal.span {(p : ℤ)})
-    (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (algebraMap ℤ (𝓞 L)).injective_int]; exact bot_le)
-  have hmem : ((p : ℕ) : 𝓞 L) ∈ Q := by
-    have : (p : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 L)) := by
-      change (p : ℤ) ∈ Ideal.under ℤ Q
-      rw [hQ']
-      exact Ideal.mem_span_singleton_self _
-    simpa [Ideal.mem_comap] using this
-  refine ⟨⟨Q, hQ.isPrime, ?_⟩, hmem⟩
-  rintro rfl
-  exact (Nat.cast_ne_zero.2 hp.ne_zero) (Ideal.mem_bot.1 hmem)
+    ∃ P : HeightOneSpectrum (𝓞 L), ((p : ℕ) : 𝓞 L) ∈ P.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 theorem ratPrime_unique {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) {p q : ℕ}
     (hp : p.Prime) (hq : q.Prime) (hpw : (p : 𝓞 L) ∈ w.asIdeal) (hqw : (q : 𝓞 L) ∈ w.asIdeal) : p = q := by

@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Formalism.LocalToGlobal.ProjectiveLattices.MulCMemSec
 public import Formalism.LocalToGlobal.ProjectiveLattices.VAtVNeBot
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
@@ -79,22 +80,8 @@ theorem exists_goodAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   simpa using h3
 
 theorem exists_place (K : Type) [Field K] [NumberField K] (p : ℕ) (hp : p.Prime) :
-    ∃ la : HeightOneSpectrum (𝓞 K), (p : 𝓞 K) ∈ la.asIdeal := by
-  have hP : (Ideal.span {(p : ℤ)}).IsPrime :=
-    (Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.mp hp)
-  obtain ⟨Q, -, hQ, hQl⟩ := Ideal.exists_ideal_over_prime_of_isIntegral (S := 𝓞 K) (Ideal.span {(p : ℤ)}) ⊥
-    (by rw [(show Ideal.under _ ⊥ = ⊥ from Ideal.comap_bot_of_injective _ (algebraMap ℤ (𝓞 K)).injective_int)]; exact bot_le)
-  have hpQ : (p : 𝓞 K) ∈ Q := by
-    have : ((p : ℤ)) ∈ Ideal.under ℤ Q := by
-      rw [hQl]
-      exact Ideal.mem_span_singleton_self _
-    simpa using this
-  refine ⟨⟨Q, hQ, fun h => ?_⟩, hpQ⟩
-  rw [h] at hQl
-  change Ideal.comap (algebraMap ℤ (𝓞 K)) ⊥ = _ at hQl
-  rw [Ideal.comap_bot_of_injective _ (algebraMap ℤ (𝓞 K)).injective_int] at hQl
-  have : ((p : ℤ)) ∈ (⊥ : Ideal ℤ) := hQl ▸ Ideal.mem_span_singleton_self _
-  exact hp.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 this))
+    ∃ la : HeightOneSpectrum (𝓞 K), (p : 𝓞 K) ∈ la.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 theorem integral_of_eqChar : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c), Dom a n → f ∈ cusp Xo c U a n → ∀ (T : CDVR), Countable (IsLocalRing.ResidueField T.V) → ∀ (io : c.F →+* T.Fr), (∀ k : c.F, io k ∈ (algebraMap T.V T.Fr).range) → ∀ y : IntFr Xo c T io, evI y f ∈ (algebraMap T.V T.Fr).range := by
   intro E _ _ _ H Dw l Xo c r U hU a n f hd hf T hcnt io hint y

@@ -239,8 +239,8 @@ theorem iwU_coprime (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (hg : g.Prime) (h
   have : a = 1 := Units.ext h1
   rw [this, map_one]
 
-theorem exists_place (g : ℕ) (hg : g.Prime) : ∃ v : HeightOneSpectrum (𝓞 F), (g : 𝓞 F) ∈ v.asIdeal := by
-  first | exact Bl.general_b_fact_left_tail.goal1 .. | (apply Bl.general_b_fact_left_tail.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_tail.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_tail.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_tail.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_tail.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› g hg | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› g | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› | exact @Bl.general_b_fact_left_tail.goal1 F
+theorem exists_place (g : ℕ) (hg : g.Prime) : ∃ v : HeightOneSpectrum (𝓞 F), (g : 𝓞 F) ∈ v.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 g hg
 
 end Place
 

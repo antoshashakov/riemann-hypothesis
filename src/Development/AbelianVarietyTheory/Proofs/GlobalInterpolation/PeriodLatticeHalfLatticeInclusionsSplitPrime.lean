@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HeisenbergCocycleFormIntegralSelfDual
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFactsStatement
@@ -109,13 +110,8 @@ theorem nat_notMem {Q : HeightOneSpectrum (𝓞 E)} {n p : ℕ} (h : Nat.Coprime
   exact Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (huv ▸ Q.asIdeal.add_mem (Q.asIdeal.mul_mem_left _ hn) (Q.asIdeal.mul_mem_left _ hp)))
 
-theorem exists_prime_over {p : ℕ} (hp : p.Prime) : ∃ Q : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ Q.asIdeal := by
-  have hu : ¬ IsUnit (p : 𝓞 E) := fun h => by
-    have : IsUnit (p : ℤ) := isUnit_of_map_unit (algebraMap ℤ (𝓞 E)) _ (by simpa using h)
-    exact hp.one_lt.ne' (by simpa [Int.isUnit_iff_natAbs_eq] using this)
-  obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal (Ideal.span {(p : 𝓞 E)}) (by simpa [Ideal.span_singleton_eq_top] using hu)
-  exact ⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩,
-    hle (Ideal.mem_span_singleton_self _)⟩
+theorem exists_prime_over {p : ℕ} (hp : p.Prime) : ∃ Q : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ Q.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 theorem expS_conj [StarRing E] {S : Finset (HeightOneSpectrum (𝓞 E))} (hS : ∀ P ∈ S, conjPrime₂ P ∉ S)
     (Q : HeightOneSpectrum (𝓞 E)) : expS S (conjPrime₂ Q) = -expS S Q := by

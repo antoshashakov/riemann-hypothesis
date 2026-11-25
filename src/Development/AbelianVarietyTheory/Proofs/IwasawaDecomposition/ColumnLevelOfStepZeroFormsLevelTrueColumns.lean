@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtLattice
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemStabGLAdeleIff
 public import Formalism.LocalRingCardinality.IntCastDvdOfDvdIntegers
@@ -119,18 +120,8 @@ theorem not_both_mem {p q : ℕ} (h : Nat.Coprime p q) (v : HeightOneSpectrum (�
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (hab ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hp) (v.asIdeal.mul_mem_left _ hq)))
 
-theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ v : HeightOneSpectrum (𝓞 F), (p : 𝓞 F) ∈ v.asIdeal := by
-  have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.1 hp
-  have : (Ideal.span {(p : ℤ)}).IsMaximal :=
-    (Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ |>.isMaximal (by simpa using hpZ.ne_zero)
-  obtain ⟨Q, hQ, hov⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 F) (Ideal.span {(p : ℤ)})
-  have hmem : (p : 𝓞 F) ∈ Q := by
-    have : (p : ℤ) ∈ Q.under ℤ := by rw [← hov.over]; exact Ideal.mem_span_singleton_self _
-    simpa using this
-  refine ⟨⟨Q, hQ.isPrime, ?_⟩, hmem⟩
-  rintro rfl
-  have : (p : 𝓞 F) = 0 := by simpa using hmem
-  exact hp.ne_zero (by exact_mod_cast this)
+theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ v : HeightOneSpectrum (𝓞 F), (p : 𝓞 F) ∈ v.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 theorem inJ_iff {k : Type} [Field k] {n a t fc : ℕ} (ha : n ≤ a) (hfc : n ≤ fc) (M : Matrix (Fin n) (Fin n) k) :
     InJ a t fc false M ↔ ∀ i j : Fin n, (j < i → M i j = 0) ∧ M i i = 1 := by

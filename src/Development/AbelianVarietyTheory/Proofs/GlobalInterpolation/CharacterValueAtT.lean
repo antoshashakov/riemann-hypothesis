@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MaxVSpanSingleton
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.CharacterValuation
 public import Development.AbelianVarietyTheory.Definitions.Foundations.AbsCharNotUnitary
@@ -204,16 +205,8 @@ theorem val_vp_unit {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} {x : K} (h : w.va
   simp
 
 theorem exists_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) :
-    ∃ v : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ v.asIdeal := by
-  have hnu : ¬ IsUnit ((p : ℕ) : 𝓞 K) := by
-    intro hu
-    have h2 := hu.map (Algebra.norm ℤ)
-    have e : ((p : ℕ) : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ) := by simp
-    rw [e, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq] at h2
-    exact hp.ne_one (by simpa using h2)
-  obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 K)}) (by rwa [Ne, Ideal.span_singleton_eq_top])
-  exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField K)⟩,
-    hle (Ideal.mem_span_singleton_self _)⟩
+    ∃ v : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ v.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 end Val
 

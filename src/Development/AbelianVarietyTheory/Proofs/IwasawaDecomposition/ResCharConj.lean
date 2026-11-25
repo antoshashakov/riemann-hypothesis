@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CmQuadraticFormEqAlternatingForm
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ImportsFurther
 import Mathlib.Algebra.Order.Floor.Extended
@@ -46,14 +47,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Mem.Top.TwFin
 
 theorem exists_over {K : Type} [Field K] [NumberField K] {l : ℕ} (hl : l.Prime) :
-    ∃ v : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ v.asIdeal := by
-  first
-  | exact @_root_.GlobalTheory.IsolatedTheoremFour.main
-  | exact _root_.GlobalTheory.IsolatedTheoremFour.main
-  | (apply _root_.GlobalTheory.IsolatedTheoremFour.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IsolatedTheoremFour.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IsolatedTheoremFour.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IsolatedTheoremFour.main ..)
+    ∃ v : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ v.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 l hl
 
 theorem finite_mem {K : Type} [Field K] [NumberField K] {l : ℕ} (hl : l ≠ 0) :
     {v : HeightOneSpectrum (𝓞 K) | ((l : ℕ) : 𝓞 K) ∈ v.asIdeal}.Finite := by

@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IncAdjYZeroMulVec
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IncAMulMemIntAt
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ClassC0PrimeNotExceptional
@@ -68,16 +69,8 @@ open Matrix GlobalTheory.GoodPos
 namespace GlobalTheory.LineOffT
 
 theorem exists_place (E : Type) [Field E] [NumberField E] {T : ℕ} (hT : T.Prime) :
-    ∃ P : HeightOneSpectrum (𝓞 E), (T : 𝓞 E) ∈ P.asIdeal := by
-  have hne : Ideal.span {(T : 𝓞 E)} ≠ ⊤ := fun h => by
-    have h1 := congrArg Ideal.absNorm h
-    rw [Ideal.absNorm_span_natCast, Ideal.absNorm_top] at h1
-    rcases (Nat.pow_eq_one.1 h1) with h2 | h2
-    · exact hT.one_lt.ne' h2
-    · exact (Module.finrank_pos (R := ℤ) (M := 𝓞 E)).ne' h2
-  obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal _ hne
-  have hmem : (T : 𝓞 E) ∈ M := hle (Ideal.mem_span_singleton_self _)
-  exact ⟨⟨M, hM.isPrime, fun h => Nat.cast_ne_zero.2 hT.ne_zero (by rwa [h, Ideal.mem_bot] at hmem)⟩, hmem⟩
+    ∃ P : HeightOneSpectrum (𝓞 E), (T : 𝓞 E) ∈ P.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 T hT
 
 variable {D : D7}
 

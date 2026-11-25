@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactLeftTail.Imports
 public import Development.AbelianVarietyTheory.Definitions.Divisors.BasePlaceNotMemChiGridBadPlaces
 public import Development.AbelianVarietyTheory.Definitions.Foundations.RootOfUnityEightQMemCoeffGaloisSubfield
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPartConjMem
@@ -69,16 +70,8 @@ theorem prime_eq_of_mem {M : Type} [Field M] [NumberField M] (P : HeightOneSpect
   exact add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)
 
 theorem exists_place (M : Type) [Field M] [NumberField M] {p : ℕ} (hp : p.Prime) :
-    ∃ P : HeightOneSpectrum (𝓞 M), (p : 𝓞 M) ∈ P.asIdeal := by
-  have : Fact p.Prime := ⟨hp⟩
-  have hm : (Ideal.span {(p : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime p
-  obtain ⟨⟨W, hW, hWQ⟩⟩ := (inferInstance : Nonempty ((Ideal.span {(p : ℤ)}).primesOver (𝓞 M)))
-  have hm : (p : 𝓞 M) ∈ W := by
-    have : (p : ℤ) ∈ W.under ℤ := by rw [← hWQ.over]; exact Ideal.mem_span_singleton_self _
-    simpa using (show algebraMap ℤ (𝓞 M) (p : ℤ) ∈ W from this)
-  refine ⟨⟨W, hW, ?_⟩, hm⟩
-  rintro rfl
-  exact hp.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hm))
+    ∃ P : HeightOneSpectrum (𝓞 M), (p : 𝓞 M) ∈ P.asIdeal :=
+  _root_.Bl.general_b_fact_left_tail.goal1 p hp
 
 theorem natCast_mem_under {M N : Type} [Field M] [NumberField M] [Field N] [NumberField N] [Algebra M N]
     (P : HeightOneSpectrum (𝓞 N)) (n : ℕ) : (n : 𝓞 M) ∈ (P.under (𝓞 M)).asIdeal ↔ (n : 𝓞 N) ∈ P.asIdeal := by
