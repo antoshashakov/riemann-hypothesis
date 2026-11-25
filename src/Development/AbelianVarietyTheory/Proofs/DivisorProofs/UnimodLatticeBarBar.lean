@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HalfIntegralGeneratorTraceEqOne
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CmHostIdempotentTraceEqOne
 
 @[expose] public section
 
@@ -61,31 +62,7 @@ theorem unimodLattice_bar_bar {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
 theorem unimodLattice_bar_rt {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
-    H.bar H.rt = -H.rt := by
-  apply RingOfIntegers.ext
-  rw [H.bar_eq]
-  obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply φ.injective
-  rw [IsCMField.complexEmbedding_complexConj]
-  have hsq : φ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
-    have := congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq
-    simpa using this
-  have hd : (7 : ℝ) ≤ H.d := by
-    have := H.d_mod
-    have : 7 ≤ H.d := by omega
-    exact_mod_cast this
-  set z := φ (H.rt : E) with hz
-  have hre := congrArg Complex.re hsq
-  have him := congrArg Complex.im hsq
-  simp [pow_two] at hre him
-  have hx : z.re = 0 := by
-    have hm : z.re * z.im = 0 := by linarith
-    rcases mul_eq_zero.1 hm with h | h
-    · exact h
-    · rw [h] at hre; nlinarith [sq_nonneg z.re]
-  have key : starRingEnd ℂ z = -z := by apply Complex.ext <;> simp [hx]
-  rw [hz] at key
-  simpa using key
+    H.bar H.rt = -H.rt := GlobalTheory.QuadTrace.bar_rt H
 
 theorem unimodLattice_w0_add {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     H.w0 + H.bar H.w0 = 1 := GlobalTheory.AnVal.halfIntegralGenerator_trace_eq_one H

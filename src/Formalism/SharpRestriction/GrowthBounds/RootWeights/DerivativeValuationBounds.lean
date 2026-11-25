@@ -485,61 +485,8 @@ theorem flt_g_pascal (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ
   Formalism.MainNotions.TestSideWords.TwistedFiltration.G1.flt_g_pascal R m be a
 
 theorem flt_tay_monomial (R : Type*) [CommRing R] {σ : Type*} (m : σ →₀ ℕ) :
-    ∀ be, AddMonoidAlgebra.coeff (flt_tay R σ (monomial m 1)) be = flt_g R m be := by
-  classical
-  suffices H : ∀ d : ℕ, ∀ m : σ →₀ ℕ, (m.sum fun _ e => e) = d →
-      ∀ be, AddMonoidAlgebra.coeff (flt_tay R σ (monomial m 1)) be = flt_g R m be from H _ m rfl
-  intro d
-  induction d with
-  | zero =>
-    intro m hm be
-    have hm0 : m = 0 := by
-      ext k
-      simp only [Finsupp.coe_zero, Pi.zero_apply]
-      by_contra hk
-      have h1 : m k ≤ m.sum fun _ e => e := by
-        simp only [Finsupp.sum]
-        exact Finset.single_le_sum (f := fun k => m k) (fun _ _ => Nat.zero_le _) (Finsupp.mem_support_iff.2 hk)
-      omega
-    subst hm0
-    rw [← MvPolynomial.C_apply, _root_.map_one, _root_.map_one, MvPolynomial.coeff_one, flt_g, zero_tsub]
-    split_ifs with h
-    · subst h
-      simp [← MvPolynomial.C_apply]
-    · obtain ⟨k, hk⟩ : ∃ k, be k ≠ 0 := by
-        by_contra hne
-        push_neg at hne
-        exact h (by ext k; simp [hne k])
-      have h0 : (be.prod fun k j => ((0 : σ →₀ ℕ) k).choose j) = 0 :=
-        Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hk)
-          (by simp [Nat.choose_eq_zero_of_lt (Nat.pos_of_ne_zero hk)])
-      rw [h0, Nat.cast_zero, MvPolynomial.monomial_zero]
-  | succ d ih =>
-    intro m hm be
-    obtain ⟨a, ha⟩ : ∃ a, m a ≠ 0 := by
-      by_contra hne
-      push_neg at hne
-      have h0 : m = 0 := by ext k; simp [hne k]
-      subst h0
-      simp at hm
-    have hm' : m - Finsupp.single a 1 + Finsupp.single a 1 = m := by
-      ext k
-      simp only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]
-      split_ifs with h
-      · subst h; omega
-      · omega
-    have hsum : ((m - Finsupp.single a 1).sum fun _ e => e) = d := by
-      have h1 := hm
-      rw [← hm', Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl] at h1
-      omega
-    have e1 : monomial (m - Finsupp.single a 1 + Finsupp.single a 1) (1 : R) =
-        monomial (m - Finsupp.single a 1) 1 * X a := by
-      rw [← pow_one (X a), MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, one_mul]
-    have e2 : flt_tay R σ (X a) = C (X a) + X a := by
-      simp only [flt_tay, eval₂Hom_X']
-    rw [← hm', e1, _root_.map_mul, flt_g_pascal, e2, mul_add, MvPolynomial.coeff_add,
-      mul_comm _ (C (X a)), MvPolynomial.coeff_C_mul, MvPolynomial.coeff_mul_X', ih _ hsum be, ih _ hsum (be - Finsupp.single a 1)]
-    all_goals (first | ring | (split_ifs <;> ring))
+    ∀ be, AddMonoidAlgebra.coeff (flt_tay R σ (monomial m 1)) be = flt_g R m be :=
+  Formalism.MainNotions.TestSideWords.TwistedFiltration.G1.flt_tay_monomial R m
 
 theorem flt_tay_coeff (R : Type*) [CommRing R] {σ : Type*} (F : MvPolynomial σ R) (be : σ →₀ ℕ) :
     AddMonoidAlgebra.coeff (flt_tay R σ F) be = divDer be F := by

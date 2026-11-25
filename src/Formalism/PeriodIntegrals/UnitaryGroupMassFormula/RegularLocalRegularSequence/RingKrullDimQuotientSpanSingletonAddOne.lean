@@ -109,52 +109,8 @@ theorem spanFinrank_maximalIdeal_quotient_succ_le (R : Type*) [CommRing R] [IsLo
     [IsNoetherianRing R] {x : R} (hx : x ∈ maximalIdeal R) (hx2 : x ∉ maximalIdeal R ^ 2)
     [IsLocalRing (R ⧸ Ideal.span ({x} : Set R))] :
     Submodule.spanFinrank (maximalIdeal (R ⧸ Ideal.span ({x} : Set R))) + 1 ≤
-      Module.finrank (ResidueField R) (CotangentSpace R) := by
-  classical
-  let b := Module.finBasis (ResidueField R) (CotangentSpace R)
-  have hv : (maximalIdeal R).toCotangent ⟨x, hx⟩ ≠ 0 := by
-    rw [Ne, Ideal.toCotangent_eq_zero]; exact hx2
-  obtain ⟨j, hj⟩ := exists_repr_ne_zero b hv
-  have htop := span_insert_image_erase_eq_top b _ hj
-  choose y hy using fun i => (maximalIdeal R).toCotangent_surjective (b i)
-  have hcot : Submodule.span (ResidueField R) ((maximalIdeal R).toCotangent ''
-      (insert (⟨x, hx⟩ : maximalIdeal R) (y '' ↑(Finset.univ.erase j)))) = ⊤ := by
-    refine Eq.trans ?_ htop
-    congr 1
-    simp only [Set.image_insert_eq, Set.image_image, hy]
-  have hspan0 := IsLocalRing.CotangentSpace.span_image_eq_top_iff.mp hcot
-  have hspan : Submodule.span R (Subtype.val ''
-      (insert (⟨x, hx⟩ : maximalIdeal R) (y '' ↑(Finset.univ.erase j)))) = maximalIdeal R := by
-    calc _ = Submodule.map (maximalIdeal R).subtype (Submodule.span R
-          (insert (⟨x, hx⟩ : maximalIdeal R) (y '' ↑(Finset.univ.erase j)))) :=
-          (Submodule.map_span _ _).symm
-      _ = Submodule.map (maximalIdeal R).subtype ⊤ := by rw [hspan0]
-      _ = maximalIdeal R := Submodule.map_subtype_top _
-  obtain ⟨F, hF⟩ : ∃ F : Finset R, F = (Finset.univ.erase j).image (fun i => (y i : R)) := ⟨_, rfl⟩
-  have hm : Ideal.span (insert x (F : Set R)) = maximalIdeal R := by
-    refine Eq.trans ?_ hspan
-    rw [hF, Finset.coe_image, Set.image_insert_eq, Set.image_image]
-  have hcomap : Ideal.comap (Ideal.Quotient.mk (Ideal.span ({x} : Set R)))
-      (maximalIdeal (R ⧸ Ideal.span ({x} : Set R))) = maximalIdeal R :=
-    IsLocalRing.eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective)
-  have hx0 : Ideal.Quotient.mk (Ideal.span ({x} : Set R)) x = 0 :=
-    Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self x)
-  have hQ : maximalIdeal (R ⧸ Ideal.span ({x} : Set R)) =
-      Ideal.span ((F.image (Ideal.Quotient.mk (Ideal.span ({x} : Set R))) : Finset _) :
-        Set (R ⧸ Ideal.span ({x} : Set R))) := by
-    rw [← Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective
-      (maximalIdeal (R ⧸ Ideal.span ({x} : Set R))), hcomap, ← hm, Ideal.map_span,
-      Set.image_insert_eq, hx0, Ideal.span_insert, Ideal.span_singleton_eq_bot.mpr rfl, bot_sup_eq,
-      Finset.coe_image]
-  have hcard : (F.image (Ideal.Quotient.mk (Ideal.span ({x} : Set R)))).card ≤
-      Module.finrank (ResidueField R) (CotangentSpace R) - 1 := by
-    calc (F.image (Ideal.Quotient.mk (Ideal.span ({x} : Set R)))).card ≤ F.card := Finset.card_image_le
-      _ ≤ (Finset.univ.erase j).card := by rw [hF]; exact Finset.card_image_le
-      _ = _ := by rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
-  have hpos : 0 < Module.finrank (ResidueField R) (CotangentSpace R) := Fin.pos j
-  rw [hQ]
-  have := spanFinrank_span_finset_le (F.image (Ideal.Quotient.mk (Ideal.span ({x} : Set R))))
-  omega
+      Module.finrank (ResidueField R) (CotangentSpace R) :=
+  ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.spanFinrank_maximalIdeal_quotient_succ_le R hx hx2
 
 private theorem natCast_withBot_enat_le_iff {a b : ℕ} :
     ((a : ℕ) : WithBot ℕ∞) ≤ ((b : ℕ) : WithBot ℕ∞) ↔ a ≤ b := by

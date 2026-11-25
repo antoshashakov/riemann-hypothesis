@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.ClassFieldRamification.IsClassFieldHilbert
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.Mk0IdMapCongr
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.LeOfFiniteSplitNotSplitBauer
 
 @[expose] public section
 
@@ -58,42 +59,8 @@ private theorem UpperTheory.V.CF.bauer_fix_iff (K M N : Type) [Field K] [NumberF
     [Field N] [NumberField N] [Algebra K M] [Algebra M N] [Algebra K N] [IsScalarTower K M N]
     [IsGalois K N] (P : Ideal (𝓞 N)) [P.IsPrime] (hP : P ≠ ⊥) :
     (∀ σ : N ≃ₐ[K] N, σ • P = P → ∀ x : M, σ (algebraMap M N x) = algebraMap M N x) ↔
-      (P.under (𝓞 M)).ramificationIdx (𝓞 K) * (P.under (𝓞 M)).inertiaDeg (𝓞 K) = 1 := by
-  haveI : IsGalois M N := IsGalois.tower_top_of_isGalois K M N
-  haveI : P.IsMaximal := Ideal.IsPrime.isMaximal inferInstance hP
-  have h1 := Ideal.card_stabilizer_eq (G := N ≃ₐ[K] N) (P.under (𝓞 K)) P
-  have h2 := Ideal.card_stabilizer_eq (G := N ≃ₐ[M] N) (P.under (𝓞 M)) P
-  rw [Ideal.ramificationIdxIn_eq_ramificationIdx _ P (N ≃ₐ[K] N),
-    Ideal.inertiaDegIn_eq_inertiaDeg _ P (N ≃ₐ[K] N),
-    Ideal.ramificationIdx_tower (P.under (𝓞 M)) P, Ideal.inertiaDeg_tower (P.under (𝓞 M)) P] at h1
-  rw [Ideal.ramificationIdxIn_eq_ramificationIdx _ P (N ≃ₐ[M] N),
-    Ideal.inertiaDegIn_eq_inertiaDeg _ P (N ≃ₐ[M] N)] at h2
-  have h3 : Nat.card (MulAction.stabilizer (N ≃ₐ[K] N) P) =
-      ((P.under (𝓞 M)).ramificationIdx (𝓞 K) * (P.under (𝓞 M)).inertiaDeg (𝓞 K)) *
-        Nat.card (MulAction.stabilizer (N ≃ₐ[M] N) P) := by
-    rw [h1, h2]; ring
-  let j : MulAction.stabilizer (N ≃ₐ[M] N) P → MulAction.stabilizer (N ≃ₐ[K] N) P :=
-    fun σ => ⟨σ.1.restrictScalars K, σ.2⟩
-  have hj : Function.Injective j := by
-    intro a b e
-    apply Subtype.ext
-    exact AlgEquiv.restrictScalars_injective K (congrArg Subtype.val e)
-  have hpos : 0 < Nat.card (MulAction.stabilizer (N ≃ₐ[M] N) P) := Nat.card_pos
-  constructor
-  · intro h
-    have hs : Function.Surjective j := by
-      rintro ⟨σ, hσ⟩
-      exact ⟨⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (h σ hσ), hσ⟩, rfl⟩
-    have := Nat.card_eq_of_bijective j ⟨hj, hs⟩
-    rw [h3] at this
-    exact (Nat.eq_of_mul_eq_mul_right hpos (by rw [← this, one_mul])).symm
-  · intro h σ hσ x
-    rw [h, one_mul] at h3
-    have hb := (Nat.bijective_iff_injective_and_card j).2 ⟨hj, h3.symm⟩
-    obtain ⟨τ, hτ⟩ := hb.2 ⟨σ, hσ⟩
-    have : σ = τ.1.restrictScalars K := (congrArg Subtype.val hτ).symm
-    rw [this]
-    exact τ.1.commutes x
+      (P.under (𝓞 M)).ramificationIdx (𝓞 K) * (P.under (𝓞 M)).inertiaDeg (𝓞 K) = 1 :=
+  GlobalTheory.Bauer.stabilizer_fixes_iff K M N P hP
 
 private theorem UpperTheory.V.CF.bauer_fix (K A C N : Type) [Field K] [NumberField K] [Field A] [NumberField A]
     [Field C] [NumberField C] [Field N] [NumberField N] [Algebra K A] [Algebra K C] [Algebra K N]

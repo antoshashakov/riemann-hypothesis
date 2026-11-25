@@ -51,6 +51,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneCodiscreteGermIdentityAndUnits
 
 @[expose] public section
 
@@ -150,17 +151,8 @@ private theorem siegel_admissible_to_rat (c M : ℕ) [NeZero M] (h1 : 1 < c) (h6
   · exact key 0 n0 hn0
   · exact key 1 n1 hn1
 
-private theorem neBot : (Filter.codiscreteWithin Hs).NeBot := by
-  have hI : Complex.I ∈ Hs := by simp [Hs]
-  have hopen : IsOpen Hs := by
-    show IsOpen {z : ℂ | 0 < z.im}
-    exact isOpen_lt continuous_const Complex.continuous_im
-  have hnb : (nhdsWithin Complex.I (Hs \ {Complex.I})).NeBot := by
-    rw [Set.diff_eq, nhdsWithin_inter_of_mem
-      (mem_nhdsWithin_of_mem_nhds (hopen.mem_nhds hI))]
-    infer_instance
-  refine hnb.mono ?_
-  exact le_iSup₂ (f := fun x (_ : x ∈ Hs) => nhdsWithin x (Hs \ {x})) Complex.I hI
+private theorem neBot : (Filter.codiscreteWithin Hs).NeBot :=
+  GlobalTheory.FN.codiscreteWithin_Hs_neBot
 
 private theorem mob_dg (k : ℕ) (hk : 0 < k) (z : ℂ) : mob (dg k) z = k * z := by
   simp [mob, dg, toGQ, ent, Matrix.det_fin_two, hk, Matrix.GeneralLinearGroup.mk']

@@ -60,6 +60,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpecialisationToStrictlyHenselian
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalOverClosedPointClosedFibre
 
 @[expose] public section
 
@@ -77,69 +78,7 @@ private theorem exists_maximal_over_closedPt : ∀ (T E : Type) [CommRing T] [Is
       y.comap (algebraMap (Polynomial T) E) ≠
         (IsLocalRing.maximalIdeal T).map (Polynomial.C : T →+* Polynomial T) ∧
       (y.comap (algebraMap (Polynomial T) E)).comap (Polynomial.C : T →+* Polynomial T) =
-        IsLocalRing.maximalIdeal T := by
-  intro T E _ _ _ _ _ Q _ hQ
-  set I : Ideal (Polynomial T) := (maximalIdeal T).map (Polynomial.C : T →+* Polynomial T)
-    with hI
-  have hIQ : I ≤ Q.comap (algebraMap (Polynomial T) E) := hQ.ge
-  let f : Polynomial T ⧸ I →+* E ⧸ Q := Ideal.quotientMap Q (algebraMap (Polynomial T) E) hIQ
-  let K := T ⧸ maximalIdeal T
-  let _ : Field K := Ideal.Quotient.field _
-  let e : Polynomial K ≃+* Polynomial T ⧸ I :=
-    Ideal.polynomialQuotientEquivQuotientPolynomial (maximalIdeal T)
-  have : IsJacobsonRing (Polynomial T ⧸ I) :=
-    isJacobsonRing_of_surjective ⟨e.toRingHom, e.surjective⟩
-  have hnf : ¬ IsField (Polynomial T ⧸ I) := fun h =>
-    Polynomial.not_isField K (MulEquiv.isField h e.toMulEquiv)
-  have hft : f.FiniteType := by
-    have h1 : ((Ideal.Quotient.mk Q).comp (algebraMap (Polynomial T) E)).FiniteType :=
-      (RingHom.FiniteType.of_surjective _ Ideal.Quotient.mk_surjective).comp
-        (RingHom.finiteType_algebraMap.mpr inferInstance)
-    rw [← Ideal.quotientMap_comp_mk hIQ] at h1
-    exact RingHom.FiniteType.of_comp_finiteType h1
-  obtain ⟨m, hm⟩ := Ideal.exists_maximal (E ⧸ Q)
-  have hcm : (m.comap f).IsMaximal := by
-    let _ := Ideal.Quotient.field m
-    let g : Polynomial T ⧸ I →+* (E ⧸ Q) ⧸ m := (Ideal.Quotient.mk m).comp f
-    have hgft : g.FiniteType :=
-      (RingHom.FiniteType.of_surjective _ Ideal.Quotient.mk_surjective).comp hft
-    have hgint : g.IsIntegral :=
-      (RingHom.finite_iff_finiteType_of_isJacobsonRing.mpr hgft).to_isIntegral
-    have := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' g hgint ⊥
-    have heq : m.comap f = (⊥ : Ideal ((E ⧸ Q) ⧸ m)).comap g := by
-      ext a
-      simp [g, Ideal.Quotient.eq_zero_iff_mem]
-    rw [heq]
-    exact this
-  have hcm0 : m.comap f ≠ ⊥ := by
-    intro h
-    rw [h] at hcm
-    exact hnf (Ring.isField_iff_maximal_bot.mpr hcm)
-  refine ⟨m.comap (Ideal.Quotient.mk Q), Ideal.comap_isMaximal_of_surjective _
-    Ideal.Quotient.mk_surjective, fun x hx => ?_, ?_, ?_⟩
-  · simp [Ideal.Quotient.eq_zero_iff_mem.mpr hx]
-  · intro hy
-    apply hcm0
-    rw [eq_bot_iff]
-    intro a ha
-    obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective a
-    have hp : p ∈ (m.comap (Ideal.Quotient.mk Q)).comap (algebraMap (Polynomial T) E) := by
-      simpa [f, Ideal.quotientMap_mk] using ha
-    rw [hy] at hp
-    simpa [Ideal.Quotient.eq_zero_iff_mem] using hp
-  · have hle : maximalIdeal T ≤
-        ((m.comap (Ideal.Quotient.mk Q)).comap (algebraMap (Polynomial T) E)).comap
-          (Polynomial.C : T →+* Polynomial T) := by
-      intro t ht
-      simp only [Ideal.mem_comap]
-      have h1 : Polynomial.C t ∈ I := Ideal.mem_map_of_mem _ ht
-      have h2 : algebraMap (Polynomial T) E (Polynomial.C t) ∈ Q := hIQ h1
-      simp [Ideal.Quotient.eq_zero_iff_mem.mpr h2]
-    have hp : (((m.comap (Ideal.Quotient.mk Q)).comap (algebraMap (Polynomial T) E)).comap
-        (Polynomial.C : T →+* Polynomial T)).IsPrime := by
-      have : (m.comap (Ideal.Quotient.mk Q)).IsPrime := Ideal.comap_isPrime _ _
-      exact Ideal.comap_isPrime _ _
-    exact ((maximalIdeal.isMaximal T).eq_of_le hp.ne_top hle).symm
+        IsLocalRing.maximalIdeal T := GlobalTheory.exists_maximal_over_closedPt
 
 private theorem isSeparable_apply_of_etale (R A K L : Type) [CommRing R] [CommRing A] [Field K]
     [Field L] [Algebra R A] [Algebra.Etale R A] [Algebra R K] [Algebra K L] [Algebra R L]

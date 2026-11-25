@@ -53,6 +53,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.StatementW
 import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.OrthogonalGaussModels.OneLetterGaussTranslateOfCmCase
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ComplexPadicNormKappaSplitPrime
 
 @[expose] public section
 
@@ -213,35 +214,8 @@ theorem norm_unit (l : ℕ) [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (k : ℕ) (h
   nlinarith [norm_nonneg (ι x), norm_nonneg (ι w)]
 
 theorem norm_rt {D : D7} {γ₀ : IsoK D} (k : KapChoice γ₀) (l : ℕ) [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (p : ℕ)
-    (hp : p.Prime) (hs : SplitK D p) (hpl : p ≠ l) : ‖ι (k.rt p)‖ = 1 := by
-  have hh := k.rt_pow p hp hs
-  obtain ⟨w, hw⟩ : ∃ w : 𝓞 D.host.K, w * k.pi p = (p : 𝓞 D.host.K) ^ classNumber D.host.K := by
-    have hmem : (p : 𝓞 D.host.K) ^ classNumber D.host.K ∈ (k.pp p).asIdeal ^ classNumber D.host.K :=
-      Ideal.pow_mem_pow (k.pp_over p hp hs) _
-    rw [k.pi_gen p hp hs, Ideal.mem_span_singleton'] at hmem
-    exact hmem
-  have hpl' : ¬ l ∣ p ^ classNumber D.host.K := by
-    intro h
-    have h1 : l ∣ p := (Fact.out : l.Prime).dvd_of_dvd_pow h
-    exact hpl (((Nat.prime_dvd_prime_iff_eq Fact.out hp).1 h1).symm)
-  have hwK : (w : D.host.K) * (k.pi p : D.host.K) = ((p ^ classNumber D.host.K : ℕ) : D.host.K) := by
-    have := congrArg (algebraMap (𝓞 D.host.K) D.host.K) hw
-    simpa using this
-  let fK : D.host.K →+* ℂ := D.host.φ₀.comp (algebraMap D.host.K D.host.E)
-  let fK' : D.host.K →+* ℂ := D.host.φ₀.comp ((D.host.conj : D.host.E →+* D.host.E).comp (algebraMap D.host.K D.host.E))
-  have hint : ∀ (g : D.host.K →+* ℂ) (x : 𝓞 D.host.K), IsIntegral ℤ (g (x : D.host.K)) := fun g x =>
-    map_isIntegral_int g (NumberField.RingOfIntegers.isIntegral_coe x)
-  have e : ∀ g : D.host.K →+* ℂ, ((p ^ classNumber D.host.K : ℕ) : ℂ) = g (k.pi p : D.host.K) * g (w : D.host.K) := by
-    intro g
-    rw [← map_natCast g, ← hwK, map_mul, mul_comm]
-  have h1 : ‖ι (D.host.φ₀ (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E))‖ = 1 :=
-    norm_unit l ι _ hpl' (hint fK (k.pi p)) (hint fK w) (e fK)
-  have h2 : ‖ι (D.host.φ₀ (D.host.conj (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E)))‖ = 1 :=
-    norm_unit l ι _ hpl' (hint fK' (k.pi p)) (hint fK' w) (e fK')
-  have hpow : ‖ι (k.rt p)‖ ^ (2 * classNumber D.host.K) = 1 := by
-    rw [← norm_pow, ← map_pow, hh, map_div₀, norm_div, h1, h2, div_one]
-  have hc := NumberField.classNumber_pos D.host.K
-  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).1 hpow
+    (hp : p.Prime) (hs : SplitK D p) (hpl : p ≠ l) : ‖ι (k.rt p)‖ = 1 :=
+  GlobalTheory.KapSplitNorm.norm_rt_eq_one k l ι p hp hs hpl
 
 theorem norm_kappa {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (l : ℕ) [Fact l.Prime]
     (hl : ∀ p : ℕ, p.Prime → SplitK D p → p ≠ l) (ι : ℂ ≃+* ℂ_[l]) : ‖ι B.kappa‖ = 1 := by
