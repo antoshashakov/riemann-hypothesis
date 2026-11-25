@@ -8,7 +8,7 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SplitAnisotropic
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeExtendByScalarBlockStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeExtendByScalarBlock
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeOfCongruentFormStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeOfCongruentMatrixStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeZeroRankOneOfThreeLeStatement
@@ -576,7 +576,7 @@ theorem swFree_singular : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
       have hSW := ih M₁ J₁ hJ₁ T₁ hT₁ hd₁ (by omega) ⟨_, hfr₁⟩
       refine GlobalTheory.T.siegelWeilFree_of_congruent_matrix F E σ hCM (M₁ + 1) J hJ (n + 1) T hT g _ hT' hb ?_
       exact GlobalTheory.T.siegelWeilFree_of_congruent_form F E σ hCM (M₁ + 1) J hJ g' _ hb' (n + 1) _ hT'
-        (GlobalTheory.T.siegelWeilFree_extend_by_scalar_block F E σ hCM M₁ J₁ hJ₁ t ht n (by omega) T₁ hT₁ hT' ⟨_, hfr₁⟩ hSW)
+        (_root_.GlobalTheory.CompanionTheory.WeilSiegel.Free.Aniso.aniso_step F E σ hCM M₁ J₁ hJ₁ t ht n (by omega) T₁ hT₁ hT' ⟨_, hfr₁⟩ hSW)
 
 theorem swFree_block : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ J → ∀ (n t : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), IsBlockM t T → 2 * n < M → (framesE σ J T).Nonempty → SWFree σ J T hT := by
   intro F E _ _ _ _ _ σ hCM M J hJ n t T hT hB hM hfr

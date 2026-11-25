@@ -9,7 +9,7 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SummableOneDivAbsNormSq
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicSumNondegenerateFrame
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalContentZetaSeriesStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalContentZetaSeries
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalIsotropicOrbitOfE0Statement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalRankOneZeroFibreVolumeStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSiegelWeilUnramifiedMeasureStatement
@@ -153,7 +153,7 @@ theorem good_local (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
           m₁ (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (primV σ J b v) *
             ENNReal.ofReal (zetaV E v (M + 1)) := by
   have hJ' : IsHermND σ (hypOne J) := (GlobalTheory.CompanionTheory.WeilSiegel.HypStep.hypOne_isHermND_and_e0_mem F E σ hσ M J hJ).1
-  filter_upwards [GlobalTheory.T.local_content_zeta_series F E σ hσ d b, GlobalTheory.T.primitive_vectors_content_decomposition F E σ hσ M J hJ d b] with v hc hp lam hlam m m₁ m' hm hm₁ hm'
+  filter_upwards [_root_.GlobalTheory.CompanionTheory.WeilSiegel.HypMass.Content.content F E σ hσ d b, GlobalTheory.T.primitive_vectors_content_decomposition F E σ hσ M J hJ d b] with v hc hp lam hlam m m₁ m' hm hm₁ hm'
   obtain ⟨ι, hι, c, w, hC, hZ⟩ := hc
   obtain ⟨pM, pL, pD, pE⟩ := hp ι c w hC
   obtain ⟨c1, c2, c3, -, -⟩ := hC

@@ -8,7 +8,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContin
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousRealComponentHomUnitaryAdelicStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFlagDomainOrthonormalFrameIdentificationStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPackingSetMeasureGeCovolumeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableSetDetImPosAtIndexStatement
+public import Formalism.LocalRingCardinality.DataCD
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableSetDetImPosAtIndex
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RiemannianHaarIndependentOfOrthonormalFrameStatement
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsArchEquivEq
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsFundamentalDomain
@@ -163,7 +164,7 @@ theorem tube : VolSt → StabSt → IdxSt → TubeSt := by
   have := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1
   let B : ι → Set (∀ ρ, Upq V ρ) := fun k => π ⁻¹' F k ∩ {b | 0 < (UpqT.mat (b ρ₀)).det.im}
   have hBm : ∀ k, MeasurableSet (B k) := fun k =>
-    (hπc.measurable (hFm k)).inter (GlobalTheory.T.measurableSet_det_im_pos_at_index D.what₂.Tau _ _ ρ₀)
+    (hπc.measurable (hFm k)).inter (_root_.GlobalTheory.CovTop.VolUp.DetImMeas.measurableSet_det_im_pos D.what₂.Tau _ _ ρ₀)
   choose g' hg'C hg'f using fun k => GlobalTheory.SplitDec.exists_finPart V (g k)
   let T : ι → Set (GA D V) := fun k => {y | (g' k)⁻¹ * y ∈ KM V M ∧ rp y ∈ B k}
   have hKMo : IsOpen (KM V M) := (hstab.1 D V).2 M (by omega)

@@ -16,7 +16,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndepen
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGramFibrationDisintegration
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalWittIsotropicToE0Statement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrbitIntegralInvariantE0Statement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryMovingUnitVectorStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryMovingUnitVector
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.LocalGramFibreIntegralEq
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DetAdmA
 import Mathlib.Algebra.Order.Floor.Extended
@@ -246,7 +246,7 @@ theorem local_stages : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     have hxg : gramR R σ (hypOne J) x = 0 := by
       rw [hx, (gAct 1).2.2.2, hy, (gAct 1).2.2.2, gramR_e0]
     have hxt : hR R σ (hypOne J) (x 0) (x 0) = 0 := congrFun (congrFun hxg 0) 0
-    obtain ⟨c, hc⟩ := GlobalTheory.T.unitary_moving_unit_vector F E σ hCM M J hJ R (x 0) hxu
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.WeilSiegel.HypUnit.cvec_unitary F E σ hCM M J hJ R (x 0) hxu
     have hch := chartS_zero (n := n) R σ J x hxt c hc
     have hce : actW R σ (hypOne J) c (e0 _ M) = x := by
       funext i

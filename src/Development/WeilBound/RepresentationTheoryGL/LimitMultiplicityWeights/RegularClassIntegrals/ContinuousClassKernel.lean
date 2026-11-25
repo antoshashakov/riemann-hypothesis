@@ -9,7 +9,10 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeInte
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLatticePointsInSiegelSetBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrableDescendOfCover
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemParabolicOfFlagPreservingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularSemisimpleConjugateUnipotentTranslateStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ContinuousOfMemCcSmooth
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.LinearIndependentE
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularSemisimpleConjugateUnipotentTranslate
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.EllipticPartTestData
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelCompactTranslateBound
 public import Development.WeilBound.RepresentationTheoryGL.LimitMultiplicityWeights.RegularClassIntegrals.DecayFinal
 public import Development.WeilBound.ThetaLifts.Reductions.SiegelOfCore
@@ -397,7 +400,7 @@ theorem class_bound {X Y : Matrix (Fin V.rank) (Fin r) D.host.E} (hW : IsWittFra
         (ht1 p hp t ht a ha k hk δ (subset_tsupport f hδ) j hc1 hc2)
     have hmul : ∀ δ ∈ Cl, h δ ≠ 0 → ∀ ν ∈ (frameFlag (isIsoFrame_firstCols hW j)).unipRat D.sp.cm, δ * ν ∈ Cl := by
       intro δ hδ hne ν hν
-      obtain ⟨g, hg⟩ := GlobalTheory.T.regular_semisimple_conjugate_unipotent_translate D V _ _ (isIsoFrame_firstCols hW j) δ (regSS_of_conj hδ hreg) (hstab δ hne) ν hν
+      obtain ⟨g, hg⟩ := _root_.GlobalTheory.CompanionTheory.ParabConj.conj_translate D V _ _ (isIsoFrame_firstCols hW j) δ (regSS_of_conj hδ hreg) (hstab δ hne) ν hν
       exact IsConj.trans hδ (isConj_iff.2 ⟨g, hg⟩)
     have hT' : T ≤ ρ ^ (r * r) := prod_max_le tpos hρ1 hall
     set β : ℝ := B₂ * T ^ A₂ * ρ⁻¹ ^ m' with hβ

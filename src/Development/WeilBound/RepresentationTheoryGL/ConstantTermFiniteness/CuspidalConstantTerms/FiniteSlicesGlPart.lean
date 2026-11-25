@@ -19,7 +19,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Cofinite
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantOfLieOneLEqZero
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.DerEndMemLeftInv
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsBlockPointStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UnitaryAdelicUnipotentLiftStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBlockEmb
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.UnitaryAdelicUnipotentLift
 public import Development.WeilBound.HeckeVectors.SmoothVectors.ContinuousUnits.LocInCompT
 public import Development.WeilBound.RepresentationTheoryGL.ConstantTermFiniteness.CuspidalConstantTerms.EnvRepAllInjective
 public import Development.WeilBound.RepresentationTheoryGL.ConstantTermFiniteness.CuspidalConstantTerms.IsCuspidalCompBlockEmb
@@ -245,7 +246,7 @@ theorem finite_slices_glPart : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host
   obtain ⟨l, d, hl, hd, hkl, hblk, hprev⟩ := exists_block T k hk
   have hend : ∃ k' ∈ T, k'.val + 1 = l + d := ⟨k, hk, hkl⟩
   obtain ⟨ι, hι⟩ := GlobalTheory.BlockFormsEmb.exists_blockEmb _ _ D.sp.cm.sig hcm _ V.gram hJ m X Y hW l d hl
-  have hrange := GlobalTheory.T.block_embedding_parabolic_compatibility _ _ D.sp.cm.sig hcm _ V.gram hJ m X Y hW T k hk l d hl ι hι hkl hd hblk hprev
+  have hrange := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.BlockRange.glPart_eq_range _ _ D.sp.cm.sig hcm _ V.gram hJ m X Y hW T k hk l d hl ι hι hkl hd hblk hprev
   have hιH : ∀ x, ι x ∈ glPart D.sp.cm.sig V.gram X Y T k := fun x => hrange ▸ ⟨x, rfl⟩
   obtain ⟨K, hKm, j, hjs, hj⟩ := GlobalTheory.T.exists_maxCompact_realPoints_of_orthonormalFrames D θ hθ V ε fr hfr
   have hK : IsMaxCpt D.sp.cm.sig V.gram K :=

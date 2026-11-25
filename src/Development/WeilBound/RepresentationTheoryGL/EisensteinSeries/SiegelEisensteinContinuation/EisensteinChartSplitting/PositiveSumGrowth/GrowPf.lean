@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.EisValueAtIffEisPoleLE
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHeightLeTwoMulQuotHeight
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SphericalSiegelEisensteinModerateGrowthConvergenStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SphericalSiegelEisensteinModerateGrowthConvergen
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalVolumeLift
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,7 +58,7 @@ theorem posSum_growth' (D : D7) (V : HSp D) (hV : 0 < V.rank) (a : GL (Fin V.ran
       ‖GlobalTheory.Eis.cosetSum (siegel V) (GQ (dblSp V)) (fun x => (Real.exp (t * h x) : ℂ)) g‖ ≤
         C * GlobalTheory.Grow.height (dblSp V) g ^ N := by
   have hσ : (V.rank : ℝ) / 2 < t - (V.rank : ℝ) / 2 := by linarith
-  obtain ⟨C₀, A, hC₀⟩ := GlobalTheory.T.sphericalSiegelEisenstein_moderate_growth_convergent D V hV a ha hI (t - (V.rank : ℝ) / 2) hσ
+  obtain ⟨C₀, A, hC₀⟩ := _root_.GlobalTheory.Core.Rk.SphGrowth.spherical_eisenstein_modGrowth D V hV a ha hI (t - (V.rank : ℝ) / 2) hσ
   have hpos : ∀ y, 0 < hgt V a y := fun y => hgtH_pos _
   have hf : (fun x => (Real.exp (t * h x) : ℂ)) = (Real.exp (t * Real.log c) : ℂ) •
       fun x => GlobalTheory.Eis.sph V a (((t - (V.rank : ℝ) / 2 : ℝ)) : ℂ) (x * p⁻¹) := by

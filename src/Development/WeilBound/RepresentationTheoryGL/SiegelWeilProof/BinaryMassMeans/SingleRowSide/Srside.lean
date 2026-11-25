@@ -4,7 +4,8 @@ public import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.Binar
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanBinaryGramDensityStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanBinaryGramIntegralStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalBinaryGramDensityStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalBinaryGramIntegralStatement
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalBinaryGramIntegral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,7 +73,7 @@ theorem srside : MeanVal → LocMass → RSide := by
     (fun v s => (m v (hermScal (Fv F v) σ s) (A v)).toReal) C hGc hGs hG0 (fun v y => ENNReal.toReal_nonneg)
     (fun v hv => by
       obtain ⟨h1, h2, h3⟩ := hAS v hv
-      obtain ⟨c1, c2, -⟩ := GlobalTheory.T.local_binary_gram_integral F E σ hCM J hJ d b v (lam v) (hlam v) (m v) (hm v) (A v) h1 h2 h3
+      obtain ⟨c1, c2, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.FibreCpt.fibre_masses F E σ hCM J hJ d b v (lam v) (hlam v) (m v) (hm v) (A v) h1 h2 h3
       exact ⟨c1, c2⟩)
     (fun v hv => by
       obtain ⟨p1, p2, p3⟩ := hP v hv
@@ -91,7 +92,7 @@ theorem srside : MeanVal → LocMass → RSide := by
     congr 1
     refine Finset.prod_congr rfl fun v hv => ?_
     obtain ⟨h1, h2, h3⟩ := hAS v hv
-    exact (GlobalTheory.T.local_binary_gram_integral F E σ hCM J hJ d b v (lam v) (hlam v) (m v) (hm v) (A v) h1 h2 h3).2.2
+    exact (_root_.GlobalTheory.CompanionTheory.SW.FibreCpt.fibre_masses F E σ hCM J hJ d b v (lam v) (hlam v) (m v) (hm v) (A v) h1 h2 h3).2.2
   rw [hlim] at key
   have hsq : Tendsto (fun ε : ℝ => ε ^ 2) (𝓝[>] 0) (𝓝[>] 0) := by
     refine tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_

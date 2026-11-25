@@ -9,7 +9,10 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Def
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DefiniteUnitaryQuotientCompactFundamentalDomainStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingIntegralsVanishOfAllLiftsVanishStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoublingVectorFockPairIsCompactFinite
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSumHyperbolicPlanesOrthogonalWittDecomposiStatement
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalVolumeLift
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittDecompProjAnisotropicAnisotropicEmbedding
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSumHyperbolicPlanesOrthogonalWittDecomposi
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalZero
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsVacuumVectorPrincipalCongruenceSupportStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumHermitianSpaceDoubled
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
@@ -81,7 +84,7 @@ variable {D : D7}
 theorem downNe_of_core : ResidueKilled.DM → PositivityTheory.Rg.Rsw.ResCore →
     GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.SimplePole → ∀ D : D7, EulerRight D → DownNe D := by
   intro hDM hCore hSP D hER ψ θ A W t χA χW om cA a β Z m u par sW Φ hDef hSigW hW0 hrank hη hom hPl hm hForm hOcc hNo
-  obtain ⟨H, B, o, hd, hSigH, hSigB, hHr, hHsig, sH, hsH⟩ := GlobalTheory.T.exists_sum_hyperbolicPlanes_orthogonal_wittDecomposition D W t hSigW
+  obtain ⟨H, B, o, hd, hSigH, hSigB, hHr, hHsig, sH, hsH⟩ := _root_.GlobalTheory.HypSumWitt.exists_hypSum_orthDec_hypDec D W t hSigW
   obtain ⟨c, hHyp⟩ := hForm.str
   have ht : W.rank + 5 ≤ t := hHyp.2.1
   have hBr : B.rank = W.rank + 2 * t := by have := o.rank_add; omega

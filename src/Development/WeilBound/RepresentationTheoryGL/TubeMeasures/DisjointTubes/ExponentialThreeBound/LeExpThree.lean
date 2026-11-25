@@ -2,7 +2,12 @@ module
 
 public import Development.WeilBound.RepresentationTheoryGL.TubeMeasures.DisjointTubes.TubeSt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsContinuousRealComponentHomUnitaryAdelicStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartMemFullLevelOfKeepsSelfDualLatticeStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsKMOne
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfDualLatticeInFrameCoordinatesEq
+public import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
+public import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartMemFullLevelOfKeepsSelfDualLattice
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianMassUpperBound
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureTranslateLevelRealBoxLeIndexMulStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpqLocallyCompactGroup
@@ -159,7 +164,7 @@ theorem up_core (hV : VolSt) (hS : StabSt) (hN : NumSt) (D : D7) (Tu : Type) (C 
     refine ⟨?_, hb⟩
     rw [inv_one, one_mul]
     have hk : h ∈ KM (Wc D i) 1 := (hS.1 D (Wc D i)).1 ▸ hh
-    exact GlobalTheory.T.finitePart_mem_fullLevel_of_keeps_selfDualLattice D (Wc D i) (C.βW i) (C.ΛW i) _ (hC.βW i) hrk.le rfl h hk
+    exact _root_.GlobalTheory.CovTop.VolUp.FullLevel.finE_mem_lev_of_isKM D (Wc D i) (C.βW i) (C.ΛW i) _ (hC.βW i) hrk.le rfl h hk
   have h44 := GlobalTheory.T.measure_translateLevel_realBox_le_index_mul D (Wc D i) θ A m rp (levW C i P) K₀ μ (D.sp.W_sig _) hθ hA hm hrpc hrp
     (fun k hk => ⟨hk.1, Subgroup.mem_top _⟩) hn (GlobalTheory.ParahoricCompact.isOpen_comap_lev _ _ _) hF.1 1 (GfC _).one_mem B hBm
   set c := ReciprocityTheory.ChartRestriction.DS.volU (Wc D i).rank ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D (Wc D i).rank with hc

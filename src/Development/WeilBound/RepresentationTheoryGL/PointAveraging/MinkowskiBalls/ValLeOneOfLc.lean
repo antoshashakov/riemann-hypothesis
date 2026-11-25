@@ -3,7 +3,10 @@ module
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.GermIntegrals.StepSt
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianFormNormSqLeReMulReStatement
+public import Mathlib.Algebra.Algebra.Basic
+public import Mathlib.Algebra.Module.LinearMap.Star
+public import Mathlib.Analysis.Complex.Norm
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HermitianFormNormSqLeReMulRe
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -410,7 +413,7 @@ theorem avg_zero {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
   have hs0 : 0 < ‖s‖ := lt_of_le_of_lt (Nat.cast_nonneg _) hs
   have hterm : ∀ i, ‖Bf (σ (g i) v) v‖ ≤ (Bf v v).re := by
     intro i
-    have h := GlobalTheory.T.hermitian_norm_sq_le_re_mul_re_of_posDef V Bf hsym hpos (σ (g i) v) v
+    have h := _root_.GlobalTheory.hermitianForm_norm_sq_le_re_mul_re V Bf hsym hpos (σ (g i) v) v
     rw [hinv] at h
     have h' : ‖Bf (σ (g i) v) v‖ ^ 2 ≤ (Bf v v).re ^ 2 := by rw [sq ((Bf v v).re)]; exact h
     exact (pow_le_pow_iff_left₀ (norm_nonneg _) hR.le two_ne_zero).1 h'

@@ -5,7 +5,9 @@ public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FundamentalDomainUnitaryAdelicExistsMeasureEq
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTamagawaMeasureNormalizationStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameIntegralThetaMeasureFormulaStatement
-public import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.BlockCoefficientLocalGlobalFactorStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMMemFramesEIff
+public import GroundTheory.HeightsAndTheta.Theta.AdelicFourier
+public import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.BlockCoefficientLocalGlobalFactor
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.SiegelWeilFreeOfBlockNonemptyFramesStatement
 import Formalism.SharpRestriction.GlobalSchurBounds.LocalCountingBounds
 import Mathlib.Algebra.Order.Floor.Extended
@@ -72,6 +74,6 @@ theorem siegel_frame : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.ho
     d b laminf lamv h1 h2 ν 𝓕 hν h𝓕 minf m h3 h4
   obtain ⟨hi, he⟩ := GlobalTheory.T.frame_integral_theta_measure_formula D r V θ hθ ν hν 𝓕 h𝓕 φ hφ habs β
   rw [he]
-  exact (GlobalTheory.T.block_coefficient_local_global_factor D r V ψ θ μ lam ν φ hH t β hNF d b laminf lamv minf m h1 h2 h3 h4 _ hS hi).symm
+  exact (_root_.GlobalTheory.CompanionTheory.WhitFree.whit_eq_integral D r V ψ θ μ lam ν φ hH t β hNF d b laminf lamv minf m h1 h2 h3 h4 _ hS hi).symm
 
 end GlobalTheory.CompanionTheory.WeilSiegel.Frame

@@ -5,7 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsUniqueIsPr
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CompactAverageProjectionThetaSchrodingerStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumDoubledOfSchrodingerFormulas
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilDatumTransportSchwartzBruhatStandard
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IkedaMapSchrodingerPartialIntegralStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SphericalEisensteinSeriesOnGroup
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.HeckeFormNSOfHeckeForm
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IkedaMapSchrodingerPartialIntegral
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsHeckeCharRestrictionEtaInv
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MixedModelFormulasWittTargetStatement
@@ -137,7 +139,7 @@ theorem main (D : D7) (A : HSp D) (t : ℕ) (B W : HSp D) (d : HypDec B W t) (ψ
   have hK := LIkSch.isCompact_K d I.good
   have := I.probK
   have hP := GlobalTheory.T.compactAverageProjection_theta_schrodinger D ψ₀ A B χ⁻¹ omB homB μB 𝓕B hμB I.l.K hK I.νK I.probK
-  have hI := GlobalTheory.T.ikedaMap_schrodinger_partialIntegral D ψ₀ h₀ A B W t d μB 𝓕B hμB μW 𝓕W hμW μ₁ 𝓕₁ hμ₁ I.μ₁ 𝓕₂ hμ₂
+  have hI := _root_.GlobalTheory.IkedaSch.sch_ikeda D ψ₀ h₀ A B W t d μB 𝓕B hμB μW 𝓕W hμW μ₁ 𝓕₁ hμ₁ I.μ₁ 𝓕₂ hμ₂
   have hgf := homB.om_pres (g, 1) f hf
   have e1 : ∀ φ, IsThetaFunO ψ₀ (dblSp A) B φ →
       ikp I (GlobalTheory.Core.Rk.SW.sch ψ₀ A B μB 𝓕B φ) = GlobalTheory.Core.Rk.SW.sch ψ₀ A W μW 𝓕W (ikeda ψ₀ d μ₁ 𝓕₁ (projK omB I.νK φ)) := fun φ hφ => by

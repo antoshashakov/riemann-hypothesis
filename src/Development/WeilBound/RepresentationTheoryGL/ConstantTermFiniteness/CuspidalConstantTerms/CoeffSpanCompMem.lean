@@ -10,7 +10,8 @@ public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsCuspFunSlice
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.LeviNormalizesUnipotentVariant
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.OrthogonalSubspaceUnitaryEmbeddingStatement
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SmoothAutomorphicDerivativeGrowthStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.StandardThreeBlockIndexStatement
+public import Formalism.LocalToGlobal.BesselHermitianTheta.TiedSmooth
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.StandardThreeBlockIndex
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemElt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 import Mathlib.Algebra.Order.Floor.Extended
@@ -109,7 +110,7 @@ theorem finite_slices_core : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F
           rw [mul_assoc, hcomm k, ← mul_assoc]
           exact h2 _ hk (hsf k hk') _⟩
         cont := h1.cont.comp (hsc.mul continuous_const) }
-    refine ⟨GlobalTheory.T.smooth_automorphic_derivative_growth D θ hθ V' _ hAF hsm hgr (fun τ k => ⟨A τ k, hA ψ hψ.1 y hy hyc τ k⟩),
+    refine ⟨_root_.GlobalTheory.CompanionTheory.ZFin.isAutFunSm_of_gelf_roots D θ hθ V' _ hAF hsm hgr (fun τ k => ⟨A τ k, hA ψ hψ.1 y hy hyc τ k⟩),
       ?_, fun τ x => ?_,
       GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.isCuspFun_slice D θ V U ε fr W ρ c m X Y hXY T V' ι hι hran s hs ψ hψ y hy hyc, fun τ => hA ψ hψ.1 y hy hyc τ 1⟩
     · intro k hk hk' g

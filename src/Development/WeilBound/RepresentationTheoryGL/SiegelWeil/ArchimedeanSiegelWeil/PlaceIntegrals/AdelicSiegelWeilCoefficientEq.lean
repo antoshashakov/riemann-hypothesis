@@ -15,7 +15,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FubiniFo
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianEulerProductStandardStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeGramIntegralAlmostAllStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSiegelWeilUnramifiedMeasureStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBruhatIntegrableAnyHaarStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBruhatIntegrableAnyHaar
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ModerateGrowthSchwartz
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilConvergentRangeStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilProductOverPlacesStatement
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.HermitianLatticeMemIffEntries
@@ -207,7 +208,7 @@ theorem coefS_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   obtain ⟨ρ, U, hρ, hρs, hU, hUs, hUpos, hI, hc, hbd, hlim⟩ := hS₁ S hS1
   have hΦSB : GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (pureN φ A) :=
     GlobalTheory.T.factorizable_siegel_weil_finite_set F E σ hCM M J hJ n hn h2n d b S φ A hφ hA hAl
-  have hΦdx : Integrable (pureN φ A) dx := GlobalTheory.T.schwartz_bruhat_integrable_any_haar F E σ hCM M n dx hdx.1 _ hΦSB
+  have hΦdx : Integrable (pureN φ A) dx := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.SBInt.integrable_isSchwartzBruhat_tuple F E σ hCM M n dx hdx.1 _ hΦSB
   have hstar : Integrable (starN σ J ψ dx (pureN φ A)) db :=
     GlobalTheory.T.siegel_weil_convergent_range F E σ hCM M J hJ n h2n ψ hψ dx hdx db hdb _ hΦSB
   have hsd := hdx.1

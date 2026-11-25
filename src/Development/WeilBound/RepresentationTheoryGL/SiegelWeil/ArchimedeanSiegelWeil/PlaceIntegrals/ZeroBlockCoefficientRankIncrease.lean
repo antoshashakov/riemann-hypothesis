@@ -17,7 +17,10 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EulerPro
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicPlaneUnfoldingIntegralStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicRankOneGlobalVolumeStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HyperbolicSumNondegenerateFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ISupFiniteProductTailLimitStatement
+public import Mathlib.Order.CompletePartialOrder
+public import Mathlib.Topology.Algebra.InfiniteSum.Defs
+public import Mathlib.Topology.MetricSpace.Pseudo.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ISupFiniteProductTailLimit
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeStabilizerVolumeAlmostAllStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilFreeZeroRankOneOfThreeLeStatement
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeil.ArchimedeanSiegelWeil.PlaceIntegrals.ZeroBlockCoefficientInductionLeftStatement
@@ -289,7 +292,7 @@ theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   have hΨgm : Measurable fun y => ⨆ S', term (S ∪ S') y := Measurable.iSup fun S' => htm _
   have hB := GlobalTheory.T.hyperbolic_plane_unfolding_integral F E σ hCM M J hJ n hn hnM μ 𝓕 hμ h𝓕 μ₁ 𝓕₁ hμ₁ h𝓕₁ dA hdA _ _ hΦm hΨgm hcond
   rw [hB, lintegral_iSup_places _ S term htm hmono _ _ hint,
-    GlobalTheory.T.iSup_finite_product_tail_limit _ Mv τ p S hsumM hsumτ hsump hM0 hτ0 hp0 hle]
+    _root_.GlobalTheory.CompanionTheory.TailProd.iSup_partial_mul_tails _ Mv τ p S hsumM hsumτ hsump hM0 hτ0 hp0 hle]
   simp only [ENNReal.coe_one, one_mul]
   congr 2
   exact tprod_congr fun v => hMv v.1
