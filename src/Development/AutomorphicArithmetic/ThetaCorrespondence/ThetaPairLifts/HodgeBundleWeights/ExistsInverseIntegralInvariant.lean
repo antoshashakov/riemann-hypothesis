@@ -2,11 +2,13 @@ module
 
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 public import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantSmulIntegralOfFourthPowerStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConstantSmulIntegralOfFourthPower
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeySectionFourthRootPerComponent
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSectionThetaKeyRuleWeightFour
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdConjDifferentEqZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeyRuleValuationNonnegIntegralFramedPointStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KchMul
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeyRuleValuationNonnegIntegralFramedPoint
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionValuationBoundsDifferent
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyFamOne
 import Mathlib.Algebra.Order.Floor.Extended
@@ -85,8 +87,8 @@ theorem exists_inverse_integral_invariant : _root_.GlobalTheory.CovTop.Published
       ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) w, 0 ≤ v (K : Rul Y.d.Xo₂ Y.d.c₂) := by
     by_cases hg : ∀ p : ℕ, p.Prime → Y.d.l₂.GoodAt p
     · exact fun w v hv => (GlobalTheory.KeyIntegralVal.key_valuation_bounds κ hkr _ _ _ _ _ _ g ee K hpq hg hK hKv w v hv).1
-    · exact GlobalTheory.T.thetaKeyRule_valuation_nonneg_integral_framed_point κ hkr _ _ _ _ _ _ g ee K hpq hK hKv
-  obtain ⟨t, ht, hint⟩ := GlobalTheory.T.exists_constant_smul_integral_of_fourth_power _ _ _ _ _ _ (K : Rul Y.d.Xo₂ Y.d.c₂) (ρ.ρ : Rul Y.d.Xo₂ Y.d.c₂) a ha hZ hKint
+    · exact _root_.GlobalTheory.KeyValAny.key_valuation_nonneg κ hkr _ _ _ _ _ _ g ee K hpq hK hKv
+  obtain ⟨t, ht, hint⟩ := _root_.GlobalTheory.RuleIntegral.exists_smul_nonneg _ _ _ _ _ _ (K : Rul Y.d.Xo₂ Y.d.c₂) (ρ.ρ : Rul Y.d.Xo₂ Y.d.c₂) a ha hZ hKint
   have hwt : ∀ (m : ℤ) (τ : D.host.E →+* ℂ) (i : ℕ), i < (T.Q.Dw j).mult τ → (wtOf (T.Q.Dw j) 0 m).1 (τ, i) = -m :=
     GlobalTheory.KeyRootTw.wtOf_zero_fst _ _ (T.Q.Dw j)
   have hex : GlobalTheory.AllWt.exOf (T.Q.Dw j) 0 1 = -keyEx (T.Q.Dw j) := by

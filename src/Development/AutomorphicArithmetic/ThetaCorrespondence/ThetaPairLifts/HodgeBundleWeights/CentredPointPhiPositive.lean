@@ -8,10 +8,11 @@ public import Formalism.LocalToGlobal.ProjectiveLattices.OneLtAbsNormReal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompleteDVRReadingCentredValuation
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
 public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFramedPointOfCompactFlagSpaceOpenPartStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.BarCompSubsetClosure
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFramedPointOfCompactFlagSpaceOpenPart
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemModelInteriorOfMemAbelianLocusPullback
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitGenericPointMemCompactFlagSpaceOpenPartStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TraitGenericPointMemCompactFlagSpaceOpenPart
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ExistsUniformizingIntegralFrameExtension
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.PeriodMinimumPhiPos
 import Mathlib.Algebra.Order.Floor.Extended
@@ -77,9 +78,9 @@ theorem degree_valuation_phi_pos (hP : _root_.GlobalTheory.CovTop.PublishedHodge
     rw [map_mul, map_zero, mul_eq_zero] at this
     exact this.imp (h3 a) (h3 b)
   obtain ⟨T, g, ρ, hρ, hinj, hloc, hval⟩ := _root_.GlobalTheory.CentredDiscreteRead.exists_cdvr_read _ ν h1 h2 h3
-  have hz := GlobalTheory.T.traitGenericPoint_mem_compactFlagSpaceOpenPart TF Z y T.Fr ((algebraMap T.V T.Fr).comp g)
+  have hz := _root_.GlobalTheory.GenTrait.top_le_preimage_flagOpen TF Z y T.Fr ((algebraMap T.V T.Fr).comp g)
     ((IsFractionRing.injective T.V T.Fr).comp hinj)
-  obtain ⟨io, hP'⟩ := GlobalTheory.T.exists_framedPoint_of_compactFlagSpaceOpenPart TF.X T.Fr _ hz
+  obtain ⟨io, hP'⟩ := _root_.GlobalTheory.CompHS.exists_frPt_of_flagOpen TF.X T.Fr _ hz
   letI := io.toAlgebra
   obtain ⟨P, hPz⟩ := hP'
   let w : Sp T.V ⟶ TF.Y.X :=

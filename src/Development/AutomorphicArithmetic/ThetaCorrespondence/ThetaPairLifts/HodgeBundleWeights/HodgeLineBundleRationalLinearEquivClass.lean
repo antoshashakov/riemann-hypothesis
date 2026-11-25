@@ -5,7 +5,7 @@ public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLif
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompactificationComponentIntegralSmoothProjectiv
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorDetLieEigenpartsToroidalStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsRestMore
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieDeterminantLinearisationEquivariantPullbackStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieDeterminantLinearisationEquivariantPullback
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.EquivariantLinearizationPullbackCompat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -81,7 +81,7 @@ theorem hodgeLineBundle_rationally_linear : _root_.GlobalTheory.CovTop.Published
       refine ext_of_isDominant ℓ ?_
       rw [← Category.assoc, ← heq, Category.assoc, ← Category.assoc ℓ φ, hj]
       exact hAct.1 γ
-    exact GlobalTheory.T.lieDeterminant_linearisation_equivariant_pullback E H Dw l Xo c TF Z φ₀ f₀ (GlobalTheory.HodgeLin.offCM H) D hφ₀ hDe Γ X' φ ρ' hd hρ G' ψ act' m hE
+    exact _root_.GlobalTheory.HodgeLin.ratLin_pull E H Dw l Xo c TF Z φ₀ f₀ (GlobalTheory.HodgeLin.offCM H) D hφ₀ hDe Γ X' φ ρ' hd hρ G' ψ act' m hE
 end GlobalTheory.HodgeLin
 end
 end
