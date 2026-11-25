@@ -93,24 +93,7 @@ theorem dz_sub_muNext_nonneg (i : Fin n) : 0 ≤ Dz n i - muNext (Dz n) i := by
   · have : (i : ℕ) + 1 = n := by omega
     omega
 
-theorem phiLe : PhiLe := by
-  intro n ε X hX k
-  obtain ⟨hP, hE⟩ := inP_conj k⁻¹ hX
-  rw [inv_inv] at hP hE
-  unfold phiK
-  rw [← hE]
-  set Y := toMK k⁻¹ * X * toMK k with hY
-  have hpd := exp_noncompactPart_posDef hP
-  have hr : ∀ i : Fin n, lead ((i : ℕ) + 1) (NormedSpace.exp Y) = ((lead ((i : ℕ) + 1) (NormedSpace.exp Y)).re : ℂ) :=
-    fun i => Complex.ext (by simp) (by simp [(lead_posDef hpd _ i.isLt).2])
-  have hphi : PhiM (Dz n) (NormedSpace.exp Y) =
-      ((∏ i : Fin n, (lead ((i : ℕ) + 1) (NormedSpace.exp Y)).re ^ (-(Dz n i - muNext (Dz n) i)) : ℝ) : ℂ) := by
-    unfold PhiM
-    rw [Complex.ofReal_prod]
-    refine Finset.prod_congr rfl fun i _ => ?_
-    rw [hr i, Complex.ofReal_zpow, Complex.ofReal_re]
-  rw [hphi, Complex.ofReal_re]
-  refine Finset.prod_le_one₀ (fun i _ => zpow_nonneg (zero_le_one.trans (one_le_lead_exp hP _ i.isLt)) _) fun i _ => ?_
-  exact zpow_le_one_of_nonpos₀ (one_le_lead_exp hP _ i.isLt) (neg_nonpos.2 (dz_sub_muNext_nonneg i))
+theorem phiLe : PhiLe :=
+  _root_.PositivityTheory.RgFd.phiLe
 
 end CompanionTheory.RgFd
