@@ -5,7 +5,13 @@ public import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOf
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 public import Mathlib.RingTheory.AdicCompletion.Noetherian
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionModPrimePowRescaleStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitEdgeClassKummerDlogCongruenceStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsTopWTopWOfExists
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
+public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitEdgeClassKummerDlogCongruence
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxCoefficientSeqOneMemSubringStatement
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.EisensteinModularTowers.NormalModularTowerTopAlgebraModel
 public import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.ConstInt
@@ -204,7 +210,7 @@ theorem UpperTheory.Kd.L.one :
   intro l _
   by_cases h2 : l = 2
   · exact ⟨0, fun ε X N _ c d gm hP => absurd h2 hP.odd⟩
-  obtain ⟨cc, hcc⟩ := GlobalTheory.T.siegelUnit_edgeClass_kummer_dlog_congruence l h2
+  obtain ⟨cc, hcc⟩ := _root_.GlobalTheory.pair_edge_dlog l h2
   refine ⟨cc, ?_⟩
   intro Ω _ _ _ _ ε X N _ c d gm hP A hA x m n hm hn g hg hg0 hg1
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ

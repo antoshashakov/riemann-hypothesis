@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IpEqZeroOfHe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodModModT
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelIntG
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddCharTraceUnitBlockTrivialOfMovesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddCharTraceUnitBlockTrivialOfMoves
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSmulConjSmul
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFinPt
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemSum
@@ -295,7 +296,7 @@ theorem mem_of_char_eq {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {r : D.hos
       (2 * σ * (1 - mt S g⁻¹) i j) (by rw [RingHom.map_mul, RingHom.map_mul, hσ, mul_zero, zero_mul]) fun t ht ht' => by
         have e2 : algebraMap D.host.E (FA D) r * fe D (t * σ) = fe D t * s := by
           rw [RingHom.map_mul, mul_left_comm, e1]
-        have h2 := GlobalTheory.T.addChar_trace_unitBlock_trivial_of_moves ψ S T r (skewId D 𝔪) o g gS gT ho h (t * σ) i j
+        have h2 := _root_.GlobalTheory.CosetOrth.Pairing.char_trace_eq_one ψ S T r (skewId D 𝔪) o g gS gT ho h (t * σ) i j
           (by rw [RingHom.map_mul, ht, zero_mul]) (by rw [e2]; exact ht'.mul_left hs)
           fun l => by rw [e2, hH, mul_assoc]; exact ht'.mul_left (hs' l)
         rw [← h2]

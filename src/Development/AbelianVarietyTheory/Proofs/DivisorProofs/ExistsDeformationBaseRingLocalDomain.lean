@@ -4,7 +4,9 @@ public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.RingTheory.IntegralClosure.IntegrallyClosed
 public import Mathlib.RingTheory.PowerSeries.Basic
 public import Mathlib.Topology.MetricSpace.Ultra.Basic
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedPowerSeriesEvaluationDivisibilityStatement
+public import Mathlib.Analysis.Normed.Field.Basic
+public import Mathlib.Topology.Algebra.InfiniteSum.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedPowerSeriesEvaluationDivisibility
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNoetherianLocalOfOrderFunctionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPuncturedDiscInjectiveEvalAtPointStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -95,7 +97,7 @@ theorem ring_of_deformation : ∀ (C : Type) [NontriviallyNormedField C] [IsUltr
   set G : Set (PowerSeries C) :=
     Set.range (fun x : o => PowerSeries.C (x : C)) ∪ Set.range Φ with hG
   set A : Subring (PowerSeries C) := Subring.closure G with hA
-  obtain ⟨B, ev, t, hB, hev, ht, hevt, hfin⟩ := GlobalTheory.T.bounded_power_series_evaluation_divisibility C π hπ
+  obtain ⟨B, ev, t, hB, hev, ht, hevt, hfin⟩ := _root_.GlobalTheory.MBLow.BddPS.main C π hπ
   have hAB : A ≤ B := by
     refine Subring.closure_le.2 ?_
     rintro _ (⟨x, rfl⟩ | ⟨a, rfl⟩)

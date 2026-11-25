@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
 public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsDomainAndIsIntegrallyClosedLocalizationOfIsInv
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardPullbackCartierDivisorBundleEqStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechPicardPullbackCartierDivisorBundleEq
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnIffGeneratesAtInv
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuationSubringDominatingSubring
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartierDivisorGroupQuotientDescent
@@ -215,7 +215,7 @@ theorem descent : ∀ (F : Type) [Field F] [NumberField F] (X W : Scheme.{0}) [I
     rwa [hg] at this
   obtain ⟨E, hE⟩ := _root_.GlobalTheory.Cartier.Descent.exists_cartierDiv_descent X W Γ ρ q hq D' key
   refine ⟨toLB E, isLB_toLB E, ?_⟩
-  rw [GlobalTheory.T.cechPicardPullback_cartierDivisorBundle_eq X W q D' E hE]
+  rw [_root_.GlobalTheory.Cartier.PullPres.pull_cls_toLB X W q D' E hE]
   calc cls (toLB D') (isLB_toLB D') = toPic D' := (toPic_apply D').symm
     _ = toPic D := by rw [hD', map_sub, toPic_principal, sub_zero]
     _ = cls L hL := hcls

@@ -8,7 +8,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Archimed
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanOrbitalIntegralContinuousStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanOrbitalIntegralHuaBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexCoordinatesExistAtInfinityStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianArchimedeanComplexCoordinatesStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianArchimedeanComplexCoordinates
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductHuaDeterminantIntegrableStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatC
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TupleArchimedeanComplexCoordinates
@@ -103,7 +103,7 @@ theorem integrable_starLoc_inf : ∀ (F E : Type) [Field F] [NumberField F] [Fie
   obtain ⟨ρ, e, hρ, he, heρ, -, -⟩ := GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hcm.1
   obtain ⟨a, ha, hinf, -, -, -⟩ := GlobalTheory.T.adelic_character_archimedean_form F hcm.1 ρ e hρ he heρ ψ hψ
   obtain ⟨τ, Θ, hΘ⟩ := GlobalTheory.T.complex_coordinates_exist_at_infinity F E σ hcm ρ e hρ he heρ
-  obtain ⟨Ψ, hΨ, hΨν⟩ := GlobalTheory.T.hermitian_archimedean_complex_coordinates F E σ hcm e τ Θ hΘ n
+  obtain ⟨Ψ, hΨ, hΨν⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HermCoord.exists_hermEquiv F E σ hcm e τ Θ hΘ n
   obtain ⟨Φ, hΦ, hΦc, hΦs, hΦμ⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.TupHaar.tup_coord_haar F E σ hcm e τ Θ hΘ n M
   obtain ⟨N, e₀, he₀, he₀s, f, hP⟩ := hP
   obtain ⟨hνH, hνI⟩ := hΨν ν hν

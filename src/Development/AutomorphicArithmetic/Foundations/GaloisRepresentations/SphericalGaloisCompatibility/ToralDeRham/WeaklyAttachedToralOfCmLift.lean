@@ -4,7 +4,15 @@ public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentation
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalArtinExistsHolds
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspRepCharacterSupportLiftTransTowerStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIsPlaceOverFiniteExtensionOfIsPlaceOverStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsOpenGaloisSubgroupTraceNeZeroStatement
+public import Formalism.ConjugateSelfDual.Statement
+public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsOpenGaloisSubgroupTraceNeZero
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsOpenSubgroupWeilElementCharacterKernelStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSolvableCmExtensionAbelianCompletionStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSolvableCmExtensionSplitPlaceStatement
@@ -72,7 +80,7 @@ theorem exists_cm_lift_fix_charKer : UpperTheory.Gal.ToralGalois.Inq → ∀ (Ω
     ext x
     rw [← hv x, Ideal.under, Ideal.mem_comap, ← hu, IsScalarTower.algebraMap_apply K L Ω]
     rfl
-  obtain ⟨N₀, hN₀o, hN₀⟩ := GlobalTheory.T.exists_open_galoisSubgroup_trace_ne_zero Ω E l n hn r hr.1
+  obtain ⟨N₀, hN₀o, hN₀⟩ := _root_.GlobalTheory.AboveL.exists_open_trace_ne_zero Ω E l n hn r hr.1
   obtain ⟨M₀, _, _, _, _, _, _, _, hsd₀, hfix₀, hfixR₀⟩ := GlobalTheory.T.exists_solvable_cm_extension_split_place Ω E A w h N₀ hN₀o
   obtain ⟨π₀, χ₀, hπ₀, hl₀⟩ := GlobalTheory.T.exists_cuspidal_charLift_of_solvable_cmExtension hI Ω E M₀ l ι n hn π χ hπ r hr N₀ hN₀ hsd₀
   obtain ⟨v₀, h₀, -⟩ := GlobalTheory.T.exists_isPlaceOver_finiteExtension_of_isPlaceOver E M₀ Ω A w h
@@ -90,7 +98,7 @@ theorem exists_cm_lift_fix_charKer : UpperTheory.Gal.ToralGalois.Inq → ∀ (Ω
   obtain ⟨V, hVo, hVc, hgV, hVine⟩ := GlobalTheory.T.exists_open_subgroup_weilElement_characterKernel Ω M₀ v₀ A h₀ n (fun j => (ξ j).comp (GlobalTheory.BCChar.normU w v₀))
     (fun j => GlobalTheory.BCChar.isSmoothChar_comp_normU w v₀ (hξ j)) a₀ ha₀ g₀ hdeg₀
   have hr₀ : Weak π₀ ι (r.comp (UpperTheory.V.Af.Bc.res E Ω M₀)) := GlobalTheory.T.weaklyAttachedGaloisRepresentation_baseChange_restrict E M₀ Ω l ι n π π₀ hl₀.1 r hr
-  obtain ⟨N₁, hN₁o, hN₁⟩ := GlobalTheory.T.exists_open_galoisSubgroup_trace_ne_zero Ω M₀ l n hn _ hr₀.1
+  obtain ⟨N₁, hN₁o, hN₁⟩ := _root_.GlobalTheory.AboveL.exists_open_trace_ne_zero Ω M₀ l n hn _ hr₀.1
   obtain ⟨M₁, _, _, _, _, _, _, _, hsd₁, hV₁⟩ := GlobalTheory.T.exists_solvable_cm_extension_abelianCompletion Ω M₀ A v₀ h₀ hfixR₀ V hVo hVc N₁ hN₁o
   obtain ⟨P, χ₁, hP, hl₁⟩ := GlobalTheory.T.exists_cuspidal_charLift_of_solvable_cmExtension hI Ω M₀ M₁ l ι n hn π₀ χ₀ hπ₀ _ hr₀ N₁ hN₁ hsd₁
   letI : Algebra E M₁ := ((algebraMap M₀ M₁).comp (algebraMap E M₀)).toAlgebra

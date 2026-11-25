@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdMinorsMe
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlkGLMem
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChainFrameSignatureData
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColumnSubstitutionUnitaryOfKillsLieCoinvariantsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteBottomRowTransportContragredientStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasInfExpDiv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteBottomRowTransportContragredient
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DefiniteBottomTripleWeightNaturalStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalHermitianFrameSignsPosOfDefiniteStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrientedPairFockMapsLieEquivariant
@@ -157,7 +159,7 @@ theorem GlobalTheory.RealQuotBot.real_quotient_invariants_equiv : GlobalTheory.P
     rw [hpB f' hf', hpB f' hf', hfy'] at h2
     refine canc _ _ ?_
     rw [h1, h2, hPP]
-  have hrow := GlobalTheory.T.definite_bottom_row_transport_contragredient D A A' WW FA FA' FW b a n₀ Pr q q' sA sA' sW
+  have hrow := _root_.GlobalTheory.RowTransport.row_transport D A A' WW FA FA' FW b a n₀ Pr q q' sA sA' sW
     (fun τ => by
       have hc : ((A.rank : ℚ) + (A'.rank : ℚ)) = (WW.rank : ℚ) := by exact_mod_cast had
       rw [hn₀ τ, hc]) hrel
