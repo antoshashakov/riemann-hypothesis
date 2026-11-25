@@ -70,64 +70,11 @@ theorem gb_self (q : ℕ) : ∀ n : ℕ, gaussBinom q n n = 1
 
 theorem pascal2 (q M n : ℕ) :
     gaussBinom q (M + 1) (n + 1) = gaussBinom q M (n + 1) + q ^ (M - n) * gaussBinom q M n := by
-  induction M generalizing n with
-  | zero =>
-    cases n with
-    | zero =>
-      rw [Formalism.G0.QVandermondeP.gb_succ_succ q 0 0,
-        Formalism.G0.QVandermondeP.gb_zero_succ q 0,
-        Formalism.G0.QVandermondeP.gb_zero_right q 0]
-      simp
-    | succ k =>
-      rw [Formalism.G0.QVandermondeP.gb_eq_zero q (0 + 1) (k + 1 + 1) (by omega),
-        Formalism.G0.QVandermondeP.gb_zero_succ q (k + 1),
-        Formalism.G0.QVandermondeP.gb_zero_succ q k]
-      simp
-  | succ M ih =>
-    cases n with
-    | zero =>
-      have s1 := Formalism.G0.QVandermondeP.gb_succ_succ q (M + 1) 0
-      have s3 := Formalism.G0.QVandermondeP.gb_succ_succ q M 0
-      have d1 := ih 0
-      have z1 := Formalism.G0.QVandermondeP.gb_zero_right q (M + 1)
-      have z0 := Formalism.G0.QVandermondeP.gb_zero_right q M
-      calc gaussBinom q (M + 1 + 1) (0 + 1)
-          = 1 + q ^ (0 + 1) * gaussBinom q (M + 1) (0 + 1) := by rw [s1, z1]
-        _ = 1 + q ^ (0 + 1) * (gaussBinom q M (0 + 1) + q ^ (M - 0) * gaussBinom q M 0) := by
-          rw [d1]
-        _ = (gaussBinom q M 0 + q ^ (0 + 1) * gaussBinom q M (0 + 1)) + q ^ (M + 1 - 0) * 1 := by
-          rw [z0, Nat.sub_zero, Nat.sub_zero]; ring
-        _ = gaussBinom q (M + 1) (0 + 1) + q ^ (M + 1 - 0) * gaussBinom q (M + 1) 0 := by
-          rw [s3, z1]
-    | succ k =>
-      have s1 := Formalism.G0.QVandermondeP.gb_succ_succ q (M + 1) (k + 1)
-      have s2 := Formalism.G0.QVandermondeP.gb_succ_succ q M (k + 1)
-      have s3 := Formalism.G0.QVandermondeP.gb_succ_succ q M k
-      have d1 := ih k
-      have d2 := ih (k + 1)
-      have e : q ^ (k + 1 + 1) * (q ^ (M - (k + 1)) * gaussBinom q M (k + 1)) =
-          q ^ (M - k) * (q ^ (k + 1) * gaussBinom q M (k + 1)) := by
-        by_cases h : k + 1 ≤ M
-        · rw [← mul_assoc, ← mul_assoc, ← pow_add, ← pow_add]
-          have hx : k + 1 + 1 + (M - (k + 1)) = M - k + (k + 1) := by omega
-          rw [hx]
-        · simp [Formalism.G0.QVandermondeP.gb_eq_zero q M (k + 1) (by omega)]
-      rw [Nat.add_sub_add_right]
-      calc gaussBinom q (M + 1 + 1) (k + 1 + 1)
-          = gaussBinom q (M + 1) (k + 1) + q ^ (k + 1 + 1) * gaussBinom q (M + 1) (k + 1 + 1) := s1
-        _ = (gaussBinom q M (k + 1) + q ^ (M - k) * gaussBinom q M k) +
-              q ^ (k + 1 + 1) * (gaussBinom q M (k + 1 + 1) +
-                q ^ (M - (k + 1)) * gaussBinom q M (k + 1)) := by rw [d1, d2]
-        _ = gaussBinom q M (k + 1) + q ^ (M - k) * gaussBinom q M k +
-              q ^ (k + 1 + 1) * gaussBinom q M (k + 1 + 1) +
-              q ^ (k + 1 + 1) * (q ^ (M - (k + 1)) * gaussBinom q M (k + 1)) := by ring
-        _ = gaussBinom q M (k + 1) + q ^ (M - k) * gaussBinom q M k +
-              q ^ (k + 1 + 1) * gaussBinom q M (k + 1 + 1) +
-              q ^ (M - k) * (q ^ (k + 1) * gaussBinom q M (k + 1)) := by rw [e]
-        _ = (gaussBinom q M (k + 1) + q ^ (k + 1 + 1) * gaussBinom q M (k + 1 + 1)) +
-              q ^ (M - k) * (gaussBinom q M k + q ^ (k + 1) * gaussBinom q M (k + 1)) := by ring
-        _ = gaussBinom q (M + 1) (k + 1 + 1) + q ^ (M - k) * gaussBinom q (M + 1) (k + 1) := by
-          rw [s2, s3]
+  rw [Nat.add_comm M 1, form2, Finset.sum_range_succ, Finset.sum_range_succ]
+  rw [Finset.sum_eq_zero (fun x hx => by
+    have hx' := Finset.mem_range.mp hx
+    simp [gb_eq_zero q 1 (n + 1 - x) (by omega)])]
+  simp [gb_zero_right, gb_succ_succ, gb_zero_succ, add_comm]
 
 theorem gb_symm (q : ℕ) : ∀ a b : ℕ, gaussBinom q (a + b) a = gaussBinom q (a + b) b
   | 0, b => by rw [Nat.zero_add, gb_zero_right, gb_self]
@@ -155,42 +102,16 @@ namespace TypeIIDownP
 
 open QVandermondeP
 
-private theorem finrank_map_subtype_eq' {F W : Type} [Field F] [AddCommGroup W] [Module F W]
-    (A : Submodule F W) (V : Submodule F A) :
-    Module.finrank F (V.map A.subtype) = Module.finrank F V :=
-  (Submodule.equivMapOfInjective A.subtype (fun _ _ h => Subtype.ext h) V).finrank_eq.symm
-
 theorem countBelow_eq {F W : Type} [Field F] [AddCommGroup W] [Module F W] [Finite W]
     (A : Submodule F W) (k : ℕ) :
     countBelow A k = countBelow (⊤ : Submodule F A) k := by
-  unfold Formalism.G0.countBelow
-  exact Nat.card_congr
-    { toFun := fun U => ⟨U.1.comap A.subtype, le_top, by
-        rw [← finrank_map_subtype_eq' A (U.1.comap A.subtype), Submodule.map_comap_subtype,
-          inf_eq_right.mpr U.2.1]
-        exact U.2.2⟩
-      invFun := fun V => ⟨V.1.map A.subtype, Submodule.map_subtype_le A V.1, by
-        rw [finrank_map_subtype_eq']; exact V.2.2⟩
-      left_inv := fun U => Subtype.ext (by
-        show Submodule.map A.subtype (Submodule.comap A.subtype U.1) = U.1
-        rw [Submodule.map_comap_subtype, inf_eq_right.mpr U.2.1])
-      right_inv := fun V => Subtype.ext (by
-        show Submodule.comap A.subtype (Submodule.map A.subtype V.1) = V.1
-        exact Submodule.comap_map_eq_of_injective (fun _ _ h => Subtype.ext h) V.1) }
-
-private theorem finrank_map_mkQ_add_finrank_eq {F Q : Type} [Field F] [AddCommGroup Q] [Module F Q]
-    [Module.Finite F Q] (R U : Submodule F Q) (h : R ≤ U) :
-    Module.finrank F (U.map R.mkQ) + Module.finrank F R = Module.finrank F U := by
-  have h1 := LinearMap.finrank_range_add_finrank_ker (R.mkQ.domRestrict U)
-  rw [LinearMap.range_domRestrict, LinearMap.ker_domRestrict, Submodule.ker_mkQ] at h1
-  rw [← h1, (Submodule.comapSubtypeEquivOfLe h).finrank_eq]
-
-private theorem le_comap_mkQ' {F Q : Type} [Field F] [AddCommGroup Q] [Module F Q]
-    (R : Submodule F Q) (V : Submodule F (Q ⧸ R)) : R ≤ V.comap R.mkQ := by
-  intro x hx
-  have h0 : R.mkQ x = 0 := by simpa using hx
-  rw [Submodule.mem_comap, h0]
-  exact V.zero_mem
+  unfold countBelow
+  refine Nat.card_congr (((Equiv.subtypeEquivRight fun V => and_iff_right le_top).trans ?_).trans
+    (Equiv.subtypeSubtypeEquivSubtypeInter _ _)).symm
+  refine A.mapIic.toEquiv.subtypeEquiv ?_
+  intro V
+  change Module.finrank F V = k ↔ Module.finrank F (V.map A.subtype) = k
+  rw [(Submodule.equivMapOfInjective A.subtype A.injective_subtype V).finrank_eq]
 
 private theorem mkQ_surjective' {F Q : Type} [Field F] [AddCommGroup Q] [Module F Q]
     (R : Submodule F Q) : Function.Surjective R.mkQ :=
@@ -201,23 +122,14 @@ theorem countAboveCodim_eq {F Q : Type} [Field F] [AddCommGroup Q] [Module F Q] 
     Nat.card {U : Submodule F Q // R ≤ U ∧ Module.finrank F U + j = n} =
       Nat.card {V : Submodule F (Q ⧸ R) // Module.finrank F V + j = Module.finrank F (Q ⧸ R)} := by
   have : Module.Finite F Q := Module.Finite.of_finite
-  have hQ := Submodule.finrank_quotient_add_finrank R
-  exact Nat.card_congr
-    { toFun := fun U => ⟨U.1.map R.mkQ, by
-        have h1 := finrank_map_mkQ_add_finrank_eq R U.1 U.2.1
-        have h2 := U.2.2
-        omega⟩
-      invFun := fun V => ⟨V.1.comap R.mkQ, le_comap_mkQ' R V.1, by
-        have h1 := finrank_map_mkQ_add_finrank_eq R (V.1.comap R.mkQ) (le_comap_mkQ' R V.1)
-        rw [Submodule.map_comap_eq_of_surjective (mkQ_surjective' R)] at h1
-        have h2 := V.2
-        omega⟩
-      left_inv := fun U => Subtype.ext (by
-        show Submodule.comap R.mkQ (Submodule.map R.mkQ U.1) = U.1
-        rw [Submodule.comap_map_mkQ, sup_eq_right.mpr U.2.1])
-      right_inv := fun V => Subtype.ext (by
-        show Submodule.map R.mkQ (Submodule.comap R.mkQ V.1) = V.1
-        exact Submodule.map_comap_eq_of_surjective (mkQ_surjective' R) V.1) }
+  refine Nat.card_congr ((Equiv.subtypeSubtypeEquivSubtypeInter _ _).symm.trans ?_)
+  refine R.comapMkQRelIso.symm.toEquiv.subtypeEquiv ?_
+  intro U
+  change _ ↔ Module.finrank F (U.1.map R.mkQ) + j = _
+  have h := (Submodule.quotientQuotientEquivQuotient R U.1 U.2).finrank_eq
+  have hU := U.1.finrank_quotient_add_finrank
+  have hV := (U.1.map R.mkQ).finrank_quotient_add_finrank
+  omega
 
 end TypeIIDownP
 
