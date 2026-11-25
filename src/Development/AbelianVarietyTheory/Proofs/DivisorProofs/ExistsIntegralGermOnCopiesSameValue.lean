@@ -1,24 +1,24 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvIsIntMapMap
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ActionLinearLogCoordinatesIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CanonGaugeBiadditiveOfLogSumActionLinearStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColumnInclusionIntegralOfLimitStepsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColumnInclusionRetractionOfLimitStepsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstCoeffOperatorLinearSubstitutionProofStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ActionLinearLogCoordinatesIntegral
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CanonGaugeBiadditiveOfLogSumActionLinear
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColumnInclusionIntegralOfLimitSteps
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColumnInclusionRetractionOfLimitSteps
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstCoeffOperatorLinearSubstitutionProof
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DepthNonnegIntegralOperatorIntegralVectors
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameSeriesExpSumOfActionLinearLogUnitStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaugeHermitianCombinationOfStepsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationEqPartialLogCoordsProofStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LimitActionIntegralPointOfStepsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LimitActionLieAlgebraOfPrimeIdempotentApproxStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameSeriesExpSumOfActionLinearLogUnit
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaugeHermitianCombinationOfSteps
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDerivationEqPartialLogCoordsProof
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LimitActionIntegralPointOfSteps
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LimitActionLieAlgebraOfPrimeIdempotentApprox
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LimitEntriesMatrixInverseClosedProof
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LimitIsotropicFrameIntegralOfStepsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogIntegralUnitsSubgroupExpHomProofStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogarithmSumIntegralAdditiveStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NablaOperatorFrameSeriesOfStepsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeIdempotentApproximationsDVRProofStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeriesCoeffUniformlyContinuousInCoeffsProofStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LimitIsotropicFrameIntegralOfSteps
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogIntegralUnitsSubgroupExpHomProof
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogarithmSumIntegralAdditive
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NablaOperatorFrameSeriesOfSteps
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeIdempotentApproximationsDVRProof
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SeriesCoeffUniformlyContinuousInCoeffsProof
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -143,18 +143,18 @@ theorem exists_germ_on_copies : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing
   intro p _ la T io e _ y Ch X cx n B hB N k f hf
-  have hadd := GlobalTheory.T.logarithm_sum_integral_additive
-  have hact := GlobalTheory.T.action_linear_logCoordinates_integral
-  have hunit := GlobalTheory.T.logIntegralUnitsSubgroupExpHom_proof
-  have hcont := GlobalTheory.T.seriesCoeffUniformlyContinuousInCoeffs_proof
-  have hbi := GlobalTheory.T.canonGaugeBiadditive_of_logSum_actionLinear hadd hact
-  have hfr := GlobalTheory.T.frameSeriesExpSum_of_actionLinear_logUnit hact hunit
-  have hfin := GlobalTheory.T.gaugeHermitianCombination_of_steps hadd hact hunit hbi
-  have hla := GlobalTheory.T.limitActionLieAlgebra_of_primeIdempotentApprox GlobalTheory.T.primeIdempotentApproximationsDVR_proof
-  have hlp := GlobalTheory.T.limitActionIntegralPoint_of_steps hadd hact hcont
-  have hlf := GlobalTheory.T.limitIsotropicFrameIntegral_of_steps hadd hact hunit hbi hfr hfin hcont
-  obtain ⟨g, hg, h⟩ := exists_nabX_eq (GlobalTheory.T.nablaOperatorFrameSeries_of_steps GlobalTheory.T.invariantDerivationEqPartialLogCoords_proof GlobalTheory.T.constCoeffOperatorLinearSubstitution_proof hfr) (GlobalTheory.T.columnInclusionIntegral_of_limitSteps hla hlp hlf)
-    (GlobalTheory.T.columnInclusionRetraction_of_limitSteps hla hlp GlobalTheory.IsoTriv.limitEntriesMatrixInverseClosed_proof) hunit hfr (fun _ => rfl) Ch X cx B hB k f hf
+  have hadd := _root_.GlobalTheory.IsoTriv.log_sum_additive_preserves_integrality
+  have hact := _root_.GlobalTheory.IsoTriv.actSt
+  have hunit := _root_.GlobalTheory.IsoTriv.unitSt
+  have hcont := _root_.GlobalTheory.IsoTriv.contSt_holds
+  have hbi := _root_.GlobalTheory.IsoTriv.GaugeBiadd.biadd_of_add_of_act hadd hact
+  have hfr := _root_.GlobalTheory.IsoTriv.frameSt_of hact hunit
+  have hfin := _root_.GlobalTheory.IsoTriv.HermRead.finSt_of hadd hact hunit hbi
+  have hla := _root_.GlobalTheory.IsoTriv.limActSt_of_epsSt _root_.GlobalTheory.IsoTriv.PrimeIdempotent.epsSt
+  have hlp := _root_.GlobalTheory.IsoTriv.limPt_of_steps hadd hact hcont
+  have hlf := _root_.GlobalTheory.IsoTriv.limFrame hadd hact hunit hbi hfr hfin hcont
+  obtain ⟨g, hg, h⟩ := exists_nabX_eq (_root_.GlobalTheory.IsoTriv.nabSt_of _root_.GlobalTheory.InvDer.invDer _root_.GlobalTheory.IsoTriv.linSt_holds hfr) (_root_.GlobalTheory.IsoTriv.Incl.inclSt_of_lim hla hlp hlf)
+    (_root_.GlobalTheory.IsoTriv.retrSt_of hla hlp GlobalTheory.IsoTriv.limitEntriesMatrixInverseClosed_proof) hunit hfr (fun _ => rfl) Ch X cx B hB k f hf
   refine ⟨g, hg, ?_⟩
   rw [h, sub_self, AddValuation.map_zero]
   exact le_top
