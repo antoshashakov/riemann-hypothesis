@@ -66,16 +66,7 @@ theorem idempotent_action_prime_card {O : Type} [Ring O] {G : Type} [AddCommGrou
 
 theorem unit_lift_int_prime_field {K : Type} [Field K] [Fintype K] {p : ℕ} (hp : p.Prime) (hK : Fintype.card K = p) (a : Kˣ) :
     ∃ k : ℤ, (k : K) = a ∧ ¬ (p : ℤ) ∣ k := by
-  have hG : Nat.card K = p := by rw [Nat.card_eq_fintype_card, hK]
-  have htop := subgroup_prime_card_eq_top hp hG (AddSubgroup.zmultiples (1 : K)) (AddSubgroup.mem_zmultiples 1) one_ne_zero
-  have ha : (a : K) ∈ AddSubgroup.zmultiples (1 : K) := by rw [htop]; exact AddSubgroup.mem_top _
-  obtain ⟨k, hk⟩ := AddSubgroup.mem_zmultiples_iff.1 ha
-  rw [zsmul_one] at hk
-  refine ⟨k, hk, fun ⟨m, hm⟩ => a.ne_zero ?_⟩
-  have hp0 : (p : K) = 0 := by
-    have := card_nsmul_eq_zero' (G := K) (x := 1)
-    rwa [hG, nsmul_eq_mul, mul_one] at this
-  rw [← hk, hm, Int.cast_mul, Int.cast_natCast, hp0, zero_mul]
+  exact _root_.Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.unit_lift_int_prime_field hp hK a
 
 end Prime
 
@@ -85,18 +76,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 theorem int_not_mem_prime_over (v : HeightOneSpectrum (𝓞 F)) {T : ℕ} (hT : T.Prime) (hv : (T : 𝓞 F) ∈ v.asIdeal)
     {k : ℤ} (hk : ¬ (T : ℤ) ∣ k) : (k : 𝓞 F) ∉ v.asIdeal := by
-  intro hkv
-  have h1 : ¬ T ∣ k.natAbs := fun h => hk (Int.natCast_dvd.2 h)
-  have h2 : Nat.Coprime T k.natAbs := (Nat.Prime.coprime_iff_not_dvd hT).2 h1
-  have hcop : IsCoprime k (T : ℤ) := by
-    rw [Int.isCoprime_iff_gcd_eq_one]
-    exact h2.symm
-  obtain ⟨a, b, hab⟩ := hcop
-  have hmem : ((a * k + b * (T : ℤ) : ℤ) : 𝓞 F) ∈ v.asIdeal := by
-    push_cast
-    exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hkv) (Ideal.mul_mem_left _ _ hv)
-  rw [hab, Int.cast_one] at hmem
-  exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hmem)
+  exact _root_.Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.int_not_mem_prime_over v hT hv hk
 
 theorem valuation_int_not_mem_eq_one (v : HeightOneSpectrum (𝓞 F)) {k : ℤ} (hk : (k : 𝓞 F) ∉ v.asIdeal) :
     Valued.v (k : v.adicCompletion F) = 1 := by
@@ -126,59 +106,8 @@ theorem local_diamond_of_idempotent (S : StepLevel F E σ J T f bad) (v : Height
     (hσc' : sigR σ (v.adicCompletion F) c' = c') (hcc : c * c' = 1)
     (hkc : (k : E ⊗[F] v.adicCompletion F) * c = 1)
     (hact : ∀ y : S.fM v hv, (⟨e, he⟩ : intV E v) • y = y) : IsLocalDiamond S v hv k := by
-  set μ : E ⊗[F] v.adicCompletion F := c * e + c' * (1 - e) with hμdef
-  set μ' : E ⊗[F] v.adicCompletion F := c * (1 - e) + c' * e with hμ'def
-  have hμμ' : μ * μ' = 1 := by
-    rw [hμdef, hμ'def]
-    linear_combination (-c ^ 2 + 2 * c * c' - c' ^ 2) * hee + hcc
-  have hμ'μ : μ' * μ = 1 := by rw [mul_comm]; exact hμμ'
-  have hσμ : sigR σ (v.adicCompletion F) μ = μ' := by
-    rw [hμdef, hμ'def, map_add (f := _), map_mul, map_mul, map_sub, map_one, hσ, hσc, hσc']
-    ring
-  have hμO : μ ∈ intV E v :=
-    add_mem (mul_mem hc he) (mul_mem hc' (sub_mem (one_mem _) he))
-  have hμ'O : μ' ∈ intV E v :=
-    add_mem (mul_mem hc (sub_mem (one_mem _) he)) (mul_mem hc' he)
-  let M : GL (Fin n) (E ⊗[F] v.adicCompletion F) :=
-    ⟨μ • (1 : Matrix (Fin n) (Fin n) _), μ' • (1 : Matrix (Fin n) (Fin n) _),
-      by rw [Matrix.smul_mul, Matrix.one_mul, smul_smul, hμμ', one_smul],
-      by rw [Matrix.smul_mul, Matrix.one_mul, smul_smul, hμ'μ, one_smul]⟩
-  have hmv : ∀ x : Fin n → E ⊗[F] v.adicCompletion F, (M : Matrix (Fin n) (Fin n) _) *ᵥ x = μ • x := by
-    intro x
-    show (μ • (1 : Matrix (Fin n) (Fin n) _)) *ᵥ x = μ • x
-    rw [Matrix.smul_mulVec, Matrix.one_mulVec]
-  have hcT : cT (sigR σ (v.adicCompletion F)) (μ • (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F))) =
-      μ' • (1 : Matrix (Fin n) (Fin n) _) := by
-    ext i j
-    by_cases h : i = j
-    · subst h; simp [cT, hσμ]
-    · simp [cT, Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]
-  have hU : M ∈ UPts σ J (v.adicCompletion F) := by
-    show cT (sigR σ (v.adicCompletion F)) (μ • (1 : Matrix (Fin n) (Fin n) _)) *
-        J.map (inclE (F := F) (v.adicCompletion F)) * (μ • (1 : Matrix (Fin n) (Fin n) _)) =
-      J.map (inclE (F := F) (v.adicCompletion F))
-    rw [hcT, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, hμ'μ,
-      one_smul]
-  have hL : M ∈ levelVL σ J v S.Lb := by
-    show M ∈ UJ _ _ ⊓ stabGL _
-    exact Subgroup.mem_inf.2 ⟨hU, scalar_mem_lattice_stabiliser _ M μ μ' hμO hμ'O hμ'μ hmv⟩
-  have hg : M ∈ stabGL (latS (F := F) (v.adicCompletion F) (intV E v)
-      (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb))) :=
-    scalar_mem_lattice_stabiliser _ M μ μ' hμO hμ'O hμ'μ hmv
-  refine ⟨M, hL, hg, fun x => ?_⟩
-  have hx : (⟨(M : Matrix (Fin n) (Fin n) _) *ᵥ x.1, (hg x.1).1 x.2⟩ : latS (F := F) (v.adicCompletion F) (intV E v)
-      (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) J S.Lb))) = (⟨μ, hμO⟩ : intV E v) • x := by
-    apply Subtype.ext
-    exact (hmv x.1).trans rfl
-  rw [hx, map_smul]
-  set y := S.fT v hv x
-  have hsplit : (⟨μ, hμO⟩ : intV E v) = ⟨c, hc⟩ * ⟨e, he⟩ + ⟨c', hc'⟩ * (1 - ⟨e, he⟩) := Subtype.ext rfl
-  have h1e : (1 - (⟨e, he⟩ : intV E v)) • y = 0 := by rw [sub_smul, one_smul, hact y, sub_self]
-  have hkO : ((k : intV E v)) * ⟨c, hc⟩ = 1 := by
-    apply Subtype.ext
-    simpa using hkc
-  rw [hsplit, add_smul, mul_smul, mul_smul, h1e, smul_zero, add_zero, hact y, ← Int.cast_smul_eq_zsmul (intV E v),
-    smul_smul, hkO, one_smul]
+  exact _root_.Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.local_diamond_of_idempotent S v hv
+    k c c' e hc hc' he hee hσ hσc hσc' hcc hkc hact
 
 theorem local_diamond_of_split_idempotent (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (hv : (T : 𝓞 F) ∈ v.asIdeal) (hT : T.Prime) (k : ℤ) (hk : ¬ (T : ℤ) ∣ k) (e : E ⊗[F] v.adicCompletion F)

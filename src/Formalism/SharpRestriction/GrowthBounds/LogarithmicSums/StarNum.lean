@@ -124,46 +124,7 @@ theorem Gp_le (s : Scale) (hx : Real.exp 1 ≤ s.x) :
     _ = cGE s.eps * Real.log s.x * s.x ^ (s.eps / 8) := by rw [hc]; ring
 
 theorem first_count_le_log (s : Scale) (hx : Real.exp 1 ≤ s.x) : (N1 s : ℝ) ≤ cNE s.eps * Real.log s.x := by
-  have he := s.eps_pos
-  have hx0 : 0 < s.x := lt_of_lt_of_le (Real.exp_pos 1) hx
-  have hL : 1 ≤ Real.log s.x := by
-    rw [← Real.log_exp 1]
-    exact Real.log_le_log (Real.exp_pos 1) hx
-  have hcg := cGE_nonneg s.eps he
-  have hd0 : 0 < s.delta1 := by unfold Scale.delta1; exact Real.rpow_pos_of_pos hx0 _
-  have hyd : s.x ^ (s.eps / 8) * s.delta1 = 1 := by
-    rw [← inv_delta1, one_div, inv_mul_cancel₀ hd0.ne']
-  have hGp := Gp_le s hx
-  unfold Gp at hGp
-  have hG1 : 6 * Real.exp 1 * (goodG' (rG s) s.delta1 (hG s) s.x : ℝ) * s.delta1 ≤
-      18 * cGE s.eps * Real.log s.x := by
-    have he3 : Real.exp 1 < 3 := lt_trans Real.exp_one_lt_d9 (by norm_num)
-    have hstep : (goodG' (rG s) s.delta1 (hG s) s.x : ℝ) * s.delta1 ≤ cGE s.eps * Real.log s.x := by
-      calc (goodG' (rG s) s.delta1 (hG s) s.x : ℝ) * s.delta1
-          ≤ cGE s.eps * Real.log s.x * s.x ^ (s.eps / 8) * s.delta1 :=
-            mul_le_mul_of_nonneg_right hGp hd0.le
-        _ = cGE s.eps * Real.log s.x := by rw [mul_assoc _ (s.x ^ _), hyd, mul_one]
-    have hcl : 0 ≤ cGE s.eps * Real.log s.x := mul_nonneg hcg (by linarith)
-    nlinarith [Real.exp_pos 1]
-  have hlog2 : 1 / 2 < Real.log 2 := lt_trans (by norm_num) Real.log_two_gt_d9
-  have hG2 : (hG s + 3) * Real.logb 2 s.x ≤ 2 * (2 + 8 * s.eps + 3) * Real.log s.x := by
-    unfold Real.logb hG
-    have hl2 : 0 < Real.log 2 := by linarith
-    rw [mul_div_assoc', div_le_iff₀ hl2]
-    have hX : 0 < (2 + 8 * s.eps + 3) * Real.log s.x := mul_pos (by linarith) (by linarith)
-    nlinarith [mul_pos hX (sub_pos.2 hlog2)]
-  have hmax : max (6 * Real.exp 1 * (goodG' (rG s) s.delta1 (hG s) s.x : ℝ) * s.delta1)
-      ((hG s + 3) * Real.logb 2 s.x) ≤ (18 * cGE s.eps + 2 * (2 + 8 * s.eps + 3)) * Real.log s.x := by
-    refine max_le ?_ ?_
-    · nlinarith
-    · nlinarith
-  have hnn : 0 ≤ max (6 * Real.exp 1 * (goodG' (rG s) s.delta1 (hG s) s.x : ℝ) * s.delta1)
-      ((hG s + 3) * Real.logb 2 s.x) := le_max_of_le_left (by positivity)
-  unfold N1 orbitWindowCount
-  push_cast
-  have hceil := (Nat.ceil_lt_add_one hnn).le
-  unfold cNE
-  nlinarith
+  exact _root_.Formalism.MainNotions.AuxBlock8.Pf.first_count_le_log s hx
 
 theorem k_le_x_pow_six {D : D7} (L : SizeData₂ D) (hS : Formalism.MainNotions.SizesAt L) : (D.R.k : ℝ) ≤ L.sc.x ^ (6 : ℝ) := by
   have hk := hS.2.2.1.2

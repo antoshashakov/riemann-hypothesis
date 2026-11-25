@@ -180,68 +180,12 @@ theorem exists_inv_mod {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {t : �
 
 theorem exists_mul_mem_span {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : 𝓞 F} (ha : a ≠ 0) :
     ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∀ x ∈ 𝔭 ^ vF 𝔭 a, t * x ∈ Ideal.span {a} := by
-  have hle : Ideal.span {a} ≤ 𝔭 ^ vF 𝔭 a :=
-    (Ideal.span_singleton_le_iff_mem _).2 (localValuationFiltration.mem_pow_vF h𝔭 ha)
-  obtain ⟨J, hJ⟩ := Ideal.dvd_iff_le.2 hle
-  have hJp : ¬ J ≤ 𝔭 := by
-    intro hJ𝔭
-    apply localValuationFiltration.notMem_pow_vF h𝔭 ha
-    have : Ideal.span {a} ≤ 𝔭 ^ (vF 𝔭 a + 1) := by
-      rw [hJ, pow_succ]
-      exact Ideal.mul_mono_right hJ𝔭
-    exact this (Ideal.mem_span_singleton_self a)
-  obtain ⟨t, htJ, ht𝔭⟩ := SetLike.not_le_iff_exists.1 hJp
-  refine ⟨t, ht𝔭, fun x hx => ?_⟩
-  rw [hJ, mul_comm t x]
-  exact Ideal.mul_mem_mul hx htJ
+  exact _root_.Formalism.L2.SG.Pf.G2.exists_mul_mem_span h𝔭 ha
 
 theorem div_mem_SP_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : 𝓞 F} (ha : a ≠ 0) (z : 𝓞 K) :
     haveI := h𝔭.isPrime
     jK z / jK (ι a) ∈ HU.SP K 𝔭 ↔ z ∈ extP K 𝔭 ^ vF 𝔭 a := by
-  have := h𝔭.isPrime
-  have ha' := jK_ι_ne_zero (K := K) ha
-  rw [HU.mem_SP]
-  constructor
-  · rintro ⟨t, ht, w, hw⟩
-    have e1 : ι t * z = w * ι a := by
-      apply FaithfulSMul.algebraMap_injective (𝓞 K) K
-      rw [map_mul, map_mul, hw]
-      field_simp
-    obtain ⟨u, hu⟩ := exists_inv_mod h𝔭 ht (vF 𝔭 a)
-    have hA : ι a ∈ extP K 𝔭 ^ vF 𝔭 a := localizedQuotients.ι_mem_pow (localValuationFiltration.mem_pow_vF h𝔭 ha)
-    have e2 : z = ι u * (ι t * z) + ι (1 - t * u) * z := by
-      rw [map_sub, map_mul, map_one]
-      ring
-    rw [e2, e1]
-    exact Submodule.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hA))
-      (Ideal.mul_mem_right _ _ (localizedQuotients.ι_mem_pow hu))
-  · intro hz
-    obtain ⟨t, ht, htx⟩ := exists_mul_mem_span h𝔭 ha
-    refine ⟨t, ht, ?_⟩
-    have hle : Ideal.span {ι t} * extP K 𝔭 ^ vF 𝔭 a ≤ Ideal.span {ι a} := by
-      rw [Ideal.span_singleton_mul_le_iff]
-      intro y hy
-      unfold extP at hy
-      rw [← Ideal.map_pow] at hy
-      refine Submodule.span_induction (p := fun y _ => ι t * y ∈ Ideal.span {ι a}) ?_ ?_ ?_ ?_ hy
-      · rintro _ ⟨x, hx, rfl⟩
-        obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 (htx x hx)
-        rw [← map_mul, ← hc, map_mul]
-        exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
-      · simp
-      · intro x y _ _ hx hy
-        rw [mul_add]
-        exact Submodule.add_mem _ hx hy
-      · intro c x _ hx
-        rw [smul_eq_mul, mul_left_comm]
-        exact Ideal.mul_mem_left _ _ hx
-    obtain ⟨w, hw⟩ := Ideal.mem_span_singleton'.1
-      (hle (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hz))
-    refine ⟨w, ?_⟩
-    have := congrArg jK hw
-    rw [map_mul, map_mul] at this
-    field_simp
-    rw [this]
+  exact _root_.Formalism.L2.SG.Pf.G2.div_mem_SP_iff h𝔭 ha z
 
 end GlobalTheory.MaxLatExpo.LocalProofs
 

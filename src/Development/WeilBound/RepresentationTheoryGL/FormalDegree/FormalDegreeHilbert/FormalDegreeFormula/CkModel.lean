@@ -65,51 +65,17 @@ variable {n : ℕ}
 theorem blkMinor_diag_mul (ε : Fin n → Bool) (c : Fin n) (d : Fin n → ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
     blkMinor ε c (diagonal d * X) =
       (∏ q ∈ univ.filter (fun q : Fin n => ε q = ε c ∧ q ≤ c), d q) * blkMinor ε c X := by
-  unfold blkMinor
-  have hx : (diagonal d * X).submatrix (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => (q : Fin n))
-      (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => (q : Fin n)) =
-      diagonal (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => d q) *
-        X.submatrix (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => (q : Fin n))
-          (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => (q : Fin n)) := by
-    ext r s
-    simp [Matrix.diagonal_mul]
-  rw [hx, det_mul, det_diagonal]
-  congr 1
-  exact (Finset.prod_subtype (univ.filter (fun q : Fin n => ε q = ε c ∧ q ≤ c)) (by simp) d).symm
+  exact _root_.CompanionTheory.RgFd.CkM.blkMinor_diag_mul ε c d X
 
 theorem model_function_diag_mul (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) (d : Fin n → ℂ)
     (X : Matrix (Fin n) (Fin n) ℂ) :
     f0 ε m (diagonal d * X) = (∏ a, d a ^ (m a).toNat) * f0 ε m X := by
-  unfold f0
-  simp_rw [blkMinor_diag_mul, mul_pow]
-  rw [Finset.prod_mul_distrib]
-  congr 1
-  simp_rw [← Finset.prod_pow]
-  rw [Finset.prod_comm' (s' := fun q => univ.filter (fun c : Fin n => ε q = ε c ∧ q ≤ c)) (t' := univ)
-    (by intro c q; simp)]
-  refine Finset.prod_congr rfl fun q _ => ?_
-  rw [Finset.prod_pow_eq_pow_sum]
-  congr 1
-  have h := hwmf_tele ε m _ q rfl
-  have h2 : ((∑ c ∈ univ.filter (fun c : Fin n => ε q = ε c ∧ q ≤ c), (mexp ε m c).toNat : ℕ) : ℤ) = m q := by
-    rw [Nat.cast_sum, ← h]
-    exact Finset.sum_congr rfl fun c _ => Int.toNat_of_nonneg (mexp_nonneg ε hm c)
-  omega
+  exact _root_.CompanionTheory.RgFd.CkM.model_function_diag_mul ε hm d X
 
 theorem vsp_diag {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) {f : KG ε → ℂ} (hf : f ∈ Vsp ε m)
     (y : KG ε) (d : Fin n → ℂ) (hy : toMK y = diagonal d) (x : KG ε) :
     f (y * x) = (∏ a, d a ^ (m a).toNat) * f x := by
-  induction hf using Submodule.span_induction with
-  | mem g hg =>
-    obtain ⟨k, rfl⟩ := hg
-    show f0K ε m (y * x * k) = _ * f0K ε m (x * k)
-    unfold f0K
-    rw [show toMK (y * x * k) = diagonal d * toMK (x * k) by
-      rw [mul_assoc]; show toMK y * toMK (x * k) = _; rw [hy]]
-    exact model_function_diag_mul ε hm d _
-  | zero => simp
-  | add f g _ _ hf hg => simp [Pi.add_apply, hf, hg, mul_add]
-  | smul c f _ hf => simp [Pi.smul_apply, hf, smul_eq_mul]; ring
+  exact _root_.CompanionTheory.RgFd.CkM.vsp_diag hm hf y d hy x
 
 def ev (ε : Fin n → Bool) (m : Fin n → ℤ) : MV ε m →ₗ[ℂ] ℂ := (LinearMap.proj (1 : KG ε)).comp (mvFnL ε m)
 
@@ -126,32 +92,12 @@ theorem cpart1_Eaa (ε : Fin n → Bool) (a : Fin n) : cpart1 ε (bdPart ε (sin
 
 theorem cpart2_Eaa (ε : Fin n → Bool) (a : Fin n) :
     cpart2 ε (bdPart ε (single a a (1 : ℂ))) = (-Complex.I) • single a a (1 : ℂ) := by
-  ext i j
-  rw [cpart2_bdPart_apply]
-  by_cases hi : i = a
-  · subst hi
-    by_cases hj : j = i
-    · subst hj; simp [single_apply]; ring
-    · simp [single_apply, hj, Ne.symm hj]
-  · by_cases hj : j = a
-    · subst hj; simp [single_apply, hi, Ne.symm hi]
-    · simp [single_apply, hi, hj, Ne.symm hi, Ne.symm hj]
+  exact _root_.CompanionTheory.RgFd.CkM.cpart2_Eaa ε a
 
 theorem exp_Eaa (a : Fin n) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • ((-Complex.I) • single a a (1 : ℂ))) =
       diagonal (fun c => if c = a then Complex.exp (-(Complex.I * t)) else 1) := by
-  have e : (t : ℂ) • ((-Complex.I) • single a a (1 : ℂ)) =
-      diagonal (fun c => if c = a then -(Complex.I * t) else 0) := by
-    ext i j
-    by_cases hi : i = a <;> by_cases hj : j = a
-    · subst hi; subst hj; simp [diagonal_apply, single_apply]; ring
-    · subst hi; simp [diagonal_apply, single_apply, Ne.symm hj]
-    · subst hj; simp [diagonal_apply, single_apply, Ne.symm hi, hi]
-    · simp [diagonal_apply, single_apply, hi, hj, Ne.symm hi, Ne.symm hj]
-  rw [e, Matrix.exp_diagonal]
-  congr 1
-  funext c
-  by_cases h : c = a <;> simp [h, ← Complex.exp_eq_exp_ℂ]
+  exact _root_.CompanionTheory.RgFd.CkM.exp_Eaa a t
 
 theorem ev_dTau_Eaa {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) (a : Fin n) (f : MV ε m) :
     ev ε m (dTau ε m (single a a 1) f) = ((m a : ℤ) : ℂ) * ev ε m f := by
@@ -194,25 +140,7 @@ theorem evaluation_longest_weyl_one {ε : Fin n → Bool} {m : Fin n → ℤ} : 
 
 theorem uEv_eq {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) :
     uEv ε m = ((‖w0 ε m‖⁻¹ : ℝ) : ℂ) • wN ε m := by
-  have hne : uEv ε m ≠ 0 := by
-    intro h
-    have := inner_uEv (w0 ε m)
-    rw [h, inner_zero_left, evaluation_longest_weyl_one] at this
-    exact zero_ne_one this
-  obtain ⟨-, c, hc⟩ := HW.KType.hw_unique (modelKType ε hm) hne
-    ⟨fun a => by rw [kunits, model_dτ]; exact uEv_wt hm a, fun a b hab he => by
-      rw [kunits, model_dτ]; exact uEv_hw hm hab he⟩
-  rw [model_w] at hc
-  have hc' : uEv ε m = c • wN ε m := hc
-  have hcv : starRingEnd ℂ c = ev ε m (wN ε m) := by
-    rw [← inner_uEv, hc', inner_smul_left, inner_self_eq_norm_sq_to_K, norm_wN]; simp
-  have hev : ev ε m (wN ε m) = ((‖w0 ε m‖⁻¹ : ℝ) : ℂ) := by
-    rw [wN, map_smul, evaluation_longest_weyl_one, smul_eq_mul, mul_one]
-  have : c = ((‖w0 ε m‖⁻¹ : ℝ) : ℂ) := by
-    have h2 := congrArg (starRingEnd ℂ) hcv
-    rw [Complex.conj_conj, hev, Complex.conj_ofReal] at h2
-    exact h2
-  rw [hc', this]
+  exact _root_.CompanionTheory.RgFd.CkM.uEv_eq hm
 
 theorem ckModel : PositivityTheory.RgFd.CkModel := by
   intro n ε m hm k

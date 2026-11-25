@@ -65,33 +65,7 @@ theorem extZ_val (U : Set V) (φ : U → ℝ) (u : U) : extZ U φ u = φ u := by
 
 theorem extZ_props {U : Set V} (hU : IsOpen U) (φ : U → ℝ) (hc : Continuous φ)
     (hs : HasCompactSupport φ) : IsCcOn U (extZ U φ) := by
-  set K : Set V := Subtype.val '' tsupport φ with hKdef
-  have hK : IsCompact K := hs.image continuous_subtype_val
-  have hKU : K ⊆ U := by rintro _ ⟨u, -, rfl⟩; exact u.2
-  have hzero : ∀ v ∉ K, extZ U φ v = 0 := by
-    intro v hv
-    by_cases h : v ∈ U
-    · simp only [extZ, h, dite_true]
-      exact image_eq_zero_of_notMem_tsupport (fun hm => hv ⟨⟨v, h⟩, hm, rfl⟩)
-    · simp [extZ, h]
-  have hsupp : tsupport (extZ U φ) ⊆ K := by
-    apply closure_minimal _ hK.isClosed
-    intro v hv
-    by_contra h
-    exact hv (hzero v h)
-  refine ⟨?_, HasCompactSupport.intro' hK hK.isClosed hzero, hsupp.trans hKU⟩
-  rw [continuous_iff_continuousAt]
-  intro v
-  by_cases hv : v ∈ U
-  · have hcon : ContinuousOn (extZ U φ) U := by
-      rw [continuousOn_iff_continuous_restrict]
-      convert hc using 1
-      funext u; exact extZ_val U φ u
-    exact hcon.continuousAt (hU.mem_nhds hv)
-  · have hvK : v ∉ K := fun h => hv (hKU h)
-    have hev : (fun _ => (0 : ℝ)) =ᶠ[𝓝 v] extZ U φ := by
-      filter_upwards [hK.isClosed.isOpen_compl.mem_nhds hvK] with w hw using (hzero w hw).symm
-    exact (continuousAt_const (y := (0 : ℝ))).congr hev
+  exact _root_.PI.VolStabSW.Glue.extZ_props hU φ hc hs
 
 theorem extZ_add (U : Set V) (φ ψ : U → ℝ) : extZ U (φ + ψ) = extZ U φ + extZ U ψ := by
   funext v; by_cases h : v ∈ U <;> simp [extZ, h]
@@ -241,54 +215,11 @@ theorem extZ_restr (hU : IsOpen U) (φ : V → ℝ) (h : IsCcOn U φ) :
 theorem fibG_integral (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) (φ : V → ℝ)
     (h : IsCcOn U φ) :
     Integrable φ (fibG hD hU b) ∧ ∫ v, φ v ∂(fibG hD hU b) = G hD φ b := by
-  haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
-  have hme : MeasurableEmbedding (Subtype.val : U → V) :=
-    MeasurableEmbedding.subtype_coe hU.measurableSet
-  have hint : Integrable (restr hU φ h) (RealRMK.rieszMeasure (lam hD hU b)) :=
-    (restr hU φ h).continuous.integrable_of_hasCompactSupport (restr hU φ h).hasCompactSupport
-  refine ⟨(hme.integrable_map_iff).2 hint, ?_⟩
-  rw [fibG, hme.integral_map]
-  have := RealRMK.integral_rieszMeasure (lam hD hU b) (restr hU φ h)
-  rw [lam_apply, extZ_restr] at this
-  exact this
+  exact _root_.PI.VolStabSW.Glue.fibG_integral hD hU b φ h
 
 theorem fibG_supp (hD : DensAll μ f ι ν U) (hU : IsOpen U) (hf : Continuous f)
     (hι : Continuous ι) (b : X) : fibG hD hU b (f ⁻¹' {ι b} ∩ U)ᶜ = 0 := by
-  haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
-  have hme : MeasurableEmbedding (Subtype.val : U → V) :=
-    MeasurableEmbedding.subtype_coe hU.measurableSet
-  rw [fibG, hme.map_apply]
-  have hOeq : (Subtype.val : U → V) ⁻¹' (f ⁻¹' {ι b} ∩ U)ᶜ = (f ∘ Subtype.val) ⁻¹' {ι b}ᶜ := by
-    ext u; simp [u.2]
-  have hO : IsOpen ((f ∘ Subtype.val : U → Y) ⁻¹' {ι b}ᶜ) :=
-    isOpen_compl_singleton.preimage (hf.comp continuous_subtype_val)
-  rw [hOeq]
-  refine le_antisymm ?_ bot_le
-  rw [hO.measure_eq_iSup_isCompact]
-  refine iSup_le fun K => iSup_le fun hKO => iSup_le fun hK => ?_
-  obtain ⟨g, hg1, hgc, hgO, hg01⟩ := exists_continuousMap_one_of_isCompact_subset_isOpen hK hO hKO
-  let ψ : C_c(U, ℝ) := ⟨g, hgc⟩
-  have hle := RealRMK.rieszMeasure_le_of_eq_one (lam hD hU b) (f := ψ) (fun x => (hg01 x).1) hK
-    (fun x hx => hg1 hx)
-  refine hle.trans (le_of_eq ?_)
-  rw [lam_apply]
-  have hcc : IsCcOn U (extZ U ψ) := extZ_props hU ψ ψ.continuous ψ.hasCompactSupport
-  have hts := tsupport_extZ U ψ ψ.hasCompactSupport
-  have hCc : IsCompact (f '' tsupport (extZ U ψ)) := hcc.2.1.image hf
-  set N : Set X := (ι ⁻¹' (f '' tsupport (extZ U ψ)))ᶜ with hN
-  have hNo : IsOpen N := (hCc.isClosed.preimage hι).isOpen_compl
-  have hbN : b ∈ N := by
-    rintro ⟨v, hv, hfv⟩
-    obtain ⟨u, hu, rfl⟩ := hts hv
-    exact hgO hu hfv
-  have hz := DensGen.eq_zero_of_setIntegral (ν := ν) (G hD (extZ U ψ)) N b (hNo.mem_nhds hbN)
-    (G_spec hD hcc).1.continuousOn (fun S hS hSN => by
-      rw [← (G_spec hD hcc).2 S hS]
-      refine setIntegral_eq_zero_of_forall_eq_zero fun v hv => ?_
-      by_contra hne
-      obtain ⟨s, hs, hfs⟩ := hv
-      exact hSN hs ⟨v, subset_tsupport _ hne, hfs.symm⟩)
-  rw [hz, ENNReal.ofReal_zero]
+  exact _root_.PI.VolStabSW.Glue.fibG_supp hD hU hf hι b
 
 end Riesz
 

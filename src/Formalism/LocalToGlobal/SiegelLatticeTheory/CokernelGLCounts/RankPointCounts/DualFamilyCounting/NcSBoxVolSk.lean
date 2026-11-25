@@ -3,9 +3,6 @@ module
 public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
 import Supplements.MathlibImports.AnalysisAndTactics
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.LocVol
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Measures
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Volumes
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FundamentalEquivalence.LevelIntersectParabolic
 
 @[expose] public section
 

@@ -882,23 +882,7 @@ theorem levi_of_cell {j : ℕ} (hj : j ≤ N) (i : Fin N) {z0 : Fin e → ℂ} {
     ContDiffAt ℝ 2 f z0 ∧ ∀ v, levi f z0 v = ∑ p : Pairs N,
       if min (rel N j p.1.1) (rel N j p.1.2) ≤ (i : ℕ) ∧ (i : ℕ) < max (rel N j p.1.1) (rel N j p.1.2)
       then (1 / 2 : ℝ) * ‖fderiv ℂ z z0 v p‖ ^ 2 else 0 := by
-  obtain ⟨H, hH, hHe⟩ := hf
-  obtain ⟨hS2, hSl⟩ := levi_cellMat_potential_at_zero_eq_sum (N := N) hj i
-  have hS2' : ContDiffAt ℝ 2 (fun u : Pairs N → ℂ => stepPot N j i (cellMat N u)) (z z0) := by
-    rw [hz0]
-    exact hS2
-  have hz2 : ContDiffAt ℝ 2 (fun w => stepPot N j i (cellMat N (z w))) z0 :=
-    hS2'.comp z0 (hz.contDiffAt.restrict_scalars ℝ)
-  have hH2 : ContDiffAt ℝ 2 (fun w => (H w).re) z0 :=
-    Complex.reCLM.contDiff.contDiffAt.comp z0 (hH.contDiffAt.restrict_scalars ℝ)
-  have hfe : f =ᶠ[𝓝 z0] fun w => stepPot N j i (cellMat N (z w)) + 1 * (H w).re := by
-    filter_upwards [hHe] with w hw
-    linarith [show f w - stepPot N j i (cellMat N (z w)) = (H w).re from hw]
-  refine ⟨(hz2.add (contDiffAt_const.mul hH2)).congr_of_eventuallyEq hfe, fun v => ?_⟩
-  rw [levi_congr hfe v, levi_add_smul 1 hz2 hH2 v, levi_re_analytic hH v, mul_zero, add_zero]
-  rw [show (fun w => stepPot N j i (cellMat N (z w))) =
-    (fun u : Pairs N → ℂ => stepPot N j i (cellMat N u)) ∘ z from rfl]
-  rw [levi_comp v hz hS2', hz0, hSl]
+  exact _root_.GlobalTheory.CompanionTheory.Ar.PB.PerDiag.levi_of_cell hj i hz hz0 hf
 
 theorem rel_lt {j : ℕ} (hj : j ≤ N) (a : Fin N) : rel N j a < N := by
   have := a.2
@@ -922,21 +906,7 @@ def pairMap (σ : Fin N → Fin N) (hσ : Function.Injective σ) (p : Pairs N) :
 
 theorem pairMap_injective (σ : Fin N → Fin N) (hσ : Function.Injective σ) :
     Function.Injective (pairMap σ hσ) := by
-  rintro ⟨⟨a, b⟩, hab⟩ ⟨⟨c, d⟩, hcd⟩ h
-  simp only [pairMap, Subtype.mk.injEq, Prod.mk.injEq] at h
-  obtain ⟨h1, h2⟩ := h
-  dsimp only at hab hcd
-  apply Subtype.ext
-  rcases le_total (σ a) (σ b) with h3 | h3 <;> rcases le_total (σ c) (σ d) with h4 | h4
-  all_goals
-    simp only [min_eq_left h3, max_eq_right h3, min_eq_right h3, max_eq_left h3,
-      min_eq_left h4, max_eq_right h4, min_eq_right h4, max_eq_left h4] at h1 h2
-    have e1 := hσ h1
-    have e2 := hσ h2
-    subst e1 e2
-    first
-      | rfl
-      | exact absurd (hab.trans hcd) (lt_irrefl _)
+  exact _root_.GlobalTheory.CompanionTheory.Ar.PB.PerDiag.pairMap_injective σ hσ
 
 def pairEquiv {j : ℕ} (hj : j ≤ N) : Pairs N ≃ Pairs N :=
   Equiv.ofBijective (pairMap (relF hj) (relF_injective hj))
