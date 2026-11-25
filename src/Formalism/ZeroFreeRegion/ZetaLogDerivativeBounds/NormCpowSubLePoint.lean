@@ -108,23 +108,16 @@ lemma norm_eint_le {a : ℝ} (ha : 0 < a) {s : ℂ} (hs : 0 < s.re) :
 lemma d_eq {a : ℝ} (ha : 0 < a) (s : ℂ) :
     (a : ℂ) ^ (1 - s) - ((a + 1 : ℝ) : ℂ) ^ (1 - s) - (s - 1) * ((a + 1 : ℝ) : ℂ) ^ (-s) =
       (s - 1) * eint s a := by
-  unfold eint
-  by_cases hs1 : s = 1
-  · subst hs1; simp
-  have h0 : (0:ℝ) ∉ Set.uIcc a (a + 1) := by
-    rw [Set.uIcc_of_le (by linarith)]; intro h; linarith [h.1]
-  have hr : -s ≠ -1 := by intro h; apply hs1; linear_combination -h
-  have hint1 : IntervalIntegrable (fun x : ℝ => (x : ℂ) ^ (-s)) MeasureTheory.volume a (a + 1) :=
-    intervalIntegral.intervalIntegrable_cpow (Or.inr h0)
-  rw [intervalIntegral.integral_sub hint1 intervalIntegrable_const,
-    integral_cpow (Or.inr ⟨hr, h0⟩), intervalIntegral.integral_const]
-  have e : -s + 1 = 1 - s := by ring
-  rw [e]
-  have hs' : (1 - s) ≠ 0 := sub_ne_zero.mpr (Ne.symm hs1)
-  rw [Complex.real_smul]
-  push_cast
-  field_simp
-  ring
+  by_cases hs : s = 1
+  · simp [hs]
+  · unfold eint
+    rw [intervalIntegral.integral_sub
+      (intervalIntegral.intervalIntegrable_cpow (Or.inr (Set.notMem_uIcc_of_lt ha (by positivity))))
+      intervalIntegrable_const, intervalIntegral.integral_const,
+      show a + 1 - a = 1 by ring, one_smul, mul_sub]
+    congr 1
+    simpa only [neg_sub, sub_sub_cancel_left] using
+      cpow_sub_eq_integral' ha (le_add_of_nonneg_right zero_le_one) (sub_ne_zero.mpr hs)
 
 end ComplexPowerDifferenceIntegral
 
