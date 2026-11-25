@@ -3,19 +3,27 @@ module
 public import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ExistsPrimitiveRootPow
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardDualZmodModuleEqCardStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ContCohomologyTransportMulEquivStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DecompositionGroupMulEquivLocalGaloisCyclotomicStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoboundaryOfSubsingletonContCohomologyThreStatement
+public import ReciprocityTheory.Hypotheses.GalCohDefs
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ContCohomologyTransportMulEquiv
+public import Formalism.GaloisCohomology.LocalTateDualityK
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DecompositionGroupMulEquivLocalGaloisCyclotomic
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoboundaryOfSubsingletonContCohomologyThre
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDecompositionGroupCyclotomicCharacterZpowNStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModLThreeCocycleConditionStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NatCardCokerKerPadicModPowStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicCoboundaryOfDivisibleStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIntLengthEqOfCardQuotientEqCardSubmoduleStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIntModuleFiniteOfSeparatedOfFiniteQuotientAStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIntTorsionFreeOfCardQuotientPowStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIntTwoCocycleEqPowSmulOfReductionCoboundaryStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QzTorsionZmodEmbeddingStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sha1TorsionLevelFiltrationStatement
+public import Mathlib.Analysis.Normed.Group.Ultra
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Mathlib.Topology.Instances.ZMod
+public import ReciprocityTheory.GaloisValuations.SeparatedDvrSecondCohomologyMem
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModLThreeCocycleCondition
+public import Mathlib.NumberTheory.Padics.PadicIntegers
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NatCardCokerKerPadicModPow
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicCoboundaryOfDivisible
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIntLengthEqOfCardQuotientEqCardSubmodule
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIntModuleFiniteOfSeparatedOfFiniteQuotientA
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIntTorsionFreeOfCardQuotientPow
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIntTwoCocycleEqPowSmulOfReductionCoboundary
+public import Formalism.GaloisCohomology.Statement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QzTorsionZmodEmbedding
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sha1TorsionLevelFiltration
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -125,7 +133,7 @@ theorem reduction_h2_eq_zero_iff [ContinuousMul Γ] (ρ : Representation ℤ_[l]
       intro hz
       have hz' : reduceTwoCocyclesModPrimePow ρ r ρr h z ∈ (B2 ρr).comap (Z2 ρr).subtype :=
         (Submodule.Quotient.mk_eq_zero _).1 hz
-      obtain ⟨w, hw, hb⟩ := GlobalTheory.T.exists_z2_sub_pow_smul_mem_b2_of_reduction l Γ ρ hρ r ρr h z.1 z.2 hz'
+      obtain ⟨w, hw, hb⟩ := _root_.GlobalTheory.padicInt_two_cocycle_eq_pow_smul_of_reduction_coboundary l Γ ρ hρ r ρr h z.1 z.2 hz'
       refine ⟨Submodule.Quotient.mk ⟨w, hw⟩, ?_⟩
       rw [← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq]
       exact hb
@@ -144,8 +152,8 @@ theorem reduction_h2_surjective [ContinuousMul Γ] (ρ : Representation ℤ_[l] 
   intro y
   induction y using Submodule.Quotient.induction_on with
   | H y =>
-    obtain ⟨z, hz, e⟩ := GlobalTheory.T.mod_l_three_cocycle_condition l Γ ρ hρ (ρr 1) (h 1)
-      (GlobalTheory.T.exists_coboundary_of_subsingleton_contCohomology_three _ Γ _ (ρr 1) h3) r (ρr r) (h r) y.1 y.2
+    obtain ⟨z, hz, e⟩ := _root_.GlobalTheory.PadicCocycleLift.twoCocycle_lift l Γ ρ hρ (ρr 1) (h 1)
+      (_root_.GlobalTheory.exists_coboundary_of_subsingleton_Hn_three _ Γ _ (ρr 1) h3) r (ρr r) (h r) y.1 y.2
     exact ⟨Submodule.Quotient.mk ⟨z, hz⟩,
       congrArg Submodule.Quotient.mk (Subtype.ext (funext e))⟩
 
@@ -163,14 +171,14 @@ theorem finite_h2_padic_representation [ContinuousMul Γ] (ρ : Representation �
     (h : ∀ r g x, PadicInt.toZModPow r (ρ g x) = ρr r g (PadicInt.toZModPow r x))
     (h1 : ∀ r, 0 < r → Finite (H1 (ρr r))) (h2 : Finite (H2 (ρr 1)))
     (h3 : Subsingleton (Hn (ρr 1) 3)) : Module.Finite ℤ_[l] (H2 ρ) := by
-  refine GlobalTheory.T.padicInt_module_finite_of_separated l _ ?_ fun x hx => ?_
+  refine _root_.GlobalTheory.padicInt_module_finite_of_separated_of_finite_quotient l _ ?_ fun x hx => ?_
   · refine Nat.finite_of_card_ne_zero ?_
     rw [card_quot_lpow 1 _ (reduction_h2_surjective ρ hρ ρr h h3 1) (reduction_h2_eq_zero_iff ρ hρ 1 _ (h 1))]
     exact Nat.card_pos.ne'
   · induction x using Submodule.Quotient.induction_on with
     | H z =>
       rw [Submodule.Quotient.mk_eq_zero]
-      refine GlobalTheory.T.padic_coboundary_of_divisible l Γ ρ ρr h h1 z.1 z.2 fun r => ?_
+      refine _root_.GlobalTheory.PadicH2Separated.mem_coboundaries_of_forall_pow l Γ ρ ρr h h1 z.1 z.2 fun r => ?_
       obtain ⟨y, hy⟩ := hx r
       induction y using Submodule.Quotient.induction_on with
       | H w =>
@@ -187,7 +195,7 @@ theorem length_eq_length_invariants_of_torsion_levels {X : Type} [AddCommGroup X
     (he : ∀ r g n, ι r (τ r g n) = σ g (ι r n))
     (hc : ∀ r, 0 < r → Nat.card (X ⧸ lpow l X r) = Nat.card (H0 (τ r))) :
     Module.length ℤ_[l] X = Module.length ℤ_[l] (H0 σ) := by
-  refine GlobalTheory.T.padicInt_length_eq_of_card_quotient_eq l X (H0 σ) (lpow l X)
+  refine _root_.GlobalTheory.padicInt_length_eq_of_card_quotient_eq_card_submodule l X (H0 σ) (lpow l X)
     (fun r => Submodule.torsionBy ℤ_[l] (H0 σ) ((l : ℤ_[l]) ^ r)) 1 (lpow_anti X) (lpow_sep X)
     (fun r s h => Submodule.torsionBy_le_torsionBy_of_dvd _ _ (pow_dvd_pow _ h))
     (fun y => (hA y.1).imp fun r h => Subtype.ext h) fun r h => ?_
@@ -220,7 +228,7 @@ theorem exists_iota {Γ : Type} [Group Γ] (χ : Γ →* ℤ_[l]ˣ) (e : ℤ) (r
       (∀ a : QZ l, (l : ℤ_[l]) ^ r • a = 0 ↔ a ∈ Set.range ι) ∧
       ∀ g n, ι (twDual (redChar χ r) (charRep (redChar (χ ^ (e + 1)) r)) g n) =
         scalRep (QZ l) (χ ^ (-e)) g (ι n) := by
-  obtain ⟨ι, h1, h2, h3⟩ := (GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).2 r
+  obtain ⟨ι, h1, h2, h3⟩ := (_root_.GlobalTheory.qz_torsion_zmod_embedding l).2 r
   let ev : TDual (ZMod (l ^ r)) (ZMod (l ^ r)) →+ ZMod (l ^ r) :=
     { toFun := fun φ => φ 1, map_zero' := rfl, map_add' := fun _ _ => rfl }
   have hlin : ∀ (φ : TDual (ZMod (l ^ r)) (ZMod (l ^ r))) (m : ZMod (l ^ r)), φ m = m * φ 1 :=
@@ -251,12 +259,12 @@ theorem finite_cohomology_and_card_H2_eq_card_H0_dual (hF : LocalFinitenessK) (h
     (τ : Representation (ZMod (l ^ r)) (Dec (F := F) A) (TDual (ZMod (l ^ r)) M))
     (hτ : ∀ g φ m, τ g φ m = (cycMod F Ω l r g : ZMod (l ^ r)) * φ (ρ g⁻¹ m)) :
     Finite (H1 ρ) ∧ Finite (H2 ρ) ∧ Subsingleton (Hn ρ 3) ∧ Nat.card (H2 ρ) = Nat.card (H0 τ) := by
-  obtain ⟨K, hK, e, he, he', hc⟩ := GlobalTheory.T.decompositionGroup_mulEquiv_localGalois_cyclotomic F Ω l v A hv hA
+  obtain ⟨K, hK, e, he, he', hc⟩ := _root_.GlobalTheory.DecLocal.exists_mulEquiv_cyc F Ω l v A hv hA
   let ρK : Representation (ZMod (l ^ r)) (GK l K) M := ρ.comp e.symm.toMonoidHom
   have hρK : ContAction ρK := hρ.comp' he'
   obtain ⟨-, f1, f2, f3⟩ := hF l K hK r M ρK hr hρK
   obtain ⟨⟨j⟩, -, -, -, hb⟩ := hT l K hK r M ρK hr hρK
-  obtain ⟨⟨e1⟩, ⟨e2⟩, e3⟩ := GlobalTheory.T.nonempty_H1_H2_equiv_of_continuous_mulEquiv _ _ _ M e he he' ρK ρ fun g m => by simp [ρK]
+  obtain ⟨⟨e1⟩, ⟨e2⟩, e3⟩ := _root_.GlobalTheory.contCohomology_transport_mulEquiv _ _ _ M e he he' ρK ρ fun g m => by simp [ρK]
   refine ⟨Finite.of_equiv _ e1, Finite.of_equiv _ e2, e3 (f3 3 le_rfl), ?_⟩
   have hfin : Finite (TDual (ZMod (l ^ r)) M) := DFunLike.finite _
   have hH : H0 τ = H0 ((twDual (cycK l K r) ρK).comp (MonoidHom.id _)) := by
@@ -342,7 +350,7 @@ theorem local_tate_duality_h2_limit (hF : LocalFinitenessK) (hT : LocalTateDuali
   intro v
   obtain ⟨hfg, h⟩ := local_lim hF hT D (e + 1) v
   choose ι h1 h2 h3 using exists_iota D.chi e
-  exact length_eq_length_invariants_of_torsion_levels _ (GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).1 _ (fun r => (zd D (e + 1) r).comp (locFam D.S D.A v)) ι
+  exact length_eq_length_invariants_of_torsion_levels _ (_root_.GlobalTheory.qz_torsion_zmod_embedding l).1 _ (fun r => (zd D (e + 1) r).comp (locFam D.S D.A v)) ι
     h1 h2 (fun r g n => h3 r _ n) fun r hr =>
       (card_quot_lpow r _ (h r).1 (h r).2).trans (local_zr hF hT D (e + 1) v r hr).2.2.2
 
@@ -408,7 +416,7 @@ theorem cok_ker (r : ℕ) :
         Nat.card (LinearMap.ker (loc2 D.S D.A (zr D (e + 1) r)))) := by
   have hg := (global_lim D e hF hT hS h3).2 r
   have hl := fun v => (local_lim hF hT D (e + 1) v).2 r
-  refine GlobalTheory.T.natCard_coker_ker_padic_mod_pow l r _ _ (localH2 D e) _ _ _ (loc2 D.S D.A (zr D (e + 1) r)) (redGl D e r)
+  refine _root_.GlobalTheory.natCard_coker_ker_mod_pow l r _ _ (localH2 D e) _ _ _ (loc2 D.S D.A (zr D (e + 1) r)) (redGl D e r)
     (redPi D e r) hg.1 (fun y => ?_) hg.2 (fun x => ?_) fun x => ?_
   · choose x hx using fun v => (hl v).1 (y v)
     exact ⟨x, funext hx⟩
@@ -439,7 +447,7 @@ theorem ptCokerAt : PTCokerAt D e := by
   intro _
   have := finite_pi D e hF hT
   choose ι h1 h2 h4 using exists_iota D.chi e
-  exact length_eq_length_invariants_of_torsion_levels _ (GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).1 _ (zd D (e + 1)) ι h1 h2 h4 (card_cok D e hF hT hN hS h3)
+  exact length_eq_length_invariants_of_torsion_levels _ (_root_.GlobalTheory.qz_torsion_zmod_embedding l).1 _ (zd D (e + 1)) ι h1 h2 h4 (card_cok D e hF hT hN hS h3)
 
 theorem exists_kill (he : e ≠ 0) : ∃ c : ℕ, ∀ (v : D.S) (a : QZ l),
     (∀ g, qzTw D e (locFam D.S D.A v g) a = a) → (l : ℤ_[l]) ^ c • a = 0 := by
@@ -510,8 +518,8 @@ theorem ptShaAt : PTShaAt D e := by
   have hP := finite_pi D e hF hT
   have hgal : IsGalois F Ω := IsAlgClosure.isGalois F Ω
   choose ι h1 h2 h4 using exists_iota D.chi e
-  obtain ⟨P, hm, hu, hc⟩ := GlobalTheory.T.sha1_torsion_level_filtration l _ D.S _ (locFam D.S D.A) (continuous_locFam D.S D.A)
-    (QZ l) (qzTw D e) (GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).1
+  obtain ⟨P, hm, hu, hc⟩ := _root_.GlobalTheory.sha1_exhausted_by_torsion_levels l _ D.S _ (locFam D.S D.A) (continuous_locFam D.S D.A)
+    (QZ l) (qzTw D e) (_root_.GlobalTheory.qz_torsion_zmod_embedding l).1
   have key : ∃ c : ℕ, ∀ r, c ≤ r →
       (∀ x p, localH2 D e x = (l : ℤ_[l]) ^ r • p →
         ∃ x', localH2 D e x = (l : ℤ_[l]) ^ r • localH2 D e x') ∧
@@ -520,7 +528,7 @@ theorem ptShaAt : PTShaAt D e := by
         ∃ b : QZ l, (l : ℤ_[l]) ^ r • b = 0 ∧ ∀ g, qzTw D e g a - a = qzTw D e g b - b := by
     rcases eq_or_ne e 0 with he | he
     · have htr : ∀ g a, qzTw D e g a = a := fun g a => by simp [qzTw, he]
-      have htf := GlobalTheory.T.padicInt_eq_zero_of_pow_smul_of_card_quotient l (_ ⧸ LinearMap.range (localH2 D e)) fun r hr => by
+      have htf := _root_.GlobalTheory.padicInt_torsionFree_of_card_quotient_pow l (_ ⧸ LinearMap.range (localH2 D e)) fun r hr => by
         have hH : H0 (zd D (e + 1) r) = ⊤ :=
           eq_top_iff.2 fun n _ g => h1 r ((h4 r g n).trans (htr g _))
         rw [card_cok D e hF hT hN hS h3 r hr, hH, Nat.card_congr Submodule.topEquiv.toEquiv]
@@ -546,7 +554,7 @@ theorem ptShaAt : PTShaAt D e := by
   obtain ⟨c, key⟩ := key
   have hker : Sha2Zl D e = LinearMap.ker (localH2 D e) := by rw [localH2, LinearMap.ker_pi]; rfl
   rw [hker]
-  refine GlobalTheory.T.padicInt_length_eq_of_card_quotient_eq l _ _ (fun r => (lpow l _ r).comap (LinearMap.ker (localH2 D e)).subtype) P
+  refine _root_.GlobalTheory.padicInt_length_eq_of_card_quotient_eq_card_submodule l _ _ (fun r => (lpow l _ r).comap (LinearMap.ker (localH2 D e)).subtype) P
     (c + 1) (fun r s h => Submodule.comap_mono (lpow_anti _ h))
     (fun x hx => Subtype.ext (lpow_sep (l := l) _ _ hx)) hm hu fun r hr => ?_
   obtain ⟨k1, k2⟩ := key r (by omega)
