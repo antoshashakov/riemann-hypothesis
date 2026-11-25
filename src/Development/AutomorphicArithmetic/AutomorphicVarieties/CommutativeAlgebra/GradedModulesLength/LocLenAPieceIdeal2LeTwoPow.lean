@@ -77,44 +77,30 @@ theorem UpperTheory.V.Alg.M.locLen_aPiece_ideal2_le_two_pow :
       (A : Type) [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] [IsCO O (𝒜 0)] (x : A →ₐ[O] O), IsWRing 𝒜 x →
     ∀ (r s r' s' m : ℕ) (Q : Eqns 𝒜 x r s r' s' m),
     ∀ σ : 𝒜 0 →ₐ[O] K, (∀ w, locLen σ (aPiece 𝒜 Q.ideal w) ≤ 1) → ∀ w, locLen σ (aPiece 𝒜 (ideal2 Q) w) ≤ 2 ^ (r + 1 + r') := by
-  intro O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x _ r s r' s' m Q σ h1
-  have hJ0 : (Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z)).IsHomogeneous 𝒜 := by
+  intro O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x _ r s r' s' m Q σ hOne w
+  let J := Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z)
+  have hJ : J.IsHomogeneous 𝒜 := by
     apply Ideal.homogeneous_span
     rintro y ((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩)
     · exact ⟨-2, Q.hG i⟩
     · exact ⟨2, Q.hE' i⟩
     · exact ⟨0, (Q.hZ i).1⟩
-  have hE := homRange 𝒜 Q.E 1 Q.hE
-  have hF2 := homRange 𝒜 (fun i => Q.F i ^ 2) (-1 + -1) fun i => sqMem 𝒜 (Q.hF i)
-  have step1 := gen 𝒜 σ (-1) 1 (r + 1) Q.F Q.hF
-    (Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range Q.E))
-    (hJ0.sup hE)
-    (by
-      intro w'
-      have e : Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range Q.E) ⊔
-          Ideal.span (Set.range Q.F) = Q.ideal := by
-        simp only [Eqns.ideal, Ideal.span_union]
-        ac_rfl
-      rw [e]
-      exact h1 w')
-  have step2 := gen 𝒜 σ 1 (2 ^ (r + 1) * 1) r' Q.E Q.hE
-    (Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range fun i => Q.F i ^ 2))
-    (hJ0.sup hF2)
-    (by
-      intro w'
-      have e : Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔
-          Ideal.span (Set.range fun i => Q.F i ^ 2) ⊔ Ideal.span (Set.range Q.E) =
-          Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range Q.E) ⊔
-          Ideal.span (Set.range fun i => Q.F i ^ 2) := by
-        ac_rfl
-      rw [e]
-      exact step1 w')
-  intro w
-  have e : Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔
-      Ideal.span (Set.range fun i => Q.F i ^ 2) ⊔ Ideal.span (Set.range fun i => Q.E i ^ 2) = ideal2 Q := by
-    simp only [ideal2, Ideal.span_union]
-    ac_rfl
-  have h := step2 w
-  rw [e] at h
-  calc _ ≤ 2 ^ r' * (2 ^ (r + 1) * 1) := h
-    _ = 2 ^ (r + 1 + r') := by rw [mul_one, pow_add (2 : ℕ∞) (r + 1) r', mul_comm]
+  let E := Ideal.span (Set.range Q.E)
+  let F₂ := Ideal.span (Set.range fun i => Q.F i ^ 2)
+  let E₂ := Ideal.span (Set.range fun i => Q.E i ^ 2)
+  have hOriginal : J ⊔ E ⊔ Ideal.span (Set.range Q.F) = Q.ideal := by
+    simp only [J, E, Eqns.ideal, Ideal.span_union]; ac_rfl
+  have hSquared : J ⊔ F₂ ⊔ E₂ = ideal2 Q := by
+    simp only [J, F₂, E₂, ideal2, Ideal.span_union]; ac_rfl
+  have bound (L : ℕ∞) (h : ∀ v, locLen σ (aPiece 𝒜 Q.ideal v) ≤ L) :
+      locLen σ (aPiece 𝒜 (ideal2 Q) w) ≤ 2 ^ (r + 1 + r') * L := by
+    have hF := gen 𝒜 σ (-1) L (r + 1) Q.F Q.hF (J ⊔ E)
+      (hJ.sup (homRange 𝒜 Q.E 1 Q.hE)) (by rw [hOriginal]; exact h)
+    have hE := gen 𝒜 σ 1 (2 ^ (r + 1) * L) r' Q.E Q.hE
+      (J ⊔ F₂) (hJ.sup (homRange 𝒜 _ (-1 + -1) fun i => sqMem 𝒜 (Q.hF i))) (by
+        change ∀ v, locLen σ (aPiece 𝒜 (J ⊔ F₂ ⊔ E) v) ≤ _
+        rw [show J ⊔ F₂ ⊔ E = J ⊔ E ⊔ F₂ by ac_rfl]; exact hF) w
+    change locLen σ (aPiece 𝒜 (J ⊔ F₂ ⊔ E₂) w) ≤ _ at hE
+    rw [hSquared] at hE
+    simpa only [pow_add, mul_assoc, mul_left_comm, mul_comm] using hE
+  simpa only [mul_one] using bound 1 hOne
