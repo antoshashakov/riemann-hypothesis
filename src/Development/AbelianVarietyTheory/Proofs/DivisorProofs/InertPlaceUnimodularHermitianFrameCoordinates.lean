@@ -3,16 +3,18 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemKAt
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFrameAdelicLatticeAtFinitePlaceOfInert
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnimodularGramInverseInertPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHomConjInverseTransposeAtPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHomFrameConjugationAtPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameCoordinatesActionOfIdentityOffPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceUnramifiedSkewSpaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeStabilizerOfFrameConjIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemTensorLatticeAtPlaceIffFrameCoordinatesIntegrStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupportedAdelicUnitaryPointOfLocalMatrixStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupportedMatrixIffFrameCoordinatesOfInertStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilSymplecticFormFrameCoordinatesEqLocalTraceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.XmApply
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnimodularGramInverseInertPlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHomConjInverseTransposeAtPlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHomFrameConjugationAtPlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrameCoordinatesActionOfIdentityOffPlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InertPlaceUnramifiedSkewSpace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLatticeStabilizerOfFrameConjIntegral
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemTensorLatticeAtPlaceIffFrameCoordinatesIntegr
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupportedAdelicUnitaryPointOfLocalMatrix
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SupportedMatrixIffFrameCoordinatesOfInert
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilSymplecticFormFrameCoordinatesEqLocalTrace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -93,13 +95,13 @@ theorem GlobalTheory.InertLocFrame.frame : ∀ (F E : Type) [Field F] [NumberFie
     exact ((g0 : Matrix (Fin m) (Fin m) (Formalism.UG.intL L)) i j).2
   obtain ⟨PV, hPV⟩ := GlobalTheory.InertLocBasis.exists_basis_at_inert F E v w hin a G.V hG.hV.lat L ι hinj him hmul hint
   obtain ⟨PW, hPW⟩ := GlobalTheory.InertLocBasis.exists_basis_at_inert F E v w hin (a + a') G.W hG.hW.lat L ι hinj him hmul hint
-  obtain ⟨JS, hJS, hJSg, hJSh⟩ := GlobalTheory.T.exists_unimodular_gram_inverse_inertPlace F E σ B hB v w hin a _ _ G.V hG.hV L ϖ σL q ι hunr hinj him hmul hσ hint
+  obtain ⟨JS, hJS, hJSg, hJSh⟩ := _root_.GlobalTheory.InertGram.exists_gram_inv F E σ B hB v w hin a _ _ G.V hG.hV L ϖ σL q ι hunr hinj him hmul hσ hint
     PV hPV
-  obtain ⟨JT, hJT, hJTg, hJTh⟩ := GlobalTheory.T.inert_place_unramified_skew_space F E σ B hB v w hin (a + a') _ _ G.W hG.hW L ϖ σL q δ ι hunr hodd hδ hinj
+  obtain ⟨JT, hJT, hJTg, hJTh⟩ := _root_.GlobalTheory.InertGramSkew.gram_skew_unimodular F E σ B hB v w hin (a + a') _ _ G.W hG.hW L ϖ σL q δ ι hunr hodd hδ hinj
     him hmul hσ hint PW hPW
-  obtain ⟨iV, hiV⟩ := GlobalTheory.T.exists_unitary_hom_conjInverseTranspose_at_place F E σ v a G.V L σL ι him hmul hσ PV JS hJSg
-  obtain ⟨iW, hiW⟩ := GlobalTheory.T.exists_unitary_hom_frame_conjugation_at_place F E σ v (a + a') G.W L σL δ ι hδne him hmul hσ PW JT hJTg
-  have hlat := GlobalTheory.T.mem_tensorLatticeAtPlace_iff_frame_coordinates_integral F E v a (a + a') G.V G.W L ι hinj him hmul hint PV PW hPV hPW
+  obtain ⟨iV, hiV⟩ := _root_.GlobalTheory.InertLocHomV.exists_homV F E σ v a G.V L σL ι him hmul hσ PV JS hJSg
+  obtain ⟨iW, hiW⟩ := _root_.GlobalTheory.InertLocFrame.HomW.homW F E σ v (a + a') G.W L σL δ ι hδne him hmul hσ PW JT hJTg
+  have hlat := _root_.GlobalTheory.InertLocFrame.mem_latAtV_iff_xm F E v a (a + a') G.V G.W L ι hinj him hmul hint PV PW hPV hPW
   have e1 : ∀ M : Matrix (Fin a) (Fin (a + a')) L,
       ((PV⁻¹ : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) * ((PV : Matrix (Fin a) (Fin a) L) * M) = M := by
     intro M
@@ -111,22 +113,22 @@ theorem GlobalTheory.InertLocFrame.frame : ∀ (F E : Type) [Field F] [NumberFie
     rw [← Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one,
       Matrix.transpose_one, Matrix.one_mul]
   refine ⟨JS, JT, GlobalTheory.InertLocFrame.xm ι PV PW, iV, iW, hJS, hJT, hJSh, hJTh,
-    GlobalTheory.T.weil_symplectic_form_frame_coordinates_eq_local_trace F E σ B v a (a + a') G.V G.W L ϖ σL q δ ψL ι hunr hδ hinj him hmul hσ hψ PV JS PW JT hJSg hJTg,
-    GlobalTheory.T.supported_matrix_iff_frame_coordinates_of_inert F E v a (a + a') L ι hinj him hmul PV PW, fun u hu => (hlat _).2 ⟨u, hu, rfl⟩,
-    fun z hz => (hlat z).1 hz, ?_, fun g => GlobalTheory.T.supported_adelic_unitary_point_of_local_matrix F E σ v a G.V L ι him (iV g) _ (hiV g),
-    fun h => GlobalTheory.T.supported_adelic_unitary_point_of_local_matrix F E σ v (a + a') G.W L ι him (iW h) _ (hiW h), ?_, ?_⟩
+    _root_.GlobalTheory.InertLocSymp.psi_symp_eq F E σ B v a (a + a') G.V G.W L ϖ σL q δ ψL ι hunr hδ hinj him hmul hσ hψ PV JS PW JT hJSg hJTg,
+    _root_.GlobalTheory.InertLocFrame.xm_bij_at F E v a (a + a') L ι hinj him hmul PV PW, fun u hu => (hlat _).2 ⟨u, hu, rfl⟩,
+    fun z hz => (hlat z).1 hz, ?_, fun g => _root_.GlobalTheory.InertLocFrame.uAt_of_local F E σ v a G.V L ι him (iV g) _ (hiV g),
+    fun h => _root_.GlobalTheory.InertLocFrame.uAt_of_local F E σ v (a + a') G.W L ι him (iW h) _ (hiW h), ?_, ?_⟩
   · intro g h x
-    rw [GlobalTheory.T.frame_coordinates_action_of_identity_off_place F E σ a (a + a') G.V G.W L ι hmul PV PW _ _ (iV g) (iW h) (hiV g) (hiW h) x,
+    rw [_root_.GlobalTheory.InertLocFrame.actAB_xm_frame F E σ a (a + a') G.V G.W L ι hmul PV PW _ _ (iV g) (iW h) (hiV g) (hiW h) x,
       GlobalTheory.InertLocFrame.xm_apply]
     congr 1
     simp only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, e1, e2]
   · intro g hg
-    refine GlobalTheory.T.mem_latticeStabilizer_of_frame_conj_integral F E σ v a G.V L ι hinj him hmul hint PV hPV (iV g)
+    refine _root_.GlobalTheory.InertKatFrame.mem_KAt_of_frame F E σ v a G.V L ι hinj him hmul hint PV hPV (iV g)
       (((g : GL (Fin a) L)⁻¹ : GL (Fin a) L) : Matrix (Fin a) (Fin a) L)ᵀ ((g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L)ᵀ
       (fun i j => ent _ (inv_mem hg) j i) (fun i j => ent _ hg j i) (hiV g) ?_
     rw [← map_inv, hiV, Subgroup.coe_inv, inv_inv]
   · intro h hh
-    refine GlobalTheory.T.mem_latticeStabilizer_of_frame_conj_integral F E σ v (a + a') G.W L ι hinj him hmul hint PW hPW (iW h)
+    refine _root_.GlobalTheory.InertKatFrame.mem_KAt_of_frame F E σ v (a + a') G.W L ι hinj him hmul hint PW hPW (iW h)
       ((h : GL (Fin (a + a')) L) : Matrix (Fin (a + a')) (Fin (a + a')) L)
       (((h : GL (Fin (a + a')) L)⁻¹ : GL (Fin (a + a')) L) : Matrix (Fin (a + a')) (Fin (a + a')) L)
       (fun i j => ent _ hh i j) (fun i j => ent _ (inv_mem hh) i j) (hiW h) ?_

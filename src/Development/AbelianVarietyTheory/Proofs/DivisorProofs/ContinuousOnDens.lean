@@ -2,20 +2,21 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceComplexPointsOfProjVariety
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericPointFlagInCellOfFrameStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenericPointFlagInCellOfFrame
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagCellCoordinatesContDiffAtEtaleChartStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagCellCoordsBijectiveOntoChartProdStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagRefinementBundleDimEqBaseAddCardAboveDiagonaStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagCellCoordsBijectiveOntoChartProd
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagRefinementBundleDimEqBaseAddCardAboveDiagona
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlaggedBundleMetricSmoothUnitEtaleChartStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormPartComplComplexPointsInOpenEqZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormPartEqLintegralImageInjectiveHolomorphicStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormPartSubsetChartEqLintegralImageStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedLineFirstChernFormsPullbackCellStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormPartComplComplexPointsInOpenEqZero
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormPartEqLintegralImageInjectiveHolomorphic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormPartSubsetChartEqLintegralImage
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GradedLineFirstChernFormsPullbackCell
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenFlagBundleCellAndCoordsRegularStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackAevalEvenComplexFormsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackBaseFormFlagCellCoordinatesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetLIntegralFlagCellFibreDensityEqBaseStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDegreeDensityBaseFormTimesFibreClassStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackAevalEvenComplexForms
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackBaseFormFlagCellCoordinates
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetLIntegralFlagCellFibreDensityEqBase
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDegreeDensityBaseFormTimesFibreClass
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -77,14 +78,14 @@ theorem part_preimage : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F
   · simp
   haveI : T2Space (CxPts X.str σ) := CxPts.t2Space _ _
   haveI : T2Space (CxPts Y.str σ) := CxPts.t2Space _ _
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_genericPoint_flag_in_cell_of_frame F X Y ι m E E' φ f hR _ A (hOA x₀ (hTO hx₀))
-  have hdim := GlobalTheory.T.flagRefinementBundle_dim_eq_base_add_card_aboveDiagonal F σ X Y ι m E E' φ f hf hR
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.FlagCell2.GenericCell.exists_inCell_genericPoint F X Y ι m E E' φ f hR _ A (hOA x₀ (hTO hx₀))
+  have hdim := _root_.GlobalTheory.FlagCell2.Dim.main F σ X Y ι m E E' φ f hf hR
   let ε : Fin Y.dim ≃ Fin X.dim ⊕ Cell m := Fintype.equivOfCardEq (by simp [hdim])
-  obtain ⟨hopen, hinj, himg⟩ := GlobalTheory.T.flagCell_coords_bijective_onto_chart_prod F σ X Y ι m E E' φ f hf hR c A u hu _ ε
+  obtain ⟨hopen, hinj, himg⟩ := _root_.GlobalTheory.FlagCell2.cellMap_image_eq F σ X Y ι m E E' φ f hf hR c A u hu _ ε
   have hW := (GlobalTheory.T.isOpen_flagBundleCell_and_coords_regular F X Y ι m E E' φ f hR A u).1
   have hπ : Continuous (ptMap σ f hf) := GlobalTheory.Points.PtsOver.continuous_map f hf _
   have hTm : MeasurableSet (ptMap σ f hf ⁻¹' T) := hπ.measurable hT
-  have hnull := GlobalTheory.T.formPart_compl_complexPointsInOpen_eq_zero F σ Y ((atlas X σ).pullback (atlas Y σ) (ptMap σ f hf) α *
+  have hnull := _root_.GlobalTheory.FlagCell2Null.part_compl_ptsIn F σ Y ((atlas X σ).pullback (atlas Y σ) (ptMap σ f hf) α *
     evalF (atlas Y σ) (grF E' (pullGram E H φ f hf)) (fibrePoint m)) ⟨_, hW⟩ hu s
   obtain ⟨μ, hμ⟩ : ∃ μ, μ = (atlas Y σ).part ((atlas X σ).pullback (atlas Y σ) (ptMap σ f hf) α *
     evalF (atlas Y σ) (grF E' (pullGram E H φ f hf)) (fibrePoint m)) s := ⟨_, rfl⟩
@@ -117,26 +118,26 @@ theorem part_preimage : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F
     rw [e]
     exact (MeasurableEmbedding.subtype_coe c.e.open_target.measurableSet).measurableSet_image.2
       ((continuousOn_iff_continuous_restrict.1 c.e.continuousOn_symm).measurable hT)
-  rw [h1, hμ, GlobalTheory.T.formPart_eq_lintegral_image_injective_holomorphic _ _ (atlas Y σ) _ hβ _ (cellMap ε f hf c u)
+  rw [h1, hμ, _root_.GlobalTheory.FlagCell2.ChangeOfVariables.part_eq_lintegral_image _ _ (atlas Y σ) _ hβ _ (cellMap ε f hf c u)
     (cellForm ε (fun v => H A (c.e.symm v)) ((atlas X σ).loc α c)) hopen hinj ?_ s _
     (hTm.inter hopen.measurableSet) Set.inter_subset_right, himg T (hTO.trans hOc) fun x hx => hOA x (hTO hx),
     show (atlas X σ).part α s T = ∫⁻ v in c.e '' T, ENNReal.ofReal (((s : ℤ) : ℝ) * (dens ((atlas X σ).loc α c v)).re)
-      from GlobalTheory.T.formPart_subset_chart_eq_lintegral_image _ _ (atlas X σ) α hα s c T hT (hTO.trans hOc),
-    ← GlobalTheory.T.setLIntegral_flagCellFibreDensity_eq_base ι m _ _ ε (fun v => H A (c.e.symm v))
+      from _root_.GlobalTheory.FlagCell2.part_subset_chart _ _ (atlas X σ) α hα s c T hT (hTO.trans hOc),
+    ← _root_.GlobalTheory.FlagCell2.setLIntegral_fibDens ι m _ _ ε (fun v => H A (c.e.symm v))
       (fun v => ((s : ℤ) : ℝ) * (dens ((atlas X σ).loc α c v)).re) (c.e '' O) (c.e '' T) hOo hTi (Set.image_mono hTO)
       (continuousOn_const.mul ((continuousOn_dens _ hα c).mono ?_))
       (fun τ i j v hv => ((hG v hv τ).1 i j).continuousAt.continuousWithinAt) fun v hv τ => (hG v hv τ).2]
   · refine setLIntegral_congr_fun ((bsL ε).continuous.measurable hTi) fun w hw => ?_
     have hw' := Set.image_mono hTO hw
     beta_reduce
-    rw [GlobalTheory.T.topDegreeDensity_base_form_times_fibre_class ι m _ _ ε _ _ w (fun τ => (hG _ hw' τ).2) fun τ => (hG _ hw' τ).1.of_le (by norm_cast),
+    rw [_root_.GlobalTheory.FlagCell2.CellDens.dens_cellForm ι m _ _ ε _ _ w (fun τ => (hG _ hw' τ).2) fun τ => (hG _ hw' τ).1.of_le (by norm_cast),
       Complex.re_mul_ofReal, mul_assoc]
   · rintro _ ⟨x, hx, rfl⟩
     exact c.e.map_source (hOc hx)
   · intro x hx
     refine ⟨(GlobalTheory.T.flagCellCoordinates_contDiffAt_etaleChart F σ X Y ι m E E' φ f hf hR c A u _ ε x hx).differentiableAt two_ne_zero, ?_⟩
-    rw [Pi.mul_apply, cellForm, map_mul, GlobalTheory.T.pullback_base_form_flag_cell_coordinates F σ X Y ι m E E' φ f hf hR c A u _ ε α hα x hx]
+    rw [Pi.mul_apply, cellForm, map_mul, _root_.GlobalTheory.FlagCell2.pullback_cell F σ X Y ι m E E' φ f hf hR c A u _ ε α hα x hx]
     congr 1
-    exact GlobalTheory.T.pullback_aeval_evenComplexForms _ _ _ _ _ _ _ (GlobalTheory.T.graded_line_first_chern_forms_pullback_cell F σ X Y ι m E E' φ f hf hR c A u H hH ε x hx)
+    exact _root_.GlobalTheory.FlagCell2.pull_aeval_even _ _ _ _ _ _ _ (_root_.GlobalTheory.FlagCell2.GradedPull.grF_eq_pull F σ X Y ι m E E' φ f hf hR c A u H hH ε x hx)
 
 end GlobalTheory.FlagCell2.LocFib

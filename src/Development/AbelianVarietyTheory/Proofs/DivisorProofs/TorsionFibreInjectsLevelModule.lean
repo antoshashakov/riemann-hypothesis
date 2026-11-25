@@ -5,9 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfTorsionP
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaCompOfIsGrpPullback
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClassTorsionPointLocalSchemeStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelSectionOfIdealTorsionAtGeometricPoint
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelSectionAddAtGeometricPointStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelSectionInjectiveAtGeometricPointStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelSectionSmulAtGeometricPointStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelSectionAddAtGeometricPoint
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelSectionInjectiveAtGeometricPoint
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelSectionSmulAtGeometricPoint
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointClassAtStalkSmulAction
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaEqOfMkEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionPointClassImageEqLevelAction
@@ -133,7 +133,7 @@ theorem torsLevel_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     fun P h => Classical.choose (Classical.choose_spec (hlift P h)).2
   have hcl : ∀ P h, ValAt (pullG TF Z φ) l.M ℓ (etaSecL TF Z φ ℓ hℓ) (PT P h (IsLocalRing.closedPoint K)) (cl P h) :=
     fun P h => Classical.choose_spec (Classical.choose_spec (hlift P h)).2
-  have hun := GlobalTheory.T.levelSection_injective_at_geometricPoint TF Z φ ℓ hℓ
+  have hun := _root_.GlobalTheory.TorsSpec.etaSecL_injective_at TF Z φ ℓ hℓ
   refine ⟨fun P => if h : IsTorsI I (pullAct TF Z φ) P then cl P h else 0, ?_, ?_, ?_, ?_⟩
   · intro P Q hP hQ
     have hPQ : IsTorsI I (pullAct TF Z φ) (P * Q) := fun a ha => by
@@ -141,7 +141,7 @@ theorem torsLevel_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       rw [MonObj.mul_comp, hP a ha, hQ a ha, _root_.mul_one]
     simp only [dif_pos hP, dif_pos hQ, dif_pos hPQ]
     exact _root_.GlobalTheory.TorsSpec.valAt_mul (pullG TF Z φ) l.M hn ℓ (etaSecL TF Z φ ℓ hℓ) (etaSecL_w TF Z φ ℓ hℓ) hun
-      (GlobalTheory.T.levelSection_add_at_geometricPoint TF Z φ ℓ hℓ) K t P Q _ _ _ (hPT P hP) (hPT Q hQ) (hPT _ hPQ) _ _ _ _ (hcl P hP) (hcl Q hQ)
+      (_root_.GlobalTheory.TorsSpec.etaSecL_add_geom TF Z φ ℓ hℓ) K t P Q _ _ _ (hPT P hP) (hPT Q hQ) (hPT _ hPQ) _ _ _ _ (hcl P hP) (hcl Q hQ)
       (hcl _ hPQ)
   · intro P a hP
     have hPa : IsTorsI I (pullAct TF Z φ) (P ≫ (pullAct TF Z φ).act a) := fun r hr => by
@@ -149,7 +149,7 @@ theorem torsLevel_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       exact hP _ (I.mul_mem_left a hr)
     simp only [dif_pos hP, dif_pos hPa]
     exact _root_.GlobalTheory.TorsSpec.class_act (pullG TF Z φ) l.M hn ℓ (etaSecL TF Z φ ℓ hℓ) (etaSecL_w TF Z φ ℓ hℓ) hun (pullAct TF Z φ)
-      (GlobalTheory.T.levelSection_smul_at_geometricPoint TF Z φ ℓ hℓ) K t P a _ _ (hPT P hP) (hPT _ hPa) _ _ _ (hcl P hP) (hcl _ hPa)
+      (_root_.GlobalTheory.TorsSpec.etaSecL_smul_geom TF Z φ ℓ hℓ) K t P a _ _ (hPT P hP) (hPT _ hPa) _ _ _ (hcl P hP) (hcl _ hPa)
   · intro P Q hP hQ he
     simp only [dif_pos hP, dif_pos hQ] at he
     exact _root_.GlobalTheory.TorsSpec.eq_of_valAt_eq (pullG TF Z φ) l.M hn ℓ (etaSecL TF Z φ ℓ hℓ) (etaSecL_w TF Z φ ℓ hℓ) K t P Q _ _
