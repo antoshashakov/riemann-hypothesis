@@ -5,7 +5,8 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.DictionaryStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreVolumeCompactBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreVolumeCompactLowerBoundStatement
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreVolumeCompactLowerBound
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreVolumeCoverCountableStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalCompactCoverByUnitScalingsStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalDependentSetNullStatement
@@ -100,7 +101,7 @@ theorem avg_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   obtain ⟨c, hc⟩ := GlobalTheory.T.fibre_volume_compact_bound _ _ _ lam _ _ _ hQ hfam P hPc hPo hPZ
   have hset := fun i => GlobalTheory.T.unit_scaling_compact_free_set F E σ hCM M v (u i) P hPc hPo hPZ
   have hb := fun i S hS => GlobalTheory.T.local_rank_one_volume_bound F E σ hCM M J hJ hM1 d b v lam hlam P c hPo.measurableSet hc (u i) S hS
-  have hmass := fun i => GlobalTheory.T.fibre_volume_compact_open_le_of_measure_le _ _ _ lam _ _ _ hQ hfam _ (hset i).1 (hset i).2.1 (hset i).2.2 _ (hb i)
+  have hmass := fun i => _root_.GlobalTheory.CompanionTheory.WeilSiegel.FibreMass.fibre_mass_le_of_pushforward _ _ _ lam _ _ _ hQ hfam _ (hset i).1 (hset i).2.1 (hset i).2.2 _ (hb i)
   have key := GlobalTheory.T.fibre_volume_cover_countable _ _ ι _ lam _ _ _ hQ hfam hnull A hAc hAo _ _ hset hcov (hsum.mul_left c) hb hmass 0
   have e0 : hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀ = hermScal (Fv F v) σ 0 :=
     Subtype.ext (funext fun _ => funext fun _ => by

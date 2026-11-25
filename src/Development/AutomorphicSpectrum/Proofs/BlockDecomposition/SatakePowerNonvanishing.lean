@@ -11,7 +11,9 @@ public import Mathlib.GroupTheory.Coset.Defs
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CosetRepsOfFactorization
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantConjugateUnipotentMemStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictDom
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalZeroOfInjectivePowerStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalZeroOfInjectivePower
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckePowerCosetFormulaStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryIwahoriFactorizationStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryIwahoriIndexFiniteStatement
@@ -136,7 +138,7 @@ theorem abs_main {G : Type} [Group G] (K I : Subgroup G) (hIK : I ≤ K) (hfin :
     intro a ha
     exact Subtype.ext (hinj a a.2 (congrArg Subtype.val ha))
   have hl0 : l v = 0 := by
-    refine GlobalTheory.T.functional_zero_of_injective_power _ A hAinj l v j₀ fun j hj => ?_
+    refine _root_.GlobalTheory.CompanionTheory.SatPow.functional_eq_zero_of_late_iterates _ A hAinj l v j₀ fun j hj => ?_
     obtain ⟨m, -, hm⟩ := GlobalTheory.T.hecke_power_coset_formula G K I hIK hfin t R h1R hRI hRt hR j
     have := hm φ₀ hK
     rw [hlam, hcon j hj, mul_zero, finsum_eq_sum_of_fintype] at this

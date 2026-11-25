@@ -2,7 +2,7 @@ module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.FriedrichsKernels.CalcSteps
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusOnSobolevStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusOnSobolev
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianCasimirRelationStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LaplacianPowerCasimirBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightWordLaplacianPowerBoundStatement
@@ -147,7 +147,7 @@ theorem smoothOp : SmoothOp := by
   have hW := word_est μ E hAE hL hU hR hC h hh Ω T F hΩ
   choose Cw hCw using hW
   obtain ⟨S, Cs, hb⟩ := GlobalTheory.CompanionTheory.CurveJ.sup_bound hS n μ
-  have hkeep := (GlobalTheory.T.functional_calculus_on_sobolev) n μ E Ω T F hL hU hR hS hC hΩ h
+  have hkeep := (_root_.GlobalTheory.CompanionTheory.FcSmooth.phi_keeps_sections) n μ E Ω T F hL hU hR hS hC hΩ h
   refine ⟨|Cs| * ∑ w ∈ S, |Cw w|, fun x hx => ?_⟩
   obtain ⟨xs, hxs, hlim⟩ := mem_closure_iff_seq_limit.1 hx
   choose fs hfS hfsec hfcl using hxs

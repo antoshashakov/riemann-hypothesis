@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatVInjective
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZeroMemBoxF
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicBoxCompactStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicBoxCompact
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdelicTensorRationalApproximationStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactAdelicNormBoundedStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactHeightLowerBoundStatement
@@ -247,7 +247,7 @@ theorem upper_bound (h : IsCMExt F E σ) (x₁ x₂ : Fin n → E) {A₁ A₂ : 
       hv ((matHom _ σ J κ⁻¹).1 *ᵥ ((α₁ * ζ) • ratV F x₁ + (α₂ * algebraMap (AF F) (AF F ⊗[F] E) z) • ratV F x₂)) ≤ P := by
   have := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
-  obtain ⟨hbF, hbE⟩ := GlobalTheory.T.adelic_box_compact F E
+  obtain ⟨hbF, hbE⟩ := _root_.GlobalTheory.CompanionTheory.RedCov.Simple.BoxCpt.main F E
   have hcA : Continuous (algebraMap (AF F) (AF F ⊗[F] E)) :=
     IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF F) (AF F ⊗[F] E))
   let Φ : GAd σ J × (AF F ⊗[F] E) × (AF F ⊗[F] E) × (AF F ⊗[F] E) × AF F → Fin n → AF F ⊗[F] E := fun t =>

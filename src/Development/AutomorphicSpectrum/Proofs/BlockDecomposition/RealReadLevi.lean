@@ -1,7 +1,10 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameReading.JoinType
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFixedNonzeroStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
+public import Mathlib.Basic.Complex.Basic
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedFixedNonzero
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusTrivialOnCompactParabolicStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicElementBlockFormStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -92,7 +95,7 @@ theorem fixed_ind₂_ne_bot (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
       ((GlobalTheory.SmGL.deltaHalf k (GlobalTheory.SmGL.Two (Fin a) (Fin b)) (GlobalTheory.SmGL.leviProj k (GlobalTheory.SmGL.two e) p) : ℂˣ) : ℂ) •
         ρ ((GlobalTheory.SmGL.leviTwo k (Fin a) (Fin b)).symm (GlobalTheory.SmGL.leviProj k (GlobalTheory.SmGL.two e) p)) x = x) :
     fixed (GlobalTheory.SmGL.ind₂ e ρ) K ≠ ⊥ :=
-  GlobalTheory.T.induced_fixed_nonzero _ _ _ _ K hK x hx hfix
+  _root_.GlobalTheory.CompanionTheory.SmInd.fixed_smInd_ne_bot_of_fixed _ _ _ _ K hK x hx hfix
 
 theorem exists_fixed_of_sep {G V X : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup X] [Module ℂ X] {ρ : Representation ℂ G V} {S : Submodule ℂ V} {τ : Representation ℂ G X}

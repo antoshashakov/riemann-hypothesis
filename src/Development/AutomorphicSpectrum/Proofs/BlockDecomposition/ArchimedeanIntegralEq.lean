@@ -3,7 +3,7 @@ module
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatiosEqOfSameOrbit
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArithmeticVarietyGenericallyEtaleCoordinates
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BadProjectionLocusNullStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BadProjectionLocusNull
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChernPartNullSetZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointLiftsToMulticoneStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointsSecondCountableStatement
@@ -196,7 +196,7 @@ theorem archIntEq_of_integrable : ArchIntegrableOn → ArchIntEq := by
         by_cases h0 : Ψ (ReciprocityTheory.ChartRestriction.G.Geo.segre z) 0 = 0
         · exact Or.inl ⟨z, hz, h0⟩
         · exact Or.inr fun hreg => hvG (GlobalTheory.T.projection_regular_on_nonvanishing_chart m n X i D Ψ N _ hNh c _ z (c.e.map_target hv) hz hNz h0 hreg)
-    exact measure_mono_null hsub (measure_union_null (GlobalTheory.T.bad_projection_locus_null m n X i D hX Ψ hΨ c)
+    exact measure_mono_null hsub (measure_union_null (_root_.GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit m n X i D hX Ψ hΨ c)
       ((GlobalTheory.T.hypersurface_complex_points_measurable_null m n X i D N _ hNh hNP).2 c))
 
   let J := {p : OpenPartialHomeomorph (GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀) (Fin D → ℂ) ×

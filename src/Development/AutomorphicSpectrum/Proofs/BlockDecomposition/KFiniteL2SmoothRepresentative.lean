@@ -13,7 +13,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Convolut
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalConvolutionSplitCentreInvariantStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsTestFunctionFixedSubspaceStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KFiniteIrreducibleFixedVectorsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightTranslationLieConjugateStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightTranslationLieConjugate
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TestFunctionContinuousCompactSupportStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TestFunctionDerivativeIsTestStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryExponentialPathExistsStatement
@@ -123,7 +124,7 @@ omit μ in
 theorem Zalg_comm_cptRep {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (k : Kinf E a) :
     z * cptRep E a k = cptRep E a k * z := by
   obtain ⟨c, Y, h0, h1, hd, hi⟩ := GlobalTheory.T.unitary_exponential_path_exists E a k
-  have h := GlobalTheory.T.center_commutes_one_parameter_flow E a (GlobalTheory.T.right_translation_lie_conjugate E a) z hz (GlobalTheory.T.center_enveloping_commutes_lie E a z hz) c Y h0 hd hi
+  have h := GlobalTheory.T.center_commutes_one_parameter_flow E a (_root_.GlobalTheory.CompanionTheory.SmoothRep.rt_infGL_mul_lie E a) z hz (GlobalTheory.T.center_enveloping_commutes_lie E a z hz) c Y h0 hd hi
   rw [h1] at h
   exact h
 

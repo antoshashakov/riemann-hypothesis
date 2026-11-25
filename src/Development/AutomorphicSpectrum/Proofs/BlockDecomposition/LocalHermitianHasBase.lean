@@ -8,7 +8,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Hermitia
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianValuationSplitCriterionStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MaxEvenLatticeRankOneSplitStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitLocalTensorProductSwapStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitOrderFgIdealProductStatement
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitOrderFgIdealProduct
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorFixedByInvolutionIsBaseStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -163,7 +164,7 @@ theorem hasBase_of_split {k R : Type} [Field k] [CommRing R] (O : ValuationSubri
         apply Submodule.fg_of_fg_map_injective f finj
         rw [Submodule.map_comap_eq_of_surjective fsurj]
         exact hNfg
-      obtain ⟨α, β, hαβ⟩ := GlobalTheory.T.split_order_fg_ideal_product O φ 𝔬 h𝔬 (N.comap f) hfg
+      obtain ⟨α, β, hαβ⟩ := _root_.GlobalTheory.CompanionTheory.KFin.fg_eq_prod_principal O φ 𝔬 h𝔬 (N.comap f) hfg
       have hαβ' : ∀ r : R, r • w₀ ∈ N ↔ (∃ x ∈ O, (φ r).1 = α * x) ∧ ∃ y ∈ O, (φ r).2 = β * y :=
         fun r => hαβ r
       exact ⟨α, β, GlobalTheory.T.max_even_lattice_rank_one_split O φ c 𝔬 hc h𝔬 h hH w₀ hspan hunit N hN α β hαβ', hαβ'⟩

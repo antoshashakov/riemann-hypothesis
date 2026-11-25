@@ -6,7 +6,8 @@ public import Formalism.SatakeDualWeyl.Statement
 public import Mathlib.NumberTheory.NumberField.CMField
 public import Mathlib.RingTheory.SimpleRing.Principal
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPositiveHermitianForm
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionCentralizerStatement
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionCentralizer
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTorsionLatticeCompactStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralPointsOpenCompactStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwCentRatFCommStatement
@@ -154,7 +155,7 @@ theorem factor (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (δ 
     obtain ⟨γ, hγ, hcm, c, hc', e⟩ := hsel t h1 h2
     obtain ⟨γ₀, hγ₀, rfl⟩ := hγ
     exact ⟨ratF E n γ₀, ⟨⟨γ₀, rfl⟩, (hc _).2 ⟨(ratF_mem_UJ E n H γ₀).2 hγ₀, hcm⟩⟩, c, hc', e⟩
-  · refine ((GlobalTheory.T.finite_torsion_centralizer_alt E n _ hs).image (ratF E n)).subset ?_
+  · refine ((_root_.GlobalTheory.CompanionTheory.TorCent.finite_torsion_centralizer E n _ hs).image (ratF E n)).subset ?_
     rintro y ⟨hy, hfo⟩
     obtain ⟨⟨γ, rfl⟩, ht⟩ := hy
     refine ⟨γ, ⟨ratF_injective E n ?_, ?_⟩, rfl⟩

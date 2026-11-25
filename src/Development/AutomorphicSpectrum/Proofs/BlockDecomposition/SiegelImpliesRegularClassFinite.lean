@@ -12,7 +12,9 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactA
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFiniteRationalDenominatorStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeepConeWeightRatioBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsWittComplementFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameStabilizerFlagConverseStatement
+public import Formalism.SatakeDualWeyl.Statement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameStabilizerFlagConverse
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameStabilizerFlagCriterionStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalParabolicArchimedeanStabilizesStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalPointsEqEmbeddingStatement
@@ -168,7 +170,7 @@ theorem exists_conj_levi (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittF
     rw [← cm, ← cm, rel]
   have rel2 := congrArg (bd (lev m S)) rel'
   rw [bd_mul tδ tg, bd_mul tg tμ, hμb] at rel2
-  obtain ⟨hU, hUJ⟩ := GlobalTheory.T.frame_stabilizer_flag_converse E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S g.1.1
+  obtain ⟨hU, hUJ⟩ := _root_.GlobalTheory.CompanionTheory.CFin.BdU.bd_unitary E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S g.1.1
     g.1.isUnit g.2 tg
   obtain ⟨g', hg'def⟩ : ∃ g' : GRat σ J, g'.1.1 = frm X Z Y * bd (lev m S) (Qi * g.1.1 * frm X Z Y) * Qi :=
     ⟨⟨hU.unit, hUJ⟩, rfl⟩

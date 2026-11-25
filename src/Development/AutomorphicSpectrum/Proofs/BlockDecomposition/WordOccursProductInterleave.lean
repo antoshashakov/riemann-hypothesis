@@ -6,7 +6,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClOfSelf
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivProdIrrTw
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InstAddCommGroupTwo
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InterleavingTwoColourEmbeddingStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyInterleaving.Interleave
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InterleavingTwoColourEmbedding
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityOrderEmbeddingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiProductSingleFactorEquivStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SocleOfMultiplicityOne
@@ -83,7 +84,7 @@ theorem interleave_embed {T : Type 1} {u v w : List T} (h : Zc.Comb.Interleave u
     ∃ (r : Fin w.length → Fin 2) (σ₀ : Fin u.length ↪o Fin w.length) (σ₁ : Fin v.length ↪o Fin w.length),
       (∀ j, r j = 0 ↔ j ∈ Set.range σ₀) ∧ (∀ j, r j = 1 ↔ j ∈ Set.range σ₁) ∧
         (∀ a, w.get (σ₀ a) = u.get a) ∧ (∀ a, w.get (σ₁ a) = v.get a) :=
-  GlobalTheory.T.interleaving_two_colour_embedding h
+  _root_.GlobalTheory.CompanionTheory.WordProd.Intl.interleave_embeddings h
 
 theorem jm_congr' {h N : ℕ} {x x' : Fin h → IrrGL (k := k)} (e : x = x') (hd : ∑ a, (x a).1 = N)
     (hd' : ∑ a, (x' a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) :

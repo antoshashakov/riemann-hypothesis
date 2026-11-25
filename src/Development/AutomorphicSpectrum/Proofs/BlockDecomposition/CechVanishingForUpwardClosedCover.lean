@@ -1,7 +1,7 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechVanishingFromCoverStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechVanishingFromCover
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -92,7 +92,7 @@ theorem glob_van_rel : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
     obtain ⟨a, ha⟩ := hS
     exact subsingleton_HU_iter F _ (capS W S) (capS U' S) (fun T hT => ⟨a, hT a ha⟩)
       (fun T => Iff.rfl) j h
-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.cech_vanishing_from_cover ((ObjectProperty.ι fun T : C => ∃ α, W α T) ⋙ F) U' hU hc s
+  obtain ⟨h1, h2, h3⟩ := _root_.GlobalTheory.CompanionTheory.CosieveMV.vanishing_of_cover ((ObjectProperty.ι fun T : C => ∃ α, W α T) ⋙ F) U' hU hc s
   exact ⟨fun h j hj => h1 (fun S hS j hj => tr S hS j (h S hS j hj)) j hj,
     fun h j => h2 (fun S hS j => tr S hS j (h S hS j)) j,
     fun h j hj => h3 (fun S hS j hj => tr S hS j (h S hS j hj)) j hj⟩

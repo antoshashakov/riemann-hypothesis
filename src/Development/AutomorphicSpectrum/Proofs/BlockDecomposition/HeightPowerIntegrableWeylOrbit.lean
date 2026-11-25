@@ -7,7 +7,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierZ
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPowerSummableRationalHermitianStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPullbackFirstBlockStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightRightTranslateCompactBound
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrableOfSummableFundamentalDomainStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSiegelTheta.BigCellDefs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrableOfSummableFundamentalDomain
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacobiMapsExist
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PartialConstantTermBound
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemElt
@@ -123,7 +124,7 @@ theorem integrable_height_rpow : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (
   have hNc : Continuous fun z : hermA D ρ => M.nzx z 0 := GlobalTheory.CompanionTheory.PcB.continuous_nz M
   obtain ⟨κ, hκ1, hκ⟩ := GlobalTheory.CompanionTheory.HtRightTranslate.height_mul_le D n H hH hC
     ((fun z => M.nzx z 0) '' K) (hK.image hNc)
-  refine GlobalTheory.T.integrable_of_summable_fundamental_domain D ρ m.lz m.𝓖 m.hz (fun ζ => (H (M.w * M.nzx ζ 0) : ℝ) ^ τ) ?_ ?_ hSum K hKc (κ ^ τ)
+  refine _root_.GlobalTheory.CompanionTheory.HermFD.integrable_of_periodisation_bound D ρ m.lz m.𝓖 m.hz (fun ζ => (H (M.w * M.nzx ζ 0) : ℝ) ^ τ) ?_ ?_ hSum K hKc (κ ^ τ)
     (Real.rpow_nonneg (by linarith) τ) ?_
   · exact (NNReal.continuous_coe.comp (hH.1.comp (continuous_const.mul hNc))).rpow_const fun _ => Or.inr hτ0
   · exact fun z => Real.rpow_nonneg (NNReal.coe_nonneg _) τ

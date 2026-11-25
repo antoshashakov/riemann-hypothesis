@@ -7,7 +7,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMulTrI
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCohomologyRankBoundAtClosedPoint
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsBaseChangeStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MinimalGeneratorsLocalIdealStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialPullbackGivesUnitCocycleStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrivialPullbackGivesUnitCocycle
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftMinimalGenerators
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitCocycleLiftModuloMaximal
 import Mathlib.Algebra.Order.Floor.Extended
@@ -68,7 +68,7 @@ namespace GlobalTheory.CompanionTheory.FewEq
 
 theorem fewEq : FewEqSt := by
   have gen := GlobalTheory.T.cocycle_units_trivialize_modulo_ideal
-  have data := GlobalTheory.T.trivial_pullback_gives_unit_cocycle
+  have data := _root_.GlobalTheory.CompanionTheory.FewEq.exists_local_of_triv
   have mingens := GlobalTheory.T.minimal_generators_local_ideal
   have flat := GlobalTheory.T.minimal_generators_base_change
   have dep := GlobalTheory.T.dependency_statement

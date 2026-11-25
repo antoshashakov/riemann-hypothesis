@@ -8,7 +8,7 @@ public import GroundTheory.ProfiniteCohomology.LocalClassFormation.InvariantSpli
 public import GroundTheory.ProfiniteCohomology.PoincareDuality.Torsion
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DecompositionGroupLocalGaloisStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAlgHomMulEquivDec
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KummerCharacterTameFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KummerCharacterTameFormula
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerOrderEqOneStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedCharacterContinuousStatement
 public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmp
@@ -127,7 +127,7 @@ theorem inv_class (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] 
   have hJx' : (cohomologyMap (rootsOfUnityToUnits K Ω n) 2).hom (cohomologyπ _ 2 x) =
       cohomologyπ _ 2 ((HomologicalComplex.cyclesMap (cochainsMap (rootsOfUnityToUnits K Ω n)) 2).hom x) := hJx
   rw [hJx']
-  refine GlobalTheory.T.kummer_character_tame_formula K Ω n ζ y a hζ.pow_eq_one ha hy κ χ hκ hadd hcont hF _ fun s => ?_
+  refine _root_.GlobalTheory.CompanionTheory.KummerCupInv.inv_kummerCup K Ω n ζ y a hζ.pow_eq_one ha hy κ χ hκ hadd hcont hF _ fun s => ?_
   rw [cochainOf_cyclesMap, hx, rootsOfUnityToUnits_hom_apply, muEquiv_apply]
 
 theorem generates_of_inv {n : ℕ} [NeZero n] {H : Type} [AddCommGroup H] [Module (ZMod n) H] (T : H →+ QZ)

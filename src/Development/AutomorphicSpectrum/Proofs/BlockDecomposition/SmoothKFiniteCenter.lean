@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactAdelicIntegralDenominatorStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactConjugateCentrePowerBoundedStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactConjugateRationalEntriesBoundedStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactConjugateRationalEntriesBounded
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOpenLevel
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteAdelicRestrictionMeasureStatement
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
@@ -111,7 +112,7 @@ theorem count_lattice (E : Type) [Field E] [NumberField E] [_root_.NumberField.I
     rw [pow_zero, mul_one]
     exact_mod_cast this
   obtain ⟨n₀, hn₀⟩ := GlobalTheory.T.compact_conjugate_centre_power_bounded E a ha Q hQ
-  obtain ⟨Qf, C₁, hQf, hC₁, hent⟩ := GlobalTheory.T.compact_conjugate_rational_entries_bounded E a g₀ Q hQ n₀
+  obtain ⟨Qf, C₁, hQf, hC₁, hent⟩ := _root_.GlobalTheory.CompanionTheory.GrowthEntries.entries_bound E a g₀ Q hQ n₀
   obtain ⟨C₂, N₂, hC₂, hcount⟩ := count_rational E Qf hQf
   obtain ⟨c₃, hc₃⟩ : ∃ c₃ : ℝ, c₃ = C₂ * (C₁ + 1) ^ N₂ := ⟨_, rfl⟩
   have hc₃0 : 0 ≤ c₃ := by rw [hc₃]; positivity

@@ -1,7 +1,9 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SplittingFieldLattices.BasisB
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AlmostFiniteModuleBoundedTorsionStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
+public import Mathlib.RingTheory.AdicCompletion.Basic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AlmostFiniteModuleBoundedTorsion
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InverseLimitCohomologyComparisonStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationProperty
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
@@ -227,7 +229,7 @@ theorem bounds {I : Ideal R} {γ : DividedPowers I} {l m : ℕ} (h : LatBase γ 
   have hcl : ∀ x : R, (∀ n : ℕ, x ∈ Ideal.span {(l : R) ^ n} ⊔ I) → x ∈ I := by
     have := h.closed 1
     rwa [dividedPowerFiltration_one_eq] at this
-  have key := fun (N : Type 1) [AddCommGroup N] [Module R N] => GlobalTheory.T.almost_finite_module_bounded_torsion R I (l : R) hfg hnil h.prime h.val h.dv
+  have key := fun (N : Type 1) [AddCommGroup N] [Module R N] => _root_.GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete R I (l : R) hfg hnil h.prime h.val h.dv
     h.cpl.toIsPrecomplete hcl N
   obtain ⟨k₁, a₁, -, -⟩ := key M' hM'
   obtain ⟨k₂, -, b₂, c₂⟩ := key M hM

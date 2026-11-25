@@ -19,7 +19,9 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCell
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenDoubleCosetCriterionStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionConstructedFromDoubleCosetStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothParabolicInductionProductStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportInducedFunctionClosedStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
+public import Mathlib.Basic.Complex.Basic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportInducedFunctionClosed
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SurjectiveIntertwinerQuotientEquivStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -233,7 +235,7 @@ theorem two_orbits [NonarchimedeanGroup G] {Q P : Subgroup G} {w : G}
     rw [this, map_zero]
   have mem2 : ∀ f : S.toSubmodule, resInd σ H₂ hH₂ τ₂ E₂ hE₂ f.1 ∈ cIndSpace H₂ τ₂ := fun f => by
     refine resInd_mem_cInd hw hP B₀ hB hB1 K₀ hK₀ hIw σ H₂ hH₂ τ₂ E₂ hE₂ f.1 {g | f.1.1.1 g ≠ 0}
-      (GlobalTheory.T.support_induced_function_closed σ f.1) ?_ ?_ (fun p hp => hp)
+      (_root_.GlobalTheory.CompanionTheory.BZRes.isClosed_support_smooth_ind σ f.1) ?_ ?_ (fun p hp => hp)
     · intro g hg
       exact (hcov g).resolve_left fun h => hg (vanish f g h)
     · intro q hq g hg

@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
 public import GroundTheory.AutomorphicForms.GeometricLemmaNormal
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockCountReindexEquivsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviDoubleCosetIntersectionStatement
+public import GroundTheory.AutomorphicForms.FiniteBruhat
+public import GroundTheory.AutomorphicForms.InductionParabolicGroups
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviDoubleCosetIntersection
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEquivContinuousStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRefinementBlockOrderStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRefinementParabolicStatement
@@ -209,7 +211,7 @@ theorem cell_equiv (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) 
   have hin : GroundTheory.Automorphic.Parabolic.leviInfIncl β (γ ∘ ⇑w⁻¹)
       (cellInnerHom β γ w (cellLeviSubIncl k β γ w b)) = φ (relEmb k f sq) := by
     apply Subtype.ext
-    rw [hφ, ← GlobalTheory.T.levi_double_coset_intersection k e β hβ e' f g w hcell p.1 p.2 hxm]
+    rw [hφ, ← _root_.GlobalTheory.CompanionTheory.GeomCell.innerMat k e β hβ e' f g w hcell p.1 p.2 hxm]
     show ((GroundTheory.Automorphic.Parabolic.leviProj k N β _ : levi k N β) : GL (Fin N) k) = _
     congr 2
     exact Subtype.ext (show permGL k w * (((b : levi k N γ)) : GL (Fin N) k) * (permGL k w)⁻¹ = _ by

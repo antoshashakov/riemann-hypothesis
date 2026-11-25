@@ -7,7 +7,8 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactSetContainedInLatticeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityBoundByRecursionStatement
+public import Mathlib.MeasureTheory.Measure.MeasureSpaceDef
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityBoundByRecursion
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOrderDataExistAtPlaceStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureUnramifiedFormulaStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureUnramifiedVolumeStatement
@@ -373,7 +374,7 @@ theorem GlobalTheory.CompanionTheory.AvgFree.exhaust_density : ∀ (F E : Type) 
   have hj : ∀ᶠ j in Filter.atTop, ρ j < 1 := hρ.eventually (gt_mem_nhds zero_lt_one)
   obtain ⟨j₀, hj₀⟩ := hj.exists
   obtain ⟨hmass, -, -, C₀, hC₀⟩ := GlobalTheory.T.local_fibre_measure_unramified_formula F E σ hσ d b v lv hlv M J hJ n mv hmv _ (hcl j₀).1 (hcl j₀).2 (hfree j₀)
-  obtain ⟨C, hC⟩ := GlobalTheory.T.density_bound_by_recursion (HermR (Fv F v) σ n) ι (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n)
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.DensityIter.bounded_density_of_iterated (HermR (Fv F v) σ n) ι (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n)
     (fun Y => GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M
       (tupIn (M := M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E)) ∩ gramIn (Fv F v) σ J Y))
     (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M (tupIn (M := M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E))))

@@ -2,7 +2,10 @@ module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.GlobSerreSt
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SubMemOfMk
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverCohomologyFiniteStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Proper
+public import Mathlib.Order.CompletePartialOrder
+public import Mathlib.Tactic.ENatToNat
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AffineCoverCohomologyFinite
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoverCupActionBasis
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsGradedFormOnAffineChartStatement
@@ -150,7 +153,7 @@ theorem main_nl (hLoc : KH.LocGr) (hPoly : KH.PolyTf) {O : Type} [CommRing O] [I
     Module.Finite O ((CrystallineSemistableComparison.Pb.cechH (grF (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥)) r)
       (fun α => St (TF l s) {U.U α}) r).cx.H p) := by
   obtain ⟨V⟩ := vb_cech hLoc hPoly l s hb q U r hr
-  exact GlobalTheory.T.affine_cover_cohomology_finite q U.U U.cover (capO_affine U) _ V p
+  exact _root_.GlobalTheory.CompanionTheory.VBGlue.finite_H_cx q U.U U.cover (capO_affine U) _ V p
 
 
 

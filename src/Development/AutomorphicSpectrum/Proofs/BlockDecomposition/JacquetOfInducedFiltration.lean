@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsCellOfIsSubquotient
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BernsteinZelevinskyGeometricLemmaStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CellLeviTensorDecompositionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleCosetBlockMatrixStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.LeviEmbMemNormalizerLower
+public import GroundTheory.AutomorphicForms.Iwasawa
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleCosetBlockMatrix
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPermBlockMatrixStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsStrictBlockOrderStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiltrationTransportEquivStatement
@@ -99,7 +101,7 @@ theorem jacquetOfInducedFiltration : ∀ (k : Type) [Field k] [ValuativeRel k] [
   have hsz : ∀ v v' : Equiv.Perm (Fin N), permGL k v' ∈ doubleCoset (permGL k v)
       (blockUpper k N βF : Set (GL (Fin N) k)) (blockUpper k N γF) ↔ sz v = sz v' := by
     intro v v'
-    rw [GlobalTheory.T.double_coset_block_matrix k E βF hβ E' γF hγ v v']
+    rw [_root_.GlobalTheory.CompanionTheory.GeoCell.permGL_mem_doubleCoset_iff_card k E βF hβ E' γF hγ v v']
     exact ⟨fun h => funext fun i => funext fun j => h i j, fun h i j => congrFun (congrFun h i) j⟩
   have hself : ∀ v : Equiv.Perm (Fin N), permGL k v ∈ doubleCoset (permGL k v)
       (blockUpper k N βF : Set (GL (Fin N) k)) (blockUpper k N γF) := fun v =>

@@ -1,7 +1,8 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrders.LeibnizOrd
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactInductionCongrEquivStatement
+public import Mathlib.RepresentationTheory.Intertwining
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactInductionCongrEquiv
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactInductionTwistEquivStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousMirabolicEmbeddingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousParabolicProjStatement
@@ -305,7 +306,7 @@ theorem prodGP_congr {m j : ℕ} {V V' W W' : Type} [AddCommGroup V] [Module ℂ
     {a : Representation ℂ (GL (Fin m) k) V} {a' : Representation ℂ (GL (Fin m) k) V'}
     {c : Representation ℂ (Mir k j) W} {c' : Representation ℂ (Mir k j) W'} (e : a.Equiv a') (f : c.Equiv c') :
     Nonempty ((prodGP a c).Equiv (prodGP a' c')) :=
-  GlobalTheory.T.compactInduction_congr_equiv (MirabolicParabolic k m j) _ _ (extEquiv e f (gpProj k m j))
+  _root_.GlobalTheory.CompanionTheory.CIndCongr.nonempty_equiv_cInd (MirabolicParabolic k m j) _ _ (extEquiv e f (gpProj k m j))
 
 theorem tw_rep {m j : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (a : Representation ℂ (GL (Fin m) k) V) (c : Representation ℂ (Mir k j) W) (r : ℝ) :

@@ -9,7 +9,9 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsEx
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart
 public import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Archimedean
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOpenIntegralSubgroup
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLatticePointsSiegelStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+public import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.L2DecayOfCountEscape
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLatticePointsSiegel
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsLeftInvariantOfIsAutForm
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelEigenfunctionBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelEigenfunctionEquicontinuousStatement
@@ -239,7 +241,7 @@ theorem initU (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotally
       (∀ i, ∃ s : ℂ, δ ≤ ‖s‖ ∧ ∀ x, ∫ y, α y * f i (x * y) ∂μ = s * f i x) →
       (∀ i, (∫⁻ x in F, ‖f i x‖ₑ ^ 2 ∂μ) = 1) → UBnd f (fun _ => M) := by
   obtain ⟨C₀, hC₀⟩ := GlobalTheory.T.kernel_eigenfunction_bound E N μ α δ F hα hαc hδ hF
-  obtain ⟨M, hM0, hM⟩ := GlobalTheory.T.finite_lattice_points_siegel E N
+  obtain ⟨M, hM0, hM⟩ := _root_.GlobalTheory.CompanionTheory.ConcCount.count_conj_siegel E N
   refine ⟨M / 2, fun ι f hc hl hs hn ω hω hωB t₀ Q hQ => ?_⟩
   obtain ⟨C, hC⟩ := hM (tsupport α) ω t₀ Q hαc hω hωB hQ
   set c : ℝ := Real.exp (M * ((N : ℝ) * |t₀|)) with hc'

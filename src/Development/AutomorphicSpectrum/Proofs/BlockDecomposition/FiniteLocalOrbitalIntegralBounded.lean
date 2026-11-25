@@ -5,7 +5,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermOf
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaConjInvariantStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaPosIndexStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DeltaPosIndex
 public import Mathlib.MeasureTheory.Group.Defs
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisjointTranslatesVolumeBound
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GaussSumFiniteAverageBound
@@ -147,7 +147,7 @@ theorem finite_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     exact h.symm
   set c' : Matrix (Fin n) (Fin n) E := ((t • c).1).map σ with hc'
   have hδ : delta c' = delta (t • c).1 := GlobalTheory.T.delta_conj_invariant F E σ n _
-  have hδ0 : delta c' ≠ 0 := GlobalTheory.T.delta_ne_zero' E n c'
+  have hδ0 : delta c' ≠ 0 := _root_.GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.Fin.delta_pos_index E n c'
   haveI hfin : Finite ((Fin n → 𝓞 E) ⧸ Kc c') := Nat.finite_of_card_ne_zero hδ0
   haveI := Fintype.ofFinite ((Fin n → 𝓞 E) ⧸ Kc c')
 

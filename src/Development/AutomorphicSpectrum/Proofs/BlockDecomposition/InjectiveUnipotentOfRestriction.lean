@@ -7,7 +7,7 @@ public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassifica
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwLMulSelf
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundaryProdCreationLeviChains
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteLeviStableChainsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviAdjointOnChainsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviAdjointOnChains
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviCommuteUnipotentBoundaryStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRaisingKillsTopChainStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -215,7 +215,7 @@ theorem injUU_of_injRL : InjRL → InjUU := by
   obtain ⟨y', hy'T, hy'0, hy'b⟩ := highest_preimage
     (ι := {pq : Fin n × Fin n // pq.1 < pq.2 ∧ lev pq.1 = lev pq.2}) T
     (fun i => Lv lev E1 E2 i.1.1 i.1.2) (fun i => Lv lev E1 E2 i.1.2 i.1.1) (bdL (inUU lev) E1 E2) y hTf
-    (fun i x z => GlobalTheory.T.levi_adjoint_on_chains n lev V E1 E2 hA.unitK _ _ i.2.2 x z)
+    (fun i x z => _root_.GlobalTheory.CompanionTheory.LvChainAdj.Lv_adjoint n lev V E1 E2 hA.unitK _ _ i.2.2 x z)
     (fun i t ht => hTs _ _ i.2.2 t ht)
     (fun i t ht => hTs _ _ i.2.2.symm t ht)
     (fun i t _ => (LinearMap.congr_fun (hC _ _ i.2.2) t).symm ▸ rfl)

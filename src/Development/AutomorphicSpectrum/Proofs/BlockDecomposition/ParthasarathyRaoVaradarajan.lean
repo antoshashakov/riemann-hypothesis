@@ -12,7 +12,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHi
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightAntitoneOfFiniteDimensionalStable
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Sl2SquareKillsVector
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinGlRelationsAdjointStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinTensorHighestWeightStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinTensorHighestWeight
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -193,7 +193,7 @@ theorem assemble {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n 
     · rcases lt_or_gt_of_ne (σ.symm.injective.ne hne) with h | h
       · left; simpa using hah _ _ h
       · right; simpa using hah _ _ h
-  obtain ⟨φ, hφq, hφup, hφdiag⟩ := GlobalTheory.T.spin_tensor_highest_weight c hc q hq0 hq1 hq2 E hEgl (wtR ν) a0 hay hadj
+  obtain ⟨φ, hφq, hφup, hφdiag⟩ := _root_.GlobalTheory.CompanionTheory.RealCount.SpinMap.exists_spin_map c hc q hq0 hq1 hq2 E hEgl (wtR ν) a0 hay hadj
   have hφsum : ∀ f : ι → ℂ, φ f = ∑ j, f j • φ (Pi.single j 1) := by
     intro f
     conv_lhs => rw [show f = ∑ j, f j • (Pi.single j 1 : ι → ℂ) by

@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.CmTypeRestrictRealSu
 public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactAdelicDenominator
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegerCoordinatesBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InversePointTorusScalingStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InversePointTorusScaling
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeSumDecayBoundStatement
 import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
 import Mathlib.Algebra.Order.Floor.Extended
@@ -215,7 +215,7 @@ theorem count_main : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp 
     · exact mul_pos hCn0 (inv_pos.2 (ht0 i))
     · exact hCn0
   have hU : ∀ ξ, 0 ≤ U ξ := fun ξ => norm_nonneg _
-  have hcoord := GlobalTheory.T.inverse_point_torus_scaling D θ hθ V Xf Yf hW t ht0 a ha
+  have hcoord := _root_.GlobalTheory.CompanionTheory.TorusCoord.torus_coords D θ hθ V Xf Yf hW t ht0 a ha
   have hent : ∀ ξ ρ j, ‖compAt θ ρ (invPt V a ξ) j 0‖ ≤ U ξ := fun ξ ρ j =>
     (norm_le_pi_norm (fun i => compAt θ ρ (invPt V a ξ) i 0) j).trans
       (norm_le_pi_norm (fun τ i => compAt θ τ (invPt V a ξ) i 0) ρ)

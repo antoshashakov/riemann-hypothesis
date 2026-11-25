@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCliff
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.IsCoreMod
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LoweringWordsSpanStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LoweringWordsSpan
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinGlRelationsAdjointStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -294,7 +294,7 @@ theorem exists_spin_map : ∀ {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι
     rw [LinearMap.mem_ker] at hd ⊢
     let coef : List (Fin n × Fin n) → ℂ := fun l => if h : ∀ p ∈ l, p.2 < p.1 then d ⟨l, h⟩ else 0
     have hcoef : ∀ t : Lw n, coef t.1 = d t := fun t => dif_pos t.2
-    have key := GlobalTheory.T.lowering_words_span (tw S) (tw E) hwS hwE q hq0
+    have key := _root_.GlobalTheory.CompanionTheory.PresRho.pres_rho (tw S) (tw E) hwS hwE q hq0
       (fun a => by
         simp only [tw, LinearMap.neg_apply, hSapp, hqd a]
         push_cast

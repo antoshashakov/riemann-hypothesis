@@ -5,7 +5,7 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdeleHaarMapEqScaledVolumeStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanRankOneFreeOfPlacesStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanRankOneFreeOfPlaces
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanRankOneVolumeBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DisintegrationInjectiveOpenMapStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpen
@@ -93,7 +93,7 @@ theorem fibre_rapid_zero_eq_density : ∀ (F E : Type) [Field F] [NumberField F]
   obtain ⟨δ, R, hδ, hR, hK, hb⟩ := GlobalTheory.T.archimedean_rank_one_volume_bound F E σ hCM M J hJ hM d b ρ e hρ he heρ hen hreal μ ν hμ hν φ hφc hφ0 hφr ε hε
   refine ⟨_, hK, ?_, hb⟩
   intro X hX
-  refine GlobalTheory.T.archimedean_rank_one_free_of_places F E σ hCM M d b ρ e hρ he heρ X fun w h => ?_
+  refine _root_.GlobalTheory.CompanionTheory.WeilSiegel.Inf0.FreeVec.linearIndependent_of_xw_ne_zero F E σ hCM M d b ρ e hρ he heρ X fun w h => ?_
   have h1 := (hX w).1
   have h2 : ‖(fun w => xw e b X w) w‖ = 0 := by
     show ‖xw e b X w‖ = 0

@@ -8,7 +8,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommuteO
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutePolynomialOfMemCentralizerStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnLambdaSubgroupStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreeMulIdempotentRangeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCyclicVectorOfSeparableStatement
+public import Mathlib.FieldTheory.Separable
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCyclicVectorOfSeparable
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsEpsilonCentralizerBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvolutionAdjoinNormStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPolynomialProjectionInvariantStatement
@@ -87,7 +88,7 @@ theorem commute_of_mem (d : GL (Fin n) E) (t : GA E n) (ht : t ∈ adCent d) (e 
 
 theorem adCent_comm (d : GL (Fin n) E) (hd : IsRegD d) (t t' : GA E n) (ht : t ∈ adCent d) (ht' : t' ∈ adCent d) :
     t * t' = t' * t := by
-  obtain ⟨v, hv⟩ := GlobalTheory.T.exists_cyclic_vector_of_separable E n (nrm d).val hd
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector E n (nrm d).val hd
   have hγ : IsPol (nrm d).val (nrm d).val := ⟨X, (aeval_X _).symm⟩
   exact Units.ext (GlobalTheory.T.commute_of_commute_cyclic_matrix E (Ad E) n (nrm d).val v hv t.val t'.val
     (commute_of_mem d t ht _ hγ) (commute_of_mem d t' ht' _ hγ))
@@ -95,7 +96,7 @@ theorem adCent_comm (d : GL (Fin n) E) (hd : IsRegD d) (t t' : GA E n) (ht : t �
 theorem exists_idem' {K : Type} [Field K] {n : ℕ} (γ : Matrix (Fin n) (Fin n) K) (hγ : γ.charpoly.Separable)
     (W : Submodule K (Fin n → K)) (hW : W.map (Matrix.toLin' γ) ≤ W) :
     ∃ π, IsPol γ π ∧ π * π = π ∧ LinearMap.range (Matrix.toLin' π) = W := by
-  obtain ⟨v, hv⟩ := GlobalTheory.T.exists_cyclic_vector_of_separable K n γ hγ
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector K n γ hγ
   exact GlobalTheory.T.exists_polynomial_projection_invariant K n γ v hγ hv W hW
 
 theorem sg_pol (d : GL (Fin n) E) (x : Matrix (Fin n) (Fin n) E) (hx : IsPol (nrm d).val x) :
@@ -168,7 +169,7 @@ theorem height_lb {K : Type} [Field K] [NumberField K] {n : ℕ} (γ : Matrix (F
       ∀ s : (AdeleRing (𝓞 K) K)ˣ, (s : AdeleRing (𝓞 K) K) = (1 + e.map (algebraMap K (AdeleRing (𝓞 K) K)) * (g.val - 1)).det →
       c ≤ (GroundTheory.Global.IdeleGroup.ideleModule K s : ℝ) → ∀ x : Fin n → K, x ᵥ* e ≠ 0 →
         ε ≤ GroundTheory.Automorphic.Reduction.height g x := by
-  obtain ⟨v, hv⟩ := GlobalTheory.T.exists_cyclic_vector_of_separable K n γᵀ (by rwa [Matrix.charpoly_transpose])
+  obtain ⟨v, hv⟩ := _root_.GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector K n γᵀ (by rwa [Matrix.charpoly_transpose])
   refine GlobalTheory.T.exists_epsilon_centralizer_bound K n γ v (fun y => ?_) e he c hc
   obtain ⟨h, hh⟩ := hv y
   exact ⟨h, by rw [hh, aeval_transpose, Matrix.mulVec_transpose]⟩

@@ -10,7 +10,8 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFib
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorelStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFreeSetProjectsCompactStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreIntegralContinuousInParameterStatement
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibreIntegralContinuousInParameter
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearIndependentUnitaryActionIffStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpenStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFibreMeasureOrthogonalSumStatement
@@ -137,7 +138,7 @@ theorem cont_double_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
       refine hφ.comp (hact.comp ((continuous_fst.comp continuous_fst).prodMk ?_))
       exact continuous_vec.comp ((cT.comp (continuous_fst.comp (continuous_snd.comp continuous_fst))).prodMk
         ((continuous_snd.comp (continuous_snd.comp continuous_fst)).prodMk continuous_snd))
-    have hj := GlobalTheory.T.fibre_integral_continuous_in_parameter (Fin n → Fin M → R ⊗[F] E) (HermR R σ n) _ (coordW R b lam n M)
+    have hj := _root_.GlobalTheory.CompanionTheory.SW.FibreJointOpen.continuousOn_fibre_integral_of_subset (Fin n → Fin M → R ⊗[F] E) (HermR R σ n) _ (coordW R b lam n M)
       (coordHerm R σ b lam n) (gramR R σ J) Subtype.val {X | LinearIndependent (R ⊗[F] E) X} hUo
       Set.univ isOpen_univ m' D.hm'
       (HA R σ (blockOne (algebraMap F E t) J) × R × (Fin n → R ⊗[F] E))

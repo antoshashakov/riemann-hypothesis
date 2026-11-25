@@ -10,7 +10,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Continuo
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinFamilyHeightBoundStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightPowerIntegrableWeylOrbitStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeightRightTranslateCompactBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicUnipotentLeviFactorStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitarySchrodinger
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicUnipotentLeviFactor
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzHeightMajorantIntegrableStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftCommutesLeviEmbeddingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftUnipotentLeviCommutatorStatement
@@ -348,7 +349,7 @@ theorem rsec_law (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle} {�
     (hΩ : IsTh ψ χ' θ b₀ m.μ Ω) {z : ℂ} {f : G D n → ℂ} (hf : IsLaw χ z f) (g : G D n) :
     IsLaw (χ * χ'⁻¹) z (Rsec M m ψ b₀ f g Ω) := by
   intro q hq a ha h
-  obtain ⟨g₁, g₂, b, rfl, h1, h2⟩ := GlobalTheory.T.parabolic_unipotent_levi_factor D p q hq a ha
+  obtain ⟨g₁, g₂, b, rfl, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.SiegelNM.unip_mul_levi D p q hq a ha
   rw [mul_assoc, rsec_unip M m b₀ hψ hΩ hf g g₁ b h1, rsec_levi M m b₀ hΩ hf g g₂ a h2]
 
 end Law

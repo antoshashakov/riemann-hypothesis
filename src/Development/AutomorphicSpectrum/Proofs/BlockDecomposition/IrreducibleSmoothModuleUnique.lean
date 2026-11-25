@@ -2,7 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AnalyticOrthogonalVanishingStatement
+public import Mathlib.Analysis.CStarAlgebra.Module.Constructions
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AnalyticOrthogonalVanishing
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrreducibleCuspidalFormL2MemStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.L2InnerDerivativeTranslateStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LiePowerL2FactorialBoundStatement
@@ -102,7 +105,7 @@ theorem R_curve_mem {W : Submodule ℂ (Sm E a)} (hs : _root_.GlobalTheory.CuspR
     rw [this]
     exact Submodule.le_topologicalClosure _ (toL2_mem_classes (hmem k) (hM k))
   have hperp : F 0 t ∈ Cᗮᗮ := (Submodule.mem_orthogonal _ _).2 fun u hu =>
-    GlobalTheory.T.analytic_orthogonal_vanishing _ F M B u hd hn (fun k => (Submodule.mem_orthogonal' _ _).1 hu _ (hF0 k)) t
+    _root_.GlobalTheory.CompanionTheory.VectorTaylor.inner_eq_zero_of_factorial_bounds _ F M B u hd hn (fun k => (Submodule.mem_orthogonal' _ _).1 hu _ (hF0 k)) t
   rw [Submodule.orthogonal_orthogonal] at hperp
   have e : (hM 0).toL2 = h.toL2 := rfl
   exact e ▸ hperp

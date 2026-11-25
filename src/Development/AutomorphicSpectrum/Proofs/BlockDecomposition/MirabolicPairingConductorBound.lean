@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearGL
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCoefficientContinuousStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicCoefficientContinuous
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicPairingDepthVanishingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShearPreservesBoxMembershipStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothVectorFixedSmallShearStatement
@@ -104,7 +105,7 @@ theorem JJ_preimage_box_eq_JJ_box : ∀ {k : Type} [Field k] [ValuativeRel k] [T
     exact continuous_subtype_val.comp (hψ.comp (continuous_apply (Fin.last n)).neg)
   have hf : Continuous fun x =>
       GlobalTheory.CompanionTheory.MirPair.wt ψ n x * GlobalTheory.CompanionTheory.MirPair.coef T B v v' x :=
-    hw.mul (GlobalTheory.T.mirabolic_coefficient_continuous T B hT v v')
+    hw.mul (_root_.GlobalTheory.CompanionTheory.MirPair.continuous_coef T B hT v v')
   have hsub : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) t : Set (Fin (n + 1) → k)) ⊆ M :=
     fun x hx => hgt x hx
   have key := GlobalTheory.T.fourier_box_integral_vanishing ν ψ c hψ hc (n + 1) t M

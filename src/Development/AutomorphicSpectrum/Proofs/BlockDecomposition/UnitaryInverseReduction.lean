@@ -12,7 +12,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemWeylCellU
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalVectorValueUnitaryRankOneGindikinKarpelStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusConjugationWeylCell
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryBorelEqDiagonalMulUnipotentStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryRankOneSphericalIntegrandDiagonalTorusFacStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryRankOneSphericalIntegrandDiagonalTorusFac
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryThreeRankOneSphericalVectorCellValueStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellHaarRightTranslateInvariant
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylSimpleReflectionRevCommSqEqOneStatement
@@ -207,7 +207,7 @@ theorem scale_cell (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val + 1
   · refine ⟨_, (_root_.GlobalTheory.WeylCell.WeylUnipotentShell.integral_conj_diag_cellU_last L ϖ σ q h n k hk hn y hyK hy μ hμ t ht).1, ?_⟩
     obtain ⟨Φ, hΦ, hΦ1, -⟩ := Formalism.UG.Final.SphericalExistsU L ϖ σ q n (n / 2) h (by omega) (by omega)
       (fun i => (α i : ℂ)) fun i => (α i).ne_zero
-    have e := GlobalTheory.T.unitaryRankOne_sphericalIntegrand_diagonal_torus_factor L ϖ σ q h n k hk hn y hyK hy α Φ hΦ t ht 1 y
+    have e := _root_.GlobalTheory.WeylCell.U21TorusFactor.torus_factor L ϖ σ q h n k hk hn y hyK hy α Φ hΦ t ht 1 y
     have hB := (GlobalTheory.WeylCell.diagConjU L σ n y _ hy t ht).1
     have e2 : Φ (y⁻¹ * t * 1 * y) = chiDeltaU q (fun i => (α i : ℂ)) (y⁻¹ * t * y) := by
       have := hΦ (y⁻¹ * t * y) 1 1 hB (one_mem _)
