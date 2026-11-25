@@ -44,6 +44,9 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 
+import
+  Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ExplicitFormula.RectIntEqZeroOfDifferentiableOn
+
 @[expose] public section
 
 open Complex
@@ -83,54 +86,9 @@ theorem rectRes_hasDerivAt_vert (c : ℂ) (t : ℝ) :
 theorem rectInt_inv_sub (p : ℂ) (x0 x1 y0 y1 : ℝ) (h1 : x0 < p.re) (h2 : p.re < x1)
     (h3 : y0 < p.im) (h4 : p.im < y1) :
     rectInt (fun w => 1 / (w - p)) x0 x1 y0 y1 = 2 * (Real.pi : ℂ) * I := by
-  have E1 : ∫ x in x0..x1, 1 / ((x : ℂ) + (y0 : ℂ) * I - p) =
-      log ((x1 : ℂ) + (y0 : ℂ) * I - p) - log ((x0 : ℂ) + (y0 : ℂ) * I - p) := by
-    have h := rectRes_ftc_log (γ := fun x : ℝ => (x : ℂ) + ((y0 : ℂ) * I - p)) (d := 1)
-      (a := x0) (b := x1) (fun t => rectRes_hasDerivAt_horiz _ t)
-      (fun t _ => Complex.mem_slitPlane_iff.2 (Or.inr (by intro h'; simp at h'; linarith)))
-    simpa only [add_sub_assoc] using h
-  have E2 : ∫ x in x0..x1, 1 / ((x : ℂ) + (y1 : ℂ) * I - p) =
-      log ((x1 : ℂ) + (y1 : ℂ) * I - p) - log ((x0 : ℂ) + (y1 : ℂ) * I - p) := by
-    have h := rectRes_ftc_log (γ := fun x : ℝ => (x : ℂ) + ((y1 : ℂ) * I - p)) (d := 1)
-      (a := x0) (b := x1) (fun t => rectRes_hasDerivAt_horiz _ t)
-      (fun t _ => Complex.mem_slitPlane_iff.2 (Or.inr (by intro h'; simp at h'; linarith)))
-    simpa only [add_sub_assoc] using h
-  have E3 : I * ∫ y in y0..y1, 1 / ((x1 : ℂ) + (y : ℂ) * I - p) =
-      log ((x1 : ℂ) + (y1 : ℂ) * I - p) - log ((x1 : ℂ) + (y0 : ℂ) * I - p) := by
-    have h := rectRes_ftc_log (γ := fun y : ℝ => ((x1 : ℂ) - p) + (y : ℂ) * I) (d := I)
-      (a := y0) (b := y1) (fun t => rectRes_hasDerivAt_vert _ t)
-      (fun t _ => Complex.mem_slitPlane_iff.2 (Or.inl (by simp <;> linarith)))
-    rw [← intervalIntegral.integral_const_mul]
-    have e1 : (x1 : ℂ) + (y1 : ℂ) * I - p = ((x1 : ℂ) - p) + (y1 : ℂ) * I := by ring
-    have e0 : (x1 : ℂ) + (y0 : ℂ) * I - p = ((x1 : ℂ) - p) + (y0 : ℂ) * I := by ring
-    rw [e1, e0, ← h]
-    refine intervalIntegral.integral_congr (fun y _ => ?_)
-    show I * (1 / ((x1 : ℂ) + (y : ℂ) * I - p)) = I / (((x1 : ℂ) - p) + (y : ℂ) * I)
-    rw [mul_one_div]
-    congr 1
-    ring
-  have E4 : I * ∫ y in y0..y1, 1 / ((x0 : ℂ) + (y : ℂ) * I - p) =
-      log (-((x0 : ℂ) + (y1 : ℂ) * I - p)) - log (-((x0 : ℂ) + (y0 : ℂ) * I - p)) := by
-    have h := rectRes_ftc_log (γ := fun y : ℝ => -(((x0 : ℂ) - p) + (y : ℂ) * I)) (d := -I)
-      (a := y0) (b := y1) (fun t => (rectRes_hasDerivAt_vert _ t).neg)
-      (fun t _ => Complex.mem_slitPlane_iff.2 (Or.inl (by simp <;> linarith)))
-    rw [← intervalIntegral.integral_const_mul]
-    have e1 : (x0 : ℂ) + (y1 : ℂ) * I - p = ((x0 : ℂ) - p) + (y1 : ℂ) * I := by ring
-    have e0 : (x0 : ℂ) + (y0 : ℂ) * I - p = ((x0 : ℂ) - p) + (y0 : ℂ) * I := by ring
-    rw [e1, e0, ← h]
-    refine intervalIntegral.integral_congr (fun y _ => ?_)
-    show I * (1 / ((x0 : ℂ) + (y : ℂ) * I - p)) = -I / -(((x0 : ℂ) - p) + (y : ℂ) * I)
-    rw [neg_div_neg_eq, mul_one_div]
-    congr 1
-    ring
-  have P1 := rectRes_log_sub_log_neg_of_im_pos (z := (x0 : ℂ) + (y1 : ℂ) * I - p)
-    (by simp <;> linarith)
-  have P0 := rectRes_log_sub_log_neg_of_im_neg (z := (x0 : ℂ) + (y0 : ℂ) * I - p)
-    (by simp <;> linarith)
-  unfold rectInt
-  beta_reduce
-  rw [E1, E2, E3, E4]
-  linear_combination P1 - P0
+  change PI.EF.Rect.rectInt (fun w => 1 / (w - p)) ⟨x0, y0⟩ ⟨x1, y1⟩ = _
+  simpa only [one_div] using PI.EF.Rect.rectInt_inv_sub (p := p) (z := ⟨x0, y0⟩) (w := ⟨x1, y1⟩)
+    ⟨h1, h2, h3, h4⟩
 
 theorem rectRes_edge (g G : ℂ → ℂ) (P : Finset ℂ) (b : ℂ → ℂ) (γ : ℝ → ℂ) (a c : ℝ)
     (hγ : Continuous γ) (hG : ContinuousOn (fun t => G (γ t)) (Set.uIcc a c))
@@ -167,68 +125,27 @@ theorem rectRes_sum_combo (P : Finset ℂ) (b A B C D : ℂ → ℂ) :
   exact Finset.sum_congr rfl fun p _ => by ring
 
 theorem rectangle_residue : RectResidue := by
-  unfold RectResidue
-  intro g G P b x0 x1 y0 y1 _ _ hPin hU hg
-  obtain ⟨U, -, hsub, hGd⟩ := hU
-  have hGc : ContinuousOn G U := hGd.continuousOn
-  have hG0 : ((∫ x in x0..x1, G ((x : ℂ) + (y0 : ℂ) * I)) - (∫ x in x0..x1, G ((x : ℂ) + (y1 : ℂ) * I))
-      + I * (∫ y in y0..y1, G ((x1 : ℂ) + (y : ℂ) * I))) - I * (∫ y in y0..y1, G ((x0 : ℂ) + (y : ℂ) * I))
-      = 0 := by
-    have h := Complex.integral_boundary_rect_eq_zero_of_differentiableOn G ⟨x0, y0⟩ ⟨x1, y1⟩
-      (hGd.mono hsub)
-    simp only [smul_eq_mul] at h
-    exact h
-  have eB := rectRes_edge g G P b (fun x : ℝ => (x : ℂ) + (y0 : ℂ) * I) x0 x1
-    (Complex.continuous_ofReal.add continuous_const)
-    (hGc.comp (Complex.continuous_ofReal.add continuous_const).continuousOn
-      (fun t ht => hsub (Complex.mem_reProdIm.2 ⟨by simpa using ht, by simp⟩)))
-    (fun t _ p hp h => by
-      have h' := congrArg Complex.im h
-      simp at h'
-      linarith [(hPin p hp).2.2.1]) hg
-  have eT := rectRes_edge g G P b (fun x : ℝ => (x : ℂ) + (y1 : ℂ) * I) x0 x1
-    (Complex.continuous_ofReal.add continuous_const)
-    (hGc.comp (Complex.continuous_ofReal.add continuous_const).continuousOn
-      (fun t ht => hsub (Complex.mem_reProdIm.2 ⟨by simpa using ht, by simp⟩)))
-    (fun t _ p hp h => by
-      have h' := congrArg Complex.im h
-      simp at h'
-      linarith [(hPin p hp).2.2.2]) hg
-  have eR := rectRes_edge g G P b (fun y : ℝ => (x1 : ℂ) + (y : ℂ) * I) y0 y1
-    (continuous_const.add (Complex.continuous_ofReal.mul continuous_const))
-    (hGc.comp (continuous_const.add (Complex.continuous_ofReal.mul continuous_const)).continuousOn
-      (fun t ht => hsub (Complex.mem_reProdIm.2 ⟨by simp, by simpa using ht⟩)))
-    (fun t _ p hp h => by
-      have h' := congrArg Complex.re h
-      simp at h'
-      linarith [(hPin p hp).2.1]) hg
-  have eL := rectRes_edge g G P b (fun y : ℝ => (x0 : ℂ) + (y : ℂ) * I) y0 y1
-    (continuous_const.add (Complex.continuous_ofReal.mul continuous_const))
-    (hGc.comp (continuous_const.add (Complex.continuous_ofReal.mul continuous_const)).continuousOn
-      (fun t ht => hsub (Complex.mem_reProdIm.2 ⟨by simp, by simpa using ht⟩)))
-    (fun t _ p hp h => by
-      have h' := congrArg Complex.re h
-      simp at h'
-      linarith [(hPin p hp).1]) hg
-  have hc := rectRes_sum_combo P b
-    (fun p => ∫ t in x0..x1, 1 / ((t : ℂ) + (y0 : ℂ) * I - p))
-    (fun p => ∫ t in x0..x1, 1 / ((t : ℂ) + (y1 : ℂ) * I - p))
-    (fun p => ∫ t in y0..y1, 1 / ((x1 : ℂ) + (t : ℂ) * I - p))
-    (fun p => ∫ t in y0..y1, 1 / ((x0 : ℂ) + (t : ℂ) * I - p))
-  have hsum : ∑ p ∈ P, b p * ((∫ t in x0..x1, 1 / ((t : ℂ) + (y0 : ℂ) * I - p))
-      - (∫ t in x0..x1, 1 / ((t : ℂ) + (y1 : ℂ) * I - p))
-      + I * (∫ t in y0..y1, 1 / ((x1 : ℂ) + (t : ℂ) * I - p))
-      - I * (∫ t in y0..y1, 1 / ((x0 : ℂ) + (t : ℂ) * I - p)))
-      = 2 * (Real.pi : ℂ) * I * ∑ p ∈ P, b p := by
-    rw [Finset.mul_sum]
-    refine Finset.sum_congr rfl (fun p hp => ?_)
-    have h := rectInt_inv_sub p x0 x1 y0 y1 (hPin p hp).1 (hPin p hp).2.1 (hPin p hp).2.2.1
-      (hPin p hp).2.2.2
-    unfold rectInt at h
-    beta_reduce at h
-    rw [h]
-    ring
-  unfold rectInt
-  linear_combination eB - eT + I * eR - I * eL + hG0 + hsum - hc
+  intro g G P b x0 x1 y0 y1 hx hy hPin hU hg
+  obtain ⟨U, -, hsub, hG⟩ := hU
+  let z : ℂ := ⟨x0, y0⟩
+  let w : ℂ := ⟨x1, y1⟩
+  have hD : DifferentiableOn ℂ G (PI.EF.Rect.rectClosed z w) := hG.mono (by
+    rw [Set.uIcc_of_le hx.le, Set.uIcc_of_le hy.le] at hsub
+    exact hsub)
+  have hin (p : ℂ) (hp : p ∈ P) : p ∈ PI.EF.Rect.rectOpen z w := hPin p hp
+  have hC : ContinuousOn G (PI.EF.Rect.rectBdry z w) :=
+    hD.continuousOn.mono (PI.EF.Rect.rectBdry_subset hx.le hy.le)
+  have hB (p : ℂ) (hp : p ∈ P) :
+      ContinuousOn (fun s => b p / (s - p)) (PI.EF.Rect.rectBdry z w) :=
+    PI.EF.Rect.continuousOn_div_sub (hin p hp) continuousOn_const
+  have hEq : Set.EqOn g (fun s => G s + ∑ p ∈ P, b p / (s - p)) (PI.EF.Rect.rectBdry z w) :=
+    fun s hs => hg s fun hp => PI.EF.Rect.ne_of_mem_bdry_of_mem_open hs (hin s hp) rfl
+  have hzero : PI.EF.Rect.rectInt G z w = 0 :=
+    Complex.integral_boundary_rect_eq_zero_of_differentiableOn G z w (hG.mono hsub)
+  change PI.EF.Rect.rectInt g z w = _
+  rw [PI.EF.Rect.rectInt_congr hEq, PI.EF.Rect.rectInt_add hC (continuousOn_finsetSum _ hB),
+    hzero, zero_add, PI.EF.Rect.rectInt_finset_sum P _ hB, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun p hp =>
+    PI.EF.Rect.rectInt_div_sub (hin p hp) (differentiableOn_const (b p))
 
 end Formalism.FX
