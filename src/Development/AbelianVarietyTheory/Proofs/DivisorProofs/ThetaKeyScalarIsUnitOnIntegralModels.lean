@@ -2,17 +2,21 @@ module
 
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FibreFramesOnModels
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PushInvertibleModelOfIso
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArcPropertyLocalisationBaseChangeOfModelStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBaseChangeRigidifiedSectionOfScalarMultiplStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratingFrameUnitChangeToChartStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineSectionsExternalTensorPowerFibreStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitThetaKeyRuleOpenModelChartStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatFibrePowerAndExternalTensorSectionNonzeroCloStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOfArcsAndGoodReductionPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPreimmersionFlatValuationSubringBaseRingStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitThetaKeyScalarGoodReductionChartStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitFibresLocalisedModelBaseChangeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationSubringDedekindOpenImmersionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalisedModelUniformisationBaseChange
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArcPropertyLocalisationBaseChangeOfModel
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBaseChangeRigidifiedSectionOfScalarMultipl
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratingFrameUnitChangeToChart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineSectionsExternalTensorPowerFibre
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitThetaKeyRuleOpenModelChart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatFibrePowerAndExternalTensorSectionNonzeroClo
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsChartOfIsLocalRing
+public import Mathlib.RingTheory.HahnSeries.PowerSeries
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralOfArcsAndGoodReductionPoints
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPreimmersionFlatValuationSubringBaseRing
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitThetaKeyScalarGoodReductionChart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitFibresLocalisedModelBaseChange
+public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AuxiliaryInertOddPrime
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationSubringDedekindOpenImmersion
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsSecPullNonzeroOnFibres
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsKeyInputAtChartPoint
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNormalAtOfUnif
@@ -119,12 +123,12 @@ theorem exists_chart_unit {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) 
     (hP : PushInvertible Y.t.G Y.t.PP.L) (h3 : Y.N3) (h4 : Y.N4) (hs : Y.SplitFibres) {κ : KeyRule} (hκ : IsKeyRule κ)
     (M : GChart Y) : ∃ u : Γ(Y.X, M.U), IsUnit u ∧ ∀ (K : Type) [Field K] [CharZero K] (z : Sp K ⟶ Y.X)
       (hz : ⊤ ≤ z ⁻¹ᵁ M.U) (x : KeyIn K), Set.range z ⊆ Set.range Y.j → KeyAt M z hz x → (κ K x : K) = ev z M.U hz u := by
-  obtain ⟨⟨⟨_, hDed⟩, -, -⟩, hopen⟩ := GlobalTheory.T.valuation_subring_dedekind_open_immersion E H l c W
+  obtain ⟨⟨⟨_, hDed⟩, -, -⟩, hopen⟩ := _root_.GlobalTheory.CoeffValuation.isDedFrac_and_isOpenImmersion E H l c W
   have := Y.jQ_open
   have hj : IsOpenImmersion Y.j := by unfold Model.j; infer_instance
   obtain ⟨-, -, -, -, -, hdom, -⟩ := GlobalTheory.genericPart_dense_proOpen W c.F Y.X _ Y.s Y.jQ Y.flat Y.proj Y.jQ_open Y.jQ_dense
   have hdense : Dense (Set.range Y.j) := hdom.denseRange
-  obtain ⟨W₀, f₀, hW, hf⟩ := GlobalTheory.T.exists_unit_thetaKeyRule_open_model_chart E H D l Xo c _ _ Y inferInstance hj hpq κ hκ M
+  obtain ⟨W₀, f₀, hW, hf⟩ := _root_.GlobalTheory.KeyOpenModel.exists_unit_open E H D l Xo c _ _ Y inferInstance hj hpq κ hκ M
   have hcF : Countable c.F := by
     have := c.fin
     have := Algebra.IsAlgebraic.cardinalMk_le_max ℚ c.F
@@ -154,7 +158,7 @@ theorem exists_chart_unit {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) 
     refine hext u fun R K _ _ _ _ _ _ z hR hz h => ?_
     let y := IsOpenImmersion.lift Y.j (spMap (algebraMap R K) ≫ z) (hWj h)
     have : CharZero K := charZero_of_injective_ringHom (Spec.preimage (y ≫ pullback.snd _ _)).hom.injective
-    refine GlobalTheory.T.integral_of_arcs_and_goodReduction_points E H D l Xo c W Y h3 h4 hs hj M.U W₀ u (fun x hx hx' => (hW x).2 ⟨hx, hx'⟩)
+    refine _root_.GlobalTheory.ArcIntegralMixed.integral_of_arcs_of_good E H D l Xo c W Y h3 h4 hs hj M.U W₀ u (fun x hx hx' => (hW x).2 ⟨hx, hx'⟩)
       (fun a χ hA hover hgen hχ => ?_) (fun R K _ _ _ _ _ _ _ z y hz hy hab h => ?_) R K z y hR hz
       (IsOpenImmersion.lift_fac _ _ _) h
     · obtain ⟨y, hy, T, C', hC', hT⟩ := GlobalTheory.ArcNormal.arc_normal_form _ _ _ _ _ _ _ Y hpq hP a χ hA hover hgen M hχ
@@ -167,7 +171,7 @@ theorem exists_chart_unit {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) 
       · rwa [e]
       · rwa [map_units_inv, e]
     · obtain ⟨x, -, hk⟩ := GlobalTheory.KeyAtEx.exists_keyAt_model M _ (le_preimage_comp _ hz) (hWj h) hpos
-      obtain ⟨v, hv⟩ := GlobalTheory.T.isUnit_thetaKeyScalar_goodReduction_chart E H D l Xo c _ _ Y κ hκ M R K z hz y hy hab x hk
+      obtain ⟨v, hv⟩ := _root_.GlobalTheory.KeyUnitGood.isUnit_key_of_good E H D l Xo c _ _ Y κ hκ M R K z hz y hy hab x hk
       have e := hf K _ h _ x hk
       rcases hu with rfl | rfl
       · exact ⟨v, by rw [e, hv]⟩
@@ -192,7 +196,7 @@ theorem unitAt_local {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) (hpq 
     (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] :
     UnitAt κ Y V K := by
   intro y yt hyt t m n w hw θ x hx
-  obtain ⟨⟨⟨_, hDed⟩, -, -⟩, -⟩ := GlobalTheory.T.valuation_subring_dedekind_open_immersion E H l c W
+  obtain ⟨⟨⟨_, hDed⟩, -, -⟩, -⟩ := _root_.GlobalTheory.CoeffValuation.isDedFrac_and_isOpenImmersion E H l c W
   obtain ⟨M, hM⟩ := GlobalTheory.FlagMod.exists_gChart hP (yt (IsLocalRing.closedPoint V))
   have hz : ⊤ ≤ yt ⁻¹ᵁ M.U := ((IsLocalRing.closed_point_mem_iff (U := yt ⁻¹ᵁ M.U)).1 hM).ge
   obtain ⟨u, hu, hval⟩ := exists_chart_unit Y hpq hP h3 h4 hs hκ M
@@ -203,7 +207,7 @@ theorem unitAt_local {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) (hpq 
     exact ⟨θ₀, g, h₁, TopologicalSpace.Opens.mem_iSup.2 ⟨i, h₂⟩⟩
   have hC : ∀ (θ : t.PP.L.Sec) (x : KeyIn K), IsFibreOf x t.G t.PP.L t.PP.rig θ w (algebraMap V K) →
       Generates (X := t.G) θ → ∃ u : Vˣ, (κ K x : K) = algebraMap V K u := fun θ x hx hθ => by
-    obtain ⟨x', a, d, hk, e⟩ := GlobalTheory.T.exists_generatingFrame_unit_change_to_chart E H D l Xo c _ _ Y M V K yt hz t m n w hw θ x hx hθ
+    obtain ⟨x', a, d, hk, e⟩ := _root_.GlobalTheory.KeyFramePoint.exists_keyAt_units E H D l Xo c _ _ Y M V K yt hz t m n w hw θ x hx hθ
     have e₁ := e κ hκ
     rw [hval K _ _ x' (by
       rw [hyt]; rintro _ ⟨q, rfl⟩; exact ⟨y q, (Scheme.Hom.comp_apply _ _ _).symm⟩) hk,
@@ -215,14 +219,14 @@ theorem unitAt_local {W : ValuationSubring c.F} (Y : Model Xo c W.subtype) (hpq 
   have hB : ∀ (θ : t.PP.L.Sec), Generates (X := t.G) θ → ∀ N : ℕ, Generates (X := pow t.G N) (boxSec t.G θ N) :=
     fun θ' hθ N => by
       obtain ⟨a, ha, -⟩ := hθ θ₀
-      obtain ⟨hfl, g, hg, hnz⟩ := GlobalTheory.T.flat_fibrePower_and_externalTensorSection_nonzero_closedFibre V t.G t.PP.L θ' (NonzeroClosed.of_isMul ha h₀).2 N
-      obtain ⟨X', p', φ, L', b, k₁, k₂, k₃, k₄⟩ := GlobalTheory.T.exists_line_sections_externalTensorPower_fibre V K _ t.G t.PP.L t.PP.rig θ n w x t.PP.isLB hx N
+      obtain ⟨hfl, g, hg, hnz⟩ := _root_.GlobalTheory.BoxNonzeroClosed.main V t.G t.PP.L θ' (NonzeroClosed.of_isMul ha h₀).2 N
+      obtain ⟨X', p', φ, L', b, k₁, k₂, k₃, k₄⟩ := _root_.GlobalTheory.BoxLine.sections_line V K _ t.G t.PP.L t.PP.rig θ n w x t.PP.isLB hx N
       exact generates_of_generic_line (pow t.G N).hom k₁ (LB.isLB_linComb t.PP.isLB _ _) k₂ k₃ b k₄ _ hg hnz
   refine ⟨fun hθ => ⟨hC θ x hx hθ, fun N _ => hB θ hθ N⟩, ?_⟩
   intro N hN σ a hσ hmul
   have hg₀ := generates_of_isFibreOf t.PP.isLB hx h₀
   obtain ⟨b, hθb, -⟩ := hg₀ θ
-  obtain ⟨th₀, hth₀, hth, hx₀⟩ := GlobalTheory.T.exists_baseChange_rigidifiedSection_of_scalarMultiple V K _ t.G t.PP.L t.PP.rig θ n w x t.PP.isLB hx θ₀ b hθb
+  obtain ⟨th₀, hth₀, hth, hx₀⟩ := _root_.GlobalTheory.KeySwapSec.exists_isFibreOf_of_isMul V K _ t.G t.PP.L t.PP.rig θ n w x t.PP.isLB hx θ₀ b hθb
   obtain ⟨u₀, hu₀⟩ := hC θ₀ _ hx₀ hg₀
   have hbox₀ := hB θ₀ hg₀ N
   have hom := hκ.1 K x.P x.g_pos x.rig x.rig_gen th₀ hth₀ x.v x.basis x.th x.th_ne x.v x.basis (algebraMap V K b) 1
@@ -267,12 +271,12 @@ theorem unitAt_valuation {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model X
   have hb' : b'.comp b = b₀ := RingHom.ext fun a => by
     apply e.injective
     exact (e.apply_symm_apply _).trans (Subtype.ext (RingHom.congr_fun hc a).symm)
-  obtain ⟨_, _⟩ := GlobalTheory.T.isPreimmersion_flat_valuationSubring_baseRing E H l c O β hβ W b hb
+  obtain ⟨_, _⟩ := _root_.GlobalTheory.ValLocal.preimmersion_flat E H l c O β hβ W b hb
   let yt' : Sp V ⟶ (locModel Y b hb).X := pullback.lift yt (spMap b') (by rw [sp, hb', hb₀])
   have hy' : yt' ≫ pullback.fst Y.s (spMap b) = yt := pullback.lift_fst _ _ _
   obtain ⟨m', -⟩ := GlobalTheory.ObjMaps.exists_sab_cancel (g := yt') (locMap Y b) (hy'.symm ▸ m)
-  exact unitAt_local (locModel Y b hb) hpq (locModel_pushInvertible Y b hb (GlobalTheory.T.valuation_subring_dedekind_open_immersion E H l c W).1 hP) (localisedModel_uniformisation_baseChange Y b hb h3)
-    (GlobalTheory.T.arcProperty_localisationBaseChange_of_model E H D l Xo c O β Y _ _ b hb h4) (GlobalTheory.T.splitFibres_localisedModel_baseChange E H D l Xo c O β Y _ _ b hb hs) hκ V K y yt' (by
+  exact unitAt_local (locModel Y b hb) hpq (locModel_pushInvertible Y b hb (_root_.GlobalTheory.CoeffValuation.isDedFrac_and_isOpenImmersion E H l c W).1 hP) (localisedModel_uniformisation_baseChange Y b hb h3)
+    (_root_.GlobalTheory.LocArc.arc_localise E H D l Xo c O β Y _ _ b hb h4) (_root_.GlobalTheory.KeyUnitModels.SplitLoc.locModel_splitFibres E H D l Xo c O β Y _ _ b hb hs) hκ V K y yt' (by
       rw [← cancel_mono (pullback.fst Y.s (spMap b)), Category.assoc, Category.assoc, hy', locModel_j, hyt]) t m'
 
 theorem keyUnitOnModels : KeyUnitOnModels := by
