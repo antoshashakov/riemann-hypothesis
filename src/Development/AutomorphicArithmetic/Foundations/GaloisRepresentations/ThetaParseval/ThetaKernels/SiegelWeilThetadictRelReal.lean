@@ -54,7 +54,7 @@ namespace PositivityTheory.SiegelWeilFormula.ThetaDictR
 open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 theorem isCharAF_of_good_k (B : Base F E) (hB : _root_.UpperTheory.TP.W.GoodK σ B) : HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F B.ψ :=
-  GlobalTheory.StdCharFromIsStd.isCharAF hB.std
+  _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.isCharAF_of_good_c B hB.std
 theorem frW_det_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {η : E} (hη : η ≠ 0) (w : InfinitePlace F) :
     IsUnit (cW d.B η w • (R.fr w).1.map star).det := by
   rw [isUnit_iff_ne_zero, Matrix.det_smul]

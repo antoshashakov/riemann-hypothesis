@@ -97,7 +97,7 @@ theorem isCartan_one {n : ℕ} : IsCartan (1 : Matrix (Fin n) (Fin n) ℂ) 1 := 
     have h := (Matrix.dotProduct_star_self_pos_iff (v := x)).2 hx
     exact (Complex.pos_iff.1 h).1
 
-theorem isHerm_unitSpc {B : Base F E} (hB : B.IsGood σ) (n : ℕ) : (unitSpc F E n).IsHerm σ B n 0 := by
+theorem isHerm_unitSpc_c {B : Base F E} (hB_cm : IsCMExt F E σ) (n : ℕ) : (unitSpc F E n).IsHerm σ B n 0 := by
   refine ⟨fun i j => ?_, fun w => ?_, isLattice_stdLattice, fun y => ?_, fun w => ?_, fun v => ?_⟩
   · simp only [unitSpc, Matrix.one_apply]
     split_ifs with h1 h2 h2
@@ -126,7 +126,10 @@ theorem isHerm_unitSpc {B : Base F E} (hB : B.IsGood σ) (n : ℕ) : (unitSpc F 
       simpa [Pi.single_apply] using this
   · simp only [unitSpc, Matrix.map_one _ (map_zero _) (map_one _)]
     exact isCartan_one
-  · exact isSplitBasis_stdLattice (B.τ v) hB.cm
+  · exact isSplitBasis_stdLattice (B.τ v) hB_cm
+
+theorem isHerm_unitSpc {B : Base F E} (hB : B.IsGood σ) (n : ℕ) : (unitSpc F E n).IsHerm σ B n 0 :=
+  isHerm_unitSpc_c hB.cm n
 
 end PositivityTheory.SiegelWeilFormula.Ldexb.UnitHermitianSpace
 

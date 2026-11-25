@@ -58,24 +58,8 @@ namespace GlobalTheory.RatAnnihF
 section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 theorem adele_rat_of_isGood_k {σ : E →ₐ[F] E} {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) (a : AF F)
-    (h : ∀ c : F, B.ψ (a * algebraMap F _ c) = 1) : ∃ d : F, a = algebraMap F _ d := by
-  haveI : IsTotallyReal F := hB.cm.1
-  obtain ⟨⟨θ, hθ⟩, -⟩ := (_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B hB).2
-  let L : Ainf F →+ ℂ := AddMonoidHom.mk' (fun x => ∑ w, θ w (x ⊗ₜ[F] (1 : E))) fun a b => by
-    simp only [map_add (f := _), TensorProduct.add_tmul, Finset.sum_add_distrib]
-  have hL : ∀ x, L x = ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (InfiniteAdeleRing.ringEquiv_mixedSpace F x) : ℝ) : ℂ) :=
-    fun x => GlobalTheory.StdCharWeilDatum.sum_infFam B θ hθ x
-  refine GlobalTheory.RatAnnih.adele_rat (GlobalTheory.StdCharWeilDatum.isCharAF hB.std) (psiV_exists_ne_one hB.std) L
-    (continuous_finsetSum _ fun w _ => (hθ w).2) (fun x => ?_) (fun x => ?_) a h
-  · rw [hL]
-    have e : InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (Ainf F) x) = mixedEmbedding F x := by
-      rw [InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]
-    rw [e, GlobalTheory.LatVacArith.trace_mixedEmbedding]
-    exact Complex.ofReal_ratCast _
-  · show B.ψ (pairA F x 0) = _
-    rw [GlobalTheory.StdCharWeilDatum.psi_pairA hB.std, hL]
-    congr 1
-    ring
+    (h : ∀ c : F, B.ψ (a * algebraMap F _ c) = 1) : ∃ d : F, a = algebraMap F _ d :=
+  _root_.GlobalTheory.RatAnnihF.adele_rat_of_isGood_c hB.cm hB.std a h
 end
 theorem ratLF_annihilator_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

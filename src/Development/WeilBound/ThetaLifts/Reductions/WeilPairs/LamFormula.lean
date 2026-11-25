@@ -71,7 +71,7 @@ theorem psi_cancel [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ) (A C : AF F
   rw [← mul_assoc, ← AddChar.map_add_eq_mul, show ⅟(2 : AF F) * -A + (C + ⅟2 * A) = C by ring]
   ring
 
-theorem lam_formula {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
+theorem lam_formula_c {σ : E →ₐ[F] E} {B : Base F E} (hB_cm : IsCMExt F E σ) (hB_std : IsStd B.ψ) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
     (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))
     (hν : ν.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν) (N : ℕ)
     (α β : WOF F E nS nT ≃ₗ[AF F] (Fin N → AF F)) (e : WOF F E nS (nT + nT) ≃ₗ[AF F] VA F N)
@@ -101,7 +101,7 @@ theorem lam_formula {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS n
   obtain ⟨h0, htop, -, -⟩ := hNn ν 𝓕 hν h𝓕
   haveI : IsFiniteMeasure (ν.restrict 𝓕) := isFiniteMeasure_restrict.mpr htop
   haveI := hν
-  have hstd := GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB
+  have hstd := GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_c F E σ B hB_cm hB_std
   obtain ⟨hcont, hnorm, htriv, s0, hs0⟩ := hstd.1
   refine ⟨((ν 𝓕).toReal : ℂ), ?_, fun Φ hΦ v => ?_⟩
   · exact_mod_cast (ENNReal.toReal_pos h0 htop).ne'
@@ -178,6 +178,21 @@ theorem lam_formula {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS n
   simp only [Pi.zero_apply, map_zero]
   rw [hz, Measure.real]
   ring
+
+theorem lam_formula {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
+    (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))
+    (hν : ν.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν) (N : ℕ)
+    (α β : WOF F E nS nT ≃ₗ[AF F] (Fin N → AF F)) (e : WOF F E nS (nT + nT) ≃ₗ[AF F] VA F N)
+    (hCe : ∀ u v, e (dC (AF F ⊗[F] E) nT * u + dCd F JT * v) = (α v, β u))
+    (he : ∀ w w', symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ w w' = symV (e w) (e w'))
+    (hβc : Continuous β) (hβs : Continuous β.symm)
+    (hr1 : ∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y : Fin N → F, β (ratWF x) = GlobalTheory.SWQ.rat y)
+    (hr2 : ∀ y : Fin N → F, ∃ x : Matrix (Fin nT) (Fin nS) E, β (ratWF x) = GlobalTheory.SWQ.rat y) :
+    ∃ c : ℂ, c ≠ 0 ∧ ∀ Φ ∈ schA F (Fin N), ∀ v : WOF F E nS nT,
+      GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT)
+        (heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dCd F JT * v) (thV B.ψ Φ ∘ e)) =
+        c * Φ (α v) :=
+  lam_formula_c hB.cm hB.std JS JT ξ₀ ν 𝓕 hν h𝓕 N α β e hCe he hβc hβs hr1 hr2
 
 end PositivityTheory.ThKW.AdelicSchwartzProperties
 

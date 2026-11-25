@@ -61,13 +61,21 @@ namespace PositivityTheory.SiegelWeilFormula.Aeis
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
+theorem isCompact_K_w_c {B : Base F E} (hB_cm : IsCMExt F E σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
+    (hK : IsStdK (σ := σ) (Y := Y) B b K) : IsCompact (K : Set (G2 σ Y)) :=
+  GlobalTheory.CompanionTheory.StdK.isCompact_of_isStdK B hB_cm b K hK
+
 theorem isCompact_K_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)}
     (hK : IsStdK (σ := σ) (Y := Y) B b K) : IsCompact (K : Set (G2 σ Y)) :=
-  GlobalTheory.CompanionTheory.StdK.isCompact_of_isStdK B hB.cm b K hK
+  isCompact_K_w_c hB.cm hK
+
+theorem height_pos_w_c {B : Base F E} (hB_cm : IsCMExt F E σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ}
+    (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) : Continuous a ∧ ∀ x, 0 < a x :=
+  GlobalTheory.CompanionTheory.Iwasawa.continuous_pos (isCompact_K_w_c hB_cm hK) ha
 
 theorem height_pos_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ}
     (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) : Continuous a ∧ ∀ x, 0 < a x :=
-  GlobalTheory.CompanionTheory.Iwasawa.continuous_pos (isCompact_K_w hB hK) ha
+  height_pos_w_c hB.cm hK ha
 
 theorem eis_left_rat_w {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (hK : IsHgt K a) {χ : Chr F E} {s₁ : ℂ} {f : G2 σ Y → ℂ}
     (hf : IsSec K χ s₁ f) (hχ : IsHecke F E χ) (t : ℝ) (Ê : ℂ → G2 σ Y → ℂ)
@@ -76,11 +84,11 @@ theorem eis_left_rat_w {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (hK : IsHg
   intro s' hs' γ hγ x
   exact (GlobalTheory.CompanionTheory.EisRat.law_flat hK hf s').eis_rat hχ (hs s' hs') hγ x
 
-theorem godement_sum_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ}
+theorem godement_sum_w_c {B : Base F E} (hB_cm : IsCMExt F E σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ}
     (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) :
     ∃ σ₀ : ℝ, ∀ σ' : ℝ, σ₀ < σ' → ∃ (C : ℝ) (N : ℕ), ∀ x : G2 σ Y, Summable (fun q : Cos σ Y => a ((Quotient.out q).1 * x) ^ σ') ∧
       ∑' q : Cos σ Y, a ((Quotient.out q).1 * x) ^ σ' ≤ C * (ht2 x : ℝ) ^ N := by
-  have hcm : IsCMExt F E σ := hB.cm
+  have hcm : IsCMExt F E σ := hB_cm
   obtain ⟨C, hC⟩ := key_bound hcm hb.2 hK ha
   have hrat : ∀ q : Cos σ Y, ∃ g : GL (Ix n) E,
       Matrix.GeneralLinearGroup.map (n := Ix n) (inclR (F := F) (E := E) (AF F)) g = (Quotient.out q).1.1 := fun q => by
@@ -158,6 +166,12 @@ theorem godement_sum_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin 
         rw [tsum_mul_left, Real.mul_rpow (by positivity) (by positivity)]
     _ ≤ (C : ℝ) ^ s' * (ht2 x : ℝ) ^ ⌈2 * n * s'⌉₊ * ∑' q, h q ^ (-s') := by gcongr
     _ = _ := by ring
+
+theorem godement_sum_w {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ}
+    (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a) :
+    ∃ σ₀ : ℝ, ∀ σ' : ℝ, σ₀ < σ' → ∃ (C : ℝ) (N : ℕ), ∀ x : G2 σ Y, Summable (fun q : Cos σ Y => a ((Quotient.out q).1 * x) ^ σ') ∧
+      ∑' q : Cos σ Y, a ((Quotient.out q).1 * x) ^ σ' ≤ C * (ht2 x : ℝ) ^ N :=
+  godement_sum_w_c hB.cm hb hK ha
 
 end PositivityTheory.SiegelWeilFormula.Aeis
 

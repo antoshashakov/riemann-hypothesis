@@ -72,18 +72,21 @@ theorem sigma_invol' {B : Base F E} (hB : B.IsGood σ) (x : E) : σ (σ x) = x :
   apply τ.injective
   rw [hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]
 
-theorem exists_ne_sigma {B : Base F E} (hB : B.IsGood σ) : ∃ x : E, σ x ≠ x := by
+theorem exists_ne_sigma_c (hB_cm : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   by_contra hne
   push Not at hne
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
-  have hc : (NumberField.InfinitePlace.mk τ).IsComplex := hB.cm.2.1.isComplex _
+  have hc : (NumberField.InfinitePlace.mk τ).IsComplex := hB_cm.2.1.isComplex _
   rw [NumberField.InfinitePlace.isComplex_mk_iff] at hc
   apply hc
   show NumberField.ComplexEmbedding.conjugate τ = τ
   ext x
   rw [NumberField.ComplexEmbedding.conjugate_coe_eq]
   show star (τ x) = τ x
-  rw [← hB.cm.2.2.2 τ x, hne x]
+  rw [← hB_cm.2.2.2 τ x, hne x]
+
+theorem exists_ne_sigma {B : Base F E} (hB : B.IsGood σ) : ∃ x : E, σ x ≠ x :=
+  exists_ne_sigma_c hB.cm
 
 theorem fixed_mem {B : Base F E} (hB : B.IsGood σ) {q : E} (hq : σ q = q) : ∃ f : F, algebraMap F E f = q := by
   by_contra hne

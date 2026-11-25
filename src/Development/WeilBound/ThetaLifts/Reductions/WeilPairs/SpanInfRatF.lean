@@ -459,9 +459,9 @@ def Lm (B : Base F E) [_root_.NumberField.IsTotallyComplex E] : mixedEmbedding.m
   LinearMap.pi fun w => (cw B w).comp ((LinearMap.proj (R := ℝ) (φ := fun _ : {W : InfinitePlace E // W.IsComplex} => ℂ)
     ⟨wE B w, IsTotallyComplex.isComplex _⟩).comp (LinearMap.snd ℝ _ _))
 
-theorem span_tau (hB : B.IsGood σ) :
+theorem span_tau_c (hB_cm : IsCMExt F E σ) :
     Submodule.span ℝ (Set.range fun e : E => fun w : InfinitePlace F => (B.emb w).1 e) = ⊤ := by
-  haveI : IsTotallyComplex E := hB.cm.2.1
+  haveI : IsTotallyComplex E := hB_cm.2.1
   have hall : ∀ z ∈ Submodule.span ℝ (Set.range (mixedEmbedding E)),
       Lm B z ∈ Submodule.span ℝ (Set.range fun e : E => fun w : InfinitePlace F => (B.emb w).1 e) := by
     intro z hz
@@ -490,6 +490,10 @@ theorem span_tau (hB : B.IsGood σ) :
     rw [wE_comap, cw_cw]
   rw [← hz]
   exact hall z (htop ▸ Submodule.mem_top)
+
+theorem span_tau (hB : B.IsGood σ) :
+    Submodule.span ℝ (Set.range fun e : E => fun w : InfinitePlace F => (B.emb w).1 e) = ⊤ :=
+  span_tau_c hB.cm
 
 theorem span_infRatF (hB : B.IsGood σ) :
     Submodule.span ℝ (Set.range (infRatF (nS := nS) (nT := nT) (tauB B))) = ⊤ := by

@@ -195,36 +195,8 @@ theorem gamQF_eq_one_iff'_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT �
     exact ⟨n, by rw [hn, map_intCast]; ring⟩
 section Span
 theorem span_tau_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) :
-    Submodule.span ℝ (Set.range fun e : E => fun w : InfinitePlace F => (B.emb w).1 e) = ⊤ := by
-  haveI : IsTotallyComplex E := hB.cm.2.1
-  have hall : ∀ z ∈ Submodule.span ℝ (Set.range (mixedEmbedding E)),
-      Lm B z ∈ Submodule.span ℝ (Set.range fun e : E => fun w : InfinitePlace F => (B.emb w).1 e) := by
-    intro z hz
-    induction hz using Submodule.span_induction with
-    | mem z hz =>
-      obtain ⟨e, rfl⟩ := hz
-      apply Submodule.subset_span
-      refine ⟨e, ?_⟩
-      funext w
-      show (B.emb w).1 e = cw B w ((wE B w).embedding e)
-      rw [cw_emb]
-    | zero => rw [map_zero]; exact zero_mem _
-    | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
-    | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
-  have htop : Submodule.span ℝ (Set.range (mixedEmbedding E)) = ⊤ := by
-    refine eq_top_iff.2 (le_trans (le_of_eq (mixedEmbedding.latticeBasis E).span_eq.symm) (Submodule.span_mono ?_))
-    rintro _ ⟨i, rfl⟩
-    exact ⟨_, (mixedEmbedding.latticeBasis_apply E i).symm⟩
-  rw [eq_top_iff]
-  rintro f -
-  let z : mixedEmbedding.mixedSpace E :=
-    (0, fun W => cw B (W.1.comap (algebraMap F E)) (f (W.1.comap (algebraMap F E))))
-  have hz : Lm B z = f := by
-    funext w
-    show cw B w (cw B ((wE B w).comap (algebraMap F E)) (f ((wE B w).comap (algebraMap F E)))) = f w
-    rw [wE_comap, cw_cw]
-  rw [← hz]
-  exact hall z (htop ▸ Submodule.mem_top)
+    Submodule.span ℝ (Set.range fun e : E => fun w : InfinitePlace F => (B.emb w).1 e) = ⊤ :=
+  _root_.PositivityTheory.ThKW.TauSpanIdentities.span_tau_c hB.cm
 theorem span_infRatF_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) :
     Submodule.span ℝ (Set.range (infRatF (nS := nS) (nT := nT) (tauB B))) = ⊤ := by
   set V := Submodule.span ℝ (Set.range (infRatF (nS := nS) (nT := nT) (tauB B)))

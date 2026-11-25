@@ -56,10 +56,9 @@ open PositivityTheory.ThKG.Loc.Cone
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
 variable {Y : Spc F E n} {B : Base F E} {v : Pl F} {r s : ℕ}
 theorem theta_pm_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) : Y.θ w = 1 ∨ Y.θ w = -1 :=
-  cartan_pm (h.sig w) h0 (fun i j => (hB.cm.2.2.2 _ _).symm.trans (congrArg _ (h.herm i j))) (h.cartan w)
-theorem commute_theta_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) (A) : Commute A (Y.θ w) := by
-  rcases _root_.GlobalTheory.ThK.Dbl.Bad.theta_pm_k hB h h0 w with e | e <;> rw [e]
-  exacts [Commute.one_right _, Commute.neg_one_right _]
+  _root_.GlobalTheory.ThK.Dbl.Bad.theta_pm_c hB.cm h h0 w
+theorem commute_theta_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) (A) : Commute A (Y.θ w) :=
+  _root_.GlobalTheory.ThK.Dbl.Bad.commute_theta_c hB.cm h h0 w A
 theorem stab_iff_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) {K : Subgroup (UA σ Y.J)} (hK : IsStab B K)
     {g : UA σ Y.J} : g ∈ K ↔ ∀ v, IntAt v g :=
   (hK g).trans ⟨fun a _ z hz _ => a.2 z hz, fun a => ⟨fun w => _root_.GlobalTheory.ThK.Dbl.Bad.commute_theta_k hB h h0 w _, fun _ hz =>

@@ -61,9 +61,9 @@ attribute [local instance] GlobalTheory.ThK.Dbl.St.ae_ring GlobalTheory.ThK.Dbl.
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
 
-theorem isCompact_stdK' (B : Base F E) (Y : Spc F E n) (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n) E)
+theorem isCompact_stdK'_c (B : Base F E) (Y : Spc F E n) (hB_cm : IsCMExt F E σ) (b : GL (Fin n ⊕ Fin n) E)
     (K : Subgroup (G2 σ Y)) (hK : IsStdK (σ := σ) (Y := Y) B b K) : IsCompact (K : Set (G2 σ Y)) := by
-  obtain ⟨Φ, hΦ, eΦ⟩ := GlobalTheory.ThK.Dbl.St.exists_section hB.cm B.emb
+  obtain ⟨Φ, hΦ, eΦ⟩ := GlobalTheory.ThK.Dbl.St.exists_section hB_cm B.emb
   have hI : IsCompact (intHat F E : Set (AE F E)) := isCompact_intHat
   have hfe : finOne F = GlobalTheory.ThK.Dbl.St.eF F := rfl
   set T : Set (AE F E) := Φ '' Set.univ.pi (fun _ => Metric.closedBall (0 : ℂ) 1) + (intHat F E : Set (AE F E))
@@ -109,6 +109,10 @@ theorem isCompact_stdK' (B : Base F E) (Y : Spc F E n) (hB : B.IsGood σ) (b : G
     · exact ((hfr.comp continuous_inv).matrix_elem i j).const_smul (finOne F)
   exact GlobalTheory.ThK.Dbl.St.isCompact_of_units (UG (cA σ) (dbl (incM F Y.J))) (GlobalTheory.EisBL.DoubledGroupTopology.isClosed_doubled_group σ Y) K hKc S hS
     fun k hk => ⟨hmat k hk, hmat k⁻¹ (K.inv_mem hk)⟩
+
+theorem isCompact_stdK' (B : Base F E) (Y : Spc F E n) (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n) E)
+    (K : Subgroup (G2 σ Y)) (hK : IsStdK (σ := σ) (Y := Y) B b K) : IsCompact (K : Set (G2 σ Y)) :=
+  isCompact_stdK'_c B Y hB.cm b K hK
 
 variable {Y : Spc F E n}
 

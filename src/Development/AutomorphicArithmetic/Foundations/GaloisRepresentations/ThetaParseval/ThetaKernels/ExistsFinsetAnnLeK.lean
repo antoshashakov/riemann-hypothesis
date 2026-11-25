@@ -75,12 +75,8 @@ theorem exists_open_sep_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (hS : IsHerm
     {e : AEF F E} (he : IsSplitIdemF σ e) (U : AddSubgroup (conjHalf σ e nS nT))
     (hU : IsOpen (U : Set (conjHalf σ e nS nT))) :
     ∃ G : Finset (WOF F E nS nT), (∀ g ∈ G, g ∈ conjHalf σ (cAF σ e) nS nT) ∧
-      ∀ y : conjHalf σ e nS nT, (∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g y = 1) → y ∈ U := by
-  obtain ⟨G, hG1, hG2⟩ := _root_.GlobalTheory.SplitLagrF.exists_finset_ann_le_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he
-    (U.comap (projH σ nS nT he.1)) (hU.preimage (continuous_projH he.1))
-  refine ⟨G, fun g hg => GlobalTheory.SplitVacF.mem_conjHalf_conj he (hG1 g hg), fun y hy => ?_⟩
-  have := hG2 y.1 y.2 hy
-  rwa [AddSubgroup.mem_comap, projH_coe] at this
+      ∀ y : conjHalf σ e nS nT, (∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g y = 1) → y ∈ U :=
+  _root_.GlobalTheory.SplitLagrF.exists_open_sep_c hB.cm hB.std hS hT hξ hσξ he U hU
 theorem exists_compact_ann_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
     {e : AEF F E} (he : IsSplitIdemF σ e) (P : WOF F E nS nT → Prop)
     (hP : ∀ g ∈ conjHalf σ (cAF σ e) nS nT, ∃ k : ℕ, 0 < k ∧ P (k • g)) :

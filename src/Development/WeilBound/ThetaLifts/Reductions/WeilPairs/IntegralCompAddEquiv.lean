@@ -163,9 +163,9 @@ theorem prof_integrable (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND 
   have h1 := hUf t _ hs
   rwa [add_sub_cancel] at h1
 
-theorem commF_eventually (hB : B.IsGood σ) {e : AEF F E} (he : IsSplitIdemF σ e) (g : WOF F E nS nT) :
+theorem commF_eventually_c (hB_std : IsStd B.ψ) {e : AEF F E} (he : IsSplitIdemF σ e) (g : WOF F E nS nT) :
     ∀ᶠ y : conjHalf σ e nS nT in nhds 0, commF σ JS JT ξ₀ B.ψ g y = 1 := by
-  have hψ : Continuous B.ψ := hB.std.1
+  have hψ : Continuous B.ψ := hB_std.1
   obtain ⟨K, hK⟩ := GlobalTheory.HeisThetaF.exists_openAddSubgroup_psi_fin B.ψ hψ
   let φ : WOF F E nS nT → AF F := fun u => symplOHF σ JS JT ξ₀ g u - symplOHF σ JS JT ξ₀ u g
   have hφ : Continuous φ :=
@@ -191,6 +191,10 @@ theorem commF_eventually (hB : B.IsGood σ) {e : AEF F E} (he : IsSplitIdemF σ 
   show B.ψ (φ u.1) = 1
   rw [hφu]
   exact hK _ hu
+
+theorem commF_eventually (hB : B.IsGood σ) {e : AEF F E} (he : IsSplitIdemF σ e) (g : WOF F E nS nT) :
+    ∀ᶠ y : conjHalf σ e nS nT in nhds 0, commF σ JS JT ξ₀ B.ψ g y = 1 :=
+  commF_eventually_c hB.std he g
 
 theorem lagrInt_eq_zero (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
     {ν : Measure (WOF F E nS nT)} {𝓕 : Set (WOF F E nS nT)} (hν : ν.IsAddHaarMeasure)

@@ -322,16 +322,23 @@ theorem exists_compact_of_finite {Y T : Type} [AddCommGroup Y] [TopologicalSpace
 
 variable {B : Base F E}
 
-theorem exists_open_sep (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
+theorem exists_open_sep_c (hB_cm : IsCMExt F E σ) (hB_std : IsStd B.ψ) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
     {e : AEF F E} (he : IsSplitIdemF σ e) (U : AddSubgroup (conjHalf σ e nS nT))
     (hU : IsOpen (U : Set (conjHalf σ e nS nT))) :
     ∃ G : Finset (WOF F E nS nT), (∀ g ∈ G, g ∈ conjHalf σ (cAF σ e) nS nT) ∧
       ∀ y : conjHalf σ e nS nT, (∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g y = 1) → y ∈ U := by
-  obtain ⟨G, hG1, hG2⟩ := exists_finset_ann_le F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he
+  obtain ⟨G, hG1, hG2⟩ := exists_finset_ann_le_c F E σ B hB_cm hB_std nS nT JS JT hS hT ξ₀ hξ hσξ e he
     (U.comap (projH σ nS nT he.1)) (hU.preimage (continuous_projH he.1))
   refine ⟨G, fun g hg => GlobalTheory.SplitVacF.mem_conjHalf_conj he (hG1 g hg), fun y hy => ?_⟩
   have := hG2 y.1 y.2 hy
   rwa [AddSubgroup.mem_comap, projH_coe] at this
+
+theorem exists_open_sep (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
+    {e : AEF F E} (he : IsSplitIdemF σ e) (U : AddSubgroup (conjHalf σ e nS nT))
+    (hU : IsOpen (U : Set (conjHalf σ e nS nT))) :
+    ∃ G : Finset (WOF F E nS nT), (∀ g ∈ G, g ∈ conjHalf σ (cAF σ e) nS nT) ∧
+      ∀ y : conjHalf σ e nS nT, (∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g y = 1) → y ∈ U :=
+  exists_open_sep_c hB.cm hB.std hS hT hξ hσξ he U hU
 
 theorem exists_compact_ann (hB : B.IsGood σ) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
     {e : AEF F E} (he : IsSplitIdemF σ e) (P : WOF F E nS nT → Prop)

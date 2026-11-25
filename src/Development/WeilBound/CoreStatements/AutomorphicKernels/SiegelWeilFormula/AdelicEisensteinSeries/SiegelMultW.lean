@@ -60,7 +60,7 @@ namespace PositivityTheory.SiegelWeilFormula.Aeis
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
-theorem siegelMult_w {B : Base F E} (hB : B.IsGood σ) (hn : 1 ≤ n) (χ : Chr F E) (hχ : IsHecke F E χ) (c : ℕ)
+theorem siegelMult_w_c {B : Base F E} (hB_cm : IsCMExt F E σ) (hB_unram : Algebra.Unramified (𝓞 F) (𝓞 E)) (hn : 1 ≤ n) (χ : Chr F E) (hχ : IsHecke F E χ) (c : ℕ)
     (hres : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ c) {b : GL (Fin n ⊕ Fin n) E}
     {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a)
     (s₁ : ℂ) (f : G2 σ Y → ℂ) (hf : IsSec K χ s₁ f) :
@@ -78,8 +78,8 @@ theorem siegelMult_w {B : Base F E} (hB : B.IsGood σ) (hn : 1 ≤ n) (χ : Chr 
   have hSg : SgAll := Hd.sgAll
   obtain ⟨⟨ε, hε⟩, t₀, ht₀⟩ := hb
   have hb' : IsFrame2 σ Y b := ⟨⟨ε, hε⟩, t₀, ht₀⟩
-  have hcm := hB.cm
-  have hunr := hB.unram
+  have hcm := hB_cm
+  have hunr := hB_unram
   have hgood : (adCM σ χ).Good := hCM F E σ χ c hcm hunr hχ hres
   obtain ⟨-, -, -, ht2', hlc', hsc', hKc⟩ := hGT E (AE F E) (adCM σ χ) hgood (Fin n) ε
   let Φ := frameEquiv (Y := Y) χ ε b hε
@@ -107,7 +107,7 @@ theorem siegelMult_w {B : Base F E} (hB : B.IsGood σ) (hn : 1 ≤ n) (χ : Chr 
   haveI := ht2'
   haveI := hlc'
   have hW := hSg F E σ χ c hcm hunr hχ hres ε (Fin n) (by simpa using hn) hiwa
-  obtain ⟨σ₀, hσ₀⟩ := godement_sum_w hB hb' hK ha
+  obtain ⟨σ₀, hσ₀⟩ := godement_sum_w_c hB_cm hb' hK ha
   refine eis_from_U hSec hWL Φ (continuous_frameEquiv χ ε b hε) _ _ _ ((adCM σ χ).uC ε (Fin n))
     ((adCM σ χ).uH ε (Set.univ : Set (Fin n))) hKc hIP' hIH ?_ K a χ s₁ f hf hΓ hKK hPP hIP hH
     (continuous_frameEquiv_symm χ ε b hε) ?_ ⟨σ₀, fun σ' h => ?_⟩
@@ -121,6 +121,15 @@ theorem siegelMult_w {B : Base F E} (hB : B.IsGood σ) (hn : 1 ≤ n) (χ : Chr 
       rwa [mul_one] at this
   · obtain ⟨C, N, h⟩ := hσ₀ σ' h
     exact ⟨C, N, fun x => (h x).2⟩
+
+theorem siegelMult_w {B : Base F E} (hB : B.IsGood σ) (hn : 1 ≤ n) (χ : Chr F E) (hχ : IsHecke F E χ) (c : ℕ)
+    (hres : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ c) {b : GL (Fin n ⊕ Fin n) E}
+    {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (hb : IsFrame2 σ Y b) (hK : IsStdK (σ := σ) (Y := Y) B b K) (ha : IsHgt K a)
+    (s₁ : ℂ) (f : G2 σ Y → ℂ) (hf : IsSec K χ s₁ f) :
+    ∃ (A : ℂ → ℂ) (H : ℂ → modFun σ Y) (t : ℝ), Differentiable ℂ A ∧ (∃ z, A z ≠ 0) ∧
+      (∀ μ, IsGrowForm μ → Differentiable ℂ (fun s => μ (H s))) ∧
+      ∀ s : ℂ, t < s.re → ∀ x, HasSum (fun q => A s * eisTerm (flat a f s₁ s) x q) ((H s).1 x) :=
+  siegelMult_w_c hB.cm hB.unram hn χ hχ c hres hb hK ha s₁ f hf
 
 end PositivityTheory.SiegelWeilFormula.Aeis
 

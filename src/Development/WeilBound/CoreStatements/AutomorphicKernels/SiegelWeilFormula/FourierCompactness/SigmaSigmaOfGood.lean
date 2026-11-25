@@ -402,20 +402,27 @@ theorem aesm_of_continuous {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) 
   obtain ⟨-, hsc, -, hbo⟩ := nA_top hσ hb
   exact hu.aestronglyMeasurable
 
-theorem sigma_sigma_of_good {B : Base F E} (hB : B.IsGood σ) (a : E) : σ (σ a) = a := by
-  obtain ⟨-, -, -, h⟩ := hB.cm
+theorem sigma_sigma_of_good_c (hB_cm : IsCMExt F E σ) (a : E) : σ (σ a) = a := by
+  obtain ⟨-, -, -, h⟩ := hB_cm
   let τ : E →+* ℂ := Classical.arbitrary _
   apply τ.injective
   rw [h, h, star_star]
 
-theorem coefData_exists {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
+theorem sigma_sigma_of_good {B : Base F E} (hB : B.IsGood σ) (a : E) : σ (σ a) = a :=
+  sigma_sigma_of_good_c hB.cm a
+
+theorem coefData_exists_c (hB_cm : IsCMExt F E σ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
     ∃ nb lam 𝓖, CoefData (σ := σ) (Y := Y) b nb lam 𝓖 := by
-  have hσ := sigma_sigma_of_good hB
+  have hσ := sigma_sigma_of_good_c hB_cm
   obtain ⟨hlc, hsc, ht2, hbo⟩ := nA_top hσ hb
   obtain ⟨K, hK, hc⟩ := nF_cocompact hσ hb
   obtain ⟨lam, 𝓖, hlam, h𝓖, h1⟩ :=
     (GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (nA σ Y b) (nF σ Y b) K hK hc).1
   exact ⟨nbE σ Y b, lam, 𝓖, isNMap_nbE hσ hb, hlam, h𝓖, h1⟩
+
+theorem coefData_exists {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
+    ∃ nb lam 𝓖, CoefData (σ := σ) (Y := Y) b nb lam 𝓖 :=
+  coefData_exists_c hB.cm hb
 
 theorem coefEx : CoefEx := fun _F _E _ _ _ _ _ _σ d => coefData_exists d.ok.good d.ok.frame
 

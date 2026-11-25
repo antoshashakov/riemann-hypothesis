@@ -71,15 +71,15 @@ theorem psiV_exists_ne_one {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : Heigh
   rw [AddChar.one_apply]
   exact h t
 
-theorem adele_rat_of_isGood {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) (a : AF F)
+theorem adele_rat_of_isGood_c {σ : E →ₐ[F] E} {B : Base F E} (hB_cm : IsCMExt F E σ) (hB_std : IsStd B.ψ) (a : AF F)
     (h : ∀ c : F, B.ψ (a * algebraMap F _ c) = 1) : ∃ d : F, a = algebraMap F _ d := by
-  haveI : IsTotallyReal F := hB.cm.1
-  obtain ⟨⟨θ, hθ⟩, -⟩ := (GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).2
+  haveI : IsTotallyReal F := hB_cm.1
+  obtain ⟨⟨θ, hθ⟩, -⟩ := (GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_c F E σ B hB_cm hB_std).2
   let L : Ainf F →+ ℂ := AddMonoidHom.mk' (fun x => ∑ w, θ w (x ⊗ₜ[F] (1 : E))) fun a b => by
     simp only [map_add (f := _), TensorProduct.add_tmul, Finset.sum_add_distrib]
   have hL : ∀ x, L x = ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (InfiniteAdeleRing.ringEquiv_mixedSpace F x) : ℝ) : ℂ) :=
     fun x => GlobalTheory.StdCharWeilDatum.sum_infFam B θ hθ x
-  refine GlobalTheory.RatAnnih.adele_rat (GlobalTheory.StdCharWeilDatum.isCharAF hB.std) (psiV_exists_ne_one hB.std) L
+  refine GlobalTheory.RatAnnih.adele_rat (GlobalTheory.StdCharWeilDatum.isCharAF hB_std) (psiV_exists_ne_one hB_std) L
     (continuous_finsetSum _ fun w _ => (hθ w).2) (fun x => ?_) (fun x => ?_) a h
   · rw [hL]
     have e : InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (Ainf F) x) = mixedEmbedding F x := by
@@ -87,9 +87,13 @@ theorem adele_rat_of_isGood {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood �
     rw [e, GlobalTheory.LatVacArith.trace_mixedEmbedding]
     exact Complex.ofReal_ratCast _
   · show B.ψ (pairA F x 0) = _
-    rw [GlobalTheory.StdCharWeilDatum.psi_pairA hB.std, hL]
+    rw [GlobalTheory.StdCharWeilDatum.psi_pairA hB_std, hL]
     congr 1
     ring
+
+theorem adele_rat_of_isGood {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) (a : AF F)
+    (h : ∀ c : F, B.ψ (a * algebraMap F _ c) = 1) : ∃ d : F, a = algebraMap F _ d :=
+  adele_rat_of_isGood_c hB.cm hB.std a h
 
 theorem exists_symplOF_eq (σ : E →ₐ[F] E) (hσ : Function.Surjective σ) {nS nT : ℕ}
     {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} (hS : IsHermND σ JS) (hT : IsHermND σ JT)

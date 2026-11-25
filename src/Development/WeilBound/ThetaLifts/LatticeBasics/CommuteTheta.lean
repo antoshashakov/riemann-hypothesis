@@ -116,12 +116,18 @@ theorem cartan_pm {M θ : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (hs : HasSig M
 
 variable {Y : Spc F E n} {B : Base F E} {v : Pl F} {r s : ℕ}
 
-theorem theta_pm (hB : B.IsGood σ) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) : Y.θ w = 1 ∨ Y.θ w = -1 :=
-  cartan_pm (h.sig w) h0 (fun i j => (hB.cm.2.2.2 _ _).symm.trans (congrArg _ (h.herm i j))) (h.cartan w)
+theorem theta_pm_c (hB_cm : IsCMExt F E σ) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) : Y.θ w = 1 ∨ Y.θ w = -1 :=
+  cartan_pm (h.sig w) h0 (fun i j => (hB_cm.2.2.2 _ _).symm.trans (congrArg _ (h.herm i j))) (h.cartan w)
 
-theorem commute_theta (hB : B.IsGood σ) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) (A) : Commute A (Y.θ w) := by
-  rcases theta_pm hB h h0 w with e | e <;> rw [e]
+theorem theta_pm (hB : B.IsGood σ) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) : Y.θ w = 1 ∨ Y.θ w = -1 :=
+  theta_pm_c hB.cm h h0 w
+
+theorem commute_theta_c (hB_cm : IsCMExt F E σ) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) (A) : Commute A (Y.θ w) := by
+  rcases theta_pm_c hB_cm h h0 w with e | e <;> rw [e]
   exacts [Commute.one_right _, Commute.neg_one_right _]
+
+theorem commute_theta (hB : B.IsGood σ) (h : Y.IsHerm σ B r s) (h0 : min r s = 0) (w) (A) : Commute A (Y.θ w) :=
+  commute_theta_c hB.cm h h0 w A
 
 omit [NumberField E] in
 theorem real_latHat {z} (hz : z ∈ latHat Y) : realAd F 1 • z = 0 := by

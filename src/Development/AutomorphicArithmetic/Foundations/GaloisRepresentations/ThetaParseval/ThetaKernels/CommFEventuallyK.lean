@@ -106,33 +106,8 @@ theorem prof_integrable_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (hS : IsHerm
   have h1 := hUf t _ hs
   rwa [add_sub_cancel] at h1
 theorem commF_eventually_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) {e : AEF F E} (he : IsSplitIdemF σ e) (g : WOF F E nS nT) :
-    ∀ᶠ y : conjHalf σ e nS nT in nhds 0, commF σ JS JT ξ₀ B.ψ g y = 1 := by
-  have hψ : Continuous B.ψ := hB.std.1
-  obtain ⟨K, hK⟩ := GlobalTheory.HeisThetaF.exists_openAddSubgroup_psi_fin B.ψ hψ
-  let φ : WOF F E nS nT → AF F := fun u => symplOHF σ JS JT ξ₀ g u - symplOHF σ JS JT ξ₀ u g
-  have hφ : Continuous φ :=
-    (GlobalTheory.HeisThetaF.continuous_symplOHF_right g).sub (GlobalTheory.HeisThetaF.continuous_symplOHF_left g)
-  let ρ : conjHalf σ e nS nT → Af F := fun u => (φ u.1).2
-  have hρ : Continuous ρ := continuous_snd.comp (hφ.comp continuous_subtype_val)
-  have h0 : ρ 0 = 0 := by
-    show (symplOHF σ JS JT ξ₀ g 0 - symplOHF σ JS JT ξ₀ 0 g).2 = 0
-    rw [GlobalTheory.HeisThetaF.symplOHF_zero_left, GlobalTheory.HeisThetaF.symplOHF_zero_right, sub_zero]
-    rfl
-  have hn : ρ ⁻¹' (K : Set (Af F)) ∈ nhds (0 : conjHalf σ e nS nT) :=
-    (K.isOpen.preimage hρ).mem_nhds (by rw [Set.mem_preimage, h0]; exact K.zero_mem)
-  filter_upwards [hn] with u hu
-  have h1 : pairA F 1 0 • u.1 = 0 :=
-    GlobalTheory.HeisThetaF.smul_eq_zero_of_map_infPartF (GlobalTheory.SplitVacF.fin_of_mem he u.2)
-  have hfst : fstA F (φ u.1) = 0 := by
-    rw [← GlobalTheory.HeisThetaF.fstA_mul_idem]
-    show fstA F (pairA F 1 0 * (symplOHF σ JS JT ξ₀ g u.1 - symplOHF σ JS JT ξ₀ u.1 g)) = 0
-    rw [mul_sub, ← GlobalTheory.HeisThetaF.symplOHF_smul_left (pairA F 1 0) u.1 g,
-      ← GlobalTheory.HeisThetaF.symplOHF_smul_right (pairA F 1 0) g u.1, h1, GlobalTheory.HeisThetaF.symplOHF_zero_left,
-      GlobalTheory.HeisThetaF.symplOHF_zero_right, sub_zero, map_zero]
-  have hφu : φ u.1 = pairA F 0 (ρ u) := Prod.ext hfst rfl
-  show B.ψ (φ u.1) = 1
-  rw [hφu]
-  exact hK _ hu
+    ∀ᶠ y : conjHalf σ e nS nT in nhds 0, commF σ JS JT ξ₀ B.ψ g y = 1 :=
+  _root_.GlobalTheory.SplitLagrF.commF_eventually_c hB.std he g
 theorem lagrInt_eq_zero_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : ξ₀ ≠ 0) (hσξ : σ ξ₀ = -ξ₀)
     {ν : Measure (WOF F E nS nT)} {𝓕 : Set (WOF F E nS nT)} (hν : ν.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν) {e : AEF F E} (he : IsSplitIdemF σ e)

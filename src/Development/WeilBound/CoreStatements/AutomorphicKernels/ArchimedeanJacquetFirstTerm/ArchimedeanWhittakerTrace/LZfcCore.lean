@@ -157,15 +157,15 @@ theorem trace_incM_rat [FiniteDimensional F E] (A : Matrix (Fin n) (Fin n) E) :
     simp [incM, Matrix.trace, inclR, TensorProduct.tmul_sum]
   rw [this, GlobalTheory.LatVac.trace_tmul, one_mul]
 
-theorem chr_ker {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b)
+theorem chr_ker_c {B : Base F E} (hB_cm : IsCMExt F E σ) (hB_std : IsStd B.ψ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b)
     (β : nA σ Y b) : (∀ T : nF σ Y b, chr B.ψ b T β = 1) ↔ β ∈ nF σ Y b := by
-  have hσ : ∀ a, σ (σ a) = a := GlobalTheory.LeviLine.sigma_invol hB.cm
-  have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hB.cm.2.2.1]; norm_num)
+  have hσ : ∀ a, σ (σ a) = a := GlobalTheory.LeviLine.sigma_invol hB_cm
+  have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hB_cm.2.2.1]; norm_num)
   obtain ⟨ε, hε⟩ := hb.1
   have hβ : β.1 ∈ PositivityTheory.SiegelWeilFormula.kfour.nCond σ n ε := (PositivityTheory.SiegelWeilFormula.kfour.mem_nA_iff hσ hε β.1).1 β.2
   constructor
   · intro h
-    refine (PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff β).2 (rat_of_ker hB.cm hB.std ε β.1 ?_ fun T hT => ?_)
+    refine (PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff β).2 (rat_of_ker hB_cm hB_std ε β.1 ?_ fun T hT => ?_)
     · have e := hβ
       simp only [PositivityTheory.SiegelWeilFormula.kfour.nCond, AddSubgroup.mem_mk, ] at e
       rw [e, Int.cast_smul_eq_zsmul]
@@ -184,17 +184,21 @@ theorem chr_ker {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (
     obtain ⟨T₁, hT₁⟩ := (PositivityTheory.SiegelWeilFormula.kfour.mem_nF_iff T.1).1 T.2
     unfold chr
     rw [hT₀, hT₁, ← incM_mul, trace_incM_rat, ← map_neg]
-    exact hB.std.2.1 _
+    exact hB_std.2.1 _
 
-theorem fc_inj_pt_per {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n) E) (nb : nA σ Y b → G2 σ Y)
+theorem chr_ker {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b)
+    (β : nA σ Y b) : (∀ T : nF σ Y b, chr B.ψ b T β = 1) ↔ β ∈ nF σ Y b :=
+  chr_ker_c hB.cm hB.std hb β
+
+theorem fc_inj_pt_per_c {B : Base F E} (hB_cm : IsCMExt F E σ) (hB_std : IsStd B.ψ) (b : GL (Fin n ⊕ Fin n) E) (nb : nA σ Y b → G2 σ Y)
     (lam : Measure (nA σ Y b)) (𝓖 : Set (nA σ Y b)) (hb : IsFrame2 σ Y b) (hc : CoefData (σ := σ) (Y := Y) b nb lam 𝓖)
     (f : G2 σ Y → ℂ) (hf : Continuous f) (hper : ∀ β ∈ nF σ Y b, ∀ g, f (nb β * g) = f g) (x : G2 σ Y)
     (hx : ∀ T : nF σ Y b, fc B.ψ b nb lam 𝓖 f T x = 0) : f x = 0 := by
   obtain ⟨hnb, hlam, hFD, -⟩ := hc
-  have hσ : ∀ a, σ (σ a) = a := GlobalTheory.LeviLine.sigma_invol hB.cm
+  have hσ : ∀ a, σ (σ a) = a := GlobalTheory.LeviLine.sigma_invol hB_cm
   obtain ⟨i1, i2, i3, i4⟩ := PositivityTheory.SiegelWeilFormula.kfour.nA_top hσ hb
   obtain ⟨K, hK, hcov⟩ := PositivityTheory.SiegelWeilFormula.kfour.nF_cocompact hσ hb
-  have hψ := GlobalTheory.StdCharFromIsStd.isCharAF hB.std
+  have hψ := GlobalTheory.StdCharFromIsStd.isCharAF hB_std
   have htr : Continuous (Algebra.trace (AF F) (AE F E)) := IsModuleTopology.continuous_of_linearMap _
   have key := GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (nA σ Y b) (nF σ Y b) K hK hcov
     (nF σ Y b) (chr B.ψ b)
@@ -211,7 +215,7 @@ theorem fc_inj_pt_per {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n
       rw [ZeroMemClass.coe_zero, ZeroMemClass.coe_zero, Matrix.zero_mul, Matrix.trace_zero, map_zero, neg_zero,
         AddChar.map_zero_eq_one])
     (fun T β => hψ.2.1 _)
-    (chr_ker hB hb)
+    (chr_ker_c hB_cm hB_std hb)
     lam 𝓖 hlam hFD (fun β => f (nb β * x))
     (by
       set_option synthInstance.maxHeartbeats 400000 in
@@ -223,6 +227,12 @@ theorem fc_inj_pt_per {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n
     (fun T => (integral_congr_ae (.of_forall fun β => mul_comm _ _)).trans (hx T))
   have h0 := congrFun key 0
   simpa [PositivityTheory.SiegelWeilFormula.kfour.nb_zero hnb] using h0
+
+theorem fc_inj_pt_per {B : Base F E} (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n) E) (nb : nA σ Y b → G2 σ Y)
+    (lam : Measure (nA σ Y b)) (𝓖 : Set (nA σ Y b)) (hb : IsFrame2 σ Y b) (hc : CoefData (σ := σ) (Y := Y) b nb lam 𝓖)
+    (f : G2 σ Y → ℂ) (hf : Continuous f) (hper : ∀ β ∈ nF σ Y b, ∀ g, f (nb β * g) = f g) (x : G2 σ Y)
+    (hx : ∀ T : nF σ Y b, fc B.ψ b nb lam 𝓖 f T x = 0) : f x = 0 :=
+  fc_inj_pt_per_c hB.cm hB.std b nb lam 𝓖 hb hc f hf hper x hx
 
 end PositivityTheory.FTA.ZFC
 

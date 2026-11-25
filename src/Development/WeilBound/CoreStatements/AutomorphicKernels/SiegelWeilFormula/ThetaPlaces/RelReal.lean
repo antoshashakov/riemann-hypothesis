@@ -61,8 +61,11 @@ def thW (B : Base F E) (w : InfinitePlace F) : HeckeCharacterZeroLocus.SiegelWei
   (starRingEnd ℂ).comp ((infEmb (B.emb w)).comp
     (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E)).toRingHom)
 
+theorem isCharAF_of_good_c (B : Base F E) (hB_std : IsStd B.ψ) : HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F B.ψ :=
+  GlobalTheory.StdCharFromIsStd.isCharAF hB_std
+
 theorem isCharAF_of_good (B : Base F E) (hB : B.IsGood σ) : HeckeCharacterZeroLocus.SiegelWeilU.IsCharAF F B.ψ :=
-  GlobalTheory.StdCharFromIsStd.isCharAF hB.std
+  isCharAF_of_good_c B hB.std
 
 def cW (B : Base F E) (η : E) (w : InfinitePlace F) : ℂ := ((‖(B.emb w).1 η‖ ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ)
 

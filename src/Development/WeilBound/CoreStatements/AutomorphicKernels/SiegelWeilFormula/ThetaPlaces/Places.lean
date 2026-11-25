@@ -132,12 +132,12 @@ theorem isCMFam_conj (B : Base F E) (h : HeckeCharacterZeroLocus.SiegelWeilU.IsC
           rw [e, cc],
         InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]
 
-theorem isPlaces_thW' (B : Base F E) (hB : B.IsGood σ) : Gen.IsPlaces σ B.ψ (thW B) (fun _ => -1) := by
-  have : IsTotallyReal F := hB.cm.1
+theorem isPlaces_thW'_c (B : Base F E) (hB_cm : IsCMExt F E σ) (hB_std : IsStd B.ψ) : Gen.IsPlaces σ B.ψ (thW B) (fun _ => -1) := by
+  have : IsTotallyReal F := hB_cm.1
   refine ⟨fun w => GlobalTheory.Mem.VolExists.infEmb_continuous (thW_infEmb B w),
-    GlobalTheory.Mem.VolExists.infEmb_bijective hB.cm (isCMFam_conj B hB.cm) (fun w => thW_infEmb B w),
-    fun w z => GlobalTheory.Mem.VolExists.infEmb_sigR hB.cm (thW_infEmb B w) z, fun _ => by norm_num, fun x => ?_⟩
-  have hs := (GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).2.2 (archimedeanEmbeddingTensor B) (archimedean_embedding_family B) x
+    GlobalTheory.Mem.VolExists.infEmb_bijective hB_cm (isCMFam_conj B hB_cm) (fun w => thW_infEmb B w),
+    fun w z => GlobalTheory.Mem.VolExists.infEmb_sigR hB_cm (thW_infEmb B w) z, fun _ => by norm_num, fun x => ?_⟩
+  have hs := (GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_c F E σ B hB_cm hB_std).2.2 (archimedeanEmbeddingTensor B) (archimedean_embedding_family B) x
   have hs' : B.ψ ((x, 0) : AF F) = _ := hs
   change B.ψ ((x, 0) : AF F) = _
   rw [hs']
@@ -150,6 +150,9 @@ theorem isPlaces_thW' (B : Base F E) (hB : B.IsGood σ) : Gen.IsPlaces σ B.ψ (
   rw [Finset.mul_sum, Finset.mul_sum]
   refine Finset.sum_congr rfl fun w _ => ?_
   ring
+
+theorem isPlaces_thW' (B : Base F E) (hB : B.IsGood σ) : Gen.IsPlaces σ B.ψ (thW B) (fun _ => -1) :=
+  isPlaces_thW'_c B hB.cm hB.std
 
 end PositivityTheory.SiegelWeilFormula.ThetaDictR
 

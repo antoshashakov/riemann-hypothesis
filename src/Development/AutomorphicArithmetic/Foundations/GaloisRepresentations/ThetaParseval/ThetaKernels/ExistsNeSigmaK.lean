@@ -62,18 +62,8 @@ theorem sigma_invol'_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) 
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
   apply τ.injective
   rw [hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]
-theorem exists_ne_sigma_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) : ∃ x : E, σ x ≠ x := by
-  by_contra hne
-  push Not at hne
-  obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
-  have hc : (NumberField.InfinitePlace.mk τ).IsComplex := hB.cm.2.1.isComplex _
-  rw [NumberField.InfinitePlace.isComplex_mk_iff] at hc
-  apply hc
-  show NumberField.ComplexEmbedding.conjugate τ = τ
-  ext x
-  rw [NumberField.ComplexEmbedding.conjugate_coe_eq]
-  show star (τ x) = τ x
-  rw [← hB.cm.2.2.2 τ x, hne x]
+theorem exists_ne_sigma_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) : ∃ x : E, σ x ≠ x :=
+  _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Meas.exists_ne_sigma_c hB.cm
 theorem fixed_mem_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {q : E} (hq : σ q = q) : ∃ f : F, algebraMap F E f = q := by
   by_contra hne
   push Not at hne

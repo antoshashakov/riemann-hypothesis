@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSelfOfTrivial
+import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.AutProdA
 
 @[expose] public section
 
@@ -68,11 +69,8 @@ variable {η : (AEF F E)ˣ →* Circle} {ε : AEF F E} {of oi : GAF σ JS × GAF
 theorem cut_char_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {χ : (AEF F E)ˣ →* Circle} {m : ℕ} (hres : ResEtaF χ m) (hε : IsHalfF σ ε) {e : AEF F E} (he : IsSplitIdemF σ e)
     {g : GAF σ J} {x : (AEF F E)ˣ} (hg : SuppAtF σ e J g) (hx : IsDetAtF σ e J g x) :
-    χ (GlobalTheory.SplitDetCharF.cutDet σ J ε hε.idem g) = χ x := by
-  rcases hε.split e he with ⟨a1, a2⟩ | ⟨a1, a2⟩
-  · rw [GlobalTheory.SplitDetCharF.cutDet_same ε hε.idem a1 a2 hg hx]
-  · exact GlobalTheory.SplitDetCharF.char_eq_of_mul_conj hB.cm hres _ x
-      (GlobalTheory.SplitDetCharF.cutDet_conj hJ ε hε.idem he.1 a1 a2 hg hx)
+    χ (GlobalTheory.SplitDetCharF.cutDet σ J ε hε.idem g) = χ x :=
+  _root_.PositivityTheory.ThKW.cut_char_c hB.cm hJ hres hε he hg hx
 theorem fin_inf_comm_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))
     (hi : IsInfWeilF σ JS JT ξ₀ B.ψ oi) (p q : GAF σ JS × GAF σ JT) (f : WOF F E nS nT → ℂ)

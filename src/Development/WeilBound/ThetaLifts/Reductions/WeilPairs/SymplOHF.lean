@@ -54,14 +54,14 @@ open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.Modulus
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem heis_C {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
-    (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (N : ℕ)
-    (α β : WOF F E nS nT ≃ₗ[AF F] (Fin N → AF F)) (e : WOF F E nS (nT + nT) ≃ₗ[AF F] VA F N)
-    (hCe : ∀ u v, e (dC (AF F ⊗[F] E) nT * u + dCd F JT * v) = (α v, β u))
-    (he : ∀ w w', symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ w w' = symV (e w) (e w'))
-    (Φ : (Fin N → AF F) → ℂ) (y : WOF F E nS nT) :
-    heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC (AF F ⊗[F] E) nT * y) (thV B.ψ Φ ∘ e) =
-      thV B.ψ (fun x => B.ψ (x ⬝ᵥ β y) * Φ x) ∘ e := by
+theorem heis_C_c {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
+ (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (N : ℕ)
+ (α β : WOF F E nS nT ≃ₗ[AF F] (Fin N → AF F)) (e : WOF F E nS (nT + nT) ≃ₗ[AF F] VA F N)
+ (hCe : ∀ u v, e (dC (AF F ⊗[F] E) nT * u + dCd F JT * v) = (α v, β u))
+ (he : ∀ w w', symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ w w' = symV (e w) (e w'))
+ (Φ : (Fin N → AF F) → ℂ) (y : WOF F E nS nT) :
+ heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC (AF F ⊗[F] E) nT * y) (thV B.ψ Φ ∘ e) =
+ thV B.ψ (fun x => B.ψ (x ⬝ᵥ β y) * Φ x) ∘ e := by
   have hCy : e (dC (AF F ⊗[F] E) nT * y) = (0, β y) := by
     have h := hCe y 0
     rw [Matrix.mul_zero, add_zero, map_zero] at h
@@ -90,6 +90,16 @@ theorem heis_C {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS nT : �
   have h22 : (⅟(2 : AF F)) + ⅟2 = 1 := invOf_two_add_invOf_two
   simp only [dotProduct_add, add_dotProduct]
   linear_combination (x₁ ⬝ᵥ b) * h22
+
+theorem heis_C {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
+    (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (N : ℕ)
+    (α β : WOF F E nS nT ≃ₗ[AF F] (Fin N → AF F)) (e : WOF F E nS (nT + nT) ≃ₗ[AF F] VA F N)
+    (hCe : ∀ u v, e (dC (AF F ⊗[F] E) nT * u + dCd F JT * v) = (α v, β u))
+    (he : ∀ w w', symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ w w' = symV (e w) (e w'))
+    (Φ : (Fin N → AF F) → ℂ) (y : WOF F E nS nT) :
+    heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC (AF F ⊗[F] E) nT * y) (thV B.ψ Φ ∘ e) =
+      thV B.ψ (fun x => B.ψ (x ⬝ᵥ β y) * Φ x) ∘ e :=
+  heis_C_c JS JT ξ₀ N α β e hCe he Φ y
 
 end PositivityTheory.ThKW.AdelicSchwartzProperties
 
