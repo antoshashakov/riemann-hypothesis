@@ -300,115 +300,20 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] {X : PT E} {DF : ℕ} {P : Par X DF}
   {I : Submodule ℤ (Vsp X.dim)}
 
-private theorem Hf_e_e_eq_ite {ι : Type} [Fintype ι] {K : Submodule ℝ (EuclideanSpace ℂ ι)}
-    (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0) (j k : Fin (Col.dK K)) :
-    Hf (Col.e K j) (Col.e K k) = if k = j then 1 else 0 := by
-  have hre : (Hf (Col.e K j) (Col.e K k)).re = inner ℝ ((Col.ob K) k) ((Col.ob K) j) := by
-    simp only [Submodule.coe_inner]
-    simp [Col.e, Hf, real_inner_eq_re_inner, PiLp.inner_apply, mul_comm]
-  have him : (Hf (Col.e K j) (Col.e K k)).im = 0 := hK _ (Col.ob K j).2 _ (Col.ob K k).2
-  rw [orthonormal_iff_ite.mp (Col.ob K).orthonormal k j] at hre
-  apply Complex.ext
-  · rw [hre]; split_ifs <;> simp
-  · rw [him]; split_ifs <;> simp
-
-private theorem Hf_p2_e_eq_zero {ι : Type} [Fintype ι] {K : Submodule ℝ (EuclideanSpace ℂ ι)}
-    (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0) (v : EuclideanSpace ℂ ι) (j : Fin (Col.dK K)) :
-    Hf (Col.p2 K v) (Col.e K j) = 0 := by
-  rw [Hf_eq_inner_swap', Col.p2, inner_sub_right, Col.p1, inner_sum]
-  simp_rw [inner_smul_right, ← Hf_eq_inner_swap', Hf_e_e_eq_ite hK]
-  simp [Col.z]
-
-private theorem Hf_eq_sum_z_add_Hf_p2 {ι : Type} [Fintype ι] {K : Submodule ℝ (EuclideanSpace ℂ ι)}
-    (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0) (v w : EuclideanSpace ℂ ι) :
-    Hf v w = ∑ k, Col.z K k v * (starRingEnd ℂ) (Col.z K k w) + Hf (Col.p2 K v) (Col.p2 K w) := by
-  have hv : v = Col.p1 K v + Col.p2 K v := by rw [Col.p2]; abel
-  have hw : w = Col.p1 K w + Col.p2 K w := by rw [Col.p2]; abel
-  have hgen : ∀ u x : EuclideanSpace ℂ ι,
-      Hf (Col.p1 K u) x = ∑ k, Col.z K k u * (starRingEnd ℂ) (Col.z K k x) := by
-    intro u x
-    rw [Hf_eq_inner_swap', Col.p1, inner_sum]
-    refine Finset.sum_congr rfl fun k _ => ?_
-    rw [inner_smul_right, ← Hf_eq_inner_swap', Hf_conj]
-    all_goals rfl
-  have h2 : Hf (Col.p2 K v) (Col.p1 K w) = 0 := by
-    rw [Hf_conj, hgen]
-    simp [Col.z, Hf_p2_e_eq_zero hK]
-  have h3 : Hf (Col.p2 K v) w = Hf (Col.p2 K v) (Col.p2 K w) := by
-    conv_lhs => rw [hw]
-    rw [Hf_eq_inner_swap', inner_add_left, ← Hf_eq_inner_swap', ← Hf_eq_inner_swap', h2, zero_add]
-  calc Hf v w = Hf (Col.p1 K v + Col.p2 K v) w := by rw [← hv]
-    _ = Hf (Col.p1 K v) w + Hf (Col.p2 K v) w := by rw [Col.Hf_add_l]
-    _ = _ := by rw [hgen, h3]
-
 private theorem im_Hf_eq_zero_on_IR {I : Submodule ℤ (Vsp X.dim)} {x : Vsp X.dim}
     (hx : ∀ a ∈ I, (Hf x a).im = 0) : ∀ a ∈ IR I, (Hf x a).im = 0 := by
   intro a ha
   induction ha using Submodule.span_induction with
   | mem y hy => exact hx y hy
   | zero => simp [Hf]
-  | add y w _ _ hy hw =>
-    have h1 : Hf x (y + w) = Hf x y + Hf x w := by
-      simp only [Hf, ← Finset.sum_add_distrib]
-      refine Finset.sum_congr rfl fun i _ => ?_
-      simp [mul_add]
-    rw [h1, Complex.add_im, hy, hw, add_zero]
-  | smul r y _ hy =>
-    have h1 : Hf x (r • y) = (r : ℂ) * Hf x y := by
-      simp only [Hf, Finset.mul_sum]
-      refine Finset.sum_congr rfl fun i _ => ?_
-      simp [Complex.real_smul] <;> ring
-    simp [h1, hy]
+  | add y w _ _ hy hw => rw [Col.Hf_add_r, Complex.add_im, hy, hw, add_zero]
+  | smul r y _ hy => simp [Col.Hf_rsmul_r, hy]
 
 theorem translate_zero_zeroModeLift (hI : IsSplit P I) (hP : Ext.PackingCount) (q : ℕ)
     {β : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ} (hβ : β ∈ (Col.YB hI hP q).Sec q) :
     Col.Tc X I q β 0 = Col.F0 I q β := by
-  have hK := Col.hK_of hI
   have hN := (Submodule.Quotient.mk_eq_zero _).mp (cabOut_mk (0 : Col.Qc X I))
-  have hIp : ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ∈ Col.Ip X I := hN
-  have hIp' : ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ∈ X.L ∧ ∀ b ∈ I, (Hf ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) b).im = 0 := hIp
-  have hz : ∀ k, (Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)).im = 0 := fun k => im_Hf_eq_zero_on_IR hIp'.2 _ (Col.ob (IR I) k).2
-  have hγ : Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ∈ lat (Col.YB hI hP q).b := by
-    have h := Col.mem_GB.2 ⟨_, hIp, rfl⟩
-    rw [← Col.lat_bB hI hP] at h
-    exact h
-  have hβ' : Differentiable ℂ β ∧ ∀ γ ∈ lat (Col.YB hI hP q).b, ∀ w,
-      β (w + γ) = (Col.YB hI hP q).ka γ * cexp (q * Real.pi * Hf w γ + q * Real.pi * Hf γ γ / 2) * β w := hβ
-  have hka : (Col.YB hI hP q).ka (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = (X.eps ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) : ℂ) ^ q := Col.kaB_wmap hI q hIp
-  have hzr : ∀ k, (starRingEnd ℂ) (Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) := fun k => by
-    rw [Complex.conj_eq_iff_im]; exact hz k
-  funext v
-  have hper := hβ'.2 _ hγ (Col.wmap (IR I) v - Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim))
-  rw [sub_add_cancel] at hper
-  have h1 : Hf v ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) = ∑ k, Col.z (IR I) k v * Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) + Hf (Col.wmap (IR I) v) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) := by
-    rw [Hf_eq_sum_z_add_Hf_p2 hK v]
-    simp only [hzr]
-    first | rw [Col.Hf_wmap hK] | rw [Col.Hf_wmap]
-  have h2 : Hf ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) = Col.S (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) + Hf (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) := by
-    rw [Hf_eq_sum_z_add_Hf_p2 hK]
-    simp only [hzr, Col.S, sq]
-    first | rw [Col.Hf_wmap hK] | rw [Col.Hf_wmap]
-  have hzs : ∀ k, Col.z (IR I) k (v - ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = Col.z (IR I) k v - Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) := fun k => by
-    simp only [Col.z]
-    rw [Hf_eq_inner_swap', inner_sub_right, ← Hf_eq_inner_swap', ← Hf_eq_inner_swap']
-  have h3 : Col.S (IR I) (v - ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = Col.S (IR I) v - 2 * ∑ k, Col.z (IR I) k v * Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) +
-      Col.S (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) := by
-    rw [Col.S, Col.S, Col.S]
-    simp only [hzs]
-    rw [Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]
-    exact Finset.sum_congr rfl fun k _ => by ring
-  have h4 : Hf (Col.wmap (IR I) v - Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = Hf (Col.wmap (IR I) v) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) - Hf (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) := by
-    rw [Hf_eq_inner_swap', inner_sub_right, ← Hf_eq_inner_swap', ← Hf_eq_inner_swap']
-  have hE : (q * Real.pi * Hf v ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) - q * Real.pi * Hf ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) / 2) +
-      (q * Real.pi / 2 : ℂ) * Col.S (IR I) (v - ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) =
-      (q * Real.pi / 2 : ℂ) * Col.S (IR I) v +
-        (q * Real.pi * Hf (Col.wmap (IR I) v - Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) + q * Real.pi * Hf (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) / 2) := by
-    rw [h1, h2, h3, h4]; ring
-  show (X.eps ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) : ℂ) ^ q * (cexp (q * Real.pi * Hf v ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) - q * Real.pi * Hf ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) / 2) *
-      (cexp ((q * Real.pi / 2 : ℂ) * Col.S (IR I) (v - ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim))) * β (Col.wmap (IR I) (v - ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim))))) =
-    cexp ((q * Real.pi / 2 : ℂ) * Col.S (IR I) v) * β (Col.wmap (IR I) v)
-  rw [map_sub, hper, hka, ← mul_assoc (cexp _), ← Complex.exp_add, hE, Complex.exp_add]
-  ring
+  exact Col.translation_zeroModeLift hI hP q hβ hN
 
 theorem cab_expo2 {q t u : ℝ} (hq : 0 < q) :
     q * Real.pi * t ^ 2 / 2 - q * Real.pi * u ^ 2 + 2 * q * Real.pi * t * u ≤
@@ -515,23 +420,7 @@ theorem cab_YB_abs (hI : IsSplit P I) (hP : Ext.PackingCount) (q : ℕ) :
   have hl : γ ∈ Col.GB X I := by rw [← Col.lat_bB hI hP]; exact hγ
   obtain ⟨x, hx, rfl⟩ := Col.mem_GB.1 hl
   have hx' : x ∈ X.L ∧ ∀ a ∈ I, (Hf x a).im = 0 := hx
-  have hreal : ∀ a ∈ IR I, (Hf x a).im = 0 := by
-    intro a ha
-    induction ha using Submodule.span_induction with
-    | mem y hy => exact hx'.2 y hy
-    | zero => simp [Hf]
-    | add y w _ _ hy hw =>
-      have h1 : Hf x (y + w) = Hf x y + Hf x w := by
-        simp only [Hf, ← Finset.sum_add_distrib]
-        refine Finset.sum_congr rfl fun i _ => ?_
-        simp [mul_add]
-      rw [h1, Complex.add_im, hy, hw, add_zero]
-    | smul r y _ hy =>
-      have h1 : Hf x (r • y) = (r : ℂ) * Hf x y := by
-        simp only [Hf, Finset.mul_sum]
-        refine Finset.sum_congr rfl fun i _ => ?_
-        simp [Complex.real_smul] <;> ring
-      simp [h1, hy]
+  have hreal : ∀ a ∈ IR I, (Hf x a).im = 0 := im_Hf_eq_zero_on_IR hx'.2
   have hz : ∀ k, (Col.z (IR I) k x).im = 0 := fun k => hreal _ (Col.ob (IR I) k).2
   have hp1 : Col.p1 (IR I) x ∈ IR I := by
     have hsum : Col.p1 (IR I) x = ∑ k, (Col.z (IR I) k x).re • Col.e (IR I) k := by

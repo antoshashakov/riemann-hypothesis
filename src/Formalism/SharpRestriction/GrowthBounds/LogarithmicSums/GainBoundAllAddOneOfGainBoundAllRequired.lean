@@ -240,12 +240,6 @@ theorem asksAll_of (X : Inst D L) (hSz : Nm D + 1 ≤ L.sc.w'' D.R.n) : Requires
   have ha1 : 1 ≤ L.sc.a := by
     show 1 ≤ L.sc.x * L.sc.b
     nlinarith
-  have hX1 : 1 ≤ L.sc.X' := by
-    show 1 ≤ Real.exp (L.sc.x ^ (L.sc.eps / 3))
-    exact Real.one_le_exp (Real.rpow_nonneg (by linarith) _)
-  have hb'0 : 0 ≤ L.sc.b' := by
-    show 0 ≤ L.sc.a / L.sc.X'
-    exact div_nonneg (by linarith) (by linarith)
   intro a b ha hb p hp j hj s hs
   have hp2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le
   obtain ⟨hk0, hkN⟩ := kaJ_bounds D j hj
@@ -358,12 +352,6 @@ theorem fl_succ (D : D7) (s : Scale) (C : ℝ) (p : ℕ) (hp : p.Prime) : fl D s
   have ha1 : 1 ≤ s.a := by
     show 1 ≤ s.x * s.b
     nlinarith
-  have hX1 : 1 ≤ s.X' := by
-    show 1 ≤ Real.exp (s.x ^ (s.eps / 3))
-    exact Real.one_le_exp (Real.rpow_nonneg (by linarith) _)
-  have hb'0 : 0 ≤ s.b' := by
-    show 0 ≤ s.a / s.X'
-    exact div_nonneg (by linarith) (by linarith)
   have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.one_lt
   have hl : 0 ≤ Real.logb p s.a := Real.logb_nonneg hp1 ha1
   have h1 : 0 ≤ (D.R.f : ℝ) * Nm D ^ 2 * Real.logb p s.a := mul_nonneg (by positivity) hl
