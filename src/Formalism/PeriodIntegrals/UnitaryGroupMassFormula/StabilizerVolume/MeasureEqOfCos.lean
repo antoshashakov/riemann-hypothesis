@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.MeasureEqOfCos
 
 @[expose] public section
 
@@ -147,39 +148,7 @@ theorem measure_eq_of_cos (m1 m2 : Measure X) [IsFiniteMeasure m1]
 
 end CosMeas
 
-theorem cosDens_holds : CosDens := by
-  unfold CosDens
-  intro X _ _ _ _ _ _ ν m _ _ H hHo _ hanti hb c0 κ hm0 hcos S hS
-  have hle : ∀ n, H n ≤ H 0 := fun n => hanti (Nat.zero_le n)
-  have hcos' : ∀ n y, m {z | z - y ∈ H n} = ((κ • ν).restrict {z | z - c0 ∈ H 0}) {z | z - y ∈ H n} := by
-    intro n y
-    have hmeas : MeasurableSet {z : X | z - y ∈ H n} :=
-      ((hHo n).preimage (continuous_id.sub continuous_const)).measurableSet
-    rw [Measure.restrict_apply hmeas, Measure.smul_apply, smul_eq_mul]
-    by_cases hy : y - c0 ∈ H 0
-    · have hsub : {z : X | z - y ∈ H n} ∩ {z | z - c0 ∈ H 0} = {z | z - y ∈ H n} := by
-        apply inter_eq_left.mpr
-        intro z hz
-        have e : z - c0 = (z - y) + (y - c0) := by abel
-        show z - c0 ∈ H 0
-        rw [e]
-        exact (H 0).add_mem (hle n hz) hy
-      rw [hsub]
-      exact hcos n y hy
-    ·
-      have hout : ∀ z, z - y ∈ H n → z - c0 ∉ H 0 := by
-        intro z hz hz0
-        apply hy
-        have e : y - c0 = (z - c0) - (z - y) := by abel
-        rw [e]
-        exact (H 0).sub_mem hz0 (hle n hz)
-      have hempty : {z : X | z - y ∈ H n} ∩ {z | z - c0 ∈ H 0} = ∅ := by
-        ext z
-        simp only [mem_inter_iff, mem_ofPred_eq, mem_empty_iff_false, iff_false, not_and]
-        exact hout z
-      rw [hempty, measure_empty, mul_zero]
-      exact measure_mono_null (fun z hz => hout z hz) hm0
-  rw [measure_eq_of_cos m _ H hHo hanti hb hcos' S hS hS.isClosed,
-    Measure.restrict_apply hS.isClosed.measurableSet, Measure.smul_apply, smul_eq_mul]
+theorem cosDens_holds : CosDens :=
+  _root_.PI.VolStabSW.cosDens_holds
 
 end PI.VolStabS
