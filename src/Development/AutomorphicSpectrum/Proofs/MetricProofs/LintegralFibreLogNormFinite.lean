@@ -3,20 +3,23 @@ module
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.CxPosDens
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MemChartComponents
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterSt
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AemeasurableCxPosDensityStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartComponentsFiniteProjectionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AemeasurableCxPosDensity
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartComponentsFiniteProjection
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartDensityIntegrable
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartSectionNotMemComponentsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.DomCellLogNormMeasurableInvariantStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGoodProjFirstCoordinateStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSmoothMetricsNonnegDensityStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegrableChartAbsDensityStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegralDensityIndependentProjectionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChartSectionNotMemComponents
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.DomCellLogNormMeasurableInvariant
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGoodProjFirstCoordinate
+public import Development.AutomorphicSpectrum.PublishedTheorems.Metrics₂.SheetDensityEqSetSheetDensity
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsSmoothMetricsNonnegDensity
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegrableChartAbsDensity
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IntegralDensityIndependentProjection
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.SegreChartProjObjects
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MeasurableDomCellLogNormChart
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RingKrullDimChartComponentsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SetFibreFiniteOfGoodProjStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ZeroSetChartIdealEqChartSetStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RingKrullDimChartComponents
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SetFibreFiniteOfGoodProj
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.Statements
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ZeroSetChartIdealEqChartSet
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PPtsSemiPosMassFinite
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -124,11 +127,11 @@ theorem cell_mass_lt_top {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type
   classical
   set σ : Fin (Fintype.card ((k : K) → ι k)) ≃ ((k : K) → ι k) := (Fintype.equivFin _).symm with hσ
   set G := (domCell i).indicator (absLogNorm A s) with hG
-  obtain ⟨hGm, hGi⟩ := GlobalTheory.T.domCell_logNorm_measurable_invariant K ι A s a i hA hAa hs
-  have hzero := GlobalTheory.T.zeroSet_chartIdeal_eq_chartSet K ι Q _ σ i hQ.2.1.2.1
-  have hdim := GlobalTheory.T.ringKrullDim_chartComponents K ι Q e _ σ i hQ
-  have hfin := GlobalTheory.T.chartComponents_finite_projection K ι Q e _ σ i Ψ hQ hΨ hΨ0 hdim
-  have hfs := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.FibSum.fibreSum K ι Q e _ σ i N G Ψ hQ hN hGi hΨ0 (GlobalTheory.T.setFibre_finite_of_goodProj K ι Q e Ψ hQ hΨ) hzero hdim hfin
+  obtain ⟨hGm, hGi⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.cutWeight_measurable_invariant K ι A s a i hA hAa hs
+  have hzero := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.zeroSet_chartIdeal_conePts K ι Q _ σ i hQ.2.1.2.1
+  have hdim := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartComponents_dim K ι Q e _ σ i hQ
+  have hfin := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.FinProj.chartProj_finite K ι Q e _ σ i Ψ hQ hΨ hΨ0 hdim
+  have hfs := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.FibSum.fibreSum K ι Q e _ σ i N G Ψ hQ hN hGi hΨ0 (_root_.GlobalTheory.CompanionTheory.Ar.Pub.CxFib.setFibre_finite K ι Q e Ψ hQ hΨ) hzero hdim hfin
   have hsm : ∀ j, ∀ J ∈ chartComponents (conePts Q) σ i, GroundTheory.Heights₂.Heights.SmoothNear
       (GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J) (chartPot σ i N j) := fun j J hJ =>
     GroundTheory.Heights₂.Heights.smoothNear_chartPot σ i hN (fun x hx => by
@@ -141,8 +144,8 @@ theorem cell_mass_lt_top {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type
       chartAbsDens J (chartProjMatrix σ Ψ) (chartWeight σ i G) (chartPot σ i N) y) :=
     integrable_finsetSum _ fun J hJ =>
       _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.integrable_chartAbsDens_cellWeight K ι Q e _ σ i Ψ N A s a J hA hAa hs hGm hzero hJ (hfin J hJ) fun R C =>
-        GlobalTheory.T.integrable_chartAbsDensity _ e J _ _ _ R C (mem_chartComponents.1 hJ).1.1 (hdim J hJ) (hfin J hJ)
-          (GlobalTheory.T.chartSection_not_mem_components K ι Q e _ σ i s a hQ hs hsQ J hJ) fun j => hsm j J hJ
+        _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.PolyLog.integrable_chartAbsDens_log _ e J _ _ _ R C (mem_chartComponents.1 hJ).1.1 (hdim J hJ) (hfin J hJ)
+          (_root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartSection_notMem_component K ι Q e _ σ i s a hQ hs hsQ J hJ) fun j => hsm j J hJ
   refine lt_of_le_of_lt (lintegral_mono_ae ?_) hint.lintegral_lt_top
   filter_upwards [hfs] with y hy
   refine ENNReal.ofReal_le_ofReal ?_
@@ -167,7 +170,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Pub.CxChart.logNorm_mass_lt_top : ∀ (K
       |setSheetDensity (conePts Q) Ψ (pot L) (logNormC A s) y w|) < ⊤ := by
   intro K _ ι _ Q e Ψ L A s a hQ hΨ hL hA hAa hs hsQ
   classical
-  obtain ⟨N, hN, hTw⟩ := GlobalTheory.T.exists_smooth_metrics_nonneg_density K ι e L hL
+  obtain ⟨N, hN, hTw⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxTwist.exists_dominating_twist K ι e L hL
   obtain ⟨hnn, hbd⟩ := hTw (conePts Q) Ψ fun z hz => hz.1
   set G : ((k : K) → ι k) → ((Σ k, ι k) → ℂ) → ℝ := fun i => (domCell i).indicator (absLogNorm A s) with hG
   have hG0 : ∀ i z, 0 ≤ G i z := fun i z => Set.indicator_nonneg (fun z _ => by
@@ -175,12 +178,12 @@ theorem GlobalTheory.CompanionTheory.Ar.Pub.CxChart.logNorm_mass_lt_top : ∀ (K
     split_ifs
     · exact abs_nonneg _
     · exact le_rfl) z
-  have hWm := fun i => GlobalTheory.T.domCell_logNorm_measurable_invariant K ι A s a i hA hAa hs
+  have hWm := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxChart.cutWeight_measurable_invariant K ι A s a i hA hAa hs
   have hcell : ∀ i, ∫⁻ y, ENNReal.ofReal (cxPosDens (conePts Q) Ψ (pot N) (G i) y) < ⊤ := by
     intro i
     by_cases hi : ∃ z ∈ conePts Q, segre z i ≠ 0
-    · obtain ⟨Ψ', hΨ', hΨ0⟩ := GlobalTheory.T.exists_goodProj_first_coordinate K ι Q e i hQ hi
-      rw [GlobalTheory.T.integral_density_independent_projection K ι Q e Ψ Ψ' N (G i) hQ hΨ hΨ' hN (hWm i).1 (hWm i).2]
+    · obtain ⟨Ψ', hΨ', hΨ0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord K ι Q e i hQ hi
+      rw [_root_.GlobalTheory.CompanionTheory.Ar.Pub.CxPosIndep.cx_posPart_indep K ι Q e Ψ Ψ' N (G i) hQ hΨ hΨ' hN (hWm i).1 (hWm i).2]
       exact cell_mass_lt_top hQ hΨ' hΨ0 hN hA hAa hs hsQ fun y w => (hTw (conePts Q) Ψ' fun z hz => hz.1).1 _ y w (hG0 i)
     · have h0 : ∀ z ∈ conePts Q, G i z = 0 := fun z hz => Set.indicator_of_notMem (fun hzi =>
         hi ⟨z, hz, segre_ne_zero_of_mem_domCell hz.1 hzi⟩) _
@@ -188,7 +191,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Pub.CxChart.logNorm_mass_lt_top : ∀ (K
         unfold cxPosDens
         simp [setSheetDensity_eq_zero (pot N) h0]
       simp [this]
-  have hfib := GlobalTheory.T.setFibre_finite_of_goodProj K ι Q e Ψ hQ hΨ
+  have hfib := _root_.GlobalTheory.CompanionTheory.Ar.Pub.CxFib.setFibre_finite K ι Q e Ψ hQ hΨ
   have hcov : ∀ z ∈ conePts Q, |logNormC A s z| ≤ ∑ i, G i z := by
     intro z hz
     obtain ⟨i, hi⟩ := exists_mem_domCell hz.1
@@ -217,6 +220,6 @@ theorem GlobalTheory.CompanionTheory.Ar.Pub.CxChart.logNorm_mass_lt_top : ∀ (K
         lintegral_mono hpt
     _ = ENNReal.ofReal (3 ^ e) * ∑ i, ∫⁻ y, ENNReal.ofReal (cxPosDens (conePts Q) Ψ (pot N) (G i) y) := by
         rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_finsetSum' _ fun i _ =>
-          (GlobalTheory.T.aemeasurable_cxPosDensity K ι Q e Ψ N (G i) hQ hΨ hN (hWm i).1 (hWm i).2).ennreal_ofReal]
+          (_root_.GlobalTheory.CompanionTheory.Ar.Pub.CxPosMeas.cxPosDens_aemeasurable K ι Q e Ψ N (G i) hQ hΨ hN (hWm i).1 (hWm i).2).ennreal_ofReal]
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top
         (ENNReal.sum_lt_top.2 fun i _ => hcell i)

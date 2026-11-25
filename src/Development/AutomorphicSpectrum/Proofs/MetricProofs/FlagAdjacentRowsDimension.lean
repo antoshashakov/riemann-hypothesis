@@ -2,19 +2,21 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackPullback
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BaseVectorPropertiesStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionFifthStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionFourthStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionSeventhStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticBadLocusNullStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticPluckerColumnSwapStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionFifth
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionFourth
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentTwistedResolutionSeventh
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticBadLocusNull
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticPluckerColumnSwap
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticProjectionBijectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticSpaceNonemptyStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagDimensionComplementEquivStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticSpaceNonempty
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagDimensionComplementEquiv
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsClosedSectionBoundaryStatement
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionFunctorialHolomorphic
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerUnipotentFamilyAnalyticStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerUnipotentOrbitEqualityStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.NullSetImageUnderHoloMapStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerUnipotentFamilyAnalytic
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LowerUnipotentOrbitEquality
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.NullSetImageUnderHoloMap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -79,9 +81,9 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
   have hblk : ((cb : ℕ) < N - j ↔ (ca : ℕ) < N - j) := by
     unfold lastCol at hca
     split_ifs at hca <;> omega
-  obtain ⟨e⟩ := GlobalTheory.T.flag_dimension_complement_equiv Ψ N j n d τ ca cb hj hlt hblk hdim
-  obtain ⟨lc1, lc2, lc3, lc4, lc5⟩ := GlobalTheory.T.lower_unipotent_family_analytic Ψ N j τ ca cb hlt hblk
-  haveI hSne := GlobalTheory.T.flag_analytic_space_nonempty K ι Φ y Ψ N j M n d BM FA
+  obtain ⟨e⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.Coord.nonempty_equiv_cIdx Ψ N j n d τ ca cb hj hlt hblk hdim
+  obtain ⟨lc1, lc2, lc3, lc4, lc5⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.LcFam.lc_main Ψ N j τ ca cb hlt hblk
+  haveI hSne := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FibNonempty.flagAn_S_nonempty K ι Φ y Ψ N j M n d BM FA
   haveI hWne := GlobalTheory.T.flag_adjacent_twisted_resolution_third K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW
   have hpi := GlobalTheory.T.flag_analytic_projection_bijective K ι Φ y Ψ N j M n d BM FA
   have hgood := GlobalTheory.T.base_vector_properties K ι Φ y Ψ N j M n BM
@@ -118,7 +120,7 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
     fun kb l k w hw => AnalyticAt.comp (g := BM.Rb.A.chart k ∘ (BM.Rb.A.chart kb).symm) (f := base)
       (BM.Rb.A.holo kb k _ ⟨hw.1.1, hw.2⟩) (base_an w trivial)
   have hfam := fun (kb : Fin BM.Rb.A.n) (l : Fin BM.q) =>
-    GlobalTheory.T.flag_adjacent_twisted_resolution_fifth K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj l (Ut kb l) Hh (bpt kb) (hUo kb l)
+    _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FamCh.charts K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj l (Ut kb l) Hh (bpt kb) (hUo kb l)
       (fun τ' r s w _ => AnalyticAt.comp (g := fun c => FC.Lc τ ca cb c τ' r s) (f := cc) (lc2 τ' r s _ trivial) (cc_an w trivial))
       (hbpc kb l) (hbpa kb l) (fun w hw => ⟨hw.2, fun τ' => lc1 _ τ'⟩)
   choose ΦYt ΦWt hYc hYa hWc hWa hYs hWs using hfam
@@ -183,7 +185,7 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
     have o1 := (hYs _ _ z hz).2 x₀ hx₀
     have o2 := (hYs _ _ z' hz').2 x₀ (hx₀.trans heq)
     rw [← e1] at o2
-    have e3 := GlobalTheory.T.lower_unipotent_orbit_equality K ι Φ y Ψ N j M n BM (tm m).2 (bpt (tm m).1 (Fin.tail z)) hz.2.1
+    have e3 := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.flag_uniq K ι Φ y Ψ N j M n BM (tm m).2 (bpt (tm m).1 (Fin.tail z)) hz.2.1
       (FC.Lca τ ca cb (cc (Fin.tail z)) (z 0)) (FC.Lca τ ca cb (cc (Fin.tail z')) (z' 0))
       (lc4 _ _) (lc4 _ _) (orbit_trans (orbit_symm o1) o2)
     obtain ⟨e4, e5⟩ := lc5 _ _ _ _ e3
@@ -218,15 +220,15 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
     rcases lt_or_gt_of_ne hne with h | h
     · exact hdisY m m' h
     · exact (hdisY m' m h).symm
-  · refine hnull_mono _ ?_ (GlobalTheory.T.null_set_image_under_holoMap (d + 1) FA.S.X FA.Re.R.X FA.S.A FA.Re.R.A FA.Re.π _ FA.Re.holo
-      (hnull_un _ _ (GlobalTheory.T.flag_analytic_bad_locus_null K ι Φ y Ψ N j M n d BM FA)))
+  · refine hnull_mono _ ?_ (_root_.GlobalTheory.CompanionTheory.Ar.PB.NullImage.isNull_image_of_holoMap (d + 1) FA.S.X FA.Re.R.X FA.S.A FA.Re.R.A FA.Re.π _ FA.Re.holo
+      (hnull_un _ _ (_root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.null_off_bigCell_resolution K ι Φ y Ψ N j M n d BM FA)))
     intro x hx
     obtain ⟨x₀, rfl⟩ := hpi.2 x
     obtain ⟨m, hm⟩ := hpc_cov (FA.pr (FA.Re.π x₀))
     refine ⟨x₀, Set.mem_iUnion.2 ⟨(tm m).2, hm.1.2, ?_⟩, rfl⟩
     by_contra hcon
     push_neg at hcon
-    obtain ⟨c, a', ho⟩ := GlobalTheory.T.flag_analytic_plucker_column_swap K ι Φ y Ψ N j M n d BM FA τ ca cb hlt hblk (tm m).2 x₀ hm.1.2 hcon.2
+    obtain ⟨c, a', ho⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.exists_Lca_of_plk_ne K ι Φ y Ψ N j M n d BM FA τ ca cb hlt hblk (tm m).2 x₀ hm.1.2 hcon.2
     have hbs := hm.1.1
     let w := mk ((BM.Rb.A.chart (tm m).1) (FA.pr (FA.Re.π x₀))) c
     have hbw : bpt (tm m).1 w = FA.pr (FA.Re.π x₀) := by
@@ -290,13 +292,13 @@ theorem fibre_charts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fint
     rcases lt_or_gt_of_ne hne with h | h
     · exact key m m' h
     · exact (key m' m h).symm
-  · refine hnull_mono _ ?_ (hnull_un _ _ (GlobalTheory.T.flag_adjacent_twisted_resolution_seventh K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj))
+  · refine hnull_mono _ ?_ (hnull_un _ _ (_root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.null_w K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj))
     intro x hx
     obtain ⟨m, hm⟩ := hpc_cov (FA.pr (q 0 x))
     refine Set.mem_iUnion.2 ⟨(tm m).2, hm.1.2, ?_⟩
     by_contra hcon
     push_neg at hcon
-    obtain ⟨c, a₀, a₁, ho⟩ := GlobalTheory.T.flag_adjacent_twisted_resolution_fourth K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj
+    obtain ⟨c, a₀, a₁, ho⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.Cell.vector_of_chart K ι Φ y Ψ N j M n d BM FA τ a b k₀ ca cb hb hs hk hca hcb RW q hq h0 h1 hinj
       (tm m).2 x hm.1.2 (fun p => (hcon.2 p).1) (fun p => (hcon.2 p).2)
     have hbs := hm.1.1
     let w := mk ((BM.Rb.A.chart (tm m).1) (FA.pr (q 0 x))) c
