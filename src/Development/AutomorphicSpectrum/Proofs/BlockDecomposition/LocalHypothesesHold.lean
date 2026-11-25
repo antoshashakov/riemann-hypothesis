@@ -4,7 +4,7 @@ public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemTwCentSwTw
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EventuallyOfSectionPlacesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTwistedDoubleCosetsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteTwistedDoubleCosets
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalConditionsOfEquivStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGoodReductionStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSupportFacts
@@ -89,7 +89,7 @@ theorem split_fin : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopological
   (∀ C : Set H, IsCompact C → {q : DoubleCoset.Quotient (twCent (MonoidHom.id H) (d * σ d') : Set H) (K : Set H) |
     ∃ k ∈ K, (Quotient.out q * k)⁻¹ * (d * σ d') * MonoidHom.id H (Quotient.out q * k) ∈ C}.Finite) →
   {q : DoubleCoset.Quotient (twCent (swTw σ) (d, d') : Set (H × H)) (K.prod K : Set (H × H)) |
-    ∃ k ∈ K.prod K, f ((Quotient.out q * k)⁻¹ * (d, d') * swTw σ (Quotient.out q * k)) ≠ 0}.Finite := @GlobalTheory.T.finite_twisted_double_cosets
+    ∃ k ∈ K.prod K, f ((Quotient.out q * k)⁻¹ * (d, d') * swTw σ (Quotient.out q * k)) ≠ 0}.Finite := @_root_.GlobalTheory.CompanionTheory.LocHypSplit.finite_doubleCosets_split
 
 theorem split_cpt : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H] (σ : H →* H) (K : Subgroup H) (d d' : H),
   Continuous σ → (∀ g, σ (σ g) = g) → IsOpen (K : Set H) → IsCompact (K : Set H) → (∀ k ∈ K, σ k ∈ K) →

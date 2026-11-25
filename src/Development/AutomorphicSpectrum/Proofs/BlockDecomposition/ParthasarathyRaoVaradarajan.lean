@@ -10,7 +10,7 @@ public import Formalism.RealPlaceAnalysis.StatementA
 public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHighestWeightModule
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HighestWeightAntitoneOfFiniteDimensionalStable
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Sl2SquareKillsVectorStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.Sl2SquareKillsVector
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinGlRelationsAdjointStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SpinTensorHighestWeightStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -185,7 +185,7 @@ theorem assemble {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n 
     intro i j hij
     have hlt : i < j := by rw [Fin.lt_def]; omega
     have hne : i ≠ j := ne_of_lt hlt
-    refine GlobalTheory.T.sl2_square_kills_vector E hEgl hEu hne ha0 (hay i) (hay j) ⟨ν i - ν j - 1, ?_⟩ ?_ ?_
+    refine _root_.GlobalTheory.CompanionTheory.RealCount.sl2_square_kills E hEgl hEu hne ha0 (hay i) (hay j) ⟨ν i - ν j - 1, ?_⟩ ?_ ?_
     · simp only [wtR, rhoV]; rw [hij]; push_cast; ring
     · have := hdom hlt.le
       simp only [wtR, rhoV] at this ⊢

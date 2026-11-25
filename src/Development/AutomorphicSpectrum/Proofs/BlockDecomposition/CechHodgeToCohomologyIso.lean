@@ -4,7 +4,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SerreCla
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechDoubleComplexMap
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleComplexDegenerateColumnIsoStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleComplexLeadSurjectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleComplexMapLeadCompatStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleComplexMapLeadCompat
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CechDesc
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
 import Mathlib.Algebra.Order.Floor.Extended
@@ -170,7 +170,7 @@ theorem cech_deg : ∀ (R : Type) [CommRing R], ∃ e : ∀ {C : Type 1} [Catego
   have hy : (eDeg F U hU hc a hv j).symm ((CrystallineSemistableComparison.Pb.cechH F U a).cx.cls _ h0) =
       (eTot F U hU hc (a + j)).symm (clsZ (dbl U hU F) (a + j) j z) := by
     rw [LinearEquiv.symm_apply_eq, eDeg_apply, LinearEquiv.apply_symm_apply, eRow_clsZ, hz, eCol_cls F U hU a j c₁ hd₁ h0]
-  obtain ⟨z', hz'1, y', hy', y₀, hy₀, e1, e2, e3⟩ := GlobalTheory.T.double_complex_map_lead_compat (dbl U hU F) (dbl U' hU' F') φ a j z
+  obtain ⟨z', hz'1, y', hy', y₀, hy₀, e1, e2, e3⟩ := _root_.GlobalTheory.CompanionTheory.CechSerre.leadE_map (dbl U hU F) (dbl U' hU' F') φ a j z
   show m.pull (a + j) ((eDeg F U hU hc a hv j).symm _) = (eDeg F' U' hU' hc' a hv' j).symm _
   rw [hy, LinearEquiv.eq_symm_apply, eDeg_apply]
   have h2 : eTot F' U' hU' hc' (a + j) (m.pull (a + j) ((eTot F U hU hc (a + j)).symm (clsZ (dbl U hU F) (a + j) j z))) =

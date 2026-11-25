@@ -8,7 +8,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockInv
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermHeckeFormulaStatement
 public import Formalism.SatakeDualWeyl.StatementF
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DetOrderBoundedHeckeSupport
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiagonalLatticeIndexPowStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiagonalLatticeIndexPow
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeIndicatorFormula
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeVectorLinearCombinationStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LatticeIndexEqDiagonalStatement
@@ -95,7 +96,7 @@ theorem hint_lat (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) 
     rw [e]
     exact IsInt.mul hX j2
   have := GlobalTheory.T.lattice_indicator_integral_index E a b w (latM ϖ m) hle
-  rw [GlobalTheory.T.lattice_index_eq_diagonal E a b w ϖ hϖ i j hi hj m t1 t2, GlobalTheory.T.diagonal_lattice_index_pow E a b w ϖ hϖ i j hi hj] at this
+  rw [GlobalTheory.T.lattice_index_eq_diagonal E a b w ϖ hϖ i j hi hj m t1 t2, _root_.GlobalTheory.CompanionTheory.CtS.LatDiag.relIndex_intSub_latD E a b w ϖ hϖ i j hi hj] at this
   rw [Nat.cast_pow] at this
   have e2 : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) =>
       if IsInt w (m.1.val * Multiplicative.toAdd X) ∧ IsInt w (ϖ • (Multiplicative.toAdd X * (m.2⁻¹).val)) then (1 : ℂ) else 0) =

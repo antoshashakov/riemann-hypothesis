@@ -5,7 +5,8 @@ public import Development.WeilBound.CoreStatements.AutomorphicKernels.Eisenstein
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDetParabolicFrameStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousDerivFamily
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecompositionStatement
+public import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.StripEntire
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecomposition
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicIffFrameParabolicStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactFrameEquivStatement
 import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.AdelicHomeomorphisms.IsTopologicalGroupG2
@@ -83,7 +84,7 @@ theorem scalar_wall (hSec : SecLaw) (hWL : WallLaw) {G : Type} [Group G] [Topolo
   have hzero : ∀ r ∈ P, r ∈ K → η r = 0 := fun r _ hr => by
     have := hη.right 1 r hr
     rwa [one_mul, h1] at this
-  obtain ⟨d, ρ, w, e, hρ, hw, he⟩ := GlobalTheory.T.finite_K_type_decomposition G Γ K P c η hP.ch hzero
+  obtain ⟨d, ρ, w, e, hρ, hw, he⟩ := _root_.GlobalTheory.CompanionTheory.SiegelRep.exists_rep G Γ K P c η hP.ch hzero
     (fun p hp q _ => hη.left p hp q) f u hf hlaw hfin
   obtain ⟨R, D, Op, H, hWl⟩ := hW (Fin d → ℂ) ρ hρ
   obtain ⟨hs₁, -, M₀, hM₀⟩ := hSec G (Fin d → ℂ) K ρ hK hρ Γ P c hP

@@ -1,7 +1,10 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UfamConst
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearRecurrenceGrowthBoundStatement
+public import Mathlib.Algebra.Polynomial.Degree.Defs
+public import Mathlib.Algebra.Polynomial.Eval.Defs
+public import Mathlib.Analysis.Complex.Exponential
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearRecurrenceGrowthBound
 public import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.ConstantTermSteps.UnipGLMemAdelicBorel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -82,7 +85,7 @@ theorem ubnd_ctn_step : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (ι :
   UBnd (fun i => An.ctn r (f i)) (Function.update m r κ) := by
   intro K _ _ n ι f m r D κ' κ pf hr hrn hf hB hκ hpf ω hω hωB t₀ Q hQ
   obtain ⟨C₁, hC₁⟩ := ubnd_ctn (r := r) hB ω hω hωB t₀ Q hQ
-  obtain ⟨C₂, hC₂0, hC₂⟩ := GlobalTheory.T.linear_recurrence_growth_bound D κ' κ hκ
+  obtain ⟨C₂, hC₂0, hC₂⟩ := _root_.GlobalTheory.CompanionTheory.LinRec.uniformRecBound D κ' κ hκ
   set E : ℝ := Real.exp (|m r| * (|t₀| + 1 + D)) with hE
   refine ⟨C₂ * (max C₁ 0 * E) * Real.exp (|κ| * (|t₀| + 1)), ?_⟩
   intro a b hb x hx q hq

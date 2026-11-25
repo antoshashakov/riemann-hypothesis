@@ -8,7 +8,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterLap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjResultantOfEllPolysStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOrEqOfUnderMaximalRealSubfieldEqCMFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSupportOfStTw2NeZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinprodEqFinprodMemFibresOfSectionStatement
+public import Mathlib.Algebra.BigOperators.Finprod
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinprodEqFinprodMemFibresOfSection
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharFinprodLocKMulInfEqOneStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KappaConstantMulOfCoprimeEllipticPolynomials
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdFormulaSqrtNormalizedAbsValuesCMFieldStatement
@@ -183,7 +184,7 @@ theorem resultant_factors_prod_eq_one {E : Type} [Field E] [NumberField E] [IsCM
       rw [GlobalTheory.T.unitaryHeckeCharCM_locK_nonsplit_eq_neg_one_pow E μ e hμ w hsp k]
       rfl
   have hS' : ∀ x : Pl E, ∃! s, s ∈ S ∧ s.under (𝓞 (maximalRealSubfield E)) = x.under (𝓞 (maximalRealSubfield E)) := hS
-  have hfib := GlobalTheory.T.finprod_eq_finprod_mem_fibres_of_section' (fun x : Pl E => x.under (𝓞 (maximalRealSubfield E))) S f hS' hfin
+  have hfib := _root_.GlobalTheory.finprod_eq_finprod_mem_fibres_of_section (fun x : Pl E => x.under (𝓞 (maximalRealSubfield E))) S f hS' hfin
   rw [finprod_mem_congr rfl hloc, ← hfib]
 
   have hinf : ∀ v : InfinitePlace E, resultant (P₁.map v.embedding) (P₂.map v.embedding) = v.embedding R :=

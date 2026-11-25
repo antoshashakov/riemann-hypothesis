@@ -2,7 +2,9 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HodgeXD
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShiftSumDifferentialCompatStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorDirectSumBasisEquivStatement
+public import Mathlib.Algebra.DirectSum.Module
+public import Mathlib.LinearAlgebra.TensorProduct.Defs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorDirectSumBasisEquiv
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -165,7 +167,7 @@ theorem prodR_cls {C D E : Cx.{1} K} (p : CxPairing C D E) {i j n : ℕ} (h : i 
 theorem kun_iff_mv {P Q T : ℕ → Cx.{1} K} (pr : ∀ {a a' c : ℕ}, a + a' = c → CxPairing (P a) (Q a') (T c)) (c n : ℕ) :
     KunC pr c n ↔ MvC (I := Tup P c) (fun u => u.i) (fun u => Q u.a') (T c) (fun u {m n} h => gmap pr c u h) n := by
   classical
-  obtain ⟨e₁, he₁⟩ := GlobalTheory.T.tensor_direct_sum_basis_equiv (K := K) (J := Idx c n) (fun t => (P t.a).H t.i) (fun t => (Q t.a').H t.j)
+  obtain ⟨e₁, he₁⟩ := _root_.GlobalTheory.CompanionTheory.KunGlue.tensBasis (K := K) (J := Idx c n) (fun t => (P t.a).H t.i) (fun t => (Q t.a').H t.j)
     (fun t => Bi (P t.a) t.i) (fun t => bas (P t.a) t.i)
   obtain ⟨r, hr⟩ := reidx (K := K) (tupEquiv P c n) (fun u : (Σ t : Idx c n, Bi (P t.a) t.i) => (Q u.1.a').H u.1.j)
   constructor

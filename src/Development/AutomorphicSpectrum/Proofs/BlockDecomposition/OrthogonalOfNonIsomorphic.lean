@@ -7,7 +7,9 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CompactSp
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdmissibleDiscreteSpaces
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsFiniteDimCompactStableStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInvariantProjectionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOpenCompactSubgroupLeStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOpenCompactSubgroupLe
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarRightInvariantStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralEqL2InnerStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieSkewAdjointBisStatement
@@ -101,7 +103,7 @@ def stabS (x : Sm E N) : Subgroup (GL (Fin N) (Af E)) where
 theorem exists_repr (μ : Measure (GA E N)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {V V' : Submodule ℂ (Sm E N)}
     (hV : IsDiscrete V) (hV' : IsDiscrete V') {x : Sm E N} (hx : x ∈ V) :
     ∃ y ∈ V', ∀ z ∈ V', ⟪l2Map μ z, l2Map μ x⟫_ℂ = ⟪l2Map μ z, l2Map μ y⟫_ℂ := by
-  obtain ⟨L, hLS, hLo, hLc⟩ := GlobalTheory.T.exists_open_compact_subgroup_le E N (stabS x) (hV.aut x hx).level
+  obtain ⟨L, hLS, hLo, hLc⟩ := _root_.GlobalTheory.CompanionTheory.FinDiscOrth.exists_compact_open_level_le E N (stabS x) (hV.aut x hx).level
   have hunit : ∀ (k : Kinf E N) {W W' : Submodule ℂ (Sm E N)}, IsDiscrete W → IsDiscrete W' → ∀ a ∈ W, ∀ b ∈ W',
       ⟪l2Map μ (cptRep E N k a), l2Map μ (cptRep E N k b)⟫_ℂ = ⟪l2Map μ a, l2Map μ b⟫_ℂ :=
     fun k _ _ h h' a ha b hb => (GlobalTheory.T.right_translate_isometry E N μ _ a b (mem_l2_of_discrete μ h ha) (mem_l2_of_discrete μ h' hb)).2

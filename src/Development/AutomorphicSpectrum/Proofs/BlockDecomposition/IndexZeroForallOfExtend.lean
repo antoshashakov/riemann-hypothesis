@@ -3,7 +3,7 @@ module
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocalisationLadders.CriterionTruncation
 public import Mathlib.Algebra.Exact.Basic
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiltrationCriticalComparisonMapStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameFormCoboundaryRelationStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameFormCoboundaryRelation
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameFormRespectsFiltrationStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrameFormRestrictionCocycleStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedCohomologyOfFrameStatement
@@ -177,7 +177,7 @@ theorem d_yc (hF : IsFil Φ Fil) (hc : E.GrConst Fil) {j q : ℕ} {r : ℤ} (hr 
     (hx : x ∈ (Fil q).S E.D) :
     CH.d _ j (yc Q E σ hF hr (Fin.succ ∘ I) x hx) =
       -(Jm Q E σ Fil r).pullC (j + 1) (fc hF E σ hr (Fin.cons 0 (Fin.succ ∘ I)) x hx) :=
-  GlobalTheory.T.frame_form_coboundary_relation Q hF E σ hc j q r (by rw [hr]; push_cast; ring) I x hx _ _ (fun s => rfl) (fun s => rfl)
+  _root_.GlobalTheory.CompanionTheory.GrDelta.gr_delta Q hF E σ hc j q r (by rw [hr]; push_cast; ring) I x hx _ _ (fun s => rfl) (fun s => rfl)
 
 theorem pull_fc (hF : IsFil Φ Fil) (hc : E.GrConst Fil) {j q : ℕ} {r : ℤ} (hr : r = j + q) (I : Fin j → Fin d) (x : Φ.A.obj E.D)
     (hx : x ∈ (Fil q).S E.D) :

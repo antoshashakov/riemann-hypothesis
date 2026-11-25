@@ -14,7 +14,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusConjuga
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryBorelEqDiagonalMulUnipotentStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryRankOneSphericalIntegrandDiagonalTorusFacStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryThreeRankOneSphericalVectorCellValueStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellHaarRightTranslateInvariantStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylCellHaarRightTranslateInvariant
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryWeylSimpleReflectionRevCommSqEqOneStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShellMeasure
@@ -233,7 +233,7 @@ theorem shift_cell (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val + 1
       intro u
       simpa using hp u 1
     simp_rw [e]
-    exact (GlobalTheory.T.unitaryWeylCell_haar_rightTranslate_invariant L ϖ σ q h n k hk hn y hyK hy μ hμ p).1 fun w => ψ (y⁻¹ * w)
+    exact (_root_.GlobalTheory.WeylCell.WeylUnipotentShell.cellU_haar_rightInv L ϖ σ q h n k hk hn y hyK hy μ hμ p).1 fun w => ψ (y⁻¹ * w)
 
 theorem integral_law (h : IsUnramInv ϖ σ q) (k : Fin (n / 2)) (hk : ¬ k.val + 1 < n / 2) (y : GU σ n)
     (hyK : y ∈ KU σ n) (hy : IsWeylRep (simpleU k) (y : GL (Fin n) L)) [MeasurableSpace (cellU y)]

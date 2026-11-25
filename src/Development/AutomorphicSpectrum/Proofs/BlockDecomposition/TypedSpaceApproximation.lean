@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Discret
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOfIsOpenStab
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousArchimedeanSmoothingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsExponentPolynomialDiscreteStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOpenIntegralSubgroupStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart
+public import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.Archimedean
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsOpenIntegralSubgroup
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLatticePointsSiegelStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsLeftInvariantOfIsAutForm
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelEigenfunctionBoundStatement
@@ -548,7 +550,7 @@ theorem conc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) 
     have : latticeGL E N ≤ S :=
       sup_le (by rintro _ ⟨γ, rfl⟩; exact (hAut i).left γ) (Subgroup.zpowers_le.2 (hcen i 1))
     exact this
-  obtain ⟨U, hU, hUk⟩ := GlobalTheory.T.exists_open_integral_subgroup E N K hK
+  obtain ⟨U, hU, hUk⟩ := _root_.GlobalTheory.CompanionTheory.Conc.LevelU.exists_level E N K hK
   have hfam : UFam f := by
     refine ⟨hcont, hLI, U, hU, fun i g u => ?_⟩
     obtain ⟨k, hk, e⟩ := hUk u

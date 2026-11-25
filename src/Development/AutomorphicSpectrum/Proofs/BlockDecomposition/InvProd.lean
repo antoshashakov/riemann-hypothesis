@@ -2,7 +2,8 @@ module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.LocDefs
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepUnique
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupListRepresentativeOfFormsStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.CechDefs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupListRepresentativeOfForms
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsLocalFrameOfCoordsStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FormSumRepresentativeLiftStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFrameDerivationCompatStatement
@@ -162,7 +163,7 @@ theorem main : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶
       have e := congrFun (cup_resQ (ks_le q s hVV) (fun k => dlogC (KS q s {V'}) s (ĝ k))) u
       rw [map_one, mul_one]
       exact (sub_eq_zero.2 e) ▸ Ideal.zero_mem _
-    have h3 := GlobalTheory.T.cup_list_representative_of_forms hF E σ hc (n + 1) ℓ cc h hh happ 1 _ hr _ h2
+    have h3 := _root_.GlobalTheory.CompanionTheory.CupRep.cup_rep hF E σ hc (n + 1) ℓ cc h hh happ 1 _ hr _ h2
     have h4 := GlobalTheory.T.form_sum_representative_lift hF E σ hc (n + 1) _ hr (fun I => I) (fun I => 1 * ∏ k, cc k (I k)) _ h3
     have h5 := rep_one E σ _ (fun I => ∑ J, sgn I J • (1 * ∏ k, cc k (J k))) _ h4
     have hu : ∀ k, IsUnit (rs hVV (g k)) := fun k => (hg k).map (rs hVV)

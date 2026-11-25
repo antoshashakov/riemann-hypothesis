@@ -4,7 +4,8 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmulMPul
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.GlobSerreSt
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GradedChartDegrees.ChartGrConst
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SplittingFieldLattices.GrSplit
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartLiftTensorCompatStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GradedChartDegrees.ThickeningIdealNilpotent
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartLiftTensorCompat
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoordinatesRestrictAffineOpenStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatBaseChangeCohomology
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.FaceMapCompSuccAboveCastSucc
@@ -145,7 +146,7 @@ theorem local_bij (hLoc : DH.LocCmpq) (hPA : DH.PolyAll) (hPT : KH.PolyTf) (hCA 
   have hT : Good (l := l) cO.D m := hQ _ hDQ
   have hevt : ∀ i, ev cO.D cO.inV (c.t i) = Ideal.Quotient.mk _ (cO.t i) := fun i => by rw [hev, ht]
   obtain ⟨σ, hσ⟩ := exists_sig h c m cL hgL hcL cO hevt hT
-  have hσb := GlobalTheory.T.chart_lift_tensor_compat h c m cL hcL cO e hi ht hev hT σ hσ
+  have hσb := _root_.GlobalTheory.CompanionTheory.DisoHm.cmp_bij h c m cL hcL cO e hi ht hev hT σ hσ
   let E := frameC (Ideal.Quotient.mk (Ideal.span {(l : O) ^ m}))
     (cL.frame hgL (St (⊤ : ObjectProperty (Thick (Lm h q m))) {W}) (fun T hT => by
       obtain ⟨-, V, rfl, hV⟩ := hT

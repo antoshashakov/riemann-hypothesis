@@ -4,7 +4,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RatiosEq
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArithmeticVarietyGenericallyEtaleCoordinates
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BadProjectionLocusNullStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChernPartNullSetZeroStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChernPartNullSetZero
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointLiftsToMulticoneStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComplexPointsSecondCountableStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DensityChartIntegralFormulaStatement
@@ -184,7 +184,7 @@ theorem archIntEq_of_integrable : ArchIntegrableOn → ArchIntEq := by
     rw [e.left_inv hy] at hv
     exact (GlobalTheory.T.rational_section_log_norm_on_sheet m n M A X i r hr f g hfg hrat y _ hv.1 (hNe _ hv.2.2.2).2.1 (hNe _ hv.2.2.2).2.2).1
   have hnull : ∀ ε, μ ε Gᶜ = 0 := fun ε => by
-    refine GlobalTheory.T.chern_part_null_set_zero _ ε _ hGo.measurableSet.compl fun c => ?_
+    refine _root_.GlobalTheory.CompanionTheory.MixZ.chernPart_null_of_chart_null _ ε _ hGo.measurableSet.compl fun c => ?_
     have hsub : c.e.target ∩ c.e.symm ⁻¹' Gᶜ ⊆
         (c.e.target ∩ c.e.symm ⁻¹' {y | (∃ z, Over i y z ∧ Ψ (ReciprocityTheory.ChartRestriction.G.Geo.segre z) 0 = 0) ∨ ¬ IsRegAt i Ψ c y}) ∪
         (c.e.target ∩ c.e.symm ⁻¹' {y | ∃ z, IsUnder (PtsOver.map i rfl _ y) z ∧ eval z (map (Int.castRingHom ℂ) N) = 0}) := by

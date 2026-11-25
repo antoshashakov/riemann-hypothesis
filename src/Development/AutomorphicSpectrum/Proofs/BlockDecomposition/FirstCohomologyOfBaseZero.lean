@@ -3,7 +3,9 @@ module
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.HodgeWedgeFields.H1CommutesBaseChange
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.USt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueIsPullForm
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbelianSchemeBaseChangeExistsStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbelianSchemeBaseChangeExists
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClassZeroCocycleTensorCoboundary
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleOnProductFromSecondFactorStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CocycleTensorCoboundaryClassZero
@@ -183,7 +185,7 @@ theorem ust_abelian : DescentSt → LowSt → SysBCSt → SteinSt → ∀ (R : T
   intro hD hL hB hS R _ A _ g hA hg P _ S M _ _ z hz
   letI : Module Rᵐᵒᵖ M := Module.compHom M ((RingEquiv.toOpposite R).symm.toRingHom)
   haveI : IsCentralScalar R M := ⟨fun r m ↦ rfl⟩
-  obtain ⟨A', _, φ, hA', hg', hpb⟩ := GlobalTheory.T.abelian_scheme_base_change_exists R (TrivSqZeroExt R M) A g hA hg
+  obtain ⟨A', _, φ, hA', hg', hpb⟩ := _root_.GlobalTheory.CompanionTheory.Axis.exists_abelianScheme_baseChange_ringHom R (TrivSqZeroExt R M) A g hA hg
   have := hA.proper
   have := hA'.proper
   obtain ⟨S', m, -⟩ := hB R (TrivSqZeroExt R M) A.left A'.left A.hom A'.hom φ hpb inferInstance P S

@@ -21,7 +21,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModulusP
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjEmbeddingCompatStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicProjUnipotentCharacterCompatStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapInducedSurjectiveIntertwiner
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapIntertwinesRestrictionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapIntertwinesRestriction
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -95,7 +95,7 @@ theorem coinv_cInd (H U : Subgroup G) (hUH : U ≤ H) (hUn : U.Normal) (θ : U �
     (hcomp : ∃ K' ∈ 𝓝 (1 : G'), IsCompact K') :
     Nonempty ((twAct (cInd H σ) U θ ι hstab).Equiv (cInd H' σ')) := by
   classical
-  have hex := GlobalTheory.T.quotient_map_intertwines_restriction H H' ι σ σ' q hι hH' hq hcl hemb hcomp
+  have hex := _root_.GlobalTheory.CompanionTheory.LeibPhi.exists_cInd_restrict H H' ι σ σ' q hι hH' hq hcl hemb hcomp
   choose T hT using hex
   have hext : ∀ F F' : cIndSpace H' σ', (∀ x, F.1.1.1 x = F'.1.1.1 x) → F = F' := fun F F' h =>
     Subtype.ext (Subtype.ext (Subtype.ext (funext h)))
