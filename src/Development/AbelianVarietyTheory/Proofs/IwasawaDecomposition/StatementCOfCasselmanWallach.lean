@@ -21,7 +21,8 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingC
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceEqOfAutomorphismMapsParahoricStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TupTiedOfMuIsW
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TwistReadingInducesSideEmbeddingFixedFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypePlacesUnionRamifiedPlacesFiniteStatement
+public import Formalism.LocalToGlobal.GaloisLevelStructure.TiedLevel
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TypePlacesUnionRamifiedPlacesFinite
 public import Formalism.LocalToGlobal.GaloisLevelStructure.DefsLevel
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpperParahoricLowerDetUnitAndSuperdiagIntegral
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsReadsAtOfCover
@@ -158,7 +159,7 @@ theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal 
     simp only [hF', this, map_smulₛₗ, cx_apply]
   have hr0 : 2 ≤ D.R.r := by have := D.R.m_add_three_le_k; have := D.R.two_le_m; unfold Ranks.r; omega
   have hr1 : D.R.r < D.R.nV := by have := D.R.rank_add_five_le; unfold Ranks.nV; omega
-  refine GlobalTheory.T.productLevel_eq_of_local_agreement _ _ _ _ _ _ _ (GlobalTheory.T.typePlaces_union_ramifiedPlaces_finite D η) m1 x1 m4 x4 fun u hu => ?_
+  refine GlobalTheory.T.productLevel_eq_of_local_agreement _ _ _ _ _ _ _ (_root_.GlobalTheory.LevCmp.gPl_union_qPl_finite D η) m1 x1 m4 x4 fun u hu => ?_
   rcases hu with hu | hu
   · obtain ⟨kk, v, s, rfl, hs⟩ := hG.2.1 u hu
     obtain ⟨p, ξ, a1, a2, a3⟩ := m3 kk v s hs

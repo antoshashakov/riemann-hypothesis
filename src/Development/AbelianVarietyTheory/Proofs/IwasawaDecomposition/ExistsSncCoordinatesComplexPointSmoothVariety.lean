@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompleteHolomorphicCoordinatesIndependentDiffereStatement
+public import ReciprocityTheory.L2DbarEstimates.IsLocalHomeomorph
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompleteHolomorphicCoordinatesIndependentDiffere
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ComplexPointMemClosedIffFactorVanishesStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EtaleChartHolomorphicCoordinateChangeStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsComplexPointDerivationSeparatingParamsCharStatement
@@ -92,7 +93,7 @@ theorem exists_chart_of_fderiv (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y �
   have hG0 : ∀ i, G i (c.e x₀) = 0 := by
     intro i
     simp only [G, Function.comp_apply, c.e.left_inv hx, h0]
-  obtain ⟨ψ, h1, h2, h3, h4, h5, h6⟩ := GlobalTheory.T.complete_holomorphic_coordinates_independent_differentials n a (c.e x₀) c'.e.target G c'.e.open_target hv0 hG hG0 hli
+  obtain ⟨ψ, h1, h2, h3, h4, h5, h6⟩ := _root_.GlobalTheory.CompleteCoords.complete_coords n a (c.e x₀) c'.e.target G c'.e.open_target hv0 hG hG0 hli
   obtain ⟨hh, hs⟩ := GlobalTheory.T.etaleChart_holomorphic_coordinate_change k Y p n σ c' ψ h4 h5
   refine ⟨c'.e.trans ψ, ⟨hx', h1⟩, fun x hx => hx.1.2, h3, hh, hs, fun x hx j hj => ?_⟩
   have := h6 _ hx.2 j hj

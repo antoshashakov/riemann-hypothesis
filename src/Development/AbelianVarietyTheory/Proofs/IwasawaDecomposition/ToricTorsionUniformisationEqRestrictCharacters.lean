@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonemptyTorusExtensionOfIsAlgClosed
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AllTorsMap
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsToricTorsionSectionsUniformisationStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsToricTorsionSectionsUniformisation
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorsionMapUniformisationGenericStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothCommGroupSchemeEqOfPowEqOfClosedPointStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionSectionEqPulledTraitPointField
@@ -109,8 +109,8 @@ theorem toric_torsion_eq_restrict : ∀ (E : Type) [Field E] [NumberField E] [Is
     rcases Nat.eq_zero_or_pos k with h | h
     · subst h; simp at hk
     · exact h
-  obtain ⟨s, s1, s2, s3, s4⟩ := GlobalTheory.T.exists_toric_torsion_sections_uniformisation E H R t P hR k hk1
-  obtain ⟨s', s1', s2', s3', s4'⟩ := GlobalTheory.T.exists_toric_torsion_sections_uniformisation E H W t' P' hW k hk1
+  obtain ⟨s, s1, s2, s3, s4⟩ := _root_.GlobalTheory.ToricTorsionSec.main E H R t P hR k hk1
+  obtain ⟨s', s1', s2', s3', s4'⟩ := _root_.GlobalTheory.ToricTorsionSec.main E H W t' P' hW k hk1
   obtain ⟨fR, hfR, -⟩ := GlobalTheory.T.exists_torsionMap_uniformisation_generic E H R t P hR F k hk1
   obtain ⟨fW, hfW, -⟩ := GlobalTheory.T.exists_torsionMap_uniformisation_generic E H W t' P' hW F k hk1
   let ρm := AddMonoidHom.toMultiplicative ρ

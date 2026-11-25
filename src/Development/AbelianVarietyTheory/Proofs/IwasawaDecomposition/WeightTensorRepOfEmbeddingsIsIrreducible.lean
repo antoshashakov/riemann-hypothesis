@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Inclu
 public import Mathlib.RepresentationTheory.Irreducible
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefficientSpaceStableEqBotOrTopStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DualWeylModuleSimpleCharZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryExtensionOfCmTypeFamilyStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryExtensionOfCmTypeFamily
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NablaSqEndomorphismEqSumGLOperatorsStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NontrivialWeylCoefficientSpaceStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryRationalPointMatrixHomSurjectiveOntoStatement
@@ -81,7 +81,7 @@ theorem GlobalTheory.AlgWtF.tenRepF_isIrreducible : ∀ (L : Type) [Field L] [Nu
     let f : (ι ⊕ ι) × Fin n × Fin n → (L →+* K) × Fin n × Fin n :=
       fun v => (Sum.elim emb (fun τ => (emb τ).comp (IsCMField.complexConj L : L →+* L)) v.1, v.2)
     have hzero := GlobalTheory.T.zariskiDense_rationalPoints_definiteUnitary_charZero L n K (MvPolynomial.rename f P) ?_
-    · obtain ⟨B, hBc, hBe⟩ := GlobalTheory.T.exists_unitary_extension_of_cmType_family L n ι K emb hCM g
+    · obtain ⟨B, hBc, hBe⟩ := _root_.GlobalTheory.cmType_family_extend L n ι K emb hCM g
       have h0 := hzero B hBc
       rw [MvPolynomial.eval_rename] at h0
       apply hψx
