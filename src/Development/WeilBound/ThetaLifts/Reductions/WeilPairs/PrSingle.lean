@@ -131,21 +131,22 @@ end PositivityTheory.ThKW.LagrangianProjectionFormula
 end
 
 open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation PositivityTheory.ThKW.PhaseFourierInjectivity PositivityTheory.ThKW.LagrangianProjectionFormula in
-theorem PositivityTheory.ThKW.PhaseFourierInjectivity.finj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+theorem PositivityTheory.ThKW.PhaseFourierInjectivity.finj_c : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    IsCMExt F E σ → IsStd B.ψ →
+        ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
       ∀ (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT)), ν.IsAddHaarMeasure →
         IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν →
     ∀ N₁ N₂ : WOF F E nS nT → ℂ, Continuous N₁ → Continuous N₂ → Integrable N₁ ν → Integrable N₂ ν →
       (∀ y, ∫ v, phase σ JS JT ξ₀ B.ψ y v * N₁ v ∂ν = ∫ v, phase σ JS JT ξ₀ B.ψ y v * N₂ v ∂ν) → N₁ = N₂ := by
-  intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 N₁ N₂ c₁ c₂ i₁ i₂ hN
-  have hψ : IsStd B.ψ := hB.std
-  have hψn : ∀ a, ‖B.ψ a‖ = 1 := GlobalTheory.StdCharWeilDatum.norm_psi hB.std
+  intro F E _ _ _ _ _ σ B hB_cm hB_std nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 N₁ N₂ c₁ c₂ i₁ i₂ hN
+  have hψ : IsStd B.ψ := hB_std
+  have hψn : ∀ a, ‖B.ψ a‖ = 1 := GlobalTheory.StdCharWeilDatum.norm_psi hB_std
   have hcc : ∀ z : AF F ⊗[F] E, cAF σ (cAF σ z) = z := by
     intro z
     induction z using TensorProduct.induction_on with
     | zero => simp
-    | tmul a x => simp [cAF, sigR, GlobalTheory.DblSiegelChar.invol hB.cm]
+    | tmul a x => simp [cAF, sigR, GlobalTheory.DblSiegelChar.invol hB_cm]
     | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
   have he : Continuous (vecE F E nS nT) := by
     show Continuous fun (w : WOF F E nS nT) (k : Fin (nT * nS)) => w (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2
@@ -207,3 +208,15 @@ theorem PositivityTheory.ThKW.PhaseFourierInjectivity.finj : ∀ (F E : Type) [F
   have := congrFun h0 (vecE F E nS nT v)
   simp only [hNdef, AddEquiv.symm_apply_apply, Pi.zero_apply] at this
   exact sub_eq_zero.1 this
+
+open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation PositivityTheory.ThKW.PhaseFourierInjectivity PositivityTheory.ThKW.LagrangianProjectionFormula in
+theorem PositivityTheory.ThKW.PhaseFourierInjectivity.finj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
+    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
+      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
+      ∀ (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT)), ν.IsAddHaarMeasure →
+        IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν →
+    ∀ N₁ N₂ : WOF F E nS nT → ℂ, Continuous N₁ → Continuous N₂ → Integrable N₁ ν → Integrable N₂ ν →
+      (∀ y, ∫ v, phase σ JS JT ξ₀ B.ψ y v * N₁ v ∂ν = ∫ v, phase σ JS JT ξ₀ B.ψ y v * N₂ v ∂ν) →
+          N₁ = N₂ := by
+  intro F E _ _ _ _ _ σ B hB
+  exact PositivityTheory.ThKW.PhaseFourierInjectivity.finj_c F E σ B hB.cm hB.std
