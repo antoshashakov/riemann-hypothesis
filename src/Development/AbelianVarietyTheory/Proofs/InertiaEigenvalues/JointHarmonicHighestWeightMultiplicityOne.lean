@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsKHwMap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueJointTop
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsJointHighestWeightHarmonicSliceOuterVariables
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointHighestWeightHarmonicMultiplicityOneCoverinStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointHighestWeightHarmonicMultiplicityOneCoverin
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JointHighestWeightHarmonicOfFockLowestKTypeStatement
 import Mathlib.Algebra.AffineMonoid.UniqueSums
 import Mathlib.Algebra.Order.Floor.Extended
@@ -117,7 +117,7 @@ theorem joint_line : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.ExportSeries.Wei
   have hU : ∀ τ : D.what₂.Tau, ∃ Q₀ : MvPolynomial (Fin m × Fin n) ℂ, ∀ α β f,
       GlobalTheory.CompactHarm.JointTop (GlobalTheory.HarmLine.zR m n (w.p τ)) (GlobalTheory.HarmLine.yR m n (w.p τ)) (κ τ) α β f →
         ∃ r : ℂ, f = r • Q₀ := fun τ =>
-    GlobalTheory.T.jointHighestWeightHarmonic_multiplicity_one_covering _ _ (GlobalTheory.HarmLine.zR_inj m n (w.p τ)) (GlobalTheory.HarmLine.yR_inj m n (w.p τ))
+    _root_.GlobalTheory.CompactHarm.jointTop_line _ _ (GlobalTheory.HarmLine.zR_inj m n (w.p τ)) (GlobalTheory.HarmLine.yR_inj m n (w.p τ))
       (GlobalTheory.HarmLine.zR_ne_yR m n (w.p τ)) (GlobalTheory.HarmLine.zR_yR_cover m n (w.p τ)) (κ τ)
   choose Q₀ hQ₀ using hU
   let Q : D.what₂.Tau → PolF D m n := fun τ => MvPolynomial.rename (Prod.mk τ) (Q₀ τ)

@@ -9,7 +9,9 @@ public import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsNormMaxPowDividingConjugatePlace
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsHalfSplitPlaceNormPowStatement
+public import Formalism.LocalToGlobal.Divisibility.DefGroup
+public import Formalism.LocalToGlobal.HeckeThetaElements.IsHeckeElt
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsHalfSplitPlaceNormPow
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceModelIndicatorEqMean
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsModHalfLatticeFinsetSum
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipIdxNeZero
@@ -83,7 +85,7 @@ theorem flip_reps : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D
       refine Finset.prod_congr rfl fun PP hPP => ?_
       have hi : Formalism.L2.NTheta.IsIdemAt (cA D (es PP)) (Formalism.L2.DIV.conjPl PP) :=
         GlobalTheory.MovedIdem.isIdemAt_conj (hes PP hPP) fun _ => Iff.rfl
-      rw [GlobalTheory.T.card_divisionPoints_half_split_place_norm_pow D V W ΛV ΛW hSV hSW _ _ hi m hm0, _root_.GlobalTheory.ConjNormPow.absNorm_maxPowDividing_conjPl]
+      rw [_root_.GlobalTheory.DivPtLocal.natCard_DQ D V W ΛV ΛW hSV hSW _ _ hi m hm0, _root_.GlobalTheory.ConjNormPow.absNorm_maxPowDividing_conjPl]
     · intro i hi; rw [← map_mul, (hes i hi).1.1]
     · intro i hi j hj hij; rw [← map_mul, GlobalTheory.Tow.idemAt_orth (hes i hi) (hes j hj) hij, map_zero]
   have hfin : Finite (GlobalTheory.DivPtFourier.DQ Λ (cA D eT) m) :=

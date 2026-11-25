@@ -5,7 +5,7 @@ public import Mathlib.Analysis.Normed.Field.Basic
 public import Mathlib.RingTheory.PowerSeries.Basic
 public import Mathlib.Topology.MetricSpace.Ultra.Basic
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIntegralInversePowerSeriesOfUnitConstantCo
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveGeneratorBoundedMultipleSetStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveGeneratorBoundedMultipleSet
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormConstantCoeffEqOneOfEisensteinFrobeniusCycleStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -176,6 +176,6 @@ theorem one_mem_of_frobenius_stable_ideals_boundedPowerSeries (GEN : ∀ (K : Ty
   rwa [mul_comm, hg] at this
 
 theorem one_mem : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K] (l e a M₁ M₂ : ℕ) [Fact l.Prime] [NeZero a], 0 < e → (l : K) ≠ 0 → ‖(l : K)‖ < 1 → ∀ (J : ZMod a → Set K⟦X⟧), (∀ τ, ∀ x ∈ J τ, ∀ y ∈ J τ, x + y ∈ J τ) → (∀ τ, ∀ x ∈ J τ, ∀ b : K⟦X⟧, (∃ c : ℝ, ∀ n, ‖coeff n b‖ ≤ c) → b * x ∈ J τ) → (∀ τ, ∀ x ∈ J τ, ∃ c : ℝ, ∀ n, ‖coeff n x‖ ≤ c) → (∀ τ, ∃ g ∈ J τ, (∀ n, ‖coeff n g‖ ≤ 1) ∧ ∃ n, ‖coeff n g‖ = 1) → (∀ τ, ∀ h ∈ J (τ - 1), E K l e ^ M₁ * frob K l h ∈ J τ) → (∀ τ, ∀ h ∈ J τ, ∀ i < l, frobSlice l i (E K l e ^ M₂ * h) ∈ J (τ - 1)) → ∀ τ, (1 : K⟦X⟧) ∈ J τ :=
-  one_mem_of_frobenius_stable_ideals_boundedPowerSeries GlobalTheory.T.exists_primitive_generator_boundedMultiple_set GlobalTheory.T.norm_constantCoeff_eq_one_of_eisenstein_frobenius_cycle _root_.GlobalTheory.powerSeries_inv_coeff_norm_le_one
+  one_mem_of_frobenius_stable_ideals_boundedPowerSeries _root_.GlobalTheory.exists_primitive_generator GlobalTheory.T.norm_constantCoeff_eq_one_of_eisenstein_frobenius_cycle _root_.GlobalTheory.powerSeries_inv_coeff_norm_le_one
 
 end GlobalTheory.BK.GcdCore

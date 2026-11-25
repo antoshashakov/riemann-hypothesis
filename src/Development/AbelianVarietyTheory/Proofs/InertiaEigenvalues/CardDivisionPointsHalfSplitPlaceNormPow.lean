@@ -8,7 +8,7 @@ public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.Finpro
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardDivisionPointsSplitPlaceLocalMatrices
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardLocalMatrixDivisionPointQuotientStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PtStringAllOfHypotheses
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceIdempotentEqCompletionEmbeddingOneStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceIdempotentEqCompletionEmbeddingOne
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.SecondStepGluing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -113,7 +113,7 @@ theorem natCard_DQ_eq_locQ : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D
   intro D S T ΛS ΛT hS hT P e he N hN
   have hs := isSplit_of_isIdemAt D P e he
   obtain ⟨ι, hι⟩ := GlobalTheory.DivPtLocal.exists_isIotaAt (rfl : P.under (𝓞 D.host.F) = P.under (𝓞 D.host.F)) hs
-  have he1 := GlobalTheory.T.splitPlace_idempotent_eq_completionEmbedding_one D P e he ι hι
+  have he1 := _root_.GlobalTheory.IdemIota.idemAt_eq_iota_one D P e he ι hι
   have h3 := hι.2.2.2.1
   have key : ∀ u : WO S T, e • u = u → (u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) ↔ u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun v => v = P.under (𝓞 D.host.F))) := by
     intro u hu

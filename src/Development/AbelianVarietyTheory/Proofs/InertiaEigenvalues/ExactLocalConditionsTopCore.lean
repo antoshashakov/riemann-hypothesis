@@ -12,7 +12,7 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardHod
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CocycleClassAdmissibleStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSumsTwistsCharactersExpectedJumps
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvrComplete
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EquivariantIsoTransportCocyclesExtensionsStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EquivariantIsoTransportCocyclesExtensions
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivStableLatticeIntegralCharacterStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNumericalGaloisDataLocalSituationStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteModuleKilledByPowOfNotIsUnitStatement
@@ -100,7 +100,7 @@ theorem admissibleExtension_iff_equivariantCoefIso {G : Type} [Group G] [Topolog
     (hzz : ∀ g, z' g = LinearEquiv.rTensor X e (z g)) (hz : z ∈ Z1 (twCoef W χ X) ⊤)
     (hz' : z' ∈ Z1 (twCoef W' χ X) ⊤) {c : O} (hc : ∀ x : X, c • x = 0) :
     Admissible PD emb Γ t Ut (Ea W χ hc ⟨z, hz⟩) ↔ Admissible PD emb Γ t Ut (Ea W' χ hc ⟨z', hz'⟩) := by
-  obtain ⟨f, hf⟩ := (GlobalTheory.T.equivariantIso_transport_cocycles_extensions W W' e he χ X z z' hzz).2.1 hz hz' hc
+  obtain ⟨f, hf⟩ := (_root_.GlobalTheory.TransportCoef.transport W W' e he χ X z z' hzz).2.1 hz hz' hc
   have hf' : ∀ g x, f.symm (Ea W' χ hc ⟨z', hz'⟩ g x) = Ea W χ hc ⟨z, hz⟩ g (f.symm x) :=
     fun g x => f.injective (by rw [hf, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply])
   exact ⟨fun h => h.of_equiv f hf, fun h => h.of_equiv f.symm hf'⟩
@@ -198,7 +198,7 @@ theorem topCore_of_typings : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI :
     let eX := LinearEquiv.rTensor X e
     let z₀ : S.G → S.O ⊗[S.O] X := fun g => eX.symm (z g)
     have hzz : ∀ g, z g = eX (z₀ g) := fun g => (eX.apply_symm_apply (z g)).symm
-    have htransport := GlobalTheory.T.equivariantIso_transport_cocycles_extensions
+    have htransport := _root_.GlobalTheory.TransportCoef.transport
       (S.Γ.Wchi c) (latRep Lc) e he' (χ 1) X z₀ z hzz
     have hact := GlobalTheory.T.twistedAction_eq_twistedCoefficients_cocycle_iff Lc X (χ 1)
     have hz' := (hact.2 z).1 hz

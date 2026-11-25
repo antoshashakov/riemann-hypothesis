@@ -5,7 +5,8 @@ public import Formalism.LocalToGlobal.NormalizedHeckeFactors.RingHomOfBaseOrderT
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraicWeightDominantIsoExistsStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContragredientPolynomialWeightUniqueHighestWeigh
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisConjDefiniteFormsSemilinearEquiv
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIrreducibleAlgebraicWeightSubrepStatement
+public import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIrreducibleAlgebraicWeightSubrep
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsAlgWeightOfContragredientHighestWeightStatement
 public import Mathlib.Basic.Complex.Basic
 public import Mathlib.Data.Matrix.Mul
@@ -93,7 +94,7 @@ theorem weight_descends : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L]
   haveI : Nontrivial W := GlobalTheory.PiIsotypic.nontrivial_of_isIrreducible ρ hρ
   have hN : 0 < N := Module.finrank_pos
   haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩
-  obtain ⟨a, j, hj, hjρ⟩ := GlobalTheory.T.exists_irreducible_algebraicWeight_subrep L n (Fin N → ℂ) ρC halg
+  obtain ⟨a, j, hj, hjρ⟩ := _root_.GlobalTheory.AlgSubrep.exists_irreducible_algWt L n (Fin N → ℂ) ρC halg
   obtain ⟨lam, Tc, hTc⟩ := GlobalTheory.T.algebraic_weight_dominant_iso_exists L n ι (fun t => e.comp (emb t)) hinj hcm hcov a
   have hmatch : ∀ γ : ReciprocityTheory.Aut.GQ L n, (((γ : GAf L n) : GL (Fin n) (ReciprocityTheory.Aut.AL L)) :
       Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL L)) =

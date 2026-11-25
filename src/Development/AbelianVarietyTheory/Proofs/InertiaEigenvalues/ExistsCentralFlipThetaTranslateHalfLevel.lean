@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInert
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValRingLocRing
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralFlipTranslateHalfPlacesThetaPairStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIdempotentSumSubsetAndConjugateFlipStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIdempotentSumSubsetAndConjugateFlip
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipScalarMemCoefficientRingAuxiliaryLevelStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipScalarPrimePowIntegralAtLevelPlacesStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HalfTranslatesLeLevelHalfTranslatesOfDvdStatement
@@ -109,8 +110,8 @@ theorem exists_flip_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
     obtain ⟨h1, h2, -⟩ := Finset.mem_filter.1 hPP
     refine Finset.mem_union_left _ (Finset.mem_sdiff.2 ⟨h1, fun h3 => ?_⟩)
     exact not_mem_of_coprime hc1 h2 (Finset.mem_filter.1 h3).2.1
-  obtain ⟨⟨eT₀, heT₀⟩, e₁, he₁⟩ := GlobalTheory.T.exists_idempotentSum_subset_and_conjugate_flip D e P T₀ he (Finset.filter_subset _ _)
-  obtain ⟨⟨eT₁, heT₁⟩, e₃, he₃⟩ := GlobalTheory.T.exists_idempotentSum_subset_and_conjugate_flip D e₁ P₁ T₁ he₁ hT₁P₁
+  obtain ⟨⟨eT₀, heT₀⟩, e₁, he₁⟩ := _root_.GlobalTheory.IdemFlip.idemSum_sub_and_flip D e P T₀ he (Finset.filter_subset _ _)
+  obtain ⟨⟨eT₁, heT₁⟩, e₃, he₃⟩ := _root_.GlobalTheory.IdemFlip.idemSum_sub_and_flip D e₁ P₁ T₁ he₁ hT₁P₁
   have hT₀S : T₀ ∈ hfin.toFinset.powerset :=
     Finset.mem_powerset.2 fun PP hPP => hfin.mem_toFinset.2 (Finset.mem_filter.1 hPP).2.1
   obtain ⟨x₂, hx₂, hstep₂⟩ := hzFlip T₀ eT₀ heT₀ hoddM₀ (Nat.Coprime.coprime_mul_right (hM ▸ hbad)) fun PP hPP => (Finset.mem_filter.1 hPP).2.1

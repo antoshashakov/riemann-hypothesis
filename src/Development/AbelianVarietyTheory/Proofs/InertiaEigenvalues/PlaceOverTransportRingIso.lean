@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AbsNormPlaceLeOfFrobeniusStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DenseNumberFieldOfContinuousCompletionEquivStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedAlgebraicOfLimitOfFixedElementsStatement
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedAlgebraicOfLimitOfFixedElements
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -178,7 +180,7 @@ theorem weil_equiv : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Alg
   have fixE : ∀ σ : G E Ω, σ ∈ Dec (F := E) A →
       ∀ y : E', conj φ σ.toRingEquiv (algebraMap E' Ω' y) = algebraMap E' Ω' y := by
     intro σ hσ y
-    refine GlobalTheory.T.fixed_algebraic_of_limit_of_fixed_elements Ω' A' (conj φ σ.toRingEquiv) ?_ _ ?_ ?_
+    refine _root_.GlobalTheory.FixApprox.fix_of_approx Ω' A' (conj φ σ.toRingEquiv) ?_ _ ?_ ?_
     · intro z
       rw [conj_apply, hP.mem, AlgEquiv.coe_ringEquiv, apply_mem_iff_of_mem_Dec hσ]
       conv_rhs => rw [← φ.apply_symm_apply z]

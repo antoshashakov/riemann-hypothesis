@@ -6,7 +6,8 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsInert
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValRingLocRing
 public import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipMapsHalfTranslatesSpanStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipVacuumEqMultipleOfTranslateMeanStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FlipIdxNeZero
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralFlipVacuumEqMultipleOfTranslateMean
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCentralConjugateFlipScalarFiniteAdelicStatement
 public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIdemSumConjugatePlacesSubsetEqFlip
@@ -88,7 +89,7 @@ theorem exists_central_flip_step : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
     let x : (AE D)ˣ := Units.mkOfMulEqOne _ _ hunit
     have hx : IsFlipDet V eT m x := hunit
     refine ⟨x, hx, ?_⟩
-    obtain ⟨lam, Y, hY, hYd, hYc, hom⟩ := GlobalTheory.T.centralFlip_vacuum_eq_multiple_of_translate_mean D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z heT hodd hcop hmT hzG hzmt
+    obtain ⟨lam, Y, hY, hYd, hYc, hom⟩ := _root_.GlobalTheory.LevelSeries.moved_vacuum_eq_mean D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z heT hodd hcop hmT hzG hzmt
     have hlam := GlobalTheory.T.movedVacuum_translateSum_flipScalar D ψ θ V W χV χW om ΛV ΛW sW f₀ hV T m eT z x lam Y heT hodd hcop hmT hzG hzmt hx hY hYd hYc hom
     subst hlam
     have hs : flipScal χW V W T m x ≠ 0 := by

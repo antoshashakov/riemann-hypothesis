@@ -6,7 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ComplexEmbedd
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationCommFockPolynomialVectors
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaPureTensorO
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdmissibleConjugatePairPlacesEqOfTwistConditionAStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitCardResidueFieldOffExceptionalPlacesStatement
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+public import Formalism.LocalToGlobal.Divisibility.DefGroup
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitCardResidueFieldOffExceptionalPlaces
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientRowsExteriorDetEqConstMulTopBlockDetStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ResidueCharacterTwistUniversalCharAtChosenPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaSeriesIntegralSourceTranslationRightMulStatement
@@ -235,7 +237,7 @@ theorem specSer_mem_span : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NT
   let qi : Pl D.host.E → ℂ := fun PP => ((Nat.card (kP PP) : ℂ) ^ ((Wc D j).rank * ((Vc D j).rank - (Wc D j).rank)))⁻¹
   have hqi : ∀ PP : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)), qi PP.1 ∈ (ρ.eOk i b k).range := by
     intro PP
-    obtain ⟨w, hw⟩ := GlobalTheory.T.isUnit_card_residueField_off_exceptional_places X i k PP.1 (hnS PP)
+    obtain ⟨w, hw⟩ := _root_.GlobalTheory.ResidueUnit.isUnit_card_residueField_Ok X i k PP.1 (hnS PP)
     refine ⟨((w⁻¹ ^ ((Wc D j).rank * ((Vc D j).rank - (Wc D j).rank)) : (X.Ok i k)ˣ) : X.Ok i k), ?_⟩
     have e : ρ.eOk i b k (w : X.Ok i k) = (Nat.card (kP PP.1) : ℂ) := by rw [hw, map_natCast]
     have e' : ρ.eOk i b k (w : X.Ok i k) ≠ 0 := by

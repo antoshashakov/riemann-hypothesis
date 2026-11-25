@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Charact
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoreClausesOfWeakCharacterisation
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReferenceTupleDatumFormReadsThetaLiftInnerProducStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReferenceTupleFormsSmoothAdmissibleUnitaryModuleStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReferenceTupleFormsSmoothAdmissibleUnitaryModule
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReferenceTupleThetaValuedMapMemThetaDataStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReferenceTupleWeilDatumCharactersStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TrilinearThetaFormReferenceTupleInvariantStatement
@@ -67,7 +67,7 @@ open GlobalTheory.RefTheta GlobalTheory.ThetaTri Formalism.IndefR.Datum Formalis
 theorem GlobalTheory.RefTheta.datum_real : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : Formalism.IndefR.Links.RealDat3 D A3 Ks) (F : Formalism.IndefR.Links.Face3 D A3) (cG : Formalism.L2.DIV.G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0), GlobalTheory.Mem.R3.Pins R F cG → GlobalTheory.Mem.R3.Holds R F → R.toRealDat.ExAt → ∀ (M : MtFam D), GlobalTheory.HeightCounting.MtAd Y M → ∀ (i : Fin D.R.m), ∃ X : GlobalTheory.NPin.RowMod D (GlobalTheory.RefTheta.repY Y) (i.1 + 1), HasThetaAt D (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)) X (R.C.mu0 i) R.C.eta := by
   intro hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH hEx M Ad i
   have hC := (GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hEx).1
-  obtain ⟨X, hc⟩ := GlobalTheory.T.referenceTuple_forms_smoothAdmissibleUnitaryModule hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hEx i
+  obtain ⟨X, hc⟩ := _root_.GlobalTheory.RefRowMod.main hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hEx i
   have hth : ∀ v, IsThetaFunO R.ψ (Vc D i) (Wc D i) (phi0 Y i v) := fun v => hC.thP.pt_theta i _ _
   have h0 : phi0 Y i ∈ Om Ad i hc := GlobalTheory.T.referenceTuple_thetaValued_map_mem_thetaData hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hEx M Ad i X hc _ hth
   refine ⟨X, Om Ad i hc, inferInstance, inferInstance, om Ad i hc, lamL Ad i hc, ⟨_, h0⟩, ?_, ?_, ?_⟩

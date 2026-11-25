@@ -4,7 +4,9 @@ public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinI
 public import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAutLoc
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLevelFullAtInertPlacePrincipalElsewhereStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSatUEigenvectorStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeFunIAddSmulStatement
+public import Formalism.AlgebraicWeights.InertDatumExists
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeFunIAddSmul
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertHeckeOperatorConvolutionEqCompStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertHeckeOperatorMaximalCompactIndicatorEqIdStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertHeckeOperatorPreservesProductLevelInvariancStatement
@@ -147,10 +149,10 @@ theorem exists_satAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n
   obtain ⟨α, x, hx0, hx⟩ := GlobalTheory.T.exists_satU_eigenvector_alt Dv.ϖ Dv.σw _ n Dv.unram V T
     (fun h₁ hh₁ h₂ hh₂ => LinearMap.ext fun f => Subtype.ext (by
       rw [LinearMap.add_apply, Submodule.coe_add, hT (h₁ + h₂) (add_mem hh₁ hh₂) f, hT h₁ hh₁ f, hT h₂ hh₂ f]
-      exact (GlobalTheory.T.heckeFunI_add_and_smul L n v w Dv U hU π.W h₁ h₂ hh₁ hh₂ 0 f).1))
+      exact (_root_.GlobalTheory.InertHeckeAdd.heckeFunI_add_smul L n v w Dv U hU π.W h₁ h₂ hh₁ hh₂ 0 f).1))
     (fun c h hh => LinearMap.ext fun f => Subtype.ext (by
       rw [LinearMap.smul_apply, Submodule.coe_smul, hT (c • h) (Submodule.smul_mem _ c hh) f, hT h hh f]
-      exact (GlobalTheory.T.heckeFunI_add_and_smul L n v w Dv U hU π.W h h hh hh c f).2))
+      exact (_root_.GlobalTheory.InertHeckeAdd.heckeFunI_add_smul L n v w Dv U hU π.W h h hh hh c f).2))
     (LinearMap.ext fun f => Subtype.ext (by
       rw [hT _ (Formalism.UG.Final.DosetIndMem _ _ ℂ 1) f]
       exact GlobalTheory.T.inertHeckeOperator_maximalCompact_indicator_eq_id L n v w Dv U hU π.W f f.2.2))

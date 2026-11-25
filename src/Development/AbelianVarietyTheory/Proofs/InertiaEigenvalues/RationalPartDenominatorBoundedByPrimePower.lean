@@ -19,7 +19,7 @@ public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Admi
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatAtTrivAtOfSplit
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupportedAdelicPointEqOneWhereIdempotentVanishesStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupportedAdelicPointEqOneWhereIdempotentVanishes
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -109,7 +109,7 @@ theorem denomAt_of_move : ∀ (D : D7) (V : HSp D), Bridge.hLat V 1 = Formalism.
     exact hb' PP hPP (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ hpP)
   obtain ⟨S, hSf, hSp, hS0⟩ := _root_.GlobalTheory.idemSum_add_conj_support_finite D ι hid hcj l e' P' he' hp'
   obtain ⟨bh, bh'⟩ := _root_.GlobalTheory.StdAtPrime.bnd_and_bnd_inv_of_eq_one_off_finite l hl _ (M (fin V h).1) S hSf hSp fun Q hQ i j =>
-    GlobalTheory.T.supported_adelic_point_eq_one_where_idempotent_vanishes D ι V e' h hs' Q (hS0 Q hQ) i j
+    _root_.GlobalTheory.SuppOneIdentity.finPt_entry_eq_one_of_idem_zero D ι V e' h hs' Q (hS0 Q hQ) i j
   have eγ : fin V γ = fin V s * fin V z * k⁻¹ * (fin V h)⁻¹ := by
     have e1 : fin V (s * z) = fin V s * fin V z := map_mul _ _ _
     rw [e1] at heq
