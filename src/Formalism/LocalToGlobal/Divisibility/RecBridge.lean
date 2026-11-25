@@ -87,12 +87,9 @@ theorem oneMap_of_coord (A Rr : Formalism.BasicNotions.HLat K) {d n : ℕ}
   rintro f ⟨a, ha, rfl⟩
   rw [hN] at ha
   obtain ⟨φ, hφ, rfl⟩ := ha
-  rw [mem_dualLat_iff']
-  intro r hr
-  rw [hR] at hr
-  obtain ⟨y, hy, rfl⟩ := hr
-  have h := (mem_dualLat_iff' Rc (B φ)).1 (h1 φ hφ) y hy
-  simpa [hB] using h
+  rw [mem_dualLat_iff', hR]
+  rintro r ⟨y, hy, rfl⟩
+  simpa [hB] using (mem_dualLat_iff' Rc (B φ)).1 (h1 φ hφ) y hy
 
 theorem ne_zero_of_coord {V W V' W' : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     [AddCommGroup V'] [Module K V'] [AddCommGroup W'] [Module K W']
@@ -101,9 +98,7 @@ theorem ne_zero_of_coord {V W V' W' : Type} [AddCommGroup V] [Module K V] [AddCo
   intro h0
   apply hne
   ext a r
-  have h := hB (eN.symm a) (eR.symm r)
-  rw [h0] at h
-  simpa using h
+  simpa [h0] using hB (eN.symm a) (eR.symm r)
 
 end PartA
 
@@ -133,8 +128,7 @@ theorem opNormAt_pos_of {a n : ℕ} (Xc : InfinitePlace K → Matrix (Fin a) (Fi
     rw [e, h2, Matrix.mul_zero, Matrix.zero_mul]
   have h4 : M = 0 := by
     ext i j
-    have := congrFun (congrFun h3 i) j
-    simpa using this
+    simpa using congrFun (congrFun h3 i) j
   exact (LinearMap.toMatrix (Pi.basisFun K (Fin a)) (Pi.basisFun K (Fin n)).dualBasis).map_eq_zero_iff.mp h4
 
 end Pos
@@ -192,8 +186,7 @@ theorem wordFacts_of {D : D7} (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.
       C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :
     WordFacts L C Cabs u := by
   refine ⟨oneMap_of_coord (D.div.Nu u) D.div.RR Nc Rc eN eR hN hR (D.div.Bk u) B hB c1, fun hne => ?_, ?_⟩
-  · rw [tHt, ← tH]
-    exact c2 (ne_zero_of_coord eN eR (D.div.Bk u) B hB hne)
+  · simpa [tHt, tH] using c2 (ne_zero_of_coord eN eR (D.div.Bk u) B hB hne)
   · rw [← tMu, ← tH, ← tFo]
     linarith
 
@@ -212,8 +205,7 @@ theorem htMap_le_of_bound {K : Type} [Field K] [NumberField K] {a n : ℕ} (Xc :
     Formalism.HN.htMap (Pi.basisFun K (Fin a)) Xc (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) B ≤ h - k := by
   obtain ⟨cu, hcu, hmean⟩ := hb
   rw [Formalism.HN.htMap, ← hmean]
-  refine mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun v _ => Real.log_le_log (pow_pos (hpos v) 2) (hcu v).2) ?_
-  positivity
+  exact mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun v _ => Real.log_le_log (pow_pos (hpos v) 2) (hcu v).2) (by positivity)
 
 variable {D : D7} {Bs : DefBase D.what₂.LL} {Df0 Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer Dc} {Nn : IndefNum Bs}
 
@@ -243,8 +235,7 @@ theorem wordFacts_of_clauses (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.W
     (P.cols.col.B (wU u)) hBk (htLink P (wU u)) P.cols.muCC (meanLog P.cols.κ) R.hu (2 * FoOfR P) R.rhs
     ?_ ?_ hcl.2.2.1 tHt tMu tH tFo tR
   · rw [hNs]; exact hcl.1
-  · intro hne
-    exact htMap_le_of_bound _ _ _ _ _ hcl.2.1 (hPos hne)
+  · exact fun hne => htMap_le_of_bound _ _ _ _ _ hcl.2.1 (hPos hne)
 
 theorem wordFacts_of_face (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) (P : IndefCoreR Df0 Df1 Dc Sp Nn)
     (wU : D.what₂.Word → Dc.Mem) (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a w) → D.what₂.LL))
@@ -302,19 +293,13 @@ theorem rhs_le_record (Nd : NumDatum) {J : Type} [Fintype J] (eJ : J ≃ Fin Nd.
   have hle : L.sc.x ^ L.sc.eps ≤ L.sc.x ^ (Cabs * L.sc.eps) :=
     Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le (le_mul_of_one_le_left L.sc.eps_pos.le hCabs)
   have e1 : (50 * C0 + 10) * ((D.host.TT.card : ℝ) * L.sc.a * L.La) ≤ C * (D.host.TT.card : ℝ) * L.sc.a * L.La := by
-    have h0 : 0 ≤ (D.host.TT.card : ℝ) * L.sc.a * L.La := by positivity
-    calc (50 * C0 + 10) * ((D.host.TT.card : ℝ) * L.sc.a * L.La)
-        ≤ C * ((D.host.TT.card : ℝ) * L.sc.a * L.La) := mul_le_mul_of_nonneg_right hC1 h0
-      _ = C * (D.host.TT.card : ℝ) * L.sc.a * L.La := by ring
+    simpa [mul_assoc] using mul_le_mul_of_nonneg_right hC1 (by positivity)
   have e2 : 60 * ce * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc))) ≤
       C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) := by
-    have h0 : 0 ≤ (D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc)) := by positivity
-    calc 60 * ce * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc)))
-        ≤ C * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc))) := mul_le_mul_of_nonneg_right hC2 h0
-      _ ≤ C * ((D.R.m : ℝ) * (L.sc.x ^ (Cabs * L.sc.eps) * (L.B0 + L.Nc))) := by
-          apply mul_le_mul_of_nonneg_left _ hC0
-          apply mul_le_mul_of_nonneg_left _ hm
-          exact mul_le_mul_of_nonneg_right hle hBN
+    calc
+      60 * ce * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc)))
+          ≤ C * ((D.R.m : ℝ) * (L.sc.x ^ (Cabs * L.sc.eps) * (L.B0 + L.Nc))) :=
+        mul_le_mul hC2 (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hle hBN) hm) (by positivity) hC0
       _ = C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) := by ring
   linarith
 
@@ -492,19 +477,14 @@ theorem WordFacts.mono {D : D7} {L : SizeData₂ D} {C C' Cabs Cabs' : ℝ} {u :
   have hle : L.sc.x ^ (Cabs * L.sc.eps) ≤ L.sc.x ^ (Cabs' * L.sc.eps) :=
     Real.rpow_le_rpow_of_exponent_le hx1 (mul_le_mul_of_nonneg_right hA L.sc.eps_pos.le)
   have e1 : C * (D.host.TT.card : ℝ) * L.sc.a * L.La ≤ C' * (D.host.TT.card : ℝ) * L.sc.a * L.La := by
-    have h0 : 0 ≤ (D.host.TT.card : ℝ) * L.sc.a * L.La := by positivity
-    calc C * (D.host.TT.card : ℝ) * L.sc.a * L.La = C * ((D.host.TT.card : ℝ) * L.sc.a * L.La) := by ring
-      _ ≤ C' * ((D.host.TT.card : ℝ) * L.sc.a * L.La) := mul_le_mul_of_nonneg_right hC h0
-      _ = C' * (D.host.TT.card : ℝ) * L.sc.a * L.La := by ring
+    simpa [mul_assoc] using mul_le_mul_of_nonneg_right hC (by positivity)
   have e2 : C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) ≤
       C' * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps) := by
-    have h0 : 0 ≤ (D.R.m : ℝ) * (L.B0 + L.Nc) := by positivity
-    calc C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)
-        = C * ((D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) := by ring
-      _ ≤ C' * ((D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :=
-          mul_le_mul_of_nonneg_right hC (mul_nonneg h0 hp)
-      _ ≤ C' * ((D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps)) :=
-          mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hle h0) hC0
+    calc
+      C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)
+          = C * ((D.R.m : ℝ) * ((L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps))) := by ring
+      _ ≤ C' * ((D.R.m : ℝ) * ((L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps))) :=
+        mul_le_mul hC (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hle hBN) hm) (by positivity) hC0
       _ = C' * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps) := by ring
   linarith
 

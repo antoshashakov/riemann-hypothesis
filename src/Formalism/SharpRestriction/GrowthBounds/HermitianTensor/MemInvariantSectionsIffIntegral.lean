@@ -118,10 +118,7 @@ private theorem step_lemma_3 (hinj : Function.Injective (algebraMap O K)) (m : �
   have hAB : A * B = 1 := by
     ext i j
     apply hinj
-    have h4 := congrFun (congrFun h2 i) j
-    rw [Matrix.map_apply] at h4
-    rw [h4, Matrix.one_apply, Matrix.one_apply]
-    split_ifs <;> simp
+    simpa [Matrix.map_apply, Matrix.one_apply] using congrFun (congrFun h2 i) j
   have hAB' : A.det * B.det = 1 := by rw [← Matrix.det_mul, hAB, Matrix.det_one]
   have hdet : IsUnit A.det := ⟨⟨A.det, B.det, hAB', by rw [mul_comm]; exact hAB'⟩, rfl⟩
   obtain ⟨u, hu⟩ := hdet
@@ -232,9 +229,7 @@ theorem core_id {k : ℕ} (g : Matrix (Fin (k + 1)) (Fin (k + 1)) K) (hg : IsUni
 theorem nuOf_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : Antitone (nuOf mu) := by
   intro a b hab
   show (mu b - mu (Fin.last m)).toNat ≤ (mu a - mu (Fin.last m)).toNat
-  apply Int.toNat_le_toNat
-  have := h hab
-  linarith
+  exact Int.toNat_le_toNat (sub_le_sub_right (h hab) _)
 
 theorem highest_weight_first_entry (k : ℕ) (ν : Fin (k + 1) → ℕ) (hν : Antitone ν) : Row0 (hw K (le_refl (k + 1)) ν) (ν 0) := by
   intro u hu
@@ -304,9 +299,7 @@ theorem hw_prim [IsLocalRing O] (hinj : Function.Injective (algebraMap O K)) (w 
 end Gen
 
 theorem caLast_ne_zero (m : ℕ) : Fin.last (m + 1) ≠ 0 := by
-  intro h
-  have := congrArg Fin.val h
-  simp at this
+  exact fun h => Nat.succ_ne_zero m (congrArg Fin.val h)
 
 theorem wtPQ_zero (m a b : ℕ) : wtPQ m a b 0 = a := by simp [wtPQ]
 

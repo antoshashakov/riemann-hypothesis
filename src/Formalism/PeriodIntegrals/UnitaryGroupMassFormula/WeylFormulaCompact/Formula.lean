@@ -68,11 +68,9 @@ theorem ePl_eq (ε : Fin N → Bool) (i : Fin (nPl ε)) : ePl ε i = (sPlus ε).
 theorem eMi_eq (ε : Fin N → Bool) (j : Fin (nMi ε)) : eMi ε j = (sMinus ε).orderEmbOfFin rfl j := rfl
 
 theorem ePl_lt_iff (ε : Fin N → Bool) (i j : Fin (nPl ε)) : ePl ε i < ePl ε j ↔ i < j := by
-  rw [ePl_eq, ePl_eq]
   exact ((sPlus ε).orderEmbOfFin rfl).lt_iff_lt
 
 theorem eMi_lt_iff (ε : Fin N → Bool) (i j : Fin (nMi ε)) : eMi ε i < eMi ε j ↔ i < j := by
-  rw [eMi_eq, eMi_eq]
   exact ((sMinus ε).orderEmbOfFin rfl).lt_iff_lt
 
 theorem ePl_inj (ε : Fin N → Bool) (i j : Fin (nPl ε)) : ePl ε i = ePl ε j ↔ i = j := by
@@ -84,8 +82,7 @@ theorem eMi_inj (ε : Fin N → Bool) (i j : Fin (nMi ε)) : eMi ε i = eMi ε j
   rw [(blk ε).injective.eq_iff, Sum.inr.injEq]
 
 theorem ePl_ne_eMi (ε : Fin N → Bool) (i : Fin (nPl ε)) (j : Fin (nMi ε)) : ePl ε i ≠ eMi ε j := by
-  intro h
-  exact Sum.inl_ne_inr ((blk ε).injective h)
+  exact fun h => Sum.inl_ne_inr ((blk ε).injective h)
 
 @[to_additive]
 theorem prod_split {M : Type*} [CommMonoid M] (ε : Fin N → Bool) (f : Fin N → M) :
@@ -102,16 +99,14 @@ private theorem exists_ePl_eq_of_true (ε : Fin N → Bool) (b : Fin N) (hb : ε
   rcases x with k | j
   · exact ⟨k, rfl⟩
   · have h2 : ε (blk ε (Sum.inr j)) = false := eps_eMi ε j
-    rw [h2] at hb
-    exact absurd hb (by decide)
+    exact absurd hb (by simp [h2])
 
 private theorem exists_eMi_eq_of_false (ε : Fin N → Bool) (b : Fin N) (hb : ε b = false) :
     ∃ k, eMi ε k = b := by
   obtain ⟨x, rfl⟩ := (blk ε).surjective b
   rcases x with k | j
   · have h2 : ε (blk ε (Sum.inl k)) = true := eps_ePl ε k
-    rw [h2] at hb
-    exact absurd hb (by decide)
+    exact absurd hb (by simp [h2])
   · exact ⟨j, rfl⟩
 
 theorem card_gt_ePl (ε : Fin N → Bool) (i : Fin (nPl ε)) :
@@ -236,11 +231,9 @@ theorem weyl_formula_compact : FormulaStep := by
   have hsp := prod_pairs_split ε (fun a b => (Λ + rhoC ε) a - (Λ + rhoC ε) b)
   rw [hsp, wu, wu, mul_div_mul_comm]
   congr 2
-  · refine Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_
-    simp only [Pi.add_apply, rhoC_ePl]
-    ring
-  · refine Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_
-    simp only [Pi.add_apply, rhoC_eMi]
+  all_goals
+    refine Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_
+    simp only [Pi.add_apply, rhoC_ePl, rhoC_eMi]
     ring
 
 theorem dominant_restriction_holds : CDomRes := by

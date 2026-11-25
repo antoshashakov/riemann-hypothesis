@@ -110,9 +110,7 @@ theorem cwl_coeffT_C_monomial_mul (d s : Fin r × Fin n →₀ ℕ)
   classical
   ext m
   rw [cwl_coeff_coeffT, coeff_C_mul, coeff_monomial_mul', one_mul]
-  split_ifs
-  · rw [cwl_coeff_coeffT]
-  · simp
+  by_cases h : s ≤ d <;> simp [h, cwl_coeff_coeffT]
 
 theorem cwl_coeffT_iota (d : Fin r × Fin n →₀ ℕ) (F : MvPolynomial (Fin r × Fin n) R) :
     cwl_coeffT d (cwl_iota F) = if d = 0 then F else 0 := by
@@ -402,10 +400,9 @@ theorem cw_letters_pairwise :
 theorem cw_wordOf (e : Fin r × Fin n →₀ ℕ) :
     wordOf e = (cwLetters r n).map fun l => (l.1, l.2.1, e l.2.2) := by
   unfold wordOf cwLetters
-  rw [List.map_flatMap]
+  simp only [List.map_flatMap, List.map_filterMap]
   congr 1
   funext s
-  rw [List.map_filterMap]
   congr 1
   funext a
   split_ifs <;> rfl
@@ -468,8 +465,7 @@ theorem coeffWord' : CoeffWord := by
     apply List.map_congr_left
     intro l hl
     have h0 := (cw_mem_letters l).mp hl
-    have hlt : l.2.2.2.val < l.2.2.1.val := by rw [h0.1, h0.2.1]; exact h0.2.2
-    simp [cwStrict, hlt]
+    simp [cwStrict, h0.1, h0.2.1, h0.2.2]
   have hnd : ((cwLetters r n).map (·.2.2)).Nodup := by
     rw [List.Nodup, List.pairwise_map]
     exact cw_letters_pairwise.imp fun h => h.2
@@ -492,14 +488,12 @@ theorem coeffWord' : CoeffWord := by
   have hid : (fun v => (C (idFrame R r n v) : MvPolynomial (Fin r × Fin n) R)) =
       idFrame (MvPolynomial (Fin r × Fin n) R) r n := by
     funext v
-    simp only [idFrame]
-    split_ifs <;> simp
+    simp [idFrame]
   rw [hid, cw_eval_Phi, cw_foldl_point _ (fun l hl => (cw_mem_letters l).mp hl) cw_letters_pairwise]
   have hpt : (fun v => idFrame (MvPolynomial (Fin r × Fin n) R) r n v +
       if v ∈ (cwLetters r n).map (·.2.2) then X v else 0) = cwPt := by
     funext v
-    simp only [hmem]
-    rfl
+    simp [cwPt, hmem]
   rw [hpt, cwl_iota, eval_map, eval₂_eq', coeff_sum]
   simp only [coeff_C_mul, cw_prod_pt]
   rw [Finset.sum_eq_single e]

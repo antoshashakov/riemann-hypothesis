@@ -81,18 +81,13 @@ theorem exists_kfin_near {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KTy
   have hterm : ∀ w ∈ Ws, ‖dSW (sigLam ε Ψ v₀) w (u - x)‖ ≤ e / (Ws.length + 1) := by
     intro w hw
     obtain ⟨i, rfl⟩ := List.get_of_mem hw
-    have hxs' : IsSmoothVecU ε (sigLam ε Ψ v₀) (∫ k, α k • sigLam ε Ψ v₀ (S7.toMK k) u ∂(S7.muK ε)) := by
-      rw [← hxdef]; exact hxs
     rw [dSW_sub hσ (hWg i) hu hxs, hxdef]
-    erw [dSW_integral hσ (fun z hz => sigLam_sep z hz) (hWg i) hu α hxs']
+    erw [dSW_integral hσ (fun z hz => sigLam_sep z hz) (hWg i) hu α (hxdef ▸ hxs)]
     rw [norm_sub_rev]
     have h1 : sigLam ε Ψ v₀ (S7.toMK (1 : S7.KG ε)) u = u := by
       rw [show S7.toMK (1 : S7.KG ε) = 1 from rfl, hσ.1.1]
       rfl
-    have h2 := hαF i
-    beta_reduce at h2
-    rw [h1] at h2
-    exact h2.le
+    simpa [h1] using (hαF i).le
   unfold nuJ
   calc (Ws.map fun w => ‖dSW (sigLam ε Ψ v₀) w (u - x)‖).sum
       ≤ (Ws.map fun w => ‖dSW (sigLam ε Ψ v₀) w (u - x)‖).length • (e / (Ws.length + 1)) :=

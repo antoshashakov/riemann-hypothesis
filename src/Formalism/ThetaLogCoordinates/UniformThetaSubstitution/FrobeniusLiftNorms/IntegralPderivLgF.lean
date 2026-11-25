@@ -154,10 +154,7 @@ theorem divided_derivative : DivDeriv := by
   have hs : MvPowerSeries.HasSubst φ := MvPowerSeries.hasSubst_of_constantCoeff_zero hφ0
   have hs' : MvPowerSeries.HasSubst φ' := by
     refine MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => ?_
-    by_cases h : i = x
-    · subst h
-      simp [hφ', hφ0, hY0]
-    · simp [hφ', Function.update_of_ne h, hφ0]
+    by_cases h : i = x <;> simp [hφ', h, hφ0, hY0]
   rw [map_sub, MvPowerSeries.coeff_subst hs', MvPowerSeries.coeff_subst hs,
     ← finsum_sub_distrib (MvPowerSeries.coeff_subst_finite hs' Φ n)
       (MvPowerSeries.coeff_subst_finite hs Φ n)]
@@ -167,10 +164,7 @@ theorem divided_derivative : DivDeriv := by
     (Finsupp.mul_prod_erase' d x (fun s e => ψ s ^ e) fun _ => pow_zero _).symm
   have e2 : ((d.erase x).prod fun s e => φ' s ^ e) = (d.erase x).prod fun s e => φ s ^ e := by
     refine Finsupp.prod_congr fun s hs => ?_
-    have : s ≠ x := by
-      rintro rfl
-      simp at hs
-    rw [hφ', Function.update_of_ne this]
+    rw [hφ', Function.update_of_ne (by rintro rfl; simp at hs)]
   have hR : Bd 1 ((d.erase x).prod fun s e => φ s ^ e) := by
     unfold Finsupp.prod
     refine Finset.prod_induction _ (Bd 1) (fun a b ha hb => int_mul ha hb) DworkIntegrality.bd_one

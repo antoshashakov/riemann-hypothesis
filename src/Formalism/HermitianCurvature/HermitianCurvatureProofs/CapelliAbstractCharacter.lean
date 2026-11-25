@@ -89,10 +89,7 @@ theorem IsPol.zero (d : ℕ) : IsPol d (fun _ => (0 : X)) := by
 theorem IsPol.sum {ι : Type} (S : Finset ι) {d : ℕ} {f : ι → ℂ → X} (hf : ∀ i ∈ S, IsPol d (f i)) :
     IsPol d (fun u => ∑ i ∈ S, f i u) := by
   obtain ⟨c, hc⟩ := Finset.sum_induction f (IsPol d) (fun a b ha hb => IsPol.add ha hb) (IsPol.zero d) hf
-  refine ⟨c, fun u => ?_⟩
-  show ∑ i ∈ S, f i u = _
-  rw [← Finset.sum_apply]
-  exact hc u
+  exact ⟨c, fun u => by simpa only [Finset.sum_apply] using hc u⟩
 
 theorem IsPol.map {d : ℕ} {f : ℂ → X} (L : X →ₗ[ℂ] Y) (hf : IsPol d f) : IsPol d (fun u => L (f u)) := by
   obtain ⟨c, h⟩ := hf
@@ -188,8 +185,7 @@ theorem aeval_mem {W : Type} [AddCommGroup W] [Module ℂ W] (G : Submodule ℂ 
 private theorem shift_sum_lemma {W : Type} [AddCommGroup W] [Module ℂ W] (d : ℕ) (a : ℕ → W) (u : ℂ) :
     ∑ s ∈ Finset.range (d + 1), u ^ s • shiftC a s = u • ∑ s ∈ Finset.range d, u ^ s • a s := by
   rw [Finset.sum_range_succ', Finset.smul_sum]
-  simp only [shiftC, smul_zero, add_zero]
-  exact Finset.sum_congr rfl (fun s _ => by rw [pow_succ', mul_smul])
+  simp only [shiftC, smul_zero, add_zero, pow_succ', mul_smul]
 
 private theorem ite_sum_lemma_2 {W : Type} [AddCommGroup W] [Module ℂ W] (d : ℕ) (b : ℕ → W) (u : ℂ) :
     ∑ s ∈ Finset.range (d + 1), u ^ s • (if s < d then b s else 0) = ∑ s ∈ Finset.range d, u ^ s • b s := by
@@ -247,8 +243,7 @@ section ring
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {E : Fin n → Fin n → A}
 
 theorem isCov_zero : IsCov E (fun _ => (0 : A)) := by
-  intro a b c
-  simp
+  simp [IsCov]
 
 theorem isCov_add {η η' : Fin n → A} (h : IsCov E η) (h' : IsCov E η') : IsCov E (fun j => η j + η' j) := by
   intro a b c
@@ -425,9 +420,8 @@ theorem charId (hE : GlRel E) {m : Fin (N + 1) → ℂ} {v : V} (hv : v ∈ CapS
   obtain ⟨A, hA⟩ := Th_pol E
   intro X hX
   refine ch_abstract (Gd E v) (KK E) (fun Y hY => KK_mem E hE hY) (N + 1) A _ ?_ (fun u Y hY => ?_) X hX
-  · have h := deg_prod_lin (Finset.univ : Finset (Fin (N + 1))) m
-    simp only [Finset.card_univ, Fintype.card_fin] at h
-    omega
+  · simpa only [Finset.card_univ, Fintype.card_fin, Nat.lt_succ_iff] using
+      deg_prod_lin (Finset.univ : Finset (Fin (N + 1))) m
   · rw [← hA, ← hA, star E hE hv hY u, eval_prod_lin]
     rfl
 

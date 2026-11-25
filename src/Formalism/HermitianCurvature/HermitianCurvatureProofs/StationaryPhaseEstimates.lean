@@ -83,36 +83,31 @@ def diagPt (s : ℕ) (a : ℂ) : Mat (s + 2) := Matrix.diagonal (fun i : Fin (s 
 
 theorem detM_diagPt (s : ℕ) (a : ℂ) : detM (diagPt s a) = a := by
   unfold detM diagPt
-  have : (Matrix.of (Matrix.diagonal (fun i : Fin (s + 2) => if i = 0 then a else 1)) :
-      Matrix (Fin (s + 2)) (Fin (s + 2)) ℂ) = Matrix.diagonal (fun i : Fin (s + 2) => if i = 0 then a else 1) := rfl
-  rw [this, Matrix.det_diagonal, Finset.prod_ite_eq']
+  change Matrix.det (Matrix.diagonal (fun i : Fin (s + 2) => if i = 0 then a else 1)) = a
+  rw [Matrix.det_diagonal, Finset.prod_ite_eq']
   simp
 
 theorem diagPt_norm_pos (s : ℕ) (a : ℂ) : 0 < ‖diagPt s a‖ := by
   rw [norm_pos_iff]
   intro h
-  have h1 : diagPt s a (Fin.last (s + 1)) (Fin.last (s + 1)) = 0 := by rw [h]; rfl
+  have h1 := congrFun (congrFun h (Fin.last (s + 1))) (Fin.last (s + 1))
   have h2 : diagPt s a (Fin.last (s + 1)) (Fin.last (s + 1)) = 1 := by
-    unfold diagPt
-    rw [Matrix.diagonal_apply_eq, if_neg (Fin.last_pos).ne']
+    simp [diagPt, Fin.last_pos.ne']
   rw [h2] at h1
   exact one_ne_zero h1
 
 theorem K_nonneg {m k : ℕ} {Kc : Set ℂ} {A K : ℝ} {Φ : Mat (m + 1 + 1) → V} {D : ℂ} (hD : D ∈ Kc)
     (h : DerivBound k (detSet (m + 1) Kc) (fun Z => K * min 1 (‖Z‖ ^ (-A))) Φ) : 0 ≤ K := by
-  have hmem : detM (diagPt m ((wMat (m + 1)).det * D)) ∈ detSet (m + 1) Kc := by
-    rw [detM_diagPt]; exact ⟨D, hD, rfl⟩
-  have h2 := (h _ hmem).2 0 (Nat.zero_le _)
-  have h3 : 0 ≤ K * min 1 (‖diagPt m ((wMat (m + 1)).det * D)‖ ^ (-A)) := (norm_nonneg _).trans h2
-  have h4 : 0 < min 1 (‖diagPt m ((wMat (m + 1)).det * D)‖ ^ (-A)) :=
-    lt_min one_pos (Real.rpow_pos_of_pos (diagPt_norm_pos _ _) _)
-  exact nonneg_of_mul_nonneg_left h3 h4
+  have h2 := (h (diagPt m ((wMat (m + 1)).det * D)) (by
+    rw [detM_diagPt]
+    exact ⟨D, hD, rfl⟩)).2 0 (Nat.zero_le _)
+  exact nonneg_of_mul_nonneg_left ((norm_nonneg _).trans h2)
+    (lt_min one_pos (Real.rpow_pos_of_pos (diagPt_norm_pos _ _) _))
 
 theorem singleton_subset_detSet {m : ℕ} {Kc : Set ℂ} {D : ℂ} (hD : D ∈ Kc) :
     ({(wMat (m + 1)).det * D} : Set ℂ) ⊆ detSet (m + 1) Kc := by
-  intro w hw
-  rw [Set.mem_singleton_iff] at hw
-  exact ⟨D, hD, hw.symm⟩
+  rw [Set.singleton_subset_iff]
+  exact ⟨D, hD, rfl⟩
 
 theorem one_le_tau {t : ℂ} {ε : ℝ} (ht : t ≠ 0) (ht1 : ‖t‖ ≤ 1) (hε : 0 ≤ ε) : 1 ≤ ‖t‖ ^ (-ε) :=
   Real.one_le_rpow_of_pos_of_le_one_of_nonpos (norm_pos_iff.mpr ht) ht1 (by linarith)
@@ -197,12 +192,8 @@ theorem inner_osc (hOm : OmConverges) (hCut : CutPhiBound) (hIn : InnerXY) {m : 
     apply h0; simpa using hD
   have hΦ0 := derivBound_mono hΦ (Nat.zero_le k) (singleton_subset_detSet (m := m) hD)
   obtain ⟨hC1, hC2⟩ := hC V Φ _ _ (‖t‖ ^ (-ε)) (one_le_tau ht ht1 hε) hΦ0
-  have e : (fun Z : Mat (m + 1 + 1) => C * (K * min 1 (‖Z‖ ^ (-A)))) =
-      fun Z => (C * K) * min 1 (‖Z‖ ^ (-A)) := by
-    funext Z; ring
-  rw [e] at hC1 hC2
-  have i1 := (hOm m β A (C * K) hA V _ t c ht hc hC1).1
-  have i2 := (hOm m β A (C * K) hA V _ t c ht hc hC2).1
+  have i1 := (hOm m β A (C * K) hA V _ t c ht hc (by simpa only [mul_assoc] using hC1)).1
+  have i2 := (hOm m β A (C * K) hA V _ t c ht hc (by simpa only [mul_assoc] using hC2)).1
   obtain ⟨j1, j2⟩ := hIn m β t c ht V _ i1
   exact ⟨i1, i2, j1, j2⟩
 
@@ -257,13 +248,11 @@ theorem ns_isClosed_Fs (m : ℕ) (D' : ℂ) (R r d : ℝ) : IsClosed (ns_Fs m D'
 theorem ns_Fs_subset_ball (m : ℕ) (D' : ℂ) (R r d : ℝ) (hR : 0 ≤ R) :
     ns_Fs m D' R r d ⊆ Metric.closedBall 0 R := by
   intro x hx
-  rw [mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg hR]
-  exact fun k => (hx.1 k).1
+  simpa [mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg hR] using fun k => (hx.1 k).1
 
 theorem ns_Fs_subset_Om (m : ℕ) (D' : ℂ) {R r r' d d' : ℝ} (hr : r' < r) (hd : d' < d) :
     ns_Fs m D' R r d ⊆ ns_Om m D' r' d' := by
-  intro x hx
-  exact ⟨fun k => hr.trans_le (hx.1 k).2, fun z hz => hd.trans_le (hx.2 z hz)⟩
+  exact fun x hx => ⟨fun k => hr.trans_le (hx.1 k).2, fun z hz => hd.trans_le (hx.2 z hz)⟩
 
 theorem ns_differentiableOn (m : ℕ) (D' : ℂ) {r d : ℝ} (hr : 0 ≤ r) :
     DifferentiableOn ℂ (g0 D') (ns_Om m D' r d) := by
@@ -281,8 +270,7 @@ theorem ns_differentiableOn (m : ℕ) (D' : ℂ) {r d : ℝ} (hr : 0 ≤ r) :
 
 theorem ns_vpow {τ ε e : ℝ} (hτ : 0 ≤ τ) (n : ℕ) (hn : (n : ℝ) = e) :
     τ ^ (-(ε * e)) = (τ ^ (-ε)) ^ n := by
-  rw [← Real.rpow_mul_natCast hτ, hn]
-  congr 1; ring
+  rw [← Real.rpow_mul_natCast hτ, hn, neg_mul]
 
 theorem rpow_decay_arith {τ ε : ℝ} (hτ : 0 < τ) (hτ1 : τ ≤ 1) (q N p : ℕ)
     (h : ε * (N : ℝ) + (p : ℝ) ≤ (q : ℝ)) : τ ^ q * (τ ^ (-ε)) ^ N ≤ τ ^ p := by
@@ -350,10 +338,7 @@ theorem ns_arith (m C₉ q ny : ℕ) {ε : ℝ} (hε : 0 < ε)
       _ ≤ 2 * (1 / 2) * ((m : ℝ) + 2) := by gcongr
       _ = (m : ℝ) + 2 := by ring
   push_cast
-  have e : ε * (((m : ℝ) + 2) * C₉ + ((m : ℝ) + 2) * ((C₉ : ℝ) + 1) * q + 2 * ((m : ℝ) + 1) + 2 * (ny : ℝ)) =
-      ε * (((m : ℝ) + 2) * C₉) + ε * (((m : ℝ) + 2) * ((C₉ : ℝ) + 1)) * q + ε * (2 * ((m : ℝ) + 1)) +
-        ε * (2 * (ny : ℝ)) := by ring
-  rw [e]
+  ring_nf
   linarith
 
 
@@ -652,9 +637,7 @@ theorem _root_.Formalism.FourierDecayAlt.P.stationary_estimate_of_parts : Formal
     _ = _ := by ring
 
 theorem gr_norm_psi (β w : ℂ) : ‖psi β w‖ = 1 := by
-  unfold psi
-  rw [mul_comm]
-  exact Complex.norm_exp_ofReal_mul_I _
+  simpa only [psi, mul_comm] using Complex.norm_exp_ofReal_mul_I _
 
 section
 
@@ -710,16 +693,14 @@ theorem gr_block_split (β : ℂ) (n : ℕ) (τ : ℝ) (Φ : Mat (n + 1) → V) 
       blockIntegrand β n (cutPhi τ Φ) t c p + blockIntegrand β n (cutPhiC τ Φ) t c p := by
   unfold blockIntegrand cutPhi cutPhiC
   rw [← smul_add, ← add_smul]
-  push_cast
-  rw [add_sub_cancel, one_smul]
+  simp
 
 theorem gr_osc_split (β : ℂ) (m : ℕ) (δ ε : ℝ) (Φ : Mat (m + 1 + 1) → V) (D t : ℂ) (p : XY m) :
     oscIn β m ε Φ D t p = ((farCut m δ D p.1 : ℝ) : ℂ) • oscIn β m ε Φ D t p +
       ∑ z ∈ rootSet (m + 2) ((-1) ^ (m + 3) * D), ((critCut δ z p.1 : ℝ) : ℂ) • oscIn β m ε Φ D t p := by
   rw [← Finset.sum_smul, ← add_smul]
   unfold farCut
-  push_cast
-  rw [sub_add_cancel, one_smul]
+  simp
 
 end
 

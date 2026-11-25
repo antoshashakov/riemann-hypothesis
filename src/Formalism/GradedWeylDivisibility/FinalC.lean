@@ -97,13 +97,8 @@ private theorem bidet_rowPart_lemma {r n K : ℕ} (sz : Fin K → ℕ) (hsz : �
   induction s using Finset.induction_on with
   | empty =>
     intro m hm
-    simp only [Finset.prod_empty] at hm
-    have hm0 : m = 0 := by
-      by_contra h
-      apply (MvPolynomial.mem_support_iff.mp hm)
-      rw [MvPolynomial.coeff_one, if_neg (Ne.symm h)]
-    subst hm0
-    simp [rowPart_zero]
+    simp only [Finset.prod_empty, MvPolynomial.support_one, Finset.mem_singleton] at hm
+    simp [hm, rowPart_zero]
   | @insert j s hj ih =>
     intro m hm
     rw [Finset.prod_insert hj] at hm
@@ -123,11 +118,9 @@ private theorem sum_rowNu_lemma_2 {r n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ 
     · unfold shapeDeg
       rw [Finset.card_filter]
     · symm
-      apply Finset.sum_eq_zero
-      intro j _
-      have := hsz j
-      exact if_neg (by omega)
-  have h2 : ∀ j : Fin K, min k (sz j) = ∑ a : Fin r with a.val < k, if a.val < sz j then 1 else 0 := by
+      exact Finset.sum_eq_zero (fun j _ => if_neg (by have := hsz j; omega))
+  have h2 : ∀ j : Fin K, min k (sz j) =
+      ∑ a : Fin r with a.val < k, if a.val < sz j then 1 else 0 := by
     intro j
     have hj : sz j ≤ r := (hsz j).trans hnr
     rw [← Finset.card_filter, Finset.filter_filter]
@@ -162,9 +155,7 @@ theorem dualWeylDominanceZ :
       exact (bidet_rowPart_lemma sz hsz I k Finset.univ m hm).trans (sum_rowNu_lemma_2 sz hsz hnr k)
     | zero => simp at hm
     | add x y _ _ ihx ihy =>
-      rcases Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h
-      · exact ihx m h
-      · exact ihy m h
+      exact (Finset.mem_union.mp (MvPolynomial.support_add hm)).elim (ihx m) (ihy m)
     | smul a x _ ihx =>
       exact ihx m (MvPolynomial.support_smul hm)
   · obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hnr

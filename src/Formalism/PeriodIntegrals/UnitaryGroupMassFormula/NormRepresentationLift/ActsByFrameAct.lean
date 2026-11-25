@@ -134,22 +134,18 @@ theorem span_zero {s : Set S.V} {φ : S.V →ₗ[E] E} (h : ∀ y ∈ s, φ y = 
 variable {r : ℕ} {T : E}
 
 theorem e_mem_Xflag (F : LFlag S r T) (a : Fin r) (j : ℕ) (h : a.val < j) : F.fl.e a ∈ Xflag F j := by
-  show F.fl.e a ∈ Submodule.span E (F.fl.e '' {i | i.1 < j})
   exact Submodule.subset_span ⟨a, h, rfl⟩
 
 theorem e_mem_Xsp (F : LFlag S r T) (a : Fin r) : F.fl.e a ∈ Xsp F := by
-  show F.fl.e a ∈ Submodule.span E (Set.range F.fl.e)
   exact Submodule.subset_span ⟨a, rfl⟩
 
 theorem hT_e_frame (F : LFlag S r T) (a : Fin r) (b : Fin (r + 1)) : S.hT (F.fl.e a) (frame F b) = 0 := by
   show S.hT (F.fl.e a) (Fin.snoc (α := fun _ => S.V) F.fl.e F.fl.z b) = 0
   cases b using Fin.lastCases with
   | last =>
-    rw [Fin.snoc_last]
-    exact F.fl.z_orth a
+    simpa [Fin.snoc_last] using F.fl.z_orth a
   | cast c =>
-    rw [Fin.snoc_castSucc]
-    exact F.fl.e_iso a c
+    simpa [Fin.snoc_castSucc] using F.fl.e_iso a c
 
 theorem tv_mem_NLam (Λ : Submodule (𝓞 E) S.V) (hint : IntLat Λ) (F : LFlag S r T) (a : Fin r)
     (hea : F.fl.e a ∈ Λ) (v : S.V) (hv : v ∈ Λ) (hperp : ∀ i : Fin r, i ≤ a → S.hT v (F.fl.e i) = 0)
@@ -225,12 +221,7 @@ theorem actsBy_mul {n : ℕ} {φ ψ : S.V ≃ₗ[E] S.V} {f : Fin n → S.V} {M 
   rw [h2 b, actsBy_frameAct h1 N b]
 
 theorem frameAct_one {n : ℕ} (f : Fin n → S.V) (b : Fin n) : frameAct f 1 b = f b := by
-  unfold frameAct
-  rw [Finset.sum_eq_single b]
-  · simp
-  · intro a _ hab
-    simp [Matrix.one_apply_ne hab]
-  · simp
+  simp [frameAct, Matrix.one_apply, Finset.sum_ite_eq']
 
 theorem actsBy_one {n : ℕ} (f : Fin n → S.V) : ActsBy (1 : S.V ≃ₗ[E] S.V) f 1 := by
   intro b

@@ -302,9 +302,8 @@ theorem g_frame (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') :
 theorem cell_frame (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (w : Point D.host.E (D.R.rS + 1))
     (hw : t.toTerm.atPt w) : IsInCell (ZhatOM (ZhatL (lf D (X.Fu u)) t.frame)) w := by
   obtain ⟨F', hrep, -, hc⟩ := hw
-  have hmk : TermDef.Rep t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') t.toTerm.cls t.frame :=
-    TermDef.rep_mk ⟨t.frame, t.rep.2.2.2.2⟩
-  exact (Pf.cell_rep_iff (Pf.cell_function_holds _ _ _) hrep hmk w).1 hc
+  exact (Pf.cell_rep_iff (Pf.cell_function_holds _ _ _) hrep
+    (TermDef.rep_mk ⟨t.frame, t.rep.2.2.2.2⟩) w).1 hc
 
 theorem gv_ne (t : TermOp.GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') (hG : t.G ≠ 0)
     (w : Point D.host.E (D.R.rS + 1)) (L U : PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U)
@@ -380,12 +379,9 @@ theorem liftDecompC_of_atSome (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) �
     (hAt : ∀ t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w) :
     LiftDecompC X Y u u' κ := by
   intro R ρ s hs
-  have hG : s.1.G ≠ 0 := realDecomp_G_ne (s := s.1) (h := s.2.1)
-  obtain ⟨hex, hall⟩ := realDecompC_of X Y u u' hAt s.1 hs hG
-  refine ⟨hex, hall _ ?_⟩
-  unfold RealObj.gamW
-  rw [dif_pos hex]
-  exact hex.choose_spec
+  obtain ⟨hex, hall⟩ := realDecompC_of X Y u u' hAt s.1 hs
+    (realDecomp_G_ne (s := s.1) (h := s.2.1))
+  exact ⟨hex, hall _ (by simpa [RealObj.gamW, dif_pos hex] using hex.choose_spec)⟩
 
 end Main
 
@@ -475,15 +471,11 @@ theorem liftGPosC_of (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
   have hex := (realDecompC_of X Y u u' hAt s.1 hs hG).1
   have hγ : RealObj.IsPtRep X u u' (PairVal.ptOf s.1.toTerm)
       (RealObj.gamW X u u' (PairVal.ptOf s.1.toTerm)) := by
-    unfold RealObj.gamW
-    rw [dif_pos hex]
-    exact hex.choose_spec
+    simpa [RealObj.gamW, dif_pos hex] using hex.choose_spec
   have hw : s.1.toTerm.atPt (PairVal.ptOf s.1.toTerm) := by
     obtain ⟨w, hw⟩ := hAt s.1.toTerm hG hs
     have hx : ∃ w, s.1.toTerm.atPt w ∧ s.1.toTerm.relevant := ⟨w, hw, hs⟩
-    unfold PairVal.ptOf
-    rw [dif_pos hx]
-    exact hx.choose_spec.1
+    simpa [PairVal.ptOf, dif_pos hx] using hx.choose_spec.1
   have hT := hTP s.1.toTerm _ hw (X.pl v)
   have he := congrArg Complex.re (gv_eq_embedding X u u' (PairVal.ptOf s.1.toTerm) _ hγ v)
   rw [Complex.ofReal_re] at he
@@ -495,8 +487,7 @@ theorem liftAtSomeC_of (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
     (hAt : ∀ t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w) :
     LiftAtSomeC X Y u u' κ := by
   intro R ρ s hs
-  have hG : s.1.G ≠ 0 := realDecomp_G_ne (s := s.1) (h := s.2.1)
-  exact hAt s.1.toTerm hG hs
+  exact hAt s.1.toTerm (realDecomp_G_ne (s := s.1) (h := s.2.1)) hs
 
 end Pos
 

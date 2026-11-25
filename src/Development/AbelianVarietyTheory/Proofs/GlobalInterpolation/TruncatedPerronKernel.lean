@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.Analysis.CStarAlgebra.Classes
+import Formalism.LFunctionBounds.LFunctionBoundsProofs.RectResidue
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -219,55 +220,19 @@ lemma rect_left (L : ℝ) {a b T : ℝ} (ha : a < 0) (hb : 0 < b) (hT : 0 < T) :
     simp only [mul_zero, Complex.exp_zero, sub_zero]
     field_simp
     ring
-  have hTn : -T ≠ 0 := by linarith
-  have ha0 : a ≠ 0 := ha.ne
-  have hb0 : b ≠ 0 := hb.ne'
-  have hDc : Continuous D := hDd.continuous
-  have sb : (∫ x in a..b, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I))
-      = (∫ x in a..b, D ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) + ∫ x in a..b, ((x : ℂ) + ((-T : ℝ) : ℂ) * I)⁻¹ := by
-    have i1 : IntervalIntegrable (fun x : ℝ => D ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) MeasureTheory.volume a b :=
-      (hDc.comp (by fun_prop : Continuous fun x : ℝ => ((x : ℂ) + ((-T : ℝ) : ℂ) * I))).intervalIntegrable _ _
-    rw [← intervalIntegral.integral_add i1 ((cont_hinv hTn).intervalIntegrable _ _)]
-    exact intervalIntegral.integral_congr fun x _ => hsplit _ (ne_zero_of_im hTn)
-  have st : (∫ x in a..b, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I))
-      = (∫ x in a..b, D ((x : ℂ) + T * I)) + ∫ x in a..b, ((x : ℂ) + T * I)⁻¹ := by
-    have i1 : IntervalIntegrable (fun x : ℝ => D ((x : ℂ) + T * I)) MeasureTheory.volume a b :=
-      (hDc.comp (by fun_prop : Continuous fun x : ℝ => ((x : ℂ) + T * I))).intervalIntegrable _ _
-    rw [← intervalIntegral.integral_add i1 ((cont_hinv hT.ne').intervalIntegrable _ _)]
-    exact intervalIntegral.integral_congr fun x _ => hsplit _ (ne_zero_of_im hT.ne')
-  have sr : (∫ t in (-T)..T, cexp (L * ((b : ℂ) + t * I)) / ((b : ℂ) + t * I))
-      = (∫ t in (-T)..T, D ((b : ℂ) + t * I)) + ∫ t in (-T)..T, ((b : ℂ) + t * I)⁻¹ := by
-    have i1 : IntervalIntegrable (fun t : ℝ => D ((b : ℂ) + t * I)) MeasureTheory.volume (-T) T :=
-      (hDc.comp (by fun_prop : Continuous fun t : ℝ => ((b : ℂ) + t * I))).intervalIntegrable _ _
-    rw [← intervalIntegral.integral_add i1 ((cont_vinv hb0).intervalIntegrable _ _)]
-    exact intervalIntegral.integral_congr fun t _ => hsplit _ (ne_zero_of_re hb0)
-  have sl : (∫ t in (-T)..T, cexp (L * ((a : ℂ) + t * I)) / ((a : ℂ) + t * I))
-      = (∫ t in (-T)..T, D ((a : ℂ) + t * I)) + ∫ t in (-T)..T, ((a : ℂ) + t * I)⁻¹ := by
-    have i1 : IntervalIntegrable (fun t : ℝ => D ((a : ℂ) + t * I)) MeasureTheory.volume (-T) T :=
-      (hDc.comp (by fun_prop : Continuous fun t : ℝ => ((a : ℂ) + t * I))).intervalIntegrable _ _
-    rw [← intervalIntegral.integral_add i1 ((cont_vinv ha0).intervalIntegrable _ _)]
-    exact intervalIntegral.integral_congr fun t _ => hsplit _ (ne_zero_of_re ha0)
-  have h1 : ((a : ℂ) + ((-T : ℝ) : ℂ) * I).re = a := by simp
-  have h2 : ((a : ℂ) + ((-T : ℝ) : ℂ) * I).im = -T := by simp
-  have h3 : ((b : ℂ) + (T : ℂ) * I).re = b := by simp
-  have h4 : ((b : ℂ) + (T : ℂ) * I).im = T := by simp
-  have hrect := Complex.integral_boundary_rect_eq_zero_of_differentiableOn
-    D ((a : ℂ) + ((-T : ℝ) : ℂ) * I) ((b : ℂ) + T * I) hDd.differentiableOn
-  rw [h1, h2, h3, h4] at hrect
-  simp only [smul_eq_mul] at hrect
-  have e1 := hinv hT.ne' a b
-  have e2 := vinv hb0 T
-  have e3 := vinv ha0 T
-  have r2 : Real.arctan (T / b) = Real.pi / 2 - Real.arctan (b / T) := by
-    rw [← inv_div, Real.arctan_inv_of_pos (div_pos hb hT)]
-  have r3 : Real.arctan (T / a) = -(Real.pi / 2) - Real.arctan (a / T) := by
-    rw [← inv_div, Real.arctan_inv_of_neg (div_neg_of_neg_of_pos ha hT)]
-  rw [r2] at e2
-  rw [r3] at e3
-  rw [sb, st, sr, sl]
-  linear_combination (norm := skip) hrect + e1 + I * e2 - I * e3
-  push_cast
-  ring
+  have hres := Formalism.FX.rectangle_residue (fun z : ℂ => cexp (L * z) / z)
+    D {0} (fun _ => 1) a b (-T) T (ha.trans hb) (by linarith)
+    (by
+      intro p hp
+      simp only [Finset.mem_singleton] at hp
+      subst p
+      exact ⟨ha, hb, by simpa using neg_neg_of_pos hT, hT⟩)
+    ⟨Set.univ, isOpen_univ, Set.subset_univ _, hDd.differentiableOn⟩
+    (by
+      intro w hw
+      have hw0 : w ≠ 0 := by simpa using hw
+      simpa using hsplit w hw0)
+  simpa [Formalism.FX.rectInt] using hres
 
 lemma le_of_forall_large {x B K c : ℝ} (hc : 0 < c) (hK : 0 ≤ K)
     (h : ∀ U : ℝ, c ≤ U → x ≤ B + K / U) : x ≤ B := by

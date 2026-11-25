@@ -69,18 +69,13 @@ theorem comm_inv {B : Type} [Monoid B] {x xi b : B} (h1 : x * xi = 1) (h2 : xi *
 theorem star_inv {B : Type} [Monoid B] [StarMul B] {x xi : B} (h1 : x * xi = 1)
     (h : star x = x) : star xi = xi := by
   have h2 : star xi * x = 1 := by
-    have := congrArg star h1
-    rwa [star_mul, h, star_one] at this
-  calc star xi = star xi * (x * xi) := by rw [h1, mul_one]
-    _ = (star xi * x) * xi := (mul_assoc _ _ _).symm
-    _ = xi := by rw [h2, one_mul]
+    simpa only [star_mul, h, star_one] using congrArg star h1
+  rw [← mul_one (star xi), ← h1, ← mul_assoc, h2, one_mul]
 
 theorem mul_mul_one {B : Type} [Monoid B] {c ci d di : B} (h1 : c * ci = 1) (h2 : d * di = 1)
     (h : Commute d ci) : c * d * (ci * di) = 1 := by
   calc c * d * (ci * di) = c * (d * ci) * di := by simp only [mul_assoc]
-    _ = c * (ci * d) * di := by rw [h.eq]
-    _ = (c * ci) * (d * di) := by simp only [mul_assoc]
-    _ = 1 := by rw [h1, h2, one_mul]
+    _ = 1 := by rw [h.eq, ← mul_assoc, mul_assoc, h1, h2, one_mul]
 
 theorem mat1 {B : Type} [Ring B] (z zi w wi G Gi l : B) (hz : zi * z = 1) (hw : wi * w = 1)
     (hG : G * Gi = 1) :
@@ -88,8 +83,7 @@ theorem mat1 {B : Type} [Ring B] (z zi w wi G Gi l : B) (hz : zi * z = 1) (hw : 
   rw [Matrix.mul_fin_two, Matrix.mul_fin_two, Matrix.mul_fin_two, Matrix.one_fin_two]
   simp only [mul_one, mul_zero, zero_mul, add_zero, zero_add, one_mul]
   ext i j
-  fin_cases i <;> fin_cases j
-  all_goals simp
+  fin_cases i <;> fin_cases j <;> simp
   · exact hz
   · noncomm_ring
   · rw [← mul_assoc, mul_assoc wi G Gi, hG, mul_one, hw]
@@ -100,8 +94,7 @@ theorem mat2 {B : Type} [Ring B] (z zi w wi G Gi l : B) (hz : z * zi = 1) (hw : 
   rw [Matrix.mul_fin_two, Matrix.mul_fin_two, Matrix.mul_fin_two, Matrix.one_fin_two]
   simp only [mul_one, mul_zero, zero_mul, add_zero, zero_add, one_mul]
   ext i j
-  fin_cases i <;> fin_cases j
-  all_goals simp
+  fin_cases i <;> fin_cases j <;> simp
   · exact hz
   · rw [mul_assoc l, hz, mul_one, mul_assoc Gi, ← mul_assoc w, hw, one_mul, ← mul_assoc, hG,
       one_mul, neg_add_cancel]
@@ -206,8 +199,7 @@ theorem dg_mul {p q p' q' : SlopeTestRemainingChoices S A} (hp : FreeOf a p) (hq
   simp
 
 theorem dg_one : ins a !![(1 : SlopeTestRemainingChoices S A), 0; 0, 1] = 1 := by
-  rw [← Matrix.one_fin_two]
-  exact ins_one a
+  simpa only [← Matrix.one_fin_two] using ins_one a
 
 theorem dg_comm {p q p' q' : SlopeTestRemainingChoices S A} (hp : FreeOf a p) (hq : FreeOf a q) (hp' : FreeOf a p')
     (hq' : FreeOf a q') (h1 : Commute p p') (h2 : Commute q q') :
@@ -236,8 +228,7 @@ theorem freeOf_smul_one (φ : ℂ) : FreeOf a (φ • (1 : SlopeTestRemainingCho
 theorem mul_rh0_apply_one_zero (M : M2 (SlopeTestRemainingChoices S A)) (D : ℂ) :
     (M * Rh0 a D : M2 (SlopeTestRemainingChoices S A)) 1 0 = (D - 1)⁻¹ • (D • M 1 0 - M 1 0 * eU a 0 0 - M 1 1 * eU a 0 1) := by
   simp only [Rh0, P0, Matrix.mul_apply, Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply,
-    Matrix.one_apply, Matrix.of_apply]
-  simp only [mul_smul_comm, mul_sub, smul_sub]
+    Matrix.one_apply, Matrix.of_apply, mul_smul_comm, mul_sub, smul_sub]
   simp
   module
 
@@ -410,7 +401,6 @@ end Formalism.FourierDecayAlt.P.Fr7
 namespace Formalism.FourierDecayAlt.P
 
 theorem plus_letter_frame_of_data : Formalism.FourierDecayAlt.Fr.PlusAssemble := by
-  unfold Formalism.FourierDecayAlt.Fr.PlusAssemble Formalism.FourierDecayAlt.Fr.PlusStep
   intro _ _ _ _ hLP hRTT hForm hTau hPL A S _ _ _ _ _ _ r L f a Ya h
   exact Formalism.FourierDecayAlt.P.Fr7.plusStep_of hLP hRTT hForm hTau hPL L f a Ya h
 

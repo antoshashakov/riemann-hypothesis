@@ -52,13 +52,7 @@ open scoped BigOperators
 namespace Formalism.IncomingBounds
 
 private theorem one_add_mul_le_one_add_pow (x : ℝ) (hx : 0 ≤ x) (k : ℕ) : 1 + k * x ≤ (1 + x) ^ k := by
-  induction k with
-  | zero => simp
-  | succ k ih =>
-    rw [pow_succ]
-    push_cast
-    nlinarith [mul_nonneg (Nat.cast_nonneg k : (0:ℝ) ≤ k) (mul_nonneg hx hx),
-      mul_le_mul_of_nonneg_right ih (by linarith : (0:ℝ) ≤ 1 + x)]
+  simpa using one_add_mul_le_pow (a := x) (n := k) (by linarith)
 
 theorem padicValuationGain : ValGain := by
   intro l hl

@@ -139,8 +139,7 @@ theorem sum_of_meanN {ι : Type} [Fintype ι] [DecidableEq ι] (Sa Sb : Finset �
       M * ((Sa.card : ℝ) ^ Fintype.card ι * (Sb.card : ℝ) ^ Fintype.card ι) := by
   have hD : (0 : ℝ) < (Sa.card : ℝ) ^ Fintype.card ι * (Sb.card : ℝ) ^ Fintype.card ι :=
     mul_pos (pow_pos (by exact_mod_cast ha) _) (pow_pos (by exact_mod_cast hb) _)
-  unfold meanN at h
-  rwa [div_le_iff₀ hD] at h
+  simpa [meanN, div_le_iff₀ hD] using h
 
 
 open Classical in
@@ -303,21 +302,10 @@ theorem mean_of (K : Cst) (hKp : K.Pos) (X : Dat) (hF : ColumnSpanNumericalFacts
     refine Finset.sum_congr rfl fun A _ => ?_
     exact sum_piFinset_Icc_shift_eq X.lb X.ub X.ccl (fun B => X.kF K R (fun s => A s + X.ccl) B)
   rw [← hsh] at sc
-  have hS : (∑ aa ∈ Fintype.piFinset (fun _ : X.TT => Formalism.MainNotions.flipOneThree.IaZ X.m X.Y X.ar),
-      ∑ bb ∈ Fintype.piFinset (fun _ : X.TT => Formalism.MainNotions.flipOneThree.IbZ X.bl X.bu), X.kText K R aa bb) =
-      ∑ A ∈ Fintype.piFinset (fun _ : X.TT => Finset.Icc X.a X.ua),
-        ∑ B ∈ Fintype.piFinset (fun _ : X.TT => Finset.Icc X.lb X.ub),
-          ((if (∀ s, X.a + X.ccl ≤ A s ∧ X.lb + X.ccl ≤ B s) then
-            X.kF K R (fun s => A s - X.ccl) (fun s => B s - X.ccl) else 1) +
-          2 * X.kF K R (fun s => A s + X.ccl) (fun s => B s + X.ccl) +
-            12 * X.N * X.k * X.ccl / X.b') := by
-    rw [hIa, hIb, sum_pi_cast]
-    refine Finset.sum_congr rfl fun A _ => ?_
-    rw [sum_pi_cast]
-    refine Finset.sum_congr rfl fun B _ => ?_
-    exact kText_cast K X R blnn A B
   unfold Formalism.MainNotions.flipOneThree.meanKap
-  rw [hS, hIa, hIb, card_Icc_cast, card_Icc_cast, hNN, div_le_iff₀ hT]
+  rw [hIa, hIb]
+  simp_rw [sum_pi_cast, kText_cast K X R blnn]
+  rw [card_Icc_cast, card_Icc_cast, hNN, div_le_iff₀ hT]
   simp only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, nsmul_eq_mul,
     Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, hN, Nat.cast_pow]
   have p1 := mul_le_mul_of_nonneg_left eps hT.le

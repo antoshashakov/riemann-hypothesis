@@ -150,13 +150,11 @@ variable {n r k : ℕ} {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z z'
 
 theorem hJ_comb_left (d : Fin r → ℂ) (y : Fin n → ℂ) (h : ∀ a, hJ ε (e a) y = 0) :
     hJ ε (∑ a, d a • e a) y = 0 := by
-  rw [UnitaryIsometries.hJ_sum_left]
-  simp [h]
+  simp [UnitaryIsometries.hJ_sum_left, h]
 
 theorem hJ_comb_right (d : Fin r → ℂ) (y : Fin n → ℂ) (h : ∀ a, hJ ε y (e a) = 0) :
     hJ ε y (∑ a, d a • e a) = 0 := by
-  rw [UnitaryIsometries.hJ_sum_right]
-  simp [h]
+  simp [UnitaryIsometries.hJ_sum_right, h]
 
 theorem z_not_mem_span (hF : FrameLoc ε k e z z' T T') : z ∉ Submodule.span ℂ (Set.range e) := by
   intro hz
@@ -251,12 +249,9 @@ theorem exists_pow_mul_pred_ge (hF : FrameLoc ε k e z z' T T') (d : Fin r → �
     ring
   have hI := ei_isIsom ε x v q hxx hxv hq
   refine ⟨UnitaryIsometries.toUJ ε hI, fun a => ?_, ?_, ?_⟩ <;> rw [UnitaryIsometries.uMat_toUJ, ei_apply]
-  · rw [hxe, hve]
-    simp
-  · rw [hxz', hvz']
-    simp
-  · rw [hxx, hvx]
-    simp
+  · simp [hxe, hve]
+  · simp [hxz', hvz']
+  · simp [hxx, hvx]
 
 theorem comb_mem_spanLt (d : Fin r → ℂ) : ∑ a, d a • e a ∈ spanLt e r :=
   Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, a.2, rfl⟩)
@@ -286,9 +281,8 @@ theorem sLoc_shift (d : Fin r → ℂ) : SLoc ε e (z' + ∑ a, d a • e a) = S
 
 theorem famSc_shift (g : Formalism.REAL.UJ ε) (z'' : Fin n → ℂ) (he : ∀ a, uMat g *ᵥ e a = e a)
     (hz : uMat g *ᵥ z' = z'') (sc : ℝ) (b : Fin (r + 1)) : uMat g *ᵥ famSc sc e z' b = famSc sc e z'' b := by
-  cases b using Fin.lastCases with
-  | last => simp only [famSc, fam, Matrix.mulVec_smul, Fin.snoc_last, hz]
-  | cast a => simp only [famSc, fam, Matrix.mulVec_smul, Fin.snoc_castSucc, he]
+  cases b using Fin.lastCases <;>
+    simp only [famSc, fam, Matrix.mulVec_smul, Fin.snoc_last, Fin.snoc_castSucc, he, hz]
 
 end Frame
 

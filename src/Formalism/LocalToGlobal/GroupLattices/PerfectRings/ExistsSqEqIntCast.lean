@@ -143,16 +143,14 @@ theorem frob_iter_WQ (x : WQ p n) : (WittVector.frobenius^[n]) x = x := by
       ((WittVector.frobenius^[m]) y).coeff k = y.coeff k ^ (p ^ m) := by
     intro m
     induction m with
-    | zero => intro y k; simp
+    | zero => simp
     | succ m ih =>
       intro y k
       rw [Function.iterate_succ_apply', WittVector.coeff_frobenius_charP, ih, ← pow_mul, pow_succ]
   ext k
   rw [hit]
   haveI : Fintype (F1 p n) := Fintype.ofFinite _
-  have hcard : Fintype.card (F1 p n) = p ^ n := by
-    rw [Fintype.card_eq_nat_card]; exact GaloisField.card p n (NeZero.ne n)
-  rw [← hcard, FiniteField.pow_card]
+  rw [← GaloisField.card p n (NeZero.ne n), ← Fintype.card_eq_nat_card, FiniteField.pow_card]
 
 def sig : FractionRing (WQ p n) ≃+* FractionRing (WQ p n) :=
   IsFractionRing.ringEquivOfRingEquiv (WittVector.frobeniusEquiv p (F1 p n))
@@ -182,8 +180,7 @@ theorem sig_period : sig p n ^ n = 1 := by
       RingEquiv.coe_toRingHom, RingHom.id_apply]
     rw [sig_pow_alg, frob_iter_WQ]
   ext y
-  have := congrArg (fun f : FractionRing (WQ p n) →+* FractionRing (WQ p n) => f y) h
-  simpa using this
+  simpa using congrArg (fun f : FractionRing (WQ p n) →+* FractionRing (WQ p n) => f y) h
 
 theorem precomplete_pi {R : Type*} [CommRing R] (π : R) [IsPrecomplete (Ideal.span {π}) R] (d : ℕ) :
     IsPrecomplete (Ideal.span {π}) (Fin d → R) := by
@@ -237,9 +234,8 @@ omit [NeZero n] in
 theorem jW_injective : Function.Injective (jW p n) := by
   intro x y h
   ext k
-  have := congrArg (fun z => WittVector.coeff z k) h
-  simp only [jW_coeff] at this
-  exact (algebraMap (F1 p n) (F2 p n)).injective this
+  exact (algebraMap (F1 p n) (F2 p n)).injective (by
+    simpa [jW_coeff] using congrArg (fun z => WittVector.coeff z k) h)
 
 private theorem exists_mul_p_pow_eq_verschiebung_iterate (k : Type) [Field k] [CharP k p] [PerfectRing k p] (m : ℕ)
     (s : WittVector p k) :
@@ -248,10 +244,8 @@ private theorem exists_mul_p_pow_eq_verschiebung_iterate (k : Type) [Field k] [C
   | zero => exact ⟨s, by simp⟩
   | succ m ih =>
     obtain ⟨a, ha⟩ := ih s
-    obtain ⟨b, hb⟩ : ∃ b, WittVector.frobenius b = a := by
-      refine ⟨(WittVector.frobeniusEquiv p k).symm a, ?_⟩
-      have := (WittVector.frobeniusEquiv p k).apply_symm_apply a
-      rwa [WittVector.frobeniusEquiv_apply] at this
+    obtain ⟨b, hb⟩ := (WittVector.frobeniusEquiv p k).surjective a
+    rw [WittVector.frobeniusEquiv_apply] at hb
     refine ⟨b, ?_⟩
     rw [Function.iterate_succ_apply', ← ha, ← hb]
     have : WittVector.frobenius b * (p : WittVector p k) ^ m =

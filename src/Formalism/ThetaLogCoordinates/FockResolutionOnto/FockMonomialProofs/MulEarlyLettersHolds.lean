@@ -241,16 +241,11 @@ theorem abs_wt_le (LL : Letters N) (j : ℕ) (c : Fin r) (m : Fin N × Fin r →
 
 theorem sum_shift {σ : Type} [Fintype σ] [DecidableEq σ] (m : σ →₀ ℕ) (u v : σ) (hv : 1 ≤ m v) :
     ∑ w, (Finsupp.single u 1 + (m - Finsupp.single v 1) : σ →₀ ℕ) w = ∑ w, m w := by
-  have h := single_add_sub_single_eq_of_one_le m v hv
-  have e1 : ∀ x : σ, ∑ w, (Finsupp.single x 1 : σ →₀ ℕ) w = 1 := by
-    intro x; simp [Finsupp.single_apply]
   calc ∑ w, (Finsupp.single u 1 + (m - Finsupp.single v 1) : σ →₀ ℕ) w
-      = ∑ w, (Finsupp.single u 1 : σ →₀ ℕ) w + ∑ w, (m - Finsupp.single v 1 : σ →₀ ℕ) w := by
-        simp only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]
-    _ = ∑ w, (Finsupp.single v 1 : σ →₀ ℕ) w + ∑ w, (m - Finsupp.single v 1 : σ →₀ ℕ) w := by rw [e1, e1]
+      = ∑ w, (Finsupp.single v 1 + (m - Finsupp.single v 1) : σ →₀ ℕ) w := by
+        simp [Finsupp.coe_add, Pi.add_apply, Finsupp.single_apply, Finset.sum_add_distrib]
     _ = ∑ w, m w := by
-        rw [← Finset.sum_add_distrib]
-        exact Finset.sum_congr rfl fun w _ => by rw [← Finsupp.add_apply, h]
+        rw [single_add_sub_single_eq_of_one_le m v hv]
 
 private theorem sum_weight_mul_single_add_eq {σ : Type} [Fintype σ] (w : σ → ℕ) (u : σ) (m : σ →₀ ℕ) :
     ∑ v, w v * (Finsupp.single u 1 + m : σ →₀ ℕ) v = w u + ∑ v, w v * m v := by
@@ -342,14 +337,12 @@ variable (p : ℕ) [Fact p.Prime] {K r : ℕ} [NeZero r] (LL : Letters (K + 1)) 
 theorem last_X (hj : K + 1 ≤ j) (hv : LL.vec (Fin.last K) = true) (a b c : Fin r) :
     glAct p LL j a b (X (Fin.last K, c)) = if b = c then X (Fin.last K, a) else 0 := by
   have hK : K < j := by omega
-  rw [glAct_X]
-  simp [Fin.val_last, hK, hv]
+  simp [glAct_X, Fin.val_last, hK, hv]
 
 theorem last_wt (hj : K + 1 ≤ j) (hv : LL.vec (Fin.last K) = true) (c : Fin r) (m : Fin (K + 1) × Fin r →₀ ℕ) :
     wt LL j 0 (Finsupp.single (Fin.last K, c) 1 + m) = wt LL j 0 m + (if c = 0 then 1 else 0) := by
   have hK : K < j := by omega
-  rw [wt_single_add]
-  simp [Fin.val_last, hK, hv]
+  simp [wt_single_add, Fin.val_last, hK, hv]
 
 theorem mulLast_bwd (hj : K + 1 ≤ j) (hv : LL.vec (Fin.last K) = true) (c : Fin r)
     (h : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (hh : h ∈ YCond p LL j (M + ((-1 : ℤ) : WithTop ℤ))) :

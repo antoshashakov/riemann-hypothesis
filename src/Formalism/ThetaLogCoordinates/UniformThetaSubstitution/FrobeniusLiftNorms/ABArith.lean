@@ -74,8 +74,7 @@ theorem digits_sum_le_lgN (p m : ℕ) (hp : 1 < p) :
     · exact Nat.length_digits p m hp h
   have h := List.sum_le_card_nsmul (Nat.digits p m) (p - 1)
     (fun d hd => Nat.le_sub_one_of_lt (Nat.digits_lt_base hp hd))
-  rw [hlen, smul_eq_mul, mul_comm] at h
-  exact h
+  simpa [hlen, smul_eq_mul, mul_comm] using h
 
 theorem factorialValuationLowerBound : FactorialLg := by
   intro p m hp
@@ -141,9 +140,7 @@ theorem sum_factorial_ge {ι : Type} (p : ℕ) (hp : p.Prime) (T : Finset ι) (f
     have h := factorialValuationLowerBound p (f x) hp
     have h' : (lgN p (f x) : ℝ) ≤ lgN p B := by exact_mod_cast lgN_mono p (hB x hx)
     linarith
-  rw [Finset.sum_sub_distrib, ← Finset.sum_div, sum_const, nsmul_eq_mul] at h1
-  rw [Nat.cast_sum]
-  exact h1
+  simpa [Finset.sum_sub_distrib, ← Finset.sum_div, sum_const, nsmul_eq_mul, Nat.cast_sum] using h1
 
 theorem gainFactorialInequality : StarArith := by
   intro S _ p r0 r1 TT al ls e a i E i0 i2 hp halT he ha hiE hiT hpi htot hi2
@@ -244,13 +241,7 @@ theorem excessGainBound : ExcessGainBound := by
       gamP p * al s - ∑ e ∈ E, ch s e - ∑ e ∈ E, i s e := by
     intro s hs
     have hA : HasSum (fun e : ℕ => al s / p ^ (2 * e + 1)) (gamP p * al s) := by
-      have h := hgs.mul_right (al s)
-      have hf : (fun e : ℕ => al s / p ^ (2 * e + 1)) =
-          fun e : ℕ => (p ^ (2 * e + 1))⁻¹ * al s := by
-        funext e
-        rw [div_eq_mul_inv, mul_comm]
-      rw [hf]
-      exact h
+      simpa [div_eq_mul_inv, mul_comm] using hgs.mul_right (al s)
     have hC : HasSum (fun e : ℕ => ch s e) (∑ e ∈ E, ch s e) :=
       hasSum_sum_of_ne_finset_zero (fun e he => (hE s e he).2)
     have hI : HasSum (fun e : ℕ => i s e) (∑ e ∈ E, i s e) :=

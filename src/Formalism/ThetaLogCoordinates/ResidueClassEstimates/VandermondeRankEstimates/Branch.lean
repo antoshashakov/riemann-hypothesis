@@ -134,10 +134,7 @@ lemma det_diff {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ) (h : ∀ i
     · simp [B]
     · simp [B]
   rw [h1, Matrix.det_succ_column_zero, Fin.sum_univ_succ]
-  have h2 : ∀ i : Fin n, B i.succ 0 = 0 := by
-    intro i; simp [B, h]
-  have h3 : B 0 0 = 1 := by simp [B, h]
-  simp only [h2, h3, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul]
+  simp [B, h]
   congr 1
 
 def W (n : ℕ) (u : ℕ → ℝ) : ℝ := ∏ j ∈ range n, ∏ i ∈ range j, (u j - u i)
@@ -198,10 +195,8 @@ lemma core {n : ℕ} (mu : Fin (n + 1) → ℤ) (h : ∀ i : Fin n, mu i.succ �
 
 lemma finsum_prop_eq_sum {α : Type*} (p : α → Prop) (s : Finset α) (f : α → ℝ) (h : ∀ a, p a ↔ a ∈ s) :
     ∑ᶠ (a : α) (_ : p a), f a = ∑ a ∈ s, f a := by
-  rw [← finsum_mem_coe_finset]
-  refine finsum_congr fun a => ?_
-  have e : p a = (a ∈ (s : Set α)) := propext (by rw [Finset.mem_coe]; exact h a)
-  rw [e]
+  simp_rw [h]
+  exact finsum_mem_finset_eq_sum f s
 
 lemma interl_iff {n : ℕ} (la : Fin n → ℤ) (mu : Fin (n + 1) → ℤ) :
     Interl n (extW la) (extW mu) ↔

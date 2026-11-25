@@ -72,9 +72,7 @@ theorem multideg_mapDomain {ι κ : Type} [Fintype ι] {n : ℕ} (g : ι → κ)
     rw [Finsupp.mapDomain_add]
     simp only [Finsupp.add_apply, Finset.sum_add_distrib, h₁, h₂]
     rw [← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl
-    intro x _
-    split_ifs <;> simp
+    exact Finset.sum_congr rfl (fun x _ => by split_ifs <;> simp)
   | single a b =>
     rw [Finsupp.mapDomain_single]
     obtain ⟨a1, a2⟩ := a
@@ -118,12 +116,7 @@ theorem ml_mem_letters (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hnL : ∀ j, nL
   | ll j l =>
     simp only [mlPos]
     apply (LL_sub_letters hV hr _ _ _).1
-    have hl : (l : ℕ) < ((Fr.LLset (segZ j)).sort (· ≤ ·)).length := by
-      rw [Finset.length_sort, ← hnL]
-      exact l.2
-    unfold llPos
-    rw [List.getD_eq_getElem _ _ hl]
-    exact (Finset.mem_sort _).mp (List.getElem_mem hl)
+    exact llPos_mem Fr (segZ j) l.val (by rw [← hnL]; exact l.isLt)
   | lab j m =>
     simp only [mlPos]
     exact fr_mem_letters hV hr _ _ (by omega)
@@ -156,12 +149,7 @@ theorem tl_mem_letters (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hnL : ∀ j, nL
   obtain ⟨j, l | m⟩ := x
   · simp only [tlPos, posTL]
     apply LL_sub_letters hV hr
-    have hl : (l : ℕ) < ((Fr.LLset (segZ j)).sort (· ≤ ·)).length := by
-      rw [Finset.length_sort, ← hnL]
-      exact l.2
-    unfold llPos
-    rw [List.getD_eq_getElem _ _ hl]
-    exact (Finset.mem_sort _).mp (List.getElem_mem hl)
+    exact llPos_mem Fr (segZ j) l.val (by rw [← hnL]; exact l.isLt)
   · simp only [tlPos, posTL]
     refine ⟨fr_mem_letters hV hr _ _ (by omega), ?_⟩
     unfold Frames.IsW
@@ -181,8 +169,7 @@ variable (p : ℕ) {n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type) [
 
 theorem valBd_of (hM : MFH p Fr TT L₁ L₂ N₁ G' deg d Y (r + K) cP)
     (hH : MH p O Fr deg Y N₁ G' cP d Dt dPl dNo ka rho No Go) : ValBd p O Fr deg Y N₁ G' cP Dt ka No Go := by
-  have hF := hM.frames
-  have hV : Fr.Valid L₁ N₁ := hF.2.1
+  have hV : Fr.Valid L₁ N₁ := hM.frames.2.1
   have hr : 1 ≤ r := by
     have := hM.two_le_r
     omega
@@ -264,9 +251,7 @@ theorem suppOK_of (hM : MFH p Fr TT L₁ L₂ N₁ G' deg d Y (r + K) cP)
     (hH : MH p O Fr deg Y N₁ G' cP d Dt dPl dNo ka rho No Go) : SuppOK p O Fr Dt dNo No Go := by
   unfold MH SignedChainDegreeCondition Tied NormTest at hH
   obtain ⟨⟨⟨hJ, hnL, -⟩, -⟩, -, ⟨-, hPol, -⟩, -⟩ := hH
-  have hF := hM.frames
-  unfold FramesOK at hF
-  have hV : Fr.Valid L₁ N₁ := hF.2.1
+  have hV : Fr.Valid L₁ N₁ := hM.frames.2.1
   have hr : 1 ≤ r := by
     have := hM.two_le_r
     omega

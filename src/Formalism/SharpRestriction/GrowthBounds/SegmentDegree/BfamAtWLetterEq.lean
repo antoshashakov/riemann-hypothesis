@@ -90,23 +90,12 @@ theorem bfam_at_w_letter_eq {L₁ N₁ : ℕ} (hV : X.F.Valid L₁ N₁) (la : F
       · exact lt_trans (ih h (by omega)) (hV.2.2.1 k b (by omega))
       · subst h
         exact hV.2.2.1 k a (by omega)
-  have hle0 : X.F.fr (j - 1) 0 ≤ X.F.fr (j - 1) i := by
-    rcases Nat.eq_zero_or_pos i with h | h
-    · rw [h]
-    · exact (hmono _ 0 i h hi).le
-  have hleR : X.F.fr (j - 1) i ≤ X.F.fr (j - 1) (r - 1) := by
-    rcases eq_or_lt_of_le (Nat.le_pred_of_lt hi) with h | h
-    · rw [h]
-      exact le_rfl
-    · exact (hmono _ i (r - 1) h (by omega)).le
+  have hle0 : X.F.fr (j - 1) 0 ≤ X.F.fr (j - 1) i := fr_zero_le hV (j - 1) i hi
+  have hleR : X.F.fr (j - 1) i ≤ X.F.fr (j - 1) (r - 1) :=
+    TE.fr_le hV (j - 1) i (r - 1) (Nat.le_pred_of_lt hi) (by omega)
   have hlt : X.F.fr (j - 1) (r - 1) < X.F.fr j 0 := by
-    have h := hV.2.2.2.1 (j - 1)
-    simp only [sub_add_cancel] at h
-    exact h
-  have hle2 : X.F.fr j 0 ≤ X.F.fr j (r - 1) := by
-    rcases Nat.eq_zero_or_pos (r - 1) with h | h
-    · rw [h]
-    · exact (hmono j 0 (r - 1) h (by omega)).le
+    simpa using hV.2.2.2.1 (j - 1)
+  have hle2 : X.F.fr j 0 ≤ X.F.fr j (r - 1) := fr_zero_le hV j (r - 1) (by omega)
   have hmem : X.F.fr (j - 1) i ∈ X.F.letters j := by
     unfold Formalism.MainNotions.G.Frames.letters
     rw [Finset.mem_filter, Finset.mem_Icc]

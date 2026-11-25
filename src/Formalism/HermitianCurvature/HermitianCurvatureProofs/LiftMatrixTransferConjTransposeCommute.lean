@@ -299,19 +299,15 @@ theorem sitesCommute_symm {σ τ : Site A} (h : SitesCommute σ τ) : SitesCommu
 
 theorem liftMatrix_transfer_commute_diagScalar {τ : Site A} {b : SlopeTestRemainingChoices S A} (h : CC τ b) (Y : K) :
     Commute (lift0 (Ts τ Y)) (d0 b) := by
-  have hφ : ∀ (k : K) (r : SlopeTestRemainingChoices S A),
-      Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) (algebraMap K A k)) r :=
-    fun k r => io_algebraMap_comm k r
-  have h' : ∀ x ∈ ops τ, Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) x) b := h
-  exact liftMatrix_commute_diagScalar _ _ fun i j => comm_Ts _ hφ τ b h' Y i j
+  exact liftMatrix_commute_diagScalar _ _ fun i j =>
+    comm_Ts (Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A)
+      (fun k r => io_algebraMap_comm k r) τ b h Y i j
 
 theorem liftMatrix_transfer_conjTranspose_commute {τ : Site A} {b : SlopeTestRemainingChoices S A} (h : CC τ b) (Y : K) :
     Commute (lift0 (Ts τ Y)ᴴ) (d0 b) := by
-  have hφ : ∀ (k : K) (r : SlopeTestRemainingChoices S A),
-      Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) (algebraMap K A k)) r :=
-    fun k r => io_algebraMap_comm k r
-  have h' : ∀ x ∈ ops τ, Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) x) b := h
-  exact liftMatrix_commute_diagScalar _ _ fun i j => comm_Ts_star _ hφ τ b h' Y j i
+  exact liftMatrix_commute_diagScalar _ _ fun i j =>
+    comm_Ts_star (Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A)
+      (fun k r => io_algebraMap_comm k r) τ b h Y j i
 
 theorem exchA_mat (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
     (h1 : ∀ σ ∈ sites, Xp w Y * lift0 (Ts σ Y) * d0 (bT σ w) = d0 (bT σ w) * lift0 (Ts σ Y) * Xp w Y)
@@ -348,12 +344,10 @@ theorem exchB_mat (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
 
 theorem mul_col_fix (B C : SlopeTestRemainingChoices S A) (z : Ix S) (h : ∀ z', C z' e1 = if z' = e1 then 1 else 0) :
     (B * C) z e1 = B z e1 := by
-  rw [Matrix.mul_apply]
-  simp [h]
+  simp [Matrix.mul_apply, h]
 
 theorem mul_col_zero (B C : SlopeTestRemainingChoices S A) (z : Ix S) (h : ∀ z', C z' e1 = 0) : (B * C) z e1 = 0 := by
-  rw [Matrix.mul_apply]
-  simp [h]
+  simp [Matrix.mul_apply, h]
 
 theorem sum_col_fix (B C : Fin 2 → SlopeTestRemainingChoices S A) (z : Ix S)
     (h : ∀ (k : Fin 2) (z' : Ix S), C k z' e1 = if k = 0 ∧ z' = e1 then 1 else 0) :
@@ -448,9 +442,7 @@ theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
 
 theorem eU_mul_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     ((eU a i j : SlopeTestRemainingChoices S A) * B) x y = if x a = i then B (Function.update x a j) y else 0 := by
-  rw [Matrix.mul_apply]
-  simp only [eU_apply]
-  by_cases h : x a = i <;> simp [h]
+  by_cases h : x a = i <;> simp [Matrix.mul_apply, eU_apply, h]
 
 theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
     Commute (eU c i j : SlopeTestRemainingChoices S A) (eU a k l) := by
@@ -625,9 +617,7 @@ theorem tTFactor : TTFactor := by
   induction w with
   | nil => simp [TTw, Xm, Xp]
   | cons l w ih =>
-    by_cases h : l.plus = true
-    · simp [TTw, Xm, Xp, h, ih, mul_assoc]
-    · simp [TTw, Xm, Xp, h, ih, mul_assoc]
+    cases h : l.plus <;> simp [TTw, Xm, Xp, h, ih, mul_assoc]
 
 end Formalism.FourierDecayAlt.P.Wd8
 

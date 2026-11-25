@@ -2,6 +2,7 @@ module
 
 public import Mathlib.Basic.Complex.Basic
 public import Mathlib.LinearAlgebra.Trace
+import Development.AutomorphicArithmetic.TwistedTraces.LinearFormEqMulTraceOfTwistedInvariant
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -57,38 +58,6 @@ import Mathlib.Topology.Sheaves.Init
 open scoped BigOperators
 
 open TensorProduct in
-private lemma traceForm {S : Type} [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S]
-    (τ : Module.End ℂ S →ₗ[ℂ] ℂ) (hτ : ∀ a b, τ (a * b) = τ (b * a))
-    (ξ : Module.Dual ℂ S) (e : S) (h : ξ e = 1) (t : Module.End ℂ S) :
-    τ t = LinearMap.trace ℂ S t * τ (dualTensorHom ℂ S S (ξ ⊗ₜ e)) := by
-  obtain ⟨u, rfl⟩ := (dualTensorHomEquiv ℂ S S).surjective t
-  induction u using TensorProduct.induction_on with
-  | zero => simp
-  | add x y hx hy => simp only [map_add (f := _), add_mul, hx, hy]
-  | tmul f x =>
-    have hab : (dualTensorHom ℂ S S (f ⊗ₜ x)) =
-        (dualTensorHom ℂ S S (ξ ⊗ₜ x)) * (dualTensorHom ℂ S S (f ⊗ₜ e)) := by
-      ext y
-      simp [dualTensorHom_apply, h]
-    have hba : (dualTensorHom ℂ S S (f ⊗ₜ e)) * (dualTensorHom ℂ S S (ξ ⊗ₜ x)) =
-        f x • dualTensorHom ℂ S S (ξ ⊗ₜ e) := by
-      ext y
-      simp [dualTensorHom_apply, smul_smul, mul_comm]
-    have hE : dualTensorHomEquiv ℂ S S (f ⊗ₜ x) = dualTensorHom ℂ S S (f ⊗ₜ x) := rfl
-    rw [hE, LinearMap.trace_eq_contract_apply, contractLeft_apply, hab, hτ, hba, map_smul,
-      smul_eq_mul]
-
-private lemma existsDual (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S]
-    [Nontrivial S] : ∃ (ξ : Module.Dual ℂ S) (e : S), ξ e = 1 := by
-  obtain ⟨e, he⟩ := exists_ne (0 : S)
-  have : ∃ f : Module.Dual ℂ S, f e ≠ 0 := by
-    by_contra hc
-    push_neg at hc
-    exact he ((Module.forall_dual_apply_eq_zero_iff ℂ e).1 hc)
-  obtain ⟨f, hf⟩ := this
-  exact ⟨(f e)⁻¹ • f, e, by simp [hf]⟩
-
-open TensorProduct in
 private lemma commuting_idempotent_trace {X : Type} [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X] :
     ∀ (r : ℕ) (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)]
       [∀ i, FiniteDimensional ℂ (S i)] [∀ i, Nontrivial (S i)]
@@ -107,7 +76,8 @@ private lemma commuting_idempotent_trace {X : Type} [AddCommGroup X] [Module ℂ
     simpa using this
   | succ r ih =>
     intro S _ _ _ _ c hc B hB hcomm
-    obtain ⟨ξ, e, h1⟩ := existsDual (S 0)
+    obtain ⟨e, he⟩ := exists_ne (0 : S 0)
+    obtain ⟨ξ, h1⟩ := Module.Projective.exists_dual_eq_one ℂ he
     set E : Module.End ℂ (S 0) := dualTensorHom ℂ (S 0) (S 0) (ξ ⊗ₜ e) with hEdef
     have hE : IsIdempotentElem E := by
       show E * E = E
@@ -135,17 +105,16 @@ private lemma commuting_idempotent_trace {X : Type} [AddCommGroup X] [Module ℂ
     have hτv : ∀ s, τ s = LinearMap.trace ℂ X (B * c 0 s * A) := fun s => rfl
     have hτ : ∀ a b, τ (a * b) = τ (b * a) := by
       intro a b
-      rw [hτv, hτv, map_mul (c 0), map_mul (c 0)]
-      have e1 : B * (c 0 a * c 0 b) * A = c 0 a * (B * c 0 b * A) := by
-        rw [← mul_assoc B, (hcomm 0 a).eq]
-        simp only [mul_assoc]
-      have e2 : (B * c 0 b * A) * c 0 a = B * (c 0 b * c 0 a) * A := by
-        rw [mul_assoc (B * c 0 b) A, ← (hAc a).eq]
-        simp only [mul_assoc]
-      rw [e1, LinearMap.trace_mul_comm, e2]
-    have key := traceForm τ hτ ξ e h1 (t 0)
+      simp only [hτv, map_mul, mul_assoc]
+      rw [(hcomm 0 a).left_comm, LinearMap.trace_mul_comm]
+      simp only [mul_assoc]
+      rw [← (hAc a).eq]
+    have key := UpperTheory.linearForm_eq_mul_trace_of_twisted_invariant (S 0) 1 E τ
+      (by simpa [hEdef, LinearMap.trace_eq_contract_apply, contractLeft_apply] using h1)
+      (fun a a' b ha => by simp only [mul_one, one_mul] at ha; simpa [ha] using hτ b a) (t 0)
+    simp only [mul_one] at key
     have hN' := hN (fun i => t i.succ)
-    rw [← mul_assoc, ← hτv, key, hτv, ← hEdef, hN']
+    rw [← mul_assoc, ← hτv, key, hτv, hN']
     ring
 
 theorem UpperTheory.trace_pairing_separates_endomorphisms :

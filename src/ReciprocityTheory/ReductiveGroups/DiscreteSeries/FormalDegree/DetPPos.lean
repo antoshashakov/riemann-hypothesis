@@ -139,11 +139,9 @@ variable {ε : Fin n → Bool} (y : PCoord ε → ℂ)
 abbrev Uy : Matrix (Fin n) (Fin n) ℂ := ((pmat_isHermitian y).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)
 
 theorem Uy_star_mul : (Uy y)ᴴ * Uy y = 1 := by
-  have h := Matrix.mem_unitaryGroup_iff'.mp (pmat_isHermitian y).eigenvectorUnitary.prop
-  exact h
+  exact Matrix.mem_unitaryGroup_iff'.mp (pmat_isHermitian y).eigenvectorUnitary.prop
 theorem Uy_mul_star : Uy y * (Uy y)ᴴ = 1 := by
-  have h := Matrix.mem_unitaryGroup_iff.mp (pmat_isHermitian y).eigenvectorUnitary.prop
-  exact h
+  exact Matrix.mem_unitaryGroup_iff.mp (pmat_isHermitian y).eigenvectorUnitary.prop
 
 theorem shcAd_eq (W : Matrix (Fin n) (Fin n) ℂ) :
     shcAd y W = Uy y * Matrix.of (fun i j => ((shc (pev y i - pev y j) : ℝ) : ℂ) *
@@ -258,29 +256,24 @@ variable {ε : Fin n → Bool}
 
 theorem pmat_add' (v w : PCoord ε → ℂ) : pmat (v + w) = pmat v + pmat w := by
   ext a b
-  rw [Matrix.add_apply]
-  simp only [pmat]
+  simp only [pmat, Matrix.add_apply]
   split_ifs <;> simp [star_add]
 
 theorem pmat_smul' (c : ℝ) (v : PCoord ε → ℂ) : pmat (c • v) = c • pmat v := by
   have hs : ∀ r : ℝ, star (r : ℂ) = r := fun r => Complex.conj_ofReal r
   ext a b
-  rw [Matrix.smul_apply]
-  simp only [pmat]
+  simp only [pmat, Matrix.smul_apply]
   split_ifs <;> simp [Complex.real_smul, star_mul', hs]
 
 theorem pmat_apply_coord (v : PCoord ε → ℂ) (ab : PCoord ε) : pmat v ab.1.1 ab.1.2 = v ab := by
   obtain ⟨⟨a, b⟩, h⟩ := ab
-  have h' : b < a ∧ ε a ≠ ε b := h
-  simp only [pmat, dif_pos h']
+  simp only [pmat, dif_pos h]
 
 theorem pmat_ne_zero (v : PCoord ε → ℂ) (hv : v ≠ 0) : pmat v ≠ 0 := by
   intro h
   apply hv
   funext ab
-  have := pmat_apply_coord v ab
-  rw [h] at this
-  simpa using this.symm
+  simpa [h] using (pmat_apply_coord v ab).symm
 
 theorem shcAd_add' (y : PCoord ε → ℂ) (W W' : Matrix (Fin n) (Fin n) ℂ) :
     shcAd y (W + W') = shcAd y W + shcAd y W' := by

@@ -99,33 +99,23 @@ theorem gl_mul {s : Finset ι} {e : ι → R} (he : Orth s e) (M N : Matrix n n 
 theorem gl_mulVec (s : Finset ι) (e : ι → R) (M : Matrix n n R) (A : ι → Matrix n n R) (y : n → R) :
     gl s e M A *ᵥ y = M *ᵥ y + ∑ i ∈ s, e i • ((A i - M) *ᵥ y) := by
   unfold gl
-  rw [Matrix.add_mulVec]
-  congr 1
-  refine Finset.induction_on s ?_ ?_
-  · simp
-  · intro i s hi ih
-    rw [Finset.sum_insert hi, Finset.sum_insert hi, Matrix.add_mulVec, ih, Matrix.smul_mulVec]
+  rw [Matrix.add_mulVec, Matrix.sum_mulVec]
+  simp only [Matrix.smul_mulVec]
 
 theorem gl_proj {s : Finset ι} {e : ι → R} (he : Orth s e) (M : Matrix n n R) (A : ι → Matrix n n R)
     (y : n → R) {j : ι} (hj : j ∈ s) : e j • (gl s e M A *ᵥ y) = e j • (A j *ᵥ y) := by
-  rw [gl_mulVec, smul_add, Finset.smul_sum]
-  have h : ∑ i ∈ s, e j • e i • ((A i - M) *ᵥ y) = e j • ((A j - M) *ᵥ y) := by
-    rw [Finset.sum_eq_single j]
-    · rw [smul_smul, he j hj j hj, if_pos rfl]
-    · intro b hb hbj
-      rw [smul_smul, he j hj b hb, if_neg (Ne.symm hbj), zero_smul]
-    · intro h
-      exact absurd hj h
-  rw [h, ← smul_add, Matrix.sub_mulVec]
-  congr 1
-  abel
+  rw [gl_mulVec, smul_add, Finset.smul_sum, Finset.sum_eq_single j]
+  · rw [smul_smul, he j hj j hj, if_pos rfl, ← smul_add, Matrix.sub_mulVec]
+    congr 1
+    abel
+  · intro b hb hbj
+    rw [smul_smul, he j hj b hb, if_neg (Ne.symm hbj), zero_smul]
+  · exact fun h => absurd hj h
 
 theorem gl_proj0 {s : Finset ι} {e : ι → R} {f : R} (hf : ∀ i ∈ s, f * e i = 0) (M : Matrix n n R)
     (A : ι → Matrix n n R) (y : n → R) : f • (gl s e M A *ᵥ y) = f • (M *ᵥ y) := by
-  rw [gl_mulVec, smul_add, Finset.smul_sum]
-  have h : ∑ i ∈ s, f • e i • ((A i - M) *ᵥ y) = 0 :=
-    Finset.sum_eq_zero fun i hi => by rw [smul_smul, hf i hi, zero_smul]
-  rw [h, add_zero]
+  rw [gl_mulVec, smul_add, Finset.smul_sum,
+    Finset.sum_eq_zero (fun i hi => by rw [smul_smul, hf i hi, zero_smul]), add_zero]
 
 theorem cT_gl (σ : R →+* R) {s : Finset ι} {e : ι → R} (hσ : ∀ i ∈ s, σ (e i) = e i) (M : Matrix n n R)
     (A : ι → Matrix n n R) :
@@ -153,8 +143,7 @@ theorem mkI_apply (c : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F)
 
 theorem mkI_mem (c : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F)
     (hc : ∀ v, c v ∈ v.adicCompletionIntegers F) : mkI c hc ∈ Formalism.UG.intAd F := by
-  intro v
-  exact hc v
+  exact hc
 
 def ev (v : HeightOneSpectrum (𝓞 F)) : Af F →+* v.adicCompletion F where
   toFun a := a v

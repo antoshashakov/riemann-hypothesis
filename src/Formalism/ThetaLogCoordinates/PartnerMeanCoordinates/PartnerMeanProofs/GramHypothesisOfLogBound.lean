@@ -86,12 +86,10 @@ theorem natLog_le_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r x : ℕ) (ha : 0 �
   unfold lgSeg
   have hp : 1 < (p : ℝ) := by exact_mod_cast (Fact.out : p.Prime).one_lt
   have hr' : (1 : ℝ) ≤ r := by exact_mod_cast hr
-  have hy : (1 : ℝ) ≤ 8 * a + r := by linarith
-  have hl : 0 ≤ Real.logb p (8 * a + r) := Real.logb_nonneg hp hy
   rcases Nat.eq_zero_or_pos x with hx0 | hx0
   · subst hx0
     simp only [Nat.log_zero_right, Nat.cast_zero]
-    linarith
+    linarith [Real.logb_nonneg hp (show (1 : ℝ) ≤ 8 * a + r by linarith)]
   · have h1 : ((p ^ Nat.log p x : ℕ) : ℝ) ≤ (x : ℝ) := by
       exact_mod_cast Nat.pow_log_le_self p hx0.ne'
     push_cast at h1
@@ -154,7 +152,6 @@ theorem gram_hypothesis_of_log_bound (p : ℕ) [Fact p.Prime] (K r : ℕ) [NeZer
   have g2 : ((r.choose 2 * Nat.log p (4 * LLw.total + r - 1) : ℕ) : ℝ) ≤ (r : ℝ) ^ 2 / 2 * lgv := by
     rw [Nat.cast_mul]
     exact mul_le_mul hc h2 hl2 (by positivity)
-  have hK0 : (0 : ℝ) ≤ K := Nat.cast_nonneg _
   rcases Nat.eq_zero_or_pos K with rfl | hK
   · refine graded_bound_saturation_holds p 0 r LLw J M ρ (kapC p r LLw.total) 0 κ4 hr hρ hv (hypPE_setLast LLw ρ)
       (fun e _ => restricted_saturation_zero p r _ J _ ρ hr hρ hv) ?_
@@ -175,8 +172,7 @@ theorem gram_hypothesis_of_log_bound (p : ℕ) [Fact p.Prime] (K r : ℕ) [NeZer
       nlinarith
 
 theorem deg_le_total' {N : ℕ} (LL : Letters N) (x : Fin N) : LL.deg x ≤ LL.total := by
-  unfold Letters.total
-  exact Finset.single_le_sum (fun i _ => Nat.zero_le _) (Finset.mem_univ x)
+  simpa [Letters.total] using Finset.single_le_sum (fun i _ => Nat.zero_le _) (Finset.mem_univ x)
 
 theorem theoremMV7Of : TheoremMV7Of := by
   unfold TheoremMV7Of
@@ -234,8 +230,7 @@ theorem theoremMV7Of : TheoremMV7Of := by
 theorem setTies_total_le {N : ℕ} (LL : Letters N) (T : TieData) (n n' : Fin T.t → ℕ) (h : ∀ i, n i ≤ n' i) :
     (LL.setTies T n).total ≤ (LL.setTies T n').total := by
   unfold Letters.total
-  apply Finset.sum_le_sum
-  intro i _
+  refine Finset.sum_le_sum fun i _ => ?_
   unfold Letters.setTies
   dsimp only
   split_ifs with hh

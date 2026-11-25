@@ -58,19 +58,16 @@ theorem resChar_eq {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (
     {n : ℕ} (hn : n.Prime) (hp : ((n : ℕ) : 𝓞 F) ∈ p.asIdeal) :
     Formalism.MainNotions.S.Loc.resChar p = n := by
   have : Nontrivial (𝓞 F ⧸ p.asIdeal) := Ideal.Quotient.nontrivial_iff.mpr p.isPrime.ne_top
-  have h0 : ((n : ℕ) : 𝓞 F ⧸ p.asIdeal) = 0 := by
-    rw [← map_natCast (Ideal.Quotient.mk p.asIdeal) n]
-    exact Ideal.Quotient.eq_zero_iff_mem.mpr hp
   show ringChar (𝓞 F ⧸ p.asIdeal) = n
-  exact CharP.ringChar_of_prime_eq_zero (R := 𝓞 F ⧸ p.asIdeal) hn h0
+  exact CharP.ringChar_of_prime_eq_zero hn (by
+    rw [← map_natCast (Ideal.Quotient.mk p.asIdeal) n]
+    exact Ideal.Quotient.eq_zero_iff_mem.mpr hp)
 
 theorem le_exp_neg_one_of_lt_one {a : ℤᵐ⁰} (h : a < 1) : a ≤ exp (-1) := by
   rcases eq_or_ne a 0 with rfl | ha
   · exact zero_le
   · rw [← WithZero.exp_log ha] at h ⊢
-    have h' : WithZero.exp (WithZero.log a) < WithZero.exp (0 : ℤ) := by
-      rwa [WithZero.exp_zero]
-    rw [WithZero.exp_lt_exp] at h'
+    rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
     rw [WithZero.exp_le_exp]
     omega
 
@@ -88,9 +85,8 @@ theorem vF_eq (x y : F) :
 theorem exists_val (a : A.Fp) (ha : a ≠ 0) :
     ∃ x : F, valuation A.Fp (A.ιF x) = valuation A.Fp a := by
   have := A.lf
-  have hv : ValuativeRel.valuation A.Fp a ≠ 0 := (ValuativeRel.valuation A.Fp).ne_zero_iff.mpr ha
-  obtain ⟨x, hx⟩ := A.dense.mem_nhds ((ValuativeRel.valuation A.Fp).locally_const hv)
-  exact ⟨x, hx⟩
+  exact A.dense.mem_nhds ((ValuativeRel.valuation A.Fp).locally_const
+    ((ValuativeRel.valuation A.Fp).ne_zero_iff.mpr ha))
 
 theorem natVal (n : ℕ) : p.valuation F ((n : ℕ) : F) = p.intValuation ((n : ℕ) : 𝓞 F) := by
   have h := p.valuation_of_algebraMap (K := F) ((n : ℕ) : 𝓞 F)
@@ -162,9 +158,7 @@ theorem unit {n : ℕ} (hn : ((n : ℕ) : 𝓞 F) ∉ p.asIdeal) :
     rw [natVal]
     exact HeightOneSpectrum.intValuation_eq_one_iff.mpr hn
   have hv : ValuativeRel.valuation A.Fp (A.ιF ((n : ℕ) : F)) = 1 := by
-    have h := (vF_eq A ((n : ℕ) : F) 1).mpr (by rw [hw, map_one])
-    simp only [map_one] at h
-    exact h
+    simpa using (vF_eq A ((n : ℕ) : F) 1).mpr (by rw [hw, map_one])
   have hmem : A.ιF ((n : ℕ) : F) ∈ 𝒪[A.Fp] := by
     rw [Valuation.mem_integer_iff, hv]
   refine ⟨⟨A.ιF ((n : ℕ) : F), hmem⟩, ?_, rfl⟩
