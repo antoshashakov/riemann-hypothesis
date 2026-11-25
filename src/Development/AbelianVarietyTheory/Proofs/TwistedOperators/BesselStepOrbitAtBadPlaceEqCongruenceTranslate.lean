@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAuxiliaryVectorWittDec
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFrameProperties
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FramedCongruenceElementMemPrincipalCongruenceStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitLocalFrameOddLevelStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitLocalFrameOddLevel
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPlaceTuplesOneOrbitModUniformizerPowerStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -60,7 +60,7 @@ theorem besselOrbit_at_badPlace_eq_congruenceTranslate : OnStd fun {D} _ _ {sc} 
     exact ⟨1, one_mem _, one_mem _, fun i j => j.elim0⟩
   | succ σ =>
     obtain ⟨k, _, _, _, _, p, β, ι, ι', s, t, hpv, hidem, hlat, hι, hι', hdisj, hX, hΦ, hA⟩ :=
-      GlobalTheory.T.split_local_frame_odd_level D hQ T L μ0 hL sc G W M hM F hF σ h v hv
+      _root_.GlobalTheory.AscFin.FrameBF.frame_bf D hQ T L μ0 hL sc G W M hM F hF σ h v hv
     obtain ⟨ha1, ha2⟩ := hA a ha
     subst hpv
     obtain ⟨k₀, hk₀, hoff'⟩ := GlobalTheory.T.splitPlace_tuples_one_orbit_mod_uniformizer_power D k p _ σ β (xZero (F.dJ (σ + 1) h)) ι ι' s t (G.pl.depth sc p.v)

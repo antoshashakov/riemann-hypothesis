@@ -7,7 +7,9 @@ public import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBou
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SelfDualCLatP
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointFrameRowReductionConjLinearIntegersStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdjointFrameRowReductionEqZeroIffMemStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegerConjPrescribedResiduesPlacesStatement
+public import Formalism.LocalToGlobal.Divisibility.DefGroup
+public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIntegerConjPrescribedResiduesPlaces
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FrameAdjointPartAtMovedRationalPointRowStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeVectorAdjointRowIntegralStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LevelDatumConjugatePlacesLevelEqCharactersStatement
@@ -107,7 +109,7 @@ theorem level_datum_eq : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank �
       if_true]
   have hsp : C.X.Λ ≤ Submodule.span (𝓞 D.host.E) (Set.range β) ⊔ GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ := by
     intro v hv
-    choose c hc using fun j => GlobalTheory.T.exists_integer_conj_prescribed_residues_places D (Pg ∪ Q) (fun PP => R PP v j)
+    choose c hc using fun j => _root_.GlobalTheory.SW.Lev.exists_bar_mk_eq_at_places D (Pg ∪ Q) (fun PP => R PP v j)
     have hw : v - ∑ j, c j • β j ∈ C.X.Λ := sub_mem hv (sum_mem fun j _ => Submodule.smul_mem _ _ (hβΛ j))
     have hw0 : v - ∑ j, c j • β j ∈ GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ := by
       refine (Iker _ hw).1 fun PP hPP => ?_

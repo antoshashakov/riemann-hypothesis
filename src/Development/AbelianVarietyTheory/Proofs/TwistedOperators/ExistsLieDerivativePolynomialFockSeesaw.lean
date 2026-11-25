@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchOperatorUnitaryWSeesawStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsArchOperatorUnitaryWSeesaw
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmoothWeilOrbitPreservedByHeisenbergDerivatives
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilActionOneParamSubgroupGaussVacuumSmooth
 import Mathlib.Algebra.Order.Floor.Extended
@@ -67,7 +67,7 @@ theorem exists_lie_deriv_pol : ∀ {F E : Type} [Field F] [NumberField F] [Field
     ∃ δ : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a')), ∀ f ∈ G.M.Pol B.ψ B.emb,
       δ f ∈ G.M.Pol B.ψ B.emb ∧ ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f (δ f) := by
   intro F E _ _ _ _ _ σ a a' B G X om om' hT γ hγ
-  choose T hT' using fun t : ℝ => GlobalTheory.T.exists_archOperator_unitaryW_seesaw B G X om om' hT (γ (Multiplicative.ofAdd t)) (hγ.2 _)
+  choose T hT' using fun t : ℝ => _root_.GlobalTheory.ArchFactor.exists_archOperator B G X om om' hT (γ (Multiplicative.ofAdd t)) (hγ.2 _)
   have hvac : ∀ f₀, G.M.IsGauss B.ψ B.emb f₀ → f₀ ∈ G.M.Pol B.ψ B.emb := fun f₀ h =>
     Submodule.mem_sInf.2 fun N hN => hN.1 f₀ h
   have hstab : ∀ u, At (evI F) u → ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f₁ : SInf F (Fin a × Fin (a + a')),
