@@ -35,7 +35,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.PrimeLogSum
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumPrimeLogDivPredLeLogAdd
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.DefiniteFormStabilizerFiniteAwayFromP
 
 @[expose] public section
@@ -114,7 +114,8 @@ theorem costTwo_bound (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Re
     have h3 : ∑ p ∈ P, Real.log p / ((p : ℝ) - 1) ≤ Real.log N + 2.2 := by
       have hPe : P = (Finset.Iic N).filter Nat.Prime := by
         ext p; simp [hP]
-      rw [hPe]; exact ReciprocityTheory.ChartRestriction.G.H1.primeLogSum_nat N (by omega)
+      rw [hPe, show Finset.Iic N = Finset.range (N + 1) by ext; simp [Nat.lt_succ_iff]]
+      exact GlobalTheory.PrimeLogSum.sum_log_div_pred_le N
     have hL1 : 1 ≤ Real.log ((N : ℝ) + 1) := by
       rw [Real.le_log_iff_exp_le (by linarith)]
       linarith [Real.exp_one_lt_d9]
