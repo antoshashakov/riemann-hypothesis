@@ -659,42 +659,8 @@ open Formalism.G0
 
 theorem ln_length_pow {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (ϖ : R)
     (hϖ : Irreducible ϖ) (n : ℕ) : Module.length R (R ⧸ Ideal.span {ϖ ^ n}) = n := by
-  induction n with
-  | zero =>
-    rw [pow_zero, Ideal.span_singleton_one]
-    have : Subsingleton (R ⧸ (⊤ : Ideal R)) := Submodule.Quotient.subsingleton_iff.mpr rfl
-    simp
-  | succ n ih =>
-    have hUV : Ideal.span {ϖ ^ (n + 1)} ≤ Ideal.span {ϖ ^ n} := by
-      rw [Ideal.span_singleton_le_span_singleton]
-      exact pow_dvd_pow _ (Nat.le_succ n)
-    rw [LengthLayersP.length_quot_eq_add (O := R) (X := R) hUV, ih]
-    have hmap : Submodule.map (Submodule.mkQ (Ideal.span {ϖ ^ (n + 1)})) (Ideal.span {ϖ ^ n}) =
-        Submodule.span R {Submodule.mkQ (Ideal.span {ϖ ^ (n + 1)}) (ϖ ^ n)} := by
-      show Submodule.map _ (Submodule.span R {ϖ ^ n}) = _
-      rw [Submodule.map_span, Set.image_singleton]
-    rw [hmap]
-    set x := Submodule.mkQ (Ideal.span {ϖ ^ (n + 1)}) (ϖ ^ n) with hx
-    have hkill : ϖ ^ 1 • x = 0 := by
-      rw [hx, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul, pow_one,
-        ← pow_succ']
-      exact Ideal.mem_span_singleton_self _
-    have hle : Module.length R ↥(Submodule.span R {x}) ≤ ((1 : ℕ) : ℕ∞) :=
-      LengthLayersP.length_span_singleton_le ϖ hϖ 1 x hkill
-    have hx0 : x ≠ 0 := by
-      rw [hx, Submodule.mkQ_apply, Ne, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton,
-        pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit]
-      omega
-    have hne : Module.length R ↥(Submodule.span R {x}) ≠ 0 := by
-      rw [Ne, Module.length_eq_zero_iff, not_subsingleton_iff_nontrivial,
-        Submodule.nontrivial_iff_ne_bot, Ne, Submodule.span_singleton_eq_bot]
-      exact hx0
-    have h1 : Module.length R ↥(Submodule.span R {x}) = 1 := by
-      apply le_antisymm (by simpa using hle)
-      exact Order.one_le_iff_ne_zero.mpr hne
-    rw [h1]
-    push_cast
-    rw [add_comm]
+  rw [← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq,
+    IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]
 
 theorem ln_conv {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] (u : Rˣ) (ϖ a : R) (e : ℕ)
     (ha : a = ↑u * ϖ ^ e) (k : ℕ) (x : X) (P : Submodule R X) (h : a ^ k • x ∈ P) :
@@ -1736,60 +1702,7 @@ theorem lb_indep (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O K
     (hinj : Function.Injective (algebraMap O Kf)) (m : ℕ) (lam : Fin (m + 1) → ℤ)
     (g h : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : IsUnit g.det) (hh : IsUnit h.det)
     (hs : colSpan O g = colSpan O h) : nablaLTw O Kf m lam g ≤ nablaLTw O Kf m lam h := by
-  classical
-  have hcol : ∀ (g h : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf), colSpan O g = colSpan O h →
-      ∃ U : Matrix (Fin (m + 1)) (Fin (m + 1)) O, h = g * U.map (algebraMap O Kf) := by
-    intro g h hs
-    have h1 : ∀ j, ∃ c : Fin (m + 1) → O, ∑ i, c i • (fun a => g a i) = fun a => h a j := by
-      intro j
-      have hm : (fun a => h a j) ∈ colSpan O g := by
-        rw [hs]; exact Submodule.subset_span ⟨j, rfl⟩
-      exact (Submodule.mem_span_range_iff_exists_fun O).1 hm
-    choose c hc using h1
-    refine ⟨fun i j => c j i, ?_⟩
-    ext a j
-    have h2 := congrFun (hc j) a
-    rw [Matrix.mul_apply, ← h2, Finset.sum_apply]
-    apply Finset.sum_congr rfl
-    intro i _
-    show c j i • g a i = g a i * algebraMap O Kf (c j i)
-    rw [Algebra.smul_def, mul_comm]
-  obtain ⟨U, hU⟩ := hcol g h hs
-  obtain ⟨U', hU'⟩ := hcol h g hs.symm
-  have hdU : ∀ V : Matrix (Fin (m + 1)) (Fin (m + 1)) O,
-      (V.map (algebraMap O Kf)).det = algebraMap O Kf V.det :=
-    fun V => (RingHom.map_det (algebraMap O Kf) V).symm
-  have hdet : U.det * U'.det = 1 := by
-    apply hinj
-    have h1 : g.det * (algebraMap O Kf U.det * algebraMap O Kf U'.det) = g.det * 1 := by
-      conv_rhs => rw [mul_one, hU', hU, Matrix.det_mul, Matrix.det_mul, hdU, hdU]
-      ring
-    rw [map_mul, map_one]
-    exact mul_left_cancel₀ hg.ne_zero h1
-  let u : Oˣ := ⟨U.det, U'.det, hdet, by rw [mul_comm]; exact hdet⟩
-  set e : ℤ := lam (Fin.last m) with he
-  have hz : algebraMap O Kf ((u ^ e : Oˣ) : O) = (algebraMap O Kf U.det) ^ e := by
-    calc algebraMap O Kf ((u ^ e : Oˣ) : O)
-        = ((Units.map (algebraMap O Kf : O →* Kf) (u ^ e) : Kfˣ) : Kf) := rfl
-      _ = (((Units.map (algebraMap O Kf : O →* Kf) u) ^ e : Kfˣ) : Kf) := by rw [map_zpow]
-      _ = ((Units.map (algebraMap O Kf : O →* Kf) u : Kfˣ) : Kf) ^ e := Units.val_zpow_eq_zpow_val _ _
-      _ = (algebraMap O Kf U.det) ^ e := rfl
-  intro F hF
-  rw [nablaLTwMem O Kf m lam h hh]
-  rw [nablaLTwMem O Kf m lam g hg] at hF
-  obtain ⟨f, hf, hfe⟩ := hF
-  refine ⟨((u ^ e : Oˣ) : O) • rowAct O U f,
-    Submodule.smul_mem _ _ (dualWeylRowStable O _ _ _ U f hf), ?_⟩
-  have hmap : ∀ f : MvPolynomial (Fin (m + 1) × Fin (m + 1)) O,
-      (mapAlgHom (Algebra.ofId O Kf)).toLinearMap f = map (algebraMap O Kf) f := fun f => rfl
-  rw [hmap] at hfe
-  rw [map_smul, hmap, ldtwist_map_rowAct, hfe, map_smul, ← algebraMap_smul Kf ((u ^ e : Oˣ) : O), hz,
-    smul_smul]
-  have h4 : rowAct Kf (U.map (algebraMap O Kf)) (rowAct Kf g F) = rowAct Kf h F := by
-    have h5 := rowActMul Kf (m + 1) (m + 1) (U.map (algebraMap O Kf)) g
-    rw [hU, ← h5]
-    rfl
-  rw [h4, hU, Matrix.det_mul, hdU, mul_zpow, mul_comm]
+  exact la_indep hinj m lam g h hg hh hs
 
 theorem lb_D_det {K : Type*} [Field K] (k r : ℕ) (c : K) (hc : c ≠ 0) : IsUnit (lb_D k r c).det := by
   rw [lb_D, Matrix.det_diagonal, isUnit_iff_ne_zero, Finset.prod_ne_zero_iff]
@@ -1806,12 +1719,9 @@ theorem lb_pos (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
       H0 O m lam (colSpan O (g * lb_D (m + 1) r (algebraMap O Kf w))) := by
   have hgD : IsUnit (g * lb_D (m + 1) r (algebraMap O Kf w)).det := by
     rw [Matrix.det_mul]; exact hg.mul (lb_D_det _ _ _ hw)
-  unfold H0 at hF ⊢
-  rw [if_pos hlam] at hF ⊢
-  have h1 : F ∈ nablaLTw O Kf m lam g := (iInf₂_le g ⟨hg, rfl⟩ : _ ≤ nablaLTw O Kf m lam g) hF
-  have h2 := lb_P O Kf hinj m r lam hlam w hw g hg F h1
-  exact (le_iInf₂ fun h hh => lb_indep O Kf hinj m lam _ h hgD hh.1 hh.2 :
-    nablaLTw O Kf m lam (g * lb_D (m + 1) r (algebraMap O Kf w)) ≤ _) h2
+  rw [H0_eq_twisted_nabla (la_indep hinj) m lam hlam g hg] at hF
+  rw [H0_eq_twisted_nabla (la_indep hinj) m lam hlam _ hgD]
+  exact lb_P O Kf hinj m r lam hlam w hw g hg F hF
 
 variable {p : ℕ}
 
