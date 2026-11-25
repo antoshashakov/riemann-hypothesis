@@ -54,6 +54,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndFrFixAsm
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndVerbB
 
 @[expose] public section
 
@@ -84,41 +85,8 @@ theorem balanced_pairs_conjugate {E : Type} [Field E] [NumberField E] [IsCMField
     (heig : ∀ (a : 𝓞 E) (ℓ : Lt1 Dw) (i : Fin d), ∑ j, A a i j * uvec ℓ j = algebraMap c.F S (embK c ℓ.1 a) * uvec ℓ i)
     (M : Fin d → Fin d → S) (hbal : ∀ a, (A a).transpose * Matrix.of M = Matrix.of M * A (H.bar a))
     (ℓ ℓ' : Lt1 Dw) (hne : ∑ i, ∑ j, M i j * uvec ℓ i * uvec ℓ' j ≠ 0) :
-    ℓ'.1 = ComplexEmbedding.conjugate ℓ.1 := by
-  by_contra hc
-  have hσ : ℓ.1 ≠ ComplexEmbedding.conjugate ℓ'.1 := by
-    intro h
-    apply hc
-    rw [h]
-    show ℓ'.1 = star (star ℓ'.1)
-    rw [star_star]
-  obtain ⟨a, ha⟩ := embeddings_differ_on_integer _ _ hσ
-  have hmv : ∀ (b : 𝓞 E) (ℓ₀ : Lt1 Dw), A b *ᵥ uvec ℓ₀ = algebraMap c.F S (embK c ℓ₀.1 b) • uvec ℓ₀ := by
-    intro b ℓ₀
-    funext i
-    simp only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]
-    exact heig b ℓ₀ i
-  set B := uvec ℓ ⬝ᵥ (Matrix.of M *ᵥ uvec ℓ') with hB
-  have hBe : B = ∑ i, ∑ j, M i j * uvec ℓ i * uvec ℓ' j := by
-    rw [hB]
-    simp only [dotProduct, Matrix.mulVec, Matrix.of_apply, Finset.mul_sum]
-    refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-    ring
-  have h1 := congrArg (fun N : Matrix (Fin d) (Fin d) S => uvec ℓ ⬝ᵥ (N *ᵥ uvec ℓ')) (hbal a)
-  rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, hmv,
-    hmv, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul,
-    smul_eq_mul, ← hB] at h1
-  have key : (algebraMap c.F S (embK c ℓ.1 a) - algebraMap c.F S (embK c ℓ'.1 (H.bar a))) * B = 0 := by
-    rw [sub_mul, h1, sub_self]
-  have hu : IsUnit (algebraMap c.F S (embK c ℓ.1 a) - algebraMap c.F S (embK c ℓ'.1 (H.bar a))) := by
-    rw [← map_sub]
-    refine IsUnit.map _ (isUnit_iff_ne_zero.2 ?_)
-    intro h0
-    apply ha
-    have h2 := congrArg (fun x : c.F => (x : ℂ)) (sub_eq_zero.1 h0)
-    simp only [embK_coe] at h2
-    rw [h2, H.bar_eq, IsCMField.complexEmbedding_complexConj, ComplexEmbedding.conjugate_coe_eq]
-  exact hne (hBe ▸ (hu.mul_right_eq_zero).1 key)
+    ℓ'.1 = ComplexEmbedding.conjugate ℓ.1 :=
+  Formalism.MainNotions.ModuliIntegralCharts.H1.pair_of_balanced c A uvec heig M hbal ℓ ℓ' hne
 
 theorem twist_on_eigenDirections (hFix : FrTruncFixSt) (hLE : LinEigSt) : FrTruncFixBSt := by
   intro E _ _ _ H Dw l Xo c _ hs S _ _ _ y C

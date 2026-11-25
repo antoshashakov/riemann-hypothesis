@@ -49,6 +49,7 @@ import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapAinfInvPrimeBdRPlusInjective
 
 @[expose] public section
 
@@ -57,20 +58,8 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BKLim.BinfInv
 
-private theorem exists_isEps_pt (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := by
-  obtain ⟨ζ, ε, h0, -, h1, hr⟩ := GlobalTheory.T.exists_compatible_rootsOfUnity_and_tilt_padic l
-  refine ⟨ε, ?_, ?_⟩
-  · have := hr 0
-    rw [h0, map_one] at this
-    exact Subtype.ext this
-  · intro h
-    have := hr 1
-    have e : rootT ε 1 = 1 := h
-    rw [e] at this
-    apply h1
-    apply (algebraMap (Om l) ℂ_[l]).injective
-    rw [← this, map_one]
-    rfl
+private theorem exists_isEps_pt (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e :=
+  GlobalTheory.MemLoc.exists_isEps_for_inj l
 
 private theorem algebraMap_mem_filtration_one_iff_mem_ker (l : ℕ) [Fact l.Prime] (a : Per.AinfP l) :
     algebraMap (Per.AinfP l) (Per.BdRp l) a ∈ Per.FilP l 1 ↔ a ∈ Per.kerP l := by
