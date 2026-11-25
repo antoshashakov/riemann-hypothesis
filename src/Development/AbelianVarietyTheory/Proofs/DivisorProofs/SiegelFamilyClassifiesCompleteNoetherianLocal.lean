@@ -151,8 +151,8 @@ theorem quot_artin {R : Type} [CommRing R] [IsNoetherianRing R] (m : Ideal R) (h
   exact IsNoetherianRing.isArtinianRing_of_krullDimLE_zero
 
 theorem spMap_comp_ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem spMap_id_ {A : Type} [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp [spMap]

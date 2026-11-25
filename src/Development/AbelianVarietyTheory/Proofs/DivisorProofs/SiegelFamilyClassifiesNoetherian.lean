@@ -50,8 +50,8 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegelNoeth
 
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
-    spMap (b.comp a) = spMap b ≫ spMap a := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (b.comp a) = spMap b ≫ spMap a :=
+  Spec.map_comp _ _
 
 theorem spMap_id_eq (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) := by
   simp only [spMap]

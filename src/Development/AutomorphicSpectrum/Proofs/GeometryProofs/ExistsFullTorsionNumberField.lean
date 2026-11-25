@@ -273,8 +273,8 @@ theorem exists_spMap {R F : Type} [CommRing R] [CommRing F] (y : Sp F ⟶ Sp R) 
   ⟨(Spec.preimage y).hom, by simp [spMap]⟩
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp [spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem exists_ptEquiv {R F : Type} [CommRing R] [Algebra L R] [CommRing F] (io : L →+* F) :
     ∃ e : (Over.mk (spMap io) ⟶ Over.mk (spMap (algebraMap L R))) ≃

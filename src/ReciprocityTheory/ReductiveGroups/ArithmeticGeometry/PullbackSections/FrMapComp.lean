@@ -53,8 +53,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem spMap_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
-    spMap (ψ.comp φ) = spMap ψ ≫ spMap φ := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (ψ.comp φ) = spMap ψ ≫ spMap φ :=
+  Spec.map_comp _ _
 
 theorem dualMap_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) := RingHom.ext fun x => by ext <;> simp [dualMap]

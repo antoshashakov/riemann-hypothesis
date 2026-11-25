@@ -51,10 +51,8 @@ noncomputable section
 namespace GlobalTheory.ZM.DwModel
 
 private lemma spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  show Spec.map _ = Spec.map _ ≫ Spec.map _
-  rw [← Spec.map_comp]
-  rfl
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 private lemma spMap_surjective' {A B : Type} [CommRing A] [CommRing B] (y : Sp B ⟶ Sp A) :
     ∃ f : A →+* B, spMap f = y :=

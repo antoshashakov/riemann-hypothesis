@@ -78,9 +78,8 @@ theorem le_dual {X : Scheme.{0}} {v : Sp (DualNumber C) ⟶ X} {x : Sp C ⟶ X}
   change v _ ∈ U
   rwa [Scheme.Hom.comp_apply] at h1
 
-theorem spMap_comp' (β : R →+* C) (κ : C →+* D) : spMap (κ.comp β) = spMap κ ≫ spMap β := by
-  show Spec.map _ = Spec.map _ ≫ Spec.map _
-  rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
+theorem spMap_comp' (β : R →+* C) (κ : C →+* D) : spMap (κ.comp β) = spMap κ ≫ spMap β :=
+  Spec.map_comp _ _
 
 theorem dualMap_comp (β : R →+* C) (κ : C →+* D) : dualMap (κ.comp β) = (dualMap κ).comp (dualMap β) := by
   refine RingHom.ext fun x => ?_

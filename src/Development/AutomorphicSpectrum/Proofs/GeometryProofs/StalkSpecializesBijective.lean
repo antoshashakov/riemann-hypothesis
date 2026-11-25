@@ -461,8 +461,8 @@ theorem genMap_bijective {ξ : Spec (CommRingCat.of Ω₁) ⟶ X} (hg : IsCptGen
   exact h
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem mono_spec_comp {R : CommRingCat.{0}} (g : R →+* Ω₁) (hb : Function.Bijective g) (F : Spec R ⟶ X) [Mono F]
     {ξ : Spec (CommRingCat.of Ω₁) ⟶ X} (hξ : Spec.map (CommRingCat.ofHom g : R ⟶ CommRingCat.of Ω₁) ≫ F = ξ) :

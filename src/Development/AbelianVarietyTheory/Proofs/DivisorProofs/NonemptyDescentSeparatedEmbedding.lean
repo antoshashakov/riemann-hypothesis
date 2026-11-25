@@ -74,8 +74,8 @@ theorem spMap_cst {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (p : X
   rfl
 
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (a : R →+* R') (b : R' →+* R'') :
-    spMap (b.comp a) = spMap b ≫ spMap a := by
-  rw [← Spec.map_comp]; rfl
+    spMap (b.comp a) = spMap b ≫ spMap a :=
+  Spec.map_comp _ _
 
 theorem cst_comp {X : Scheme.{0}} [IsIntegral X] {R R' : Type} [CommRing R] [CommRing R'] (q : X ⟶ Sp R') (ρ : R →+* R') :
     Desc.cst (q ≫ spMap ρ) = (Desc.cst q).comp ρ := by

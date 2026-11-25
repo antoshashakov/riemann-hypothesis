@@ -61,9 +61,8 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.LocFn.Spread
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (c : A →+* B) (d : B →+* C) :
-    spMap (d.comp c) = spMap d ≫ spMap c := by
-  simp only [spMap, ← Spec.map_comp]
-  rfl
+    spMap (d.comp c) = spMap d ≫ spMap c :=
+  Spec.map_comp _ _
 
 theorem exists_ringHom {X : Scheme.{0}} {A B : Type} [CommRing A] [CommRing B] (x : Sp A ⟶ X) [IsOpenImmersion x]
     (z : Sp B ⟶ X) (hr : Set.range z ⊆ Set.range x) : ∃ a : A →+* B, spMap a ≫ x = z := by

@@ -189,8 +189,8 @@ structure Thick (γ : DividedPowers I) (s : X ⟶ Sp R) : Type 1 where
 attribute [instance] Thick.ring Thick.alg Thick.ring₀
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  exact Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   exact Spec.map_id (CommRingCat.of A)

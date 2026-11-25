@@ -120,9 +120,8 @@ theorem exists_isoMaps_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H 
   exact congrArg₂ (· * ·) (gs_unit _ y _ hy _) (gs_res _ y _ hy _)
 
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (io : R →+* S) (φ : S →+* T) :
-    spMap (φ.comp io) = spMap φ ≫ spMap io := by
-  show Spec.map _ = Spec.map _ ≫ Spec.map _
-  rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
+    spMap (φ.comp io) = spMap φ ≫ spMap io :=
+  Spec.map_comp _ _
 
 theorem dual_alg {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) :
     spMap (dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap T (DualNumber T)) ≫ spMap φ := by

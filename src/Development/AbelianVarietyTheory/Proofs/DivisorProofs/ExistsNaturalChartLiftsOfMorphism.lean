@@ -57,8 +57,8 @@ section Chart
 variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+* R₀}
 
 theorem chart_spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
-    spMap (b.comp a) = spMap b ≫ spMap a := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (b.comp a) = spMap b ≫ spMap a :=
+  Spec.map_comp _ _
 
 theorem chart_spMap_inj {A B : Type} [CommRing A] [CommRing B] {a b : A →+* B} (e : spMap a = spMap b) : a = b := by
   have := Spec.map_injective e

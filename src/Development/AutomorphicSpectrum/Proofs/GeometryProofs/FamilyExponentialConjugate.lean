@@ -67,9 +67,8 @@ section Points
 
 variable {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
 
-theorem spMap_comp_ring (f : A →+* B) (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
-  show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f)
-  rw [CommRingCat.ofHom_comp, Spec.map_comp]
+theorem spMap_comp_ring (f : A →+* B) (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem conj_conj_point : κ ≫ κ = 𝟙 (Sp ℂ) := by
   have h : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ := by

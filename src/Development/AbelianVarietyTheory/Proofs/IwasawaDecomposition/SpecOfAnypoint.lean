@@ -63,8 +63,8 @@ theorem upper_mul {n : ℕ} {R : Type} [CommRing R] {M N : Matrix (Fin n) (Fin n
   | (intros; exact _root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul ..)
 
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (ρ : R →+* R') (ψ : R' →+* R'') :
-    spMap (ψ.comp ρ) = spMap ψ ≫ spMap ρ := by
-  simp [spMap, Spec.map_comp]
+    spMap (ψ.comp ρ) = spMap ψ ≫ spMap ρ :=
+  Spec.map_comp _ _
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}

@@ -49,8 +49,8 @@ open Classical
 namespace GlobalTheory.KeyEven
 
 theorem spMap_comp' {A B K : Type} [CommRing A] [CommRing B] [CommRing K] (f : A →+* B) (h : B →+* K) :
-    spMap (h.comp f) = spMap h ≫ spMap f := by
-  simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (h.comp f) = spMap h ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem eSec_hom' {S : Scheme.{0}} (G : Over S) [GrpObj G] : eSec G ≫ G.hom = 𝟙 _ := by
   simpa [eSec] using Over.w η[G]

@@ -70,8 +70,8 @@ theorem flat_spec_field {K : Type} [Field K] {Z : Scheme.{0}} (f : Z ⟶ Sp K) :
   infer_instance
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (i : A →+* B) (j : B →+* C) :
-    spMap (j.comp i) = spMap j ≫ spMap i := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (j.comp i) = spMap j ≫ spMap i :=
+  Spec.map_comp _ _
 
 theorem appTop_spMap_injective {A B : Type} [CommRing A] [CommRing B] (j : A →+* B)
     (hj : Function.Injective j) : Function.Injective (spMap j).appTop.hom := by

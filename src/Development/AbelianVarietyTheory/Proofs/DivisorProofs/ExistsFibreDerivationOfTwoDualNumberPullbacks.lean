@@ -117,8 +117,8 @@ theorem dual_decomp {k : Type} [Field k] (x : DualNumber k) :
   ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 end GlobalTheory.KS.TwoPull
 

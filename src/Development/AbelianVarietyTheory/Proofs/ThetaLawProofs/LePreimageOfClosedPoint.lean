@@ -175,9 +175,8 @@ theorem valH_spMap (φ : Γ(X, V) →+* T) :
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R')
-    (f' : R' →+* R'') : spMap (f'.comp f) = spMap f' ≫ spMap f := by
-  rw [← Spec.map_comp]
-  rfl
+    (f' : R' →+* R'') : spMap (f'.comp f) = spMap f' ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem fromSpec_comp {O : Type} [CommRing O] (h : X ⟶ Sp O) :
     hV.fromSpec ≫ h = spMap (R' := Γ(X, V))

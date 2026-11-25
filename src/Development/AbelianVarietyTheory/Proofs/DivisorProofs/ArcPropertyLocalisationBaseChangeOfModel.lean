@@ -118,9 +118,8 @@ theorem mem_range_j_iff (x : (locModel Y b hb).X) :
     rw [← hu, Scheme.Hom.comp_apply]
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [spMap, spMap, spMap, ← Spec.map_comp]
-  rfl
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem locModel_arc (h : Y.N4) : (locModel Y b hb).N4 := by
   intro O'' _ _ _ b' ϖ a hO

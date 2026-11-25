@@ -55,8 +55,8 @@ open GlobalTheory.Poinc.FibLat GlobalTheory.Poinc.Eq8
 namespace GlobalTheory.Poinc.FibLat.UnifLat
 
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 theorem exists_tau {o B X : Type} [CommRing o] [CommRing B] [AddCommGroup X] (b : o →+* B) (ζ : oˣ) {L : ℕ}
     (hL : 0 < L) (hζ : ζ ^ L = 1) (c : X →+ ZMod L) :

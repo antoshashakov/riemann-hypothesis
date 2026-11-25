@@ -184,8 +184,8 @@ theorem cv_nat {a : Sp A ⟶ S} {B : Type} [CommRing B] (h : A →+* B) {b : Sp 
 end Pts
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A →+* B) (h : B →+* C) :
-    spMap (h.comp g) = spMap h ≫ spMap g := by
-  rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
+    spMap (h.comp g) = spMap h ≫ spMap g :=
+  Spec.map_comp _ _
 
 theorem exists_pullback_ext {k Ω : Type} [Field k] [Field Ω] (f : Sp Ω ⟶ Sp k)
     (G : Over (Sp k)) [GrpObj G] (T : TorusExtension G) :

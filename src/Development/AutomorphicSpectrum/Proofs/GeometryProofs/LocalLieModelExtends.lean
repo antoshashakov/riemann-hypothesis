@@ -66,9 +66,8 @@ open GlobalTheory.CompanionTheory.Ar.LieTangent GlobalTheory.CompanionTheory.Ar.
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G]
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (c : A →+* B) (d : B →+* C) :
-    spMap (d.comp c) = spMap d ≫ spMap c := by
-  simp only [spMap, ← Spec.map_comp]
-  rfl
+    spMap (d.comp c) = spMap d ≫ spMap c :=
+  Spec.map_comp _ _
 
 
 omit [GrpObj G] in

@@ -72,8 +72,8 @@ noncomputable section
 namespace GlobalTheory.Ex.OneGen
 
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 section Mod
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left}

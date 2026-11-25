@@ -173,8 +173,8 @@ theorem lin_of_generators {X : Scheme.{0}} {O M : Type} [CommRing O] [AddCommGro
   exact key o (by rw [hs]; exact AddSubgroup.mem_top o) a
 
 private lemma spMap_comp_moduli_spaces {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
-    (f : R →+* R') (g : R' →+* R'') : spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp [spMap, CommRingCat.ofHom_comp]
+    (f : R →+* R') (g : R' →+* R'') : spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 private lemma modN_add' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {k : ℕ} {x y : Dw.La} (hx : Dw.ModN k x) (hy : Dw.ModN k y) :

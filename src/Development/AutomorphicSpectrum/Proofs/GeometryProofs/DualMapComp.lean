@@ -162,10 +162,8 @@ namespace GlobalTheory.CompanionTheory.Ar.OrVert
 open _root_.GlobalTheory.CompanionTheory.Ar.Top HodgeCpt
 
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
-    spMap (b.comp a) = spMap b ≫ spMap a := by
-  simp only [spMap]
-  rw [← Spec.map_comp]
-  rfl
+    spMap (b.comp a) = spMap b ≫ spMap a :=
+  Spec.map_comp _ _
 
 theorem dualMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     dualMap (b.comp a) = (dualMap b).comp (dualMap a) := by

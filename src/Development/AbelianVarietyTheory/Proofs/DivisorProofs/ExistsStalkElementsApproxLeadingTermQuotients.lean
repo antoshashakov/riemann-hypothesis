@@ -63,8 +63,8 @@ noncomputable section
 namespace GlobalTheory.CoverElements
 
 theorem spMap_comp₁ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 
 set_option synthInstance.maxHeartbeats 400000 in

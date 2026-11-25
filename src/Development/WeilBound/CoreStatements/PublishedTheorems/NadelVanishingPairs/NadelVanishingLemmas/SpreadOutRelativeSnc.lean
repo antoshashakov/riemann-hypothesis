@@ -86,8 +86,8 @@ theorem finiteType_adjInv {k : Type} [Field k] (R : Subring k) (hR : Algebra.Fin
     (Polynomial.eval₂RingHom R.subtype a⁻¹).rangeRestrict_surjective
 
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+    spMap (g.comp f) = spMap g ≫ spMap f :=
+  Spec.map_comp _ _
 
 end GlobalTheory.ModelSnc
 
