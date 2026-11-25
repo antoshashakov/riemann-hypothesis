@@ -139,9 +139,7 @@ theorem hnExtreme_of (h1 : HNSlopes.{u, v, w}) (h2 : MuChar.{u, v, w}) (h3 : HNS
     ⟨⟨rk ρ L - 1, by omega⟩, le_antisymm ?_ (lowB _)⟩⟩
   · rw [key]
     show 0 < rk ρ (hnStep ρ L (muMax ρ L))
-    rcases Nat.eq_zero_or_pos (rk ρ (hnStep ρ L (muMax ρ L))) with h | h
-    · exact absurd ((B4 _ (hSL _)).1 h) hstepMaxNe
-    · exact h
+    exact Nat.pos_of_ne_zero fun h => hstepMaxNe ((B4 _ (hSL _)).1 h)
   · by_contra hlt
     rw [not_le] at hlt
     set θ := slopeList ρ L ⟨rk ρ L - 1, by omega⟩ with hθdef

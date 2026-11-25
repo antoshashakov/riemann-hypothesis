@@ -75,9 +75,8 @@ theorem l_shift_from_determinant : LShift := by
   calc τinv Y * t Y 1 0 = τinv Y * t Y 1 0 * (t (Y + 1) 1 1 * τinv (Y + 1)) := by
         rw [(h4 (Y + 1) hY1).1, mul_one]
     _ = τinv Y * (t Y 1 0 * t (Y + 1) 1 1) * τinv (Y + 1) := by simp only [mul_assoc]
-    _ = τinv Y * (t Y 1 1 * t (Y + 1) 1 0) * τinv (Y + 1) := by rw [e]
-    _ = τinv Y * t Y 1 1 * t (Y + 1) 1 0 * τinv (Y + 1) := by simp only [mul_assoc]
-    _ = t (Y + 1) 1 0 * τinv (Y + 1) := by rw [(h4 Y hY).2, one_mul]
+    _ = t (Y + 1) 1 0 * τinv (Y + 1) := by
+          rw [e, ← mul_assoc, (h4 Y hY).2, one_mul]
 
 theorem quasi_determinant_from_entries : QuasiDetT := by
   intro 𝕜 A _ _ _ t τinv q S h Y hY hY1
@@ -144,11 +143,9 @@ theorem rtt_relation_entries : RTTEntries := by
   intro K B _ _ _ M v u hR i j k l
   have h := congrFun (congrFun hR (i, k)) (j, l)
   rw [mul_assoc, sub_mul, smul_mul_assoc, one_mul, Matrix.sub_apply, Matrix.smul_apply,
-    e1_mul_e2_apply, pf_mul_apply, e1_mul_e2_apply] at h
-  rw [mul_sub, mul_smul_comm, mul_one, Matrix.sub_apply, Matrix.smul_apply,
-    e2_mul_e1_apply, mul_pf_apply, e2_mul_e1_apply] at h
-  rw [smul_sub, sub_eq_sub_iff_sub_eq_sub]
-  exact h
+    e1_mul_e2_apply, pf_mul_apply, e1_mul_e2_apply, mul_sub, mul_smul_comm, mul_one,
+    Matrix.sub_apply, Matrix.smul_apply, e2_mul_e1_apply, mul_pf_apply, e2_mul_e1_apply] at h
+  simpa only [smul_sub, sub_eq_sub_iff_sub_eq_sub] using h
 
 theorem adjoint_l_shift_relation : AdjL := by
   intro 𝕜 A _ _ _ _ t τinv q S RR h hRR Y hY hY1 hst

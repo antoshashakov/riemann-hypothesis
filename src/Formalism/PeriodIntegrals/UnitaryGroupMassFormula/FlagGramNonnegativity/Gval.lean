@@ -64,8 +64,7 @@ theorem main : PI.FlagGramNonneg := by
   intro E _ _ _ V _ _ _ hT hS hN N b τ hτ p r T T' hsig hT0 hT'0 e e' z z' hf hf'
   obtain ⟨-, he, hez, hzz⟩ := hf
   obtain ⟨-, he', hez', hzz'⟩ := hf'
-  have hsym : ∀ x y, hT y x = star (hT x y) := fun x y => by
-    rw [← hS.eq x y, starRingEnd_apply]
+  have hsym : ∀ x y, hT y x = star (hT x y) := fun x y => (hS.eq x y).symm
   set Z := zhat hT (fvec e z) (fvec e' z') with hZ
   have hsub : Z.submatrix Fin.castSucc Fin.castSucc = amat hT e e' := by
     ext a c
@@ -75,8 +74,6 @@ theorem main : PI.FlagGramNonneg := by
     rw [gval, leadMinorE_succ, leadMinorE_self, hsub]
   by_cases hA : IsUnit (amat hT e e').det
   ·
-    have hsubU : IsUnit (Z.submatrix Fin.castSucc Fin.castSucc).det := by
-      rw [hsub]; exact hA
     have hrow : (fun c => Z (Fin.last r) (Fin.castSucc c)) = vvec hT z e' := by
       funext c; simp [hZ, zhat, fvec, vvec]
     have hcol : (fun a => Z (Fin.castSucc a) (Fin.last r)) = uvec hT e z' := by
@@ -84,7 +81,7 @@ theorem main : PI.FlagGramNonneg := by
     have hll : Z (Fin.last r) (Fin.last r) = hT z z' := by
       simp [hZ, zhat, fvec]
     have hdet : Z.det = (amat hT e e').det * sval hT e e' z z' := by
-      rw [det_succ_schur Z hsubU, hsub, hll, hrow, hcol]
+      rw [det_succ_schur Z (by simpa [hsub] using hA), hsub, hll, hrow, hcol]
       rfl
 
     have hs : (T : ℝ) * T' ≤ Complex.normSq (τ (sval hT e e' z z')) := by

@@ -55,12 +55,10 @@ open Formalism.L2.SG.AdBridge
 theorem tmul_mem_IntAf (I : AutInst) {x : I.E} (hx : x ∈ Formalism.UG.intOE I.E)
     {a : Formalism.MainNotions.S.Af I.F} (ha : a ∈ Formalism.UG.intAd I.F) :
     x ⊗ₜ[I.F] a ∈ Formalism.MainNotions.S.IntAf I.F I.E := by
-  have h1 : x ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F) ∈ Formalism.MainNotions.S.IntAf I.F I.E := by
-    refine Subring.subset_closure ?_
-    exact Or.inl ⟨⟨x, hx⟩, rfl⟩
-  have h2 : (1 : I.E) ⊗ₜ[I.F] a ∈ Formalism.MainNotions.S.IntAf I.F I.E := by
-    refine Subring.subset_closure ?_
-    exact Or.inr ⟨⟨a, ha⟩, rfl⟩
+  have h1 : x ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F) ∈ Formalism.MainNotions.S.IntAf I.F I.E :=
+    Subring.subset_closure (Or.inl ⟨⟨x, hx⟩, rfl⟩)
+  have h2 : (1 : I.E) ⊗ₜ[I.F] a ∈ Formalism.MainNotions.S.IntAf I.F I.E :=
+    Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)
   have h3 := mul_mem h1 h2
   rwa [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul] at h3
 

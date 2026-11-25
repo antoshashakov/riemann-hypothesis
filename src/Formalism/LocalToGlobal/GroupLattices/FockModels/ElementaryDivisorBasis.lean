@@ -148,9 +148,8 @@ theorem comap_span_coe {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [A
     [Module O X] [IsScalarTower O Kf X] {I : Type} (Vs : Submodule Kf X) (f : I → Vs) :
     (Submodule.span O (Set.range fun i => (f i : X))).comap (Vs.subtype.restrictScalars O) =
       Submodule.span O (Set.range f) := by
-  have h : (Set.range fun i => (f i : X)) = (Vs.subtype.restrictScalars O) '' Set.range f := by
-    ext y
-    simp
+  have h : (Set.range fun i => (f i : X)) = (Vs.subtype.restrictScalars O) '' Set.range f :=
+    Set.range_comp (Vs.subtype.restrictScalars O) f
   rw [h, ← Submodule.map_span, Submodule.comap_map_eq_of_injective]
   exact Subtype.val_injective
 
@@ -283,12 +282,9 @@ theorem w_ne (h : HidaSetting p n' W Qq O Kf ι σ j w) : algebraMap O Kf w ≠ 
   have hpK : (p : Kf) = algebraMap O Kf w ^ 2 := by rw [← map_pow, h.w_sq, map_natCast]
   have hpW : (p : W) ≠ 0 := h.p_unif.ne_zero
   haveI := h.frac_alt
-  have hpQ : (p : Qq) ≠ 0 := by
-    rw [← map_natCast (algebraMap W Qq)]
-    exact (map_ne_zero_iff _ (IsFractionRing.injective W Qq)).2 hpW
   have hpK' : (p : Kf) ≠ 0 := by
-    rw [← map_natCast ι]
-    exact (map_ne_zero ι).2 hpQ
+    rw [← map_natCast ι, ← map_natCast (algebraMap W Qq)]
+    exact (map_ne_zero ι).2 ((map_ne_zero_iff _ (IsFractionRing.injective W Qq)).2 hpW)
   exact hpK' (by rw [hpK, h0]; simp)
 
 theorem p_eq (h : HidaSetting p n' W Qq O Kf ι σ j w) : (p : Kf) = algebraMap O Kf w ^ 2 := by
@@ -304,8 +300,7 @@ theorem edgeLat (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (e : Edge
   lb_edgeLat_of_basis (mkG h m r (fun _ _ => 0) (fun _ _ _ _ => le_rfl)) (0 : Fin 1) (restEdgeBasis _ _) e he
 
 theorem lb_D_one {K : Type} [Field K] (k r : ℕ) : lb_D k r (1 : K) = 1 := by
-  unfold lb_D
-  simp
+  simp [lb_D]
 
 theorem lb_D_sq {K : Type} [Field K] (k r : ℕ) (c : K) : lb_D k r c * lb_D k r c = lb_D k r (c ^ 2) := by
   unfold lb_D

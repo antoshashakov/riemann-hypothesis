@@ -116,8 +116,7 @@ theorem beO_bal (c c' : 𝓞 D.host.E) (h : (c' : D.host.E) = D.host.conj (c : D
 theorem beO_self (a : 𝓞 D.host.E) : beO D a a = ∑ σ : D.host.E →ₐ[ℚ] ℂ, Complex.normSq (σ (a : D.host.E)) := by
   apply Complex.ofReal_injective
   rw [beO_eq, Complex.ofReal_sum]
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  rw [Complex.mul_conj]
+  simp only [Complex.mul_conj]
 
 theorem beO_nonneg (a : 𝓞 D.host.E) : 0 ≤ beO D a a := by
   rw [beO_self]
@@ -248,9 +247,8 @@ theorem subsingleton_rank_indicator_iff (P : Prop) : Subsingleton (Fin (rk01 P) 
     exact ⟨fun _ => h, fun _ => inferInstance⟩
   · rw [if_neg h]
     refine ⟨fun hs => ?_, fun hp => absurd hp h⟩
-    exfalso
     have h1 := congrFun (hs.elim (fun _ => (0 : 𝓞 D.host.E)) (fun _ => 1)) 0
-    exact zero_ne_one h1
+    exact absurd h1 zero_ne_one
 
 def pmM (dg : PsiT D → ℕ → ℤ) (n : ℕ) : ℤ := ∑ t : D.what₂.Tau, ∑ k ∈ Finset.Icc 1 n, |dg (D.eTau t) k|
 
@@ -287,8 +285,7 @@ theorem atM_tors (k n : ℕ) (x : AtM k n) : n • x = 0 := by
     rw [this, zero_mul]
 
 theorem atM_card (k n : ℕ) (h : 0 < n) : Fintype.card (AtM k n) = n ^ k := by
-  have hn : nn n = n := if_neg (by omega)
-  rw [Fintype.card_fun, ZMod.card, Fintype.card_fin, hn]
+  rw [Fintype.card_fun, ZMod.card, Fintype.card_fin, (show nn n = n from if_neg (by omega))]
 
 structure MP (D : D7) (p : ℕ) where
   K : CF p

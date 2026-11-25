@@ -125,9 +125,8 @@ theorem eq_self_of_le {f : Fin N → Fin N} (hf : Function.Injective f) (hle : �
   | _ n ih =>
     intro a ha
     rcases (hle a).lt_or_eq with hlt | heq
-    · exfalso
-      have h1 : f (f a) = f a := ih (f a).val (by rw [← ha]; exact hlt) (f a) rfl
-      exact (ne_of_lt hlt) (hf h1)
+    · have h1 : f (f a) = f a := ih (f a).val (by rw [← ha]; exact hlt) (f a) rfl
+      exact absurd (hf h1) (ne_of_lt hlt)
     · exact heq
 
 def mono (π : Fin N → Fin N) (c : Fin N → K) : Matrix (Fin N) (Fin N) K := fun a b => if b = π a then c a else 0
@@ -184,9 +183,7 @@ theorem mono_uniq {π ρ : Fin N → Fin N} (hπ : ∀ a, π (π a) = a) (hρ : 
   have hid : ∀ a, π (ρ a) = a := eq_self_of_le hinj hle
   have hpr : π = ρ := by
     funext a
-    have := congrArg π (hid a)
-    rw [hπ] at this
-    exact this.symm
+    simpa only [hρ] using hid (ρ a)
   refine ⟨hpr, ?_⟩
   funext a
   have h2 := e a (π a)

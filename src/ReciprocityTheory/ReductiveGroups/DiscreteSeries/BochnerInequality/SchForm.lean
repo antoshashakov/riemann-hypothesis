@@ -111,8 +111,7 @@ theorem phi_Wm_position_of_sch (hE : IsGlRep E) (hV : IsKIrrHW ε E (lowK ε lam
         Equiv.symm_swap, Equiv.swap_apply_right]
     rw [hs]
     exact hF _
-  rw [hzero, sub_zero] at hsub
-  exact hsub
+  simpa [hzero] using hsub
 
 private theorem sum_pairs_sub_eq_sum_mul_count_diff (P : Fin n → Fin n → Prop) [DecidableRel P]
     (hP : ∀ c d, P c d ↔ P d c) (ν : Fin n → ℝ) :
@@ -238,8 +237,7 @@ theorem khw_lowK_mem_of_sch (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     obtain ⟨-, hpos, hle⟩ := (hws j).2 hne
     have : 0 < 2 * (((j : ℕ) : ℝ) + 1) * (h - n + 1) := by positivity
     linarith
-  rw [hwe, Finset.sum_eq_zero (fun j _ => hz j), add_zero]
-  exact hw₀
+  simpa [hwe, hz] using hw₀
 
 theorem exists_khw_of_not_sch (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)

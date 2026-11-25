@@ -89,9 +89,7 @@ theorem valuation_ge_add_of_le {a1 a2 : D.what₂.LL} {z1 z2 : V} {s : ℝ} (h1 
     VGe D w Λ (a1 • z1 + a2 • z2) s := by
   refine ⟨a1, z1 + (⟨a2 / a1, div_mem_intW D w h1 h2 hle⟩ : intW D.what₂.places w) • z2,
     Submodule.add_mem _ hz1 (Submodule.smul_mem _ _ hz2), ?_, Or.inr hv⟩
-  rw [Subring.smul_def, smul_add, smul_smul]
-  show a1 • z1 + a2 • z2 = a1 • z1 + (a1 * (a2 / a1)) • z2
-  rw [mul_div_cancel₀ a2 h1]
+  rw [Subring.smul_def, smul_add, smul_smul, mul_div_cancel₀ a2 h1]
 
 theorem VGe_add {y1 y2 : V} {s : ℝ} (h1 : VGe D w Λ y1 s) (h2 : VGe D w Λ y2 s) : VGe D w Λ (y1 + y2) s := by
   obtain ⟨a1, z1, hz1, rfl, ha1⟩ := h1

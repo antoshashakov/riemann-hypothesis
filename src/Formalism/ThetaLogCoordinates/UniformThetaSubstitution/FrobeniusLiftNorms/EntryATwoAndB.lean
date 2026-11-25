@@ -140,8 +140,7 @@ lemma pay_le [NeZero ν] {p : ℕ} (hp : 0 < p) (α : PhiI ν r0 r1 E → ℕ) (
         rcases hP φ hα with h | h
         · exact le_trans (one_le_dAof_left hp φ) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) h)
         · exact le_trans (one_le_dAof_right hp φ) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) h)
-      calc α φ = α φ * 1 := (mul_one _).symm
-        _ ≤ α φ * ∑ τ ∈ P, dAof p φ τ := Nat.mul_le_mul_left _ h1
+      simpa using Nat.mul_le_mul_left (α φ) h1
   · rw [Finset.sum_filter]
     refine Finset.sum_le_sum (fun k _ => ?_)
     split_ifs with hk
@@ -150,8 +149,7 @@ lemma pay_le [NeZero ν] {p : ℕ} (hp : 0 < p) (α : PhiI ν r0 r1 E → ℕ) (
         refine le_trans ?_ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) hk)
         simp only [dBof, Finsupp.single_eq_same]
         exact Nat.one_le_pow _ _ hp
-      calc β k = β k * 1 := (mul_one _).symm
-        _ ≤ β k * ∑ τ ∈ P, dBof p k τ := Nat.mul_le_mul_left _ h1
+      simpa using Nat.mul_le_mul_left (β k) h1
     · exact Nat.zero_le _
 
 lemma iN_mul_le [NeZero ν] {p : ℕ} (α : PhiI ν r0 r1 E → ℕ) (β : KapI ν r1 E →₀ ℕ)
@@ -214,8 +212,7 @@ lemma iN_le_min (hC : HitsCapPos) {K : Type} [Field K] [NeZero ν] {C : ℕ} {p 
 lemma sum_iN_tops [NeZero ν] (β : KapI ν r1 E →₀ ℕ) (TT : Finset (ZMod (2 * ν)))
     (h2 : ∀ k, β k ≠ 0 → k.1 ∈ TT) :
     ∑ s ∈ TT, ∑ e' ∈ range E, iN β s e' = ∑ k, β k := by
-  rw [sum_iN β TT]
-  exact Finset.sum_filter_of_ne (fun k _ hk => h2 k hk)
+  simpa [sum_iN β TT] using Finset.sum_filter_of_ne (fun k _ hk => h2 k hk)
 
 lemma low_pay (hJ : HitsColumnsPos) {K : Type} [Field K] [NeZero ν] {C : ℕ} (p : ℕ)
     (ξ : ZMod (2 * ν) → Fin r0 → K) (β : KapI ν r1 E →₀ ℕ) (l : Fin C → ℕ)

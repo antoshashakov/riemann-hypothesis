@@ -168,9 +168,7 @@ theorem da_cTP (hσ : ∀ a, σ (σ a) = a) (hJ : Formalism.UG.IsHerm σ J) (x y
     (M : Matrix (Fin k) (Fin k) A) :
     Formalism.UG.cT σ (daP σ J x y M) * J = daT σ J y x (Formalism.UG.cT σ M) := by
   unfold daP daT
-  simp only [cT_mul_lemma]
-  rw [da_cT_cT hσ, show Formalism.UG.cT σ J = J from hJ]
-  simp only [Matrix.mul_assoc]
+  simp only [cT_mul_lemma, da_cT_cT hσ, show Formalism.UG.cT σ J = J from hJ, Matrix.mul_assoc]
 
 theorem da_JP (x y : Fin k → Fin n → A) (M : Matrix (Fin k) (Fin k) A) :
     J * daP σ J x y M = daT σ J x y M := by

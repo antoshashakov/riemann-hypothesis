@@ -71,9 +71,7 @@ theorem fr_period (hV : F.Valid L₁ N₁) (j : ℤ) (i : ℕ) (m : ℤ) :
     linarith
 
 theorem posOf_add_mul (x m : ℤ) : posOf n' (x + m * n') = posOf n' x := by
-  unfold posOf
-  congr 2
-  rw [Int.add_mul_emod_self_right]
+  simp [posOf, Int.add_mul_emod_self_right]
 
 theorem late_reduce (hV : F.Valid L₁ N₁) (j x : ℤ) (hx : x ∈ F.letters j) (hW : ¬ F.IsW j x) :
     ∃ j' : ℕ, j' < F.J ∧ ∃ x' : ℤ, x' ∈ F.letters (j' : ℤ) ∧ ¬ F.IsW (j' : ℤ) x' ∧ posOf n' x' = posOf n' x ∧

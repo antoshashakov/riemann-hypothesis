@@ -62,9 +62,7 @@ open Formalism.MainNotions.S PI.ScRefExists
 
 theorem inv_mem_of_val (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : ℕ)
     (hc : Valued.v ((c : v.adicCompletion I.F)) = 1) : ((c : KV I v))⁻¹ ∈ OV I v := by
-  have h1 : Valued.v (((c : v.adicCompletion I.F))⁻¹) = 1 := by rw [map_inv₀, hc, inv_one]
-  show ((c : v.adicCompletion I.F))⁻¹ ∈ v.adicCompletionIntegers I.F
-  exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).2 h1.le
+  exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).2 (by simp [map_inv₀, hc])
 
 theorem lat_of_inAt (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) {g : ℕ} (hv : (g : 𝓞 I.F) ∈ v.asIdeal)
     (x : VA I) (hx : InAt I g 1 x) :

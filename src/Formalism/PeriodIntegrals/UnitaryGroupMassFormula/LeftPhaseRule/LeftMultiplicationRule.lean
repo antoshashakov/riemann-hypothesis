@@ -159,10 +159,7 @@ private lemma hpk_col_lemma (x y : Fin (2 * r + k + 1)) :
   by_cases h : x = tau k r y
   · subst h
     simp [tau_tau_lemma, sgn_tau_lemma]
-  · rw [if_neg h, if_neg]
-    intro h'
-    apply h
-    rw [h', tau_tau_lemma]
+  · rw [if_neg h, if_neg (fun h' => h (by rw [h', tau_tau_lemma]))]
 
 private lemma hpk_mul_conjTranspose_mul_hpk_apply (M : Mx k r) (p q : Fin (2 * r + k + 1)) :
     (Hpk k r * Mᴴ * Hpk k r) p q =
@@ -202,12 +199,10 @@ lemma ginv_eq (hc : c ≠ 0) : (w1 k r l c * g₁)⁻¹ = g₁⁻¹ * w1 k r l (
   rw [Matrix.mul_inv_rev, weyl_cell_inv l c hc]
 
 lemma e_out (l : Fin r) : ¬ (l.val < (eI k r l).val ∧ (eI k r l).val < 2 * r + k - l.val) := by
-  intro h
-  exact absurd h.1 (lt_irrefl _)
+  exact fun h => (lt_irrefl _) h.1
 
 lemma es_out (l : Fin r) : ¬ (l.val < (esI k r l).val ∧ (esI k r l).val < 2 * r + k - l.val) := by
-  intro h
-  exact absurd h.2 (lt_irrefl _)
+  exact fun h => (lt_irrefl _) h.2
 
 lemma case1 (hz : inWb k r z) (hL : LeftEq k r z l.castSucc D f) (hc : c ≠ 0)
     (hg₁ : g₁ ∈ Glev k r l.succ) (hgD : w1 k r l c * g₁ ∈ D) (v : Fin (2 * r + k + 1))

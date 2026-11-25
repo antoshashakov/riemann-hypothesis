@@ -231,9 +231,7 @@ theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x
 
 theorem zhat_swap (F : FlagG S r T) (F' : FlagG S r T') : Zhat F' F = (Zhat F F')ᴴ := by
   ext a b
-  rw [Matrix.conjTranspose_apply]
-  simp only [Zhat]
-  exact brS_swap (F'.fvec a) (F.fvec b)
+  simpa only [Zhat, Matrix.conjTranspose_apply] using brS_swap (F'.fvec a) (F.fvec b)
 
 theorem Dl_swap (F : FlagG S r T) (F' : FlagG S r T') (l : ℕ) : Dl F' F l = star (Dl F F' l) := by
   unfold Dl leadMinorE

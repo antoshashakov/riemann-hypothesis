@@ -74,8 +74,7 @@ theorem locAdj_split (G : Finset ℕ) (loc : ∀ p, Formalism.MainNotions.S.Loc.
       Formalism.MainNotions.S.Loc.SplitAt (loc p).Fp (loc p).Ep (loc p).cj (Formalism.MainNotions.S.Loc.resChar p))
     (p : HeightOneSpectrum (𝓞 F)) :
     (locAdj sig G loc spl p).split.isSome ↔ Formalism.MainNotions.S.Loc.resChar p ∈ G := by
-  unfold locAdj
-  by_cases h : Formalism.MainNotions.S.Loc.resChar p ∈ G <;> simp [h]
+  by_cases h : Formalism.MainNotions.S.Loc.resChar p ∈ G <;> simp [locAdj, h] <;> rfl
 
 variable {Word Tau : Type} [Subsingleton Word] (hc : Word → Tau → HCParam R)
 
@@ -202,22 +201,20 @@ theorem toySignLevel_M (p : ℕ) : (toySignLevel p).M = ⊥ := by
   funext L
   have h := hF
   simp only [Level.M, Level.funMod, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker] at h
-  have h1 := h.2 (show (toySignLevel p).Γ from (-1 : ℤˣ)) L
-  have hs : (toySignLevel p).smul (show (toySignLevel p).Γ from (-1 : ℤˣ)) L = L := Subsingleton.elim _ _
+  have h1 := h.2 (-1 : ℤˣ) L
+  have hs : (toySignLevel p).smul (-1 : ℤˣ) L = L := Subsingleton.elim _ _
   simp only [LinearMap.sub_apply, LinearMap.proj_apply, LinearMap.comp_apply, LinearMap.smul_apply,
     hs] at h1
-  have hc : ((toySignLevel p).χ (show (toySignLevel p).Γ from (-1 : ℤˣ)) : ℤ_[3]) = -1 := by
+  have hc : ((toySignLevel p).χ (-1 : ℤˣ) : ℤ_[3]) = -1 := by
     show ((Units.map (Int.castRingHom ℤ_[3]).toMonoidHom (-1 : ℤˣ) : ℤ_[3]ˣ) : ℤ_[3]) = -1
     simp
   rw [hc] at h1
-  have e : (((toySignLevel p).actX (show (toySignLevel p).Γ from (-1 : ℤˣ))).restrictScalars
-      ℤ_[3]) (F L) = F L := by
+  have e : (((toySignLevel p).actX (-1 : ℤˣ)).restrictScalars ℤ_[3]) (F L) = F L := by
     show (emptyPlaces p).natAct _ (F L) = F L
     rw [emptyPlaces_natAct]
     rfl
   rw [e, neg_one_smul, sub_neg_eq_add] at h1
-  have h2 : (2 : ℚ_[3]) • F L = 0 := by rw [two_smul]; exact h1
-  simpa using (smul_eq_zero.mp h2).resolve_left two_ne_zero
+  simpa using (smul_eq_zero.mp (by simpa [two_smul] using h1)).resolve_left two_ne_zero
 
 theorem gAtPExample_M (p : ℕ) : (gAtPExample p).M = ⊥ := by
   rw [eq_bot_iff]
@@ -230,8 +227,7 @@ theorem gAtPExample_M (p : ℕ) : (gAtPExample p).M = ⊥ := by
 
 theorem gAtPExample_d (p : ℕ) : (gAtPExample p).d = 0 := by
   unfold GAtP.d
-  rw [gAtPExample_M]
-  exact finrank_bot _ _
+  rw [gAtPExample_M, finrank_bot]
 
 end G
 

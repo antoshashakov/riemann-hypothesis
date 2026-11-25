@@ -60,9 +60,8 @@ def rowW {k : ℕ} (a : Fin k) : Fin k × Fin k → ℕ := fun v => if v.1 = a t
 theorem RE_eq_of_hom {K : Type} [CommRing K] {k : ℕ} (a : Fin k)
     (f : MvPolynomial (Fin k × Fin k) K) (d : ℕ)
     (h : IsWeightedHomogeneous (rowW a) f d) : RE K k a a f = (d : K) • f := by
-  have h' := h.sum_weight_X_mul_pderiv
   unfold RE
-  rw [Nat.cast_smul_eq_nsmul K d f, ← h']
+  rw [Nat.cast_smul_eq_nsmul K d f, ← h.sum_weight_X_mul_pderiv]
   symm
   rw [Fintype.sum_prod_type, Finset.sum_eq_single a (fun x _ hx => by simp [rowW, hx])
     (fun h => absurd (Finset.mem_univ a) h)]
@@ -91,8 +90,7 @@ theorem bidet_hom {K : Type} [CommRing K] {k N : ℕ} (a : Fin k) (sz : Fin N �
     (hsz : ∀ j, sz j ≤ k) (I : ∀ j, Fin (sz j) → Fin k) :
     IsWeightedHomogeneous (rowW a) (bideterminant K sz hsz I)
       (∑ j, (Finset.univ.filter fun p => I j p = a).card) := by
-  unfold bideterminant
-  exact IsWeightedHomogeneous.prod _ _ _ fun j _ => minor_hom a (I j) (hsz j)
+  simpa [bideterminant] using IsWeightedHomogeneous.prod _ _ _ fun j _ => minor_hom a (I j) (hsz j)
 
 theorem wt_le {k N : ℕ} (sz : Fin N → ℕ) (I : ∀ j, Fin (sz j) → Fin k)
     (hI : ∀ j, StrictMono (I j)) (a t0 : Fin k) (ht0 : t0.val = 0) :

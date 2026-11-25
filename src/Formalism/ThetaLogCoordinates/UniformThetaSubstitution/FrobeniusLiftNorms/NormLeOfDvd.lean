@@ -91,9 +91,7 @@ theorem lowOp_deg {K : Type} [Field K] (hM : MinorProdDegree) {ν r0 r1 C : ℕ}
     (I : ∀ c, Fin (l c) → Fin r1) (n : ZV ν r0 r1 →₀ ℕ) (hn : n ∈ (lowOp l sf T I).support) :
     (∀ s, ∑ x : Fin r0 × Fin r1, n (s, x) = lsN l sf s) ∧ n.degree = ∑ s, lsN l sf s := by
   have hs := hM K (ZMod (2 * ν)) r0 r1 C l sf T I n hn
-  refine ⟨hs, ?_⟩
-  rw [deg_ZV]
-  exact Finset.sum_congr rfl fun s _ => hs s
+  exact ⟨hs, by rw [deg_ZV]; exact Finset.sum_congr rfl fun s _ => hs s⟩
 
 theorem lowOp_hom {K : Type} [Field K] (hM : MinorProdDegree) {ν r0 r1 C : ℕ} [NeZero ν]
     (l : Fin C → ℕ) (sf : Fin C → ZMod (2 * ν)) (T : ∀ c, Fin (l c) → Fin r0 → K)

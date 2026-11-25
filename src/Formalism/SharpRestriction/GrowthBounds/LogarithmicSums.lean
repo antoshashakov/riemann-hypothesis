@@ -69,8 +69,7 @@ private theorem eventually_adm_of_admFam {eps : ℝ} (Fm : FamP eps) {K : Consts
       ∀ i : Fm.Ix x, admitted (Fm.D x i) (Fm.L x i) (X x i) (Y x i) K ⟨C31, Ce, Cm, 1⟩ := by
   obtain ⟨x0, -, h⟩ := hA 1 one_pos
   refine ⟨max x0 (Fm.x1 + 1), fun x hx => ⟨?_, h x (le_trans (le_max_left _ _) hx)⟩⟩
-  have := le_trans (le_max_right _ _) hx
-  linarith
+  linarith [le_trans (le_max_right _ _) hx]
 
 theorem rest0 {eps : ℝ} (Fm : FamP eps) : FamilyAskBounds Fm := by
   intro K _ C31 Ce Cm _ _ _ X Y hA
@@ -131,8 +130,7 @@ theorem restT {eps : ℝ} (Fm : FamP eps) : RestT Fm := by
   exact G5.third_estimate_along_family Fm K hK C31 Ce Cm C hC X Y hA
 
 theorem restStar {eps : ℝ} (Fm : FamP eps) : RestStar Fm := by
-  intro K hK C31 Ce Cm hC31
-  exact St.star_fam Fm K hK C31 Ce Cm hC31
+  exact St.star_fam Fm
 
 theorem stmtEF {eps : ℝ} (Fm : FamP eps) : FamilyClosedForm Fm :=
   stmtEF_of Fm (rest0 Fm) (remainingCountingStatement_of_restStar Fm (restStar Fm)) (rest2 Fm) (restW Fm) (rest3 Fm) (restT Fm)

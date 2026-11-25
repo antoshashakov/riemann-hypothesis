@@ -189,8 +189,7 @@ theorem sandwichO (D : Formalism.BasicNotions.D7) {p n' : ℕ} (O : Type) [CommR
     apply hinj
     rw [← hz, sw_map_smul]
     rfl
-  rw [he]
-  exact hz0
+  simpa [he] using hz0
 
 section Set
 
@@ -227,9 +226,7 @@ theorem good_ring_of_setting (h : HidaSetting p n' W Qq O Kf ι σ j w) : Admiss
 
 theorem ellWt_nuOf (m : ℕ) (lam : Fin (m + 1) → ℤ) :
     ellWt (fun a => (nuOf lam a : ℤ)) = ellWt lam := by
-  have hl : lastIdx (m + 1) = Fin.last m := by
-    ext
-    simp [lastIdx]
+  have hl : lastIdx (m + 1) = Fin.last m := Fin.ext (by simp [lastIdx])
   simp [ellWt, nuOf, hl]
   omega
 

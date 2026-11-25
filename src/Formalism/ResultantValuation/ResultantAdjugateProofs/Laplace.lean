@@ -273,12 +273,9 @@ theorem image_glue (x : Σ _ : {J : Finset (Fin (a + b)) // J.card = a},
 theorem glue_injective : Function.Injective (glue (a := a) (b := b)) := by
   rintro ⟨⟨J, hJ⟩, σ, τ⟩ ⟨⟨J', hJ'⟩, σ', τ'⟩ heq
   have hJJ : J = J' := by
-    have h1 := image_glue (⟨⟨J, hJ⟩, σ, τ⟩ : Σ _ : {J : Finset (Fin (a + b)) // J.card = a},
-      Perm (Fin a) × Perm (Fin b))
-    have h2 := image_glue (⟨⟨J', hJ'⟩, σ', τ'⟩ : Σ _ : {J : Finset (Fin (a + b)) // J.card = a},
-      Perm (Fin a) × Perm (Fin b))
-    rw [heq] at h1
-    exact h1.symm.trans h2
+    simpa only [image_glue] using
+      congrArg (fun f : Perm (Fin (a + b)) =>
+        (Finset.univ.image fun i : Fin a => f (Fin.castAdd b i))) heq
   subst hJJ
   have hσ : σ = σ' := by
     refine Equiv.ext fun i => ?_

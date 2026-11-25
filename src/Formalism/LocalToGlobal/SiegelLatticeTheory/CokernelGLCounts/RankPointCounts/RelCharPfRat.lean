@@ -65,9 +65,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
 
 theorem lieN_map (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : FlagG S r T) (Y : S.V →ₗ[E] S.V)
     (h : (γ.symm.toLinearMap ∘ₗ Y ∘ₗ γ.toLinearMap) ∈ F.LieN) : Y ∈ (mapFlag γ hγ F).LieN := by
-  have hiso : ∀ x y, S.hT (γ x) (γ y) = S.hT x y := by
-    unfold HermitianLatticesTheory.isom at hγ
-    exact hγ
+  have hiso : ∀ x y, S.hT (γ x) (γ y) = S.hT x y := hγ
   have hXa : ∀ a, (mapFlag γ hγ F).Xa a = (F.Xa a).map γ.toLinearMap := by
     intro a
     unfold FlagG.Xa
@@ -144,9 +142,8 @@ theorem lieN_fvec_mem (F : FlagG S r T) {Z : S.V →ₗ[E] S.V} (hZ : Z ∈ F.Li
 
 theorem ell_eq_dual (F : FlagG S r T) (fd : Fin r → S.V) (hfd : ∀ a b, S.hT (fd a) (F.e b) = if b = a then 1 else 0)
     {Z : S.V →ₗ[E] S.V} (hZ : Z ∈ F.LieN) : F.ell Z = ∑ a, S.hT (fd a) (Z (F.fvec a.succ)) := by
-  unfold FlagG.ell
-  refine Finset.sum_congr rfl fun a _ => ?_
-  exact (hT_eq_coefX F (fd a) a (hfd a) (lieN_fvec_mem F hZ a)).symm
+  simpa [FlagG.ell] using Finset.sum_congr rfl fun a _ =>
+    (hT_eq_coefX F (fd a) a (hfd a) (lieN_fvec_mem F hZ a)).symm
 
 end Gen
 
@@ -255,9 +252,7 @@ theorem ell_coord (w : D.what₂.Word) (W : Matrix (Kap X) (Kap X) X.B.I.E) (Z :
   refine Finset.sum_congr rfl fun a _ => ?_
   have hM : (X.B.I.P v)⁻¹ * (Bm X * W * Bm' X).map (X.B.I.φ v) * X.B.I.P v =
       Bv X v * W.map (X.B.I.φ v) * Bv' X v := by
-    unfold Bv Bv'
-    rw [Matrix.map_mul, Matrix.map_mul]
-    simp only [Matrix.mul_assoc]
+    simp only [Bv, Bv', Matrix.map_mul, Matrix.mul_assoc]
   have hn : rv X.B.I v (X.crd (nxt X.eX (X.zu w) a)) =
       nxt (fun b => rv X.B.I v (X.eR b)) (rv X.B.I v (X.zR w)) a := by
     rw [nxt_map (fun y => rv X.B.I v (X.crd y))]; rfl

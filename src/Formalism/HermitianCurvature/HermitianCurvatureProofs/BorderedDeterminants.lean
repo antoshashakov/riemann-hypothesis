@@ -112,9 +112,7 @@ theorem qdet_sub {n : ℕ} (E : Fin (n + 1) → Fin (n + 1) → A) (u : ℂ) :
 
 theorem bS_id (n : ℕ) : bS (Fin.castSucc : Fin n → Fin (n + 1)) (Fin.last n) = id := by
   funext i
-  induction i using Fin.lastCases with
-  | last => simp [bS]
-  | cast j => simp [bS]
+  induction i using Fin.lastCases <;> simp [bS]
 
 theorem borderS' {n m : ℕ} (E : Fin n → Fin n → A) (es : Fin n) (v : Fin m → Fin n) (hE : GlRel E)
     (hvs : ∀ j, v j ≠ es) (u : ℂ) :

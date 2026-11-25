@@ -107,11 +107,9 @@ theorem cp_quot {k A : Type} [Field k] [Ring A] [Algebra k A] {V : Type} [AddCom
     [Module k V] [Module A V] [IsScalarTower k A V] [FiniteDimensional k V]
     (N : Submodule A V) (a : A) :
     cp k V a = cp k N a * cp k (V ⧸ N) a := by
-  have he : N.restrictScalars k ≤ (N.restrictScalars k).comap (Algebra.lsmul k k V a) :=
-    fun x hx => N.smul_mem a hx
   unfold cp
-  rw [charpoly_eq_restrict_mul_mapQ (N.restrictScalars k) _ he]
-  rfl
+  exact charpoly_eq_restrict_mul_mapQ (N.restrictScalars k) (Algebra.lsmul k k V a)
+    (fun x hx => N.smul_mem a hx)
 
 theorem charpoly_mem_closure_simple {k A : Type} [Field k] [Ring A] [Algebra k A] :
     ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module k V] [Module A V] [IsScalarTower k A V]

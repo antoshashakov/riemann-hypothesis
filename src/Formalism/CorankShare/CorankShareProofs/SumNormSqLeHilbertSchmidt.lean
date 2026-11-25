@@ -96,8 +96,7 @@ lemma hilbert_schmidt_eq_basis_sum {ι : Type*} [Fintype ι] (A : E →ₗ[ℂ] 
   classical
   unfold hs2
   rw [trace_eq_sum_inner_orthonormalBasis v, Complex.re_sum]
-  refine Finset.sum_congr rfl (fun m _ => ?_)
-  rw [LinearMap.comp_apply, LinearMap.adjoint_inner_right, re_inner_self_eq_norm_sq_corank_share]
+  simp only [LinearMap.comp_apply, LinearMap.adjoint_inner_right, re_inner_self_eq_norm_sq_corank_share]
 
 lemma sum_norm_sq_le_hilbert_schmidt {κ : Type*} [Fintype κ] (A : E →ₗ[ℂ] F) {g : κ → E} (hg : Orthonormal ℂ g) :
     ∑ l, ‖A (g l)‖ ^ 2 ≤ hs2 A := by
@@ -133,14 +132,11 @@ lemma fam_bound (c : ℝ) (B : E →ₗ[ℂ] F) {κ : Type*} [Fintype κ] {g : �
     (hg : Orthonormal ℂ g) :
     |c * ∑ l, ‖B (g l)‖ ^ 2 - Fintype.card κ|
       ≤ Real.sqrt (Fintype.card κ) * Real.sqrt (hs2 (frK c B - LinearMap.id)) := by
-  have h1 : ∀ l, (⟪g l, ((frK c B - LinearMap.id : E →ₗ[ℂ] E)) (g l)⟫_ℂ).re = c * ‖B (g l)‖ ^ 2 - 1 := by
-    intro l
+  have h2 : ∑ l, (⟪g l, ((frK c B - LinearMap.id : E →ₗ[ℂ] E)) (g l)⟫_ℂ).re = c * ∑ l, ‖B (g l)‖ ^ 2 - Fintype.card κ := by
     simp only [frK, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.id_apply,
       inner_sub_right, inner_smul_right, LinearMap.adjoint_inner_right, Complex.sub_re, Complex.re_ofReal_mul,
-      re_inner_self_eq_norm_sq_corank_share, hg.1 l]
-    norm_num
-  have h2 : ∑ l, (⟪g l, ((frK c B - LinearMap.id : E →ₗ[ℂ] E)) (g l)⟫_ℂ).re = c * ∑ l, ‖B (g l)‖ ^ 2 - Fintype.card κ := by
-    rw [Finset.sum_congr rfl (fun l _ => h1 l), Finset.sum_sub_distrib, Finset.mul_sum]
+      re_inner_self_eq_norm_sq_corank_share, hg.1]
+    rw [Finset.sum_sub_distrib, Finset.mul_sum]
     simp
   rw [← h2]
   exact sum_re_inner_bound _ hg
@@ -179,11 +175,10 @@ lemma tQ_eq (c : ι → ℝ) (B : ∀ i, V i →ₗ[ℂ] H) :
 lemma trace_frame_sq_eq_sum (c : ι → ℝ) (B : ∀ i, V i →ₗ[ℂ] H) :
     (trace ℂ H (frQ c B ∘ₗ frQ c B)).re = ∑ n, ‖frQ c B (stdOrthonormalBasis ℂ H n)‖ ^ 2 := by
   have hadj : frQ c B = adjoint (frQ c B) := by
-    rw [LinearMap.eq_adjoint_iff]; exact Q_symm c B
-  have h := hilbert_schmidt_eq_basis_sum (frQ c B) (stdOrthonormalBasis ℂ H)
-  unfold hs2 at h
-  rw [← hadj] at h
-  exact h
+    rw [LinearMap.eq_adjoint_iff]
+    exact Q_symm c B
+  simpa [hs2, hadj.symm] using
+    hilbert_schmidt_eq_basis_sum (frQ c B) (stdOrthonormalBasis ℂ H)
 
 end fam
 

@@ -66,17 +66,14 @@ theorem unitary_group_holds : UHGroup := by
   · show (1 : Matrix (Fin m) (Fin m) ℂ)ᴴ * H * 1 = H
     simp
   · intro g hg h' hh
-    have hg' : gᴴ * H * g = H := hg
-    have hh' : h'ᴴ * H * h' = H := hh
     show (g * h')ᴴ * H * (g * h') = H
     rw [Matrix.conjTranspose_mul]
     calc h'ᴴ * gᴴ * H * (g * h') = h'ᴴ * (gᴴ * H * g) * h' := by
           simp only [Matrix.mul_assoc]
-      _ = H := by rw [hg', hh']
+      _ = H := by rw [hg, hh]
   · intro g hg
-    have hg' : gᴴ * H * g = H := hg
     have hdet : IsUnit g.det := by
-      have e := congrArg Matrix.det hg'
+      have e := congrArg Matrix.det hg
       rw [Matrix.det_mul, Matrix.det_mul] at e
       rw [isUnit_iff_ne_zero] at hH ⊢
       intro h0
@@ -85,7 +82,7 @@ theorem unitary_group_holds : UHGroup := by
     refine ⟨hdet, ?_⟩
     show (g⁻¹)ᴴ * H * g⁻¹ = H
     have h1 : g * g⁻¹ = 1 := Matrix.mul_nonsing_inv g hdet
-    calc (g⁻¹)ᴴ * H * g⁻¹ = (g⁻¹)ᴴ * (gᴴ * H * g) * g⁻¹ := by rw [hg']
+    calc (g⁻¹)ᴴ * H * g⁻¹ = (g⁻¹)ᴴ * (gᴴ * H * g) * g⁻¹ := by rw [hg]
       _ = (g * g⁻¹)ᴴ * H * (g * g⁻¹) := by
           rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
       _ = H := by rw [h1]; simp
@@ -171,8 +168,7 @@ lemma eq_sig_iff (k r : ℕ) (i l : Fin (2 * r + k + 1)) : i = sig k r l ↔ l =
 lemma sig_inj (k r : ℕ) (i j : Fin (2 * r + k + 1)) : sig k r i = sig k r j ↔ i = j := by
   constructor
   · intro h
-    have e := congrArg (sig k r) h
-    rwa [sig_sig, sig_sig] at e
+    simpa only [sig_sig] using congrArg (sig k r) h
   · intro h
     rw [h]
 

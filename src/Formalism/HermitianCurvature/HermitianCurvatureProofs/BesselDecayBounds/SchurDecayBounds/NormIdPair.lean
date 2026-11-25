@@ -71,13 +71,10 @@ theorem hs_one {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp 
     intro b hb y y'
     have hbinv : b⁻¹ ∈ UWset k r z := hGr.2.2.1 b hb
     have h1 : b * b⁻¹ = 1 := (hGr.2.1 b hb.1).1
-    have h2 : π b (π b⁻¹ y') = y' := by
-      have h3 := hPi.2.1 b hb b⁻¹ hbinv
-      rw [h1, hPi.1] at h3
-      have h4 := congrArg (fun T : Wp →L[ℂ] Wp => T y') h3
-      simpa using h4.symm
-    calc ⟪π b y, y'⟫_ℂ = ⟪π b y, π b (π b⁻¹ y')⟫_ℂ := by rw [h2]
-      _ = ⟪y, π b⁻¹ y'⟫_ℂ := hiso b hb y _
+    have hadj' : ContinuousLinearMap.adjoint (π b) = π b⁻¹ :=
+      Cv.adjoint_eq_of_iso _ _ (hPi.2.2 b hb)
+        (by rw [← hPi.2.1 b hb b⁻¹ hbinv, h1, hPi.1])
+    rw [← hadj', ContinuousLinearMap.adjoint_inner_right]
   have hc : ∀ y y' : Wp, star ⟪y, y'⟫_ℂ = ⟪y', y⟫_ℂ := fun y y' => inner_conj_symm y' y
   have key : ∀ p : Mt k r × Mt k r, Matrix.of p.1 ∈ UWset k r z → Matrix.of p.2 ∈ Nset k r →
       Fx z c π μW μN σ u v ξ (sM p * x) = ⟪A ξ, beF z c π σ (σ x u) v p ξ⟫_ℂ := by
@@ -104,9 +101,8 @@ theorem hs_one {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp 
     exact key p hp.1 hp.2
   let L : (Wp →L[ℂ] Wp) →L[ℂ] ℂ := (innerSL ℂ (A ξ)).comp (ContinuousLinearMap.apply ℂ Wp ξ)
   have hL : ∀ T : Wp →L[ℂ] Wp, L T = ⟪A ξ, T ξ⟫_ℂ := fun T => by simp [L]
-  have hLint : Integrable (fun p => L (beF z c π σ (σ x u) v p)) (μW.prod μN) := L.integrable_comp hint
   have hint2 : Integrable (fun p => ⟪A ξ, beF z c π σ (σ x u) v p ξ⟫_ℂ) (μW.prod μN) := by
-    simpa only [hL] using hLint
+    simpa only [hL] using L.integrable_comp hint
   refine ⟨hint2.congr hae.symm, ?_⟩
   rw [integral_congr_ae hae]
   have hI : ∫ p, ⟪A ξ, beF z c π σ (σ x u) v p ξ⟫_ℂ ∂(μW.prod μN) = ⟪A ξ, A ξ⟫_ℂ := by

@@ -98,8 +98,7 @@ noncomputable def r4 (n : ℕ) : (ZMod (2 ^ (n + 2)))ˣ →* (ZMod (2 ^ 2))ˣ :=
 
 lemma five_unit_mod_four : u5 2 = 1 := by
   ext
-  rw [five_unit_coe_int, Units.val_one]
-  exact (intCast_five_zmod_two_pow_eq_one_iff 2).2 ⟨1, by norm_num⟩
+  simpa [five_unit_coe_int] using (intCast_five_zmod_two_pow_eq_one_iff 2).2 ⟨1, by norm_num⟩
 
 lemma mod_four_reduction_five (n : ℕ) : r4 n (u5 (n + 2)) = 1 := by rw [r4, unitsMap_five, five_unit_mod_four]
 
@@ -152,8 +151,7 @@ lemma card_units (s : ℕ) : Nat.card (ZMod (2 ^ (s + 2)))ˣ = 2 ^ (s + 1) := by
   norm_num
 
 lemma card_zp_neg (s : ℕ) : Nat.card (Subgroup.zpowers (-1 : (ZMod (2 ^ (s + 2)))ˣ)) = 2 := by
-  rw [Nat.card_zpowers]
-  exact orderOf_eq_prime neg_one_sq_units (neg_ne_one s)
+  rw [Nat.card_zpowers, orderOf_eq_prime neg_one_sq_units (neg_ne_one s)]
 
 lemma card_QQ (s : ℕ) : Nat.card (QQ s) = 2 ^ s := by
   have h := Subgroup.card_eq_card_quotient_mul_card_subgroup (Subgroup.zpowers (-1 : (ZMod (2 ^ (s + 2)))ˣ))
@@ -265,9 +263,7 @@ lemma mod_four_generator_eq_one (s m : ℕ) : r4 m (wgen s m) = 1 := by rw [wgen
 
 lemma um_w {s m : ℕ} (h : s ≤ m) :
     ZMod.unitsMap (pow_dvd_pow 2 (by omega : s + 2 ≤ m + 2)) (wgen s m) = 1 := by
-  rw [wgen, map_pow, unitsMap_five]
-  have h1 := pow_orderOf_eq_one (u5 (s + 2))
-  rwa [ord5] at h1
+  rw [wgen, map_pow, unitsMap_five, ← ord5 s, pow_orderOf_eq_one]
 
 noncomputable def psi {s m : ℕ} (h : s ≤ m) :
     ℤˣ × Multiplicative (ZMod (2 ^ (m - s))) →* GalL (m + 2) :=

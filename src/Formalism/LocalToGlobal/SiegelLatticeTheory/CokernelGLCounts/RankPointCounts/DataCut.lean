@@ -657,10 +657,8 @@ theorem rowVec_eq_chat (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermD
 
 theorem massTerm_nonneg (t : TermDef.Term D u u' F0 what₂) : 0 ≤ PairVal.massTerm t := by
   unfold PairVal.massTerm PairVal.massRow
-  apply div_nonneg
-  · unfold Formalism.MainNotions.S.wRow; positivity
-  · unfold Formalism.MainNotions.S.Cnt.massRows
-    exact Finset.sum_nonneg fun _ _ => by unfold Formalism.MainNotions.S.wRow; positivity
+  exact div_nonneg (by unfold Formalism.MainNotions.S.wRow; positivity)
+    (Finset.sum_nonneg fun _ _ => by unfold Formalism.MainNotions.S.wRow; positivity)
 
 theorem lam_eq_of_termScal {t t' : TermDef.Term D u u' F0 what₂} (h : Corank.TermScal D t t') : t.lam = t'.lam := by
   obtain ⟨p, rfl, rfl, -⟩ := h

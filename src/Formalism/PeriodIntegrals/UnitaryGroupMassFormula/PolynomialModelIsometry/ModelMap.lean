@@ -74,8 +74,7 @@ lemma poly_ext {N : ℕ} {p q : MvPolynomial (Fin N × Fin N) ℂ}
     (h : ∀ A : Matrix (Fin N) (Fin N) ℂ, evM A p = evM A q) : p = q := by
   apply MvPolynomial.funext
   intro x
-  have := h (Matrix.of fun i j => x (i, j))
-  simpa [evM] using this
+  simpa [evM] using h (Matrix.of fun i j => x (i, j))
 
 lemma evM_add {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (p q : MvPolynomial (Fin N × Fin N) ℂ) :
     evM A (p + q) = evM A p + evM A q := by simp [evM]
@@ -186,9 +185,7 @@ def Fq (x : V) : MvPolynomial (Fin N × Fin N) ℂ :=
   rename Prod.swap (Classical.choose (hP.poly x v0))
 
 lemma evM_Fq (x : V) (A : Matrix (Fin N) (Fin N) ℂ) : evM A (Fq hP v0 x) = ⟪v0, P Aᵀ x⟫_ℂ := by
-  unfold Fq
-  rw [evM_rename_swap]
-  exact Classical.choose_spec (hP.poly x v0) Aᵀ
+  simpa [Fq, evM_rename_swap] using Classical.choose_spec (hP.poly x v0) Aᵀ
 
 def Fl : V →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ where
   toFun := Fq hP v0

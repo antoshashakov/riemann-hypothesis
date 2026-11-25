@@ -88,11 +88,9 @@ theorem szEatI_fam {eps : ℝ} (Fm : FamP eps) : ∃ C : ℝ, 0 ≤ C ∧ ∃ x0
 
 theorem one_le_Xpp {D : D7} (L : SizeData₂ D) (h : SizesAt L) (hm : 1 ≤ D.R.m) : 1 ≤ L.sc.X'' D.R.n := by
   obtain ⟨τ⟩ := S.Inh.tau_index_set_nonempty D
-  have hX : SizeXpp L := h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
   have hw : L.sc.w'' D.R.n ≤ wj D 1 τ := S.wj_ge L τ 1 le_rfl hm
-  have hpos : 0 < wj D 1 τ := lt_of_lt_of_le (S.w''_pos L) hw
-  have hr := hX 1 τ 1 τ le_rfl hm le_rfl hm
-  nlinarith
+  have hr := h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 1 τ 1 τ le_rfl hm le_rfl hm
+  nlinarith [S.w''_pos L, hw, hr]
 
 theorem admissible_size_family {eps : ℝ} (Fm : FamP eps) (hD : DGamSize Fm) : ∃ C : ℝ, 0 ≤ C ∧ ∃ x0 : ℝ, ∀ x ≥ x0,
     ∀ (_ : Fm.x1 < x) (i : Fm.Ix x), WeilJacquetShalikaLaw.TypePrimeSizeConds (Fm.D x i) (Fm.L x i) Fm.GK Fm.cX.err C := by
@@ -108,9 +106,8 @@ theorem admissible_size_family {eps : ℝ} (Fm : FamP eps) (hD : DGamSize Fm) : 
     omega
   have hlog : 0 ≤ Real.log ((Fm.L x i).sc.X'' (Fm.D x i).R.n) := Real.log_nonneg (one_le_Xpp (Fm.L x i) (Fm.sizes x h1 i) hm)
   have hb : 0 < (Fm.L x i).sc.b := by unfold Scale.b; positivity
-  have hf : (0 : ℝ) ≤ ((Fm.D x i).R.f : ℝ) := Nat.cast_nonneg _
   have hnn : 0 ≤ ((Fm.D x i).R.f : ℝ) * (Fm.L x i).sc.b * Real.log ((Fm.L x i).sc.X'' (Fm.D x i).R.n) :=
-    mul_nonneg (mul_nonneg hf hb.le) hlog
+    mul_nonneg (mul_nonneg (Nat.cast_nonneg _) hb.le) hlog
   refine (he x ee h1 i j hj S hS).trans ?_
   calc Ce * ((Fm.D x i).R.f : ℝ) * (Fm.L x i).sc.b * Real.log ((Fm.L x i).sc.X'' (Fm.D x i).R.n)
       = Ce * (((Fm.D x i).R.f : ℝ) * (Fm.L x i).sc.b * Real.log ((Fm.L x i).sc.X'' (Fm.D x i).R.n)) := by ring

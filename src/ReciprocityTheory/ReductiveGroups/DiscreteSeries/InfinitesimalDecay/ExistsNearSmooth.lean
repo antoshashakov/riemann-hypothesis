@@ -61,10 +61,8 @@ theorem exists_near_smooth {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.K
         nuJ (sigLam ε Ψ v₀) Ws (u - ⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩) < e := by
   obtain ⟨x, hxK, hxe⟩ := exists_kfin_near hlam hgap hP hv₀ Ws hWs u hu he
   obtain ⟨y, hy, hyx⟩ := kfin_mem_genSub hlam hgap hP hv₀ x hxK
-  have hyH : ((y : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀ := by rw [hyx]; exact x.2
-  refine ⟨y, hy, hyH, ?_⟩
+  have hyH : ((y : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀ := hyx.symm ▸ x.2
   have hxy : (⟨((y : smD ε (rreg ε)) : L2 ε), hyH⟩ : Hlam ε Ψ v₀) = x := Subtype.ext hyx
-  rw [hxy]
-  exact hxe
+  exact ⟨y, hy, hyH, hxy.symm ▸ hxe⟩
 
 end ReciprocityTheory.ChartRestriction.DS.DecInf

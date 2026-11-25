@@ -62,14 +62,12 @@ theorem cn_front {j : ℕ} {l : List (Fin n × Fin n)} (h : NO n j l) (a b : Fin
   cases lF with
   | nil =>
     exfalso
-    have hA := hNO.2.2.1 a b (by omega) (by omega)
-    exact hG _ (by simpa using hA) ha
+    exact hG _ (by simpa using hNO.2.2.1 a b (by omega) (by omega)) ha
   | cons f lF' =>
     obtain ⟨a', d⟩ := f
     have ha' : a'.val = j := hF (a', d) List.mem_cons_self
     obtain rfl : a' = a := Fin.ext (by omega)
-    have hd := (hNO.2.1 (a', d) (by simp)).2
-    simp only at hd
+    have hd : a'.val < d.val := (hNO.2.1 (a', d) (by simp)).2
     have hdb : d = b := by
       by_contra hne
       have hne' : d.val ≠ b.val := fun h' => hne (Fin.ext h')
@@ -126,10 +124,8 @@ theorem cn_iter {ord : List (Fin n × Fin n)} (h : NO n 0 ord) :
   | succ j ih =>
     obtain ⟨l', R, hs, hno⟩ := ih
     obtain ⟨l'', R', hs', hno'⟩ := cn_back hno
-    refine ⟨l'', R' ++ R, ?_, hno'⟩
-    have h2 := cn_steps_tail hs' R
-    rw [List.append_assoc] at h2
-    exact hs.trans h2
+    exact ⟨l'', R' ++ R,
+      hs.trans (by simpa [List.append_assoc] using cn_steps_tail hs' R), hno'⟩
 
 theorem restConn : RestConn := by
   intro n ord hord a b hab

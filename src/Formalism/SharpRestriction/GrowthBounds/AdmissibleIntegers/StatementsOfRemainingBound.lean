@@ -198,9 +198,7 @@ theorem totS_eq (u : D.what₂.Word) (w : D.what₂.places.Pl) :
     totS X K Xe ce sp u w =
       (∑ j ∈ SizeData₂.lifts D, gainS X K (D.what₂.places.resChar w) j) + lowS L Xe K ce sp u w := by
   unfold totS lowS
-  have h : ∀ j ∈ SizeData₂.lifts D, gainS X K (D.what₂.places.resChar w) j + L.F j w - ES L Xe K ce u j w =
-      gainS X K (D.what₂.places.resChar w) j + (L.F j w - ES L Xe K ce u j w) := fun j _ => by ring
-  rw [Finset.sum_congr rfl h, Finset.sum_add_distrib]
+  simp only [sub_eq_add_neg, Finset.sum_add_distrib]
   ring
 
 theorem baseChange_preserves_unitary_of (W : TwLoc D Y) (hV : CmpV c Dx T W) (hG : TupleLatticeValuation D L X Y K Dx W lev Xe ce sp)

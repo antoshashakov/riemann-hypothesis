@@ -98,11 +98,7 @@ lemma al_o (l : Fin r) (c : ℂ) {p : Fin (2 * r + k + 1)} (h1 : p ≠ eI k r l)
 
 lemma trich (l : Fin r) (p : Fin (2 * r + k + 1)) :
     p = eI k r l ∨ p = esI k r l ∨ (p ≠ eI k r l ∧ p ≠ esI k r l) := by
-  by_cases h1 : p = eI k r l
-  · exact Or.inl h1
-  · by_cases h2 : p = esI k r l
-    · exact Or.inr (Or.inl h2)
-    · exact Or.inr (Or.inr ⟨h1, h2⟩)
+  by_cases h1 : p = eI k r l <;> by_cases h2 : p = esI k r l <;> simp [h1, h2]
 
 lemma sw_sw (l : Fin r) (p : Fin (2 * r + k + 1)) : sw l (sw l p) = p := by
   rcases trich l p with h | h | ⟨h1, h2⟩
@@ -124,8 +120,7 @@ lemma reflection_row_formula (l : Fin r) (c : ℂ) (p i : Fin (2 * r + k + 1)) :
   rw [weyl_lift_eq_pair]
   by_cases h : i = sw l p
   · subst h
-    rw [sw_sw]
-    simp
+    simp [sw_sw]
   · have h' : p ≠ sw l i := fun h' => h (by rw [h', sw_sw])
     simp [h, h']
 

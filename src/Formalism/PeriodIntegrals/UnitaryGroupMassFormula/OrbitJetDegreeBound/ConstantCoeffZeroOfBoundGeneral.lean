@@ -66,8 +66,7 @@ theorem applyAt0_congr (T T' : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (
 
 theorem applyAt0_zero_left (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l (0 : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) P = 0 := by
-  unfold applyAt0
-  simp
+  simp [OJ.applyAt0]
 
 theorem applyAt0_add_left (T T' : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l (T + T') P = applyAt0 N0 N1 l T P + applyAt0 N0 N1 l T' P := by
@@ -90,11 +89,9 @@ theorem applyAt0_sum_left {ι : Type*} (S : Finset ι) (c : ι → ℂ_[l]) (T :
     (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l (∑ i ∈ S, c i • T i) P = ∑ i ∈ S, c i • applyAt0 N0 N1 l (T i) P := by
   induction S using Finset.induction_on with
-  | empty =>
-    simp only [Finset.sum_empty]
-    exact applyAt0_zero_left P
+  | empty => simpa using applyAt0_zero_left P
   | insert a S ha ih =>
-    rw [Finset.sum_insert ha, Finset.sum_insert ha, applyAt0_add_left, applyAt0_smul_left, ih]
+    simp [Finset.sum_insert ha, applyAt0_add_left, applyAt0_smul_left, ih]
 
 end Lin
 

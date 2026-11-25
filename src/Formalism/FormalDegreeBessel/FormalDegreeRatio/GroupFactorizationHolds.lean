@@ -112,11 +112,9 @@ theorem Sset_UH {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s ∈ Sset k r z) :
     sᴴ * Hpk k r * s = Hpk k r := by
   obtain ⟨h, hh, m, hm, rfl⟩ := hs
-  have h1 : hᴴ * Hpk k r * h = Hpk k r := hh.1
-  have h2 : mᴴ * Hpk k r * m = Hpk k r := hm.1
   rw [conjTranspose_mul]
   calc mᴴ * hᴴ * Hpk k r * (h * m) = mᴴ * (hᴴ * Hpk k r * h) * m := by simp only [Matrix.mul_assoc]
-    _ = Hpk k r := by rw [h1, h2]
+    _ = Hpk k r := by rw [hh.1, hm.1]
 
 theorem UW_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z) :
@@ -252,9 +250,6 @@ theorem diagonal_inverse_holds : DInv := by
   have hH : sᴴ * Hpk k r * s = Hpk k r := Sset_UH hs
   have hFs : (Fm k r z)ᴴ * sᴴ = Uᴴ * (Fm k r z)ᴴ := by
     rw [← conjTranspose_mul, hsF, conjTranspose_mul]
-  have hL0 : ∀ i j : Fin (r + 1), i < j → Uᴴ i j = 0 := fun i j hij => by
-    simp [conjTranspose_apply, hU0 j i hij]
-  have hL1 : ∀ i, Uᴴ i i = 1 := fun i => by simp [conjTranspose_apply, hU1 i]
   have hmul : Uᴴ * Zhat k r z z' (s * g * s') = Zhat k r z z' g * U' := by
     rw [Zhat_eq, Zhat_eq]
     calc Uᴴ * ((Fm k r z)ᴴ * Hpk k r * (s * g * s') * Fm k r z')
@@ -266,7 +261,8 @@ theorem diagonal_inverse_holds : DInv := by
       _ = (Fm k r z)ᴴ * Hpk k r * g * Fm k r z' * U' := by
           rw [hH, hsF']
           simp only [Matrix.mul_assoc]
-  exact minor_eq_of_mul Uᴴ U' _ _ hL0 hL1 hU0' hU1' hmul l.val _
+  exact minor_eq_of_mul Uᴴ U' _ _ (fun i j hij => by simp [conjTranspose_apply, hU0 j i hij])
+    (fun i => by simp [conjTranspose_apply, hU1 i]) hU0' hU1' hmul l.val _
 
 theorem group_inverse_holds : GInv := by
   intro k r z z' hz hz' s hs s' hs' g

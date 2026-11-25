@@ -323,8 +323,7 @@ def psiR (g : Mx k r) : Fin r → ℝ := fun a => (mof g a a).im
 
 theorem lowId_cA (x : CI k r → ℂ) : LowId (cA x) := by
   intro a b hba
-  simp only [cA]
-  rw [dif_neg (not_lt.mpr hba)]
+  simp only [cA, dif_neg (not_lt.mpr hba)]
 
 theorem det_of_lowId {A : Matrix (Fin r) (Fin r) ℂ} (hA : LowId A) : A.det = 1 := by
   have ht : A.BlockTriangular id := fun i j hij => by
@@ -343,10 +342,8 @@ theorem cA_cF (x : CI k r → ℂ) : (cA x)ᴴ * cF x = 1 := by
     Matrix.conjTranspose_one]
 
 theorem nilpotent_chart_matrix_eq (x : CI k r → ℂ) (s : Fin r → ℝ) : mof (phi0 x s) = cM x s := by
-  unfold mof phi0
-  rw [bF_mk, bC_mk]
-  unfold cC
-  rw [← Matrix.mul_assoc, cF_cA, Matrix.one_mul]
+  unfold mof phi0 cC
+  rw [bF_mk, bC_mk, ← Matrix.mul_assoc, cF_cA, Matrix.one_mul]
 
 theorem test_vector_mem_schwartz_bruhat (x : CI k r → ℂ) (s : Fin r → ℝ) : phi0 x s ∈ Nset k r := by
   have hD : (dD k)ᴴ = dD k := by
@@ -447,7 +444,6 @@ theorem cA_psi {g : Mx k r} (hc : ColB g) : cA (psiC g) = bA g := by
     exact (hc.aa a b (not_lt.mp h)).symm
 
 theorem cB_psi (g : Mx k r) : cB (psiC g) = bB g := by
-  ext a j
   rfl
 
 theorem adj_eq {g : Mx k r} (hc : ColB g) (hu : g ∈ UH (Hpk k r)) : (bA g).adjugate = (bF g)ᴴ := by

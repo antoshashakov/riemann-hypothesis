@@ -50,8 +50,7 @@ open Formalism.BasicNotions Formalism.MainNotions.G
 
 theorem eTau_tauPl (D : D7) (z : Bool × HH D) :
     (D.eTau (tauPl D z) : D.R.GG) = plGG D z := by
-  unfold Formalism.BasicNotions.tauPl
-  simp
+  simp [Formalism.BasicNotions.tauPl]
 
 theorem ramifiedTau1_ne_ramifiedTau2 (φ : Formalism.HC.Frame) (a b : φ.A) : φ.tau1 a ≠ φ.tau2 b := by
   intro h
@@ -61,8 +60,7 @@ theorem ramifiedTau1_ne_ramifiedTau2 (φ : Formalism.HC.Frame) (a b : φ.A) : φ
   decide
 
 theorem tau1_injective_alt (φ : Formalism.HC.Frame) {a b : φ.A} (h : φ.tau1 a = φ.tau1 b) : a = b := by
-  simp only [Formalism.HC.Frame.tau1, Prod.mk.injEq, true_and] at h
-  simpa [Formalism.HC.Frame.iota] using h
+  simpa [Formalism.HC.Frame.tau1, Formalism.HC.Frame.iota] using h
 
 theorem placeFacts : PlaceFacts := by
   intro D

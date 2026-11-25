@@ -88,14 +88,12 @@ theorem growth_group_bound : Formalism.FourierDecayAlt.ThreeDimData.GrowthG := b
     have h1 := Formalism.FourierDecayAlt.P.norm_power_integrable_sharp 0 0 μG 1 hG' (by simp [Formalism.FourierDecayAlt.B.AB])
     have hI := integrable_gN_rpow_of_lintegral_lt_top h1
     refine hI.congr ?_
-    have hconc : μG {x : Mt 0 0 | Matrix.of x ∉ UH (Hpk 0 0)} = 0 := hG.2.2.1
     rw [Filter.EventuallyEq, ae_iff]
-    refine measure_mono_null (fun x hx => ?_) hconc
+    refine measure_mono_null (fun x hx => ?_) hG.2.2.1
     intro hxG
-    apply hx
-    show Formalism.FourierDecayAlt.B.gN (k := 0) (r := 0) (Matrix.of x) ^ (-(1:ℝ)) =
-      Formalism.FourierDecayAlt.B.gN (k := 0) (r := 0) (Matrix.of x) ^ (-A)
-    rw [gN_eq_one_of_zero_dim (Matrix.of x : Formalism.FourierDecayAlt.B.Mat 0 0) hxG, Real.one_rpow, Real.one_rpow]
+    exact hx (by
+      rw [gN_eq_one_of_zero_dim (Matrix.of x : Formalism.FourierDecayAlt.B.Mat 0 0) hxG,
+        Real.one_rpow, Real.one_rpow])
   · have hAB : Formalism.FourierDecayAlt.B.AB k r ≤ A := by
       have hkr : (1 : ℝ) ≤ (k : ℝ) + r := by exact_mod_cast hpos
       simp only [Formalism.FourierDecayAlt.B.AB, Formalism.FourierDecayAlt.ThreeDimData.AG] at hA ⊢

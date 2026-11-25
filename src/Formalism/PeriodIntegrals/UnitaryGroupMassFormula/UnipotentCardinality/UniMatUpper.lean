@@ -63,8 +63,7 @@ theorem uniMat_upper (f : Pairs k → F) : (uniMat f).IsUpperTriangular := by
   simp [uniMat, ne_of_gt hji, not_lt.mpr hji.le]
 
 theorem uniMat_det (f : Pairs k → F) : (uniMat f).det = 1 := by
-  rw [Matrix.det_of_upperTriangular (uniMat_upper f)]
-  simp [uniMat]
+  simpa [uniMat] using Matrix.det_of_upperTriangular (uniMat_upper f)
 
 noncomputable def uniGL (f : Pairs k → F) : GL (Fin k) F :=
   GeneralLinearGroup.mkOfDetNeZero (uniMat f) (by rw [uniMat_det]; exact one_ne_zero)
@@ -73,9 +72,8 @@ theorem uniGL_coe (f : Pairs k → F) : ((uniGL f : GL (Fin k) F) : Matrix (Fin 
 
 theorem isUni_uniGL (f : Pairs k → F) : IsUni k (uniGL f) := by
   unfold IsUni
-  refine ⟨fun i => ?_, fun i j h => ?_⟩
-  · simp [uniGL_coe, uniMat]
-  · simp [uniGL_coe, uniMat, ne_of_gt h, not_lt.mpr h.le]
+  exact ⟨fun i => by simp [uniGL_coe, uniMat],
+    fun i j h => by simp [uniGL_coe, uniMat, ne_of_gt h, not_lt.mpr h.le]⟩
 
 noncomputable def uniEquiv : {x : GL (Fin k) F // IsUni k x} ≃ (Pairs k → F) where
   toFun x p := (x.1 : Matrix (Fin k) (Fin k) F) p.1.1 p.1.2
@@ -105,8 +103,7 @@ theorem card_pairs (k : ℕ) : Fintype.card (Pairs k) = k * (k - 1) / 2 := by
     exact Fin.card_Iio j
   rw [Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type_right]
   simp only [hI]
-  have h3 : ∑ j : Fin k, (j : ℕ) = ∑ j ∈ Finset.range k, j := Fin.sum_univ_eq_sum_range (fun i => i) k
-  rw [h3, Finset.sum_range_id]
+  rw [Fin.sum_univ_eq_sum_range (fun i => i) k, Finset.sum_range_id]
 
 theorem cardUni : CardUni := by
   intro F _ _ k

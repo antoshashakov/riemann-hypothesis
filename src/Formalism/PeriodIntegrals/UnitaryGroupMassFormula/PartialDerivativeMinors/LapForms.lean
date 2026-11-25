@@ -119,9 +119,7 @@ lemma nonzeroCount_add_zeroCount (L : List (ℕ × Fin N1)) : nzc L + z0c L = L.
 lemma dRow_apply (t : H) (r : ℕ) (b : Fin N1) (P : PolyXZ H N0 N1) :
     dRow (N0 := N0) t r b P =
       ∑ a : Fin N0, X (Sum.inl ((false, t), r, a)) * pderiv (Sum.inr ((true, t), a, b)) P := by
-  unfold dRow
-  rw [der_sum_apply]
-  simp only [Derivation.smul_apply, smul_eq_mul]
+  simp [dRow, der_sum_apply, Derivation.smul_apply, smul_eq_mul]
 
 lemma lap_apply (t : H) (P : PolyXZ H N0 N1) :
     lapT N0 N1 t P = ∑ a : Fin N0, ∑ b : Fin N1,
@@ -349,9 +347,7 @@ lemma ms_prod (t : H) {ι : Type} (s : Finset ι) (f : ι → PolyXZ H N0 N1) (a
   classical
   induction s using Finset.induction_on with
   | empty =>
-    simp only [Finset.prod_empty, Finset.sum_empty]
-    apply Submodule.subset_span
-    exact ⟨[], by simp [tmL], by simp [nzc], by simp [z0c]⟩
+    exact Submodule.subset_span ⟨[], by simp [tmL, nzc, z0c]⟩
   | insert i s hi ih =>
     rw [Finset.prod_insert hi, Finset.sum_insert hi, Finset.sum_insert hi]
     exact ms_mul t (h i (Finset.mem_insert_self i s)) (ih (fun j hj => h j (Finset.mem_insert_of_mem hj)))
@@ -386,8 +382,7 @@ lemma minor_mem (t : H) (p : ℕ) (hp : 0 < p) (I : Fin p ↪o Fin N1) :
     omega
 
 lemma colLen_pos (α : YoungDiagram) (c : Fin (α.rowLen 0)) : 0 < α.colLen c := by
-  rw [← YoungDiagram.mem_iff_lt_colLen]
-  exact YoungDiagram.mem_iff_lt_rowLen.mpr c.2
+  exact YoungDiagram.mem_iff_lt_colLen.mp (YoungDiagram.mem_iff_lt_rowLen.mpr c.2)
 
 lemma sum_colLen_le (α : YoungDiagram) : ∑ c : Fin (α.rowLen 0), α.colLen c ≤ α.cells.card := by
   have e : ∑ c : Fin (α.rowLen 0), α.colLen c =

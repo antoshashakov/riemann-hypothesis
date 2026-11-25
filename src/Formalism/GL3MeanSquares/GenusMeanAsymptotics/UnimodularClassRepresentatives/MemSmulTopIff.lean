@@ -87,12 +87,8 @@ theorem mem_smul_top_iff (A : Submodule (𝓞 K) V) (I : Ideal (𝓞 K)) (w : �
     w ∈ (I • ⊤ : Submodule (𝓞 K) ↥A) ↔ (w : V) ∈ (I • A : Submodule (𝓞 K) V) := by
   have e : (I • ⊤ : Submodule (𝓞 K) ↥A).map A.subtype = I • A := by
     rw [Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype]
-  rw [← e]
-  constructor
-  · intro hw
-    exact Submodule.mem_map_of_mem hw
-  · rintro ⟨w', hw', e'⟩
-    rwa [← Subtype.ext (a1 := w') (a2 := w) e']
+  rw [← e, Submodule.mem_map]
+  exact ⟨fun hw => ⟨w, hw, rfl⟩, fun ⟨w', hw', h⟩ => by rwa [← Subtype.ext h]⟩
 
 end DA
 
@@ -136,7 +132,6 @@ theorem quot_eq_iff {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V
       (b : V ≃ₗ[K] V) x - (a : V ≃ₗ[K] V) x ∈ ((extP K 𝔭) ^ J • A : Submodule (𝓞 K) V) := by
   rw [QuotientGroup.eq, Subgroup.mem_subgroupOf, mem_stabB]
   have ha := hD a.2
-  have hb := hD b.2
   have e1 : ((a⁻¹ * b : ↥D) : V ≃ₗ[K] V) x - x =
       (a : V ≃ₗ[K] V)⁻¹ ((b : V ≃ₗ[K] V) x - (a : V ≃ₗ[K] V) x) := by
     rw [map_sub, ← LinearEquiv.mul_apply, ← LinearEquiv.mul_apply, inv_mul_cancel,

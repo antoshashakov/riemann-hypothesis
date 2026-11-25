@@ -127,10 +127,8 @@ theorem norm_sq_sum_orth {ι : Type*} [DecidableEq ι] (s : Finset ι) (x : ι �
     rw [inner_sum]
     exact Finset.sum_eq_zero fun i hi => h a (Finset.mem_insert_self _ _) i (Finset.mem_insert_of_mem hi)
       (fun e => ha (by rw [e]; exact hi))
-  have h2 := norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ h0
   rw [← ih (fun i hi j hj => h i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj))]
-  simp only [sq]
-  exact h2
+  simpa only [sq] using norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ h0
 
 end Orth
 

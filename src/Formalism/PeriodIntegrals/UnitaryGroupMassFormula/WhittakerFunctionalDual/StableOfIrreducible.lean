@@ -128,15 +128,12 @@ theorem whit_mem {F : Type} [Field F] [Fintype F] {k : ℕ} (ψ₀ : AddChar F �
 
 theorem whitFunctDual_main : PI.WhitFunctDual := by
   intro hGG F _ _ k ψ₀ hψ V _ _ _ π hπ ℓ₁ ℓ₂ h1 h2 hne
-  have hψ' : ψ₀⁻¹ ≠ 1 := inv_ne_one.mpr hψ
-  have hirr := isIrr_dual π hπ
-  have hdim := hGG F (Module.Dual ℂ V) k ψ₀⁻¹ (Representation.dual π) hψ' hirr
-  have m1 : ℓ₁ ∈ Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.besselSpace (Representation.dual π) ψ₀⁻¹ 0 0 := whit_mem ψ₀ π ℓ₁ h1
-  have m2 : ℓ₂ ∈ Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.besselSpace (Representation.dual π) ψ₀⁻¹ 0 0 := whit_mem ψ₀ π ℓ₂ h2
-  have hne' : (⟨ℓ₁, m1⟩ : Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.besselSpace (Representation.dual π) ψ₀⁻¹ 0 0) ≠ 0 :=
-    fun h0 => hne (congrArg Subtype.val h0)
-  have hpos : 0 < Module.finrank ℂ (Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.besselSpace (Representation.dual π) ψ₀⁻¹ 0 0) :=
-    Module.finrank_pos_iff_exists_ne_zero.mpr ⟨_, hne'⟩
+  let B : Submodule ℂ (Module.Dual ℂ V) := Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.besselSpace (Representation.dual π) ψ₀⁻¹ 0 0
+  have hdim : Module.finrank ℂ B ≤ 1 := hGG F (Module.Dual ℂ V) k ψ₀⁻¹ (Representation.dual π) (inv_ne_one.mpr hψ) (isIrr_dual π hπ)
+  have m1 : ℓ₁ ∈ B := whit_mem ψ₀ π ℓ₁ h1
+  have m2 : ℓ₂ ∈ B := whit_mem ψ₀ π ℓ₂ h2
+  have hne' : (⟨ℓ₁, m1⟩ : B) ≠ 0 := fun h0 => hne (congrArg Subtype.val h0)
+  have hpos : 0 < Module.finrank ℂ B := Module.finrank_pos_iff_exists_ne_zero.mpr ⟨_, hne'⟩
   obtain ⟨c, hc⟩ := (finrank_eq_one_iff_of_nonzero' _ hne').mp (le_antisymm hdim hpos) ⟨ℓ₂, m2⟩
   exact ⟨c, (congrArg Subtype.val hc).symm⟩
 

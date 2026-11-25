@@ -132,12 +132,10 @@ theorem adK_RZ (hD : IsOpen D) {Z : Mx k r} (h1 : inLieLev k r (Fin.last r) (hpa
 
 private theorem mul_mem_uh {n : Type*} [Fintype n] [DecidableEq n] {H a b : Matrix n n ℂ}
     (ha : a ∈ UH H) (hb : b ∈ UH H) : a * b ∈ UH H := by
-  have ha' : aᴴ * H * a = H := ha
-  have hb' : bᴴ * H * b = H := hb
   show (a * b)ᴴ * H * (a * b) = H
   rw [Matrix.conjTranspose_mul]
   calc bᴴ * aᴴ * H * (a * b) = bᴴ * (aᴴ * H * a) * b := by simp only [Matrix.mul_assoc]
-    _ = H := by rw [ha', hb']
+    _ = H := by rw [show aᴴ * H * a = H from ha, show bᴴ * H * b = H from hb]
 
 theorem ad_rd_point {F : Mx k r → (Wq →L[ℂ] Wp)} (hF : F ∈ AdK k r z π D) {g : Mx k r}
     (hg : g ∈ Glev k r (Fin.last r) ∩ D) (hgi : g⁻¹ * g = 1) (hgi' : g * g⁻¹ = 1) (hgU : IsUnit g)
@@ -283,9 +281,7 @@ theorem left_ad (hz : inWb k r z) (hz' : inWb k r z') (hD : IsDom k r z z' (Fin.
     refine ⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩ <;> simp [UH]
   have hJ' : J ∈ AdK k r z π D := by
     refine ⟨hJ.1, fun x hx h hh => ?_⟩
-    have e := hJ.2.2.2 x hx h hh 1 h1W
-    rw [mul_one, hπ'1] at e
-    simpa [ContinuousLinearMap.one_def] using e
+    simpa [ContinuousLinearMap.one_def, mul_one, hπ'1] using hJ.2.2.2 x hx h hh 1 h1W
   unfold capR capRep qmF
   simp only [Finset.sum_apply, ContinuousLinearMap.sum_apply, Pi.smul_apply,
     ContinuousLinearMap.smul_apply]

@@ -90,12 +90,8 @@ theorem hco_sub_right (c d d' : Co r) : hco T' c (d - d') = hco T' c d - hco T' 
   ring
 
 theorem hco_smul_left (x : ℂ) (c d : Co r) : hco T' (x • c) d = x * hco T' c d := by
-  simp only [hco, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]
-  have e1 : ∑ a, x * c.1 a * conj (d.2.1 a) = x * ∑ a, c.1 a * conj (d.2.1 a) := by
-    rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring
-  have e2 : ∑ a, x * c.2.1 a * conj (d.1 a) = x * ∑ a, c.2.1 a * conj (d.1 a) := by
-    rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring
-  rw [e1, e2]
+  simp only [hco, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, mul_add, mul_sub,
+    Finset.mul_sum, mul_assoc]
   ring
 
 theorem hco_smul_right (x : ℂ) (c d : Co r) : hco T' c (x • d) = conj x * hco T' c d := by

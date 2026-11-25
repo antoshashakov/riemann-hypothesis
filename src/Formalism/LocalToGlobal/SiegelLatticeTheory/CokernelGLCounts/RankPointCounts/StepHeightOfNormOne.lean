@@ -149,12 +149,9 @@ theorem sizes_of_hypotheses : StepSizes := by
   have hkCl : (D.R.k : ℝ) ^ (2 : ℝ) ≤ (D.R.k : ℝ) ^ Cl :=
     Real.rpow_le_rpow_of_exponent_le (by linarith) hCl
   have hb256 : (256 : ℝ) ≤ large₂.sc.b ^ 2 := by
-    have e1 : (D.R.k : ℝ) ^ (2 : ℝ) = (D.R.k : ℝ) ^ 2 := Real.rpow_two _
-    have e2 : large₂.sc.b ^ (2 : ℝ) = large₂.sc.b ^ 2 := Real.rpow_two _
+    rw [Real.rpow_two] at hkCl hb2
     have h256 : (D.R.k : ℝ) ^ 2 ≥ 256 := by nlinarith
     have h5 := le_trans (le_max_left _ _) hb1
-    rw [e1] at hkCl
-    rw [e2] at hb2
     linarith
   have hb16 : (16 : ℝ) ≤ large₂.sc.b := by nlinarith
   have hb1' : (1 : ℝ) ≤ large₂.sc.b := by linarith

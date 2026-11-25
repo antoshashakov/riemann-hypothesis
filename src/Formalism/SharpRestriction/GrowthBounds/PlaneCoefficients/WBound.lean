@@ -62,9 +62,7 @@ theorem sum_ite_mem {α β : Type*} [DecidableEq α] (f : β → α) (T : Finset
     have e : ∀ s, (((y :: l).filter fun z => f z = s).length : ℝ) =
         ((l.filter fun z => f z = s).length : ℝ) + if f y = s then 1 else 0 := by
       intro s
-      by_cases h : f y = s
-      · simp [h]
-      · simp [h]
+      by_cases h : f y = s <;> simp [h]
     simp only [List.map_cons, List.sum_cons, ih, e, Finset.sum_add_distrib, Finset.sum_ite_eq]
     split_ifs <;> ring
 
@@ -80,8 +78,7 @@ theorem llPos_mem (j : ℤ) (l : ℕ) (hl : l < (Fr.LLset j).card) : llPos Fr j 
 
 theorem mem_LLset (j x : ℤ) : x ∈ Fr.LLset j ↔
     (Fr.fr (j - 1) (r - 1) < x ∧ x < Fr.fr j 0) ∧ posOf n' x ∈ Fr.TT := by
-  unfold Frames.LLset
-  simp only [Finset.mem_filter, Finset.mem_Ioo]
+  simp [Frames.LLset]
 
 variable {Fr} {L₁ N₁ : ℕ}
 

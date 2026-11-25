@@ -127,11 +127,8 @@ lemma jetPair_C_left (c : K) (F : MvPowerSeries ι K) :
   classical
   rw [jetPair_eq_sum (MvPolynomial.C c) F {0}]
   · simp [mfact, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-  · intro κ hκ
-    rw [MvPolynomial.mem_support_iff, MvPolynomial.coeff_C] at hκ
-    rw [Finset.mem_singleton]
-    by_contra h
-    exact hκ (if_neg (fun h' => h h'.symm))
+  · rw [MvPolynomial.support_C]
+    split_ifs <;> simp
 
 lemma mfact_add_single (κ : ι →₀ ℕ) (i : ι) :
     mfact (κ + Finsupp.single i 1) = mfact κ * (κ i + 1) := by
@@ -365,11 +362,9 @@ lemma subst_mvExp {K : Type u} [NormedField K] [CharZero K] {ι ι' : Type} {a :
     (hs : MvPowerSeries.HasSubst a) (f : MvPowerSeries ι' K)
     (hf : MvPowerSeries.constantCoeff f = 0) :
     MvPowerSeries.subst a (mvExp f) = mvExp (MvPowerSeries.subst a f) := by
-  unfold mvExp
-  have hf' : MvPowerSeries.HasSubst (fun _ : Unit => f) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hf)
-  unfold PowerSeries.subst
-  exact MvPowerSeries.subst_comp_subst_apply hf' hs _
+  unfold mvExp PowerSeries.subst
+  exact MvPowerSeries.subst_comp_subst_apply
+    (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ : Unit => hf)) hs _
 
 lemma sum_ZV_slice {d N0 N1 : ℕ} [NeZero d] {M : Type*} [AddCommMonoid M] (s : ZMod d)
     (b : Fin N1) (f : ZV d N0 N1 → M) (hf : ∀ y, ¬ (y.1 = s ∧ y.2.2 = b) → f y = 0) :

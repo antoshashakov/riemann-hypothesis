@@ -97,12 +97,9 @@ theorem onExport2_of (hR : RamBasic) : OnExport2 := by
   have hD1 : (1 : ℝ) ≤ D := by exact_mod_cast hD
   refine ⟨?_, ?_, ?_⟩
   · intro w hw
-    obtain ⟨hp, hr1, hpc, hrc, hell⟩ := hR K w
+    obtain ⟨-, hr1, -, hrc, hell⟩ := hR K w
     have hρ : (1 : ℝ) ≤ (ramw w : ℝ) := by exact_mod_cast hr1
     obtain ⟨hv0, hvc, hvg⟩ := hv w hw
-    have hl : (0 : ℝ) < (plc w : ℝ) ^ 2 := by
-      have : (0 : ℝ) < (plc w : ℝ) := by exact_mod_cast hp.pos
-      positivity
     have key : ∀ j, ((idx w (M j) (matLat (θ j (μ w)) (T j (μ w))) : ℝ) +
           (idx (conjPl w) (M j) (matLat (θ j (μ w)) (T j (μ w))) : ℝ)) ≤
         (2 * ((ramw w : ℝ) * F0 w j) +

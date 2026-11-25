@@ -72,14 +72,12 @@ theorem converseStep_of (hG : GramInv) : ConverseStep := by
   have hγ : γ ∈ B.GV k r := hP.1
   have hγu : IsUnit γ.det := isUnit_det_of_mem_GV hγ
   have hZ : IsUnit (Zhat k r z z' γ).det := isUnit_iff_ne_zero.mpr (det_Zhat_ne z z' hS γ hP)
-  have hZh : IsUnit (Zhat k r z z' γ)ᴴ.det := by
-    rw [Matrix.det_conjTranspose]; exact hZ.star
+  have hZh : IsUnit (Zhat k r z z' γ)ᴴ.det := by simpa [Matrix.det_conjTranspose] using hZ.star
   have hZp' : u'ᴴ * (Zhat k r z z' γ)ᴴ * u = (Zhat k r z z' γ)ᴴ := by
-    have := congrArg Matrix.conjTranspose hZp
-    simpa only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc] using this
+    simpa only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]
+      using congrArg Matrix.conjTranspose hZp
   have hGi' : IsUnit ((Fm k r z z' γ)ᴴ * Hpk k r * Fm k r z z' γ).det := by rwa [← gramM_eq]
-  obtain ⟨ρ, hρ⟩ : ∃ ρ, ρ = PI.StabPairsW.rhoOf k r z z' γ u u' := ⟨_, rfl⟩
-  rw [← hρ]
+  set ρ := PI.StabPairsW.rhoOf k r z z' γ u u' with hρ
 
   have hρF : ρ * Fm k r z z' γ = Fm k r z z' γ * Wm u u' := by
     rw [hρ, rho_eq]; exact PI.StabPairs.ConvAlg.rhoOf_mul _ _ _ hGi'

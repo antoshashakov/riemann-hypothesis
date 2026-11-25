@@ -105,8 +105,7 @@ lemma herm_single (i j : ι) : herm H (Pi.single j 1) (Pi.single i 1) = H i j :=
 
 lemma unitary_of_form (g : Matrix ι ι ℂ) (h : ∀ x y, herm H (g *ᵥ x) (g *ᵥ y) = herm H x y) : gᴴ * H * g = H := by
   ext i j
-  have := h (Pi.single j 1) (Pi.single i 1)
-  rwa [herm_mulVec, herm_single, herm_single] at this
+  simpa only [herm_mulVec, herm_single] using h (Pi.single j 1) (Pi.single i 1)
 
 lemma form_of_unitary {g : Matrix ι ι ℂ} (h : gᴴ * H * g = H) (x y : ι → ℂ) : herm H (g *ᵥ x) (g *ᵥ y) = herm H x y := by
   rw [herm_mulVec, h]
@@ -344,20 +343,17 @@ lemma herm_mid (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz' : inW
 
 lemma herm_self (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) :
     herm (Hb k) (wbPart k r z) (wbPart k r z) = -((Tz k r z : ℝ) : ℂ) := by
-  have e := herm_mid k r z z hz hz
   have hx := herm_symm (Hb k) (Hb_herm k) (wbPart k r z) (wbPart k r z)
   simp only [Tz]
-  rw [e]
-  simp only [Complex.ofReal_neg, neg_neg]
-  exact (Complex.conj_eq_iff_re.mp hx).symm
+  rw [herm_mid k r z z hz hz]
+  simpa only [Complex.ofReal_neg, neg_neg] using (Complex.conj_eq_iff_re.mp hx).symm
 
 end mid
 
 theorem sectionExists : Formalism.QuantumDeterminants.SectionExists := by
   intro k r z z' hk hz hz' hT hT'
-  obtain ⟨μ, h1, h2⟩ := section_core k hk (wbPart k r z) (wbPart k r z') (Tz k r z) (Tz k r z') hT hT'
+  exact section_core k hk (wbPart k r z) (wbPart k r z') (Tz k r z) (Tz k r z') hT hT'
     (herm_self k r z hz) (herm_self k r z' hz')
-  exact ⟨μ, h1, h2⟩
 
 end Formalism.FourierDecayAlt.P.SettingConstruction
 

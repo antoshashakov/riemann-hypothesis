@@ -378,19 +378,16 @@ theorem nb_Nset (hS : Sᴴ = -S) : unipotentBlockMatrix k r Bm S ∈ Nset k r :=
 
 theorem nb_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hB : Bm *ᵥ zW k r z = 0) (hS : Sᴴ = -S) :
     unipotentBlockMatrix k r Bm S ∈ C2.N0set k r z := by
-  show _ ∧ _
   exact ⟨nb_Nset Bm S hS, nb_uMap Bm S hz hB⟩
 
 omit Bm S in
 lemma um_lt (z : Fin (2 * r + k + 1) → ℂ) (n : B.Mat k r) (a : Fin r) (b : Fin (r + 1)) :
     C2.uMap k r z n ⟨a.val, by omega⟩ b = (n *ᵥ fvec k r z b) (eI k r a) := by
-  simp only [C2.uMap]
-  rw [dif_pos a.isLt, herm_esI]
+  simp only [C2.uMap, dif_pos a.isLt, herm_esI]
 
 omit Bm S in
 lemma fvec_lt (z : Fin (2 * r + k + 1) → ℂ) (b : Fin r) : fvec k r z ⟨b.val, by omega⟩ = bvec (eI k r b) := by
-  simp only [fvec]
-  rw [dif_pos b.isLt]
+  simp only [fvec, dif_pos b.isLt]
 
 omit Bm S in
 lemma fvec_last (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by

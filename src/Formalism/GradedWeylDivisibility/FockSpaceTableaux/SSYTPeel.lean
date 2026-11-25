@@ -53,10 +53,8 @@ namespace Formalism.GradedWeylDivisibility
 
 private theorem exists_pos_of_sum_pos {ι : Type*} (s : Finset ι) (f : ι → ℕ)
     (h : 0 < ∑ i ∈ s, f i) : ∃ i ∈ s, 0 < f i := by
-  by_contra hne
-  push_neg at hne
-  have hz : ∑ i ∈ s, f i = 0 := Finset.sum_eq_zero (fun i hi => by have := hne i hi; omega)
-  omega
+  obtain ⟨i, hi, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero (Nat.pos_iff_ne_zero.mp h)
+  exact ⟨i, hi, Nat.pos_of_ne_zero hne⟩
 
 private theorem colExp_apply {r n h : ℕ} (c : Fin h → Fin r) (hh : h ≤ n) (a : Fin r)
     (t : Fin n) :

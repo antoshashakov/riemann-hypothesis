@@ -64,11 +64,9 @@ theorem weight_wLet (X : Loc) (x : X.TT × Bool) (μ : (X.TT × Bool) × Fin (X.
   classical
   rw [Finsupp.weight_apply, Finsupp.sum_fintype μ (fun v k => k • wLet X x v) (fun _ => zero_smul _ _),
     Fintype.sum_prod_type, Finset.sum_eq_single x]
-  · unfold multideg wLet
-    simp
+  · simp [multideg, wLet]
   · intro y _ hy
-    unfold wLet
-    simp [hy]
+    simp [wLet, hy]
   · intro h
     exact absurd (Finset.mem_univ _) h
 

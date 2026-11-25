@@ -227,13 +227,11 @@ private lemma mul_mem_utset {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A
 
 private lemma det_eq_one_of_mem_ltset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.LTset m) :
     A.det = 1 := by
-  rw [Matrix.det_of_lowerTriangular A (fun i j h => hA.1 i j h)]
-  simp [hA.2]
+  simp [Matrix.det_of_lowerTriangular A (fun i j h => hA.1 i j h), hA.2]
 
 private lemma det_eq_one_of_mem_utset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) :
     A.det = 1 := by
-  rw [Matrix.det_of_upperTriangular (fun i j h => hA.1 i j h)]
-  simp [hA.2]
+  simp [Matrix.det_of_upperTriangular (fun i j h => hA.1 i j h), hA.2]
 
 private lemma inv_mem_ltset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.LTset m) :
     A⁻¹ ∈ C2.LTset m := by
@@ -373,14 +371,12 @@ theorem upper_splitting : C2.UpSplit := by
   refine ⟨(bᴴ, aᴴ), ⟨conjTranspose_mem_utset_of_mem_ltset hb.1, conjTranspose_mem_utset_of_mem_ltset ha.1,
     by simpa only [Matrix.conjTranspose_conjTranspose] using hb,
     by simpa only [Matrix.conjTranspose_conjTranspose] using ha, ?_⟩, ?_⟩
-  · have hab' : uᴴ = a * b := hab
-    show u = bᴴ * aᴴ
-    rw [← Matrix.conjTranspose_mul, ← hab', Matrix.conjTranspose_conjTranspose]
+  · show u = bᴴ * aᴴ
+    rw [← Matrix.conjTranspose_mul, ← hab, Matrix.conjTranspose_conjTranspose]
   · rintro ⟨q1, q2⟩ ⟨_, _, hq1c, hq2c, hq⟩
-    have hq' : u = q1 * q2 := hq
     have h := huniq (q2ᴴ, q1ᴴ) ⟨hq2c, hq1c, by
       show uᴴ = q2ᴴ * q1ᴴ
-      rw [← Matrix.conjTranspose_mul, ← hq']⟩
+      rw [← Matrix.conjTranspose_mul, ← hq]⟩
     simp only [Prod.mk.injEq] at h
     rw [← h.1, ← h.2, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]
 

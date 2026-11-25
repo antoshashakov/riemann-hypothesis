@@ -356,10 +356,7 @@ theorem hb_sq : Hb k * Hb k = 1 := by
 
 theorem vec_zero {μ L : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (h : μ * L = 1)
     (v : Fin (k + 1) → ℂ) (hv : ∀ t, ∑ s, v s * μ s t = 0) : v = 0 := by
-  have h1 : Matrix.vecMul v μ = 0 := by
-    funext t
-    rw [Pi.zero_apply, ← hv t]
-    rfl
+  have h1 : Matrix.vecMul v μ = 0 := funext hv
   calc v = Matrix.vecMul v (μ * L) := by rw [h, Matrix.vecMul_one]
     _ = Matrix.vecMul (Matrix.vecMul v μ) L := by rw [Matrix.vecMul_vecMul]
     _ = 0 := by rw [h1, Matrix.zero_vecMul]

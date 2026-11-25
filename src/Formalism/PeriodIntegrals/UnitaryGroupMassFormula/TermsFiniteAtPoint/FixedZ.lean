@@ -85,9 +85,8 @@ theorem gram_frame {T' : E} (F : LFlag S r T') (a b : Fin (r + 1)) :
     S.hT (frame F a) (frame F b) = if a = Fin.last r ∧ b = Fin.last r then -T' else 0 := by
   refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b
   · simpa [frame, FlagG.fvec] using F.fl.z_norm
-  · have h := F.fl.z_orth j
-    have : S.hT F.fl.z (F.fl.e j) = 0 := by rw [← herm_star, h]; simp
-    simpa [frame, FlagG.fvec, Fin.castSucc_ne_last] using this
+  · simpa [frame, FlagG.fvec, Fin.castSucc_ne_last] using
+      (show S.hT F.fl.z (F.fl.e j) = 0 by rw [← herm_star, F.fl.z_orth j]; simp)
   · simpa [frame, FlagG.fvec, Fin.castSucc_ne_last] using F.fl.z_orth i
   · simpa [frame, FlagG.fvec, Fin.castSucc_ne_last] using F.fl.e_iso i j
 
@@ -97,14 +96,11 @@ theorem mem_orth_Xplus {T : E} (F : LFlag S r T) (x : S.V) (he : ∀ a, S.hT (F.
     refine sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)
     · rintro _ ⟨a, rfl⟩
       simp [he a]
-    · intro w hw
-      rw [Set.mem_singleton_iff] at hw
-      subst hw
+    · rintro _ rfl
       simp [hz]
   simp only [orth, Submodule.mem_iInf]
   intro w hw
-  have := hle hw
-  simpa using this
+  simpa using hle hw
 
 end Gen
 

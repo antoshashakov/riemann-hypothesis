@@ -60,7 +60,6 @@ namespace Pgsn2pfran
 
 lemma ind_anti (c : ℝ) : Antitone (fun τ : ℝ => if τ < c then (1:ℝ) else 0) := by
   intro a b hab
-  show (if b < c then (1:ℝ) else 0) ≤ (if a < c then (1:ℝ) else 0)
   by_cases h1 : b < c
   · have h2 : a < c := lt_of_le_of_lt hab h1
     simp [h1, h2]
@@ -73,8 +72,7 @@ lemma ind_int (c HH : ℝ) (hc0 : 0 ≤ c) (hc : c ≤ HH) :
   have hi2 : IntervalIntegrable (fun τ : ℝ => if τ < c then (1:ℝ) else 0) volume c HH :=
     (ind_anti c).intervalIntegrable
   have hne : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ c := by
-    rw [ae_iff]
-    simp
+    simp [ae_iff]
   have h1 : ∫ τ in (0:ℝ)..c, (if τ < c then (1:ℝ) else 0) = ∫ τ in (0:ℝ)..c, (1:ℝ) := by
     apply intervalIntegral.integral_congr_ae
     filter_upwards [hne] with x hx hmem
@@ -92,10 +90,8 @@ lemma ind_int (c HH : ℝ) (hc0 : 0 ≤ c) (hc : c ≤ HH) :
 lemma ind_lb (a xj HH : ℝ) (h : a - HH ≤ xj) (hHH : 0 ≤ HH) :
     a - xj ≤ ∫ τ in (0:ℝ)..HH, (if τ < a - xj then (1:ℝ) else 0) := by
   rcases le_total (a - xj) 0 with h0 | h0
-  · have hpos : 0 ≤ ∫ τ in (0:ℝ)..HH, (if τ < a - xj then (1:ℝ) else 0) := by
-      apply intervalIntegral.integral_nonneg hHH
-      intro u _
-      split_ifs <;> norm_num
+  · have hpos : 0 ≤ ∫ τ in (0:ℝ)..HH, (if τ < a - xj then (1:ℝ) else 0) :=
+      intervalIntegral.integral_nonneg hHH (fun u _ => by split_ifs <;> norm_num)
     linarith
   · exact le_of_eq (ind_int (a - xj) HH h0 (by linarith)).symm
 

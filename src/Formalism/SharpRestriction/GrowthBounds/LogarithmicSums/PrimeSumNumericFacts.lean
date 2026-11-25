@@ -413,7 +413,6 @@ namespace Formalism.MainNotions.AuxBlock8.Pf.G5
 
 theorem prime_sum_facts_of_scaled {D : D7} {L : SizeData₂ D} {K : Consts} {C bo : ℝ} (hC : 0 ≤ C) (N : Nu.NumG5' D L K (40 * C) bo) :
     PrimeSumNumericFacts D L K C bo := by
-  have hx := sc_x_pos L.sc
   have e1 : c1 L (40 * C) = 40 * c1 L C := by unfold c1; ring
   have e1' : cfl D L.sc (40 * C) = 40 * cfl D L.sc C := by unfold cfl; ring
   have e2 : c2 L (40 * C) = 40 * c2 L C := by unfold c2; ring
@@ -451,8 +450,7 @@ theorem prime_sum_facts_along_family {eps : ℝ} (Fm : FamP eps) (K : Consts) (h
       PrimeSumNumericFacts (Fm.D x i) (Fm.L x i) K C ((Fm.L x i).sc.b ^ (x ^ (-(eps / 2)))) := by
   have he : 0 < eps := by
     obtain ⟨i⟩ := Fm.Ix_zero
-    have := (Fm.L 0 i).sc.eps_pos
-    rwa [Fm.L_eps] at this
+    simpa only [Fm.L_eps] using (Fm.L 0 i).sc.eps_pos
   obtain ⟨x1, _, H1⟩ := hA (eps / 48) (by positivity)
   obtain ⟨x2, H2⟩ := Filter.eventually_atTop.1 (Nu.prime_sum_facts_eventually eps K hK (40 * C) (by positivity))
   refine ⟨max (Fm.x1 + 1) (max x1 x2), fun x hx i => ?_⟩

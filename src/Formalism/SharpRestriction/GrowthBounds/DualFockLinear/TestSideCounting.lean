@@ -60,13 +60,11 @@ open Formalism.L2.G.Model (Intl SSZ intl_zero card_SSZ card_ssIdx weylQ)
 
 theorem sum_le_succ {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b ≤ a.succ, F b) = F 0 + ∑ b : Fin k with b ≤ a, F b.succ := by
-  rw [Finset.sum_filter, Fin.sum_univ_succ, Finset.sum_filter]
-  simp [Fin.succ_le_succ_iff]
+  simp [Finset.sum_filter, Fin.sum_univ_succ, Fin.succ_le_succ_iff]
 
 theorem sum_lt_succ {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b < a.succ, F b) = F 0 + ∑ b : Fin k with b < a, F b.succ := by
-  rw [Finset.sum_filter, Fin.sum_univ_succ, Finset.sum_filter]
-  simp [Fin.succ_lt_succ_iff, Fin.succ_pos]
+  simp [Finset.sum_filter, Fin.sum_univ_succ, Fin.succ_lt_succ_iff, Fin.succ_pos]
 
 theorem sum_le_zero {k : ℕ} (F : Fin (k + 1) → ℕ) :
     (∑ b : Fin (k + 1) with b ≤ 0, F b) = F 0 := by
@@ -272,8 +270,7 @@ theorem nuOf_cast {m : ℕ} (lam : Fin (m + 1) → ℤ) (h : Antitone lam) (t : 
 
 private lemma weylDim_add_const' (n : ℕ) (μ : Fin n → ℤ) (c : ℤ) :
     Formalism.CountingSumsFrames.weylDim n (fun t => μ t + c) = Formalism.CountingSumsFrames.weylDim n μ := by
-  unfold Formalism.CountingSumsFrames.weylDim
-  simp only [add_sub_add_right_eq_sub]
+  simp only [Formalism.CountingSumsFrames.weylDim, add_sub_add_right_eq_sub]
 
 theorem cntSpec : CntSpec := by
   intro m lam hlam vec

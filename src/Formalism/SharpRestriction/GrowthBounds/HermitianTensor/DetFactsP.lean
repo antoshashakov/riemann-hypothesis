@@ -88,11 +88,8 @@ theorem detFactsP : DetFactsP := by
     have hM : (rowAct A (n := r) l).mapMatrix (Matrix.of fun i j : Fin r => (X (i, j) : MvPolynomial (Fin r × Fin r) A)) =
         (C : A →+* MvPolynomial (Fin r × Fin r) A).mapMatrix l *
           (Matrix.of fun i j : Fin r => (X (i, j) : MvPolynomial (Fin r × Fin r) A)) := by
-      apply Matrix.ext
-      intro i j
-      rw [Matrix.mul_apply]
-      show rowAct A l (X (i, j)) = ∑ b, C (l i b) * X (b, j)
-      simp [rowAct]
+      ext i j
+      simp [rowAct, Matrix.mul_apply]
     refine hA.trans ?_
     rw [hM, Matrix.det_mul, ← RingHom.map_det]
     rfl

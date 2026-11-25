@@ -163,10 +163,8 @@ theorem frame_change_preserves_multidegree {R : Type} [CommRing R] {ι : Type} [
     (G : MvPolynomial (ι × Fin r) R) (hG : G ∈ Pol R r d) :
     ∀ m ∈ (eBeta LL S j g0 g0inv G).support, ∀ i, multideg m i = d i := by
   intro m hm i
-  have hG' : ∀ m ∈ G.support, multideg m i = d i := by
-    intro m hm
-    have := (MvPolynomial.mem_restrictSupport_iff R).1 hG
-    exact this (by simpa using hm) i
+  have hG' : ∀ m ∈ G.support, multideg m i = d i :=
+    fun m hm => ((MvPolynomial.mem_restrictSupport_iff R).1 hG) (by simpa using hm) i
   have := frame_change_weighted_homogeneous LL S j g0 g0inv i (d i) G hG' (mem_support_iff.1 hm)
   rwa [letter_weight_eq_multidegree] at this
 
@@ -182,8 +180,7 @@ theorem last_column_weight_eq {ι : Type} [Fintype ι] {r : ℕ} [NeZero r] (LL 
   · simp
   · intro c _ hc
     simp [hc]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  · simp
 
 theorem last_column_weight_bound {ι : Type} [Fintype ι] {r : ℕ} [NeZero r] (LL : Letters ι) (S : Set ι) (A : Fin r → ι)
     (d : ι → ℕ) (m : ι × Fin r →₀ ℕ) (hm : ∀ i, multideg m i = d i)
