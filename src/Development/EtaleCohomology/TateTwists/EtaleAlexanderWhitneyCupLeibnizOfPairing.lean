@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
+import Development.EtaleCohomology.KummerTheory.CupAWCut
 
 @[expose] public section
 
@@ -135,69 +136,5 @@ end LateralTheory.EtaleFoundations.AWLeib
 
 
 open LateralTheory.EtaleFoundations.AWLeib in
-theorem LateralTheory.EtaleFoundations.etaleAlexanderWhitneyCup_leibniz_of_pairing : LateralTheory.EtaleFoundations.EtaleAlexanderWhitneyCupLeibniz := by
-  intro R _ I J K μ E n m k hk α β γ γ₁ γ₂ hγ h1 h2
-  have ev_ext (a b : Cochain ((chains R).obj E) K (k + 1))
-      (h : ∀ p s hs U x, ev (R := R) a p s hs U x = ev (R := R) b p s hs U x) : a = b := by
-    ext i j hij : 1
-    by_cases hi : 0 < i
-    · exact (isZero_pos E i hi).eq_of_src _ _
-    obtain ⟨p, rfl⟩ : ∃ p : ℕ, i = -(p : ℤ) := ⟨(-i).toNat, by omega⟩
-    rw [← cancel_epi (chainsXIso R E p).inv]
-    exact free_ext _ _ (fun U x => h p j hij U x)
-  apply ev_ext
-  intro N w hw U x
-  have ev_add : ev (R := R) (γ₁ + n.negOnePow • γ₂) N w hw U x =
-      ev (R := R) γ₁ N w hw U x + ev (R := R) (n.negOnePow • γ₂) N w hw U x := by
-    unfold ev
-    rw [Cochain.add_v, Preadditive.comp_add]
-    rfl
-  have ev_units_smul : ev (R := R) (n.negOnePow • γ₂) N w hw U x = n.negOnePow • ev (R := R) γ₂ N w hw U x := by
-    change Sec.map ((chainsXIso R E N).inv ≫ (n.negOnePow • γ₂).v _ _ hw) (freeGen R _ U x) = _
-    rw [Cochain.units_smul_v, Linear.comp_units_smul, Units.smul_def, sec_map_zsmul]
-    rfl
-  rw [ev_add, ev_units_smul, ev_delta_bd rfl γ N (-(N : ℤ) + k) w rfl hw U x, hγ N _ rfl U x, h1 N w hw U x,
-    h2 N w hw U x]
-  rw [bd_congr (g := fun N' y => ∑ p : Fin (N' + 1), ((m * (p : ℕ)).negOnePow : ℤ) •
-      Fm μ α β U w p (N' - p) (y.sub 0 p (by omega)) (y.sub p (N' - p) (by omega))) ?_ x]
-  swap
-  · intro N' y hN
-    rw [dite_eq_left (by omega), hγ N' w _ U y]
-    refine Finset.sum_congr rfl fun p _ => ?_
-    rw [Units.smul_def]
-    unfold Fm
-    rw [dite_eq_left (by omega)]
-  rw [bd_aw (Fm μ α β U w) (fun p : ℕ => ((m * (p : ℤ)).negOnePow : ℤ)) (fun p : ℕ => ((m * ((p : ℤ) - 1)).negOnePow : ℤ))
-    (fun p => by congr 2; push_cast; ring) N x]
-  rw [secmap_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun p _ => ?_
-  have hp := p.2
-  rw [Units.smul_def, secmap_zsmul, leib' μ U _ _ _ (-((p : ℕ) : ℤ) + (n + 1)) (-((N - p : ℕ) : ℤ) + (m + 1)) w _ (by ring) (by ring) (by omega)]
-  rw [ev_delta_bd rfl α p (-((p : ℕ) : ℤ) + n) _ rfl _ U, ev_delta_bd rfl β (N - p) (-((N - p : ℕ) : ℤ) + m) _ rfl _ U]
-  simp only [map_add (f := _), map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, Units.smul_def, mul_bd_left, mul_bd_right]
-  refine recombine _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ?_ ?_ ?_ ?_ ?_
-  · refine bd_congr (fun q z hq => ?_) _
-    rw [dite_eq_left (by omega)]
-    unfold Fm
-    rw [dite_eq_left (by omega)]
-    exact mul_congr μ U α β _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-  · refine bd_congr (fun q z hq => ?_) _
-    rw [dite_eq_left (by omega)]
-    unfold Fm
-    rw [dite_eq_left (by omega)]
-    exact mul_congr μ U α β _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-  · simp only [← Units.val_mul, ← Int.negOnePow_add]
-    congr 1
-    rw [Int.negOnePow_eq_iff]
-    exact ⟨-((p : ℕ) : ℤ), by ring⟩
-  · subst hk
-    simp only [← Units.val_mul, ← Int.negOnePow_add]
-    congr 1
-    rw [Int.negOnePow_eq_iff]
-    exact ⟨0, by ring⟩
-  · subst hk
-    rw [sign_nat]
-    simp only [← Units.val_mul, ← Int.negOnePow_add]
-    congr 1
-    rw [Int.negOnePow_eq_iff]
-    exact ⟨0, by ring⟩
+theorem LateralTheory.EtaleFoundations.etaleAlexanderWhitneyCup_leibniz_of_pairing : LateralTheory.EtaleFoundations.EtaleAlexanderWhitneyCupLeibniz :=
+  _root_.LateralTheory.KummerTheory.AW.leibniz
