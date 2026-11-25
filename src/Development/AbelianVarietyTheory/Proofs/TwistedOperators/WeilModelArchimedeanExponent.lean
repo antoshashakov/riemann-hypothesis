@@ -15,7 +15,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtTh
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzComplexStructureVacuumSolutionEqSmulStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CmTypeRestrictRealSubfieldInfinitePlaceBijective
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ArchimedeanLineEqRealScalarSmulSupported
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDarbouxComplexStructureTwoInvolutionsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TrPairApply
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDarbouxComplexStructureTwoInvolutions
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFockPolynomialOperatorHeisenbergDerivative
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalDarbouxOrientedPairTransport
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockCreationPreservesFockVectorsTwoFrames
@@ -95,7 +96,7 @@ theorem gauss_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     ∀ f g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), M.IsGauss ψ τ g → g ≠ 0 → M.IsGauss ψ τ f → ∃ z : ℂ, f = z • g := by
   intro F E _ _ _ _ _ σ n d X W M ψ τ hCM hStd hX hW f g ⟨ε, hg⟩ hg0 ⟨ε', hf⟩
   obtain ⟨D, hDu⟩ := GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ _ _ M.co hStd
-  obtain ⟨J, e, e', hJ, he, hJe, he1, he2, hy⟩ := GlobalTheory.T.exists_darboux_complex_structure_two_involutions F E σ (Fin n) (Fin d) (Fin n × Fin d) τ _ _ M.co X.θ W.θ
+  obtain ⟨J, e, e', hJ, he, hJe, he1, he2, hy⟩ := _root_.GlobalTheory.SignInvolDarboux.exists_bridge F E σ (Fin n) (Fin d) (Fin n × Fin d) τ _ _ M.co X.θ W.θ
     ε ε' hCM hX hW
   have hz : ∀ (u : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) (t : ℝ), M.co.rho ψ (realAd F t • u) 0 = 0 := by
     intro u t; funext x; simp [Darboux.rho, schr]

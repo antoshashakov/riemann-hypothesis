@@ -11,7 +11,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareThetaT
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaGridCharactersArchExponentsGapGtRank
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LiftsAtAndSeedFacts
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSignatureFstUniqueSylvesterStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SquareTripleFinitePlacesOfOrientedRoutesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
+public import Mathlib.Algebra.AffineMonoid.Basic
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SquareTripleFinitePlacesOfOrientedRoutes
 import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasChr
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -168,6 +170,6 @@ theorem isTriple_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Con
     rw [hrank, rW, rW₁]
     push_cast at key ⊢
     linarith
-  · exact GlobalTheory.T.squareTriple_finitePlaces_of_orientedRoutes hL W t i j hS M hM e Bs Γ X om om' hX hY
+  · exact _root_.GlobalTheory.TripleRam.ram_clause hL W t i j hS M hM e Bs Γ X om om' hX hY
 
 end GlobalTheory.SquareTripleForm

@@ -3,7 +3,7 @@ module
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.BunExists
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BSlotD
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HermitianFormDualFlagEqReducedFrameCoordinatesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemSpanAddSmulLatticeOfFrameCoeffsZmodStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemSpanAddSmulLatticeOfFrameCoeffsZmod
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ResidueCoordinatesInFrameLinearStabiliserStatement
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.NatCastKPZero
 import Mathlib.Algebra.Order.Floor.Extended
@@ -285,7 +285,7 @@ theorem cong_of_pairs (h : FH I g e0 f0 z0 bw bwd ew) {x : I.Gf} (hx : x ∈ I.K
   have hm := h.mem
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩ := hT
   refine ⟨fun a => ?_, ?_, fun i => ?_⟩
-  · have := GlobalTheory.T.mem_span_add_smul_lattice_of_frame_coeffs_zmod I g e0 f0 z0 bw bwd ew h _ (K_sub_mv I hx (hm.1 a).1) {b | b.1 < a.1} ∅
+  · have := _root_.GlobalTheory.mo_of_coef_mod I g e0 f0 z0 bw bwd ew h _ (K_sub_mv I hx (hm.1 a).1) {b | b.1 < a.1} ∅
       (fun c hc => hP _ (hm.1 c).2 _ (hm.1 a).1 (h1 a c (not_lt.1 hc)).1 (h1 a c (not_lt.1 hc)).2)
       (fun c => hP _ (hm.1 c).1 _ (hm.1 a).1 (h2 c a) (h2 a c))
       (hP _ hm.2.1 _ (hm.1 a).1 (h3 a).1 (h3 a).2)
@@ -293,7 +293,7 @@ theorem cong_of_pairs (h : FH I g e0 f0 z0 bw bwd ew) {x : I.Gf} (hx : x ∈ I.K
       (fun i => hP _ (hm.2.2 i).1 _ (hm.1 a).1 (h5 a i).1 (h5 a i).2)
     rw [Set.image_empty, Set.union_empty] at this
     exact this
-  · have := GlobalTheory.T.mem_span_add_smul_lattice_of_frame_coeffs_zmod I g e0 f0 z0 bw bwd ew h _ (K_sub_mv I hx hm.2.1) Set.univ ∅
+  · have := _root_.GlobalTheory.mo_of_coef_mod I g e0 f0 z0 bw bwd ew h _ (K_sub_mv I hx hm.2.1) Set.univ ∅
       (fun c hc => absurd (Set.mem_univ c) hc)
       (fun c => hP _ (hm.1 c).1 _ hm.2.1 (h3 c).2 (h3 c).1)
       (hP _ hm.2.1 _ hm.2.1 h6 h6)
@@ -301,7 +301,7 @@ theorem cong_of_pairs (h : FH I g e0 f0 z0 bw bwd ew) {x : I.Gf} (hx : x ∈ I.K
       (fun i => hP _ (hm.2.2 i).1 _ hm.2.1 (h8 i).1 (h8 i).2)
     rw [Set.image_empty, Set.union_empty, Set.image_univ] at this
     exact this
-  · have := GlobalTheory.T.mem_span_add_smul_lattice_of_frame_coeffs_zmod I g e0 f0 z0 bw bwd ew h _ (K_sub_mv I hx (hm.2.2 i).1) Set.univ {j | j.1 < i.1}
+  · have := _root_.GlobalTheory.mo_of_coef_mod I g e0 f0 z0 bw bwd ew h _ (K_sub_mv I hx (hm.2.2 i).1) Set.univ {j | j.1 < i.1}
       (fun c hc => absurd (Set.mem_univ c) hc)
       (fun c => hP _ (hm.1 c).1 _ (hm.2.2 i).1 (h5 c i).2 (h5 c i).1)
       (hP _ hm.2.1 _ (hm.2.2 i).1 (h8 i).2 (h8 i).1)

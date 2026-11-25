@@ -6,7 +6,12 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteS
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EquivariantOfGeneratorOneParameterGroupStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockSourceGlActionEqQuadraticAddNonRaisingStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockTargetGlActionEqQuadraticAddNonRaisingStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemMaximalCompactOfMapsFockVectorToFockStatement
+public import Formalism.FormalDegreeBessel.StatementG
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemMaximalCompactOfMapsFockVectorToFock
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NotLocallyFiniteQuadraticMulAddDegreeNonraisingStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubstitutionTotalDegreeLeStatement
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactExponentialSurjective
@@ -251,7 +256,7 @@ theorem equiv_alt (hθ : IsInfFam θ) (h : GlobIt M M' aS aT It I) (τ : D.what�
     subst this
     simp only [map_zero, LinearMap.zero_apply]
   have T := GlobalTheory.T.discreteSeries_pureInnerProducts_tensorProduct D V S M
-  obtain ⟨k, hk, rfl⟩ := GlobalTheory.T.mem_maximalCompact_of_maps_fockVector_to_fock V.rank (M.ε τ) (M.fr τ) (gramAt D V τ) _ _ (ptL ψ θ M M' f)
+  obtain ⟨k, hk, rfl⟩ := _root_.GlobalTheory.Chain.RealIt.CompactStab.mem_compact V.rank (M.ε τ) (M.fr τ) (gramAt D V τ) _ _ (ptL ψ θ M M' f)
     (fun g => ω (atTau θ V τ g, 1)) (srcOp M M' τ (aT τ)) (M.fr_unit τ) (M.fr_gram τ) hinj (om_src_one hθ τ)
     (om_src_mul hθ τ) (fun X hX => hasDerivAt_lieAction_source_operator hL hX) (compact_action_preserves_polynomial_degree hθ hC)
     (fun X _ ⟨j, k, hjk, h1, h2⟩ => not_locFin _ (GlobalTheory.T.fockSourceGlAction_eq_quadratic_add_nonRaising D _ _ τ (M.ε τ) (M'.ε τ) _ hr
@@ -300,7 +305,7 @@ theorem inv_tgt (hθ : IsInfFam θ) (h : GlobIt M M' aS aT It I) (τ : D.what₂
     simp only [map_zero, LinearMap.zero_apply]
   have T := GlobalTheory.T.discreteSeries_pureInnerProducts_tensorProduct D V S M
   have T' := GlobalTheory.T.discreteSeries_pureInnerProducts_tensorProduct D W S' M'
-  obtain ⟨k, hk, rfl⟩ := GlobalTheory.T.mem_maximalCompact_of_maps_fockVector_to_fock W.rank (M'.ε τ) (M'.fr τ) (gramAt D W τ) _ _ (ptL ψ θ M M' f)
+  obtain ⟨k, hk, rfl⟩ := _root_.GlobalTheory.Chain.RealIt.CompactStab.mem_compact W.rank (M'.ε τ) (M'.fr τ) (gramAt D W τ) _ _ (ptL ψ θ M M' f)
     (fun g => ω (1, atTau θ W τ g)) (tgtOp M M' τ (aS τ)) (M'.fr_unit τ) (M'.fr_gram τ) hinj (om_tgt_one hθ τ)
     (om_tgt_mul hθ τ) (fun X hX => lie_tgt hL hX) (cpt_tgt hθ hC)
     (fun X _ hjk => not_locFin _ (GlobalTheory.T.fockTargetGlAction_eq_quadratic_add_nonRaising D _ _ τ (M.ε τ) (M'.ε τ) _ hr hjk))

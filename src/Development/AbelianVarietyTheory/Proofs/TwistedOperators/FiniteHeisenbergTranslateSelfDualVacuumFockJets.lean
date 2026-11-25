@@ -16,7 +16,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DeltaOrth
 public import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EntireEqOfMonomialDerivationsAtZeroEq
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergRootSmulFiniteRationalLatticeDecompStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergRootSmulFiniteRationalLatticeDecomp
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslateFiniteRationalRealGaussianStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualImageOrthonormalFrameLatticeStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -141,7 +141,7 @@ theorem core (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
   obtain ⟨ΛS, hΛSe, hΛS⟩ := GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice S frS hS Ls hLs
   obtain ⟨ΛT, hΛTe, hΛT⟩ := GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice T frT hT Lt hLt
   rw [← hΛSe, ← hΛTe] at hF hw
-  obtain ⟨M, ζ, hζ, hnM, heq⟩ := GlobalTheory.T.heisenberg_root_smul_finiteRational_latticeDecomp ψ S T ΛS ΛT hψ hΛS hΛT F hF.2.lat n hn w hw
+  obtain ⟨M, ζ, hζ, hnM, heq⟩ := _root_.GlobalTheory.MultLatDecomp.heisO_eq_root_smul_finRat ψ S T ΛS ΛT hψ hΛS hΛT F hF.2.lat n hn w hw
   rw [hΛSe, hΛTe] at hnM
   obtain ⟨Φ, hΦd, hΦ⟩ := GlobalTheory.T.fockVacuum_real_restriction_gaussian_entire ψ θ S T frS frT _ _ hS hT F hF
   set sc : ℂ := (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹) with hsc

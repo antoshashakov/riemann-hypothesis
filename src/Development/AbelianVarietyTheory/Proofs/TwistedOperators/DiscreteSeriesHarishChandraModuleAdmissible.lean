@@ -32,7 +32,12 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NoThetaTe
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormSumWordCombinationCoefficientsLeStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PolarCoordinatesUnitaryPQDoubleCoverStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealPlaceGroupsActUnitarilyWeaklyOnThetaStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealThetaIntertwinersProportionalOfHarishChandraStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsStepWeil
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RealThetaIntertwinersProportionalOfHarishChandra
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.BarMatrix
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HalfLinearCocycle
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ThetaSourceAction
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChosenSeries
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignCompatibleNumberingOfWittTowerLowerStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplittingHeckeCharExistsArchimedeanExponentStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SymmetrisationInjective
@@ -546,7 +551,7 @@ theorem archOnRecord_of_cover (hDS : GlobalTheory.Published.DiscreteSeriesCover)
   obtain ⟨Y, hpar, hds, hq5, hy1, -, hy3, -⟩ := GlobalTheory.T.exists_provA_discreteSeries_archimedeanRallis hDS hHC
   have hG : Good D Y := ⟨hpar, hds, hq5, GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra hDS hHC D⟩
   exact ⟨⟨chainLower hG, pairLower hG⟩, fun hg => ⟨chainTop hG hy1 hy3 hg, pairTop hG hy1 hy3 hg,
-    itLaw (GlobalTheory.T.exists_uniformRealThetaIntertwiner_chainStep hDS hHC D) (GlobalTheory.T.realThetaIntertwiners_proportional_of_harishChandra hDS hHC D) hg,
+    itLaw (GlobalTheory.T.exists_uniformRealThetaIntertwiner_chainStep hDS hHC D) (_root_.GlobalTheory.ArchRec.itLine_of_hypotheses hDS hHC D) hg,
     ioLaw (GlobalTheory.T.lowestKTypeFockMap_exists_of_discreteSeries hDS hHC D) (GlobalTheory.T.lowestKTypeFockMap_unique_of_discreteSeries hDS hHC D) (GlobalTheory.T.lowestKTypeFockMap_harmonic_of_discreteSeries hDS hHC D)⟩⟩
 
 theorem archOnRecord (hDS : GlobalTheory.Published.DiscreteSeriesCover) (hHC : GlobalTheory.Published.HarishChandraModules) (D : D7) :

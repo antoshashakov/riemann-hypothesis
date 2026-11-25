@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ValuationGdetKapAt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteUnfSupportOfNeOne
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierJacobiPhaseAdjacentStepsInvariantVertexStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.FlatTensorVacuum
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierJacobiPhaseAdjacentStepsInvariantVertex
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FourierJacobiStepLeftChangeMeasurePreservingStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.StepPointMulPeriodUnipotentGLMeasurePreservingStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -97,7 +99,7 @@ theorem GlobalTheory.flatStep_vertex : ∀ {k : Type} [Field k] [ValuativeRel k]
   refine ⟨φ₀, hφ₀, φ₁, hφ₁, fun e₀ e₁ => ?_⟩
   have hg₁ : frameGL h₁ g = v * embX (c + 1) κ := hg
   have hg₂ : frameGL h₂ g = v * embX (c + 1) κ := hg
-  obtain ⟨A, B⟩ := GlobalTheory.T.fourierJacobiPhase_adjacentSteps_invariant_vertex (n₀ := Fin a₀) (n := Fin a₁) (n₂ := Fin a₂) (c := c) v hv κ x₀ e₀ x₁ e₁
+  obtain ⟨A, B⟩ := _root_.GlobalTheory.PhaseStep.phase_step_inv (n₀ := Fin a₀) (n := Fin a₁) (n₂ := Fin a₂) (c := c) v hv κ x₀ e₀ x₁ e₁
     (stepPt ((κ⁻¹).val * x₀) (φ₀ e₀)) (stepPt (x₁ * κ.val) (φ₁ e₁)) (H₀ e₀).symm (H₁ e₁).symm
   refine ⟨fun f => ?_, fun f => ?_, A, fun ho l s hl => ?_, fun ho r i hi => ?_⟩
   · rw [GlobalTheory.FlatStepVertex.mul_reindex_gen, map_inv, hg₁, H₀]

@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCom
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneParameterOperatorUnique
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PairInfApply
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneParameterWeilOperatorDerivative
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTriplePolynomialFockStableMulTraceLinearStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaTriplePolynomialFockStableMulTraceLinear
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracePairingArchimedeanVarsNondegenerateRightStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryArchimedeanLineOperatorsOneParameterStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOneParamMovesFockVacuumSmoothlyStatement
@@ -85,7 +85,7 @@ theorem smooth_vacuum_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E
     (GlobalTheory.T.tracePairingArchimedeanVars_nondegenerate_right F _) T h1 h0 hU A hAc hAadd hA0 hAint hC J₀ hJ f₀ hvac
   refine ⟨hsm, ?_⟩
   have hf₀P : f₀ ∈ G.M.Pol B.ψ B.emb := Submodule.mem_sInf.2 fun N hN => hN.1 f₀ hf₀
-  have hmul := GlobalTheory.T.thetaTriple_polynomialFock_stable_mul_trace_linear B G X om om' hT
+  have hmul := _root_.GlobalTheory.PolMul.pol_mul_pairInf B G X om om' hT
   choose m hmP hmE using hmul
   refine ⟨(∑ i, cs i • m (qs i) (m (qs' i) f₀ hf₀P) (hmP _ _ _)) + c • f₀,
     add_mem (sum_mem fun i _ => Submodule.smul_mem _ _ (hmP _ _ _)) (Submodule.smul_mem _ _ hf₀P), fun x => ?_⟩

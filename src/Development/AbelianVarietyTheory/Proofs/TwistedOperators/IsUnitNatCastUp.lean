@@ -15,7 +15,8 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFib
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsRigIsoOfBaseChangeStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLinearHeckeIsogenyInverseUpToPSqStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FibreIsogenyPairDefinedOverFiniteSubextensionStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteAndIntegralStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.OneLtAbsNormReal
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteAndIntegral
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FramedPointDescendsFiniteSubextensionStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GoodReductionStableValuationRingExtensionStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralFrameExtensionOfRankZeroSignatureStatement
@@ -397,7 +398,7 @@ theorem heckeFrameInt (cls : PtClass Xo c)
   have hv : ∀ a, vV T₂.V (i a) = ((r₂ * r₁ : ℕ) : ℤ) * vV T.V a := fun a => by
     rw [RingHom.comp_apply, hv₂, hv₁, Nat.cast_mul, _root_.mul_assoc]
   have hr : 0 < r₂ * r₁ := Nat.mul_pos hr₂ hr₁
-  obtain ⟨j, hj⟩ := exists_lift (j₁.toRingHom.comp ψ.symm.toRingHom) i₂ (GlobalTheory.T.ringHom_finite_and_isIntegral_of_valuation_scaled T₁ T₂ i₂ r₂ hr₂ hv₂ hT₂).1
+  obtain ⟨j, hj⟩ := exists_lift (j₁.toRingHom.comp ψ.symm.toRingHom) i₂ (_root_.GlobalTheory.CompleteValExt.finite_and_integral T₁ T₂ i₂ r₂ hr₂ hv₂ hT₂).1
   have hj' : ∀ a : L, j (i₂ (ψ a)) = j₁ a := fun a => by simpa using DFunLike.congr_fun hj (ψ a)
   letI := (i.comp io).toAlgebra
   let b : L →ₐ[c.F] T₂.Fr := ⟨i₂.comp ψ.toRingHom, fun a =>
@@ -414,7 +415,7 @@ theorem heckeFrameInt (cls : PtClass Xo c)
     (hz₂.1.trans (hx₀.trans (by rw [← Category.assoc, TorsionRat.sp_comp])).symm)
     (h₁.up b hpp.pos (frMap_of_comp hy₁ hy₂ hφ) hz₂)
   obtain ⟨w', hw'⟩ := exists_frMap J y'.1
-  refine ⟨T₂, i, ⟨(GlobalTheory.T.ringHom_finite_and_isIntegral_of_valuation_scaled T T₂ i _ hr hv hT₂).1, _, hr, hv⟩, J, RingHom.ext hjk, y', hT₂,
+  refine ⟨T₂, i, ⟨(_root_.GlobalTheory.CompleteValExt.finite_and_integral T T₂ i _ hr hv hT₂).1, _, hr, hv⟩, J, RingHom.ext hjk, y', hT₂,
     hcls T io y T₂ _ y' hc fun h => hg (GlobalTheory.T.goodReduction_stable_valuationRing_extension E H Dw l Xo c T T₂ io _ y y₂ i _ hr hv hy₂.1 h), w', u, hw', ?_⟩
   exact frBor_map J hb hw' (frMap_of_comp hz₂ hz₁ hj')
 
@@ -440,7 +441,7 @@ theorem heckeValueInt (cls : PtClass Xo c) (h : HeckeFrameInt Xo c cls) : HeckeV
     rw [e₁, e₂, map_mul, map_mul]
     congr 1
     simp [wchar]
-  obtain ⟨q, hq, hq'⟩ := (GlobalTheory.T.ringHom_finite_and_isIntegral_of_valuation_scaled T T' i r hr hi hy').2 (wchar (ex Dw a m) u * b)
+  obtain ⟨q, hq, hq'⟩ := (_root_.GlobalTheory.CompleteValExt.finite_and_integral T T' i r hr hi hy').2 (wchar (ex Dw a m) u * b)
   refine ⟨q, hq, ?_⟩
   rw [e₃, ← hj, RingHom.comp_assoc]
   exact (Polynomial.hom_eval₂ q _ j.toRingHom _).symm.trans ((congrArg j.toRingHom hq').trans (map_zero _))

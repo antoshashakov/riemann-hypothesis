@@ -6,7 +6,10 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDualFamily
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactLevelOffFinEmpty
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdelicUnitaryClosureLocalComponentsOpen
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiscreteSeriesFactorLocalStableStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFinsetSumTranslatesFixedCompactSubgroupStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RepresentationTheory.Basic
+public import Mathlib.Topology.Algebra.Group.Defs
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFinsetSumTranslatesFixedCompactSubgroup
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FactorisableRestrictedTensorLevelStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IrreducibleUnitaryRepEqFiniteSmoothPartTensorDisStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SpanValuesDenseFinitePartSubrepStatement
@@ -260,7 +263,7 @@ theorem irreducible [CompleteSpace H] (hπ : IsIrrUnitary π) (hD : HasDSComp M 
     exact inner_map_map hunit _ _ _
   have hall : ∀ n ∈ N.toSubmodule, ⟪ev n, ev (Φ - n0)⟫_ℂ = 0 := by
     intro n hn
-    obtain ⟨s, hsK, hsne, hsfix⟩ := GlobalTheory.T.exists_finsetSum_translates_fixed_compactSubgroup (finPartDSSm M hU) K hKc n (isSmooth_smoothRep _ n)
+    obtain ⟨s, hsK, hsne, hsfix⟩ := _root_.GlobalTheory.exists_finset_sum_translate_fixed (finPartDSSm M hU) K hKc n (isSmooth_smoothRep _ n)
     have hmem : ∑ g ∈ s, finPartDSSm M hU g n ∈ E :=
       hEmem _ (Submodule.sum_mem _ fun g _ => N.apply_mem_toSubmodule g hn) (mem_fixed_iff.2 hsfix)
     have h1 := (Submodule.mem_orthogonal _ _).1 horth (ev (∑ g ∈ s, finPartDSSm M hU g n))

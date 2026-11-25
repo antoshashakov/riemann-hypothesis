@@ -12,7 +12,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SchurFi
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ThetaPairingInvariant
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CongruentPairsFixVacuumWeilDatumStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAlgebraicInvariantFormVacuumSplitPlaceStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAlgebraicInvariantFormVacuumSplitPlace
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNeZeroAtZero
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRationalApproxFinitePointVacuumLevel
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteUnitaryPointsMemOfLevelAndSplitPlaceStatement
@@ -214,7 +216,7 @@ theorem split_alg {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {g : GA D
       (mem_algebraicClosure_iff.2 (GlobalTheory.T.vacuum_self_dual_lattices hv hS hT p.1 p.2 hp F F hF hF))
 
   obtain ⟨n, c, w, hc, hw, hFe⟩ := id hF
-  obtain ⟨ℓ, l1, l2, l3⟩ := GlobalTheory.T.exists_algebraicInvariantForm_vacuum_splitPlace hv hS hT e he n w hw
+  obtain ⟨ℓ, l1, l2, l3⟩ := _root_.GlobalTheory.SplitAlgForm.exists_alg_form hv hS hT e he n w hw
   have ha : ℓ F ∈ Qb := by
 
     rw [hFe, map_sum]
