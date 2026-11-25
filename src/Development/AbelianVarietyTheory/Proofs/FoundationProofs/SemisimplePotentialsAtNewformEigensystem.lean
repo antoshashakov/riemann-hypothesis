@@ -5,16 +5,19 @@ public import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApply
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ChosenDiamondMatrixLetterOperatorsCosetSumsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraCocyclesGammaOneGammaZeroFiniteDimStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsJointGenEigenspaceIdempotentPolyStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeDiamondCommuteModCoboundariesGamma1Gamma0Statement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.OpLDOneSubMemTriv
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ChosenDiamondMatrixLetterOperatorsCosetSums
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerShimuraCocyclesGammaOneGammaZeroFiniteDim
+public import Mathlib.Algebra.FreeAlgebra
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsJointGenEigenspaceIdempotentPoly
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeDiamondCommuteModCoboundariesGamma1Gamma0
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeDoubleCosetRepsGammaOneGammaZeroLevelStatement
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeOperatorOnCocycleMapsCocycleCoboundaryConjStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeSemisimpleGeneralisedEigenNewformGamma1GammStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeSumPotentialsCocycleEqStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeSemisimpleGeneralisedEigenNewformGamma1Gamm
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeSumPotentialsCocycleEq
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PolyDegreeSlashActionRightActionPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PotentialCocycleDehomogenisedLawsStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PotentialCocycleDehomogenisedLaws
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,22 +92,22 @@ theorem letter_pot (N l w : ℕ) (hN : 5 ≤ N) (hl : l.Prime) (hlN : ¬ l ∣ N
   intro F hF
   have hN0 : 0 < N := by omega
   have hl0 : 0 < l := hl.pos
-  obtain ⟨hsg, hTq, hU, hD⟩ := GlobalTheory.T.chosenDiamondMatrix_letterOperators_cosetSums N l hN0 hl hlN
+  obtain ⟨hsg, hTq, hU, hD⟩ := _root_.GlobalTheory.KZ.DiamondOperatorFamilies.sgD_fams N l hN0 hl hlN
   obtain ⟨rT, rU, rD⟩ := GlobalTheory.T.heckeDoubleCosetReps_gammaOneGammaZeroLevel N l hN hl hlN
   cases T with
   | T q =>
     obtain ⟨hq, hqN⟩ := hT
     have hcop : Nat.Coprime q N := (Nat.Prime.coprime_iff_not_dvd hq).2 fun h => hqN (h.mul_right l)
     rw [hTq q, LinearMap.sum_apply]
-    exact GlobalTheory.T.heckeSum_potentials_cocycle_eq N l w (GlobalTheory.HeckeFamilyMatrices.dg 1 q) _ _ hN0 hl0
+    exact _root_.GlobalTheory.KZ.DictHk.dict_hk N l w (GlobalTheory.HeckeFamilyMatrices.dg 1 q) _ _ hN0 hl0
       (by simp [GlobalTheory.HeckeFamilyMatrices.dg, Matrix.det_fin_two_of]; exact_mod_cast hq.pos) (rT q _ hq hqN (hsg q hcop)) F hF
   | U =>
     rw [hU, LinearMap.sum_apply]
-    exact GlobalTheory.T.heckeSum_potentials_cocycle_eq N l w (GlobalTheory.HeckeFamilyMatrices.dg 1 l) _ _ hN0 hl0
+    exact _root_.GlobalTheory.KZ.DictHk.dict_hk N l w (GlobalTheory.HeckeFamilyMatrices.dg 1 l) _ _ hN0 hl0
       (by simp [GlobalTheory.HeckeFamilyMatrices.dg, Matrix.det_fin_two_of]; exact_mod_cast hl.pos) rU F hF
   | D d =>
     rw [hD d, LinearMap.sum_apply]
-    exact GlobalTheory.T.heckeSum_potentials_cocycle_eq N l w (GlobalTheory.HeckeFamilyMatrices.mat (sgD N l d)) _ _ hN0 hl0 (by simp) (rD _ _ (hsg d hT)) F hF
+    exact _root_.GlobalTheory.KZ.DictHk.dict_hk N l w (GlobalTheory.HeckeFamilyMatrices.mat (sgD N l d)) _ _ hN0 hl0 (by simp) (rD _ _ (hsg d hT)) F hF
 
 theorem lift_pot (N l w : ℕ) (hN : 5 ≤ N) (hl : l.Prime) (hlN : ¬ l ∣ N) {P : FreeAlgebra ℂ Letter}
     (hP : P ∈ admissibleLettersSubalgebra ℂ N l) :
@@ -112,7 +115,7 @@ theorem lift_pot (N l w : ℕ) (hN : 5 ≤ N) (hl : l.Prime) (hlN : ¬ l ∣ N) 
       cocP (GlobalTheory.HeckeFamilyMatrices.Lev N l) (FreeAlgebra.lift ℂ (opL ℂ N l) P F) =
         FreeAlgebra.lift ℂ (opZ N l w) P (cocP (GlobalTheory.HeckeFamilyMatrices.Lev N l) F) := by
   have hN0 : 0 < N := by omega
-  obtain ⟨-, hadd, hsmul⟩ := GlobalTheory.T.potentialCocycleDehomogenised_laws w N l hN0 hl.pos
+  obtain ⟨-, hadd, hsmul⟩ := _root_.GlobalTheory.KZ.cocP_laws w N l hN0 hl.pos
   induction hP using Algebra.adjoin_induction with
   | mem y hy =>
     obtain ⟨T, hT, rfl⟩ := hy
@@ -149,7 +152,7 @@ theorem ssPotB_at_newform : ∀ (k : ℕ) (g : UpperTheory.V.Af.Newform k) (N l 
   have hN0 : 0 < N := by omega
   have hl0 : 0 < l := hl.pos
   haveI : NeZero N := ⟨by omega⟩
-  obtain ⟨hsg, -, -, -⟩ := GlobalTheory.T.chosenDiamondMatrix_letterOperators_cosetSums N l hN0 hl hlN
+  obtain ⟨hsg, -, -, -⟩ := _root_.GlobalTheory.KZ.DiamondOperatorFamilies.sgD_fams N l hN0 hl hlN
   obtain ⟨rT, rU, rD⟩ := GlobalTheory.T.heckeDoubleCosetReps_gammaOneGammaZeroLevel N l hN5 hl hlN
   have hcopq : ∀ q, q.Prime → ¬ q ∣ N * l → Nat.Coprime q N := fun q hq hqN =>
     (Nat.Prime.coprime_iff_not_dvd hq).2 fun h => hqN (h.mul_right l)
@@ -178,7 +181,7 @@ theorem ssPotB_at_newform : ∀ (k : ℕ) (g : UpperTheory.V.Af.Newform k) (N l 
 
   have comm := fun (q q' d d' : ℕ) (hq : q.Prime) (hqN : ¬ q ∣ N * l) (hq' : q'.Prime) (hq'N : ¬ q' ∣ N * l)
       (hd : Nat.Coprime d N) (hd' : Nat.Coprime d' N) =>
-    GlobalTheory.T.heckeDiamond_commute_mod_coboundaries_gamma1Gamma0 N l k hN5 hl hlN hk3 hk q q' (sgD N l q) (sgD N l q') (sgD N l d) (sgD N l d') (d : ZMod N)
+    _root_.GlobalTheory.HeckeFamilyMatrices.Comm.heckeDiamond_commute_mod_coboundaries_gamma1Gamma0_alt N l k hN5 hl hlN hk3 hk q q' (sgD N l q) (sgD N l q') (sgD N l d) (sgD N l d') (d : ZMod N)
       (d' : ZMod N) hq hqN hq' hq'N (hsg q (hcopq q hq hqN)) (hsg q' (hcopq q' hq' hq'N)) (hsg d hd) (hsg d' hd')
   have h1N : Nat.Coprime 1 N := Nat.coprime_one_left N
   have hcomm : ∀ t t', admitted N l t → admitted N l t' → ∀ z ∈ GlobalTheory.HeckeFamilyMatrices.Z1 (GlobalTheory.HeckeFamilyMatrices.Lev N l) (k - 2),
@@ -221,7 +224,7 @@ theorem ssPotB_at_newform : ∀ (k : ℕ) (g : UpperTheory.V.Af.Newform k) (N l 
       have := hsg (e u) (he1 u); rwa [he2 u] at this
     have hchi : ∀ u : (ZMod N)ˣ, lam (Letter.D (e u)) = g.χ (ZMod.castHom hN (ZMod g.M) (u : ZMod N)) := fun u => by
       rw [hlD _ (he1 u), ← he2 u, map_natCast (ZMod.castHom hN (ZMod g.M))]
-    obtain ⟨cT, cU, cD⟩ := GlobalTheory.T.hecke_semisimple_generalised_eigen_newform_gamma1Gamma0 k g N l hN hN5 hl hlN hk hk3 α hα h1 h2 (fun q => sgD N l q)
+    obtain ⟨cT, cU, cD⟩ := _root_.GlobalTheory.HeckeFamilyMatrices.hecke_semisimple_at_newform k g N l hN hN5 hl hlN hk hk3 α hα h1 h2 (fun q => sgD N l q)
       (fun u => sgD N l (e u)) (fun q hq hqN => hsg q (hcopq q hq hqN)) hσD z hz n
       (fun q hq hqN => by have h := hgen (Letter.T q) ⟨hq, hqN⟩; rw [hlT q hq hqN] at h; exact h)
       (by have h := hgen Letter.U trivial; rw [hlU] at h; exact h)
@@ -250,11 +253,11 @@ theorem ssPotB_at_newform : ∀ (k : ℕ) (g : UpperTheory.V.Af.Newform k) (N l 
       · intro u; split_ifs with h
         · exact h.symm
         · exact hval2 u
-  obtain ⟨P, hP, hP1, hPz⟩ := GlobalTheory.T.exists_joint_genEigenspace_idempotent_poly ℂ (GlobalTheory.HeckeFamilyMatrices.Lev N l → Polynomial ℂ) (GlobalTheory.HeckeFamilyMatrices.Z1 (GlobalTheory.HeckeFamilyMatrices.Lev N l) (k - 2))
+  obtain ⟨P, hP, hP1, hPz⟩ := _root_.GlobalTheory.exists_genEig_idem_poly ℂ (GlobalTheory.HeckeFamilyMatrices.Lev N l → Polynomial ℂ) (GlobalTheory.HeckeFamilyMatrices.Z1 (GlobalTheory.HeckeFamilyMatrices.Lev N l) (k - 2))
     (GlobalTheory.HeckeFamilyMatrices.B1 (GlobalTheory.HeckeFamilyMatrices.Lev N l) (k - 2)) Letter (admitted N l) (opZ N l (k - 2)) lam (eichlerShimuraCoboundaries_le_eichlerShimuraCocycles _ _)
-    (GlobalTheory.T.eichlerShimuraCocycles_gammaOneGammaZero_finiteDimensional N l (k - 2) hN0 hl0) (fun t ht => (hpres t ht).1) (fun t ht => (hpres t ht).2) hcomm heig
+    (_root_.GlobalTheory.KZ.H3.lev_fd N l (k - 2) hN0 hl0) (fun t ht => (hpres t ht).1) (fun t ht => (hpres t ht).2) hcomm heig
   refine ⟨P, hP, hP1, fun F hF T hT => ?_⟩
-  obtain ⟨hD1, hD2, hD3⟩ := GlobalTheory.T.potentialCocycleDehomogenised_laws (k - 2) N l hN0 hl0
+  obtain ⟨hD1, hD2, hD3⟩ := _root_.GlobalTheory.KZ.cocP_laws (k - 2) N l hN0 hl0
   obtain ⟨hPF, hcPF⟩ := lift_pot N l (k - 2) hN5 hl hlN hP F hF
   obtain ⟨hTF, hcTF⟩ := letter_pot N l (k - 2) hN5 hl hlN T hT _ hPF
   have hG : (opL ℂ N l T - lam T • (1 : Module.End ℂ (ℂ → MvPolynomial (Fin 2) ℂ)))

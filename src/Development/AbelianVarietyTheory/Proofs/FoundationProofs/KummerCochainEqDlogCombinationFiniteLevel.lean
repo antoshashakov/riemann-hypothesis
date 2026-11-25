@@ -1,18 +1,19 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationModIntegralAlmostDualPSqIsIntStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlmostGaloisCoordinatesStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationModIntegralExtensionPCubeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDlogDerivationsGluedTowerLevelsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDlogDerivationsTowerLevelModIntegralStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationModIntegralAlmostDualPSqIsInt
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAlmostGaloisCoordinates
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationModIntegralExtensionPCube
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDlogDerivationsGluedTowerLevels
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDlogDerivationsTowerLevelModIntegral
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIntPrimeDivRootOfUnitySubOnePowStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KaehlerRelationDerivationModIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerGaloisFixedEqDivLevelElementsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerGnExponentsKummerCochainsStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KaehlerRelationDerivationModIntegral
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerGaloisFixedEqDivLevelElements
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerGnExponentsKummerCochains
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelAdjoinRootsIntegrallyClosedQuotientStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRootsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceTowerAlmostDualBasesAdjoinKummerRootStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceTowerAlmostDualBasesAdjoinKummerRoot
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -84,7 +85,7 @@ theorem conj_mem_Hinf {T : Tower p Ω} {n : ℕ} {lz lq : Gal p Ω → ZMod (p ^
     {g h : Gal p Ω} (hg : g ∈ Gn T n) (hh : h ∈ Hinf T) : g⁻¹ * h * g ∈ Hinf T := by
   rw [mem_Hinf] at hh ⊢
   intro m
-  obtain ⟨i, j, -, -, e1, e2, -⟩ := GlobalTheory.T.towerGn_exponents_kummer_cochains p Ω T n (m + 2 * n) (by omega) lz lq hz hq g hg
+  obtain ⟨i, j, -, -, e1, e2, -⟩ := _root_.GlobalTheory.KumExpo.exponents p Ω T n (m + 2 * n) (by omega) lz lq hz hq g hg
   have k1 : (g⁻¹ * h * g) (T.ζ (m + 2 * n)) = T.ζ (m + 2 * n) := by
     show g.symm (h (g _)) = _
     rw [AlgEquiv.symm_apply_eq, e1, map_pow, (hh _).1]
@@ -112,7 +113,7 @@ theorem gal_mem_fix {T : Tower p Ω} {n : ℕ} {a lz lq : Gal p Ω → ZMod (p ^
 theorem fix_mem_Lev (hΩ : IsClo p Ω) (T : Tower p Ω) :
     ∀ x ∈ FixI (Hinf T), ∃ m : ℕ, x ∈ Lev T m := by
   intro x hx
-  obtain ⟨m, a, ha, b, hb, hb0, rfl⟩ := GlobalTheory.T.towerGaloisFixed_eq_div_levelElements p Ω hΩ T x hx.2
+  obtain ⟨m, a, ha, b, hb, hb0, rfl⟩ := _root_.GlobalTheory.FixFrac.fixed_eq_div p Ω hΩ T x hx.2
   exact ⟨m + 1, GlobalTheory.T.towerLevelAdjoinRoots_integrallyClosed_quotient p Ω hΩ T (m + 1) (by omega) a (Lev_mono T (by omega) ha) b
     (Lev_mono T (by omega) hb) hb0 hx.1⟩
 
@@ -137,12 +138,12 @@ theorem exists_ders (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ
         (1 + p ^ n * ((lz g).val : Ω) + p ^ (2 * n) * s) * g (Dz r) -
         (p ^ n * ((lq g).val : Ω) + p ^ (2 * n) * t) * g (Dq r))) := by
   have hH : ∀ h ∈ Hinf T, ∃ i : ℕ, h r = T.ζ n ^ i * r := fun h hh => ⟨_, ha h (Hinf_le T n hh)⟩
-  obtain ⟨ι, _, u, v, hu, hv, huv, h0⟩ := GlobalTheory.T.exists_almostGalois_coordinates p hp2 Ω hΩ T n r hr hH
-  obtain ⟨tr, hd⟩ := GlobalTheory.T.traceTower_almostDualBases_adjoin_kummer_root p Ω T n r hr hH ι u v hu hv huv h0
-  obtain ⟨dz, dq, hdz, hdq, hval⟩ := GlobalTheory.T.exists_dlog_derivations_glued_tower_levels p Ω hΩ T _ (fix_mem_Lev hΩ T)
-    (fun m hm => GlobalTheory.T.exists_dlog_derivations_towerLevel_mod_integral p Ω hΩ T m hm)
-  obtain ⟨Dz, hDz, ez⟩ := GlobalTheory.T.exists_derivationModIntegral_extension_p_cube p Ω _ _ ι u v tr hd dz hdz
-  obtain ⟨Dq, hDq, eq⟩ := GlobalTheory.T.exists_derivationModIntegral_extension_p_cube p Ω _ _ ι u v tr hd dq hdq
+  obtain ⟨ι, _, u, v, hu, hv, huv, h0⟩ := _root_.GlobalTheory.KumDlog.almostGal_coord p hp2 Ω hΩ T n r hr hH
+  obtain ⟨tr, hd⟩ := _root_.GlobalTheory.traceTower_dualData p Ω T n r hr hH ι u v hu hv huv h0
+  obtain ⟨dz, dq, hdz, hdq, hval⟩ := _root_.GlobalTheory.LevGlue.glue p Ω hΩ T _ (fix_mem_Lev hΩ T)
+    (fun m hm => _root_.GlobalTheory.LevDer.exists_levDer p Ω hΩ T m hm)
+  obtain ⟨Dz, hDz, ez⟩ := _root_.GlobalTheory.DerExt.exists_ext p Ω _ _ ι u v tr hd dz hdz
+  obtain ⟨Dq, hDq, eq⟩ := _root_.GlobalTheory.DerExt.exists_ext p Ω _ _ ι u v tr hd dq hdq
   have hC := hd.2.1
   have hLB : ∀ m, Lev T m ≤ FixI (Hinf T) := fun m => Lev_le_FixI T m (Hinf_le T m)
   have p3 : IsInt (p := p) ((p : Ω) ^ 3) := int_pow (int_nat p) 3
@@ -165,7 +166,7 @@ theorem exists_ders (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ
   obtain ⟨m, hm2, hmM⟩ : ∃ m, 2 * n ≤ m ∧ ∀ kl, M kl ≤ m :=
     ⟨max (2 * n) (Finset.univ.sup M), le_max_left _ _, fun kl =>
       le_trans (Finset.le_sup (f := M) (Finset.mem_univ kl)) (le_max_right _ _)⟩
-  obtain ⟨i, j, s, t, e1, e2, hi, hj⟩ := GlobalTheory.T.towerGn_exponents_kummer_cochains p Ω T n m hm2 lz lq hz hq g hg
+  obtain ⟨i, j, s, t, e1, e2, hi, hj⟩ := _root_.GlobalTheory.KumExpo.exponents p Ω T n m hm2 lz lq hz hq g hg
   obtain ⟨y1, y2, y3, y4⟩ := V m (by omega)
   have zC := hd.1 (hLB m (zeta_mem_Lev T m))
   have qC := hd.1 (hLB m (qq_mem_Lev T m))
@@ -186,7 +187,7 @@ theorem exists_ders (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ
       refine int_congr (int_sub (int_sub a3 (int_mul (int_nat i) y2)) (int_mul (int_nat j) y4)) ?_
       simp only [map_sub, map_mul, map_div₀, map_pow, map_natCast, AlgEquiv.symm_apply_apply]
       ring)
-  have hU := GlobalTheory.T.derivationModIntegral_almostDual_p_sq_isInt p Ω _ _ ι u v tr hd _ hD' r hrC
+  have hU := _root_.GlobalTheory.KumDlog.der_dual_p_sq_int p Ω _ _ ι u v tr hd _ hD' r hrC
     (fun k l => hvan _ (Lev_mono T (hmM (k, l)) (hM (k, l))))
   refine ⟨s, t, int_congr (int_gal g hU) ?_⟩
   have hi' : (i : Ω) = 1 + p ^ n * ((lz g).val : Ω) + p ^ (2 * n) * s := by
@@ -217,8 +218,8 @@ theorem core (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ) (hn :
   have hC : ∀ x ∈ FixI (Hfix T r), IsInt (p := p) x := fun x hx => hx.1
   have hLC : Lev T n ≤ FixI (Hfix T r) := Lev_le_FixI T n (le_trans inf_le_left (Hinf_le T n))
   have hrC : r ∈ FixI (Hfix T r) := ⟨hrI, fun h hh => hh.2⟩
-  have kz := GlobalTheory.T.kaehler_relation_derivationModIntegral p Ω n ι _ hC (fun x => hLC (hL x)) Dz hDz _ _ _ _ _ _ hrel
-  have kq := GlobalTheory.T.kaehler_relation_derivationModIntegral p Ω n ι _ hC (fun x => hLC (hL x)) Dq hDq _ _ _ _ _ _ hrel
+  have kz := _root_.GlobalTheory.KumDlog.kaehler_rel_isInt p Ω n ι _ hC (fun x => hLC (hL x)) Dz hDz _ _ _ _ _ _ hrel
+  have kq := _root_.GlobalTheory.KumDlog.kaehler_rel_isInt p Ω n ι _ hC (fun x => hLC (hL x)) Dq hDq _ _ _ _ _ _ hrel
   simp only [map_mul, hι.1, hι.2] at kz kq
   have z0 := zeta_ne T n
   have q0 := qq_ne T n
