@@ -5,7 +5,7 @@ public import GroundTheory.AutomorphicForms.GL2.GJMatrixLocal
 public import GroundTheory.GlobalFields.TateThesis.EulerFactorsFourierFinite
 import GroundTheory.AutomorphicForms.GL2.IsAddHaarMeasureMatrixMeasureFinSq
 import GroundTheory.AutomorphicForms.ReductionMeasure
-public import GroundTheory.AutomorphicForms.RestrictedAddHaarProduct
+public import GroundTheory.AutomorphicForms.RestrictedHaarProduct
 public import GroundTheory.GlobalFields.TateThesis.RootNumberLocalPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -281,7 +281,7 @@ theorem isCompact_integralMatrices (v : HeightOneSpectrum (𝓞 K)) :
   exact isCompact_univ_pi fun _ ↦ isCompact_univ_pi fun _ ↦ isCompact_valBall 0
 
 theorem finConstF_ne_zero : finConstF K n ≠ 0 := by
-  refine mul_ne_zero (RestrictedAddHaar.measureReal_setOf_forall_mem_pos
+  refine mul_ne_zero (RestrictedHaarAdd.measureReal_setOf_forall_mem_pos
     (G := fun v : HeightOneSpectrum (𝓞 K) ↦ Matrix (Fin n) (Fin n) (v.adicCompletion K))
     (fun v ↦ (integralMatrices (v.adicCompletion K) n).toAddSubgroup)
     (fact_isOpen_integralMatrices (K := K) (n := n)).out isCompact_integralMatrices _).ne'
@@ -335,7 +335,7 @@ theorem finiteFourierPi_tensorFin (S : Finset (HeightOneSpectrum (𝓞 K)))
   set R := ramifiedPlaces K with hRdef
   set Bz := (finite_setOf_not_integral z).toFinset with hBzdef
   set T := S ∪ R ∪ Bz with hTdef
-  have hbox : ∀ X ∈ RestrictedAddHaar.box C T, H X = ∏ v ∈ T, F v (X v) := by
+  have hbox : ∀ X ∈ RestrictedHaarAdd.box C T, H X = ∏ v ∈ T, F v (X v) := by
     intro X hX
     refine finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ ?_
     by_contra hvT
@@ -345,9 +345,9 @@ theorem finiteFourierPi_tensorFin (S : Finset (HeightOneSpectrum (𝓞 K)))
     have hXv : X v ∈ integralMatrices (v.adicCompletion K) n := hX v hvT
     show Φ v (X v) * _ = 1
     rw [hΦ1 v hvS _ hXv, hψ1 v _ hXv (hWint v hvB), one_mul]
-  have hzero : ∀ X, X ∉ RestrictedAddHaar.box C S → H X = 0 := by
+  have hzero : ∀ X, X ∉ RestrictedHaarAdd.box C S → H X = 0 := by
     intro X hX
-    simp only [RestrictedAddHaar.mem_box, not_forall] at hX
+    simp only [RestrictedHaarAdd.mem_box, not_forall] at hX
     obtain ⟨v, hvS, hXv⟩ := hX
     refine finprod_eq_zero _ v ?_ ?_
     · show Φ v (X v) * _ = 0
@@ -394,12 +394,12 @@ theorem finiteFourierPi_tensorFin (S : Finset (HeightOneSpectrum (𝓞 K)))
     rfl
   have hST : S ⊆ T := fun v h ↦ Finset.mem_union_left _ (Finset.mem_union_left _ h)
   have h2 : ∫ X, H X ∂finMatHaar K n =
-      ∫ X in (RestrictedAddHaar.box C T : Set (Πʳ v : HeightOneSpectrum (𝓞 K),
+      ∫ X in (RestrictedHaarAdd.box C T : Set (Πʳ v : HeightOneSpectrum (𝓞 K),
         [Matrix (Fin n) (Fin n) (v.adicCompletion K),
           (integralMatrices (v.adicCompletion K) n : Set (Matrix (Fin n) (Fin n) (v.adicCompletion K)))])),
         H X ∂finMatHaar K n :=
     (setIntegral_eq_integral_of_forall_compl_eq_zero fun X hX ↦
-      hzero X fun h ↦ hX (RestrictedAddHaar.box_mono C hST h)).symm
+      hzero X fun h ↦ hX (RestrictedHaarAdd.box_mono C hST h)).symm
   have hFc : ∀ v, Measurable (F v) := by
     intro v
     have hΦc : Continuous (Φ v) := by
@@ -413,7 +413,7 @@ theorem finiteFourierPi_tensorFin (S : Finset (HeightOneSpectrum (𝓞 K)))
       ((C v : AddSubgroup (Matrix (Fin n) (Fin n) (v.adicCompletion K))) :
         Set (Matrix (Fin n) (Fin n) (v.adicCompletion K))) = 1 :=
     fun v ↦ locMeas_integralMatrices v
-  have h3 := RestrictedAddHaar.setIntegral_box
+  have h3 := RestrictedHaarAdd.setIntegral_box
     (G := fun v : HeightOneSpectrum (𝓞 K) ↦ Matrix (Fin n) (Fin n) (v.adicCompletion K)) C
     (fact_isOpen_integralMatrices (K := K) (n := n)).out isCompact_integralMatrices (finMatHaar K n)
     (fun v ↦ locMeas K n v) hν1 F hFc T H hbox
