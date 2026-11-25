@@ -102,6 +102,7 @@ theorem lintegral_fintype_prod_eq_prod {κ : Type*} [Fintype κ] {E : κ → Typ
 
 variable {ι : Type*} {G : ι → Type*} [∀ i, Group (G i)] (C : ∀ i, Subgroup (G i))
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.box]
 def box (T : Finset ι) : Subgroup (Πʳ i, [G i, (C i : Set (G i))]) where
   carrier := {x | ∀ i, i ∉ T → x i ∈ C i}
   one_mem' i _ := by
@@ -117,9 +118,11 @@ def box (T : Finset ι) : Subgroup (Πʳ i, [G i, (C i : Set (G i))]) where
     rw [RestrictedProduct.inv_apply]
     exact (C i).inv_mem (hx i hi)
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.mem_box]
 theorem mem_box {T : Finset ι} {x : Πʳ i, [G i, (C i : Set (G i))]} :
     x ∈ box C T ↔ ∀ i, i ∉ T → x i ∈ C i := Iff.rfl
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.box_mono]
 theorem box_mono {T T' : Finset ι} (h : T ⊆ T') : box C T ≤ box C T' :=
   fun _ hx i hi ↦ hx i fun hiT ↦ hi (h hiT)
 
@@ -129,6 +132,7 @@ theorem exists_mem_box (x : Πʳ i, [G i, (C i : Set (G i))]) : ∃ T : Finset �
   by_contra h
   exact hi (hx.mem_toFinset.2 h)
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.proj]
 def proj (T : Finset ι) : (Πʳ i, [G i, (C i : Set (G i))]) →* ((i : T) → G i) where
   toFun x i := x i
   map_one' := by
@@ -140,26 +144,31 @@ def proj (T : Finset ι) : (Πʳ i, [G i, (C i : Set (G i))]) →* ((i : T) → 
     show (x * y) (i : ι) = x i * y i
     rw [RestrictedProduct.mul_apply]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.proj_apply]
 theorem proj_apply (T : Finset ι) (x : Πʳ i, [G i, (C i : Set (G i))]) (i : T) : proj C T x i = x i := rfl
 
 
 open Classical in
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.secFun]
 def secFun (T : Finset ι) (a : (i : T) → G i) (i : ι) : G i := by
   classical
   exact if h : i ∈ T then a ⟨i, h⟩ else 1
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.secFun_of_mem]
 theorem secFun_of_mem {T : Finset ι} (a : (i : T) → G i) {i : ι} (h : i ∈ T) :
     secFun T a i = a ⟨i, h⟩ := by
   classical
   unfold secFun
   rw [dite_eq_left h]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.secFun_of_notMem]
 theorem secFun_of_notMem {T : Finset ι} (a : (i : T) → G i) {i : ι} (h : i ∉ T) :
     secFun T a i = 1 := by
   classical
   unfold secFun
   rw [dite_eq_right h]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.sec]
 def sec (T : Finset ι) : ((i : T) → G i) →* (Πʳ i, [G i, (C i : Set (G i))]) where
   toFun a := ⟨secFun T a, by
     filter_upwards [T.finite_toSet.compl_mem_cofinite] with i hi
@@ -181,27 +190,33 @@ def sec (T : Finset ι) : ((i : T) → G i) →* (Πʳ i, [G i, (C i : Set (G i)
       rfl
     · rw [secFun_of_notMem _ h, secFun_of_notMem _ h, secFun_of_notMem _ h, one_mul]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.sec_apply]
 theorem sec_apply (T : Finset ι) (a : (i : T) → G i) (i : ι) : sec C T a i = secFun T a i := rfl
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.sec_mem_box]
 theorem sec_mem_box (T : Finset ι) (a : (i : T) → G i) : sec C T a ∈ box C T := by
   intro i hi
   rw [sec_apply, secFun_of_notMem a hi]
   exact (C i).one_mem
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.proj_sec]
 theorem proj_sec (T : Finset ι) (a : (i : T) → G i) : proj C T (sec C T a) = a := by
   funext i
   rw [proj_apply, sec_apply, secFun_of_mem a i.2]
 
 variable [∀ i, TopologicalSpace (G i)]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.continuous_proj]
 theorem continuous_proj (T : Finset ι) : Continuous (proj C T) :=
   continuous_pi fun i ↦ RestrictedProduct.continuous_eval (i : ι)
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.isOpen_box]
 theorem isOpen_box (hCo : ∀ i, IsOpen (C i : Set (G i))) (T : Finset ι) :
     IsOpen (box C T : Set (Πʳ i, [G i, (C i : Set (G i))])) :=
   RestrictedProduct.isOpen_forall_imp_mem (R := G) (A := fun i ↦ (C i : Set (G i))) hCo
     (p := fun i ↦ i ∉ T)
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.isCompact_box_inter_preimage]
 theorem isCompact_box_inter_preimage [∀ i, IsTopologicalGroup (G i)] [∀ i, T2Space (G i)] (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (T : Finset ι) {E : Set ((i : T) → G i)}
     (hE : IsCompact E) :
@@ -259,16 +274,19 @@ variable [∀ i, IsTopologicalGroup (G i)] [∀ i, T2Space (G i)] [∀ i, Second
   [∀ i, MeasurableSpace (G i)] [∀ i, BorelSpace (G i)]
   [MeasurableSpace (Πʳ i, [G i, (C i : Set (G i))])] [BorelSpace (Πʳ i, [G i, (C i : Set (G i))])]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.projMeasure]
 def projMeasure (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) (T : Finset ι) :
     Measure ((i : T) → G i) :=
   (μ.restrict (box C T : Set (Πʳ i, [G i, (C i : Set (G i))]))).map (proj C T)
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.projMeasure_apply]
 theorem projMeasure_apply (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
     (T : Finset ι) {E : Set ((i : T) → G i)} (hE : MeasurableSet E) :
     projMeasure C μ T E = μ ((box C T : Set (Πʳ i, [G i, (C i : Set (G i))])) ∩ proj C T ⁻¹' E) := by
   have hm : Measurable (proj C T) := (continuous_proj C T).measurable
   rw [projMeasure, Measure.map_apply hm hE, Measure.restrict_apply (hm hE), inter_comm]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.isHaarMeasure_projMeasure]
 theorem isHaarMeasure_projMeasure (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
     [μ.IsHaarMeasure] (T : Finset ι) : (projMeasure C μ T).IsHaarMeasure := by
@@ -302,6 +320,7 @@ theorem isHaarMeasure_projMeasure (hCo : ∀ i, IsOpen (C i : Set (G i)))
     rw [proj_sec]
     exact ha
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.setOf_forall_mem_eq]
 theorem setOf_forall_mem_eq :
     {x : Πʳ i, [G i, (C i : Set (G i))] | ∀ i, x i ∈ C i} =
       (box C ∅ : Set (Πʳ i, [G i, (C i : Set (G i))])) ∩ proj C ∅ ⁻¹' univ := by
@@ -309,6 +328,7 @@ theorem setOf_forall_mem_eq :
   simp only [mem_ofPred_eq, mem_inter_iff, SetLike.mem_coe, mem_box, Finset.notMem_empty,
     not_false_eq_true, true_implies, mem_preimage, mem_univ, and_true]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.isCompact_setOf_forall_mem]
 theorem isCompact_setOf_forall_mem (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) :
     IsCompact {x : Πʳ i, [G i, (C i : Set (G i))] | ∀ i, x i ∈ C i} := by
@@ -316,6 +336,7 @@ theorem isCompact_setOf_forall_mem (hCo : ∀ i, IsOpen (C i : Set (G i)))
   refine isCompact_box_inter_preimage C hCo hCc ∅ ?_
   exact Set.Subsingleton.isCompact fun a _ b _ ↦ funext fun i ↦ absurd i.2 (Finset.notMem_empty _)
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.measure_setOf_forall_mem_pos]
 theorem measure_setOf_forall_mem_pos (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) [μ.IsHaarMeasure] :
     0 < μ {x : Πʳ i, [G i, (C i : Set (G i))] | ∀ i, x i ∈ C i} := by
@@ -326,6 +347,7 @@ theorem measure_setOf_forall_mem_pos (hCo : ∀ i, IsOpen (C i : Set (G i)))
   rw [h]
   exact (isOpen_box C hCo ∅).measure_pos μ ⟨1, (box C ∅).one_mem⟩
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.measureReal_setOf_forall_mem_pos]
 theorem measureReal_setOf_forall_mem_pos (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
     [μ.IsHaarMeasure] :
@@ -335,6 +357,7 @@ theorem measureReal_setOf_forall_mem_pos (hCo : ∀ i, IsOpen (C i : Set (G i)))
 
 variable [∀ i, LocallyCompactSpace (G i)]
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.projMeasure_eq]
 theorem projMeasure_eq (hCo : ∀ i, IsOpen (C i : Set (G i))) (hCc : ∀ i, IsCompact (C i : Set (G i)))
     (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) [μ.IsHaarMeasure] (ν : ∀ i, Measure (G i))
     [∀ i, (ν i).IsHaarMeasure] (hν : ∀ i, ν i (C i) = 1) (T : Finset ι) :
@@ -369,6 +392,7 @@ theorem projMeasure_eq (hCo : ∀ i, IsOpen (C i : Set (G i))) (hCc : ∀ i, IsC
   rw [← hc]
   rfl
 
+@[to_additive GroundTheory.Automorphic.RestrictedHaarAdd.setIntegral_box]
 theorem setIntegral_box (hCo : ∀ i, IsOpen (C i : Set (G i))) (hCc : ∀ i, IsCompact (C i : Set (G i)))
     (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) [μ.IsHaarMeasure] (ν : ∀ i, Measure (G i))
     [∀ i, (ν i).IsHaarMeasure] (hν : ∀ i, ν i (C i) = 1) (F : ∀ i, G i → ℂ)
