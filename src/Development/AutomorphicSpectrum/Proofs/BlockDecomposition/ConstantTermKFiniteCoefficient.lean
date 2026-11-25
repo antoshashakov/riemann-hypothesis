@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneMemGoodCT
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.AffineGLForms.GenSpace
+import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsFinsetSeparating
 
 @[expose] public section
 
@@ -56,24 +57,8 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CTFin.KType
 
 theorem exists_finset_sep {K : Type} (S : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ S] :
-    ∃ T : Finset K, ∀ s ∈ S, (∀ t ∈ T, s t = 0) → s = 0 := by
-  classical
-  let f : Finset K → Submodule ℂ S := fun T =>
-    ⨅ t ∈ T, LinearMap.ker ((LinearMap.proj (R := ℂ) (φ := fun _ : K => ℂ) t).comp S.subtype)
-  obtain ⟨T, -, hT⟩ := (measure fun T => Module.finrank ℂ (f T)).wf.has_min Set.univ ⟨∅, trivial⟩
-  refine ⟨T, fun s hs h0 => ?_⟩
-  by_contra hne
-  obtain ⟨t, ht⟩ := Function.ne_iff.1 hne
-  have hmem : ∀ T' : Finset K, ∀ u : S, u ∈ f T' ↔ ∀ t ∈ T', (u : K → ℂ) t = 0 := fun T' u => by
-    simp [f, Submodule.mem_iInf]
-  have hle : f (insert t T) ≤ f T := fun u hu =>
-    (hmem T u).2 fun t' ht' => (hmem _ u).1 hu t' (Finset.mem_insert_of_mem ht')
-  have hlt : f (insert t T) < f T := by
-    refine lt_of_le_of_ne hle fun heq => ?_
-    have h1 : (⟨s, hs⟩ : S) ∈ f T := (hmem T _).2 h0
-    rw [← heq] at h1
-    exact ht ((hmem _ _).1 h1 t (Finset.mem_insert_self t T))
-  exact hT (insert t T) trivial (Submodule.finrank_lt_finrank_of_lt hlt)
+    ∃ T : Finset K, ∀ s ∈ S, (∀ t ∈ T, s t = 0) → s = 0 :=
+  _root_.UpperTheory.Reformulated.B.Qp2.exists_finset_separating S
 
 theorem integral_mem {K K' : Type} [MeasurableSpace K'] (μ : Measure K') (S : Submodule ℂ (K → ℂ))
     [FiniteDimensional ℂ S] (F : K' → K → ℂ) (hF : ∀ k', F k' ∈ S)

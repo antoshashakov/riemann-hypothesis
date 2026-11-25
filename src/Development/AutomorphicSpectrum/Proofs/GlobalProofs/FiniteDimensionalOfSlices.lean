@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsFinsetSeparating
 
 @[expose] public section
 
@@ -103,23 +104,8 @@ def cuspOn {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.
 section Slices
 
 theorem exists_finset_sep {X : Type} (A : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ A] :
-    ∃ S : Finset X, ∀ f ∈ A, (∀ x ∈ S, f x = 0) → f = 0 := by
-  classical
-  let ev : X → Module.Dual ℂ A := fun x => (LinearMap.proj x).comp A.subtype
-  have hfg : (Submodule.span ℂ (Set.range ev)).FG := IsNoetherian.noetherian _
-  obtain ⟨s, hs, e⟩ := (Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg
-  obtain ⟨s', -, rfl⟩ := Finset.subset_set_image_iff.1 (by rwa [Set.image_univ] : (s : Set (Module.Dual ℂ A)) ⊆ ev '' Set.univ)
-  refine ⟨s', fun f hf h0 => ?_⟩
-  have h1 : ∀ l ∈ Submodule.span ℂ ((s'.image ev : Finset _) : Set (Module.Dual ℂ A)), l ⟨f, hf⟩ = 0 := fun l hl => by
-    induction hl using Submodule.span_induction with
-    | mem l h =>
-      obtain ⟨x, hx, rfl⟩ := Finset.mem_image.1 h
-      exact h0 x hx
-    | zero => rfl
-    | add a b _ _ ha hb => simp [ha, hb]
-    | smul a b _ hb => simp [hb]
-  funext x
-  exact h1 (ev x) (e ▸ Submodule.subset_span ⟨x, rfl⟩)
+    ∃ S : Finset X, ∀ f ∈ A, (∀ x ∈ S, f x = 0) → f = 0 :=
+  _root_.UpperTheory.Reformulated.B.Qp2.exists_finset_separating A
 
 theorem finiteDimensional_of_slices {ι : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type} (A : ∀ i, Submodule ℂ (X i → ℂ))
     [∀ i, FiniteDimensional ℂ (A i)] (𝓕 : Set ((∀ i, X i) → ℂ))
