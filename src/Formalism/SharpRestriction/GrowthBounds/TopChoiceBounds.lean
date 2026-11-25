@@ -260,40 +260,8 @@ theorem bc_size_real (G N1 u M P de h lx R B : ℝ)
     (hG : G = (M + 5) * (R * u)) (hB : B ≤ 2 * ((h + 3) * lx))
     (hN1 : N1 ≤ max (6 * Real.exp 1 * G * de) B + 2) :
     G * de ≤ (((h + 3) / P + 6) * R * 2) * lx ∧ N1 ≤ 16.8 * (G * de) ∧ 0 < G := by
-  have hh3 : 0 ≤ (h + 3) * lx := by positivity
-  have hq : 0 ≤ (h + 3) * lx / P := by positivity
-  have hq1 : (h + 3) * lx ≤ (h + 3) * lx / P := by
-    rw [le_div_iff₀ hP0]
-    exact mul_le_of_le_one_right hh3 hP1
-  have hM0 : 0 ≤ M := le_trans hq hM1
-  have hGde : G * de = (M + 5) * R * (u * de) := by rw [hG]; ring
-  have hMR : 0 ≤ (M + 5) * R := by positivity
-  have hup : G * de ≤ (M + 5) * R * 2 := by rw [hGde]; exact mul_le_mul_of_nonneg_left hud2 hMR
-  have hlo : (M + 5) * R ≤ G * de := by rw [hGde]; exact le_mul_of_one_le_right hMR hud1
-  have hc0 : 0 ≤ (h + 3) / P := by positivity
-  have hM5 : M + 5 ≤ ((h + 3) / P + 6) * lx := by
-    have e : (h + 3) * lx / P = (h + 3) / P * lx := by ring
-    rw [e] at hM2
-    nlinarith
-  have hR0 : 0 ≤ R := by linarith
-  have hCe : G * de ≤ (((h + 3) / P + 6) * R * 2) * lx := by
-    calc G * de ≤ (M + 5) * R * 2 := hup
-      _ ≤ (((h + 3) / P + 6) * lx) * R * 2 := by gcongr
-      _ = _ := by ring
-  have hMR5 : M + 5 ≤ (M + 5) * R := le_mul_of_one_le_right (by linarith) hR
-  have hG5 : 5 ≤ G * de := by linarith
-  have hGpos : 0 < G := by
-    by_contra hneg
-    have : G * de ≤ 0 := mul_nonpos_of_nonpos_of_nonneg (not_lt.mp hneg) hde.le
-    linarith
-  refine ⟨hCe, ?_, hGpos⟩
-  have he1 : 1 ≤ Real.exp 1 := by have := Real.add_one_le_exp (1 : ℝ); linarith
-  have he2 := Real.exp_one_lt_d9
-  have hA : B ≤ 6 * Real.exp 1 * G * de := by
-    have : 6 * (G * de) ≤ 6 * Real.exp 1 * G * de := by nlinarith
-    linarith
-  rw [max_eq_left hA] at hN1
-  nlinarith
+  exact WittFrameLocaliserOrders.orbit_size_bounds_real G N1 u M P de h lx R B
+    hR hh hde hlx hP0 hP1 hud1 hud2 hM1 hM2 hG hB hN1
 
 def logBoundConstant (r : ℕ) (h : ℝ) : ℝ := ((h + 3) / (10 : ℝ) ^ (-((6 * r + 1 : ℕ) : ℤ)) + 6) * (6 * (r : ℝ) + 1) * 2
 
@@ -476,88 +444,7 @@ theorem bc_frames (TT : Finset (Fin n')) (r u L₂ Gp M J : ℕ) (B : ℤ → �
       (∀ j : ℤ, ∀ x ∈ F.LLset j, (((F.LLset j).filter (· ≤ x)).card ≤ r ∨
           (F.LLset j).card < ((F.LLset j).filter (· ≤ x)).card + r) → F.GapGt L₂ j x) ∧
       (∀ j : ℤ, F.GapGt L₂ j (F.fr j 0)) := by
-  obtain ⟨hJ, hper, hMT, hstep, hbd, hidx, hall⟩ := hS
-  have hev : ∀ i, Even (2 * r + 2 + 2 * i) := fun i => ⟨r + 1 + i, by ring⟩
-  refine ⟨bf_F TT r u J B, rfl, hJ, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · intro j i
-    by_cases hi : i < r
-    · show (bf_F TT r u J B).fr (j + (J : ℤ)) i = _
-      rw [bf_F_fr TT r u J B _ hi, bf_F_fr TT r u J B _ hi, hper]
-      exact bf_tp_shift TT r u (hMT j) (by rw [← hper]; exact hMT _) (by omega) (by omega) (hev i)
-    · show (if i < r then _ else B (j + (J : ℤ))) = (if i < r then _ else B j) + (n' : ℤ)
-      rw [if_neg hi, if_neg hi]
-      exact hper j
-  · intro j i hi
-    rw [bf_F_fr TT r u J B _ (show i < r by omega), bf_F_fr TT r u J B _ hi]
-    exact bf_tp_lt TT r u (hMT j) (by omega) (by omega) (hev i) (hev (i + 1)) (by omega)
-  · intro j
-    rw [bf_F_fr TT r u J B _ (show r - 1 < r by omega), bf_F_fr TT r u J B _ (show 0 < r by omega)]
-    have A := bf_tp_spec TT r u (hMT j) (c := 2 * r + 2 + 2 * (r - 1)) (by omega) (by omega) (hev _)
-    have Bq := bf_tp_spec TT r u (hMT (j + 1)) (c := 2 * r + 2 + 2 * 0) (by omega) (by omega) (hev _)
-    have h1 := bf_cu (show 2 * r + 2 + 2 * (r - 1) ≤ 6 * r + 1 by omega) u
-    have h2 := bf_u_le (show 1 ≤ 2 * r + 2 + 2 * 0 by omega) u
-    linarith [A.1.2.1, Bq.1.1, hstep j]
-  · intro j i hi
-    rw [bf_F_fr TT r u J B _ hi]
-    have A := bf_tp_spec TT r u (hMT j) (c := 2 * r + 2 + 2 * i) (by omega) (by omega) (hev _)
-    exact ⟨A.1.2.2.1, A.1.2.2.2⟩
-  · intro j i x hi h1 h2 hx
-    rw [bf_F_fr TT r u J B _ (show i < r by omega)] at h1
-    rw [bf_F_fr TT r u J B _ hi] at h2
-    have A := bf_tp_spec TT r u (hMT j) (c := 2 * r + 2 + 2 * i) (by omega) (by omega) (hev _)
-    have A2 := bf_tp_spec TT r u (hMT j) (c := 2 * r + 2 + 2 * (i + 1)) (by omega) (by omega) (hev _)
-    have g1 := bf_u_le (show 1 ≤ 2 * r + 2 + 2 * i by omega) u
-    have g2 := bf_cu (show 2 * r + 2 + 2 * (i + 1) ≤ 6 * r + 1 by omega) u
-    obtain ⟨c, hce, hc1, hc2, hxc⟩ := bf_class TT r u (hMT j) hu hx (by linarith [A.1.1]) (by linarith [A2.1.2.1])
-    obtain ⟨m, hm⟩ := hce
-    rcases Nat.lt_trichotomy c (2 * r + 2 + 2 * i) with h | h | h
-    · have := bf_tp_lt TT r u (hMT j) hc1 (by omega) ⟨m, hm⟩ (hev i) h
-      omega
-    · rw [h] at hxc; omega
-    · rcases Nat.lt_trichotomy c (2 * r + 2 + 2 * (i + 1)) with h' | h' | h'
-      · omega
-      · rw [h'] at hxc; omega
-      · have := bf_tp_lt TT r u (hMT j) (by omega) hc2 (hev (i + 1)) ⟨m, hm⟩ h'
-        omega
-  · intro j
-    refine ⟨?_, ?_⟩
-    · have hS1 := bf_card_image TT r u (hMT (j - 1)) (4 * r + 2) r ⟨2 * r + 1, by ring⟩ (by omega)
-        (fun k hk => by omega)
-      refine le_trans (le_of_eq hS1.symm) (card_le_card fun y hy => ?_)
-      obtain ⟨k, hk, rfl⟩ := mem_image.1 hy
-      exact bf_LL_first hr hMT hstep j (mem_range.1 hk)
-    · intro x hx hc
-      obtain ⟨b, c, hb, he, h1, h2, rfl⟩ := bf_LL_key hr hu hMT hstep j x hx hc
-      exact (bf_tp_spec TT r u hb h1 h2 he).1.2.2.2
-  · intro j
-    obtain ⟨h1, h2, q, hq⟩ := hidx j
-    refine ⟨sidx j, h1, h2, fun i hi => ?_⟩
-    rw [bf_F_fr TT r u J B _ hi]
-    exact bf_cell (hMT j) (sidx j) q hq h1 (by omega) (by omega) (hev i)
-  · intro s hs hM
-    obtain ⟨j, rfl⟩ := hall s hs hM
-    obtain ⟨h1, h2, q, hq⟩ := hidx j
-    refine ⟨j, ?_⟩
-    rw [bf_F_fr TT r u J B _ (show 0 < r by omega)]
-    exact bf_cell (hMT j) (sidx j) q hq h1 (by omega) (by omega) (hev 0)
-  · intro j
-    rw [bf_F_fr TT r u J B _ (show r - 1 < r by omega), bf_F_fr TT r u J B _ (show 0 < r by omega)]
-    have A := bf_tp_spec TT r u (hMT j) (c := 2 * r + 2 + 2 * (r - 1)) (by omega) (by omega) (hev _)
-    have Bq := bf_tp_spec TT r u (hMT (j - 1)) (c := 2 * r + 2 + 2 * 0) (by omega) (by omega) (hev _)
-    have h1 := bf_cu (show 2 * r + 2 + 2 * (r - 1) ≤ 6 * r + 1 by omega) u
-    have h2 := bf_u_le (show 1 ≤ 2 * r + 2 + 2 * 0 by omega) u
-    have h3 := hbd (j - 1)
-    rw [sub_add_cancel] at h3
-    have h4 : ((M + 3 : ℕ) : ℤ) * (((6 * r + 1 : ℕ) : ℤ) * u) ≤ Gp := by exact_mod_cast hG
-    have h5 : ((M + 3 : ℕ) : ℤ) * (((6 * r + 1 : ℕ) : ℤ) * u) =
-        ((M + 2 : ℕ) : ℤ) * (((6 * r + 1 : ℕ) : ℤ) * u) + ((6 * r + 1 : ℕ) : ℤ) * u := by push_cast; ring
-    linarith [A.1.2.1, Bq.1.1]
-  · intro j x hx hc
-    obtain ⟨b, c, hb, he, h1, h2, rfl⟩ := bf_LL_key hr hu hMT hstep j x hx hc
-    exact bf_gapGt hL j hb h1 h2 he
-  · intro j
-    rw [bf_F_fr TT r u J B _ (show 0 < r by omega)]
-    exact bf_gapGt hL j (hMT j) (by omega) (by omega) (hev 0)
+  exact frames_with_common_marked_tile TT r u L₂ Gp M J B sidx hr hu hL hG hS
 
 theorem bc_letters_card {r : ℕ} (F : Frames n' r) (G' N₁ : ℕ) (hGn : G' ≤ n')
     (hc : Formalism.G0.CondIntervals n' (F.TT.map Fin.valEmbedding) G' N₁) (j : ℤ)
@@ -576,38 +463,7 @@ theorem bc_oldest_far {r : ℕ} (F : Frames n' r) (L₁ L₂ : ℕ) (hr : 1 ≤ 
     (hI : ∀ y : ℤ, ((Finset.Ico y (y + L₂)).filter fun t => posOf n' t ∈ F.TT).card ≤ r - 1)
     (j x : ℤ) (hE : r ≤ ((F.letters j).filter fun z => Even z ∧ z < x).card) :
     (L₁ : ℤ) < x - F.oldest j x := by
-  obtain ⟨E, hEdef⟩ : ∃ E, E = (F.letters j).filter fun z => Even z ∧ z < x := ⟨_, rfl⟩
-  rw [← hEdef] at hE
-  have hidx : E.card - r < E.card := by omega
-  have ho : F.oldest j x = E.orderEmbOfFin rfl ⟨E.card - r, hidx⟩ := by
-    unfold Frames.oldest
-    simp only
-    rw [← hEdef, Finset.length_sort, List.getD_eq_getElem _ _ (by rw [Finset.length_sort]; exact hidx),
-      Finset.orderEmbOfFin_apply]
-    rfl
-  by_contra hcon
-  have hcon' : x - F.oldest j x ≤ L₁ := not_lt.mp hcon
-  have hcard : (Finset.univ : Finset (Fin r)).card ≤
-      ((Finset.Ico (F.oldest j x) (F.oldest j x + L₂)).filter fun t => posOf n' t ∈ F.TT).card := by
-    apply Finset.card_le_card_of_injOn (fun i : Fin r => E.orderEmbOfFin rfl ⟨E.card - r + i.val, by omega⟩)
-    · intro i _
-      have hmem : E.orderEmbOfFin rfl ⟨E.card - r + i.val, by omega⟩ ∈ E := Finset.orderEmbOfFin_mem E rfl _
-      have hge : F.oldest j x ≤ E.orderEmbOfFin rfl ⟨E.card - r + i.val, by omega⟩ := by
-        rw [ho]
-        exact (E.orderEmbOfFin rfl).monotone (by rw [Fin.le_def]; simp)
-      replace hmem := (Finset.ext_iff.mp hEdef _).mp hmem
-      unfold Frames.letters at hmem
-      simp only [Finset.mem_filter, Finset.mem_Icc] at hmem
-      simp only [Finset.coe_filter, Finset.mem_Ico, Set.mem_ofPred_eq]
-      have hLz : (L₁ : ℤ) ≤ L₂ := by exact_mod_cast hL
-      exact ⟨⟨hge, by omega⟩, hmem.1.2⟩
-    · intro a _ b _ hab
-      have := (E.orderEmbOfFin rfl).injective hab
-      have h2 := Fin.mk.inj this
-      exact Fin.ext (by omega)
-  have := hI (F.oldest j x)
-  rw [Finset.card_univ, Fintype.card_fin] at hcard
-  omega
+  exact oldest_far_of_interval_card F L₁ L₂ hr hL hI j x hE
 
 theorem restFrames_proved (D : D7) : RestFrames D := by
   intro n' _ TT r L₁ L₂ u M₀ G' N₁ h hn hr
