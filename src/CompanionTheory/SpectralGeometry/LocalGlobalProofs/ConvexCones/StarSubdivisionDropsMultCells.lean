@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MultC
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SimpLabMinValOne
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsStarSubdivisionStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsTwistedCentreSetStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsTwistedCentreSet
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsTwistedSimplicialStarLabelStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.StarSubdivisionMultLeStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -57,7 +58,7 @@ theorem exists_star_drop_multCells : ∀ (O : Type) [CommRing O] [IsDedekindDoma
       Subordinate bar q φ' φ ∧ maxMult bar q φ' ≤ M ∧ MultCellsAmong bar q φ' M n := by
   intro O _ _ _ _ bar w0 hb q φ lab hDom hφ hφtw hlabtw hsl M n hM hmax hcells
   obtain ⟨R, hR⟩ := hcells
-  obtain ⟨w, hwtw, hwc, hcov, hdrop⟩ := GlobalTheory.T.exists_twisted_centre_set O bar w0 hb q φ lab hDom hφ hφtw hlabtw hsl M hM hmax (R 0)
+  obtain ⟨w, hwtw, hwc, hcov, hdrop⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fan.TwistedOrbitCentres.centres_exists O bar w0 hb q φ lab hDom hφ hφtw hlabtw hsl M hM hmax (R 0)
   obtain ⟨ψ', hψ', hψ'tw, hsub, hstar⟩ := GlobalTheory.T.exists_star_subdivision O bar w0 hb q φ w hDom hφ hφtw hwtw hwc
   obtain ⟨lab', hlab'tw, hsl'⟩ := GlobalTheory.T.exists_twisted_simplicial_star_label O bar w0 hb q φ lab w ψ' hDom hφ hlabtw hsl hwtw hwc hψ' hsub hstar
   obtain ⟨hmax', hc'⟩ := GlobalTheory.T.star_subdivision_mult_le O bar hb q φ lab w ψ' hDom hφ hsl hwc hdrop hψ' hsub hstar M hmax

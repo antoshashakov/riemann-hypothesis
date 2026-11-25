@@ -4,7 +4,11 @@ public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CapelliPolynomialPermutationMatchStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CenterActionCommutesLeviDifferenceStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FiniteTypeAlgebraCommonEigencharacterStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FreeAlgebraActionOnSubquotientStatement
+public import Mathlib.Algebra.FreeAlgebra
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.Quotient.Defs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FreeAlgebraActionOnSubquotient
+public import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.EigenspaceCyclicDensity.LowKMultOneP
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HighestWeightClassBoundaryAndWeightStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LevelWeightSumBoundStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LeviActionCommutesWithTotalBoundaryStatement
@@ -252,7 +256,7 @@ theorem coBlock : InjU → GenCOU → COBlock := by
       exact ⟨_, g1, g2 _ h2, g3.symm⟩
     · simp only [lL, if_neg hpq]
       exact B.zero_mem
-  obtain ⟨ρ, hρ⟩ := GlobalTheory.T.free_algebra_action_on_subquotient (Cn n V) (Fin n × Fin n) (lL lev E) Z B hZs hBs
+  obtain ⟨ρ, hρ⟩ := _root_.GlobalTheory.CompanionTheory.RgCOBlock.QuotAction.descends (Cn n V) (Fin n × Fin n) (lL lev E) Z B hZs hBs
   have hlift : FreeAlgebra.lift ℂ (lL lev E) = evLc lev E := rfl
   rw [hlift] at hρ
   have hzero : ∀ y, (∀ z : Z, evLc lev E y (z : Cn n V) = 0) → ρ y = 0 := fun y hy => by

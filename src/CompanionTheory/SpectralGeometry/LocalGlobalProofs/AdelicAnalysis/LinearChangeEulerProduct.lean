@@ -3,7 +3,9 @@ module
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GlobalUnitScalingHaarProductFormulaStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarMapLinearScalingByDeterminantStatement
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.MeasureTheory.Group.Measure
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarMapLinearScalingByDeterminant
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
 import GroundTheory.GlobalFields.LocalAtPlace
 import GroundTheory.GlobalFields.LocalFieldAtPlace
@@ -64,12 +66,12 @@ theorem modulus_matrix : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [F
   refine ⟨cinf, c, hU, ?_, ?_⟩
   · intro μ hμ
     haveI : BorelSpace (Ainf F) := ⟨rfl⟩
-    exact GlobalTheory.T.haar_map_linear_scaling_by_determinant F (Ainf F) ι A hA Measure.addHaar inferInstance cinf
+    exact _root_.GlobalTheory.CompanionTheory.SW.DetScale.map_mulVec_eq_smul F (Ainf F) ι A hA Measure.addHaar inferInstance cinf
       (hinf Measure.addHaar inferInstance) μ hμ
   · intro v μ hμ
     haveI : BorelSpace (Fv F v) := ⟨rfl⟩
     haveI : SecondCountableTopology (Fv F v) := (GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v).2.2.1
-    exact GlobalTheory.T.haar_map_linear_scaling_by_determinant F (Fv F v) ι A hA Measure.addHaar inferInstance (c v)
+    exact _root_.GlobalTheory.CompanionTheory.SW.DetScale.map_mulVec_eq_smul F (Fv F v) ι A hA Measure.addHaar inferInstance (c v)
       (hv v Measure.addHaar inferInstance) μ hμ
 
 end GlobalTheory.CompanionTheory.SW.ProdFormula

@@ -1,7 +1,10 @@
 module
 
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.InfinitesimalCharacterPaths.TensDecomp
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CommutingLocallyNilpotentCommonKernelStatement
+public import Mathlib.Algebra.Module.LinearMap.End
+public import Mathlib.Algebra.Module.Submodule.Lattice
+public import Mathlib.Basic.Complex.Basic
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CommutingLocallyNilpotentCommonKernel
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HasCharSub
 public import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Mathlib.Algebra.Order.Floor.Extended
@@ -164,7 +167,7 @@ theorem exists_raised : StepChar → TensDecomp → ∀ {m : ℕ} (M : GMod m) (
     intro Y
     have h1 := hc Y
     simp only [D, h1, ha Y, c, smul_sub, Finset.sum_sub_distrib, Finset.sum_smul, mul_smul]
-  obtain ⟨w, hw, hw0, hwD⟩ := GlobalTheory.T.commuting_locally_nilpotent_common_kernel _ hI D hcomm hst hnil (m + 1) _ hD
+  obtain ⟨w, hw, hw0, hwD⟩ := _root_.GlobalTheory.CompanionTheory.RgTransport.exists_joint_kernel_polynomial_family _ hI D hcomm hst hnil (m + 1) _ hD
   obtain ⟨x, rfl⟩ := hw
   refine ⟨r, f x, ⟨_, rfl⟩, hw0, fun Y => ?_⟩
   have h2 := hwD Y

@@ -1,7 +1,10 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunEvalEqFineMean
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.FinitePosDefFormSublevelStatement
+public import Mathlib.LinearAlgebra.BilinearMap
+public import Mathlib.LinearAlgebra.FreeModule.Basic
+public import Mathlib.RingTheory.Finiteness.Defs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.FinitePosDefFormSublevel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -122,7 +125,7 @@ theorem finite_isMin2 : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] [M
     ?_, ?_⟩
   · refine Set.finite_iUnion fun S => ?_
     split_ifs with hpos
-    · exact GlobalTheory.T.finite_pos_def_form_sublevel X (Q S) (fun y z => by
+    · exact _root_.GlobalTheory.CompanionTheory.Ar.Fan.sublevel_finite X (Q S) (fun y z => by
         rw [hQ, hQ]
         exact Finset.sum_congr rfl fun i _ => hsym i y z) hpos _
     · exact Set.finite_empty

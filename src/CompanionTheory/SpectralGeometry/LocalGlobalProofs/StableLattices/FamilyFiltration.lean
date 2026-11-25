@@ -1,7 +1,8 @@
 module
 
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.InfinitesimalCharacterPaths.TensDecomp
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.NilpotentOdeFirstStatement
+public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.LineFormulas.RightRule
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.NilpotentOdeFirst
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.NilpotentOdeSecondStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapStarMul
 import Mathlib.Algebra.Order.Floor.Extended
@@ -303,7 +304,7 @@ theorem eig_bounds (hc : IsCoefFam ε X c) (hA : Formalism.REAL.inG ε A) (μ : 
     refine hi ?_
     filter_upwards [hv'] with x hg
     exact ⟨line_continuous hc hA x.2 i u,
-      GlobalTheory.T.NilpotentOdeFirst z s' (not_le.1 hz) _ _ (fun t _ => ode x t) hg.1 hg.2⟩
+      _root_.GlobalTheory.CompanionTheory.OdeRoots.odeA z s' (not_le.1 hz) _ _ (fun t _ => ode x t) hg.1 hg.2⟩
   · by_contra hz
     have hz' : s ≤ z.re := not_lt.1 hz
     refine hi ?_

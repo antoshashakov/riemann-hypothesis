@@ -9,7 +9,8 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Har
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffMemSubmoduleOfComplexPolyValuesMem
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactTypeInCompactStableSubmodule
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KFiniteModuleIrreducibleOfIrreducibleUnitaryRep
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShiftedCapelliDeterminantSubleadingCoeffTraceStatement
+public import Formalism.RealPlaceAnalysis.StatementE
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ShiftedCapelliDeterminantSubleadingCoeffTrace
 public import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -92,7 +93,7 @@ theorem exists_char {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     | zero => exact ⟨fun _ => 1, rfl, fun Y => by simp [qdet, Formalism.REAL.qminor]⟩
     | succ m =>
       obtain ⟨c, _, hc, _, heval⟩ :=
-        GlobalTheory.T.shifted_capelli_determinant_subleading_coeff_trace A m E (-s)
+        _root_.GlobalTheory.CapelliNext.qdet_shift_next_coeff A m E (-s)
       exact ⟨c, hc, fun Y => by simpa only [sub_neg_eq_add] using heval Y⟩
   obtain ⟨c, hlead, heval⟩ := hexpand
   let B : Subalgebra ℂ A := ⊥

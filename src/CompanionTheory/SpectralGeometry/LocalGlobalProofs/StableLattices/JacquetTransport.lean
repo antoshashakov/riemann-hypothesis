@@ -2,7 +2,7 @@ module
 
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HasCharSub
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.ConjQdet
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LeviSubspaceInvariantUnderBlocksStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LeviSubspaceInvariantUnderBlocks
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantAntiHomomorphismStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantBlockEigenvalueStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.TensorQuotientQuantumDeterminantEigenStatement
@@ -172,7 +172,7 @@ theorem block_raise (hS : StepChar) (hT : TensDecomp) (P Q : GMod n) (d : Fin 3 
     have := (stdBlocks d h).injective hab
     simpa using this
   let M : GMod (d k) := restrMod P ι hι (leviSub P d h χ L)
-    (fun a b x hx => GlobalTheory.T.levi_subspace_invariant_under_blocks P d h χ L _ _ (by rw [hblk, hblk]) x hx)
+    (fun a b x hx => _root_.GlobalTheory.CompanionTheory.RgTransport.leviSub_stable P d h χ L _ _ (by rw [hblk, hblk]) x hx)
   have hc : Fintype.card {t // L t = k} = d k := by rw [Fintype.card_subtype]; exact hL k
   let e' : Fin (d k) ≃ {t // L t = k} := (Fintype.equivFinOfCardEq hc).symm
   let c : ℂ := (modExp (fun i => Fin (d i)) k : ℂ) / 2

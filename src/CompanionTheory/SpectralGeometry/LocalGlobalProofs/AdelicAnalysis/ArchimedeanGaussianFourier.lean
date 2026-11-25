@@ -1,7 +1,10 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RealGaussianFourierTransformStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RealGaussianFourierTransform
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -103,7 +106,7 @@ theorem gauss_fourier : ∀ (F : Type) [Field F] [NumberField F], ∀ (ι : Type
     have : (B.map (ρ w)).det = ρ w B.det := by rw [RingHom.map_det]; rfl
     rw [this]
     exact (map_ne_zero (ρ w)).2 hdet
-  have one := fun w => GlobalTheory.T.real_gaussian_fourier_transform ι (B.map (ρ w)) (P w) (hsym.map _) (hdetw w) (hP w) (hrel w)
+  have one := fun w => _root_.GlobalTheory.CompanionTheory.SW.GaussOne.fourier_gaussian_real_place ι (B.map (ρ w)) (P w) (hsym.map _) (hdetw w) (hP w) (hrel w)
   choose c hc using one
   have hfou : ∀ σ : InfinitePlace F → ℂ, (∀ w, 0 < (σ w).im) → ∀ y : InfinitePlace F → ι → ℝ,
       ((Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)| : ℝ) : ℂ) * ∫ x, gauss B ρ P σ x *
