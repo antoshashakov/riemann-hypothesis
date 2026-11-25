@@ -8,8 +8,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeOneTer
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividingThetaConstantsGenerateIntegralTorsionLabStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPointsFramesThetaSectionGenericFibreMemberStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorsionFrameEqConstMulIntegralGeneratorStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorsionTranslateThetaSectionUnitStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricTorsionPointAbelianPartLiesUnderClassZeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorsionTranslateThetaSectionUnit
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricTorsionPointAbelianPartLiesUnderClassZe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeometricTorsionPointGenericFibreMemberHasLabelStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDominantToUnitLeft
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelUnitThetaConstantNeZeroDividesAllStatement
@@ -17,7 +18,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalTors
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsTheta
 public import Development.AbelianVarietyTheory.BlockTheory.CMModuli.FlatIsoUnitGenerator
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueIntegralPointEqAdicSumTerms
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionSectionsExhaustOfGenericGeometricStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionSectionsExhaustOfGenericGeometric
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdmissibleBaseOfCompleteNormalLocalCharZero
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpBijFAndExpandsFLin
@@ -138,8 +139,8 @@ theorem exists_terms : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (
   have hb : ∀ c, (g' c).b = toUnit _ ≫ (gi c).b := fun c =>
     ((GlobalTheory.FieldRestrictionTest.isPullF_iff _ _ _).1 (hg' c)).1
   have hex : Exhausts 𝔪.D.toPre.P (X₁.S.r * X₁.S.N) fun c => (gi c).b := by
-    refine GlobalTheory.T.torsionSections_exhaust_of_generic_geometric V _ _ hN C _ (fun c => (Sep.Frames.torsion_of_nsmul (g' c) _ (hb c) (htor c)).2) fun β hβ => ?_
-    obtain ⟨y, hy, ⟨q, hq0, hqy⟩, H⟩ := GlobalTheory.T.geometricTorsionPoint_abelianPart_lies_under_classZero V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ hN β hβ
+    refine _root_.GlobalTheory.Poinc.IntTerm.exhausts_of_generic V _ _ hN C _ (fun c => (Sep.Frames.torsion_of_nsmul (g' c) _ (hb c) (htor c)).2) fun β hβ => ?_
+    obtain ⟨y, hy, ⟨q, hq0, hqy⟩, H⟩ := _root_.GlobalTheory.Poinc.IntTerm.torsion_lies_under V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ hN β hβ
     obtain ⟨a, ha⟩ := GlobalTheory.T.geometricTorsionPoint_genericFibre_member_has_label g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 y hy
     have hmem : a ∈ Set.range lab := by
       rw [hlab]
@@ -152,7 +153,7 @@ theorem exists_terms : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (
   choose υ hυ using 𝔪.psi
   choose a ha hau using fun mu c => hκ (gi c) (g' c) (w c) l (hg' c) (hw c) (hif c) (𝔪.e₈ mu) _ (hυ mu)
   have hunit : ∀ mu, ∃ c, IsUnit (a mu c) := fun mu =>
-    (GlobalTheory.T.exists_torsionTranslate_thetaSection_unit V 𝔪.D.toPre θ hθ _ hN₂ hNu C _ hex (𝔪.D.toPre.c (𝔪.e₈ mu))).imp fun c hc => hau mu c hc
+    (_root_.GlobalTheory.Poinc.IntTerm.exists_unitAt_mul V 𝔪.D.toPre θ hθ _ hN₂ hNu C _ hex (𝔪.D.toPre.c (𝔪.e₈ mu))).imp fun c hc => hau mu c hc
   have hco : ∀ mu c, coef s (g' c) (w c) (𝔪.e₈ mu) =
       l⁻¹ * κ * algebraMap V (FractionRing V) (υ mu * mono W t δ mu * a mu c) := fun mu c => by
     rw [_root_.mul_assoc, ← ha, inv_mul_cancel_left₀ hl]

@@ -6,7 +6,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinite
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelStructureNormalModelUnitaryModuliPoinStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalSpreadUniversalAbelianSchemeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSysUOver
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSystemRealisationRegularAtPrimeStatement
+public import Development.AbelianVarietyTheory.Definitions.Degenerations.RigGen
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaSystemRealisationRegularAtPrime
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericPointsFiniteUnitaryModuliCoefficientFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryActionBaseChangeSubalgebraStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -98,7 +99,7 @@ theorem exists_linked_cov : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     congr 1
     have := hkJ t
     omega
-  obtain ⟨S, ρ, hR, φ, hreg, -, hN, hr, hgS, hpb, hL, -⟩ := GlobalTheory.T.exists_thetaSystem_realisation_regular_at_prime (o₁ t) (Ω t) R hRfg hfr 𝔭 h𝔭 P n (k t)
+  obtain ⟨S, ρ, hR, φ, hreg, -, hN, hr, hgS, hpb, hL, -⟩ := _root_.GlobalTheory.ThetaRealAt.exists_thetaSys_real_at (o₁ t) (Ω t) R hRfg hfr 𝔭 h𝔭 P n (k t)
     (2 * J - 2 * k t) (ze t) hn ho (hk t) (by have := hkJ t; omega) (hun t) hS (e ▸ levR)
   obtain ⟨act', hact', -, hUA'⟩ := GlobalTheory.T.unitaryAction_baseChange_subalgebra E H Dw l Xo c (o₁ t) (Ω t) R S.R hR P ρ.P φ hpb hL act u hact hUA
   have hu' : spMap (ratHull S.R).val.toRingHom ≫ spMap (Subalgebra.inclusion (ratHull_mono hR)).toRingHom ≫ u = uτ t := by

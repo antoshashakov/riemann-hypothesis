@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplementaryAdelicSchwartzRestFunctionStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplementaryAdelicSchwartzRestFunction
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -55,7 +57,7 @@ theorem GlobalTheory.IntertwLocal.local_intertw : ∀ (F E : Type) [Field F] [Nu
     Acts (evFin F v) (om x) φ₁ φ₃ → Acts (evFin F v) (M.co.rho B.ψ (mat x.1 * u * (mat x.2)ᵀ)) φ₂ φ₄ → φ₄ = φ₃ := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v x u φ φ₁ φ₂ φ₃ φ₄ hφ hφ₁ hφ₂ h1 h2 h3 h4
   have hW := GlobalTheory.WeilM.IsUWeilPair.isUSplitting hP.weil
-  obtain ⟨R, hR0, hR⟩ := GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (Fin n × Fin d) v
+  obtain ⟨R, hR0, hR⟩ := _root_.GlobalTheory.RestWitness.exists_rest (Fin n × Fin d) v
   have hΦ : tens (evFin F v) φ R ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d) := (hR φ hφ).2
   have himpl := hW.impl x u (tens (evFin F v) φ R) hΦ
   have hact : GlobalTheory.WeilM.actAB (cA σ) x u = mat x.1 * u * (mat x.2)ᵀ := rfl

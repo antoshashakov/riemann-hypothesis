@@ -11,7 +11,10 @@ import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyI
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemRangeOfOneTmulMem
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatVectorEqUnitSmulCentralTranslatePlacePart
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatVectorThreeStepsConjugatePlaces
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterConjHalfIdeleEqProdLocalStatement
+import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
+import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterConjHalfIdeleEqProdLocal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatTranslateOfPrime
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCompletedPairLatticeIffAdjointFrameMatrixInte
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCompletedPairLatticeIffFrameMatrixIntegralOnH
@@ -448,7 +451,7 @@ theorem X_det : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A
       (∀ PP ∈ Q, χ.TameAt PP ∧ IsRes χ PP (ρ PP)) → (∀ PP ∈ Q, GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing.UnitOff N ((χ.locK PP u : ℂˣ) : ℂ)) →
       GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing.UnitOff N ((c x : Circle) : ℂ) := by
     intro c χ ρ hc h1 h2
-    have e1 := GlobalTheory.T.heckeCharacter_conjHalfIdele_eq_prod_local D _ _ (isIdemSum_conj he) (u ^ m) y (by rw [Formalism.L2.Theta.cA_cA]; exact hy) c χ hc
+    have e1 := _root_.GlobalTheory.IdemSumChar.char_eq_prod D _ _ (isIdemSum_conj he) (u ^ m) y (by rw [Formalism.L2.Theta.cA_cA]; exact hy) c χ hc
     have e2 := GlobalTheory.TameSplitChar.char_eq_prod_res D c χ Q e ρ hc he h1 (y⁻¹ * x) a ⟨d, hd⟩ (fun PP => (hun PP).unit) hx' ha.symm
       fun _ _ => rfl
     rw [← mul_inv_cancel_left y x, map_mul, Circle.coe_mul, e1, e2]

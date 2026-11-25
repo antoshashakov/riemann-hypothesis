@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.InducedModelMorphismCompStructureMap
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFractionRingOnOfMemModelLocalRingStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFractionRingOnOfMemModelLocalRing
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModelAffinePointEqOfInverseMemIffStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeOfRingOnEqNonunitsAtPointStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RingOnPreimageIntegralOfFiniteModelMapStatement
@@ -235,7 +235,7 @@ theorem isIntegral_of_mem_O (hF : IsFinite q) (hg : M₂.pt ≫ q = spMap (algeb
       have h4 : a⁻¹ ∈ M₁.O (q w) ↔ (algebraMap Ω₁ Ω₂ a)⁻¹ ∈ M₂.O w :=
         ⟨map_inv_mem_O hg, inv_mem_O_of_map hg h1 ha0⟩
       rw [h4, ← not_not (a := (algebraMap Ω₁ Ω₂ a)⁻¹ ∈ M₂.O w), ← h3, h2, not_not]
-    obtain ⟨c, hc', d, hd, hd0, hdinv, hbcd⟩ := GlobalTheory.T.exists_fraction_ringOn_of_mem_modelLocalRing _ _ M₂ _ hU₂ w hwU b (hb w hqw)
+    obtain ⟨c, hc', d, hd, hd0, hdinv, hbcd⟩ := _root_.GlobalTheory.Poinc.exists_eq_div_of_mem_O_affine _ _ M₂ _ hU₂ w hwU b (hb w hqw)
     have hdI : (⟨d, hd⟩ : M₂.ringOn ((q ⁻¹ᵁ U : M₂.Z.Opens) : Set M₂.Z)) ∈ I := by
       show d * b ∈ M₂.ringOn ((q ⁻¹ᵁ U : M₂.Z.Opens) : Set M₂.Z)
       rw [hbcd, mul_div_cancel₀ _ hd0]; exact hc'
@@ -293,7 +293,7 @@ theorem maximal_point (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNorma
     by_contra hcon
     push_neg at hcon
     obtain ⟨hb0, hbinv⟩ := hcon
-    obtain ⟨c, hc, d, hd, hd0, hdinv, hcd⟩ := GlobalTheory.T.exists_fraction_ringOn_of_mem_modelLocalRing _ _ M₂ _ hU₂ z₂ hz₂U _ hbinv
+    obtain ⟨c, hc, d, hd, hd0, hdinv, hcd⟩ := _root_.GlobalTheory.Poinc.exists_eq_div_of_mem_O_affine _ _ M₂ _ hU₂ z₂ hz₂U _ hbinv
     have e : ψ ⟨d, hd⟩ = ψ ⟨c, hc⟩ * b := by
       apply Subtype.ext
       show d = c * (b : Ω₂)
@@ -451,7 +451,7 @@ theorem lift_point (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalSc
   have hz₂U : y (cPt p) ∈ q ⁻¹ᵁ U := (le_preimage_iff y _).1 hyU
   have hb2 : (b : Ω₂) ∈ M₂.O (y (cPt p)) :=
     mem_O_of_isIntegral hN hg halg ((mem_integralClosure_iff _ _).1 b.2) hq2
-  obtain ⟨c, hc, d, hd, hd0, hdinv, hbcd⟩ := GlobalTheory.T.exists_fraction_ringOn_of_mem_modelLocalRing _ _ M₂ _ hU₂ _ hz₂U _ hb2
+  obtain ⟨c, hc, d, hd, hd0, hdinv, hbcd⟩ := _root_.GlobalTheory.Poinc.exists_eq_div_of_mem_O_affine _ _ M₂ _ hU₂ _ hz₂U _ hb2
   have hspec : ∀ w, (gPt p ≫ y) w ⤳ y (cPt p) := gPt_specializes rfl
   have hdO : d ∈ M₂.O (y (cPt p)) := mem_ringOn.1 hd _ hz₂U
   have hbd : (b : Ω₂) * d = c := by rw [hbcd, div_mul_cancel₀ _ hd0]

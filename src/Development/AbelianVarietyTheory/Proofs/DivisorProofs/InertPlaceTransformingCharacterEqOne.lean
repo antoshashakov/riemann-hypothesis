@@ -10,7 +10,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnita
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledWeilOperatorDiagonalIntegralHeisenbergPoi
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEqStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdmittedDiagonalIntegralLinearFormStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplementaryAdelicSchwartzRestFunctionStatement
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsComplementaryAdelicSchwartzRestFunction
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryDoubledBlockDiagOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryScalarInertPlaceInvertibleShiftsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePlaceComponentAdeleNormEqLocalNormStatement
@@ -250,7 +252,7 @@ theorem char_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
       show Λ (boxFun φt φ₂) - (Λ (boxFun φt φ₂) / l φt) * l φt = 0
       rw [div_mul_cancel₀ _ hlt, sub_self]
     exact sub_eq_zero.1 (hline _ hl' h0 φ hφ)
-  obtain ⟨R, hR0, hR⟩ := GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (F := F) ((Fin a' × Fin (a + a')) ⊕ (Fin a' × Fin (a + a'))) v
+  obtain ⟨R, hR0, hR⟩ := _root_.GlobalTheory.RestWitness.exists_rest (F := F) ((Fin a' × Fin (a + a')) ⊕ (Fin a' × Fin (a + a'))) v
 
   have hdiag : ∀ k ∈ UAt σ G.V' (evFin F v), ∀ kd : UG (cA σ) (dbl (incM F G.V'.J)),
       (kd.1.1 : Matrix (Fin a' ⊕ Fin a') (Fin a' ⊕ Fin a') (AE F E)) = Matrix.fromBlocks (mat k) 0 0 1 →

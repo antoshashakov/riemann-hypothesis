@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Normal
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ConjTupRefl
 public import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
 import Development.AbelianVarietyTheory.Definitions.Foundations.RootOfUnityEightQMemCoeffGaloisSubfield
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterConjHalfIdeleEqProdLocalStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterConjHalfIdeleEqProdLocal
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowEqSpan
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteRamifiedPlacesHeckeCharacter
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemFin
@@ -139,7 +141,7 @@ theorem chi_unitOff : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Ty
   have hval : ∀ (c : (AE D)ˣ →* Circle) (ψ : Formalism.L2.Host.HChar D.host.E), ChrEq c ψ →
       ((c x : Circle) : ℂ) = ∏ P ∈ Q, (((ψ.locK (conjPl P) u : ℂˣ) : ℂ)) ^ (Vc D i).rank := by
     intro c ψ hc
-    rw [GlobalTheory.T.heckeCharacter_conjHalfIdele_eq_prod_local D Q eQ heQ (u ^ (Vc D i).rank) x hxl c ψ hc]
+    rw [_root_.GlobalTheory.IdemSumChar.char_eq_prod D Q eQ heQ (u ^ (Vc D i).rank) x hxl c ψ hc]
     refine Finset.prod_congr rfl fun P _ => ?_
     rw [map_pow, Units.val_pow_eq_pow_val]
   have e : ((((Lift.chrTh (Lift.tup R.mu0 χ) R.eta ((i : ℕ) + 1)).2 x : Circle) : ℂ)) =
