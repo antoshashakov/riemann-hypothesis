@@ -623,62 +623,36 @@ lemma LineBundle.IsProjEmbedding.compactSpace_complexPoint (hN : N.IsProjEmbeddi
   -- The points are the continuous image of a closed subset K of the unit sphere in ℂ^ι.
   -- First the homogeneous coordinates of each point, and the closed immersion j into projective
   -- space along which N is pulled back.
-  have h_coord (x : ComplexPoint A) : ∃ p : ι → ℂ, N.IsHomogeneousCoords x.left p :=
-    ⟨_, hN.isLinearSystem.isHomogeneousCoords_transition (N.exists_landsIn x.left).choose_spec⟩
-  obtain ⟨j, hj_closed, hj, rfl⟩ : ∃ j : A.left ⟶ ProjSpace ι ⨯ Spec (CommRingCat.of ℂ),
-      IsClosedImmersion j ∧ j ≫ Limits.prod.snd = A.hom ∧
-        ((hyperplaneBundle ι).pull Limits.prod.fst).pull j = N :=
-    hN.exists_isClosedImmersion
-  -- Each unit vector `c` gives a point `t c` of projective space, continuously in `c`.
-  have h_points (c : Metric.sphere (0 : ι → ℂ) 1) : ∃ t : Spec ⟨ℂ⟩ ⟶ ProjSpace ι ⨯ Spec ⟨ℂ⟩,
-      t ≫ Limits.prod.snd = 𝟙 (Spec ⟨ℂ⟩) ∧
-        ((hyperplaneBundle ι).pull Limits.prod.fst).IsHomogeneousCoords t (c : ι → ℂ) := by
-    -- A unit vector has a nonzero coordinate `i`.
-    obtain ⟨i, hi⟩ := ne_iff.mp (ne_zero_of_mem_unit_sphere c)
-    exact exists_isHomogeneousCoords (𝟙 (Spec ⟨ℂ⟩)) hi.isUnit
-  choose t ht_over ht_lifts using h_points
-  have ht_cont (c : Metric.sphere (0 : ι → ℂ) 1) : HasGermAt (ContinuousAt · c) t c :=
-    .of_isHomogeneousCoords isProjEmbedding_projSpace (continuousAt_pi.mp (by fun_prop))
-      (.of_forall ht_lifts) ht_over
-  -- So the unit vectors whose point is outside the image of `j` form an open set; `K` is the rest.
-  let W : Scheme.Opens (ProjSpace ι ⨯ Spec (CommRingCat.of ℂ)) :=
-    ⟨(Set.range j)ᶜ, j.isClosedEmbedding.isClosed_range.isOpen_compl⟩
-  have h_open : IsOpen {c | LandsIn (t c) W} :=
-    isOpen_iff_mem_nhds.mpr fun c hc ↦ (ht_cont c (isRegularOn_ofSection 0) hc).left
-  let K : Compacts (Metric.sphere (0 : ι → ℂ) 1) :=
-    ⟨{c | LandsIn (t c) W}ᶜ, h_open.isClosed_compl.isCompact⟩
-  -- For `c` in `K` the point `t c` factors through `j`.
-  have h_lift (c : K) : ∃ s : Spec ⟨ℂ⟩ ⟶ A.left, s ≫ j = t c := by
-    have h_mem : t c (closedPoint ℂ) ∈ Set.range j :=
-      by_contra fun h ↦ c.prop (landsIn_iff_mem.mpr h)
-    exact exists_lift_of_dense_preimage j _ (dense_indiscrete ⟨closedPoint ℂ, h_mem⟩)
-  choose s hs using h_lift
-  let f (c : K) : ComplexPoint A := homMk (s c) (by simp [← hj, reassoc_of% hs, ht_over])
-  have hf : Continuous f := by
-    refine continuous_iff_continuousAt.mpr fun c ↦ continuousAt_complexPoint_iff.mpr ?_
-    have hv_coords (c : K) : (((hyperplaneBundle ι).pull Limits.prod.fst).pull
-        j).IsHomogeneousCoords (f c).left (c.1 : ι → ℂ) := by
-      rw [IsHomogeneousCoords.pull_iff, show (f c).left ≫ j = t c from hs c]
-      exact ht_lifts c
-    exact .of_isHomogeneousCoords hN (continuousAt_pi.mp (by fun_prop)) (.of_forall hv_coords)
-      fun c ↦ Over.w (f c)
-  refine Function.Surjective.compactSpace (f := f) hf fun x ↦ ?_
-  -- Onto: normalise the coordinates `p` of `x` to a unit vector `c`; then `t c` is the image of `x`
-  -- under `j`.
-  obtain ⟨p, hp⟩ := h_coord x
-  have hp_ne : p ≠ 0 := hp.ne_zero
-  let c : Metric.sphere (0 : ι → ℂ) 1 :=
-    ⟨(‖p‖ : ℂ)⁻¹ • p, mem_sphere_zero_iff_norm.mpr (norm_smul_inv_norm hp_ne)⟩
-  have h_unit : IsUnit ((‖p‖ : ℂ)⁻¹) := by simpa using hp_ne
-  have h_over : (x.left ≫ j) ≫ Limits.prod.snd = t c ≫ Limits.prod.snd := by simp [hj, ht_over]
-  -- points with the same homogeneous coordinates are equal
-  have hc : x.left ≫ j = t c :=
-    isProjEmbedding_projSpace.eq_of_isHomogeneousCoords h_over
-      ((IsHomogeneousCoords.pull_iff.mp hp).smul h_unit) (ht_lifts c)
-        (LineBundle.exists_landsIn _ _)
-  have h_base : (x.left ≫ j) (closedPoint ℂ) = (t c) (closedPoint ℂ) := by rw [hc]
-  have hcK : c ∈ K := fun h ↦ landsIn_iff_mem.mp h ⟨_, h_base⟩
-  exact ⟨⟨c, hcK⟩, OverMorphism.ext (by simpa [f, ← cancel_mono j, hs] using hc.symm)⟩
+  obtain ⟨j, _, hj, rfl⟩ := hN.exists_isClosedImmersion
+  -- Each unit vector c gives a point t c of projective space, continuously in c.
+  choose t o h1 using fun c ↦ exists_isHomogeneousCoords (𝟙 (Spec ⟨ℂ⟩)) (Function.ne_iff.1
+    (@ne_zero_of_mem_unit_sphere (ι → ℂ) _ c)).choose_spec.isUnit
+  -- The unit vectors outside the image of j form an open set; K is the rest.
+  -- For c in K the point t c factors through j.
+  choose s k using fun c : (Compacts.mk {c | LandsIn (t c) ⟨_, j.isClosedEmbedding.2.1⟩}ᶜ (
+    isOpen_iff_mem_nhds.2 fun c k ↦ (HasGermAt.of_isHomogeneousCoords (Q :=
+    (ContinuousAt · c)) isProjEmbedding_projSpace (continuousAt_pi.1 (by fun_prop)) (.of_forall h1)
+    o (isRegularOn_ofSection 0) k).1).isClosed_compl.isCompact)
+    ↦ exists_lift_of_dense_preimage j _ (dense_indiscrete ⟨_, by_contra (landsIn_iff_mem.2.mt c.2)⟩)
+  let f := fun c ↦ (homMk (s c) (by simp [← hj, reassoc_of% k, o]) : ComplexPoint A)
+  have h_coords c : (((hyperplaneBundle ι).pull Limits.prod.fst).pull
+      j).IsHomogeneousCoords (f c).left (c.1 : ι → ℂ) := by
+    rw [LineBundle.IsHomogeneousCoords.pull_iff]
+    change ((hyperplaneBundle ι).pull Limits.prod.fst).IsHomogeneousCoords (s c ≫ j) _
+    rw [k c]
+    exact h1 c
+  refine Function.Surjective.compactSpace (f := f)
+    (continuous_iff_continuousAt.2 fun c ↦ continuousAt_complexPoint_iff.2
+      (.of_isHomogeneousCoords hN (continuousAt_pi.1 (by fun_prop))
+        (.of_forall h_coords) fun c ↦ Over.w (f c))) fun x ↦ ?_
+  -- Onto: normalise the coordinates of x to a unit vector; its point is the image under j.
+  have p := hN.isLinearSystem.isHomogeneousCoords_transition (exists_landsIn _ x.1).choose_spec
+  have := p.ne_zero
+  -- Points with the same homogeneous coordinates are equal.
+  have := isProjEmbedding_projSpace.eq_of_isHomogeneousCoords (by simp [*])
+    (.smul (LineBundle.IsHomogeneousCoords.pull_iff.1 p) (by simpa)) (h1 ⟨_,
+      mem_sphere_zero_iff_norm.2 (norm_smul_inv_norm ‹_›)⟩) (LineBundle.exists_landsIn _ _)
+  use ⟨_, (· ⟨⟩ ⟨_, congr($this default)⟩)⟩, by ext; exact (cancel_mono j).1 (k _ ▸ this.symm)
 
 /-- On the complex points of an abelian variety with a projective embedding, addition and negation
 are continuous: they are morphisms of schemes. -/
@@ -721,69 +695,33 @@ projective space by a linear system N, admits a uniformisation ℂ^d/L ≅ A(ℂ
 lemma LineBundle.IsProjEmbedding.nonempty_uniformisation [IsAbelianScheme A]
     (hN : N.IsProjEmbedding A.hom) (hd : SmoothOfRelativeDimension d A.hom) :
     Nonempty (Uniformisation A (Fin d → ℂ)) := by
-  -- `A(ℂ)` is a compact commutative topological group with a holomorphic chart at `0` in which
-  -- addition is analytic, so it has an exponential map `e` (`exists_lie_exponential`). It remains
-  -- to see that `e` is onto, holomorphic and immersive; translations carry the last two from `0` to
-  -- any point.
-  obtain ⟨φ, ψ, hφ0, hψφ, hφψ, hψ_hol, h_chart⟩ := exists_holomorphic_chart hd 0
-  -- Addition and negation are morphisms of schemes, hence continuous on complex points.
-  have h_group : IsTopologicalAddGroup (ComplexPoint A) := isTopologicalAddGroup_complexPoint hN
-  have h_compact : CompactSpace (ComplexPoint A) := hN.compactSpace_complexPoint
-  have hψ_cont : ContinuousAt ψ 0 := continuousAt_complexPoint_iff.mpr fun U f hf hU ↦
-    (hψ_hol hf hU).imp_right AnalyticAt.continuousAt
-  have hψ0 : ψ 0 = 0 := by simpa [hφ0] using hψφ.self_of_nhds.left
-  -- Addition read in the chart is analytic: it is a holomorphic family of points through `0`.
-  have h_fst : HolomorphicAt (fun p : (Fin d → ℂ) × (Fin d → ℂ) ↦ (ψ p.1).left) 0 :=
-    .comp (φ := fun w ↦ (ψ w).left) hψ_hol analyticAt_fst
-  have h_snd : HolomorphicAt (fun p : (Fin d → ℂ) × (Fin d → ℂ) ↦ (ψ p.2).left) 0 :=
-    .comp (φ := fun w ↦ (ψ w).left) hψ_hol analyticAt_snd
-  have h_add_hol : HolomorphicAt (fun p : (Fin d → ℂ) × (Fin d → ℂ) ↦ (ψ p.1 + ψ p.2).left) 0 :=
-    (HasGermAt.lift hN h_fst h_snd).comp_hom _
-  have h_add : AnalyticAt ℂ (fun p : (Fin d → ℂ) × (Fin d → ℂ) ↦ φ (ψ p.1 + ψ p.2)) 0 :=
-    (h_chart (γ := fun p : (Fin d → ℂ) × (Fin d → ℂ) ↦ ψ p.1 + ψ p.2) (w := 0) (by simp [hψ0])
-      h_add_hol).left
-  -- `e` has a lattice as kernel and image of finite index, `φ ∘ e` is analytic at `0` with
-  -- derivative `1`, and homomorphisms differentiable in the chart factor linearly through `e`.
-  obtain ⟨e, h_lat, he_near, he_an, he_deriv, h_index, h_univ⟩ :=
-    exists_lie_exponential hφ0 (hψφ.mono fun _ ↦ And.left) (hψφ.mono fun _ ↦ And.right) hφψ hψ_cont
-      h_add
-  -- Near `0` we have `e = ψ ∘ (φ ∘ e)`, so `e` is a holomorphic family of points at `0`.
-  have he_hol : HolomorphicAt (fun z ↦ (e z).left) 0 :=
-    holomorphicAt_of_analyticAt_chart_comp hφ0 hψ_hol e he_an he_near
-  -- So is its shift `w ↦ e (-z + w)` at `z`.
-  have h_shift (z : Fin d → ℂ) : HolomorphicAt (fun w ↦ (e (-z + w)).left) z := by
-    have he_hol_at : HolomorphicAt (fun w ↦ (e w).left) (-z + z) := by simpa using he_hol
-    exact .comp (φ := fun w ↦ (e w).left) he_hol_at (by fun_prop)
-  refine ⟨{ expMap := e
-            lattice := e.ker.toIntSubmodule
-            surjective := fun y ↦ ?_
-            eq_zero_iff := fun z ↦ by tauto
-            immersive := fun z ↦ ⟨?_, fun v hv ↦ ?_⟩
-            universal := fun γ hγ ↦ ?_ }⟩
-  · -- Onto: multiplication by the index `m ≠ 0` of the image is surjective, so `y` lifts to a
-    -- complex point `x`; then `y = m • x` lies in the image.
-    obtain ⟨x, hx⟩ :
-        ∃ x : Spec (CommRingCat.of ℂ) ⟶ A.left, x ≫ (e.range.index • 𝟙 A).left = y.left :=
-      exists_point_over _ ((IsAbelianScheme.nsmul_surjective _ h_index.index_ne_zero).surj _)
-    have hxy : homMk x (by simp [← y.w, ← hx]) ≫ (e.range.index • 𝟙 A) = y := OverMorphism.ext hx
-    rw [← hxy]
-    simpa [comp_nsmul] using e.range.nsmul_index_mem _
-  · -- Holomorphic at `z`: `e w` is the translate of `e (-z + w)` by `e z`.
-    simpa [← comp_left, comp_add] using (h_shift z).comp_hom (translation (e z)).left
-  · -- Immersive at `z`: the translate `w ↦ e (-z + w)` by `-e z` is still constant to first order
-    -- in the direction `v`, and in the chart it has derivative `1` at `z`.
-    have h_still : IsFirstOrderConst (fun w ↦ (e (-z + w)).left) z v := by
-      simpa [IsFirstOrderConst, ← comp_left, add_comm, comp_add] using
-        hv.comp_hom (translation (-e z)).left
-    have he_deriv_at : HasFDerivAt (φ ∘ e) (.id ℂ _) (-z + z) := by simpa using he_deriv
-    have h_deriv : HasFDerivAt (φ ∘ fun w ↦ e (-z + w)) (.id ℂ _) z :=
-      (hasFDerivAt_comp_add_left (f := φ ∘ e) _).mpr he_deriv_at
-    have h_zero : fderiv ℂ (φ ∘ fun w ↦ e (-z + w)) z v = 0 :=
-      (h_chart (γ := fun w ↦ e (-z + w)) (w := z) (by simp) (h_shift z)).right v h_still
-    rw [h_deriv.fderiv] at h_zero
-    simpa using h_zero
-  · -- Universal: a homomorphism holomorphic at `0` is continuous, and differentiable in the chart.
-    exact h_univ γ (continuousAt_complexPoint_iff.mpr fun U f hf hU ↦
-      (hγ hf hU).imp_right AnalyticAt.continuousAt) (h_chart γ.map_zero hγ).left.differentiableAt
+  -- A(ℂ) is a compact commutative topological group with a holomorphic chart at 0 in which
+  -- addition is analytic, so it has an exponential map e. Translations carry holomorphicity and
+  -- immersivity from 0 to every point; the universal property is read in the chart.
+  obtain ⟨⟨φ, ψ, h0, hs, H, hol, hc⟩, _, _ : IsTopologicalAddGroup (ComplexPoint A)⟩ :=
+    exists_holomorphic_chart hd 0, hN.compactSpace_complexPoint,
+      isTopologicalAddGroup_complexPoint hN
+  -- The kernel is a lattice, the image has finite index, and the chart derivative is 1.
+  have ⟨e, _, L, a, D, i, hu⟩ := (Filter.eventually_and.1 hs).elim (exists_lie_exponential h0) H
+    (continuousAt_complexPoint_iff.2 (.imp_right (·.continuousAt) ∘ @hol · · ·))
+    (hc (by simp [h0 ▸ hs.self_of_nhds]) (by exact .comp_hom (by apply_rules [HasGermAt.lift,
+    (Eq.subst _ hol).comp, analyticAt_fst, analyticAt_snd]) _)).1
+  -- Near 0 we have e = ψ ∘ (φ ∘ e), so e is a holomorphic family of points.
+  have hhol := holomorphicAt_of_analyticAt_chart_comp h0 hol e a L
+  -- Its shift w ↦ e (-z + w) is holomorphic at z.
+  have K (z : Fin d → ℂ) : HolomorphicAt (fun w ↦ (e (-z + w)).left) z :=
+    .comp (φ := fun w ↦ (e w).left) (by simpa using hhol) (by fun_prop)
+  -- Multiplication by the nonzero index is surjective, so e is onto. Translations give the
+  -- immersion everywhere; a holomorphic homomorphism factors linearly through e in the chart.
+  use e, e.ker.toIntSubmodule, fun y ↦ (exists_point_over _ ((IsAbelianScheme.nsmul_surjective _
+    i.index_ne_zero).surj _)).elim fun x h ↦ (OverMorphism.ext h : homMk x (y.w ▸ h ▸ by simp) ≫
+      _ = y) ▸ by
+    simpa [comp_nsmul] using e.range.nsmul_index_mem _, by tauto, fun z ↦ ⟨by simpa [←
+      comp_left, comp_add] using ((K
+    z).comp_hom (translation (e z)).1), fun v h ↦ (((hasFDerivAt_comp_add_left _).2 (neg_add_cancel
+    z ▸ D)).fderiv ▸ (hc (by simp) (K z)).2 v (by simpa [IsFirstOrderConst, ← comp_left,
+      add_comm, comp_add]
+    using (h.comp_hom (translation (-e z)).1)) :)⟩, fun γ h ↦ hu γ (continuousAt_complexPoint_iff.2
+    (.imp_right (·.continuousAt) ∘ @h · · ·)) (hc γ.map_zero h).1.differentiableAt
 
 end New
