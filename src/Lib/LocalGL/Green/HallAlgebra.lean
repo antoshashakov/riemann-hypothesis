@@ -477,19 +477,12 @@ all sizes is invertible for the induction product. -/
 lemma Hall.isUnit_constOne : IsUnit (constOne : Hall k) := by
   -- `(1 - constOne) ^ i` vanishes in dimensions below `i`, so the geometric series in
   -- `1 - constOne` is a finite sum at each class; its sum inverts `constOne = 1 - (1 - constOne)`.
-  have h_sum : Summable fun i : ℕ ↦ (1 - constOne : Hall k) ^ i := by
-    refine Pi.summable.mpr fun c ↦ summable_of_ne_finset_zero (s := Finset.range (c.dim + 1))
-      fun i hi ↦ ?_
-    exact one_sub_constOne_pow_apply_eq_zero i c (by simpa [Nat.succ_le_iff] using hi)
   -- The product is continuous: each of its values is a finite sum of products of values.
-  have h_topRing : IsTopologicalRing (Hall k) := by
-    refine { continuous_mul := continuous_pi fun c ↦ ?_ }
-    rw [← simClassOf_out c]
-    simp only [mul_simClassOf, finsum_eq_sum_of_fintype]
-    fun_prop
-  have h_geom : constOne * ∑' i : ℕ, (1 - constOne : Hall k) ^ i = 1 := by
-    simpa only [sub_sub_cancel] using h_sum.one_sub_mul_tsum_pow
-  exact .of_mul_eq_one _ h_geom
+  exact ⟨.mkOfMulEqOne _ _
+  (@Summable.one_sub_mul_tsum_pow (Hall k) _ _ {continuous_mul := continuous_pi (simClassOf_out
+  · ▸ by simp [-simClassOf_out, finsum_eq_sum_of_fintype]; fun_prop)} _ _ (Pi.summable.2
+    (.comp_nat_add (k := ·.dim + 1)
+  (by simp +arith [one_sub_constOne_pow_apply_eq_zero])))), sub_sub_self ..⟩
 
 end
 
@@ -940,39 +933,26 @@ other factor being evaluated at the zero space (`New.Hall.rankInner 0`). -/
 lemma rankInner_mul_of_isCuspidal :
     rankInner d c (F * H) =
       rankInner d c F * rankInner 0 constOne H + rankInner 0 constOne F * rankInner d c H := by
-  classical
   -- Expand the conjugate pairing by `rankInner_mul_eq_sum_skew`. As `c` is cuspidal, only the block
   -- sizes (d, 0) and (0, d) contribute.
-  have h_sum : rankInner d (F * H) c = rankInner d F (skew 0 H c) + rankInner 0 F (skew d H c) := by
-    rw [rankInner_mul_eq_sum_skew, sum_eq_add (d, 0) (0, d) (by simp [hd]) _ (by simp) (by simp)]
-    rintro ⟨p, q⟩ h_mem ⟨h_ne_d0, h_ne_0d⟩
     -- any other pair of sizes has both positive, and there `blockAverage` of `c` vanishes
-    have h_add : p + q = d := HasAntidiagonal.mem_antidiagonal.1 h_mem
-    have hp : p ≠ 0 := by grind
-    have hq : q ≠ 0 := by grind
-    have h_cusp : ∀ a b : SimClass k, a.dim ≠ 0 → b.dim ≠ 0 → c.blockAverage a b = 0 := hc
-    simp [rankInner, skew, h_cusp, hp, hq]
   -- Conjugate; in these two terms `blockAverage` of `c` is `c` at the block of size `d`
   -- (`blockAverage_of_dim_eq_zero`).
-  replace h_sum := congrArg star h_sum
-  simp_all [← finMean_conj, mul_comm, IsCuspidal, rankInner, skew, blockAverage_of_dim_eq_zero]
   -- what is left is to pull the constant `rankInner 0 constOne H` out of an average
-  simp [finMean_eq, sum_mul, field, mul_assoc]
+  letI : Fintype k := .ofFinite k
+  letI : Fintype ((End k (Fin d → k))ˣ) := .ofFinite _
+  have := star_inj.2 (rankInner_mul_eq_sum_skew d c F H)
+  rw [Finset.sum_eq_add (d, 0) (0, d)] at this <;> simp_all [IsCuspidal, rankInner, skew,
+    blockAverage_of_dim_eq_zero, ← finMean_conj, mul_comm]
+  simp [finMean_eq, Finset.sum_mul, field, mul_assoc]; aesop
 
 /-- Take `c` cuspidal in the sense of `New.Hall.IsCuspidal` and `d ≠ 0`. Let `skew d f c` be the
 function x ↦ average over y in GL_d(k) of conj f(y) · δc(x, y), with δ the block average
 `New.Hall.blockAverage`. Then `skew d f c` equals the unit `1` of the Hall algebra times
 `rankInner d f c`, the average over GL_d(k) of conj f · c. -/
 lemma skew_of_isCuspidal : skew d f c = rankInner d f c • 1 := by
-  funext o
-  by_cases h_o : o.dim = 0
-  · -- At a class of dimension zero `blockAverage` of `c` is `c` itself.
-    have h_avg : c.blockAverage o = c := funext fun a ↦ (blockAverage_of_dim_eq_zero c h_o a).1
-    simp [skew, h_avg, h_o]
-  · -- At any other class it vanishes on blocks of size `d ≠ 0`, as `c` is cuspidal.
-    have h_avg (g : (End k (Fin d → k))ˣ) : c.blockAverage o (simClassOf g.1) = 0 :=
-      hc o _ h_o (by simpa using hd)
-    simp [skew, rankInner, h_avg, h_o]
+  letI : Fintype k := .ofFinite k
+  aesop (add simp [IsCuspidal, blockAverage_of_dim_eq_zero, rankInner, skew])
 
 /-- `skew d c` is the map sending `F` to the function x ↦ average over y in GL_d(k) of conj
 c(y) · δF(x, y), with δ the block average `New.Hall.blockAverage`. For `c` cuspidal in the sense of
@@ -985,15 +965,14 @@ Leibniz rule is stated. -/
 lemma skew_mul : skew d c (F * H) = skew d c F * H + F * skew d c H := by
   -- At an endomorphism `g` both sides are sums over the `g`-stable subspaces `W`: the left by
   -- `blockAverage_mul`, the right by the definition of the product (`mul_simClassOf`).
-  ext _ g
-  simp only [skew, rankInner, add_apply, mul_simClassOf, finsum_eq_sum_of_fintype,
-    ← sum_add_distrib]
-  simp only [blockAverage_mul, mul_sum, finMean_sum]
   -- The terms at `W` agree by `rankInner_mul_of_isCuspidal` for
   -- `F.blockAverage (simClassOf W.endOnSub)` and `H.blockAverage (simClassOf W.endOnQuot)`, whose
   -- values at the zero space are `F (simClassOf W.endOnSub)` and `H (simClassOf W.endOnQuot)`.
-  refine sum_congr rfl fun W _ ↦ (rankInner_mul_of_isCuspidal hc hd).trans ?_
-  simp [rankInner, blockAverage_of_dim_eq_zero]
+  letI : Fintype k := .ofFinite k
+  ext _ g; simp [skew, rankInner, mul_simClassOf]
+  simp [skew, rankInner, blockAverage_of_dim_eq_zero, blockAverage_mul,
+    finsum_eq_sum_of_fintype, Finset.mul_sum, Finset.sum_add_distrib, finMean_sum, @id (finMean
+    _ = _) (rankInner_mul_of_isCuspidal hc hd)]
 
 end SkewOperator
 
