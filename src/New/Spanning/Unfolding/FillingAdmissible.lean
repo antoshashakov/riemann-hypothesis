@@ -270,6 +270,9 @@ lemma filling_besselDegree_eq_exp_sum :
     rw [exp_log (one_pos.trans_le (D.targetParameter_sub_mem_Icc v (mem_range.1 hi)).1)]
     ring
 
+local grind_pattern targetParameter_sub_mem_Icc =>
+  D.targetParameter v i, D.targetParameter v l
+
 /-- The logarithm of the degree of the Bessel systems of `D`, plus `f` times the sum of `log l!`
 over `k − 1 ≤ l < r`, lies between `∑_v m (k − 1) log W_v` and `∑_v m r (log W_v + 1/x)`. Here `v`
 runs over the `f` infinite places, `k` is the rank of `X₀`, `r` is the number of entries of the
@@ -279,39 +282,18 @@ lemma log_filling_besselDegree_mem_Icc :
     Real.log D.filling.besselDegree + D.f * ∑ l ∈ Ico (D.k - 1) D.r, Real.log l ! ∈ Set.Icc
       (∑ v : D.Φ, D.m * ((D.k - 1) * Real.log (D.weight v)))
       (∑ v : D.Φ, D.m * (D.r * (Real.log (D.weight v) + D.x⁻¹))) := by
-  -- After inserting the formula for the degree the factorials cancel; it remains to bound, for each
-  -- `l`, the sum of `log (ς_i - ς_l)` over `i < l`.
-  have deg_eq : D.filling.besselDegree = exp (∑ v, ∑ l ∈ Ico (D.k - 1) D.r,
-      (∑ i ∈ range l, log (D.targetParameter v i - D.targetParameter v l) - Real.log l !)) :=
-    D.filling_besselDegree_eq_exp_sum
-  have h_low (v : D.Φ) (l : ℕ) (hl : l ∈ Ico (D.k - 1) D.r) : (D.k - 1) * Real.log (D.weight v) ≤
-      ∑ i ∈ range l, log (D.targetParameter v i - D.targetParameter v l) := by
-    -- Keep only the terms `i < k - 1`; each of these differences is at least `weight v`.
-    have h_diff (i : ℕ) (hi : i ∈ range (D.k - 1)) :
-        (D.weight v : ℝ) ≤ D.targetParameter v i - D.targetParameter v l :=
-      (D.weight_le_liftWeight_sub 0 v).trans (by norm_cast; grind [targetParameter_eq])
-    calc
-      _ ≤ ∑ i ∈ range (D.k - 1), log (D.targetParameter v i - D.targetParameter v l) := by
-        simpa using sum_le_sum fun i hi ↦ log_le_log (HasLogBound.pos D) (h_diff i hi)
-      _ ≤ _ := sum_le_sum_of_subset_of_nonneg (range_mono (mem_Ico.1 hl).1) fun i hi _ ↦
-        log_nonneg (D.targetParameter_sub_mem_Icc v (mem_range.1 hi)).1
-  have h_up (v : D.Φ) (l : ℕ) (hl : l ∈ Ico (D.k - 1) D.r) :
-      ∑ i ∈ range l, log (D.targetParameter v i - D.targetParameter v l) ≤
-        D.r * (Real.log (D.weight v) + D.x⁻¹) := by
-    -- Each of the `l < r` differences is at most `liftWeight (l + 2 - k) v` by
-    -- `targetParameter_sub_mem_Icc`.
-    calc
-      _ ≤ ∑ i ∈ range l, Real.log (D.liftWeight (l + 2 - D.k) v) := sum_le_sum fun i hi ↦ by
-        obtain ⟨h_one_le, h_le_w⟩ := D.targetParameter_sub_mem_Icc v (mem_range.1 hi)
-        exact log_le_log (one_pos.trans_le h_one_le) h_le_w
-      _ = l * Real.log (D.liftWeight (l + 2 - D.k) v) := by simp
-      _ ≤ D.r * (Real.log (D.weight v) + D.x⁻¹) := by
-        grw [(mem_Ico.1 hl).2, D.log_liftWeight_le (by grind)]
-  -- Sum both bounds over `v` and over the `m` values of `l`.
-  have h_card : D.r - (D.k - 1) = D.m := by grind
-  constructor
-  · simpa [deg_eq, h_card] using sum_le_sum (s := univ) fun (v : D.Φ) _ ↦ sum_le_sum (h_low v)
-  · simpa [deg_eq, h_card] using sum_le_sum (s := univ) fun (v : D.Φ) _ ↦ sum_le_sum (h_up v)
+  rw [D.filling_besselDegree_eq_exp_sum]
+  have weight_pos (v : D.Φ) : (0 : ℝ) < D.weight v := HasLogBound.pos D
+  have weight_ne (v : D.Φ) : D.weight v ≠ 0 := by
+    exact_mod_cast (weight_pos v).ne'
+  simp
+  constructor <;> gcongr with v
+  grw [← @range_mono (D.k - 1),
+    ← (D.weight_le_liftWeight_sub 0 v).trans (c := _ - _)] <;> norm_cast
+  any_goals grw [(D.targetParameter_sub_mem_Icc v _).2, @range_mono _ D.r,
+    D.log_liftWeight_le]
+  any_goals simp [(by grind : D.r - (D.k - 1) = D.m)]
+  all_goals grind [log_nonneg, targetParameter_eq]
 
 end New.Data
 
@@ -338,44 +320,21 @@ points, `N` being the prime level, `k` the rank of `X₀` and `f` the number of 
 lemma relIndex_latticeStabilizer :
     (D.filling.latticeStabilizer.comap D.filling.inclHFin).relIndex (stdLevel D.E D.shape.κ) =
       (D.N ^ D.k - 1 : ℝ) ^ D.f := by
-  -- An integral x lies in this preimage iff its row `k₀` is the unit vector modulo every place
-  -- of `D.piNPlaces`; each such stabiliser has index N ^ k - 1, and there are f places.
-  -- `H w` fixes the unit vector under the inverse transpose: row `k₀` is the unit vector.
-  let H (w : D.piNPlaces) : Subgroup (GL (D.X 0) (ResField w.1)) :=
-    (stabilizer _ (Pi.single D.shape.k₀ 1 : D.X 0 → ResField w.1)).comap invTransposeGL.toMonoidHom
-  have h_level :
-      D.filling.latticeStabilizer.comap D.filling.inclHFin = levelOf Subtype.val (pi ⊤ H) := by
-    ext x
-    rw [Subgroup.mem_comap, mem_levelOf, D.filling.inclHFin_mem_latticeStabilizer_iff]
-    -- Both sides say that `x` is integral, with a condition on its row `k₀`.
-    change (x.1 ∈ intGL D.shape.κ (Ô D.E) ∧ ∀ (_ : Unit) (j : D.shape.κ),
-      (x.1.1 - 1) D.shape.k₀ j ∈ Ô D.E ∙ D.piNIdele.val) ↔ _
-    refine exists_prop.symm.trans (exists_congr fun hx : x.1 ∈ intGL D.shape.κ (Ô D.E) ↦ ?_)
-    -- π divides an integral adele iff it reduces to zero at every place of `D.piNPlaces`, and `H w`
-    -- says that the entries `r j` of row `k₀` of `x - 1` reduce to zero at `w`.
-    let r (j : D.shape.κ) : Ô D.E :=
-      ⟨x.1.1 D.shape.k₀ j, hx.isIntMatrix D.shape.k₀ j⟩ - if j = D.shape.k₀ then 1 else 0
-    have h_mem (j : D.shape.κ) : (x.1.1 - 1) D.shape.k₀ j ∈ Ô D.E ∙ D.piNIdele.val ↔
-        algebraMap (RingOfIntegers D.E) (Ô D.E) D.piN ∣ r j := by
-      by_cases hj : j = D.shape.k₀ <;>
-        simp [hj, Ne.symm, r, Submodule.mem_span_singleton, dvd_def, Subtype.ext_iff,
-          Subring.smul_def, piNIdele, mul_comm, eq_comm]
-    have h_fix (w : D.piNPlaces) : stdLevel.reduceFamily Subtype.val ⟨x, hx⟩ w ∈ H w ↔
-        ∀ j : D.shape.κ, reduceAt w.1 (r j) = 0 := by
-      -- The inverse transpose fixes the unit vector iff row `k₀` of the reduction is that vector.
-      have h_mem_H (M : GL (D.X 0) (ResField w.1)) : M ∈ H w ↔
-          (transposeGL M)⁻¹ ∈ stabilizer _ (Pi.single D.shape.k₀ 1 : D.X 0 → ResField w.1) := .rfl
-      rw [h_mem_H]
-      have h_entry (j : D.shape.κ) : (stdLevel.reduceFamily Subtype.val ⟨x, hx⟩ w).1 D.shape.k₀ j =
-          reduceAt w.1 ⟨x.1.1 D.shape.k₀ j, hx.isIntMatrix D.shape.k₀ j⟩ := rfl
-      simp [r, h_entry, funext_iff, Units.smul_def, -reduceAt_eq_zero, sub_eq_zero]
-    simp only [Subgroup.mem_pi, h_mem, dvd_iff_reduceAt_eq_zero D.intValuation_piN, h_fix,
-      forall_const, ← mem_piNPlaces]
-    exact ⟨fun h w _ j ↦ h j w.1 w.2, fun h j w hw ↦ h ⟨w, hw⟩ trivial j⟩
-  -- The index of a preimage under reduction is the product of the indices of the stabilisers.
-  rw [h_level, relIndex_levelOf (h := ⟨by simp, by simp [D.isSplitLevel_piNPlaces.star_notMem]⟩)]
-  simp [Seesaw.index_pi_univ, H, index_comap, index_stabilizer_GL_vector, card_ResField,
-    D.isSplitLevel_piNPlaces.q_eq, ↓card_X₀, Fin.pos', card_piNPlaces]
+  rw [(?_ : D.filling.latticeStabilizer.comap D.filling.inclHFin =
+      levelOf (↑) (pi ⊤ fun w : D.piNPlaces ↦
+        (stabilizer _ (Pi.single D.shape.k₀ 1 : _ → ResField w.1)).comap
+          invTransposeGL.toMonoidHom)),
+    relIndex_levelOf (h := ⟨by simp, by simp [D.isSplitLevel_piNPlaces.star_notMem]⟩)]
+  simp [Seesaw.index_pi_univ, index_comap, index_stabilizer_GL_vector, card_ResField,
+    D.isSplitLevel_piNPlaces.q_eq, ↓card_X₀, card_piNPlaces, Fin.pos']
+  ext
+  erw [inclHFin_mem_latticeStabilizer_iff, mem_levelOf]
+  refine exists_prop.symm.trans (exists_congr fun h ↦
+    (?_ : _ ↔ ∀ w _, (transposeGL _)⁻¹ ∈ stabilizer ..))
+  simpa [funext_iff, Units.smul_def, ↓dvd_def, ← mem_piNPlaces, Subtype.ext_iff,
+    filling, piNIdele, stdLevel.reduceFamily, sub_eq_zero, -reduceAt_eq_zero] using!
+    (forall₂_congr fun (_ : Unit) j ↦ dvd_iff_reduceAt_eq_zero D.intValuation_piN
+      (⟨_, h.isIntMatrix (.inr ()) j⟩ - ite (j = D.shape.k₀) 1 0)).trans forall₂_comm
 
 /-- The number of classes of level `New.Data.levelX 0` on `U(X₀)` is `|H̄| (N^k - 1)^f` times
 the mass `New.mass` in rank `k`, where `H̄` is the image (`New.Filling.reducedImage`) under
