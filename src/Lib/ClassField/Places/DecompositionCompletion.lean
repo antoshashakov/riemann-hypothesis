@@ -336,56 +336,26 @@ continuously in `ℚ̄_p` (the algebra instance `a`), and the integers of `ℚ̄
 (together: `IsPadicAt`). Then the decomposition group of `A` acts on `ℚ̄_p`, compatibly with `j`,
 as the Galois group of `ℚ̄_p` over `LocField v` (`IsCompletionEmb`). -/
 lemma nonempty_isCompletionEmb_of_isPadicAt (h_at : IsPadicAt v p A j) :
-    Nonempty (IsCompletionEmb v p Γ A j) := by
-  -- The decomposition group acts through the open embedding `J` into the Galois group of `ℚ_p`. Its
-  -- fixed field is local (`Period.isLocalGalois_of_isOpenEmbedding`); it remains to identify it
-  -- with `LocField v`.
-  have h_smul_cont : ContinuousSMul (LocField v) (PadicAlgCl p) :=
-    continuousSMul_of_algebraMap _ _ h_at.continuous
-  obtain ⟨J, ⟨-, hJ_equivariant : ∀ (g : decompGroup Γ A) (x : Ω), J g (j x) = j ((g : Γ) • x)⟩,
-      hJ_open, hJ_range⟩ := exists_inducesPlace K Γ h_at.comap_eq
-  let action : MulSemiringAction (decompGroup Γ A) (PadicAlgCl p) := compHom (PadicAlgCl p) J
-  -- The image `C` of `LocField v` is a line over `LocField v`, so it is closed; a closed subfield
-  -- contains `ℚ_p` (`padic_mem_topologicalClosure`).
-  have h_image_closed :
-      IsClosed (SetLike.coe (Algebra.linearMap (LocField v) (PadicAlgCl p)).range) :=
-    Submodule.closed_of_finiteDimensional _
-  have h_padic_mem (x : ℚ_[p]) :
-      algebraMap ℚ_[p] (PadicAlgCl p) x ∈ (algebraMap (LocField v) (PadicAlgCl p)).fieldRange :=
-    h_image_closed.closure_subset
-      (padic_mem_topologicalClosure (algebraMap (LocField v) (PadicAlgCl p)).fieldRange x)
-  let C : IntermediateField ℚ_[p] (PadicAlgCl p) :=
-    (algebraMap (LocField v) (PadicAlgCl p)).fieldRange.toIntermediateField h_padic_mem
-  -- `PadicAlgCl p` is Galois over `ℚ_p`, so over the intermediate field `C`, a copy of
-  -- `LocField v`.
-  have h_galois : IsGalois (LocField v) (PadicAlgCl p) :=
-    isGalois_iff_isGalois_bot.mp (.tower_top_intermediateField C)
-  -- The group fixes `K`, which is dense in `LocField v`.
-  have h_smul_algebraMap (g : decompGroup Γ A) (y : LocField v) :
-      g • algebraMap (LocField v) (PadicAlgCl p) y = algebraMap (LocField v) (PadicAlgCl p) y := by
-    refine (v.denseRange_algebraMap K).induction_on y
-      (isClosed_eq (h_at.continuous.const_smul (J g)) h_at.continuous) fun x ↦ ?_
-    -- On `K` the map to `ℚ̄_p` is `j`, and `J g` moves `j x` as `g` moves `x`, which it fixes.
-    show J g (algebraMap (LocField v) (PadicAlgCl p) (algebraMap K (LocField v) x)) = _
-    simp [← h_at.map_algebraMap, hJ_equivariant]
-  -- An automorphism fixing `C` fixes `K`, so it comes from the group; thus invariants lie in `C`.
-  have h_invariant_mem (x : PadicAlgCl p) (hx : ∀ g : decompGroup Γ A, g • x = x) : x ∈ C := by
-    refine (fixedFieldOf_fixingSubgroup (Γ := Gp p) C).le fun ⟨g, hg⟩ ↦ ?_
-    have hg_fixes_K (y : K) : g (j (algebraMap K Ω y)) = j (algebraMap K Ω y) := by
-      rw [h_at.map_algebraMap y]
-      exact hg ⟨_, algebraMap K (LocField v) y, rfl⟩
-    obtain ⟨g', rfl⟩ := MonoidHom.mem_range.mp ((hJ_range g).mpr hg_fixes_K)
-    exact hx g'
-  exact ⟨{ action, h_at, h_galois, Period.isLocalGalois_of_isOpenEmbedding hJ_open with
-    commutes := ⟨fun g y z ↦ by simp [Algebra.smul_def, h_smul_algebraMap]⟩
-    isInvariant := ⟨h_invariant_mem⟩
-    isDiscreteValuationRing := by
-      rw [h_at.valRingBelow_eq]
-      infer_instance
-    finite_residue := by
-      rw [h_at.valRingBelow_eq]
-      infer_instance
-    equivariant g x := (hJ_equivariant g x).symm }⟩
+    Nonempty (IsCompletionEmb v p Γ A j) :=
+  have := continuousSMul_of_algebraMap _ _ h_at.continuous
+  -- The closed image of K_v contains ℚ_p, so it is an intermediate field.
+  let C : IntermediateField ℚ_[p] (PadicAlgCl p) := a.2.fieldRange.toIntermediateField
+    (a.linearMap.range.closed_of_finiteDimensional.closure_eq.le <|
+      padic_mem_topologicalClosure a.2.fieldRange ·)
+  -- Transport the open decomposition-group action to the algebraic closure.
+  (exists_inducesPlace K Γ h_at.comap_eq).rec fun J ⟨⟨_, e⟩, o, r⟩ ↦
+    let := compHom ..
+    ⟨{ this, h_at, isGalois_iff_isGalois_bot.1 (.tower_top_intermediateField C),
+      Period.isLocalGalois_of_isOpenEmbedding o with
+      -- Density fixes the completed scalars; the range identity identifies the fixed field.
+      commutes.1 g y _ := by
+        simpa [a.smul_def] using .inl ((v.denseRange_algebraMap K).eq
+          (by simp [← h_at.map_algebraMap, e]) (h_at.continuous.const_smul _) ..)
+      isDiscreteValuationRing := h_at.valRingBelow_eq ▸ inferInstance
+      finite_residue := h_at.valRingBelow_eq ▸ inferInstance
+      isInvariant.1 _ h := (fixedFieldOf_fixingSubgroup C).le fun ⟨g, hg⟩ ↦
+        ((r g).2 (h_at.map_algebraMap · ▸ hg ⟨_, _, rfl⟩)).rec (by bound)
+      equivariant := (symm ∘' e ·) }⟩
 
 /-- If the embedding of `LocField v` in `ℚ̄_p` and `j` fit together as in `IsPadicAt`, then the
 residue field of `LocField v` for the integers of `ℚ̄_p` has `v.q` elements, the norm of `v`. -/
