@@ -69,68 +69,24 @@ lemma PadicTest.bijective_generic_points {Y : Over (Spec R)} [IsProper Y.hom] (c
     Bijective
       ((uliftYoneda.{1} Y).map
         (.op (X := .mk b) (Y := .mk a)
-          ⟨Spec.map (ofHom (algebraMap c.ProdRing c.GenericRing)), r, w⟩)) := by
-  have hY_compact : CompactSpace Y.left := QuasiCompact.compactSpace_of_compactSpace Y.hom
-  -- `Y` is separated: two points agree if they do after a jointly injective family of ring maps.
-  have h_sep {C : CommRingCat} {J : Type} {K : J → CommRingCat} (f : ∀ j, C ⟶ K j)
-      (hf : ∀ t : C, (∀ j, f j t = 0) → t = 0) {x y : Spec C ⟶ Y.left}
-      (h : ∀ j, Spec.map (f j) ≫ x = Spec.map (f j) ≫ y) : x = y :=
-    up.inj ((isProperOver_pointsToBase Y.hom).ext_of_jointly_injective f hf fun j ↦
-      congrArg up (h j))
-  refine ⟨fun x y h ↦ ?_, fun z ↦ ?_⟩
-  · -- Injectivity: `c.ProdRing → c.GenericRing` is itself injective.
-    have h_left : x.down.left = y.down.left :=
-      h_sep (fun _ : Unit ↦ ofHom (algebraMap c.ProdRing c.GenericRing))
-        (fun t ht ↦ c.eq_zero_of_algebraMap_genericRing t (ht ())) fun _ ↦ congrArg (·.down.left) h
-    exact down_injective (OverMorphism.ext h_left)
-  -- Surjectivity. As `p ≠ 0` in the cell `c.Cell i`, the projection extends to a map `φ i` from
-  -- `c.GenericRing` to the fraction field of the cell.
-  let π (i : c.Index) : of c.ProdRing ⟶ of (c.Cell i) := CommRingCat.ofHom (Pi.evalRingHom c.Cell i)
-  let j (i : c.Index) : of (c.Cell i) ⟶ of (FractionRing (c.Cell i)) :=
-    CommRingCat.ofHom (algebraMap _ _)
-  have hp (i : c.Index) : IsUnit ((π i ≫ j i).hom p) := by
-    simp [π, j, -map_natCast, IsCell.p_ne_zero]
-  let φ (i : c.Index) : c.GenericRing →+* FractionRing (c.Cell i) :=
-    IsLocalization.Away.lift (p : c.ProdRing) (hp i)
-  have sq (i : c.Index) : CommSq (Spec.map (ofHom (φ i))) (Spec.map (j i))
-      (Spec.map (ofHom (algebraMap c.ProdRing c.GenericRing))) (Spec.map (π i)) :=
-    ⟨by simp [← Spec.map_comp, ← ofHom_comp, φ, π, j]⟩
-  -- The valuative criterion extends the point `z` over `Frac (c.Cell i)` to the cell `c.Cell i`.
-  have lift (i : c.Index) : ∃ l : Spec (of (c.Cell i)) ⟶ Y.left,
-      Spec.map (j i) ≫ l = Spec.map (ofHom (φ i)) ≫ z.down.left ∧
-        l ≫ Y.hom = Spec.map (π i) ≫ a := by
-    have h_val : ValuativeCriterion.Existence Y.hom :=
-      (UniversallyClosed.eq_valuativeCriterion.le _ _ _ inferInstance).1
-    -- the valuative square: the cell, its fraction field, `z` after `φ i` on top, `a` on the cell
-    let S : ValuativeCommSq Y.hom :=
-      { R := c.Cell i, K := FractionRing (c.Cell i)
-        i₁ := Spec.map (ofHom (φ i)) ≫ z.down.left, i₂ := Spec.map (π i) ≫ a
-        commSq := (sq i).horiz_comp ⟨z.down.w.trans w.symm⟩ }
-    obtain ⟨⟨l⟩⟩ : S.commSq.HasLift := h_val S
-    exact ⟨l.l, l.fac_left, l.fac_right⟩
-  choose l hl_left hl_right using lift
-  -- `Y` is quasi-compact, so the points `l i` come from a point `x` in the product `c.ProdRing`.
-  -- The first argument of `pointsPi_surjective` is explicit: with `_` the search for `IsLocalRing`
-  -- times out.
-  obtain ⟨x, hx⟩ := pointsPi_surjective (of <| c.Cell ·) Y.left l
-  have hx_eq (i : c.Index) : Spec.map (π i) ≫ x = l i := congrFun hx i
-  have hx_over : x ≫ Y.hom = a := by
-    -- both sides are determined by their restrictions to the cells, where `hl_right` holds
-    refine pointsPi_injective _ _ (funext fun i ↦ ?_)
-    show Spec.map (π i) ≫ x ≫ Y.hom = Spec.map (π i) ≫ a
-    rw [← Category.assoc, hx_eq, hl_right]
-  -- The restriction of `x` to `c.GenericRing` and `z` agree after each `φ i`.
-  refine ⟨⟨homMk x hx_over⟩,
-    down_injective (OverMorphism.ext (h_sep (fun i ↦ ofHom (φ i)) (fun t ht ↦ ?_) fun i ↦ ?_))⟩
-  · -- The `φ i` are jointly injective: up to a unit, `t` comes from some `r : c.ProdRing`.
+          ⟨Spec.map (ofHom (algebraMap c.ProdRing c.GenericRing)), r, w⟩)) :=
+  have := QuasiCompact.compactSpace_of_compactSpace Y.hom
+  ⟨fun x y h ↦ down_injective
+    (OverMorphism.ext (up.inj ((isProperOver_pointsToBase Y.hom).ext_of_jointly_injective
+    _ (c.eq_zero_of_algebraMap_genericRing · <| · ()) fun _ ↦ congr(⟨$h.1.1⟩)))), fun z ↦ by
+    have H i := (CommSq.mk ((ofHom_comp ..).symm.trans (congr(ofHom $(IsLocalization.Away.lift_comp
+      (S := c.GenericRing) (g :=
+      (algebraMap _ (FractionRing (c.Cell i))).comp (Pi.evalRingHom _ i)) (p : c.ProdRing)
+      (by simp [-map_natCast, IsCell.p_ne_zero]))).symm.trans (ofHom_comp ..)))).op.map Scheme.Spec
+    have l i := ((UniversallyClosed.eq_valuativeCriterion.le _ _ _ inferInstance).1 ⟨_, _, _, _,
+      (H i).horiz_comp ⟨z.1.w.trans w.symm⟩⟩).1.some
+    refine (pointsPi_surjective (of <| c.Cell ·) _ (l · |>.l)).elim fun x e ↦ ⟨⟨homMk x
+      (pointsPi_injective _ _ (funext fun i ↦ by simpa [pointsPi, ← congrFun e] using (l i).3))⟩,
+      down_injective (OverMorphism.ext
+      (up.inj ((isProperOver_pointsToBase Y.hom).ext_of_jointly_injective _ (fun t h ↦
+      ?_) fun i ↦ down_injective (((H i).w_assoc x).trans (congrFun e i ▸ (l i).2 :)))))⟩
     obtain ⟨r, u, rfl⟩ := exists_associated_localization t
-    have hr : r = 0 := by simp_all [φ, π, j, funext_iff, (u.isUnit.map _).ne_zero]
-    simp [hr]
-  · -- after `Spec (φ i)`, the restriction of `x` to `c.GenericRing` is `x` on the cell, that is
-    -- `l i`, which extends `z`
-    show Spec.map (ofHom (φ i)) ≫ Spec.map (ofHom (algebraMap c.ProdRing c.GenericRing)) ≫ x =
-      Spec.map (ofHom (φ i)) ≫ z.down.left
-    rw [(sq i).w_assoc, hx_eq, hl_left]
+    simp_all [← funext_iff, ← Pi.zero_def, (u.isUnit.map _).ne_zero]⟩
 
 /-- For a scheme Y over R, the map Y(S) → Y(S[1/p]), natural in the p-adic test S; `he` says that
 R → Ω → ℂ_p agrees with R → O_C → ℂ_p. -/
