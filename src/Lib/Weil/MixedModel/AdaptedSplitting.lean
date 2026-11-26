@@ -162,20 +162,13 @@ omit [Fintype n] [DecidableEq n'] [DecidableEq r] [Fintype p] in
 conjugate `Bᴴᵀ` of `B`. -/
 lemma IsOrthoIntegral.kronecker {B : Matrix r p (𝔸 E)} (hM : IsOrthoIntegral M)
     (hB : IsOrthoIntegral B) : IsOrthoIntegral (M ⊗ₖ Bᴴᵀ) := by
-  have hM_inf (w : NumberField.InfinitePlace E) : (M.map (evalInf w))ᴴ * M.map (evalInf w) = 1 :=
-    hM.left w
-  have hB_inf (w : NumberField.InfinitePlace E) : (B.map (evalInf w))ᴴ * B.map (evalInf w) = 1 :=
-    hB.left w
-  -- Evaluation at an infinite place commutes with `ᴴ`.
-  have h_conj (w : NumberField.InfinitePlace E) : Bᴴ.map (evalInf w) = (B.map (evalInf w))ᴴ :=
-    B.conjTranspose_map (evalInf w) fun _ ↦ rfl
   refine ⟨fun w ↦ ?_, fun i k ↦ ?_⟩
-  · -- Evaluation at `w` commutes with `⊗ₖ`, so the product is `MᴴM ⊗ₖ (BᴴB)ᵀ = 1 ⊗ₖ 1`.
-    simp [map_kronecker, h_conj, transpose_map, conjTranspose_kronecker,
-      conjTranspose_transpose_eq_transpose_conjTranspose, ← mul_kronecker_mul, ← transpose_mul,
-      hM_inf w, hB_inf w]
-  · -- Each entry is an entry of `M` times the conjugate of an entry of `B`.
-    simp [mul_mem, star_mem_Ô, hM.right, hB.right]
+  -- At infinity the Gram matrix is the Kronecker product of the two Gram matrices.
+  · simp [map_kronecker, B.conjTranspose_map (evalInf w) (fun _ ↦ rfl), transpose_map,
+      conjTranspose_kronecker, conjTranspose_transpose_eq_transpose_conjTranspose,
+      ← mul_kronecker_mul, ← transpose_mul, hM.1 w, hB.1 w]
+  -- At finite places each entry is a product of integral entries, with one conjugated.
+  · simp [mul_mem, star_mem_Ô, hM.2, hB.2]
 
 /-- If the splitting `A` of `W'` over `W` is adapted (`IsBaseAdapted`: its adelic frame is
 orthonormal at the infinite places and integral at the finite places), then so is the induced
@@ -186,33 +179,16 @@ adelic frame of `T`. That is, the matrix `(l (t⁻¹)ᴴ, k t, ι)` built from t
 place. -/
 lemma isAdapted_homSource [h : IsBaseAdapted A] :
     (A.homSource T).IsAdapted 1 (adaptedHomBasis p T) := by
-  -- Up to signs on rows and columns and a reordering `e` of the columns, the frame of the induced
-  -- splitting is `1 ⊗ₖ Fᴴᵀ`, where `F` is the frame of `A`.
-  let F : Matrix n' ((p ⊕ p) ⊕ n) (𝔸 E) := (A.lAdelic.fromCols A.kAdelic).fromCols A.iAdelic
-  let e : ((r × p) ⊕ (r × p)) ⊕ (r × n) → r × ((p ⊕ p) ⊕ n) :=
-    (prodSumDistrib r (p ⊕ p) n).symm ∘ Sum.map (prodSumDistrib r p p).symm id
-  let ε : ((r × p) ⊕ (r × p)) ⊕ (r × n) → ℤˣ :=
-    1 ⊕ᵥ (fun x : r × p ↦ t x.1) ⊕ᵥ fun x : r × n ↦ s x.2
-  have h_kron : IsOrthoIntegral
-      ((stdForm E fun x : r × n' ↦ s' x.2) * (1 : Matrix r r (𝔸 E)) ⊗ₖ Fᴴᵀ) :=
-    .mul (.of_stdForm fun x : r × n' ↦ s' x.2) (.kronecker .one h.isOrthoIntegral)
-
-  have h_frame : (A.homSource T).frameAt 1 (adaptedHomBasis p T) =
-      ((stdForm E fun x : r × n' ↦ s' x.2) * (1 : Matrix r r (𝔸 E)) ⊗ₖ Fᴴᵀ).submatrix id e *
-        stdForm E ε := by
-    -- By `frameAt_homSource` the entries agree block by block, up to the order of the factors.
-    rw [frameAt_homSource]
-    ext ⟨i, j⟩ ((⟨a, b⟩ | ⟨a, b⟩) | ⟨a, b⟩) : 1
-    · -- The `l` block `1 ⊗ₖ A.kCoordᵀ`: both sides are `δ i a * star (A.lAdelic j b)` times a sign.
-      simp [F, e, ε, kCoord, stdForm, Matrix.one_apply, ← Pi.one_def, Prod.mk_one_one, mul_comm]
-    · -- The `k` block `stdForm E t ⊗ₖ A.lCoordᵀ`: both sides are `δ i a * star (A.kAdelic j b)`
-      -- times signs.
-      simp +contextual [F, e, ε, lCoord, stdForm, Matrix.one_apply, diagonal_apply, mul_comm,
-        mul_left_comm]
-    · -- The `ι` block `1 ⊗ₖ A.iCoordᵀ`: both sides are `δ i a * star (A.iAdelic j b)` times signs.
-      simp [F, e, ε, iCoord, stdForm, Matrix.one_apply, mul_comm, mul_left_comm]
-  show IsOrthoIntegral ((A.homSource T).frameAt 1 (adaptedHomBasis p T))
-  exact h_kron.of_eq_submatrix_mul e (.of_stdForm ε) h_frame (by simp [e, Function.Injective])
+  -- Up to signs and a permutation of the columns, the frame is a Kronecker product
+  -- of the identity with the conjugate of A's adapted frame.
+  refine (IsOrthoIntegral.mul (.of_stdForm fun x : r × n' ↦ s' x.2)
+    (.kronecker .one h.isOrthoIntegral)).of_eq_submatrix_mul
+    ((prodSumDistrib r (p ⊕ p) n).symm ∘ Sum.map (prodSumDistrib r p p).symm id)
+    (.of_stdForm (1 ⊕ᵥ (fun x : r × p ↦ t x.1) ⊕ᵥ fun x : r × n ↦ s x.2)) ?_
+  rw [frameAt_homSource]
+  ext ⟨i, j⟩ ((⟨a, b⟩ | ⟨a, b⟩) | ⟨a, b⟩) : 1
+  all_goals simp +contextual [kCoord, lCoord, iCoord, stdForm, Matrix.one_apply, ← Pi.one_def,
+    Prod.mk_one_one, diagonal_apply, mul_comm, mul_left_comm]
 
 end AdaptedHom
 

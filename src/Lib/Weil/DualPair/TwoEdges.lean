@@ -242,32 +242,16 @@ lemma leftInverse_arrowTensor : arrowTensor.leftInverse (arrowTensor t) = t :=
 V')) ⊗ 𝒮_f(Hom(V', V'')) to 𝒮(Hom(V', V⁻ ⊕ V'')), is exactly the finite part 𝒮_f of the target. Here
 V⁻ ⊕ V'' = `flipSum V V''`, with V⁻ the opposite space of V. -/
 lemma range_arrowTensor : arrowTensor.range = (V'.hom (flipSum V V'')).finitePart := by
-  -- Both sides are spans. By `finHeisenbergOp_arrowProduct` each generator
-  -- `finHeisenbergOp _ y vacElem` of `finitePart` is a nonzero multiple of `arrowProduct` of two
-  -- generators; what is left is that every pair of generators arises from some `y`.
+  -- Both sides are spans of finite Heisenberg translates of the vacuum.
+  -- The product of two generators comes from the vector with their two blocks, after
+  -- conjugating and multiplying one block by the unit normNegOne.
   simp [← map₂_eq_range_lift_comp_mapIncl, finitePart, map₂_span_span, ← arrowProduct_vacElem,
-    finHeisenbergOp_arrowProduct, le_antisymm_iff, span_le, smul_mem, mem_span_of_mem,
-    arrowTensor, Set.range_subset_iff]
-  show ∀ (x : ι' × ι → 𝔸f E) (x' : ι'' × ι' → 𝔸f E),
-    arrowProduct ((V.hom V').finHeisenbergOp x (V.hom V').vacElem)
-        ((V'.hom V'').finHeisenbergOp x' (V'.hom V'').vacElem) ∈
-      span ℂ (Set.range fun z : (ι ⊕ ι'') × ι' → 𝔸f E ↦
-        (stdLattice.semichar fun q : ι' × ι ↦ z (Sum.inl q.2, q.1)) ^ 2 •
-          arrowProduct
-            ((V.hom V').finHeisenbergOp
-              (fun q : ι' × ι ↦ ((normNegOne : (Ô E)ˣ) : 𝔸f E) * star (z (Sum.inl q.2, q.1)))
-              (V.hom V').vacElem)
-            ((V'.hom V'').finHeisenbergOp (fun q : ι'' × ι' ↦ z (Sum.inr q.1, q.2))
-              (V'.hom V'').vacElem))
-  intro x x'
-  -- Conjugation followed by multiplication by the unit `normNegOne` is onto.
-  obtain ⟨y, rfl⟩ :
-      ∃ y : ι' × ι → 𝔸f E, (fun q ↦ ((normNegOne : (Ô E)ˣ) : 𝔸f E) * star (y q)) = x :=
-    (starMulAut.toEquiv.trans
-      (normNegOne.map (Ô E).subtype.toMonoidHom).mulLeft).surjective.comp_left x
-  -- The witness has blocks `y` and `x'`; its generator is the given product times a nonzero scalar.
-  let z₀ : (ι ⊕ ι'') × ι' → 𝔸f E := matrixToVec (flip y.curry ⊕ᵥ vecToMatrix x')
-  exact (smul_mem_iff _ (by simp)).mp (subset_span ⟨z₀, rfl⟩)
+    finHeisenbergOp_arrowProduct, -arrowProduct, le_antisymm_iff, span_le, smul_mem,
+    mem_span_of_mem, arrowTensor, Set.range_subset_iff]
+  exact (starMulAut.toEquiv.trans
+    (normNegOne.map (Ô E).subtype.toMonoidHom).mulLeft).surjective.comp_left.forall.2
+    ((smul_mem_iff _ (by simp)).1 <| subset_span
+      ⟨matrixToVec <| flip ·.curry ⊕ᵥ vecToMatrix ·, rfl⟩)
 
 /-- `New.Seesaw.arrowTensor` intertwines the normalised Weil representations
 `New.Seesaw.liftWeilFin` of finite adelic points on the two factors with `New.Seesaw.tripleWeil`
