@@ -469,39 +469,28 @@ CM lattices, each a lattice stable under `𝓞_K` with a point `t` of order two 
 series of the theta function of `D` is the `σ`-conjugate of that of `C`: the quotient `θ' / σ θ` is
 1. -/
 lemma thetaQuotient_eq_one (hD : D.a₁ = σ C.a₁) : thetaQuotient C σ D = 1 := by
-  -- Write `q = thetaQuotient C σ D`, `ω = quadGen d`, and suppose `q - 1 = X ^ n * W` with
-  -- `W 0 ≠ 0`. The relation `q (ω z) = q ^ (ω ω̄)` gives `ω ^ n = ω ω̄` in degree `n`; moduli give
-  -- `n = 2`, so `ω` would be real.
-  by_contra h_ne
-  obtain ⟨n, W, hW, h_fac⟩ :
-      ∃ (n : ℕ) (W : ℂ⟦X⟧), ¬X ∣ W ∧ thetaQuotient C σ D - 1 = X ^ n * W :=
-    WfDvdMonoid.max_power_factor (sub_ne_zero.2 h_ne) X_irreducible
-  let ω : ℂ := quadGen d
-  have hω_mem : ω ∈ quadInt d := quadGen_mem_quadInt
-  have hω_norm : 1 < ‖ω‖ := one_lt_norm_quadGen
-  have hω_ne : ω ≠ 0 := norm_pos_iff.1 (one_pos.trans hω_norm)
-  obtain ⟨N, hN⟩ := exists_isIsogeny_of_mul_mem_lattice (C.mul_mem_of_quadInt hω_mem)
-  have h_norm : ω * star ω = N := by simpa [(area_pos C.periodPair).ne'] using hN.2
-  have h_rescale : rescale ω (thetaQuotient C σ D - 1) = thetaQuotient C σ D ^ N - 1 := by
-    have h_isog : D.IsIsogeny D.periodPair (σ ω) N := by
-      simpa [hω_mem] using ⟨D.mul_mem_of_quadInt hω_mem, by simp [← h_norm]⟩
-    simpa [hω_mem] using rescale_thetaQuotient_of_conj_isogeny σ hD hD hN hω_ne h_isog
-  -- The coefficients of `X ^ n` are `ω ^ n * W 0` and `W 0 * N`, as `q` has constant term 1.
-  have h_pow : ω ^ n = ω * star ω := by
-    have h_series : rescale ω (X ^ n * W) =
+  -- The first nonzero coefficient forces a^n = a·conj(a) for every nonzero CM integer.
+  by_contra H
+  obtain ⟨n, W, hW, he⟩ := WfDvdMonoid.max_power_factor (sub_ne_zero.2 H) X_irreducible
+  have K {a : ℂ} (ha : a ∈ quadInt d) (ha0 : a ≠ 0) : a ^ n = a * star a := by
+    obtain ⟨N, hN⟩ := exists_isIsogeny_of_mul_mem_lattice (C.mul_mem_of_quadInt ha)
+    have hnorm : a * star a = N := by simpa [(area_pos C.periodPair).ne'] using hN.2
+    have hisog : D.IsIsogeny D.periodPair (σ a) N := by
+      simpa [ha] using ⟨D.mul_mem_of_quadInt ha, by simp [← hnorm]⟩
+    have hres := rescale_thetaQuotient_of_conj_isogeny σ hD hD hN ha0 hisog
+    have hseries : rescale a (X ^ n * W) =
         X ^ n * (W * ∑ i ∈ Finset.range N, thetaQuotient C σ D ^ i) := by
-      rw [← mul_assoc, ← h_fac, mul_geom_sum, h_rescale]
-    have h_coeff : ω ^ n * constantCoeff W = constantCoeff W * N := by
+      rw [← mul_assoc, ← he, mul_geom_sum]
+      simpa [ha] using hres
+    have hcoeff : a ^ n * constantCoeff W = constantCoeff W * N := by
       simpa [coeff_X_pow_mul', thetaQuotient] using
-        (coeff_rescale ..).symm.trans (congrArg (coeff n) h_series)
-    rw [h_norm]
-    exact mul_right_cancel₀ (mt X_dvd_iff.2 hW) (h_coeff.trans (mul_comm _ _))
-  obtain rfl : n = 2 := by
-    have h_moduli : ‖ω‖ ^ n = ‖ω‖ ^ 2 := by rw [← norm_pow, h_pow, norm_mul, norm_star, sq]
-    exact pow_right_injective₀ (by positivity) hω_norm.ne' h_moduli
-  -- This is absurd: `ω = (1 + i√d) / 2` has a nonzero imaginary part.
-  have h_real : ω = star ω := mul_left_cancel₀ hω_ne (by rw [← h_pow, sq])
-  simp [ω, quadGen, Complex.ext_iff, NeZero.ne, eq_neg_iff_add_eq_zero] at h_real
+        (coeff_rescale ..).symm.trans (congrArg (coeff n) hseries)
+    rw [hnorm]
+    exact mul_right_cancel₀ (mt X_dvd_iff.2 hW) (hcoeff.trans (mul_comm _ _))
+  -- Taking a=2 gives n=2; the quadratic generator is then forced to be real.
+  have bad := K quadGen_mem_quadInt
+  norm_num [by simpa [← sq] using congrArg norm ∘ @K 2 (by simp), quadGen, sq, NeZero.ne, field,
+    Complex.ext_iff] at bad
 
 /-- If `D.a₁ = σ C.a₁` for an automorphism `σ` of `ℂ` over `K`, the Taylor series at 0 of every
 monomial section of `D` is the `σ`-conjugate of that of `C`. -/
