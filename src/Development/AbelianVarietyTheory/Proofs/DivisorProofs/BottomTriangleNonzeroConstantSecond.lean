@@ -23,7 +23,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfCosetInd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevelIndicatorReadsNormPowerUnitVector
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MovedThetaFunctionsReadOfMovedVacuumReadsStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisedVacuaRatioAlgebraicUnitEveryPrimeStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisedVacuaRatioAlgebraicUnitEveryPrime
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareNuCharConductorExponentsPosProdModulusStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatticeDoubleCosetClassesStabilisers
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairSecondUnitBlockCosetRootOfUnity
@@ -178,7 +179,7 @@ theorem vac_const (hI : GlobalTheory.NormSum.Inp D) (hc : D.host.ccK = ⊤) (hse
     obtain ⟨κ, hκ, hr⟩ := vac_read hc hset hLS hLT hv h1.1 h0
     refine ⟨κ, hκ, fun hS hT e0 he _ => ?_⟩
     subst hS hT
-    obtain ⟨ζ, hζ, e⟩ := GlobalTheory.T.normalisedVacua_ratio_algebraicUnit_everyPrime hI hset.crv ht he h1
+    obtain ⟨ζ, hζ, e⟩ := _root_.GlobalTheory.VacRatio.vacuum_ratio_isAlgUnit hI hset.crv ht he h1
     exact ⟨ζ, hζ, by rwa [mul_smul, ← e]⟩
   · refine ⟨1, one_ne_zero, fun hS hT e0 he h0 => ?_⟩
     subst hS hT

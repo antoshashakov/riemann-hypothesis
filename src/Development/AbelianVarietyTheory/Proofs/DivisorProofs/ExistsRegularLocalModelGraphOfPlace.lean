@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToQMemMaximalIdealIff
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFreeGeneratorTopFormsTensorLocalizationOrdStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFreeGeneratorTopFormsTensorLocalizationOrd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsUnitMulZpowUniformiserTmulStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTrBasisInImageOfFractionFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GraphIdealLocalizationMaximalIdealEqSpanStatement
@@ -125,7 +125,7 @@ theorem GlobalTheory.GraphLocal.exists_locModel_graph : ∀ {K κ κ' L : Type} 
           Ideal.span {toQ (L := L) 𝔭 (gens E R π ρ hER t zR 0)} :=
       sup_le_sup (Ideal.pow_right_mono (map_le_maximalIdeal 𝔭 hinj) M) le_rfl
     exact h3 h2
-  · obtain ⟨y, q, hy, hq, e⟩ := GlobalTheory.T.exists_freeGenerator_topForms_tensorLocalization_order n k' x τ' E 𝔭 t hQ.const_mem hx hτ hO' ht
+  · obtain ⟨y, q, hy, hq, e⟩ := _root_.GlobalTheory.GraphLocal.exists_isFreeGen_locAt_formOrd n k' x τ' E 𝔭 t hQ.const_mem hx hτ hO' ht
     refine ⟨y, q, hy, hq, ?_⟩
     rw [hz0]
     exact e

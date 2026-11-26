@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGeneratorLineBundlePullbackSpecLocalRingStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslateCubicalSymmetricLineBundleTwoTorsStatement
+public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslateCubicalSymmetricLineBundleTwoTors
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslatedUniformisationBundleEvenClosedFibreTorStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SurjectiveCubeBaseChange
@@ -57,7 +58,7 @@ theorem exists_cp_transl : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing
   obtain ⟨hL, -, -, -, -⟩ := GlobalTheory.firstFiveLaws
   let M := GlobalTheory.ValueForm.modelCP U.toUnifPre hL.globalFns
   obtain ⟨ρ, hρ⟩ := GlobalTheory.T.exists_generator_lineBundle_pullback_spec_localRing R G.left M.L.L M.L.isLB a.left
-  obtain ⟨P, hPL, h2, h3⟩ := GlobalTheory.T.exists_translate_cubicalSymmetricLineBundle_twoTorsion (Sp R) G M a ha ρ hρ
+  obtain ⟨P, hPL, h2, h3⟩ := _root_.GlobalTheory.TranslCP.exists_transl (Sp R) G M a ha ρ hρ
   refine ⟨P, ?_, GlobalTheory.T.translatedUniformisationBundle_even_closedFibreTorus R hR D A G hG U a ha P hPL h2 h3⟩
   rw [hPL]
   exact GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB U.LG.isLB _)

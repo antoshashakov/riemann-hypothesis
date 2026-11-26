@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Degeneration
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DirEqZeroOfConst
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsClosedBoundaryPointMaximalIdealStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDerivationExtendsCompletedToricChartRing
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogVectorFieldMemMaxIdealSmulOfVanishingStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogVectorFieldMemMaxIdealSmulOfVanishing
+public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopLePreimageOfClosedPoint
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -144,7 +146,7 @@ theorem logKS_inj_mod_boundary : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     have := congrFun hdir i
     simp only [Pi.zero_apply, mul_eq_zero, Rat.cast_eq_zero, hc₀, false_or] at this
     exact this
-  exact GlobalTheory.T.logVectorField_mem_maxIdeal_smul_of_vanishing E H Dw l Xo c Y hsm hsnc U D m hm x hxi hxU hxm k m' d ξ x' hξ hx'x hEt hId hBd hU DR a hDR ha
+  exact _root_.GlobalTheory.LogBack.mem_smul_top_of_vanish E H Dw l Xo c Y hsm hsnc U D m hm x hxi hxU hxm k m' d ξ x' hξ hx'x hEt hId hBd hU DR a hDR ha
     hres ha0
 
 end GlobalTheory.ChartDer

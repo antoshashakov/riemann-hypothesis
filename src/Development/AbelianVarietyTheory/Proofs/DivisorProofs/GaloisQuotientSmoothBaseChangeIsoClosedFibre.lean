@@ -3,7 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.QuasiCompact
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCocycleUnit
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompatibleMapsModPowMaximalIdealBaseStatement
+public import Mathlib.RingTheory.Ideal.Quotient.Operations
+public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs
+public import Mathlib.RingTheory.Noetherian.Defs
+public import Mathlib.RingTheory.TensorProduct.Maps
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompatibleMapsModPowMaximalIdealBase
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsInvariantMapsAffineOpenSmoothModelStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothAwayOfQuotientPowEquivStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaloisDescentOpenInvariantSubschemeStatement
@@ -76,7 +80,7 @@ theorem quotient_smooth_and_baseChange_iso : ∀ (R : Type) [CommRing R] [IsDoma
   have : IsNoetherianRing R := hR.1.1
   have : IsNoetherianRing R' := hρ.1.1
   have : Module.Finite R R' := RingHom.finite_algebraMap.1 hρ.2.2
-  obtain ⟨i, k₁, k₂, k₃⟩ := @GlobalTheory.T.exists_compatible_maps_mod_pow_maximalIdeal_base_alt R _ _ R' _ _ _ _ _ C' _ _ _ _ _ (fun σ => actC σ) O _ _ i' h₁ h₂ h₃
+  obtain ⟨i, k₁, k₂, k₃⟩ := @_root_.GlobalTheory.exists_compatible_maps_mod_pow_maximalIdeal_base R _ _ R' _ _ _ _ _ C' _ _ _ _ _ (fun σ => actC σ) O _ _ i' h₁ h₂ h₃
   have : Algebra.FiniteType R' C' := by
     have := U'.smooth
     have : LocallyOfFiniteType (spMap (algebraMap R' C')) := by rw [← hjs]; infer_instance

@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SharpOverIff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdicCompletionRingHomExtPadicAlgClosureStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineOpenFiniteTypeIntOfModelStatement
+public import Development.AbelianVarietyTheory.Definitions.Degenerations.ArithBase
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineOpenFiniteTypeIntOfModel
 public import Mathlib.RingTheory.AdicCompletion.Algebra
 public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsLocalHomAdicCompletionExtend
@@ -63,7 +64,7 @@ namespace GlobalTheory.ClassicalPt
 theorem extend_completion : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (M : RatModel o' Ω) (x : M.Z) (R : Type) [CommRing R] (j : M.Z.presheaf.stalk x →+* R), IsCpl j → ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), y (cPt p) = x → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (ev₀ : R →+* V) (i : V →+* OO p), IsAdicComplete (maximalIdeal V) V ∧ IsLocalHom ev₀ ∧ IsLocalHom i ∧ Function.Injective i ∧ spMap (i.comp ev₀) ≫ (spMap j ≫ M.Z.fromSpecStalk x) = y ∧ ∀ ev : R →+* OO p, spMap ev ≫ (spMap j ≫ M.Z.fromSpecStalk x) = y → ev = i.comp ev₀ := by
   intro o' Ω _ _ _ _ M x R _ j hj p _ y hy
   obtain ⟨φ, hφl, hφ, hφu⟩ := GlobalTheory.T.exists_unique_stalkHom_padicAlgClosure_valuation M.Z x p y hy
-  obtain ⟨U, hU, hxU, hft⟩ := GlobalTheory.T.exists_affineOpen_finiteType_int_of_model o' Ω M x
+  obtain ⟨U, hU, hxU, hft⟩ := _root_.GlobalTheory.RatModel.exists_affineOpen_finiteType_int o' Ω M x
   obtain ⟨hN, K, hK, hφK⟩ := GlobalTheory.T.stalk_noetherian_padicImage_finiteExtension M.Z U hU x hxU hft p φ
   obtain ⟨hdvr, hcpl, -⟩ := GlobalTheory.intRing_complete_dvr p K hK
   obtain ⟨e, he⟩ := hj

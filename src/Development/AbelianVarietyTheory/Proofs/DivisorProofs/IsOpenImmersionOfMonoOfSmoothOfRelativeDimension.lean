@@ -2,7 +2,9 @@ module
 
 public import Mathlib.AlgebraicGeometry.Morphisms.Etale
 public import Mathlib.Combinatorics.Quiver.ReflQuiver
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleOfFormallyUnramifiedStandardSmoothSameRelDiStatement
+public import Mathlib.RingTheory.Etale.Basic
+public import Mathlib.RingTheory.Smooth.StandardSmooth
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleOfFormallyUnramifiedStandardSmoothSameRelDi
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -98,7 +100,7 @@ theorem etale_of_formallyUnramified_of_smoothOfRelativeDimension {X Y Z : Scheme
   letI := ((f.appLE V (X.basicOpen r) er).hom.comp (p.appLE U V e).hom).toAlgebra
   haveI : IsScalarTower Γ(Z, U) Γ(Y, V) Γ(X, X.basicOpen r) :=
     IsScalarTower.of_algebraMap_eq' rfl
-  exact GlobalTheory.T.etale_of_formallyUnramified_standardSmooth_same_relDim Γ(Z, U) Γ(Y, V) Γ(X, X.basicOpen r) g H h2 h3
+  exact _root_.GlobalTheory.etale_of_formallyUnramified_of_relDim Γ(Z, U) Γ(Y, V) Γ(X, X.basicOpen r) g H h2 h3
 
 theorem isOpenImmersion_of_mono_of_smoothOfRelativeDimension :
     ∀ (X Y Z : Scheme.{0}) (f : X ⟶ Y) (p : Y ⟶ Z) (g : ℕ), SmoothOfRelativeDimension g p →

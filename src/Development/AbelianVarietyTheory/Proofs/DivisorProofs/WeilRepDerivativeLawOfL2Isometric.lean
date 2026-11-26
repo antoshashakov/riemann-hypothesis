@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdeleJoinZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicL2EqZeroImpEqZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicL2LimitZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzHaarWeilStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzHaarWeil
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchDerivativeKeepsSumsFixedFiniteParts
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchrArchPairAdeleJoin
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerOperatorArchimedeanMemAdelicSchwartzStatement
@@ -99,7 +99,7 @@ theorem dS_om_eq : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : Ade
     have e : (fun n => GlobalTheory.WeilL2Words.l2A F μ (Gn n)) = fun n => GlobalTheory.WeilL2Words.l2A F μ (Qr n) := by
       funext n; rw [hGQ, hiso p _ (hQr_mem n)]
     rw [e]
-    have := GlobalTheory.T.adelic_schwartz_haar_weil F κ ψ hψ μ hμ h' φ hφ
+    have := _root_.GlobalTheory.WeilL2Convergence.tendsto_l2A_diffQuot F κ ψ hψ μ hμ h' φ hφ
     refine this.congr fun n => ?_
     congr 1
   set D : (κ → AdeleRing (𝓞 F) F) → ℂ := GlobalTheory.WeilL2Words.dS F ψ h (om p φ) - om p (GlobalTheory.WeilL2Words.dS F ψ h' φ) with hD

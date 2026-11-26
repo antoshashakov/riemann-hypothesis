@@ -14,7 +14,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRepSquarePairCharactersAlphaQuotientStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridSquareSkewSumSpaceIsSkewHermitianSelfDual
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAdmissibleCMBaseDataOfSquareTupleStandingStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlacesUnderLocalDataMemGoodCharacterRamificationStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlacesUnderLocalDataMemGoodCharacterRamification
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHermitianLatticeLocalBases
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemPairLat
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ScaledLatticeConjDirectSumTraceSelfDualStatement
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareCharactersIsGoodGridPlaces
@@ -95,7 +97,7 @@ theorem dual_conjLat : ∀ {D : D7} (A B : HSp D)
 theorem under_gridLocalTensorPlace_mem_goodThetaCharacterPlaces : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (B : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (X : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (a a' : ℕ),
     X.α = alpha G t i j → X.β = beta G i j → X.IsGood B a a' →
-    ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ∈ X.T := @GlobalTheory.T.placesUnder_localData_mem_goodCharacter_ramification
+    ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ∈ X.T := @_root_.GlobalTheory.BigNZ.LocalPlaceUnderMembership.under_locPl_mem
 
 theorem isHerm_conjLat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (W : G.Weil)
     (i j : Fin D.R.m) (B : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (τf : InfinitePlace D.host.F → D.what₂.Tau),

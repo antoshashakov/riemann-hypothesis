@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsNotRel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLagrModelOfIsLin
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerSkewPlaneUniqueDual
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtHeisenbergTranslateFockBoxStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtHeisenbergTranslateFockBox
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtThetaTransformHeisenbergRealLine
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddChar
 import Mathlib.Algebra.Order.Floor.Extended
@@ -104,7 +105,7 @@ theorem datum_stable : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G 
     intro x
     rw [← h.ψ]
     exact h1 _ hrest x
-  choose b hb using fun P => GlobalTheory.T.hasDerivAt_heisenbergTranslate_fockBox hL W B ρ t i j M e Bs Γ X om om' h hT n Φ τ τ' hF u hu P
+  choose b hb using fun P => _root_.GlobalTheory.RouteBoxDeriv.hasDerivAt_box hL W B ρ t i j M e Bs Γ X om om' h hT n Φ τ τ' hF u hu P
   refine ⟨a.sum fun P c => c • b P, hmem1, fun v => ?_⟩
   have H1 := GlobalTheory.ThetaLineDeriv.hasDerivAt_thetaSum_rho Γ.M.co W.ψ hFr hψc u _ ha.1 _ hmem1 hd v
   set g : PolT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j) → PureT G (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.routeA t i j) → _ → ℂ :=

@@ -7,7 +7,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianVarie
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegAevalEqProdArootsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorProperties
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneTheoryVEqVerschiebungInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfNormProdAevalEqStatement
+public import Mathlib.NumberTheory.Padics.Complex
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfNormProdAevalEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompEqZeroOfNotIsIsogeny
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPadicIntCharpolyCommuteFrobeniusSemilinearStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTorsionTowerAndHeightEqTwoDimStatement
@@ -130,7 +132,7 @@ theorem charpoly_map_eq : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type)
   have hPdeg : P.natDegree = 2 * A.dim := by
     rw [← hPm.natDegree_map ψ, hP, LinearMap.charpoly_natDegree, hrank]
   have key : P.map (algebraMap ℤ_[p] ℚ_[p]) = (charpoly f).map (Int.castRingHom ℚ_[p]) := by
-    refine GlobalTheory.T.eq_of_norm_prod_aeval_eq' p _ _ (hPm.map _) (hQm.map _) ?_ ?_
+    refine _root_.GlobalTheory.PadicRootNorm.eq_of_norm_prod_aeval_eq p _ _ (hPm.map _) (hQm.map _) ?_ ?_
     · rw [hPm.natDegree_map, hQm.natDegree_map, hPdeg, hQdeg]
     · intro R
       obtain ⟨PR, -, hPR⟩ := GlobalTheory.T.exists_padicInt_charpoly_commute_frobeniusSemilinear p k (T.M G) (T.F G) ψ

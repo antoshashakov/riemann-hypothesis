@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsPolAVSectionInverseImage
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearSectionValueAbelianPowerStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasArcDataIff
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLinearSectionValueAbelianPower
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsLineBundlePowSeparateFirstJetsOriginStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpanThetaTranslatesTorsionEqTopStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -62,7 +63,7 @@ theorem main : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x : KeyIn 
   have hy : ∀ j : Fin g, epsLift (x.v (j.cast hg.symm)) ≫ (fst (baseOver (Sp K)) x.P.A).left =
       spMap (algebraMap K (DualNumber K)) := fun j => by
     rw [epsLift, ← Over.comp_left, lift_fst]; rfl
-  choose f hf using fun j : Fin g => GlobalTheory.T.exists_linear_sectionValue_abelianPower K x (m ^ 2) (fun _ => i₀) (DualNumber K) _ (hy j)
+  choose f hf using fun j : Fin g => _root_.GlobalTheory.SecValLin.exists_linear_valR_sec K x (m ^ 2) (fun _ => i₀) (DualNumber K) _ (hy j)
   set a := c₀ - ∑ j, c j * c' j with ha
   let Φ : EA x.P (𝟙 (Sp K)) (m ^ 2) →ₗ[K] K :=
     a • ((TrivSqZeroExt.fstHom K K K).toLinearMap ∘ₗ f j₀) + ∑ j, c j • (TrivSqZeroExt.sndHom K K ∘ₗ f j)

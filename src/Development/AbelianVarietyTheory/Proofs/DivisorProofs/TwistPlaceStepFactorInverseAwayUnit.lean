@@ -2,7 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFits
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussSumStepCharacterTwistPlaceDvdStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Mu0ChiHUnramifiedOutsideStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.BasePlaceNotMemChiGridBadPlaces
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Mu0ChiHUnramifiedOutside
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StepCharacterUniformiserValueUnitAwayTwistStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistPlaceStepCharacterConductorExponentOneStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
@@ -88,7 +91,7 @@ theorem twist_factor : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G
     rw [Ne, Ideal.absNorm_eq_zero_iff]
     exact u.ne_bot
   have hqd : Ideal.absNorm v.1.asIdeal ∣ Qn G t := hq ▸ Finset.dvd_prod_of_mem _ htw
-  obtain ⟨hmu, hchi⟩ := GlobalTheory.T.mu0_and_chiH_unrAt_outside_S0 G hL i j t w hQ (by rw [hunder]; exact hvS)
+  obtain ⟨hmu, hchi⟩ := _root_.GlobalTheory.TwistUnr.mu0_chiH_unrAt G hL i j t w hQ (by rw [hunder]; exact hvS)
   have hc := GlobalTheory.T.twistPlace_stepCharacter_conductorExponent_one G hL i j t τ hmu hchi hQ
   obtain ⟨g, hg, hgd⟩ := GlobalTheory.T.gaussSum_stepCharacter_twistPlace_dvd G W S hL hN i j t τ Bs.ψ (hB.2.2.1 v.1 v.2) hloc hc
   obtain ⟨x, hx, hxa⟩ := GlobalTheory.T.stepCharacter_uniformiserValue_unit_away_twist G W S hL hN i j t τ hmu hchi htw

@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasicO
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombIn
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftsAgreeOfCocycle
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPowCocycle
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquareZeroLiftBasicOpenPairAgreeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSquareZeroLiftBasicOpenPairAgree
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -65,7 +65,7 @@ theorem lifts_corrected_agree_on_overlaps : ∀ (R R₀ : Type) [CommRing R] [Co
   classical
   have : Fintype κ := Fintype.ofFinite κ
   choose e he1 he2 he3 using hL
-  choose N₀ hN₀ using fun k j => GlobalTheory.T.exists_squareZeroLift_basicOpen_pair_agree R R₀ π hπ hI X hX g₀ hg₀ (f j) (f k) (V j) (hV j) (e j) (he1 j) (he2 j) (he3 j) (e k) (he1 k) (he2 k)
+  choose N₀ hN₀ using fun k j => _root_.GlobalTheory.SecGlue.exists_pair_lift_comb R R₀ π hπ hI X hX g₀ hg₀ (f j) (f k) (V j) (hV j) (e j) (he1 j) (he2 j) (he3 j) (e k) (he1 k) (he2 k)
   have hN : ∀ k j, N₀ k j ≤ Finset.univ.sup (fun p : κ × κ => N₀ p.1 p.2) := fun k j =>
     Finset.le_sup (f := fun p : κ × κ => N₀ p.1 p.2) (Finset.mem_univ (k, j))
   choose t ht1 ht2 ht3 ht4 using fun k j => hN₀ k j _ (hN k j)
