@@ -285,17 +285,8 @@ lemma projOn_integrated : V.projOn S (V.integrated v f) = V.integrated v (V.proj
 /-- Integrating against two real data in turn gives v ⊗ (w ⊗ f) = w(0)·(v ⊗ f). -/
 @[simp]
 lemma integrated_integrated : V.integrated v (V.integrated w f) = w 0 • V.integrated v f := by
-  -- With the restriction `r` to the finite coordinates, `u ⊗ g` is the product of `u` and `r g`,
-  -- and a product with first factor `w` restricts to `w 0` times its second factor.
-  obtain ⟨r, hr_apply, hr_integrated⟩ := (adelicSum E s).exists_restriction
-  have h_product (u : Model (realHeisenberg (realSigns E s))) (g : 𝒮 V) :
-      V.integrated u g = (adelicSum E s).tmul u (r g) :=
-    hr_integrated u g
-  have h_restrict : r (V.integrated w f) = w 0 • r f := by
-    ext b
-    rw [h_product, hr_apply, tmul_apply, ContinuousAddEquiv.symm_apply_apply, IsVacuum.smul_apply]
-  rw [h_product v, h_restrict, h_product v f]
-  exact map_smul ((adelicSum E s).tmul v) (w 0) (r f)
+  -- Intertwining moves the inner integration to the reproducing model, where it has rank one.
+  erw [← map_integrated _ (V.integrated.flip f), integrated_eq_smul] <;> simp [integrated]
 
 /-- For g = (g_∞, g_f), ω(g)(v ⊗ f) = `New.Fock.realWeil`(g_∞)v ⊗ ω(g_f)f, where ⊗ is
 `New.Space.integrated`, `New.Fock.realWeil` is the Weil representation on Fock space, and g_∞ is
@@ -408,18 +399,11 @@ lemma finHeisenbergOp_projOn {y : n → 𝔸f E} (hy : y ∈ stdLattice E n) (f 
 `finHeisenbergOp` at the components above S ∪ S̄ of y, over y ∈ Ô^n. It is self-adjoint for the
 sesquilinear form `dataInner` ⟨c, c′⟩ = ∫ c̄ c′ over 𝔸^n, that is ⟨P^S f, f′⟩ = ⟨f, P^S f′⟩. -/
 lemma dataInner_projOn : V.dataInner (V.projOn S f) f' = V.dataInner f (V.projOn S f') := by
-  -- Projecting the second argument does not change the pairing with `projOn S u`, since
-  -- `projOn S u` is fixed by the unitary operators that `projOn S` averages.
-  have h_inner (u u' : 𝒮 V) :
-      V.dataInner (V.projOn S u) (V.projOn S u') = V.dataInner (V.projOn S u) u' := by
-    refine V.map_projOn_eq_const _ fun (y : n → 𝔸f E) (hy : y ∈ stdLattice E n) ↦ ?_
-    rw [← V.dataInner_finHeisenbergOp (idem S.conjClosure • y) _ u', V.finHeisenbergOp_projOn hy]
-  have h_conj (u u' : 𝒮 V) : starRingEnd ℂ (V.dataInner u u') = V.dataInner u' u :=
-    conj_modelInner u u'
-  calc V.dataInner (V.projOn S f) f'
-      = V.dataInner (V.projOn S f) (V.projOn S f') := (h_inner f f').symm
-    _ = starRingEnd ℂ (V.dataInner (V.projOn S f') f) := by rw [← h_inner f' f, h_conj]
-    _ = V.dataInner f (V.projOn S f') := h_conj _ _
+  -- The mean fixes the projected argument; conjugate symmetry transfers the projection.
+  have k f f' := V.map_projOn_eq_const (S := S) _ fun _ ↦
+    (V.finHeisenbergOp_projOn · f ▸ V.dataInner_finHeisenbergOp _ _ f')
+  erw [← k, ← conj_modelInner, k, conj_modelInner]
+  rfl
 
 /-- The value of f at an adelic vector y is the pairing of the translate ϱ(y) vac with f. -/
 lemma val_eq_dataInner_rho_vacElem (f : 𝒮 V) (y : n → 𝔸 E) :

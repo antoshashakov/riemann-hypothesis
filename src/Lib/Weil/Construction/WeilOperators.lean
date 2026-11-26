@@ -207,22 +207,12 @@ lemma weilOp_mul (hc_one : ∀ g : G, c g 1 = 1) (h : G) :
 @[simp]
 lemma modelInner_weilOp (hc_one : c g 1 = 1) :
     modelInner (weilOp B g v) (weilOp B g w) = modelInner v w := by
-  -- The operator of `g⁻¹` is both a left inverse and an adjoint of the operator of `g`.
-  have h_inv : weilOp B g⁻¹ (weilOp B g v) = v := by
-    simpa [weilOp_one, hc_one] using DFunLike.congr_fun (weilOp_inv_mul_weilOp_mul_weilOp B g 1) v
-  -- Both sides are `Δ g` times the integral of `w (g⁻¹ • y) * conj (u y)`, as `Δ g⁻¹ = conj (Δ g)`.
-  have h_coeff (u : he.Model) (y : W) :
-      modelInner u (heisenbergOp y vacElem) = starRingEnd ℂ (u y) := by
-    rw [← conj_modelInner, modelInner_heisenbergOp_vacElem]
-  have h_adjoint (u : he.Model) :
-      modelInner u (weilOp B g w) = starRingEnd ℂ (modelInner w (weilOp B g⁻¹ u)) := by
-    calc modelInner u (weilOp B g w)
-      _ = B.Δ g * ∫ y : W, w (g⁻¹ • y) * starRingEnd ℂ (u y) ∂μ := by
-        simp [weilOp, map_integrated_moveBy _ g, h_coeff]
-      _ = starRingEnd ℂ (modelInner w (weilOp B g⁻¹ u)) := by
-        simp [weilOp, map_integrated_eq_integral, h_coeff, ← integral_conj, mul_comm,
-          MultiplierAction.Δ_inv]
-  rw [h_adjoint, h_inv, conj_modelInner]
+  -- Use the inverse cocycle relation and adjoint identity directly in the pairing.
+  convert congr(modelInner ($(weilOp_inv_mul_weilOp_mul_weilOp B g 1) v) w) using 1 <;>
+    simp_all [weilOp_one, ← conj_modelInner w]
+  set u := weilOp B g v
+  simp [weilOp, map_integrated_moveBy _ g, map_integrated_eq_integral,
+    conj_modelInner, ← integral_conj, ← conj_modelInner _ u, mul_comm, MultiplierAction.Δ_inv]
 
 /-- For an action `B` with cocycle c such that c(g, 1) = 1 for all g, the subgroup of those s in G
 with c(g, s) = 1 for every g. -/
@@ -572,28 +562,14 @@ and e₂, the integrable functions reproduced by e₁ and e₂. Read through φ,
 v((φ⁻¹x).1) · w((φ⁻¹x).2). -/
 @[local simp]
 lemma OrthogonalSum.tmul_apply : S.tmul v w x = v (S.equiv.symm x).1 * w (S.equiv.symm x).2 := by
-  obtain ⟨⟨a, b⟩, rfl⟩ := S.equiv.surjective x
-  -- The translate of the vacuum by `S.equiv (y₁, y₂)` is the product of the two reproducing
-  -- kernels, so the double integral that defines `S.tmul` reproduces `v` at `a` and `w` at `b`.
-  have h_kernel (y₁ : W₁) (y₂ : W₂) :
-      (heisenbergRep.left S).ρ y₁ ((heisenbergRep.right S).ρ y₂ vacElem) (S.equiv (a, b)) =
-        H₁.β y₁ a * e₁ (a - y₁) * (H₂.β y₂ b * e₂ (b - y₂)) := by
-    simp [mul, beta_equiv, ← map_add, ← map_sub, vac_equiv, mul_mul_mul_comm]
-  have h_inner (y₂ : W₂) :
-      (heisenbergRep.left S).integrated v ((heisenbergRep.right S).ρ y₂ vacElem) (S.equiv (a, b)) =
-        v a * (H₂.β y₂ b * e₂ (b - y₂)) := by
-    rw [← valueAt_apply, map_integrated_eq_integral, ← v.integral_mul_beta_mul_eq a,
-      ← integral_mul_const]
-    simp_rw [valueAt_apply, h_kernel, smul_eq_mul, mul_assoc]
-  rw [S.equiv.symm_apply_apply]
-  calc S.tmul v w (S.equiv (a, b))
-    _ = ∫ y₂ : W₂, w y₂ * (heisenbergRep.left S).integrated v
-          ((heisenbergRep.right S).ρ y₂ vacElem) (S.equiv (a, b)) ∂μ₂ :=
-      (heisenbergRep.right S).map_integrated_eq_integral
-        (valueAt (S.equiv (a, b)) ∘L (heisenbergRep.left S).integrated v) w vacElem
-    _ = v a * ∫ y₂ : W₂, w y₂ * (H₂.β y₂ b * e₂ (b - y₂)) ∂μ₂ := by
-      simp_rw [h_inner, ← integral_const_mul, mul_left_comm (v a)]
-    _ = v a * w b := by rw [w.integral_mul_beta_mul_eq b]
+  -- The two reproducing identities evaluate the iterated integral defining the tensor product.
+  erw [← valueAt_apply, ← v.2.2, ← w.2.2,
+    map_integrated_eq_integral _ (valueAt _ ∘L integrated _ v)]
+  revert x
+  simp [map_integrated_eq_integral, S.equiv.surjective.forall, ← integral_const_mul,
+    ← integral_mul_const, mul, S.beta_equiv, ← map_add, ← map_sub, S.vac_equiv,
+    mul_mul_mul_comm]
+  grind
 
 open scoped ComplexConjugate in
 /-- Let `S` be an orthogonal sum, that is, an isomorphism φ: W₁ × W₂ → W of topological groups under
