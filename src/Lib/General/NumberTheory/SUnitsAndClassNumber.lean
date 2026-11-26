@@ -153,51 +153,29 @@ infinite places. -/
 lemma SUnit.dirichlet_unit_theorem (hS : S.Finite) :
     Module.Finite ℤ (Additive (S.unit K)) ∧
     finrank ℤ (Additive (S.unit K)) + 1 = S.ncard + Fintype.card (InfinitePlace K) := by
-  -- The valuations at `S` map the `S`-units to `ℤ^S`. The kernel is the unit group of `𝓞 K`, and
-  -- the image has full rank by the finiteness of the class number.
-  have : Fintype S := hS.fintype
-  -- `g` sends an `S`-unit to the logarithms of its valuations at the places in `S`.
-  let g : Additive (S.unit K) →ₗ[ℤ] S → ℤ := AddMonoidHom.toIntLinearMap <| .mk'
-    (fun x v ↦ log ((v : FinPlace K).valuation K ((x.toMul : Kˣ) : K)))
-    fun x y ↦ by ext; simp [log_mul]
-  -- The kernel is the group of `∅`-units, since an `S`-unit has valuation `1` outside `S`.
-  have h_ker :
-      ((∅ : Set (FinPlace K)).unit K).subgroupOf (S.unit K) = g.ker.toAddSubgroup.toSubgroup' := by
+  obtain ⟨_, c, hc, k⟩ := hS.fintype, exists_valuation_eq_exp_mul hS
+  -- Valuations map the S-units to ℤ^S; the kernel is the ordinary unit group.
+  let g := (AddMonoidHom.mk' (fun (x : Additive (S.unit K)) (v : S) ↦
+    (v.1.valuation K x.toMul.1).log) (by aesop)).toIntLinearMap
+  have heq : ((∅ : Set (FinPlace K)).unit K).subgroupOf (S.unit K) =
+      g.ker.toAddSubgroup.toSubgroup' := by
     ext x
-    have h_outside : x.1 ∈ Set.unit ∅ K ↔ ∀ v ∈ S, v.valuation K x.1 = 1 :=
+    have h : x.1 ∈ Set.unit ∅ K ↔ ∀ v ∈ S, v.valuation K x.1 = 1 :=
       ⟨fun hx v _ ↦ hx v (Set.notMem_empty v), fun hx v _ ↦ (em (v ∈ S)).elim (hx v) (x.2 v)⟩
-    simpa [funext_iff, g, ← exp_inj (M := ℤ), mem_subgroupOf] using h_outside
-  let kerEquivEmpty : g.ker.toAddSubgroup.toSubgroup' ≃* (∅ : Set (FinPlace K)).unit K :=
-    (MulEquiv.subgroupCongr h_ker.symm).trans
-      (subgroupOfEquivOfLe fun x hx v _ ↦ hx v (Set.notMem_empty v))
-  -- The `∅`-integers are `𝓞 K`, so the `∅`-units and hence the kernel form the unit group of `𝓞 K`.
-  let integerEquiv : (∅ : Set (FinPlace K)).integer K ≃ₐ[𝓞 K] 𝓞 K :=
-    (Subalgebra.equivOfEq _ _ (integer_empty (𝓞 K) K)).trans
-      (botEquivOfInjective Subtype.val_injective)
-  let unitEquiv : (∅ : Set (FinPlace K)).unit K ≃* (𝓞 K)ˣ :=
-    (Set.unitEquivUnitsInteger ∅ K).trans (mapEquiv integerEquiv.toMulEquiv)
+    simpa [funext_iff, g, ← exp_inj (M := ℤ), mem_subgroupOf] using h
+  -- The empty integers are 𝓞 K, identifying the kernel with their unit group.
   let e : g.ker ≃ₗ[ℤ] Additive (𝓞 K)ˣ :=
-    (kerEquivEmpty.trans unitEquiv).toAdditive.toIntLinearEquiv
-  -- The group is an extension of a subgroup of `ℤ^S` by the finitely generated unit group.
-  have h_finite : Module.Finite ℤ (Additive (S.unit K)) :=
-    (isNoetherian_of_range_eq_ker (g.ker.subtype ∘ₗ e.symm.toLinearMap) g (by simp)).finite
-  have h_range : finrank ℤ g.range = finrank ℤ (S → ℤ) := by
-    refine g.range.finrank_le.eq_of_not_lt fun h_lt ↦ ?_
-    -- Otherwise some `z` has no nonzero multiple in the image; but `c • z` is the image of an
-    -- `S`-unit.
-    obtain ⟨z, hz⟩ := g.range.exists_of_finrank_lt h_lt
-    obtain ⟨c, hc, h_exists⟩ := exists_valuation_eq_exp_mul hS
-    obtain ⟨x, hx⟩ := h_exists z
-    have hx_image : g (.ofMul x) = (c : ℤ) • z := funext fun v ↦ by simp [g, hx v]
-    exact hz c (mod_cast hc) ⟨.ofMul x, hx_image⟩
-  -- Rank–nullity and Dirichlet's unit theorem.
-  have h_rank_nullity :
-      finrank ℤ (Additive (S.unit K)) = finrank ℤ g.range + finrank ℤ g.ker := by
-    rw [← g.ker.finrank_quotient_add_finrank, g.quotKerEquivRange.finrank_eq]
-  have h_card : finrank ℤ (S → ℤ) = S.ncard := by simp
-  refine ⟨h_finite, ?_⟩
-  rw [h_rank_nullity, h_range, h_card, e.finrank_eq, finrank_eq, rank, add_assoc,
-    Nat.sub_add_cancel Fintype.card_pos]
+    ((MulEquiv.subgroupCongr heq.symm).trans
+      ((subgroupOfEquivOfLe (by tauto)).trans
+        ((IsDedekindDomain.integer_empty (𝓞 K) K ▸ Set.unitEquivUnitsInteger ..).trans
+          (Units.mapEquiv (botEquivOfInjective Subtype.val_injective).toMulEquiv))))
+      |> MulEquiv.toAdditive |>.toIntLinearEquiv
+  -- The range has full rank; apply the Noetherian extension and rank–nullity.
+  have := (isNoetherian_of_range_eq_ker (g.ker.subtype ∘ₗ e.symm.1) g (by simp)).finite
+  simp_all [← g.ker.finrank_quotient_add_finrank, g.quotKerEquivRange.finrank_eq,
+    e.finrank_eq, finrank_eq, rank, add_assoc, NeZero.one_le, g.range.finrank_le.eq_of_not_lt
+    (mt g.range.exists_of_finrank_lt fun ⟨z, h⟩ ↦
+      h c (by lia) ((k z).imp' .ofMul (by aesop)))]
 
 end New
 
