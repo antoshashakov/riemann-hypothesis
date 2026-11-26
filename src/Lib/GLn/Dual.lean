@@ -591,52 +591,34 @@ isometry for the Gram matrices, and over every field of characteristic zero matc
 vectors and intertwines the Schur matrices up to a power of the determinant. -/
 lemma nonempty_mixedCartanEmbedding :
     Nonempty (MixedCartanEmbedding n kp km (mixedWeight n kp km)) := by
-  -- Let `kc` be `km` with reversed columns, so that `mixedWeight n kp km` is `kp + kc`. A witness
-  -- is `(1 ⊗ J) * C`: the transposed multiplication matrix `C = comulMatrix` splits the weight
-  -- `kp + kc` into `kp` and `kc`, and the duality matrix `J` of `exists_isDualIsometry`
-  -- identifies the factor `kc`, up to a power of the determinant, with the factor `km` composed
-  -- with `g ↦ g⁻¹ᵀ`.
   let kc : Φ → ℕ → ℕ := fun τ i ↦ km τ (card n - i)
-  obtain ⟨J, hJ⟩ : ∃ J : Matrix (WeylIndex n km) (WeylIndex n kc) ℤ,
-      IsDualIsometry (rowEquivFin fun _ : Φ ↦ n) J :=
-    exists_isDualIsometry _ fun _ _ _ ↦ rfl
-  obtain ⟨J', -, h_J'_mul_J⟩ := hJ.exists_inv
-  obtain ⟨P, h_P_mul_C⟩ : HasLeftInv (comulMatrix ℤ (fun _ : Φ ↦ n) kp kc) := hasLeftInv_comulMatrix
-  -- The witness over a ring `R`; `mulLinearMap R A B` is the matrix product `A * B`.
+  obtain ⟨J, J', hJJ', hJ'J, hgram, hprops⟩ := exists_dual_isometry (κ := km) (κ' := kc)
+    (rowEquivFin fun _ : Φ ↦ n) _ rfl (by tauto)
   let K (R : Type) [CommRing R] :
       Matrix (WeylIndex n kp × WeylIndex n km) (WeylIndex n (kp + kc)) R :=
-    mulLinearMap R (kronecker (diagonal 1) (J.map (↑))) (comulMatrix R (fun _ : Φ ↦ n) kp kc)
-  -- The entries of `comulMatrix R` and of `J.map` are casts of integers, so `K R` is the cast of
-  -- `K ℤ`.
-  have hK_map (R : Type) [CommRing R] : (K ℤ).map ((↑) : ℤ → R) = K R := by
+    mulLinearMap R (kronecker (diagonal 1) (J.map (↑)))
+      (comulMatrix R (fun _ : Φ ↦ n) kp kc)
+  have hcast (R : Type) [CommRing R] : (K ℤ).map ((↑) : ℤ → R) = K R := by
     aesop (add simp mul_apply) (add simp Matrix.one_apply)
-  have h_cast : (Int.cast : ℤ → ℤ) = fun x : ℤ ↦ x := funext fun _ ↦ Int.cast_id
-  suffices h_emb : MixedCartanEmbedding n kp km (kp + kc) from ⟨h_emb⟩
-  exact
-    { matrix := K ℤ
-      -- `J' * J = 1` and `P * comulMatrix = 1`.
-      hasLeftInv := ⟨mulLinearMap ℤ P (1 ⊗ₖ J'), by
-        simp [K, ← (_ ⊗ₖ _).mul_assoc, ← mul_kronecker_mul, h_cast, h_J'_mul_J, h_P_mul_C,
-          Matrix.mul_assoc]⟩
-      gram_eq := by
-        -- `J` is an isometry, and so is `comulMatrix`.
-        refine .trans ?_ comulMatrix_isometry
-        simp [K, ← (_ ⊗ₖ _).mul_assoc, ← mul_kronecker_mul, ← kroneckerMap_transpose, h_cast,
-          ← hJ.gram_eq, Matrix.mul_assoc]
-      top R _ _ := by
-        -- `comulMatrix` splits the evaluation vector, and `J` reverses the second factor.
-        rw [hK_map R]
-        simp [K, weylEvalAt, comulMatrix_mulVec_weylEval, ← mulVec_mulVec (weylEval _ _ _),
-          hJ.mulVec_weylEval R, kronecker_mulVec_vec, mul_vecMulVec]
-      intertwines {R} _ _ g v := by
-        -- The equivariance of `J` up to the power of the determinant, then that of `comulMatrix`.
-        have hJ_law : schur km (fun τ : Φ ↦ (g τ).val⁻¹ᵀ) * J.map (Int.cast : ℤ → R) =
-            (∏ τ : Φ, (g τ).det ^ ∑ i ∈ Ico 1 (card n), (km τ i : ℤ))⁻¹ •
-              (J.map (Int.cast : ℤ → R) * schur kc fun τ : Φ ↦ (g τ).val) := by
-          simpa [weylRep] using hJ.equivariant g
-        rw [hK_map R]
-        simp [hJ_law, K, weylRep, ← (_ ⊗ₖ _).mul_assoc, ← mul_kronecker_mul,
-          ← comulMatrix_equivariant, kronecker_smul, Matrix.mul_assoc] }
+  refine ⟨.mk (l := kp + kc) (K ℤ)
+    (hasLeftInv_comulMatrix.imp' (mulLinearMap ℤ · (1 ⊗ₖ J')) ?_)
+    (.trans ?_ comulMatrix_isometry) ?_ ?_⟩
+  · simp_all [K, ← (_ ⊗ₖ _).mul_assoc, ← mul_kronecker_mul,
+      funext @Int.cast_id, Matrix.mul_assoc]
+  · simp_all [K, ← (_ ⊗ₖ _).mul_assoc, ← mul_kronecker_mul,
+      ← kroneckerMap_transpose, funext @Int.cast_id, Matrix.mul_assoc]
+  · intro R _ _
+    rw [hcast R]
+    simp [K, weylEvalAt, comulMatrix_mulVec_weylEval,
+      ← mulVec_mulVec (weylEval _ _ _), (hprops R).1, kronecker_mulVec_vec, mul_vecMulVec]
+  · intro R _ _ g v
+    have hJlaw : schur km (fun τ : Φ ↦ (g τ).val⁻¹ᵀ) * J.map (Int.cast : ℤ → R) =
+        (∏ τ : Φ, (g τ).det ^ ∑ i ∈ Ico 1 (card n), (km τ i : ℤ))⁻¹ •
+          (J.map (Int.cast : ℤ → R) * schur kc fun τ : Φ ↦ (g τ).val) := by
+      simpa [weylRep] using (hprops R).2 g
+    rw [hcast R]
+    simp [K, weylRep, ← (_ ⊗ₖ _).mul_assoc, ← mul_kronecker_mul,
+      ← comulMatrix_equivariant, kronecker_smul, Matrix.mul_assoc, hJlaw]
 
 /-- A chosen embedding with the properties `New.GL.MixedCartanEmbedding`, from the lattice of the
 weight `New.mixedWeight n kp km`, with `kp τ i + km τ (card n - i)` columns of height `i`, into the
