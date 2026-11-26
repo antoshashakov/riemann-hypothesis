@@ -35,93 +35,54 @@ lemma norm_gaussSum_of_isPrimitive (hχ : χ.IsPrimitive) : ‖gaussSum χ stdAd
 in `[0, 1]`, has length at least `4 x (1 - x)`. -/
 lemma four_mul_le_norm_stdAddChar_sub_one {k : ZMod q} {x : ℝ} (hx : (k.val : ℝ) = q * x)
     (hx_nonneg : 0 ≤ x) (hx_le : x ≤ 1) : 4 * (x * (1 - x)) ≤ ‖stdAddChar k - 1‖ := by
-  -- With `y = π x / 2` the chord has length `2 sin (2 y) = 4 sin y cos y`, where `sin y ≥ x` and
-  -- `cos y ≥ 1 - x` by concavity.
-  have h_sin : x ≤ Real.sin (π / 2 * x) := le_sin_mul hx_nonneg hx_le
-  have h_cos : 1 - x ≤ Real.cos (π / 2 * x) := by
-    simpa [field] using
-      one_sub_mul_le_cos (by positivity) (mul_le_of_le_one_right pi_div_two_pos.le hx_le)
-  have h_angle : 2 * π * (q * x / q) / 2 = 2 * (π / 2 * x) := by field [NeZero.ne]
-  calc 4 * (x * (1 - x))
-      ≤ 4 * (Real.sin (π / 2 * x) * Real.cos (π / 2 * x)) := by nlinarith
-    _ = 2 * Real.sin (2 * (π / 2 * x)) := by linear_combination -2 * Real.sin_two_mul (π / 2 * x)
-    _ ≤ ‖stdAddChar k - 1‖ := by
-        rw [stdAddChar_apply, toCircle_eq_circleExp, Circle.coe_exp, mul_comm _ I, hx,
-          norm_exp_I_mul_ofReal_sub_one, h_angle]
-        exact le_norm_self _
+  grw [stdAddChar_apply, toCircle_eq_circleExp, Circle.coe_exp, mul_comm _ I, hx,
+    norm_exp_I_mul_ofReal_sub_one, ← le_norm_self, (by field [NeZero.ne] : _ / 2 = 2 * (π / 2 * x)),
+    Real.sin_two_mul, ← one_sub_mul_le_cos] <;> simp [field, pi_pos] <;>
+    nlinarith [le_sin_mul hx_nonneg hx_le]
 
 /-- For `k ≠ 0` in `ZMod q`, the sum of the powers `1, …, X` of the root of unity
 `stdAddChar k = exp (2 π i k / q)` has absolute value at most `q / 2 · (1 / k + 1 / (q - k))`,
 where `k` is read as its representative `k.val` in `[1, q - 1]`. -/
 lemma norm_sum_stdAddChar_pow_le {k : ZMod q} (hk : k ≠ 0) (X : ℕ) :
     ‖∑ v ∈ Ioc 0 X, stdAddChar k ^ v‖ ≤ q / 2 * ((k.val : ℝ)⁻¹ + ((q - k.val : ℕ) : ℝ)⁻¹) := by
-  have hq_pos : (0 : ℝ) < q := mod_cast NeZero.pos q
-  let x : ℝ := k.val / q
-  have hx : (k.val : ℝ) = q * x := (mul_div_cancel₀ _ hq_pos.ne').symm
-  have hx_pos : 0 < x := div_pos (mod_cast val_pos.mpr hk) hq_pos
-  have hx_lt : x < 1 := (div_lt_one hq_pos).mpr (mod_cast k.val_lt)
-  have h_sub_pos : 0 < 1 - x := sub_pos.mpr hx_lt
-  have h_ne : stdAddChar k ≠ 1 := by simpa using injective_stdAddChar.ne hk
-  calc ‖∑ v ∈ Ioc 0 X, stdAddChar k ^ v‖
-      = ‖stdAddChar k ^ (X + 1) - stdAddChar k ^ 1‖ / ‖stdAddChar k - 1‖ := by
-        rw [← Ico_add_one_add_one_eq_Ioc, zero_add, geom_sum_Ico h_ne (Nat.le_add_left 1 X),
-          norm_div]
-    _ ≤ (1 + 1) / (4 * (x * (1 - x))) := by
-        grw [norm_sub_le, ← four_mul_le_norm_stdAddChar_sub_one hx hx_pos.le hx_lt.le]
-        simp [norm_pow, AddChar.norm_apply]
-    _ = q / 2 * ((k.val : ℝ)⁻¹ + ((q - k.val : ℕ) : ℝ)⁻¹) := by
-        rw [Nat.cast_sub (val_le k), hx]
-        field_simp
-        ring
+  obtain ⟨x, c, hx, d⟩ : ∃ x > (0 : ℝ), k.val = q * x ∧ 0 < 1 - x := ⟨k.val / q, by
+    simp [field, val_lt, -natCast_val, hk, NeZero.ne, NeZero.pos]⟩
+  grw [← Ico_add_one_add_one_eq_Ioc, geom_sum_Ico
+    (injective_stdAddChar.ne hk ∘ by simp) (by simp), norm_div, norm_sub_le,
+    ← four_mul_le_norm_stdAddChar_sub_one hx c.le (by linarith)]
+  simp [val_le, field, ← two_mul, hx]
+  norm_num
 
 /-- The Pólya–Vinogradov inequality for a primitive Dirichlet character `χ` of modulus `q ≠ 1`:
 `|∑_{1 ≤ v ≤ X} χ v| ≤ √q (1 + log q)` for all `X`. -/
 lemma norm_sum_le_of_isPrimitive (hχ : χ.IsPrimitive) (hq : q ≠ 1) (X : ℕ) :
     ‖∑ v ∈ Ioc 0 X, χ v‖ ≤ √q * (1 + Real.log q) := by
-  -- Fourier inversion; the Fourier coefficients of `χ` are `χ⁻¹ (-k)` times the Gauss sum.
-  have h_expand : ∑ v ∈ Ioc 0 X, χ v = (q : ℂ)⁻¹ * ∑ k : ZMod q,
-      (∑ v ∈ Ioc 0 X, stdAddChar k ^ v) * (χ⁻¹ (-k) * gaussSum χ stdAddChar) := by
-    conv_lhs => rw [← dft.symm_apply_apply χ]
-    simp_rw [invDFT_apply, ← nsmul_eq_mul', AddChar.map_nsmul_eq_pow, ← smul_sum,
-      sum_comm (s := Ioc 0 X), ← sum_smul, hχ.fourierTransform_eq_inv_mul_gaussSum, smul_eq_mul]
-  -- The term `k = 0` vanishes, and the bounds `f k` of the others add up to twice a harmonic sum
-  -- (the terms `0⁻¹ = 0` do no harm).
   let f (n : ℕ) : ℝ := √q * q / 2 * ((n : ℝ)⁻¹ + ((q - n : ℕ) : ℝ)⁻¹)
-  have h_term (k : ZMod q) (hk : k ∈ univ.erase 0) :
-      ‖(∑ v ∈ Ioc 0 X, stdAddChar k ^ v) * (χ⁻¹ (-k) * gaussSum χ stdAddChar)‖ ≤ f k.val := by
-    grw [norm_mul, norm_mul, norm_le_one, norm_gaussSum_of_isPrimitive hχ,
-      norm_sum_stdAddChar_pow_le (ne_of_mem_erase hk)]
-    exact le_of_eq (by ring)
-  have h_subset : ((univ : Finset (ZMod q)).erase 0).image ZMod.val ⊆ range (q + 1) :=
-    image_subset_iff.mpr fun k _ ↦ mem_range.mpr (Nat.lt_succ_of_lt k.val_lt)
-  have h_harmonic : ∑ n ∈ range (q + 1), (n : ℝ)⁻¹ = harmonic q := by
-    simp [harmonic, sum_range_succ']
-  calc ‖∑ v ∈ Ioc 0 X, χ v‖
-      ≤ (q : ℝ)⁻¹ * ∑ k ∈ (univ : Finset (ZMod q)).erase 0, f k.val := by
-        grw [h_expand, ← sum_erase _ (a := 0) (by simp [map_zero' χ⁻¹ hq]), norm_mul,
-          norm_sum_le_of_le _ h_term]
-        simp
-    _ ≤ (q : ℝ)⁻¹ * ∑ n ∈ range (q + 1), f n := by
-        rw [← sum_image (val_injective q).injOn]
-        gcongr
-    _ = √q * harmonic q := by
-        rw [← mul_sum, sum_add_distrib, sum_flip fun n : ℕ ↦ (n : ℝ)⁻¹, h_harmonic]
-        field [NeZero.ne]
-    _ ≤ √q * (1 + Real.log q) := by grw [harmonic_le_one_add_log]
+  grw [← dft.symm_apply_apply χ]
+  simp_rw [invDFT_apply, ← nsmul_eq_mul', AddChar.map_nsmul_eq_pow, ← smul_sum,
+    @sum_comm _ _ ℕ, ← sum_smul, hχ.fourierTransform_eq_inv_mul_gaussSum]
+  grw [norm_smul, ← sum_erase _ (a := 0) (by simp [map_zero' χ⁻¹ hq]),
+    norm_sum_le_of_le _ (n := (f ·.val)) fun k hk ↦ ?_,
+    ← sum_image (val_injective q).injOn, (by grind : image _ _ ⊆ range (q + 1)),
+    ← harmonic_le_one_add_log]
+  iterate 3 simp [f, sum_add_distrib, ← mul_sum, sum_flip fun n : ℕ ↦ (n : ℝ)⁻¹,
+    harmonic, field, sum_range_succ', two_mul, NeZero.ne]
+  · ring_nf
+    exact le_rfl
+  grw [norm_smul, norm_mul, norm_le_one, norm_gaussSum_of_isPrimitive hχ,
+    norm_sum_stdAddChar_pow_le (ne_of_mem_erase hk)]
+  simp only [f]
+  ring_nf
+  exact le_rfl
 
 /-- A natural number `r` has at most `2 √r` divisors. -/
 lemma card_divisors_le_two_mul_sqrt (r : ℕ) : (#r.divisors : ℝ) ≤ 2 * √r := by
-  -- Of two complementary divisors one is at most `√r`.
-  have h_sub : r.divisors ⊆ Ioc 0 r.sqrt ∪ (Ioc 0 r.sqrt).image fun d : ℕ ↦ r / d := by
-    intro d hd
-    obtain ⟨⟨e, rfl⟩, hr⟩ : d ∣ r ∧ r ≠ 0 := mem_divisors.mp hd
-    obtain ⟨hd_pos, he_pos⟩ : 0 < d ∧ 0 < e := by simpa [Nat.pos_iff_ne_zero] using hr
-    rcases le_sqrt_of_eq_mul (rfl : d * e = d * e) with hd_le | he_le
-    · simp [hd_pos, hd_le]
-    · exact mem_union_right _
-        (mem_image.mpr ⟨e, mem_Ioc.mpr ⟨he_pos, he_le⟩, Nat.mul_div_cancel d he_pos⟩)
-  grw [card_le_card h_sub, card_union_le, Finset.card_image_le, ← nat_sqrt_le_real_sqrt]
-  simp [two_mul]
+  grw [card_le_card (t := Ioc 0 r.sqrt ∪ (Ioc 0 r.sqrt).image (r / ·)) fun d hd ↦ ?_,
+    card_union_le, Finset.card_image_le, ← nat_sqrt_le_real_sqrt]
+  · simp [two_mul]
+  simp [zero_lt_iff] at *
+  cases hd.1
+  cases le_sqrt_of_eq_mul ‹_› <;> aesop
 
 omit [NeZero q] in
 /-- Möbius sieve: if `χ` mod `q = M * r` is induced by `ψ` mod `M`, then `χ v` is the sum of
@@ -129,19 +90,9 @@ omit [NeZero q] in
 lemma apply_eq_sum_moebius_smul_of_changeLevel_eq {M r : ℕ} {ψ : DirichletCharacter ℂ M}
     (hr : q = M * r) (h_ind : changeLevel ⟨r, hr⟩ ψ = χ) (v : ℕ) :
     χ v = ∑ d ∈ (v.gcd r).divisors, μ d • ψ v := by
-  -- The sum of `μ` over the divisors of `n` is `1` for `n = 1` and `0` otherwise.
-  rw [← sum_smul, ← coe_mul_zeta_apply, moebius_mul_coe_zeta, one_apply]
-  show χ v = (if v.gcd r = 1 then 1 else 0 : ℤ) • ψ v
-  have h_coprime : IsCoprime (v : ℤ) q ↔ IsCoprime (v : ℤ) M ∧ v.gcd r = 1 := by
-    simp only [isCoprime_iff_coprime, hr, coprime_mul_iff_right, ← coprime_iff_gcd_eq_one]
-  by_cases hv : IsCoprime (v : ℤ) q
-  · have h_eq : χ v = ψ v := by simpa [h_ind] using ψ.changeLevel_eq_cast_of_dvd' ⟨r, hr⟩ hv
-    simp [h_eq, (h_coprime.mp hv).2]
-  · have hχ_zero : χ v = 0 := by simpa using (χ.apply_eq_zero_iff v).mpr hv
-    split_ifs with h_gcd
-    · simpa [hχ_zero] using
-        ((ψ.apply_eq_zero_iff v).mpr fun h ↦ hv (h_coprime.mpr ⟨h, h_gcd⟩)).symm
-    · rw [hχ_zero, zero_smul]
+  rw [← sum_smul, ← coe_mul_zeta_apply, moebius_mul_coe_zeta, one_apply, ← Int.cast_natCast]
+  split <;> grind [Int.cast_natCast, apply_eq_zero_iff, changeLevel_eq_cast_of_dvd',
+    coprime_mul_iff_right, isCoprime_iff_coprime]
 
 /-- The multiples of `d > 0` in `[1, X]` are the numbers `d * e` with `1 ≤ e ≤ X / d`. -/
 lemma filter_dvd_Ioc_eq_image_mul {d : ℕ} (hd : 0 < d) (X : ℕ) :
@@ -155,18 +106,12 @@ partial sums of `ψ`, indexed by the divisors `d` of `r`, with coefficients `μ 
 lemma sum_eq_sum_divisors_of_changeLevel_eq {M r : ℕ} {ψ : DirichletCharacter ℂ M}
     (hr : q = M * r) (h_ind : changeLevel ⟨r, hr⟩ ψ = χ) (X : ℕ) :
     ∑ v ∈ Ioc 0 X, χ v = ∑ d ∈ r.divisors, μ d * ψ d * ∑ v ∈ Ioc 0 (X / d), ψ v := by
-  have hr0 : r ≠ 0 := right_ne_zero_of_mul (hr.symm.trans_ne (NeZero.ne q))
-  -- Swap the sums and write `v = d * e` with `1 ≤ e ≤ X / d`.
-  have h_gcd (v : ℕ) : (v.gcd r).divisors = {d ∈ r.divisors | d ∣ v} := by grind [Nat.dvd_gcd_iff]
-  calc ∑ v ∈ Ioc 0 X, χ v
-      = ∑ v ∈ Ioc 0 X, ∑ d ∈ r.divisors with d ∣ v, μ d • ψ v := by
-        simp only [apply_eq_sum_moebius_smul_of_changeLevel_eq hr h_ind, h_gcd]
-    _ = ∑ d ∈ r.divisors, ∑ v ∈ Ioc 0 X with d ∣ v, μ d • ψ v := by
-        simp only [sum_filter, sum_comm (s := Ioc 0 X)]
-    _ = ∑ d ∈ r.divisors, μ d * ψ d * ∑ v ∈ Ioc 0 (X / d), ψ v := by
-        refine sum_congr rfl fun d hd ↦ ?_
-        rw [filter_dvd_Ioc_eq_image_mul (pos_of_mem_divisors hd)]
-        simp [mul_sum, mul_assoc, (pos_of_mem_divisors hd).ne']
+  simp_rw [apply_eq_sum_moebius_smul_of_changeLevel_eq hr h_ind]
+  rw [sum_comm' (t' := r.divisors) (s' := fun d ↦ (Ioc 0 (X / d)).image (d * ·)) (by
+    rintro v ⟨⟩ <;> simp [Nat.dvd_gcd_iff, le_div_iff_mul_le, dvd_def (b := v), mul_comm]
+    aesop)]
+  refine sum_congr rfl fun d hd ↦ ?_
+  simp [mul_sum, mul_assoc, (pos_of_mem_divisors hd).ne']
 
 /-- The **Pólya–Vinogradov inequality** for initial intervals: for a non-principal Dirichlet
 character `χ` mod `q` one has `|∑_{1 ≤ v ≤ X} χ v| ≤ 2 √q (1 + log q)` for all `X`. -/
