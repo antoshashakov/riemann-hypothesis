@@ -39,11 +39,7 @@ variable {G H k n m : Type*} [Group G] [Fintype G] [NormedAddCommGroup H] [Inner
 lemma inner_sum_sum_eq_card_mul {v : G → H} (f : G → ℂ)
     (h : ∀ a b : G, ⟪u a, v b⟫_ℂ = f (a⁻¹ * b)) :
     ⟪∑ a : G, u a, ∑ a : G, v a⟫_ℂ = Fintype.card G * ∑ s : G, f s := by
-  -- For each `a` the map `b ↦ a⁻¹ * b` is a bijection of `G`.
-  have h_row (a : G) : ⟪u a, ∑ b : G, v b⟫_ℂ = ∑ s : G, f s := by
-    simpa [inner_sum, h] using (Group.mulLeft_bijective a⁻¹).sum_comp f
-  rw [sum_inner]
-  simp [h_row]
+  simp [↓sum_inner, inner_sum, h, (Group.mulLeft_bijective _).sum_comp]
 
 /-- Let `Θ` be of positive type, `Θ (a⁻¹ * b) = ⟪u a, u b⟫`, let `ρ` be a matrix representation of
 `G`, and let `c` be an orthonormal family indexed by the vectors of `kⁿ`. Then the squared norm of
@@ -157,53 +153,37 @@ lemma card_mul_sum_det_eq_zero_le [DecidableEq m] [Fintype k] [DecidableEq k] (�
     Fintype.card k * ∑ s : G with (A₁ᵀ * (π s).val * A₀).det = 0, Θ s ≤
       2 * ∑ s : G, Θ s +
         Fintype.card k ^ Fintype.card m * √(Fintype.card k ^ Fintype.card n) * Y := by
-  -- With `ψ` a primitive additive character, `∑ y, 𝔼 v, ψ (yᵀ Z v)` counts the left kernel of
-  -- `Z = A₁ᵀ π(s) A₀`, which has at least `q` elements if `det Z = 0`. Sum against `Θ` over `s`
-  -- first: the terms with `y = 0` or `v = 0` give `Θ(G)`, the others are at most `q^(|n|/2) Y`.
-  obtain ⟨ψ, hψ⟩ : ∃ ψ : AddChar k ℂ, ψ.IsPrimitive :=
-    ⟨_, FiniteField.primitiveChar_to_Complex_isPrimitive k⟩
-  set r : ℝ := √((card k : ℝ) ^ card n)
-  let Z (s : G) : Matrix m m k := A₁ᵀ * (π s).val * A₀
-  let W (y v : m → k) (s : G) : ℂ := ψ (y ᵥ* Z s ⬝ᵥ v) * Θ s
-  -- For `y, v ≠ 0` the sum of `W y v` is bounded by means of the two stabilisers.
-  have off_axes (y v : m → k) (hy : y ≠ 0) (hv : v ≠ 0) : (∑ s, W y v s).re ≤ r * Y := by
-    have h_dot (s : G) : y ᵥ* Z s ⬝ᵥ v = (A₁ *ᵥ y) ⬝ᵥ (π s • A₀ *ᵥ v) := by
-      simp [Z, Units.smul_def, dotProduct_mulVec, ← vecMul_vecMul, vecMul_transpose]
-    simp only [W, h_dot]
-    exact re_sum_addChar_dotProduct_mul_le hψ π hu (h_fix₁ y hy) (h_fix₀ v hv)
-  -- On the axes `y = 0` and `v = 0` the character is `1`, so the sum is `Θ(G)`.
-  have on_axes (y v : m → k) (h : y = 0 ∨ v = 0) : (∑ s, W y v s).re = ∑ s, Θ s := by
-    rcases h with rfl | rfl <;> simp [W]
-  have h_rY : 0 ≤ r * Y := by positivity
-  have h_total : 0 ≤ ∑ s, Θ s := sum_nonneg fun s _ ↦ hΘ s
-  have term_le (y v : m → k) : (∑ s, W y v s).re ≤
-      (if y = 0 then ∑ s, Θ s else 0) + (if v = 0 then ∑ s, Θ s else 0) + r * Y := by
-    split_ifs with hy hv hv
-    · linarith [on_axes y v (.inl hy)]
-    · linarith [on_axes y v (.inl hy)]
-    · linarith [on_axes y v (.inr hv)]
-    · linarith [off_axes y v hy hv]
-  -- By orthogonality of characters, the mean over `v` is the mass of the `s` with `y` in the left
-  -- kernel of `Z s`.
-  have mean_eq (y : m → k) : 𝔼 v : m → k, (∑ s, W y v s).re = ∑ s with y ᵥ* Z s = 0, Θ s := by
-    rw [← re_expect, expect_sum_comm]
-    simp [W, ← expect_mul, expect_addChar_dotProduct hψ, sum_filter, apply_ite Complex.re]
-  calc card k * ∑ s with (Z s).det = 0, Θ s
-      ≤ ∑ s, #{y | y ᵥ* Z s = 0} * Θ s := by
-        rw [mul_sum, sum_filter]
-        gcongr with s
-        split_ifs with hs
-        · exact mul_le_mul_of_nonneg_right (mod_cast card_le_card_filter_vecMul_eq_zero hs) (hΘ s)
-        · exact mul_nonneg (Nat.cast_nonneg _) (hΘ s)
-    _ = ∑ y : m → k, ∑ s with y ᵥ* Z s = 0, Θ s := by
-      simp only [sum_filter, natCast_card_filter, sum_mul, boole_mul]
-      exact sum_comm
-    _ = ∑ y : m → k, 𝔼 v : m → k, (∑ s, W y v s).re := by simp only [mean_eq]
-    _ ≤ ∑ y : m → k, 𝔼 v : m → k,
-        ((if y = 0 then ∑ s, Θ s else 0) + (if v = 0 then ∑ s, Θ s else 0) + r * Y) :=
-      sum_le_sum fun y _ ↦ expect_le_expect fun v _ ↦ term_le y v
-    _ = 2 * ∑ s, Θ s + card k ^ card m * r * Y := by
-      -- Each axis gives `Θ(G)`: one `y` in the sum, and `q ^ |m|` times a mean `Θ(G) / q ^ |m|`.
-      simp [expect_add_distrib, NNRat.smul_def, field, two_mul, sum_add_distrib]
+  classical
+  let A : Bool → Matrix n m k := fun b ↦ cond b A₁ A₀
+  have h (b : Bool) (v : m → k) (hv : v ≠ 0) :
+      ∑ s : G with A b *ᵥ v = cond b invTransposeGL 1 (π s) • A b *ᵥ v, Θ s ≤ Y := by
+    cases b
+    · simpa [A] using h_fix₀ v hv
+    · simpa [A] using h_fix₁ v hv
+  change card k * ∑ s with ((A true)ᵀ * (π s).val * A false).det = 0, Θ s ≤ _
+  set r := √_
+  obtain ⟨ψ, p⟩ : ∃ _, _ := ⟨_, FiniteField.primitiveChar_to_Complex_isPrimitive k⟩
+  have N {c : (n → k) → EuclideanSpace ℂ (n → k)} (h : Orthonormal ℂ c) {σ : MulAut _} x :
+      ∑ s with x = σ (π s) • x, Θ s = ‖∑ a, c (σ (π a) • x) ⊗ₜ[ℂ] u a‖ ^ 2 / card G
+  rw [@norm_sq_eq_re_inner ℂ, inner_sum_sum_eq_card_mul (ofReal ∘ _)]
+  simpa using sum_filter ..
+  simp [*, orthonormal_iff_ite.1, apply_ite ofReal, mul_smul, eq_inv_smul_iff]
+  let W y v s := ψ (y ᵥ* (A true)ᵀ ᵥ* π s ᵥ* A false ⬝ᵥ v) * Θ s
+  apply ((sum_mono fun y ↦ univ.expect_le_expect fun v _ ↦ (?_ : re (∑ s, W y v s) ≤
+    ite (y = 0) (∑ s, Θ s) 0 + ite (v = 0) (∑ s, Θ s) 0 + r * Y)).trans _).trans'
+  simp [W, -ite_mul, sum_comm, mul_sum, sum_filter, apply_ite, ↓← re_expect, ← sum_mul, ← mul_assoc,
+    expect, NNRat.smul_def, sum_addChar_dotProduct p]
+  gcongr; repeat' split
+  cases exists_vecMul_eq_zero_iff.2 ‹_›
+  grw [← card_univ, card_le_card_of_injOn _ _ (smul_left_injective _ (by tauto)).injOn]
+  on_goal -1 => apply flip id (add_le_add (h true y _) (h false v _))
+                grw [@N fun x ↦ toLp 2 fun ζ ↦ ψ (-x ⬝ᵥ ζ) / r, N orthonormal_single, ← add_div,
+    ← two_mul_le_add_sq, mul_assoc, ← @re_inner_le_norm ℂ, inner_sum_sum_eq_card_mul (W y v · / r)]
+  all_goals simp [sum_add_distrib, sub_eq_zero, *, smul_vecMul, mul_nonneg, expect_add_distrib,
+    NNRat.smul_def, W, r, add_nonneg,
+    sum_nonneg', inner, field, vecMul_mulVec, ← Matrix.mul_assoc, orthonormal_iff_ite, two_mul,
+    invTransposeGL, dotProduct_mulVec, div_mul_div_comm, ← map_neg_eq_conj, ← map_add_eq_mul,
+    ← ofReal_mul, transposeGL,
+    add_assoc, ← sum_div, neg_add_eq_sub, ← sub_dotProduct, sum_addChar_dotProduct, Units.smul_def]
 
 end New
