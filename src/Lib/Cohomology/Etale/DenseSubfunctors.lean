@@ -135,9 +135,8 @@ lemma of_preimage_le (h : IsCohomDense F U) (p : E ⟶ Y) {W : Subfunctor E}
     (hW : U.preimage p ≤ W) : IsCohomDense F W :=
   (h.preimage p).mono hW
 
-lemma inf (h : IsCohomDense F U) (hV : IsCohomDense F V) : IsCohomDense F (U ⊓ V) := by
-  -- in `U`, the preimage of `U ⊓ V` contains the preimage of `V`, which is dense
-  exact h.trans (hV.of_preimage_le U.ι fun A x hx ↦ ⟨x.prop, hx⟩)
+lemma inf (h : IsCohomDense F U) (hV : IsCohomDense F V) : IsCohomDense F (U ⊓ V) :=
+  h.trans (hV.of_preimage_le _ fun _ ↦ (⟨·.2, ·⟩))
 
 end IsCohomDense
 
@@ -516,14 +515,8 @@ lemma H.map_map (u : X ⟶ Y) (v : Y ⟶ K) (x : H (freeAb.obj K) F n) :
 to `W`, then `u` is an equivalence. -/
 lemma IsCohomDense.isCohomEquiv_of_fromPreimage {u : X ⟶ Y} (hd : IsCohomDense F W)
     (h : IsCohomEquiv F (freeAb.map (W.fromPreimage u))) :
-    IsCohomEquiv F (freeAb.map u) := by
-  -- in the square from `W.preimage u` to `Y`, the way through `W` is an equivalence by `h` and
-  -- `hd`, and `W.preimage u → X` is one because density passes to preimages
-  have h_via_W : IsCohomEquiv F (freeAb.map (W.fromPreimage u) ≫ freeAb.map W.ι) :=
-    h.comp_iff.mpr hd.isCohomEquiv
-  have h_square : IsCohomEquiv F (freeAb.map (W.preimage u).ι ≫ freeAb.map u) := by
-    rwa [← Functor.map_comp, ← W.fromPreimage_ι, Functor.map_comp]
-  exact (hd.preimage u).isCohomEquiv.comp_iff.mp h_square
+    IsCohomEquiv F (freeAb.map u) := by grind
+  [h.comp_iff.2 hd.isCohomEquiv, W.fromPreimage_ι, (hd.preimage u).isCohomEquiv.comp_iff]
 
 end DenseRestriction
 

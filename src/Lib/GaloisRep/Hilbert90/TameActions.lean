@@ -192,22 +192,9 @@ omit [DecidableEq n] in
 /-- If `R` is profinite (`New.IsProfiniteRing`), so is every ring `B` that is isomorphic as an
 additive group to `n → R`, through `coords`, for a finite type `n`. -/
 lemma IsProfiniteRing.of_addEquiv_pi (hR : IsProfiniteRing R) (coords : B ≃+ (n → R)) :
-    IsProfiniteRing B := by
-  -- `n → R` is profinite, with limits taken coordinatewise, and `B` is a retract of it.
-  have h_pi : IsProfiniteRing (n → R) := by
-    intro x
-    -- `L k` is the limit of the `k`-th coordinates, and `hL` says that it is the only one
-    obtain ⟨L, hL⟩ : ∃ L : n → R, ∀ (k : n) (L' : R),
-        (∀ M : ℕ, M ≠ 0 → ∀ᶠ N : ℕ in hyperfilter ℕ, (M : R) ∣ x N k - L') ↔ L k = L' :=
-      forall_existsUnique_iff.mp fun k ↦ hR fun N ↦ x N k
-    refine ⟨L, fun M hM ↦ ?_, fun L' hL' ↦ ?_⟩
-    · -- each coordinate converges, and `n` is finite
-      filter_upwards [eventually_all.mpr fun k ↦ (hL k (L k)).mpr rfl M hM] with N hN
-      exact pi_dvd_iff.mpr fun k ↦ by simpa using hN k
-    · funext k
-      refine ((hL k (L' k)).mp fun M hM ↦ ?_).symm
-      exact (hL' M hM).mono fun N hN ↦ by simpa using pi_dvd_iff.mp hN k
-  exact h_pi.of_retract coords.toAddMonoidHom coords.symm coords.left_inv
+    IsProfiniteRing B := of_retract (R := n → R) (fun x ↦ by
+  choose L _ using forall_existsUnique_iff.1 (hR <| swap x ·)
+  simp_all [pi_dvd_iff, @forall_comm _ n, ← funext_iff]) coords coords.symm coords.1.3
 
 /-- If `R` is profinite (`New.IsProfiniteRing`) and `σ` is tame at level `0`, so that `σ ^ p = 1`
 and some element of `R` has trace `1`, then the subring `σ.eqLocus 1` of elements fixed by `σ` is

@@ -574,12 +574,9 @@ lemma not_isUnit_pFlat : ¬IsUnit pFlat := prime_xi.not_isUnit ∘ isUnit_iff_is
 
 /-- Reduction modulo `m` is kept by tensoring on the left: if `f : M → M'` is reduction modulo `m`
 (`New.Variety.IsReductionMod`: onto, with kernel `m M`), then so is `L ⊗ f`. -/
-lemma IsReductionMod.lTensor (h_red : IsReductionMod m f) : IsReductionMod m (f.lTensor L) := by
-  -- Tensoring is right exact, and `L ⊗ (m • –)` is multiplication by `m`.
-  have h_exact : Exact ((m : End S M).lTensor L) (f.lTensor L) :=
-    lTensor_exact L h_red.exact h_red.surjective
-  have h_smul : (m : End S M).lTensor L = m := map_natCast (End.lTensorAlgHom S M L) m
-  exact ⟨lTensor_surjective L h_red.surjective, by rwa [h_smul] at h_exact⟩
+lemma IsReductionMod.lTensor (h_red : IsReductionMod m f) : IsReductionMod m (f.lTensor L) :=
+  ⟨lTensor_surjective _ h_red.1,
+  congr(Exact $(map_natCast (End.lTensorAlgHom ..) m) _).mp (lTensor_exact L h_red.2 h_red.1)⟩
 
 /-- If `f : M → M'` is reduction modulo `m` (`New.Variety.IsReductionMod`) and `m` kills `L`, then
 `f ⊗ L` is bijective. -/
@@ -621,34 +618,13 @@ lemma isSMulRegular_tensor_of_flat_mod {O : Type} [CommRing O] [Algebra S O] [Mo
     [IsScalarTower S O M'] [Flat O M'] (hO_red : IsReductionMod m (Algebra.linearMap S O))
     (hf_red : IsReductionMod m f) (hM_reg : IsSMulRegular M m) (hL_reg : IsSMulRegular L m) :
     IsSMulRegular (L ⊗[S] M) m := by
-  -- Present `L` as a quotient `π` of a free module, with `ι` the inclusion of its kernel. The lemma
-  -- `lTensor_injective_of_exact_of_exact_of_rTensor_injective` is the balancing of `Tor₁`:
-  -- it is used to get `Tor₁(O, L) = 0`, and then to pass from `Tor₁(L, M') = 0` to the claim.
-  obtain ⟨hO_surj, hO_exact⟩ := hO_red
-  obtain ⟨hf_surj, hf_exact⟩ := hf_red
-  simp only [← cast_smul_eq_nsmul S, IsSMulRegular] at hO_exact hf_exact hM_reg hL_reg ⊢
-  let π : (L →₀ S) →ₗ[S] L := Finsupp.linearCombination S _root_.id
-  let ι : LinearMap.ker π →ₗ[S] L →₀ S := (LinearMap.ker π).subtype
-  have hπ : Surjective π := Finsupp.linearCombination_id_surjective S L
-  have h_exact : Exact ι π := exact_subtype_ker_map π
-  -- `O = S / m` and `L` has no `m`-torsion.
-  have hO_inj : Function.Injective (ι.lTensor O) :=
-    lTensor_injective_of_exact_of_exact_of_rTensor_injective (f₁ := .mul S S m) hO_exact hO_surj
-      h_exact hπ (IsSMulRegular.lTensor _ hL_reg) (by simp [ι])
-  -- `M' ⊗ – = M' ⊗[O] (O ⊗ –)` by `cancelBaseChange`, and `M'` is flat over `O`.
-  have hM'_inj : Function.Injective (ι.lTensor M') := by
-    have h_comp : Function.Injective
-        ((cancelBaseChange S O O M' _).toLinearMap ∘ₗ lTensor O M' (lTensor O O ι)) :=
-      (cancelBaseChange S O O M' _).injective.comp
-        (lTensor_preserves_injective_linearMap (ι.baseChange O) hO_inj)
-    rwa [← lTensor_comp_cancelBaseChange, coe_comp, LinearEquiv.coe_coe,
-      EquivLike.injective_comp] at h_comp
-  -- `M' = M / m`, `M` has no `m`-torsion, and free modules are flat.
-  have h_smul_inj : Function.Injective ((DistribSMul.toLinearMap S M (m : S)).lTensor L) :=
-    lTensor_injective_of_exact_of_exact_of_rTensor_injective h_exact hπ hf_exact hf_surj
-      ((lTensor_inj_iff_rTensor_inj M' ι).mp hM'_inj)
-      (lTensor_preserves_injective_linearMap _ hM_reg)
-  rwa [lTensor_smul_action] at h_smul_inj
+  simp [IsReductionMod, ← cast_smul_eq_nsmul S, IsSMulRegular] at *
+  obtain ⟨q, e, t, l⟩ := Finsupp.linearCombination_id_surjective S L, @exact_subtype_ker_map,
+   @lTensor_injective_of_exact_of_exact_of_rTensor_injective, @lTensor_preserves_injective_linearMap
+  apply congr(⇑$(lTensor_smul_action ..)).subst (t (e _) q hf_red.2 hf_red.1 _ (l _ hM_reg))
+  simpa [← lTensor_inj_iff_rTensor_inj] using! congr(⇑$(lTensor_comp_cancelBaseChange _ O
+    ..)).symm.subst ((cancelBaseChange ..).injective.comp (l _
+    (t (f₁ := mul S S m) hO_red.2 hO_red.1 (e _) q (lTensor _ hL_reg) (by simp))))
 
 end ReductionModP
 

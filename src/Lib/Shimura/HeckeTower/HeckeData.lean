@@ -621,18 +621,10 @@ lemma IsFrameFor.exists_intCast_eq (hx : x ∈ GUPlus E n) (h : IsFrameFor ((c :
 form `c • 1`, then `c = 1`. -/
 lemma IsScalarFrame.eq_one_of_mem_levelGU (hx : x ∈ levelGU n 𝔑) (hframe : IsScalarFrame x⁻¹ c) :
     c = 1 := by
-  -- Both `x` and `x⁻¹` lie in `GUPlus E n`, so `c` and `c⁻¹` are integers; and `c` is positive.
-  obtain ⟨hc_pos, h_frame⟩ := hframe
-  -- `x⁻¹ * x = 1` is a frame for `c⁻¹ • c • 1 = 1`, so `x` is one for `c⁻¹ • 1`.
-  have h_inv_frame : IsFrameFor (((c⁻¹ : ℚ) : E) • 1) x :=
-    h_frame.mul_iff.1 ⟨1, by simp [hc_pos.ne']⟩
-  -- `c⁻¹ = k` and `c = z` for integers `k` and `z`
-  obtain ⟨k, hk⟩ := h_inv_frame.exists_intCast_eq (mem_GUPlus_of_mem_levelGU hx)
-  obtain ⟨z, rfl⟩ := h_frame.exists_intCast_eq (mem_GUPlus_of_mem_levelGU (inv_mem hx))
-  have hzk : z * k = 1 := by
-    qify
-    rw [hk, mul_inv_cancel₀ hc_pos.ne']
-  exact_mod_cast Int.eq_one_of_mul_eq_one_right (by exact_mod_cast hc_pos.le) hzk
+  obtain ⟨w, rfl⟩ := hframe.2.exists_intCast_eq (mem_GUPlus_of_mem_levelGU (inv_mem hx))
+  simp_all [IsScalarFrame]; obtain ⟨left, right⟩ := hframe; grind
+  [inv_intCast_den, Rat.den_intCast, (right.mul_iff.1 ⟨1, by simp [left.ne']⟩).exists_intCast_eq
+  (c := w⁻¹) (mem_GUPlus_of_mem_levelGU hx)]
 
 /-- The inverse of an element of the principal level is a frame for the identity form. -/
 lemma levelGU.isScalarFrame_inv_one (h : x ∈ levelGU n 𝔑) : IsScalarFrame x⁻¹ 1 := by
