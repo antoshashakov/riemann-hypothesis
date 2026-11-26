@@ -500,17 +500,13 @@ lemma scaledSiegelConst_le : D.filling.scaledSiegelConst ≤
       D.f /
       volÔ D.E ^ D.shape.n * (D.filling.unipotentCovolume * D.filling.frameScaleProd /
         Fintype.card D.filling.BesselCoord) ^ 2 := by
-  -- The scaled Siegel constant is the left side of `card_mul_card_classes_mul_prod_le` times
-  -- `scale`.
   let scale : ℝ := D.filling.besselDegree * D.shape.openCellConst ^ D.f / volÔ D.E ^ D.shape.n *
     (D.filling.unipotentCovolume * D.filling.frameScaleProd / Fintype.card D.filling.BesselCoord) ^
       2
-  have deg_pos : 0 < D.filling.besselDegree := D.filling.besselDegree_pos
-  have cell_pos : 0 < D.shape.openCellConst := D.shape.openCellConst_pos
-  have vol_pos : (0 : ℝ) < volÔ D.E := by
-    rw [volÔ_eq]
-    positivity [rootDiscr_pos D.E]
+  have cell_pos := D.shape.openCellConst_pos
+  have deg_pos := D.filling.besselDegree_pos
   have N_pos : (0 : ℝ) < D.N := mod_cast D.N_prime.pos
+  have vol_pos : (0 : ℝ) < volÔ D.E := by rw [volÔ_eq]; positivity [rootDiscr_pos D.E]
   have h_rank : ∑ a ∈ range D.ϱ, (a + (D.k + 1) + a) = D.ϱ * (D.ϱ + D.k) := by
     induction D.ϱ with
     | zero => simp
@@ -518,32 +514,23 @@ lemma scaledSiegelConst_le : D.filling.scaledSiegelConst ≤
   have h_covolume : D.filling.unipotentCovolume * D.filling.frameScaleProd =
       D.filling.unipotentOrder / (D.N ^ D.k) ^ D.f / volÔ D.E ^ (D.ϱ * (D.ϱ + D.k)) *
         √√|NumberField.discr D.E| ^ D.ϱ := by
-    have h_order : ((D.filling.M : ℝ) ^ (2 * (D.ϱ * (D.ϱ + D.k)) + D.ϱ)) ^ D.f =
-        D.filling.unipotentOrder := by
-      rw [← pow_mul, unipotentOrder, Shape.k, card_X₀, Nat.cast_pow]
-      ring_nf
-    -- The factor `frameScaleProd` cancels from the definition of the covolume.
-    rw [Filling.unipotentCovolume, div_mul_cancel₀ _ D.filling.frameScaleProd_pos.ne', Shape.k,
-      card_X₀, h_rank, div_pow]
-    erw [h_order]
-    rfl
+    rw [Filling.unipotentCovolume, div_mul_cancel₀ _ D.filling.frameScaleProd_pos.ne',
+      Shape.k, card_X₀, h_rank, div_pow]
+    simp only [unipotentOrder, Shape.k, card_X₀, Nat.cast_pow, ← pow_mul]
+    congr 3; ring
   have h_siegel : D.filling.siegelConst = (∏ v : D.Φ, D.frameMass v) *
       (D.shape.openCellConst ^ D.f * (√√|NumberField.discr D.E| ^ D.ϱ) ^ 2) /
         (((D.N ^ D.k) ^ D.f) ^ 2 * volÔ D.E ^ (D.ϱ + 1 + 2 * (D.ϱ * (D.ϱ + D.k)))) := by
     rw [D.prod_frameMass_mul_openCellConst_eq, mul_assoc, mul_div_cancel_right₀ _ (by positivity)]
-  calc
-    _ = Nat.card (D.filling.reducedImage besselH) * Fintype.card D.filling.Classes *
-        (∏ v : D.Φ, D.frameMass v * Fintype.card (D.filling.besselSystem v).Index ^ 2 /
-          (D.filling.besselSystem v).deg) * scale := by
-      -- Insert the constants; the powers of N, of the volume and of the discriminant cancel.
-      rw [prod_frameMass_mul_div_eq, scaledSiegelConst, card_reducedImage_besselS, h_siegel]
-      simp only [scale, h_covolume, Shape.n]
-      push_cast
-      field_simp
-      ring
-    _ ≤ (1 + D.b⁻¹ ^ 9) * D.filling.mainSecondMoment * scale :=
-      mul_le_mul_of_nonneg_right D.card_mul_card_classes_mul_prod_le (by positivity)
-    _ = _ := by ring
+  convert mul_le_mul_of_nonneg_right D.card_mul_card_classes_mul_prod_le
+    (show 0 ≤ scale by dsimp [scale]; positivity) using 1
+  · rw [prod_frameMass_mul_div_eq, scaledSiegelConst, card_reducedImage_besselS, h_siegel]
+    simp only [scale, h_covolume, Shape.n]
+    push_cast
+    field_simp
+    ring
+  · dsimp [scale]
+    ring
 
 /-- Reduction at the chosen places maps the integral group `New.Filling.latticeStabilizer` of the
 filling data onto the finite group `New.Filling.ResidueGL`. -/
