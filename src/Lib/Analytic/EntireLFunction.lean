@@ -47,19 +47,11 @@ lemma quadTwist_apply (n : ℤ) : quadTwist χ d n = χ n * legendreSym d n :=
 
 /-- For a Dirichlet character `χ` mod `N` and an odd prime `d` coprime to `N`, the twist of `χ` by
 the Legendre symbol `(·/d)`, a character mod `N * d`, is not principal. -/
-lemma quadTwist_ne_one (hd : d ≠ 2) (hN : N.Coprime d) : quadTwist χ d ≠ 1 := by
-  -- Take a non-residue `a` mod `d`, and `n` with `n ≡ 1` mod `N` and `n ≡ a` mod `d`. The twist is
-  -- `-1` at `n`, while a value `x` of the trivial character satisfies `x * x = x`.
-  intro h_one
-  obtain ⟨a, ha⟩ := quadraticChar_exists_neg_one (F := ZMod d) (by rwa [ZMod.ringChar_zmod_n])
-  obtain ⟨n, (hn_N : n ≡ 1 [MOD N]), (hn_d : n ≡ a.val [MOD d])⟩ := chineseRemainder hN 1 a.val
-  have hn_one : (n : ZMod N) = 1 := by simpa [← ZMod.natCast_eq_natCast_iff] using hn_N
-  have hn_a : (n : ZMod d) = a := by simpa [← ZMod.natCast_eq_natCast_iff] using hn_d
-  have h_val : quadTwist χ d n = -1 := by
-    simpa [hn_one, legendreSym, hn_a, ha] using quadTwist_apply χ d n
-  have h_sq : quadTwist χ d n * quadTwist χ d n = quadTwist χ d n := by
-    simp [← MulChar.mul_apply, h_one]
-  norm_num [h_val] at h_sq
+lemma quadTwist_ne_one (hd : d ≠ 2) (hN : N.Coprime d) : quadTwist χ d ≠ 1 :=
+  (quadraticChar_exists_neg_one (ZMod.ringChar_zmod_n d ▸ hd)).elim fun a _ e ↦
+    (chineseRemainder hN 1 a.val).rec fun n _ ↦ by
+      obtain := quadTwist_apply χ d n, (quadTwist χ d).mul_apply 1 n
+      simp_all [legendreSym, ← ZMod.natCast_eq_natCast_iff, neg_eq_self]
 
 /-! ### Polar functions and Laplace integrals -/
 
@@ -84,42 +76,30 @@ variable {E : ℝ → ℝ} [NeZero N] {s : ℂ}
 `∫₀^∞ E(v) e^{(1-s)v} dv` converges for `re s > 2`. -/
 lemma integrableOn_laplace_of_abs_le {C : ℝ} (hE : Measurable E)
     (hE_growth : ∀ v ≥ (0 : ℝ), |E v| ≤ C * Real.exp v) (hs : 2 < s.re) :
-    IntegrableOn (fun v : ℝ ↦ E v * Complex.exp ((1 - s) * v)) (Ioi 0) := by
-  -- The integrand is bounded by `C * exp ((2 - re s) * v)`, whose exponent is negative.
-  refine ((integrableOn_exp_mul_Ioi (sub_neg.2 hs) 0).const_mul C).mono' (by fun_prop)
-    (ae_restrict_of_forall_mem measurableSet_Ioi fun v hv ↦ ?_)
-  calc
-    ‖E v * cexp ((1 - s) * v)‖ = |E v| * ((1 - s.re) * v).exp := by simp [norm_exp]
-    _ ≤ C * v.exp * ((1 - s.re) * v).exp := by grw [hE_growth v hv.le]
-    _ = C * ((2 - s.re) * v).exp := by
-      rw [mul_assoc, ← Real.exp_add]
-      ring_nf
+    IntegrableOn (fun v : ℝ ↦ E v * Complex.exp ((1 - s) * v)) (Ioi 0) :=
+  ((integrableOn_exp_mul_Ioi (sub_neg.2 hs) 0).const_mul C).mono' (by fun_prop)
+    (ae_restrict_of_forall_mem (by simp) (by
+      simp_intro ..
+      simp only [norm_exp, mul_re, sub_re, one_re, ofReal_re, ofReal_im, mul_zero, sub_zero]
+      grw [hE_growth, mul_assoc, ← Real.exp_add] <;> grind))
 
 /-- For `re s > 0`, the Laplace transform of `t ^ k` at `s` is `k! / s ^ (k + 1)`. -/
 lemma laplace_pow {s : ℂ} (hs : 0 < s.re) (k : ℕ) :
     ∫ t : ℝ in Ioi 0, t ^ k * Complex.exp (-s * t) = k ! / s ^ (k + 1) := by
-  -- Differentiate `∫₀^∞ exp (z t) dt = -1 / z` (for `re z < 0`) `k` times under the integral sign,
-  -- reading the integral as a moment generating function, and put `z = -s`.
-  let μ : Measure ℝ := volume.restrict (Ioi (0 : ℝ))
-  have hs_neg : (-s).re < 0 := neg_neg_of_pos hs
-  have h_int : (-s).re ∈ interior (integrableExpSet id μ) :=
-    interior_maximal (fun a ha ↦ integrableOn_exp_mul_Ioi ha 0) isOpen_Iio hs_neg
-  have h_eq : EqOn (complexMGF id μ) (fun z ↦ -z⁻¹) {z | z.re < 0} :=
-    fun z hz ↦ (integral_exp_mul_complex_Ioi hz 0).trans (by simp [neg_div])
-  rw [show ∫ t : ℝ in Ioi 0, t ^ k * Complex.exp (-s * t) = iteratedDeriv k (complexMGF id μ) (-s)
-      from (iteratedDeriv_complexMGF h_int k).symm,
-    h_eq.iteratedDeriv_of_isOpen (isOpen_re_lt 0) k hs_neg]
-  simp [iteratedDeriv_eq_iterate, zpow_sub₀ (neg_ne_zero.2 (ne_zero_of_re_pos hs)), neg_pow s,
-    field, pow_succ]
+  have h : (-s).re < 0 := by simpa using hs
+  exact (iteratedDeriv_complexMGF
+    (interior_maximal (@integrableOn_exp_mul_Ioi · · 0) isOpen_Iio h) _ ▸
+    EqOn.iteratedDeriv_of_isOpen (@integral_exp_mul_complex_Ioi · · 0)
+      (isOpen_re_lt 0) k h).trans (by
+    simp [neg_div, iteratedDeriv_eq_iterate, zpow_sub₀ (h.ne ∘ congr rfl), neg_pow s, pow_succ,
+      field])
 
 /-! ### The logarithmic derivative of a Dirichlet L-function -/
 
 @[fun_prop]
-lemma analyticAt_entireL (s : ℂ) : AnalyticAt ℂ (entireL χ) s := by
-  refine Differentiable.analyticAt ?_ s
-  rw [entireL]
-  split_ifs with hχ
-  exacts [differentiable_LFunctionTrivChar₁ N, differentiable_LFunction hχ]
+lemma analyticAt_entireL (s : ℂ) : AnalyticAt ℂ (entireL χ) s :=
+  Differentiable.analyticAt (by
+    grind [entireL, differentiable_LFunctionTrivChar₁, differentiable_LFunction]) s
 
 /-- `entireL χ` has no zero in `re s ≥ 1`. -/
 lemma entireL_ne_zero (hs : 1 ≤ s.re) : entireL χ s ≠ 0 := by
@@ -130,22 +110,11 @@ lemma entireL_ne_zero (hs : 1 ≤ s.re) : entireL χ s ≠ 0 := by
 present only for `χ = 1`. -/
 lemma LSeriesHasSum_mul_vonMangoldt (hs : 1 < s.re) :
     LSeriesHasSum (fun n : ℕ ↦ χ n * Λ n) s
-      ((if χ = 1 then 1 else 0) / (s - 1) - logDeriv (entireL χ) s) := by
-  refine LSeriesHasSum_iff.2 ⟨χ.LSeriesSummable_twist_vonMangoldt hs, ?_⟩
-  -- The series is `-L' / L`; for `χ = 1` the factor `s - 1` of `entireL` adds `1 / (s - 1)` to the
-  -- logarithmic derivative.
-  have hs_ne : s ≠ 1 := ne_of_apply_ne re hs.ne'
-  have h_series : LSeries (fun n : ℕ ↦ χ n * Λ n) s = -deriv χ.LFunction s / χ.LFunction s := by
-    rw [χ.deriv_LFunction_eq_deriv_LSeries hs, χ.LFunction_eq_LSeries hs]
-    exact χ.LSeries_twist_vonMangoldt_eq hs
-  have hL_ne : χ.LFunction s ≠ 0 := χ.LFunction_ne_zero_of_one_le_re (.inr hs_ne) hs.le
-  rw [h_series, entireL, logDeriv_apply]
-  obtain rfl | hχ := eq_or_ne χ 1
-  · rw [ite_eq_left rfl, ite_eq_left rfl, deriv_LFunctionTrivChar₁_apply_of_ne_one N hs_ne,
-      LFunctionTrivChar₁, Function.update_of_ne hs_ne, LFunctionTrivChar]
-    field_simp [sub_ne_zero.2 hs_ne]
-    ring
-  · simp [hχ, neg_div]
+      ((if χ = 1 then 1 else 0) / (s - 1) - logDeriv (entireL χ) s) :=
+  LSeriesHasSum_iff.2 ⟨χ.LSeriesSummable_twist_vonMangoldt hs, by
+    erw [entireL, logDeriv_apply, LSeries_twist_vonMangoldt_eq] <;>
+      grind [LFunction_ne_zero_of_one_le_re, one_re, deriv_LFunctionTrivChar₁_apply_of_ne_one,
+        LFunction_eq_LSeries, deriv_LFunction_eq_deriv_LSeries]⟩
 
 /-- A function continuous at `s` has residue zero there. -/
 lemma tendsto_sub_mul_of_continuousAt {f : ℂ → ℂ} (hf : ContinuousAt f s) :
@@ -168,30 +137,18 @@ principal `χ`, has at most a simple pole at `s`. Its residue is the order of va
 lemma tendsto_sub_mul_logDeriv_entireL_analyticOrderNatAt (s : ℂ) :
     Tendsto (fun z : ℂ ↦ (z - s) * logDeriv (entireL χ) z) (𝓝[≠] s)
       (𝓝 (analyticOrderNatAt (entireL χ) s : ℂ)) := by
-  -- Near `s` the function `entireL χ` is `(z - s) ^ n • g z` with `g s ≠ 0`.
-  set n : ℕ := analyticOrderNatAt (entireL χ) s
-  obtain ⟨g, hg, hg_ne, h_eq⟩ :
-      ∃ g : ℂ → ℂ, AnalyticAt ℂ g s ∧ g s ≠ 0 ∧ entireL χ =ᶠ[𝓝 s] fun z ↦ (z - s) ^ n • g z :=
-    (analyticAt_entireL χ s).analyticOrderAt_ne_top.1 (analyticOrderAt_entireL_ne_top χ s)
-  -- The logarithmic derivative is `n / (z - s) + g' / g`, and `g' / g` is continuous at `s`.
-  have h_lim : Tendsto (fun z : ℂ ↦ n + (z - s) * logDeriv g z) (𝓝[≠] s) (𝓝 (n : ℂ)) := by
-    have h_cont : ContinuousAt (logDeriv g) s := (hg.deriv.div hg hg_ne).continuousAt
-    simpa using (tendsto_sub_mul_of_continuousAt h_cont).const_add (n : ℂ)
-  refine h_lim.congr' ?_
-  filter_upwards [nhdsWithin_le_nhds h_eq.deriv, nhdsWithin_le_nhds h_eq,
-    nhdsWithin_le_nhds (hg.continuousAt.eventually_ne hg_ne),
-    nhdsWithin_le_nhds hg.eventually_analyticAt, self_mem_nhdsWithin]
-    with z hz_deriv hz hgz hg_an (hzs : z ≠ s)
-  symm
-  calc
-    (z - s) * logDeriv (entireL χ) z = (z - s) * logDeriv (fun w : ℂ ↦ (w - s) ^ n * g w) z := by
-      simp only [logDeriv_apply, hz, hz_deriv, smul_eq_mul]
-    _ = (z - s) * (n / (z - s) + logDeriv g z) := by
-      have h_mul : logDeriv (fun w : ℂ ↦ (w - s) ^ n * g w) z =
-          logDeriv (fun w : ℂ ↦ (w - s) ^ n) z + logDeriv g z :=
-        logDeriv_mul z (pow_ne_zero n (sub_ne_zero.2 hzs)) hgz (by fun_prop) hg_an.differentiableAt
-      rw [h_mul, logDeriv_fun_pow (by fun_prop)]
-      simp [logDeriv_apply, div_eq_mul_inv]
-    _ = n + (z - s) * logDeriv g z := by field_simp [sub_ne_zero.2 hzs]
+  obtain ⟨g, a, b, e⟩ := (analyticAt_entireL χ s).analyticOrderAt_ne_top.1
+    (analyticOrderAt_entireL_ne_top χ s)
+  have hlim : Tendsto (fun z : ℂ ↦ (analyticOrderNatAt (entireL χ) s : ℂ) +
+      (z - s) * logDeriv g z) (𝓝[≠] s) (𝓝 (analyticOrderNatAt (entireL χ) s : ℂ)) := by
+    simpa [logDeriv_apply] using
+      (tendsto_sub_mul_of_continuousAt (a.deriv.div a b).continuousAt).const_add
+      (analyticOrderNatAt (entireL χ) s : ℂ)
+  refine hlim.congr' ?_
+  exact mem_inf_principal.2 (by
+    filter_upwards [e.deriv, e, a.continuousAt.eventually_ne b, a.eventually_analyticAt]
+    cases analyticOrderNatAt (entireL χ) s <;>
+      simp +contextual (disch := fun_prop) [logDeriv, field]
+    grind)
 
 end New
