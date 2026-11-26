@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenS
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CartanAntitone
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGLMulIsPrimitiveFrameDiagonalLatticeStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslatesEqPrimFrameLat
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MirabolicSchwartzFunctionLeftGLEquivarianceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MirabolicSchwartzFunctionLeftGLEquivariance
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Cartan
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -101,7 +101,7 @@ theorem fFun_mul_left {a : ℕ} {A' C : Type} [Fintype A'] [DecidableEq A'] [Fin
     (ν : kˣ →* ℂˣ) (Ψ : Matrix A' C k → ℂ) (g : GL (Fin a) k) (h : GL C k) :
     fFun μ σ ν Ψ (g.val * (X0 k σ * (invT h).val)) * (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card C : ℂ) / 2) =
       fFun μ σ ν Ψ (X0 k σ * (invT h).val) := by
-  exact GlobalTheory.T.mirabolic_schwartzFunction_left_GL_equivariance k a A' C μ σ ν Ψ g h
+  exact _root_.GlobalTheory.fFun_mul_left k a A' C μ σ ν Ψ g h
 
 theorem exists_primFrame {a : ℕ} {C : Type} [Fintype C] [DecidableEq C] (d : C → kˣ)
     (X : Matrix (Fin a) C k) (hX : X.rank = a) : ∃ g₀ : GL (Fin a) k, IsPrimFrame (diagLat d) (g₀.val * X) := by

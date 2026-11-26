@@ -2,7 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.InterPolyProdSum
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IntegrableMonomialMulConjComplexGaussian
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnPoincareAreaDensityPuncturedDiscStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+public import Mathlib.MeasureTheory.Integral.IntegrableOn
+public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnPoincareAreaDensityPuncturedDisc
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,7 +67,7 @@ theorem integrableOn_poinVol {n : ℕ} (S : Finset (Fin n)) (K : Set (V n)) (hK 
     intro a
     by_cases h : a ∈ S
     · simp only [g, h, if_true]
-      exact (integrable_indicator_iff measurableSet_closedBall).2 GlobalTheory.T.integrableOn_poincareAreaDensity_punctured_disc
+      exact (integrable_indicator_iff measurableSet_closedBall).2 _root_.GlobalTheory.GoodTop.integrableOn_poincare_disc
     · simp only [g, h, if_false]
       exact (integrable_indicator_iff measurableSet_closedBall).2
         (continuousOn_const.integrableOn_compact (isCompact_closedBall _ _))

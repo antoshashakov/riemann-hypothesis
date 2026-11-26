@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsIvDOfDefinite
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescendedNormIdealSheafFiniteNormalStatement
+public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
+public import Mathlib.AlgebraicGeometry.Morphisms.Finite
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDescendedNormIdealSheafFiniteNormal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLiftPointAffineHomSectionsRingHomStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIdeal
 public import Mathlib.RingTheory.DiscreteValuationRing.Basic
@@ -62,7 +64,7 @@ theorem normDescentSheaf : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z), IsFinite π �
           IsLocalHom f ∧ (∀ j, ψ j ≫ π = spMap f ≫ ξ) ∧ (idlAlong J ξ).map f = ∏ j, idlAlong I (ψ j) := by
   intro Y Z π hπ hY hYn hYN hZN hopen hchar I
   haveI : IsAffineHom π := hπ.toIsAffineHom
-  obtain ⟨K, L, _, _, _, _, hK, J, hsupp, hJ⟩ := GlobalTheory.T.exists_descended_normIdealSheaf_finite_normal Y Z π hY hYn hYN hZN hopen hchar I
+  obtain ⟨K, L, _, _, _, _, hK, J, hsupp, hJ⟩ := _root_.GlobalTheory.NormSheafDescent.descendedIdealSheaf_exists Y Z π hY hYn hYN hZN hopen hchar I
   refine ⟨Module.finrank K L, J, Module.finrank_pos, hsupp, ?_⟩
   intro V _ _ _ _ hV ξ hξ
   obtain ⟨U, hU, hxU, hUW⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.1 Z.isBasis_affineOpens

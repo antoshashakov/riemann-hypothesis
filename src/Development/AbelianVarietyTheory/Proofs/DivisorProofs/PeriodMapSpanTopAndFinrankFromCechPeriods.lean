@@ -6,7 +6,10 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CechDeRhamCl
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineCechDeRhamComparisonBijectiveComplexAStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisOfDiscreteOfSpanEqTopComplexPi
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPerUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeEvaluationSpanDualFinrankStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.Dimension.Finrank
+public import Mathlib.LinearAlgebra.Dual.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeEvaluationSpanDualFinrank
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemPrimitiveDeRhamCohomologyOfAdditivePeriodsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SurjectivePeriodMapAbelianVarietyLatticeStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -57,7 +60,7 @@ namespace GlobalTheory.CechPer
 theorem span_periods_eq_top_and_finrank : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ P : u.Λ →+ HdR A, (∀ c : primDR A, IsPer u.ex u.Λ (cmp1 (str A) c.1) fun l => P l c) → Submodule.span ℂ (Set.range P) = ⊤ ∧ Module.finrank ℂ (HdR A) = 2 * g := by
   intro A _ g L u hA P hP
   obtain ⟨b, -, -⟩ := GlobalTheory.exists_basis_of_discrete_of_span_eq_top_complex_pi g u.Λ u.discrete u.full
-  refine GlobalTheory.T.latticeEvaluation_span_dual_finrank (primDR A) u.Λ (2 * g) b P (fun w hw ↦ ?_) (fun p ↦ ?_)
+  refine _root_.GlobalTheory.CechPer.span_eval_eq_top_and_finrank_dual (primDR A) u.Λ (2 * g) b P (fun w hw ↦ ?_) (fun p ↦ ?_)
   · have h0 : (fun l ↦ P l w) = 0 := funext hw
     have h1 := hP w
     rw [h0] at h1

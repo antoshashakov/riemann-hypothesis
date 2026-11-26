@@ -5,7 +5,8 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosedSubfunctorStalkIdealCriterionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsQuotientAbelianVarietyFiniteSubgroupSchemeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpanMaximalIdealMapOfFlatRegularStatement
+public import Mathlib.RingTheory.RingHom.Flat
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSpanMaximalIdealMapOfFlatRegular
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.StalkOfSmoothLocal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -184,6 +185,6 @@ theorem ideal_eq_span_fin : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (
   have hflat : σ.Flat := Flat.stalkMap q.left x₀
   haveI := Ldim.1
   rw [Lgeo] at hart ⊢
-  exact GlobalTheory.T.exists_span_maximalIdeal_map_of_flat_regular _ _ σ inferInstance hflat hart g Ldim.2.2
+  exact _root_.GlobalTheory.maximalIdeal_map_span_of_flat_of_isArtinianRing_fibre _ _ σ inferInstance hflat hart g Ldim.2.2
 
 end GlobalTheory.FinSubGen

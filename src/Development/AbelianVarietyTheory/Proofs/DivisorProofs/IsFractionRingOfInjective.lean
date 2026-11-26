@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.NotDominatesTopPlace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormallyEtaleBaseChangeEvalHomStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFractionRingTensorOfFractionFieldsStatement
+public import Mathlib.RingTheory.Localization.FractionRing
+public import Mathlib.RingTheory.TensorProduct.Maps
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFractionRingTensorOfFractionFields
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -117,7 +119,7 @@ theorem exists_isEtTower_tensor : ∀ {K κ L : Type} [Field K] [Field κ] [Fiel
   haveI : IsScalarTower ℂ B κ := IsScalarTower.of_algebraMap_eq' rfl
   haveI : IsFractionRing R K := isFractionRing_subring R hR.frac
   haveI : IsFractionRing B κ := isFractionRing_subring B hB.frac
-  obtain ⟨hinj, hsurj⟩ := GlobalTheory.T.isFractionRing_tensor_of_fraction_fields (k := ℂ) (R := R) (B := B) (K := K) (κ := κ) (L := L)
+  obtain ⟨hinj, hsurj⟩ := _root_.GlobalTheory.tensor_fractionRing_of_tensor (k := ℂ) (R := R) (B := B) (K := K) (κ := κ) (L := L)
   set f := (algebraMap (K ⊗[ℂ] κ) L).comp (Algebra.TensorProduct.map
     (IsScalarTower.toAlgHom ℂ R K) (IsScalarTower.toAlgHom ℂ B κ)).toRingHom with hf
   letI iA : Algebra (R ⊗[ℂ] B) L := f.toAlgebra

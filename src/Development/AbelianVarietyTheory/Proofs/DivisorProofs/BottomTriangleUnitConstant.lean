@@ -13,7 +13,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharact
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealIndicatorReadsNormPowMulIntertwinedVacuumStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralActionUnitCharacterEigenStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralMatrixFrameCompletedStandardLatticeStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralMatrixFrameCompletedStandardLattice
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OddEigenvectorUniqueUpToUnit
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
@@ -179,7 +181,7 @@ theorem reads_std (hI : GlobalTheory.NormSum.Inp D) {δ t0 : ℂ} {Q : ℕ} (P :
     (hf : f = Tm fun w => starRingEnd ℂ (stdFst ν e 𝔪 S T β 1 w)) :
     ∃ u, IsPh u ∧ Reads ψ θ hS hT ⊤ δ 1 ((c * u) • P.F) f := by
   obtain ⟨R, hR1, hR2, hF⟩ := hstd
-  obtain ⟨b1, b2⟩ := GlobalTheory.T.isIntegralMatrix_frame_completedStandardLattice β hβ
+  obtain ⟨b1, b2⟩ := _root_.GlobalTheory.StdRead.isIntM_of_isFrame_stdL β hβ
   obtain ⟨m, hm0, hpow⟩ := GlobalTheory.T.unitDetCharacter_integralFrame_pow_eq_one e 𝔪 hm ν hk β b1 b2
   choose! z hz using fun (k : Formalism.MainNotions.StandardLatticesGL3.GA D P.a) (hk : k ∈ intG D P.a) => exists_approx hm.ne_bot 0 P.d hk
   have hz' : ∀ r ∈ R, IsIntE (z r) ∧ Approx 𝔪 0 r (z r) := fun r hr => hz r (hR1 r hr)

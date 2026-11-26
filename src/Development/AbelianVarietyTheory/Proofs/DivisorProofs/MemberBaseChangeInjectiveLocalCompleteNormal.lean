@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDi
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TraceFormTwistIsoOfPullback
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackUniformisationEndomorphismCommGenericF
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelsPullbackUniformisationCommonFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelsPullbackUniformisationCommonField
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PointsCarryCommonFlagSpectrumMapFieldExt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelPullbackIdCompCancel
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
@@ -240,7 +241,7 @@ theorem qk_base {V V' : Type} [CommRing V] [IsDomain V] [IsLocalRing V] [CommRin
     (hx : QkToAkU U.toUnifPre F' k p₁ x₁) :
     ∃ (p' : QkPt D'.toPre F' k) (x' : TFK (R := V') F' ⟶ A'.A), p'.y = hD.xe.symm p₁.y ∧
       QkToAkU U'.toUnifPre F' k p' x' ∧ x'.left ≫ gA = x₁.left :=
-  GlobalTheory.T.torsionLabels_pullback_uniformisation_common_field hV hV' j hj hl hG U D' hD A' gA U' hPU hgA hrel F' hF k hk p₁ x₁ hx
+  _root_.GlobalTheory.Poinc.Sep.BaseChangeLabels.qkToAkU_pullback_common_field hV hV' j hj hl hG U D' hD A' gA U' hPU hgA hrel F' hF k hk p₁ x₁ hx
 
 theorem yy_pull' {V V' : Type} [CommRing V] [IsDomain V] [IsLocalRing V] [CommRing V'] [IsDomain V'] [IsLocalRing V']
     (hV : IsCN V) (hV' : IsCN V') (j : V →+* V') (hj : Function.Injective j) (hl : IsLocalHom j)

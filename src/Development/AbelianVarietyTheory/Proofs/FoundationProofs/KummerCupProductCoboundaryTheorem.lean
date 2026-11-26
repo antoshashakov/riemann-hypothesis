@@ -10,7 +10,7 @@ public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FieldNo
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CupKummerCoboundaryOfNormsStatement
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InertiaFixesAdjoinKummerRootsAndValuesEq
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCochainCharacterGaloisInvariantClassStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerDivisorDescendsFunctionFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerDivisorDescendsFunctionField
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerExponentOfGaloisElementIsKummerCharacter
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TsenTheoremStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ZetaMemRange
@@ -83,7 +83,7 @@ theorem cup_eq_coboundary_vanishing_on_inertia : ∀ (k K Ω : Type) [Field k] [
   obtain ⟨η₀, hη₀c, hη₀⟩ := GlobalTheory.T.exists_locallyConstant_kum_cup_coboundary_of_norm_surj K Ω N ζ hN hζ hfix hnorm a b α β ha0 hb0 hα hβ
   obtain ⟨θ, hθ0, hθE, hθη, hθs⟩ :=
     GlobalTheory.T.kummer_cochain_character_galoisInvariant_class K Ω N ζ hN hζ hfix a b α β ha0 hb0 hα hβ η₀ hη₀c hη₀
-  obtain ⟨f, hf0, hfB⟩ := GlobalTheory.T.kummer_divisor_descends_functionField k K Ω N ζ hN hζ a b α β haA hai hbA hbi ha0 hb0 hα hβ θ hθ0 hθE hθs
+  obtain ⟨f, hf0, hfB⟩ := _root_.GlobalTheory.KummerCob.divisor_descends k K Ω N ζ hN hζ a b α β haA hai hbA hbi ha0 hb0 hα hβ θ hθ0 hθE hθs
   obtain ⟨θ₀, hθ₀⟩ := IsAlgClosed.exists_pow_nat_eq (algebraMap K Ω f) hN
   have hθ₀0 : θ₀ ≠ 0 := by
     rintro rfl

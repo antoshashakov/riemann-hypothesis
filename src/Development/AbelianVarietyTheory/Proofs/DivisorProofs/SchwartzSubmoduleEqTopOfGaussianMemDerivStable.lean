@@ -9,7 +9,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemClosureWi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOfClosedSubmoduleGaussianConvolutionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NarrowGaussConvolutionDenseStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzClosureStableLinearFormFourierStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzDensityTransportLinearEquivChirpStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzDensityTransportLinearEquivChirp
 import GroundTheory.GlobalFields.TateThesis.GaussianSchwartz
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -105,7 +105,7 @@ theorem dense_of_gaussian_mem : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpa
     Dense (N : Set (SchwartzMap V ℂ)) := by
   intro V _ _ _ N g Q c hc hQ hg hgN hD hL
   obtain ⟨A, hA⟩ := GlobalTheory.T.exists_euclidean_equiv_pi_mul_norm_sq_eq_re V Q c hc hQ
-  obtain ⟨N₂, hD₂, hL₂, hG₂, hdense⟩ := GlobalTheory.T.schwartz_density_transport_linearEquiv_chirp V _ A Q N hA hD hL
+  obtain ⟨N₂, hD₂, hL₂, hG₂, hdense⟩ := _root_.GlobalTheory.GaussTransport.transport V _ A Q N hA hD hL
   apply hdense
   let G := GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))
   have hG : ∀ y, G y = Complex.exp (-((Real.pi * ‖y‖ ^ 2 : ℝ) : ℂ)) := by

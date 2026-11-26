@@ -4,7 +4,9 @@ public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOp
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FamIdeal
 public import Mathlib.AlgebraicGeometry.Morphisms.Finite
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffNormFormOfFamilyMemRangeIntegrallyClosedStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormFormCoefficientIdealMapLocalizationAwayStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIdeal
+public import Mathlib.RingTheory.Localization.Away.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormFormCoefficientIdealMapLocalizationAway
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionsIsFractionRingStalkImageOfGenericPointStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -133,7 +135,7 @@ theorem famIdeal_map_basicOpen : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsFinite
         (V := ⟨π ⁻¹ᵁ U.1, U.2.preimage π⟩) hleY).symm
     simp only [famIdeal, dif_pos hζU, dif_pos hD']
     rw [hJ]
-    exact GlobalTheory.T.normFormCoefficientIdeal_map_localizationAway Γ(Z, U) (Z.presheaf.stalk (genPt π)) Y.functionField Γ(Y, π ⁻¹ᵁ U.1)
+    exact _root_.GlobalTheory.NormSheaf.normIdeal_map_away Γ(Z, U) (Z.presheaf.stalk (genPt π)) Y.functionField Γ(Y, π ⁻¹ᵁ U.1)
       Γ(Z, Z.basicOpen f) Γ(Y, π ⁻¹ᵁ Z.basicOpen f) f h1 h2 h3 h4 h5 _
   · have hbot : Z.basicOpen f = ⊥ := by
       ext x

@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsTheta
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.UniversalNormalisedMulByNatPullbackIso
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDominantToUnitLeft
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisedMulIsoUniformisationGenericFibreOneConStatement
+public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormalisedMulIsoUniformisationGenericFibreOneCon
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UniformisedFrameRatioIntegralFrameChartIndependeStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThickenedPointToTorusExtensionGenerator
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGenMulPullPowUnif
@@ -193,7 +194,7 @@ theorem exists_frRel : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V],
   refine ⟨l, hl0, fun x e h hx hh hext => ?_⟩
 
   obtain ⟨α, hα, hα₀, hαx⟩ := frame_values' A hx
-  obtain ⟨c, hc0, hc⟩ := GlobalTheory.T.normalisedMulIso_uniformisation_genericFibre_one_constant V _ D A G U.toUnifPre w₀ hw₀ N α hα β' hβ'
+  obtain ⟨c, hc0, hc⟩ := _root_.GlobalTheory.GenericMove.move_one_const V _ D A G U.toUnifPre w₀ hw₀ N α hα β' hβ'
   obtain ⟨u₀, hu₀⟩ := unit_origin (V := V) G U.LG N β' hβ'
   obtain ⟨i, hi⟩ := exists_chart U.LG.isLB (h.left (cpt V))
   obtain ⟨f₀, hf₀⟩ := GlobalTheory.TorsFrameInt.exists_gen_of_chart U.LG.isLB (K := Fin 1) (fun _ => h.left) (fun _ => 1)

@@ -6,7 +6,8 @@ public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 public import Mathlib.Topology.Separation.CompletelyRegular
 public import ReciprocityTheory.L2DbarEstimates.IsLocalHomeomorph
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicWeightedSquareIntegrableVanishes
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeakExtensionVanishOtherOrbitPointsStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.FundSetMeasStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeakExtensionVanishOtherOrbitPoints
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlurisubharmonicDecreasingLimitExtensionStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -356,7 +357,7 @@ theorem hormander_peak : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [Numb
     rw [IW.cpt_zero] at h0
     rw [h0, hF0val]
   · intro γ hγ hne
-    exact GlobalTheory.T.peakExtension_vanish_other_orbit_points X la x ho hnd Ψw hΨm hΨB hΨΓ c (ρ / 2) hc (by linarith) hpoleψ hinj F0 F hF0R hFd
+    exact _root_.GlobalTheory.PeakOrbit.vanish_translate X la x ho hnd Ψw hΨm hΨB hΨΓ c (ρ / 2) hc (by linarith) hpoleψ hinj F0 F hF0R hFd
       hintT P0 hBE hPF γ hγ hne
 
 end GlobalTheory.HormanderPeak

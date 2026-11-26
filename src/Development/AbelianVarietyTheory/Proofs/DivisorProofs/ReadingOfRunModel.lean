@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RunModel
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearExtensionOfFormWithTransportedReStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RepresentationTheory.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearExtensionOfFormWithTransportedRe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModelCuspFormsSpanUsedRunReadingsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwoLevelFlagDomainTransporterMemDomainStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UsedRunCuspFormReadingLinearIndependentStatement
@@ -134,7 +136,7 @@ theorem reading_of_runModel (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (h : Runs
     obtain ⟨z, hz, hzy⟩ := hy'
     have hz' : z = ⟨y, hy⟩ := Subtype.ext hzy
     rw [← hz']; exact hz
-  obtain ⟨f, ρ, hfcu, hint, hind, hspan⟩ := GlobalTheory.T.exists_semilinear_extension_of_form_with_transported_rep (r.used v).full.σ₀ σ hσ cu bC hbs hbi hbt Rd hR hRs ((R2 p).FW i).ρ
+  obtain ⟨f, ρ, hfcu, hint, hind, hspan⟩ := _root_.GlobalTheory.SemilinearReading.exists_semilinear_extension_rep (r.used v).full.σ₀ σ hσ cu bC hbs hbi hbt Rd hR hRs ((R2 p).FW i).ρ
   have hρR : ∀ g F, ρ g (Rd F) = Rd (act g F) := by
     intro g F
     rw [← hfcu, ← hfcu, hint, hcu g F]

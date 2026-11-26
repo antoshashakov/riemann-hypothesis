@@ -4,7 +4,9 @@ public import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.C
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.QuotientIsAbelianSchemeOfQuotientScheme
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAbelianQuotientAffineCoverStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedQuotientMapOfLocalQuotientsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalQuotientTransitionIsomorphismsStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Flat
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalQuotientTransitionIsomorphisms
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GluedQuotientMapFiniteFlatSurjectiveStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeOfChartsSurjectiveImageStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsPullbackGluedQuotientKernelPairOfCoverStatement
@@ -69,7 +71,7 @@ theorem quotGlobal_holds : QuotGlobal := by
   have hsurj : ∀ j, Surjective (q j).left := fun j => (hq j).2.2.2.2.1
   have hqc : ∀ j, QuasiCompact (q j).left := fun j => by have := hfin j; infer_instance
   have hsq : ∀ j, _ := fun j => (hq j).2.2.2.2.2
-  obtain ⟨b, hb1, hb2, hchar⟩ := GlobalTheory.T.exists_local_quotient_transition_isomorphisms S S.affineCover A H i B q hflat hsurj hqc hsq
+  obtain ⟨b, hb1, hb2, hchar⟩ := _root_.GlobalTheory.QuotTransition.exists_transition S S.affineCover A H i B q hflat hsurj hqc hsq
   have hcoc := GlobalTheory.T.local_quotient_transition_cocycle S S.affineCover A H i B q b hflat hsurj hqc hb1 hchar
   obtain ⟨G0, F, ψ, hψ, hψ2⟩ := GlobalTheory.CocycleGlue.exists_glue (fun j => S.affineCover.X j) (fun j => (B j).left)
     (fun j => S.affineCover.f j) (fun j => inferInstance) (fun j => (B j).hom)

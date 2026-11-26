@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsG
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGoodCmPtFrPolyNeZero
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumberFieldFrameValueNeZeroOfComplex
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationFrameReadingNeZeroStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniformisationFrameReadingNeZero
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCoverComponentExtendsToRankOneCuspData
@@ -83,7 +83,7 @@ theorem exists_good_cmPt_frame_ne_zero {D : D7} {T : Core D} {j : ℕ} (Y : Deep
   have hσ : GoodEmb Y.d.c₂ Y.d.c₂.F.val.toRingHom := rfl
   have hU := hG.unf _ hσ
   have hFm := GlobalTheory.AllWt.mem_cuspW.1 hF
-  obtain ⟨k, x₁, hx₁, hne₁⟩ := GlobalTheory.T.exists_uniformisationFrame_reading_ne_zero _ _ _ _ _ _ _ _ _ hU _ F hFm.1 hF0
+  obtain ⟨k, x₁, hx₁, hne₁⟩ := _root_.GlobalTheory.exists_rdU_ne_zero_of_mem_secZ _ _ _ _ _ _ _ _ _ hU _ F hFm.1 hF0
   obtain ⟨Xx, 𝔄, hX, h𝔄, hΛ⟩ := _root_.GlobalTheory.CovData.exists_dataX_good D T j Y e o hG _ hσ k
   have hbdd := (Formalism.L2.Pj.abelian₂.holSub_SS ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds _ _ (hFm.2 _ hσ) k).1
   have hr : 0 < D.R.r := by

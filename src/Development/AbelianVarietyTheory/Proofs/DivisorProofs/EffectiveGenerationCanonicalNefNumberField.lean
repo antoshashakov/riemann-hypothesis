@@ -22,7 +22,7 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.LineBundleGl
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntersectionNumberCurveOfClassEqSmulAdd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBigLineBundleOfSmulClassEqAmpleAtAddNefStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsNefLineBundleBaseChangeFieldExtensionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundaryStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingCanonicalAddBoundary
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneLeIntersectionNumberSubvarietyThroughPositiveStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowMulIntersectionLeOfNefClassOnClosedStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -108,7 +108,7 @@ theorem core_gen (hK : GlobalTheory.Published.NadelVanishingAndNonKltDivisor) (h
       rw [lt_div_iff₀ (by positivity), ← mul_pow]
       push_cast at h4 h3' ⊢
       linarith)
-  obtain ⟨J, hJ, hvan⟩ := GlobalTheory.T.nadel_vanishing_canonical_add_boundary hK.1 X q D hq K B N hB D₀ m' 2 hm' two_pos hD₀ hNn hNb
+  obtain ⟨J, hJ, hvan⟩ := _root_.GlobalTheory.NadelApp.nadel_canonical_add hK.1 X q D hq K B N hB D₀ m' 2 hm' two_pos hD₀ hNn hNb
     (fun C hC => by
       have e1 := _root_.GlobalTheory.interNumRed_of_cls_eq_nsmul_add ℂ X q hq B N N' hB hN hN' m 1 C hC (by rw [hBc, one_smul])
       have e2 := _root_.GlobalTheory.interNumRed_of_cls_eq_nsmul_add ℂ X q hq N₀ N N' h₀ hN hN' (2 * m - 1) 2 C hC hc₀

@@ -4,7 +4,10 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelIntG
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNsmulSymplecticPairingCharacterTrivialStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPosNatMulInvIdealLatticeMemIntegralStatement
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsPosNatMulInvIdealLatticeMemIntegral
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ClassFunctionSumIntegral
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -193,7 +196,7 @@ theorem psi_sympl_moved_eq_one : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (
   subst hS; subst hT
   obtain ⟨A0, hA0⟩ : ∃ A0, A0 = actO S T g h (finPt rfl rfl r z) := ⟨_, rfl⟩
   obtain ⟨N, hN, hC⟩ := GlobalTheory.T.exists_nsmul_symplecticPairing_character_trivial ψ hset.std.1.1 hset.std.1.2.1 S T A0
-  obtain ⟨M, hM, hMint⟩ := GlobalTheory.T.exists_pos_nat_mul_inv_idealLattice_mem_integral cc r
+  obtain ⟨M, hM, hMint⟩ := _root_.GlobalTheory.NormSum.IdealDenom.exists_nat_mul_inv_mul_mem cc r
   refine ⟨N * M, by positivity, fun z' hz' => ?_⟩
   choose t ht hte using hz'
   obtain ⟨u, hu⟩ : ∃ u : WO S T, u = A0 - finPt rfl rfl r z' := ⟨_, rfl⟩

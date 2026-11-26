@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BalancedSymm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmTypeSignatureSumEqTwiceDimensionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseAffineChartPreimageInteriorStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenRankInteriorEqSignatureStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenEigenRankLevelSetIntegersActionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigRank
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenEigenRankLevelSetIntegersAction
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentBasisActionMatricesRingHomStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -76,7 +78,7 @@ theorem balanced_finite_projective_rank : ∀ (E : Type) [Field E] [NumberField 
     let f : PrimeSpectrum Γ(Y.X, U.1) → ℕ := fun 𝔭 => GlobalTheory.BalProj.eigRank (algebraMap Γ(Y.X, U.1) 𝔭.asIdeal.ResidueField) A
       (GlobalTheory.BalProj.embR c.F c.conj (GlobalTheory.BalProj.fnHom Y.s U.1) τ)
     have hop : ∀ N, IsOpen {𝔭 | f 𝔭 = N} := fun N =>
-      GlobalTheory.T.isOpen_eigenRank_levelSet_integersAction c.F c.conj Γ(Y.X, U.1) (GlobalTheory.BalProj.fnHom Y.s U.1) n A h1A haddA hmulA τ N
+      _root_.GlobalTheory.BalProjOpen.isOpen_eigRank_eq c.F c.conj Γ(Y.X, U.1) (GlobalTheory.BalProj.fnHom Y.s U.1) n A h1A haddA hmulA τ N
     have hcl : IsClosed {𝔭 | f 𝔭 = e} := by
       rw [← isOpen_compl_iff]
       have : {𝔭 | f 𝔭 = e}ᶜ = ⋃ N ∈ {N : ℕ | N ≠ e}, {𝔭 | f 𝔭 = N} := by

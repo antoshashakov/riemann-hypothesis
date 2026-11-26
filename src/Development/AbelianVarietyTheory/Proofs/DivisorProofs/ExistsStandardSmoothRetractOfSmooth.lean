@@ -3,7 +3,9 @@ module
 public import Mathlib.RingTheory.Smooth.Basic
 public import Mathlib.RingTheory.Smooth.StandardSmooth
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsWitnessesOfFormallySmoothQuotient
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothPresentationRelationsCombinationNormalStatement
+public import Mathlib.Algebra.MvPolynomial.PDeriv
+public import Mathlib.RingTheory.Ideal.Span
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothPresentationRelationsCombinationNormal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -274,7 +276,7 @@ theorem exists_retract_isStandardSmooth : ∀ (R₀ B₀ : Type) [CommRing R₀]
     Algebra.FormallySmooth.of_equiv e.symm
   obtain ⟨a, b, hab⟩ :=
     GlobalTheory.exists_witnesses_of_formallySmooth_quotient (Fin n) R₀ r g inferInstance
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.smoothPresentation_relations_combination_normal R₀ n r g a b hab
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.SmoothRel.relations_combination R₀ n r g a b hab
   obtain ⟨C₀, i1, i2, i, ρ, hstd, hret⟩ := core g a h1 h2
   exact ⟨C₀, i1, i2, i.comp e.symm.toAlgHom, e.toAlgHom.comp ρ, hstd, fun x => by simp [hret]⟩
 

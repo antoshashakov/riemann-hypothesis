@@ -12,7 +12,9 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNor
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeCharNormDescentStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PolarizedPairSatakeParameterConjugatePlace
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnderConjugatePlaceEqConjugatePlaceUnderStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnramifiedAtValueHeckeCharCompIdeleNormStatement
+public import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange
+public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnramifiedAtValueHeckeCharCompIdeleNorm
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.PolOfSatOfThetaSat
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.ThetaSatakeParametersInverse
 import Mathlib.Algebra.Order.Floor.Extended
@@ -76,7 +78,7 @@ private theorem pol_norm (hjs : GlobalTheory.Published.JacquetShalikaRigidity) (
   have hbc' := (conjSrc_injective (IsCMField.complexConj M).toRingEquiv).tendsto_cofinite.eventually hbc
   filter_upwards [hT', hbc, hbc'] with w ⟨hTw, hUw⟩ hw hcw
   obtain ⟨f, hf⟩ := _root_.GlobalTheory.AboveL.ResDeg.normV_eq_under_pow K M w
-  obtain ⟨hu', hval⟩ := GlobalTheory.T.unramifiedAt_value_heckeChar_comp_ideleNorm K M (compNorm K χ) (compNorm M χ') hN w f hf hUw
+  obtain ⟨hu', hval⟩ := _root_.GlobalTheory.NormValGen.unrAt_val_of_comp_norm K M (compNorm K χ) (compNorm M χ') hN w f hf hUw
   refine ⟨hu', ?_⟩
   obtain ⟨B, hB1, hB2⟩ := hw f hf
   have hcu := GlobalTheory.T.under_conjugatePlace_eq_conjugatePlace_under K M w

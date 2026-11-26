@@ -13,7 +13,8 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.MemLevEigenI
 public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueCmOrderActionMatrixOnAffineOpen
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenericTangentCoefficientsUniqueAffineOpenBasis
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombAtZeroSectionEigenBlockFlattenedFrameStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.IsChartIff
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombAtZeroSectionEigenBlockFlattenedFrame
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerChangeOfTangentFrame
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KodairaSpencerConditionRestrictBasicOpenOfAffine
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentBasisAffineOpenRestrictBasicOpenStatement
@@ -247,7 +248,7 @@ theorem genKS_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
       funext c
       rw [hw', Sigma.eta, Equiv.apply_symm_apply, hfacU', dualMap_comp', spMap_comp', Category.assoc]
     rw [hvw, hv'w] at h1
-    have h2 := GlobalTheory.T.isCombAtZeroSection_eigenBlock_flattened_frame E H Dw TF.Y.X TF.Y.t _ (spMap ρW ≫ GlobalTheory.LogKS.chart W) n n' e e' w' A τ i (w τ i) htan'
+    have h2 := _root_.GlobalTheory.LogKSDiv.isCombAtG_flatFrame E H Dw TF.Y.X TF.Y.t _ (spMap ρW ≫ GlobalTheory.LogKS.chart W) n n' e e' w' A τ i (w τ i) htan'
       (by rw [hρW]; exact hA τ i)
     have h3 := _root_.GlobalTheory.LogKSDiv.generic_coeff_unique E H TF.Y.X TF.Y.t W _ ρW hinj hfr n' v'W hv'WT hv'WB _ _ (w τ i) (hv'w ▸ h1) (hv'w ▸ h2)
     exact fun c => congrFun h3 c
