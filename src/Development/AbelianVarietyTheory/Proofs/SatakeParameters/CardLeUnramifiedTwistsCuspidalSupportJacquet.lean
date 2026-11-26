@@ -9,7 +9,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Algebra
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspidalJacquetSubquotientAtMostOneNonemptyBlockStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IrreducibleGl1IsoDetStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IrreducibleSubquotientEigenvectorStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JacquetRankOneCentralStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.JacquetRankOneCentral
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInSupportOfMultiProd
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InSupportOfIsSubquotient
 import Mathlib.Algebra.Order.Floor.Extended
@@ -152,7 +154,7 @@ theorem card_le_ncard_unrTwist : GlobalTheory.Published.BernsteinZelevinskyFinit
     have hT : ∀ (z : kˣ) (v : ⨂[ℂ] j', (t i j').V),
         piTensor (fun j' => (t i j').ρ) (Pi.mulSingle j (GeneralLinearGroup.scalar (Fin (b.1 i j)) z)) v =
           (ω z : ℂ) • v := fun z v =>
-      Model.scalar_of_isSubquotient (hrow i) (GlobalTheory.T.jacquet_rank_one_central k (d i) _ (σ i).π ω s' (b.1 i) (f i) j (hd1 j hj)
+      Model.scalar_of_isSubquotient (hrow i) (_root_.GlobalTheory.JacGL1.jac_mulSingle_scalar k (d i) _ (σ i).π ω s' (b.1 i) (f i) j (hd1 j hj)
         (hι1 j hj) hω z) v
     have hωt : HasCentralChar (t i j).ρ ω := by
       obtain ⟨ω', -, hω'⟩ := GlobalTheory.LocGL.exists_smooth_hasCentralChar (t i j).smooth (t i j).irr

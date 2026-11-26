@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigValD
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualNumberFieldPointMemOpenOfReductionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeneratorValueLinCombChangeOfChartsStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueLinCombChangeOfChartsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueLinearRelationLinCombStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasArcDataIff
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionValueLinearRelationLinComb
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransitionUnitPowValueAtPointCocycleStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -141,7 +142,7 @@ theorem jc_eq_unit_mul : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R)
         (lift (Over.homMk (spMap (algebraMap C (DualNumber C))) rfl : TE R C ⟶ TF (R := R) C) gm.b).left ≫
           (D.prB C).left ≫ g = gm.b.left ≫ g :=
       fun g => by rw [← Category.assoc, gl_prB']
-    have hsec := GlobalTheory.T.sectionValue_linear_relation_linComb D.P.L (D.famφ C (ν.eX α)) (DegPre.famε k) (s.s (ν.eX α)) (D.famφB (ν.eX α))
+    have hsec := _root_.GlobalTheory.MBLow.TanGauge.valR_secLin D.P.L (D.famφ C (ν.eX α)) (DegPre.famε k) (s.s (ν.eX α)) (D.famφB (ν.eX α))
       (DegPre.famε k) (fun i => f i (ν.eX α)) (D.prB C).left (fun i => scal (fst (TF (R := R) C) D.P.A).left (c i))
       (hlin _)
       (fun i => ν.J (redE C ≫ (lift (Over.homMk (spMap (algebraMap C (DualNumber C))) rfl : TE R C ⟶ TF (R := R) C)

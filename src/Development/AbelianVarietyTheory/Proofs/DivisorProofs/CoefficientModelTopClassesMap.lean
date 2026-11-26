@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.KernelNormConstantSpec
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetOperatorCharacterScaledTableStatement
+public import Formalism.LocalToGlobal.KernelLattices.ThDistC
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetOperatorCharacterScaledTable
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,7 +75,7 @@ theorem kkMap_top_eq {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : Grid
     rw [hjet mon, show fvar G (Pair.top t j) = id from rfl, Finsupp.mapDomain_id]
     rfl
   unfold Normal.kkMap fockComp
-  rw [e1, GlobalTheory.T.jetOperator_characterScaledTable _ _ _ _ _ _ hJ, smul_smul]
+  rw [e1, _root_.GlobalTheory.JetCharScale.jetOp_scale _ _ _ _ _ _ hJ, smul_smul]
   have hs : Z.scal 1 (Pair.top t j) * ((Z.c0 (Pair.top t j) : ℂ) *
       ∏ τ, period Z.δ τ ^ ∑ i, (wt G (Pair.top t j).big τ).natW i) = 1 := by
     unfold Normal.scal GlobalTheory.FunObj.fockDeg

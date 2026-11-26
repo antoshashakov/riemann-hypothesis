@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsActIffIsDiagEnd
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TraceFormTwistIsoOfPullback
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackUniformisationEndomorphismCommGenericFStatement
+public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PulledBackUniformisationEndomorphismCommGenericF
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionLabelsPullbackUniformisationCommonFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PointsCarryCommonFlagSpectrumMapFieldExt
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelPullbackIdCompCancel
@@ -191,7 +192,7 @@ theorem aA_comm {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain 
       U'.gen.inv.left ≫ pullback.fst ((Over.pullback (specOf g)).obj G).hom (jK R') ≫ pullback.fst G.hom (specOf g))
     (E : EndU U) (E' : EndU U') (hE : E'.aG = (Over.pullback (specOf g)).map E.aG) :
     E'.aA.left ≫ gA = gA ≫ E.aA.left :=
-  GlobalTheory.T.pulledBack_uniformisationEndomorphism_comm_genericFibre g hg U U' gA hgA hrel E E' hE
+  _root_.GlobalTheory.Poinc.AComm.pulled_end_comm g hg U U' gA hgA hrel E E' hE
 
 end GlobalTheory.Poinc.Sep.MemBC
 

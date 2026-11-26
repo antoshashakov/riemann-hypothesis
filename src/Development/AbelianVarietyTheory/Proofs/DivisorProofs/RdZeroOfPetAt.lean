@@ -4,7 +4,8 @@ public import Formalism.LocalToGlobal.ProjectiveLattices.ReadLeaves
 public import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 public import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.LocClauseOfUnifPlaces
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsCoreGoodMatch
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalLevelMulArchimedeanMemNhdsStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalLevelMulArchimedeanMemNhds
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.VolPairExAndFinVol
 public import Formalism.LocalToGlobal.ProjectiveLattices.ReadQuot
 import Mathlib.Algebra.Order.Floor.Extended
@@ -117,7 +118,7 @@ theorem dictLoc_of_good (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ 
     rw [h.pd]
     exact Nat.mul_pos (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos) (pow_pos (by norm_num) _)
   have hK : Y.Kf ≤ GfC (D.sp.W j) := fun k hk => ((h.levelK k).1 hk).1
-  exact GlobalTheory.DictLocTest.locClause_of_unif_places hd hK (GlobalTheory.T.principalLevel_mul_archimedean_mem_nhds D _ _ Y.Kf hN h.levelK) (fun c τ => ⟨_, hth c τ⟩)
+  exact GlobalTheory.DictLocTest.locClause_of_unif_places hd hK (_root_.GlobalTheory.LevelNbhd.level_mul_inf_mem_nhds D _ _ Y.Kf hN h.levelK) (fun c τ => ⟨_, hth c τ⟩)
 
 theorem muUnit_one (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o) (σ : Y.d.c₂.F →+* ℂ) (hσ : GoodEmb Y.d.c₂ σ) :
     MuUnit (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) :=

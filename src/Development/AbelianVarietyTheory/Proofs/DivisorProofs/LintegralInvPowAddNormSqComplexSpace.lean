@@ -4,7 +4,8 @@ public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 public import Mathlib.MeasureTheory.Constructions.BorelSpace.Complex
 public import Mathlib.MeasureTheory.Constructions.Pi
 public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralComplexInvPowAddNormSqStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralComplexInvPowAddNormSq
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.NonzeroLocus
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -118,7 +119,7 @@ theorem lintegral_inv_pow_add_sum_norm_sq :
       apply Measurable.inv
       apply Measurable.pow_const
       exact measurable_const.add (measurable_norm.pow_const 2))]
-    rw [GlobalTheory.T.lintegral_complex_inv_pow_add_norm_sq m a ha, ← ENNReal.ofReal_mul (by positivity)]
+    rw [_root_.GlobalTheory.RadialIntegral.lintegral_inv_pow_add_norm_sq m a ha, ← ENNReal.ofReal_mul (by positivity)]
     congr 1
     have h1 : ((n + (m+1)).factorial : ℝ) ≠ 0 := by positivity
     have h2 : ((n + 1 + m).factorial : ℝ) ≠ 0 := by positivity

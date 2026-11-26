@@ -15,7 +15,7 @@ public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IteratedFDeri
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MeasureOfProducts
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NormSumProdLeOfCoord
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaVectorsSetupExistsEqSmulStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TorsionLiftPairingInOrthogonalFrameStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TorsionLiftPairingInOrthogonalFrame
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -375,7 +375,7 @@ theorem moments_of_translates : ∀ (d q : ℕ) [Fact q.Prime] (lam : Qbar →+*
   have hs1 : s ≡ 1 [MOD q ^ n] := Nat.ModEq.pow_totient hcop
   have hs2 : (s₀ * ∏ i, a i) ∣ s := dvd_pow_self _ (Nat.totient_pos.2 (pow_pos hq.pos n)).ne'
   obtain ⟨L1, L2⟩ := GlobalTheory.T.cmThetaOperator_invariant_of_lift_congr_one q lam g S r b e t₀ n m' s eps y hO hb.1 he hI hnm (hint 0) hs1
-  obtain ⟨G1, G2⟩ := GlobalTheory.T.torsion_lift_pairing_in_orthogonal_frame q lam ι g S x a r b n m' s s₀ eps y hlam hO hS hx hxx ha hb.1 hI hnm hs2
+  obtain ⟨G1, G2⟩ := _root_.GlobalTheory.MomOne.kapFrame q lam ι g S x a r b n m' s s₀ eps y hlam hO hS hx hxx ha hb.1 hI hnm hs2
   set y' : Fin g → ℂ := fun i => beta S.d S.Hm ((s : ℂ) • liftY q n eps b y) (x i) / (a i : ℂ) with hy'
   set yc : Fin k → Fin g → ℂ := fun l i => beta S.d S.Hm (ys l) (x i) / (a i : ℂ) with hyc
   have hyc' : ∀ l i, yc l i ∈ Qbar := fun l i => div_mem (hβ' _ (hys l) _ (hx i)) (natCast_mem _ _)

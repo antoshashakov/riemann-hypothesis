@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFor
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.DepthZeroJacquetInjective
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.BlockSplitAll
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CharInCuspidalSupportOfJacquetSubquotientFactorStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIrreducibleSubquotientCommonEigenvectorStatement
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnitarisableOfCharIff
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsIrreducibleSubquotientCommonEigenvector
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsLeviBlockEigenvectorAtIdentityStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InSupportMulUnramifiedCharOfIntegralEigenvectorStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsSphericalTwistOfJacquetConstituentEmptyBlockStatement
@@ -81,7 +83,7 @@ theorem sph_of_isBlockVec : GlobalTheory.Published.BernsteinZelevinskyFiniteness
       rw [hblk h hh h1 h2 u hu, map_smul] at this
       exact this.symm
   obtain ⟨hx0, hx⟩ := GlobalTheory.T.jacquetModule_image_ne_zero_of_blockTypeVector hDZ k r t χ _ _ (Ψ v) hsm hirr hχt hv' hblk'
-  obtain ⟨Y, _, _, τ, hτ, hsub, y, hy0, hy⟩ := GlobalTheory.T.exists_irreducible_subquotient_common_eigenvector _ _ (jac (two (stdSum (rfl : r + t = r + t)))
+  obtain ⟨Y, _, _, τ, hτ, hsub, y, hy0, hy⟩ := _root_.GlobalTheory.EigenSubquot.exists_irreducible_subquotient_eigen _ _ (jac (two (stdSum (rfl : r + t = r + t)))
     (multiProd (two (stdSum (rfl : r + t = r + t))) (Exponents.twoRep π₁.π π₂.π)))
     {h | ∃ g ∈ KO k (Fin t), h = Pi.mulSingle true g}
     (fun h => (χ (Matrix.GeneralLinearGroup.det (h true)) : ℂ)) _ hx0

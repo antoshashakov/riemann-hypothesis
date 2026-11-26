@@ -2,7 +2,12 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AlgOverHomSurjective
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAlgHomLocalizationAwayOfRationalPointsStatement
+public import Mathlib.Algebra.Algebra.Subalgebra.Lattice
+public import Mathlib.Algebra.MonoidAlgebra.Basic
+public import Mathlib.Algebra.Polynomial.Eval.Defs
+public import Mathlib.GroupTheory.MonoidLocalization.Away
+public import Mathlib.RingTheory.OreLocalization.Ring
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsAlgHomLocalizationAwayOfRationalPoints
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsMonHomExtension
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsMultiplicativeGroupOpenNonvanishingPolynomStatement
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical
@@ -82,7 +87,7 @@ theorem algHom_algebraMap_eq_eval {k B : Type} [CommRing k] [CommRing B] [Algebr
 
 theorem exists_oneParameter_of_rational_family : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G] (A : Type) [CommRing A] [Algebra k A] (j : algOver k A ⟶ G) (ε : A →ₐ[k] k) (r : ℕ) (f : Fin r → A) (Pd : Polynomial k) (P : Fin r → Polynomial k) (ψ : k → (A →ₐ[k] k)), SmConn G → IsChart G j ε f → Pd ≠ 0 → (∃ i, P i ≠ 0) → (∀ t, t ≠ 0 → Pd.eval t ≠ 0 → ∀ i, ψ t (f i) * Pd.eval t = (P i).eval t) → (∀ t t', t ≠ 0 → t' ≠ 0 → Pd.eval t ≠ 0 → Pd.eval t' ≠ 0 → Pd.eval (t * t') ≠ 0 → (algOverHom (ψ t) ≫ j) * (algOverHom (ψ t') ≫ j) = algOverHom (ψ (t * t')) ≫ j) → ∃ F : Gm (Sp k) ⟶ G, IsMonHom F ∧ F ≠ 1 := by
   intro k _ _ G _ A _ _ j ε r f Pd P ψ hG hc hPd hP hψ hmul
-  obtain ⟨χ, hχ⟩ := GlobalTheory.T.exists_algHom_localizationAway_of_rational_points' k A r f Pd P ψ hc.2.2.1 hPd hψ
+  obtain ⟨χ, hχ⟩ := _root_.GlobalTheory.exists_algHom_localizationAway_of_rational_points k A r f Pd P ψ hc.2.2.1 hPd hψ
   obtain ⟨jj, hjj, hjm⟩ := GlobalTheory.T.exists_multiplicativeGroup_open_nonvanishing_polynomial k Pd
   have hq : Polynomial.X * Pd ≠ 0 := mul_ne_zero Polynomial.X_ne_zero hPd
   have hinj : Function.Injective

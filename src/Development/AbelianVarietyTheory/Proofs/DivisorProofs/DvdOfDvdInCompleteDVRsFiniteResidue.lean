@@ -3,7 +3,8 @@ module
 public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 public import Mathlib.RingTheory.IntegralClosure.IntegrallyClosed
 public import Mathlib.RingTheory.LocalRing.ResidueField.Defs
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitFiniteResidueCharZeroAvoidingStatement
+public import Mathlib.RingTheory.FiniteType
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTraitFiniteResidueCharZeroAvoiding
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfMemAdjoinInv
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -86,7 +87,7 @@ theorem dvd_of_forall_fintrait : ∀ (A : Type) [CommRing A] [IsDomain A] [IsInt
     have : CharZero S := charZero_of_injective_algebraMap hinjS
     obtain ⟨n, hn, hzn⟩ := exists_max_ideal_of_mem_nonunits hz
     have hfS : algebraMap A S f ≠ 0 := (map_ne_zero_iff _ hinjS).2 hf
-    obtain ⟨V, _, _, _, _, t, hc, hfin, htf, hcomap⟩ := GlobalTheory.T.exists_trait_finiteResidue_charZero_avoiding S n (algebraMap A S f) hn hfS
+    obtain ⟨V, _, _, _, _, t, hc, hfin, htf, hcomap⟩ := _root_.GlobalTheory.exists_trait_finite_residueField_charZero_avoiding S n (algebraMap A S f) hn hfS
     have hdiv := H V hc hfin (t.comp (algebraMap A S)) htf
     simp only [RingHom.comp_apply] at hdiv
     have hfa : algebraMap A S f = z * algebraMap A S a := by

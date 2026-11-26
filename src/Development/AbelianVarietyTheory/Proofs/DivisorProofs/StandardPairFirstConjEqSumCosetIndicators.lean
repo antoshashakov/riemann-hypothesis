@@ -6,7 +6,10 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegr
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegralActionUnitCharacterEigen
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemIdealIntegralTensorSwapIffMemIdealSubgroupStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemPrincipalCongruenceLevelSubgroupIffIntegralCo
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairFirstMemberIntegralFrameEqStatement
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardPairFirstMemberIntegralFrameEq
+public import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelIntG
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitDetCharIndicatorEqOneOfCongruentOneStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitDetCharIndicatorMulIntegralFrameStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
@@ -249,7 +252,7 @@ theorem conj_stdFst_eq_sum : ∀ {D : D7} (S T : HSp D) {a d : ℕ} (hS : S.rank
   have he_int : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E :=
     GlobalTheory.IdemRes.toEAf_mem_of_finPart (GlobalTheory.AdIdem.idempotent_mem_intAE D _
       (by rw [← map_mul, he_mul]))
-  rw [GlobalTheory.T.standardPairFirstMember_integralFrame_eq S T ν e 𝔪 β hβ hβ' t,
+  rw [_root_.GlobalTheory.StdReadFrame.stdFst_frame S T ν e 𝔪 β hβ hβ' t,
     GlobalTheory.T.unitDetCharIndicator_mul_integralFrame ν e he_mul he_int _ β hβ hβ', hN]
   simp only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul]
   rw [Finset.sum_congr rfl fun r hr => by rw [hc r hr]]
