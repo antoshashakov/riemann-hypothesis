@@ -184,8 +184,7 @@ theorem abs_det_skew_congruence (e : Matrix n n ℝ ≃ₗ[ℝ] V) (C : Matrix n
   have h_inj : Function.Injective ((skewOfReal (n := n)).coprod (I • skewOfReal)) := by
     refine (injective_iff_map_eq_zero _).2 fun ⟨s, s'⟩ hs ↦ ?_
     replace hs : skewOfReal s + I • skewOfReal s' = 0 := by simpa using hs
-    have hs_star : -skewOfReal s + I • skewOfReal s' = 0 := by
-      simpa using congrArg conjTranspose hs
+    have hs_star : -skewOfReal s + I • skewOfReal s' = 0 := by simpa using congrArg conjTranspose hs
     have hs_zero : skewOfReal s = 0 := by
       linear_combination (norm := module) (2⁻¹ : ℂ) • hs - (2⁻¹ : ℂ) • hs_star
     have hs'_zero : skewOfReal s' = 0 := by simpa [hs_zero] using hs
@@ -468,8 +467,7 @@ theorem cayleyChart_cayleyChartInv (g : U J) (h_unit : IsUnit ((g : Matrix n n �
   have hgN : (g : Matrix n n ℂ) * N = 1 - N :=
     eq_sub_of_add_eq (by simpa [N, Matrix.add_mul] using mul_nonsing_inv _ h_det.isUnit)
   have h_sum : J * N + Nᴴ * J = J := by
-    have h_gram : (1 - N)ᴴ * J * (1 - N) = Nᴴ * J * N := by
-      simpa [hgN] using U.gram_invariant g N N
+    have h_gram : (1 - N)ᴴ * J * (1 - N) = Nᴴ * J * N := by simpa [hgN] using U.gram_invariant g N N
     simp only [conjTranspose_sub, conjTranspose_one, Matrix.sub_mul, Matrix.mul_sub, one_mul,
       mul_one] at h_gram
     linear_combination (norm := abel1) -h_gram

@@ -222,8 +222,7 @@ private lemma New.analyticAt_chart_comp_of_hasFDerivAt {G V : Type*} [AddCommGro
     AnalyticAt ℂ (φ ∘ e) 0 := by
   -- `φ ∘ e` is differentiable at every `x` near `0`, as `φ (e (x + y))` is the sum in the chart
   -- of `φ (e x)` and `φ (e y)`.
-  have φe_tendsto : Tendsto (φ ∘ e) (𝓝 0) (𝓝 0) := by
-    simpa [h0] using e_deriv.continuousAt.tendsto
+  have φe_tendsto : Tendsto (φ ∘ e) (𝓝 0) (𝓝 0) := by simpa [h0] using e_deriv.continuousAt.tendsto
   have add_analytic : ∀ᶠ p : V × V in 𝓝 (0, 0),
       AnalyticAt ℂ (fun q : V × V ↦ φ (ψ q.1 + ψ q.2)) (φ (e p.1), φ (e p.2)) :=
     (φe_tendsto.prodMap_nhds φe_tendsto).eventually h_add.eventually_analyticAt

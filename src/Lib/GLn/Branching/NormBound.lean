@@ -703,8 +703,7 @@ lemma weylNormSq_mulVec_le_of_equivariant {c : ℤ}
         (fun y z ↦ ?_) ((span_weylEval_eq_top _).ge Submodule.mem_top) fun y ↦ ?_
       · rw [star_weylEval, star_m, h_isometry _ _ (h_star_ne y.property) z.property]
       · rw [star_weylEval, star_m, h_pairing _ (h_star_ne y.property)]
-    _ = (c : ℝ) ^ 2 * weylNormSq ξ := by
-      simp [h_tensor, ← mul_assoc, sq]
+    _ = (c : ℝ) ^ 2 * weylNormSq ξ := by simp [h_tensor, ← mul_assoc, sq]
 
 end New.GL
 

@@ -410,8 +410,7 @@ lemma theta_half_period_eq_neg (hf : f ∈ L.hermitianForm.thetaSpace (sigmaSign
   -- At `z = -l / 2` the functional equation has exponent `0`, and `sigmaSign L l = -1`.
   set l : ℂ := m * L.ω₁ + L.ω₂
   have l_mem : l ∈ L.lattice := mem_lattice.2 ⟨m, 1, by simp [l]⟩
-  have half_notMem : l / 2 ∉ L.lattice := by
-    simpa [l] using (half_mem_lattice_iff_even L m 1).not
+  have half_notMem : l / 2 ∉ L.lattice := by simpa [l] using (half_mem_lattice_iff_even L m 1).not
   have exponent_eq : L.hermitianForm l (-(l / 2)) + L.hermitianForm l l / 2 = 0 := by simp; ring
   have functional_eq : f (l / 2) = sigmaSign L l *
       exp (L.hermitianForm l (-(l / 2)) + L.hermitianForm l l / 2) * f (-(l / 2)) := by
@@ -586,8 +585,7 @@ lemma PeriodPair.exists_weierstrassP_eq_of_cubic (L : PeriodPair) (x y : ℂ)
     intro hz_mem
     simp [weierstrassPMulSq_of_mem hz_mem, sigma_eq_zero_iff.2 hz_mem,
       deriv_sigma_ne_zero hz_mem] at h_zero
-  have h_wp : ℘[L] z = x := by
-    simpa [weierstrassPMulSq_of_notMem hz, hz, sub_eq_zero] using h_zero
+  have h_wp : ℘[L] z = x := by simpa [weierstrassPMulSq_of_notMem hz, hz, sub_eq_zero] using h_zero
   have h_sq : ℘'[L] z ^ 2 = y ^ 2 := by rw [L.derivWeierstrassP_sq z hz, h_wp, h_cubic]
   rcases sq_eq_sq_iff_eq_or_eq_neg.1 h_sq with h_pos | h_neg
   · exact ⟨z, hz, h_wp, h_pos⟩

@@ -206,8 +206,7 @@ theorem exists_content {p : ι → A} {i : ι} (h_unit : IsUnit (p i)) :
   have h_prod_unit : IsUnit (V.1 i i * V⁻¹.1 i ⬝ᵥ p) := by rwa [← h_col i]
   obtain ⟨t, ht⟩ : IsUnit (V⁻¹.1 i ⬝ᵥ p) := isUnit_of_mul_isUnit_right h_prod_unit
   refine ⟨t, V⁻¹.1 i, hV.isIntMatrix_inv i, ht.symm, fun c ↦ ⟨fun hc ↦ ?_, fun hc j ↦ ?_⟩⟩
-  · have h_apply : (V⁻¹.1 *ᵥ c • p) i = t * c := by
-      simp [mulVec, ht, mul_comm c, -coe_units_inv]
+  · have h_apply : (V⁻¹.1 *ᵥ c • p) i = t * c := by simp [mulVec, ht, mul_comm c, -coe_units_inv]
     rw [← h_apply]
     exact hV.isIntMatrix_inv.mulVec (v := c • p) hc i
   · have h_int : V.1 j i * (t * c) ∈ integers := mul_mem (hV.isIntMatrix j i) hc

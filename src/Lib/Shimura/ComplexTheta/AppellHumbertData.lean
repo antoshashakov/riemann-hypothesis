@@ -193,8 +193,7 @@ lemma eq_zero_of_forall_fourierChar_eq_one {W : Type*} [AddCommGroup W] [Module 
   norm_num [h_one] at h_neg
 
 @[simp]
-lemma thetaShift_zero : B.thetaShift 0 f = f := by
-  simp [funext_iff, thetaShift_apply]
+lemma thetaShift_zero : B.thetaShift 0 f = f := by simp [funext_iff, thetaShift_apply]
 
 @[simp]
 lemma thetaShift_mul : (B + B').thetaShift u (f * g) = B.thetaShift u f * B'.thetaShift u g := by

@@ -100,8 +100,7 @@ theorem exists_isDisintegration_le_sphereDensity {κ : Type} [Fintype κ] [Decid
     have h_im : ((t : ℂ) * Complex.I).im = t := by simp
     obtain ht | ht := le_or_gt (2 * t) 0
     · rw [indicator_of_notMem (notMem_Ioi.2 ht), h_im, h_zero ht, mul_zero, zero_mul]
-    · have h_level : complexPlace.skewUnit⁻¹.val * (t * Complex.I) = (2 * t : ℝ) := by
-        simp [field]
+    · have h_level : complexPlace.skewUnit⁻¹.val * (t * Complex.I) = (2 * t : ℝ) := by simp [field]
       have h_point (h : U (1 : Matrix κ κ ℂ)) :
           f (star (point (2 * t) h) ⬝ᵥ (1 : Matrix κ κ ℂ) *ᵥ point (2 * t) h, point (2 * t) h) =
             f (((2 * t : ℝ) : ℂ), point (2 * t) h) := by

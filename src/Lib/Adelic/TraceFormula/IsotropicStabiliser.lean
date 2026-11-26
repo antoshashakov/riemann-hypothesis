@@ -145,8 +145,7 @@ lemma exists_mul_mul_eq_of_orthogonal_right (h : IsIsotropicFrame J X Y) :
   have h_adjoint : eᴴ * Yᴴ + J * X * bᴴ = 1 := by
     simpa [h.isHermitian.eq, mul_assoc] using congrArg conjTranspose h_one
   refine ⟨bᴴ * J, fun v hv ↦ h.isUnit.mul_left_cancel ?_⟩
-  calc J * (X * (bᴴ * J * v)) = (eᴴ * Yᴴ + J * X * bᴴ) * (J * v) := by
-        simp [add_mul, mul_assoc, hv]
+  calc J * (X * (bᴴ * J * v)) = (eᴴ * Yᴴ + J * X * bᴴ) * (J * v) := by simp [add_mul, mul_assoc, hv]
     _ = J * v := by rw [h_adjoint, one_mul]
 
 /-- In an isotropic frame `(J, X, Y)`, where `X` spans `A` and `Y` spans `A^⊥`, an isometry `γ`

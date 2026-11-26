@@ -105,8 +105,7 @@ lemma aeval_sub_aeval_mem_upperBlocks {g x : Matrix n n k} (hg : ε * (g * ε) =
   -- `x` and `g` induce the same map on the image of `ε`, and the same map on the quotient by it.
   obtain ⟨hx_range, hx_ker⟩ := mem_upperBlocks_iff.mp hx
   -- By `aeval_semiconj`, `a b = c a` gives `a p(b) = p(c) a`; here `a` is `ε` or `1 - ε`.
-  have hx_image : ε * (g * ε) = x * ε := by
-    linear_combination (norm := noncomm_ring) hg - hx_ker
+  have hx_image : ε * (g * ε) = x * ε := by linear_combination (norm := noncomm_ring) hg - hx_ker
   have hg_quot : (1 - ε) * g = (1 - ε) * g * (1 - ε) := by
     linear_combination (norm := noncomm_ring) -hg
   have hx_quot : (1 - ε) * x = (1 - ε) * g * (1 - ε) := by
@@ -123,8 +122,7 @@ the image of `ε`), then `ε g ε = g ε` (`g` keeps the image of `ε`). -/
 lemma mul_mul_eq_mul_of_aeval {g : Matrix n n k} {p : k[X]} (h_range : ε * aeval g p = aeval g p)
     (h_fix : aeval g p * ε = ε) : ε * (g * ε) = g * ε := by
   have h_comm : g * aeval g p = aeval g p * g := aeval_semiconj rfl p
-  have h_eq : g * ε = aeval g p * (g * ε) := by
-    rw [← mul_assoc, ← h_comm, mul_assoc, h_fix]
+  have h_eq : g * ε = aeval g p * (g * ε) := by rw [← mul_assoc, ← h_comm, mul_assoc, h_fix]
   rw [h_eq, ← mul_assoc, h_range]
 
 /-- Let `p(g)` be a projection onto the image of `ε` (`ε p(g) = p(g)` and `p(g) ε = ε`), and let

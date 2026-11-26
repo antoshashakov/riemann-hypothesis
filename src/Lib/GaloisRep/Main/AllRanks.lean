@@ -157,8 +157,7 @@ lemma New.AutChar.exists_pair_heckeCoeff_ne {E : Type} [Field E] [CMType E] [Wei
     rw [h_triv] at h_pow
     exact (Φ Classical.ofNonempty).injective (by simpa [c, mul_add] using h_pow.symm)
   -- So `γ` is a unit at `w`, whereas `u` has the valuation of a uniformiser there, `w` being split.
-  have hγ_val : w.valuation E (γ : E) = 1 := by
-    simpa [NeZero.ne] using congrArg (w.valuation E) hγ
+  have hγ_val : w.valuation E (γ : E) = 1 := by simpa [NeZero.ne] using congrArg (w.valuation E) hγ
   simpa [u, coe_divStar, locFullIdele, hw, ← map_inv, hγ_val, hn_pos.ne'] using h_unit w
 
 /-- Let `r` be continuous with non-degenerate trace form, and let its trace be that of `ρ` minus the

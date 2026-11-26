@@ -283,8 +283,7 @@ lemma mem_ratMatrices {x : Matrix m n (𝔸 E)} :
   simp [ratMatrices, ratAdeles, ← ext_iff, Classical.skolem, of.exists_congr_left]
 
 @[simp, grind .]
-lemma toAdele_half_add_half : toAdele (2⁻¹ : E) + toAdele (2⁻¹ : E) = 1 := by
-  norm_num [← map_add]
+lemma toAdele_half_add_half : toAdele (2⁻¹ : E) + toAdele (2⁻¹ : E) = 1 := by norm_num [← map_add]
 
 @[grind .]
 lemma toAdele_inv_mul_cancel {x : E} (hx : x ≠ 0) : toAdele x⁻¹ * toAdele x = 1 := by

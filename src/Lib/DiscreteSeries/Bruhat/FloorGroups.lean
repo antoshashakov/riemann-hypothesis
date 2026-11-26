@@ -342,8 +342,7 @@ lemma partialUnitriangularGroup_anti : Antitone T.partialUnitriangularGroup := b
   grind [IsConcreteLE.le_iff, Antitone]
 
 /-- The fixers `H_l = floorGroup l` decrease as `l` grows. -/
-lemma floorGroup_anti : Antitone T.floorGroup := by
-  grind [IsConcreteLE.le_iff, Antitone]
+lemma floorGroup_anti : Antitone T.floorGroup := by grind [IsConcreteLE.le_iff, Antitone]
 
 @[simp]
 lemma floorGroup_zero : T.floorGroup 0 = ⊤ := by grind [IsConcreteLE.le_iff]

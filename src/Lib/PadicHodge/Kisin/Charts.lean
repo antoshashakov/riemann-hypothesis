@@ -771,8 +771,7 @@ lemma eventually_exists_coeff_eq_of_fixed {y : OFlat}
     SeminormedAddCommGroup.mem_closure_iff.mp (ax_mem_closure_fixedField _ t_fixed) ‖(p : ℂ_[p])‖
       (by simp [NeZero.ne])
   -- The ranges increase, because `thetaPhiInvS (n + 1) (φ s) = thetaPhiInvS n s`.
-  have h_succ (n : ℕ) (s : c.S) : c.thetaPhiInvS (n + 1) (c.φ s) = c.thetaPhiInvS n s := by
-    simp [φ]
+  have h_succ (n : ℕ) (s : c.S) : c.thetaPhiInvS (n + 1) (c.φ s) = c.thetaPhiInvS n s := by simp [φ]
   have mono : Monotone fun n ↦ (c.thetaPhiInvS n).range :=
     monotone_nat_of_le_succ fun n x ⟨s, hs⟩ ↦ ⟨c.φ s, (h_succ n s).trans hs⟩
   -- An element `g` that fixes all values `thetaPhiInvS n s` fixes `S`, since `g • s - s` is

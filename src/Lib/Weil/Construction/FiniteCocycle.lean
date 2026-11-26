@@ -283,8 +283,7 @@ lemma finProjAction_cocycle_eq_one_of_mem ⦃s : Gf E ι⦄ (hs : s ∈ stdLevel
     finProjAction.1 g s = 1 := by
   -- As `s⁻¹` is integral, `1` kills the module `Q` of the Gauss sum: the sum is its one term `1`.
   obtain ⟨Q, _, γ, h_sum, h_smul⟩ := exists_gauss_sum_finProjAction g s
-  have h_zero (q : Q) : q = 0 := by
-    simpa using (h_smul 1 q).2 (by simpa using! hs.isIntMatrix_inv)
+  have h_zero (q : Q) : q = 0 := by simpa using (h_smul 1 q).2 (by simpa using! hs.isIntMatrix_inv)
   have h_gauss : ∑ q : Q, selfDualAddChar E (γ q) = 1 := by
     rw [Fintype.sum_eq_single 0 fun q hq ↦ absurd (h_zero q) hq]
     simpa using (h_smul 0 0).1

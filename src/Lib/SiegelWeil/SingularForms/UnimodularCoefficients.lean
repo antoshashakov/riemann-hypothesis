@@ -308,8 +308,7 @@ lemma dualIndex_lt_dualIndex_mul_of_det_inv_notMem {T : Matrix p p E} {γ r : Ma
     simp [det_nonsing_inv, Ring.mul_inverse_rev]
   have h_det : C⁻¹.det = (rᴴ * r).det * (rᴴ * C * r)⁻¹.det := by
     grind [det_mul, Ring.mul_inverse_cancel]
-  have h_clear : C⁻¹.det * (rᴴ * C).det = rᴴ.det := by
-    grind [det_mul, det_nonsing_inv_mul_det]
+  have h_clear : C⁻¹.det * (rᴴ * C).det = rᴴ.det := by grind [det_mul, det_nonsing_inv_mul_det]
   have h_not_clear : (rᴴ * C * r)⁻¹.det * (rᴴ * C).det = Ring.inverse r.det := by
     grind [Ring.mul_inverse_cancel]
   refine denomIndex_lt_of_mul_mem_of_mul_notMem

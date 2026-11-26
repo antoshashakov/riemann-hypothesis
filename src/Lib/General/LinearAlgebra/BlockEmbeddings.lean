@@ -59,8 +59,7 @@ lemma exists_GL_mul_inclMatrix {k : Type*} [Field k] {b : Matrix n r k}
   let e : (r → k) ≃ₗ[k] LinearMap.range (inclMatrix k ι).mulVecLin :=
     ofInjective _ (inclMatrix_mulVecLin_injective ι k)
   obtain ⟨g, hg⟩ := exists_linearEquiv_restrict_eq (e.symm ≪≫ₗ ofInjective b.mulVecLin h)
-  have h_apply (v : r → k) : g (inclMatrix k ι *ᵥ v) = b *ᵥ v := by
-    simpa [e] using (hg (e v)).symm
+  have h_apply (v : r → k) : g (inclMatrix k ι *ᵥ v) = b *ᵥ v := by simpa [e] using (hg (e v)).symm
   refine ⟨.mk'' g.toMatrix' (by simp [← coe_det]), ?_⟩
   simp [ext_iff_mulVec, ← mulVec_mulVec, h_apply]
 
@@ -394,8 +393,7 @@ U(diag(ε, ε')) is a proper map. -/
 theorem New.DiscreteSeries.isProperMap_inl : IsProperMap (U.inl ε ε') := by
   -- Followed by the continuous map "upper left block", `U.inl` is the closed embedding of the
   -- unitary group in the matrices.
-  have h_val (g : U (signMatrix ε)) : (U.inl ε ε' g).val.val = fromBlocks g.val.val 0 0 1 := by
-    simp
+  have h_val (g : U (signMatrix ε)) : (U.inl ε ε' g).val.val = fromBlocks g.val.val 0 0 1 := by simp
   have h_cont : Continuous (U.inl ε ε') := by
     simp only [continuous_U_iff_matrix, h_val]
     fun_prop

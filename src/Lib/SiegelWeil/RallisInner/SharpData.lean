@@ -203,8 +203,7 @@ lemma _root_.New.hasSum_setIntegral_mul_coset {H : Type*} [Group H] [MeasurableS
   let coset (q : H ⧸ L) : Set H := (fun g ↦ (r q)⁻¹ * g) ⁻¹' L
   have mem_coset (q : H ⧸ L) (g : H) : g ∈ coset q ↔ q = (g : H ⧸ L) := by
     rw [Set.mem_preimage, SetLike.mem_coe, ← QuotientGroup.eq, hr]
-  have h_disjoint : Pairwise (Function.onFun Disjoint coset) := by
-    grind [Pairwise]
+  have h_disjoint : Pairwise (Function.onFun Disjoint coset) := by grind [Pairwise]
   have h_cover : ⋃ q, coset q = Set.univ := by simp [Set.eq_univ_iff_forall, mem_coset]
   have h_coset (q : H ⧸ L) : ∫ g in coset q, Φ g ∂μ = ∫ g in (L : Set H), Φ (r q * g) ∂μ := by
     simpa using (measurePreserving_mul_left μ (r q)⁻¹).setIntegral_preimage_emb
@@ -740,8 +739,7 @@ inverse Euler factor of ζ_F(2k). -/
 noncomputable def placeSign (w : FinPlace E) : ℂ := if WellOrderingRel w (star w) then -1 else 1
 
 omit [WeilData E] in
-lemma norm_placeSign_le (w : FinPlace E) : ‖placeSign w‖ ≤ 1 := by
-  simp [placeSign, apply_ite]
+lemma norm_placeSign_le (w : FinPlace E) : ‖placeSign w‖ ≤ 1 := by simp [placeSign, apply_ite]
 
 omit [WeilData E] in
 /-- At a place `w` that differs from its conjugate `w̄`, the signs `placeSign` of `w` and `w̄`

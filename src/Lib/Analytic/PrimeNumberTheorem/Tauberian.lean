@@ -166,8 +166,7 @@ lemma norm_taylorCoeff_transform_sub_le (hR : Measurable R)
 lemma norm_iteratedDeriv_dslope_le {H η M : ℝ} (hH : 0 ≤ H) (hη : 0 < η)
     (hF : ∀ s ∈ closedBall (1 + H : ℂ) (H + η), DifferentiableAt ℂ F s ∧ ‖F s‖ ≤ M) (k : ℕ) :
     ‖iteratedDeriv k (dslope F 1) (1 + H)‖ ≤ k ! * (2 * M / η) / (H + η) ^ k := by
-  have h_one : (1 : ℂ) ∈ ball (1 + H : ℂ) (H + η) := by
-    simp [dist_eq_norm, abs_of_nonneg hH, hη]
+  have h_one : (1 : ℂ) ∈ ball (1 + H : ℂ) (H + η) := by simp [dist_eq_norm, abs_of_nonneg hH, hη]
   have h_nhds : closedBall (1 + H : ℂ) (H + η) ∈ 𝓝 1 :=
     mem_of_superset (isOpen_ball.mem_nhds h_one) ball_subset_closedBall
   have h_diff : DifferentiableOn ℂ (dslope F 1) (closedBall (1 + H) (H + η)) :=
@@ -308,8 +307,7 @@ lemma norm_taylorCoeff_dslope_le_inv_pow {u l H : ℝ} {A B k : ℕ} (hu : 0 < u
     _ = l ^ (2 * A) * (4 * H) / rexp ((k + 1) * (1 / l ^ A / (2 * H))) := by
         rw [Real.exp_neg]
         field
-    _ ≤ u * (u * u ^ (2 * B + 4)) / u ^ (3 * B + 7) := by
-        grw [h_pow, hH_le, ← h_gain, ← h_exp]
+    _ ≤ u * (u * u ^ (2 * B + 4)) / u ^ (3 * B + 7) := by grw [h_pow, hH_le, ← h_gain, ← h_exp]
     _ = 1 / u ^ (B + 1) := by field
 
 /-- **Tauberian theorem.** Let `R` be measurable and Lipschitz on `v ≥ 0` (it suffices to test steps

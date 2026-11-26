@@ -437,8 +437,7 @@ lemma New.Variety.exists_landsIn_smoothOfRelativeDimension {d : ℕ} {X : Scheme
     exact ⟨ofHom (IsLocalization.Away.lift f αf_unit), hom_ext (lift_comp f αf_unit)⟩
   algebraize [β.hom, β.hom.comp (algebraMap A (Away f))]
   have : FormallyUnramified A (Away f) := .of_surjective π π_surj
-  have w₀_W : LandsIn (φ w₀) W := by
-    simpa only [h_arc_extends] using arc_W.comp (specMap V.subtype)
+  have w₀_W : LandsIn (φ w₀) W := by simpa only [h_arc_extends] using arc_W.comp (specMap V.subtype)
   have w₀_f : LandsIn (φ w₀) (specMap (algebraMap B (Away f)) ≫ hW.fromSpec).opensRange :=
     landsIn_opensRange.2 ⟨β ≫ ofHom V.subtype, by simpa using h_arc_extends⟩
   -- `A` embeds in `V`: a `Q` that vanishes at `φ w₀` vanishes at its specialisations `φ w`, so

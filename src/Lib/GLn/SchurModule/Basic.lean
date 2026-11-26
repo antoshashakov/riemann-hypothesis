@@ -715,8 +715,7 @@ lemma fockPairing_rowSubst [∀ τ : Φ, DecidableEq (n τ)] (p : MatrixPoly ((�
     intro q
     obtain ⟨⟨τ, b⟩, k⟩ := j
     -- `rowSubst z (X j)` is a combination of variables, each of which moves across as `pderiv`.
-    have h_X : rowSubst z (X (⟨τ, b⟩, k)) = ∑ a : n τ, z τ b a • X (⟨τ, a⟩, k) := by
-      simp [rowSubst]
+    have h_X : rowSubst z (X (⟨τ, b⟩, k)) = ∑ a : n τ, z τ b a • X (⟨τ, a⟩, k) := by simp [rowSubst]
     simp [fockPairing_mul_X, h_chain, h_X, mul_sum, h_p]
 
 variable [Fintype Φ] {N : Φ → ℕ} {κ κ' : Φ → ℕ → ℕ} {p}

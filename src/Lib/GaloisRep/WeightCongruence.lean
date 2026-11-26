@@ -455,8 +455,7 @@ lemma padicComponents_ofSplitPlace {τ : InfinitePlace E}
   have h_not : ¬(u = star w ∨ u = w) := by
     intro h_ind
     -- `w` or its conjugate is `u`, so `w` contains `l` too
-    have hl_w : ↑l ∈ w.asIdeal := by
-      obtain h_eq | h_eq := h_ind <;> simpa [h_eq] using hl
+    have hl_w : ↑l ∈ w.asIdeal := by obtain h_eq | h_eq := h_ind <;> simpa [h_eq] using hl
     exact h_not_induces hl_w h_ind
   have h_ne : u ≠ w := fun h_eq ↦ h_not (.inr h_eq)
   have h_star_ne : star u ≠ w := fun h_eq ↦ h_not (.inl (by rw [← h_eq, star_star]))

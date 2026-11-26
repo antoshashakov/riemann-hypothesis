@@ -520,8 +520,7 @@ lemma partialHecke_hyperplane_count_of_invariant (hϖ : v ϖ.val = exp (-1)) {x 
       simp [hi, apply_ite (IsLocalRing.residue _), diagonal_apply]
     · exact (u i).out_eq
   have hψ_inv (u : Fin N → ResField w) (z : V) : ψ (ρ (n u)⁻¹ z) = ψ z := by
-    have h_diag : ∀ i ≠ r, ∀ l ≠ i, (n u).val i l = 0 := by
-      simp +contextual [hn_val, M, eq_comm]
+    have h_diag : ∀ i ≠ r, ∀ l ≠ i, (n u).val i l = 0 := by simp +contextual [hn_val, M, eq_comm]
     simpa using (hψ (n u) (hn_mem u) h_diag (ρ (n u)⁻¹ z)).symm
   -- The coefficient of the coset of `g` on the two sides.
   have h_coeff (g : GL (Fin N) (LocField w)) :

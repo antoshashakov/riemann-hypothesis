@@ -98,8 +98,7 @@ lemma G.isClosedEmbedding_blockEmb : Topology.IsClosedEmbedding (blockEmb (E := 
   have h_reindex : Topology.IsClosedEmbedding (reindex (E := E) e.symm hs).symm :=
     (reindex e.symm hs).toEquiv.right_inv.isClosedEmbedding (continuous_reindex e.symm hs)
       (continuous_reindex e h_signs)
-  have h_sum : Topology.IsClosedEmbedding (sum : G E s₁ × G E s₂ →* G E (s₁ ⊕ᵥ s₂)) := by
-    fun_prop
+  have h_sum : Topology.IsClosedEmbedding (sum : G E s₁ × G E s₂ →* G E (s₁ ⊕ᵥ s₂)) := by fun_prop
   exact h_reindex.comp h_sum
 
 variable [WeilData E]

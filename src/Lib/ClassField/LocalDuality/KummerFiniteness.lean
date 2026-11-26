@@ -179,8 +179,7 @@ lemma New.cokerKerIndex_local_units {Γ L Ω : Type} [Group Γ] [TopologicalSpac
   -- The order `f : Y → ℤ`, whose kernel is the unit group.
   obtain ⟨f₀, f_surj, h_ord⟩ := hLocal.exists_surjective_ord hπ y
   let f := f₀.toIntLinearMap
-  have val_ker (a : f.ker) : w (y a).toMul = 1 := by
-    simpa [w] using (h_ord a 0).mpr a.property
+  have val_ker (a : f.ker) : w (y a).toMul = 1 := by simpa [w] using (h_ord a 0).mpr a.property
   -- `V` is the subgroup `1 + l π O` of the unit group.
   let V : Submodule ℤ f.ker :=
     (AddSubgroup.ofSub {a : f.ker | ((y a).toMul.val - 1) / (l * π) ∈ valRingBelow L A}

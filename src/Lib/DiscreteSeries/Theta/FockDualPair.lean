@@ -309,8 +309,7 @@ theorem oscRows_apply (X : Matrix R R ℂ) :
     T.oscRows X = ∑ a : R, ∑ b : R, X a b • T.oscRowsUnit a b := by
   simp [oscRows, liftLinear_apply]
 
-theorem oscRows_E (a b : R) : T.oscRows.E a b = T.oscRowsUnit a b := by
-  simp [oscRows, E]
+theorem oscRows_E (a b : R) : T.oscRows.E a b = T.oscRowsUnit a b := by simp [oscRows, E]
 
 /-- The operator `∑ c, glOp (a, c) (b, c)` over the columns `c` where `(a, c)` has sign `-1`. For
 `ε a ≠ ε b` it is the Laplacian `-∑ c, ∂_{a c} ∂_{b c}`: up to the factor `σ`, the part of the

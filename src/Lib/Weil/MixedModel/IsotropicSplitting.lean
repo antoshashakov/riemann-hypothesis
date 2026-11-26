@@ -1000,8 +1000,7 @@ lemma exists_isCompact_rat_mul_radicalElement_mem (D : V.Splitting V₀ p) :
       z + (toAdele (j : E) • yᴴ * stdForm E s₀ * c + b) ∈ B := h_coverB _
   refine ⟨y, z, D.radicalElement_mem_Gamma y₀ hz, (_, _), ⟨h_memC, h_memB⟩, ?_⟩
   -- The parameters of the product are those that were moved into `C` and `B`.
-  have h_first : V₀.x⁻¹.val * (y₀.map toAdele + V₀.x.val * c) = y + c := by
-    simp [y, Matrix.mul_add]
+  have h_first : V₀.x⁻¹.val * (y₀.map toAdele + V₀.x.val * c) = y + c := by simp [y, Matrix.mul_add]
   simp only [φ, h_first, radicalElement_mul, add_assoc]
 
 omit [WeilData E] in

@@ -232,8 +232,7 @@ theorem exists_levelBox_disjoint {J : Subgroup (Gf E n)} (hJ : J ≤ stdLevel E 
   obtain ⟨hz'_inf, hz'_fin⟩ := mem_levelBox.1 hz'
   have h_quot : x⁻¹ * V.ratEmbed (γ'⁻¹ * γ) * x = z' * z⁻¹ :=
     calc x⁻¹ * V.ratEmbed (γ'⁻¹ * γ) * x
-        = (g⁻¹ * V.ratEmbed γ' * x)⁻¹ * (g⁻¹ * V.ratEmbed γ * x * z) * z⁻¹ := by
-          simp [mul_assoc]
+        = (g⁻¹ * V.ratEmbed γ' * x)⁻¹ * (g⁻¹ * V.ratEmbed γ * x * z) * z⁻¹ := by simp [mul_assoc]
       _ = z' * z⁻¹ := by rw [h_eq, inv_mul_cancel_left]
   have h_radius : (4 * c * V.height x ^ 2)⁻¹ ≤ 1 := inv_le_one_of_one_le₀
     (one_le_mul_of_one_le_of_one_le (by linarith) (one_le_pow₀ (V.one_le_height x)))

@@ -125,10 +125,8 @@ lemma lowerLiePart_mem_unitaryLie (c : ℂ) (Z : Matrix n n ℂ) :
   let J : Matrix n n ℂ := signMatrix ε
   have J_sq : J * J = 1 := IsHermitianInvolution.mul_self
   have J_herm : Jᴴ = J := IsHermitianInvolution.isHermitian.eq
-  have h_left : (N - J * Nᴴ * J)ᴴ * J = Nᴴ * J - J * N := by
-    simp [sub_mul, mul_assoc, J_sq, J_herm]
-  have h_right : J * (N - J * Nᴴ * J) = J * N - Nᴴ * J := by
-    simp [mul_sub, ← mul_assoc, J_sq]
+  have h_left : (N - J * Nᴴ * J)ᴴ * J = Nᴴ * J - J * N := by simp [sub_mul, mul_assoc, J_sq, J_herm]
+  have h_right : J * (N - J * Nᴴ * J) = J * N - Nᴴ * J := by simp [mul_sub, ← mul_assoc, J_sq]
   change (N - J * Nᴴ * J)ᴴ * J + J * (N - J * Nᴴ * J) = 0
   rw [h_left, h_right, sub_add_sub_cancel, sub_self]
 
@@ -604,8 +602,7 @@ lemma eventually_exists_isCircleFactorization (ho : o.Injective) {w : n → ℤ}
       _ = diagChar w a * weightMinors w b :=
         hw.weightMinors_oppBorel_mul ho det_b ha_mem (isBorelMatrix_one_add_lowerMask ho _)
       _ = weightMinors w b := by simp [a, diagChar]
-      _ = diagChar w b := by
-        simpa using hw.weightMinors_mul_borel ho (x := 1) (by simp) hb_mem hb
+      _ = diagChar w b := by simpa using hw.weightMinors_mul_borel ho (x := 1) (by simp) hb_mem hb
   have on_circle (s : Circle) : diagonal (fun i : n ↦ (s : ℂ) ^ o i) * x =
       A (ψ x) s * (diagonal (fun i : n ↦ (s : ℂ) ^ o i) * b) :=
     calc _ = diagonal (fun i : n ↦ (s : ℂ) ^ o i) * a * b := by rw [mul_assoc, ← x_eq]

@@ -185,8 +185,7 @@ lemma New.Selmer.IsLatticeIn.span_range_eq_top_of_map_pow_eq_map_conj {G n : Typ
   -- By `h_conj` and `h_fix`, `R γ` commutes with `R φ ^ card n`, so `R (φ⁻¹ ^ card n)` commutes
   -- with every `R (w p)`. As `u` is `R` conjugated by `P`, read in `O`, also `u (φ⁻¹ ^ card n)`
   -- commutes with every `u (w p)`.
-  have h_comm_φ : R (γ * φ ^ card n) = R (φ ^ card n * γ) := by
-    rw [h_conj, map_mul, map_mul, h_fix]
+  have h_comm_φ : R (γ * φ ^ card n) = R (φ ^ card n * γ) := by rw [h_conj, map_mul, map_mul, h_fix]
   have h_comm (p : Fin (card n) × Fin (card n)) : Commute (u (w p)) (u (φ⁻¹ ^ card n)) := by
     have h_R : R (w p * φ⁻¹ ^ card n) = R (φ⁻¹ ^ card n * w p) := by
       simpa only [w, map_mul] using (commute_map_pow_mul_pow_map_inv_pow R h_comm_φ _ _).eq

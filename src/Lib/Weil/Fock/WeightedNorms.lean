@@ -72,8 +72,7 @@ private lemma enorm_eq_lintegral_enorm (f : fockSpace ε) :
     ofReal_integral_norm_eq_lintegral_enorm (integrable_fockVector f)]
 
 /-- The moment of order 0 is the L¹ norm of the Fock vector `v`. -/
-lemma fockMoment_zero : fockMoment 0 v = ‖v‖ₑ := by
-  simp [fockMoment, enorm_eq_lintegral_enorm]
+lemma fockMoment_zero : fockMoment 0 v = ‖v‖ₑ := by simp [fockMoment, enorm_eq_lintegral_enorm]
 
 lemma fockMoment_smul : fockMoment N (c • v) = ‖c‖ₑ * fockMoment N v := by
   simp [fockMoment, mul_comm, ← lintegral_const_mul', ← mul_assoc]
@@ -591,8 +590,7 @@ lemma New.Fock.exists_enorm_le_mul_fockMoment_of_norm_sub_le {ι : Type*} [Finty
     enorm_le_mul_fockMoment N fun z ↦ (div_le_iff₀ (by positivity)).2 ?_⟩
   rcases lt_or_ge t 1 with ht_lt | ht_ge
   · calc ‖ℓ (realHeisenbergOp z vacVector)‖
-      _ ≤ C * ‖ℓ‖ * t ^ N * (1 + ‖z‖) ^ N := by
-        simpa using h_bound t ℓ ht ht_lt.le (h_diff ht_lt) z
+      _ ≤ C * ‖ℓ‖ * t ^ N * (1 + ‖z‖) ^ N := by simpa using h_bound t ℓ ht ht_lt.le (h_diff ht_lt) z
       _ ≤ (C + ‖(vacVector : fockSpace ε)‖) * ‖ℓ‖ * t ^ N * (1 + ‖z‖) ^ N := by
         gcongr
         exact le_add_of_nonneg_right (norm_nonneg _)

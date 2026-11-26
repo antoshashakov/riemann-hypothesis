@@ -351,12 +351,9 @@ lemma IsMatchingPair.mul {A : Type*} {j : A → U (1 : Matrix n n R)}
     rw [h_norm_mul, ← h_factor]
     exact hz_norm.mul hw_norm
   · -- A quotient `r` for `(u + v) z w` is one for `u z` and one for `v w`.
-    have hw_off_u : z * u • ((1 - v) • w) = z * u • ((1 - v) • (1 : R[X])) := by
-      rw [hw_off]
-    have hz_off_v : v • ((1 - u) • z) * w = v • ((1 - u) • (1 : R[X])) * w := by
-      rw [hz_off]
-    have huzw : u • (z * w) = u • z := by
-      simpa [smul_smul, mul_sub, huv] using hw_off_u
+    have hw_off_u : z * u • ((1 - v) • w) = z * u • ((1 - v) • (1 : R[X])) := by rw [hw_off]
+    have hz_off_v : v • ((1 - u) • z) * w = v • ((1 - u) • (1 : R[X])) * w := by rw [hz_off]
+    have huzw : u • (z * w) = u • z := by simpa [smul_smul, mul_sub, huv] using hw_off_u
     have hvzw : v • (z * w) = v • w := by
       simpa [smul_smul, mul_sub, mul_comm v u, huv] using hz_off_v
     -- multiply the relation for `(u + v) • (z * w)` by `e = u`, and by `e = v`
@@ -983,8 +980,7 @@ lemma New.exists_global_root {E E' n : Type} [Field E] [CMType E] [Field E'] [Nu
   have θ_comp_v_eq_star (q : primeFactors P) (f : (𝔸f E')[X]) :
       θ q ((f.map conj).comp (v.map k)) = star (θ q f) := by
     have h_bezout : mk q.val (v' * P + v * X) = 1 := by rw [hv, map_one]
-    have h_inv : mk q.val v * root q.val = 1 := by
-      simpa [mk_eq_zero.mpr (dvd_P q)] using h_bezout
+    have h_inv : mk q.val v * root q.val = 1 := by simpa [mk_eq_zero.mpr (dvd_P q)] using h_bezout
     have h_star : root q.val * star (root q.val) = 1 := by simpa using root_star q
     exact (θ_presents q).apply_map_conj_comp (left_inv_eq_right_inv h_inv h_star) f
   -- `θ q z` is an idele of `L q` whose norm to the ideles of `E'` lies in `kerCompNorm E' μ`

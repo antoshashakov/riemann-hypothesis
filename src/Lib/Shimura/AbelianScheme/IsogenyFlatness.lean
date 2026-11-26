@@ -160,8 +160,7 @@ lemma isPullback_fst_comp_add {S : Scheme.{0}} {A B Z : Over S} [AddObj A] [AddO
     simp_all [pullback.hom_ext_iff, ← assoc, comp_add]
   refine .mk' h_w h_ext fun T c b h_eq ↦ ?_
   -- the lift of `(c, b)` is the point `(b - c ≫ fst, c)` of the pull-back along `v`
-  have h_sq : (b - c ≫ fst A Z) ≫ f = c ≫ v := by
-    simp [← h_eq, AddGrpObj.sub_comp, comp_add]
+  have h_sq : (b - c ≫ fst A Z) ≫ f = c ≫ v := by simp [← h_eq, AddGrpObj.sub_comp, comp_add]
   exact ⟨square.lift (b - c ≫ fst A Z) c h_sq, by simp [comp_add]⟩
 
 /-- Flatness of morphisms of schemes descends along fpqc covers, that is, along surjective, flat

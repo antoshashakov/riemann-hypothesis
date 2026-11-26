@@ -391,8 +391,7 @@ lemma exists_arc_centre_eq (C : U.GraphClosure γ ν)
     (mk_quotient_le.trans (mk_set_le _) : #(ResidueField V) ≤ #ℂ)
   -- Through `φ`, the closed point of `α` is that of the residue field of `s`, which is `t`.
   refine ⟨V, α, b, φ, ?_, h_arc⟩
-  calc specMap (φ.comp (residue V)) ≫ α = specMap φ ≫ specMap (residue V) ≫ α := by
-        simp [specMap]
+  calc specMap (φ.comp (residue V)) ≫ α = specMap φ ≫ specMap (residue V) ≫ α := by simp [specMap]
     _ = specMap φ ≫ specMap ρ ≫ C.scheme.left.fromSpecResidueField s := by rw [h_centre_ρ]
     _ = t.left := by simpa [specMap] using hφ₀
 

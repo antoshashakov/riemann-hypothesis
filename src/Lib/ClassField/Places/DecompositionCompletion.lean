@@ -471,8 +471,7 @@ lemma sah (c : ∀ g k : G, x (g * k) = x g + a g • x k) (γ g : G)
   -- The hypothesis gives `x (g * γ) = x (γ * g)`; expand both sides by the cocycle rule.
   have h_comm : x (g * γ) = x (γ * g) := by
     rw [← mul_inv_cancel_left (γ * g) (g * γ), c, h_zero, smul_zero, add_zero]
-  have h_expand : x g + a g • x γ = x γ + a γ • x g := by
-    rw [← c g γ, ← c γ g, h_comm]
+  have h_expand : x g + a g • x γ = x γ + a γ • x g := by rw [← c g γ, ← c γ g, h_comm]
   rw [sub_smul, sub_smul, one_smul, one_smul, sub_eq_sub_iff_add_eq_add]
   simpa only [add_comm] using h_expand.symm
 
@@ -695,8 +694,7 @@ lemma ordRat_smul (h : IsPlaceOver A v) (g : Γ) (x : DiscreteUnits Ω) :
   -- Expand: `g` fixes `π`, which has order `1` at `A` and at `g • A`; then cancel `q.den`.
   have h_fix_π : unitsRep g (ofBase Γ Ω (.ofMul π) : DiscreteUnits Ω) = ofBase Γ Ω (.ofMul π) :=
     (ofBase Γ Ω (.ofMul π)).property g
-  have h_ord_y : ordRat K A y = q.den * ordRat K A x - q.num := by
-    simp [y, h.ordRat_ofBase, hπ]
+  have h_ord_y : ordRat K A y = q.den * ordRat K A x - q.num := by simp [y, h.ordRat_ofBase, hπ]
   have h_ord_gy :
       ordRat K (g • A) (unitsRep g y) = q.den * ordRat K (g • A) (unitsRep g x) - q.num := by
     simp [y, h_fix_π, (h.smul g).ordRat_ofBase, hπ]
@@ -764,8 +762,7 @@ lemma ramification_in_tower (h : IsPlaceOver A v) (U : Subgroup Γ) [hU_open : F
     ext (IsScalarTower.algebraMap_apply K L Ω π)
   have hπL : ordRat L A (ofBase Γ Ω (.ofMul π)) = -(w.valuation L (algebraMap K L π)).log := by
     simpa [hπ_image] using hw.ordRat_ofBase (π.map (algebraMap K L).toMonoidHom)
-  have h_ord_π_L : ordRat L A (ofBase Γ Ω (.ofMul π)) = e := by
-    simp [h_ord_L, h.ordRat_ofBase, hπ]
+  have h_ord_π_L : ordRat L A (ofBase Γ Ω (.ofMul π)) = e := by simp [h_ord_L, h.ordRat_ofBase, hπ]
   have h_log :
       -((w.valuation L (algebraMap K L π)).log : ℚ) = w.asIdeal.ramificationIdx (𝓞 K) := by
     simp [← v.valuation_liesOver L, hπ]

@@ -164,8 +164,7 @@ lemma torsionValue_comp_isogeny {C' : CMLattice d} {a : ℂ} {N : ℕ}
 lattice, at `(u, v)`, is `-n π i Im (u v̄) / area Λ`. -/
 lemma pi_mul_I_mul_riemannForm_eq (n : ℕ) (u v : ℂ) :
     π * I * (n • C.hermitianForm).riemannForm u v = -(n * π * I * (u * conj v).im / C.area) := by
-  have h_im : (conj u * v).im = -(u * conj v).im := by
-    rw [← conj_im, map_mul, conj_conj]
+  have h_im : (conj u * v).im = -(u * conj v).im := by rw [← conj_im, map_mul, conj_conj]
   rw [map_nsmul, LinearMap.smul_apply, LinearMap.smul_apply, riemannForm_hermitianForm]
   simp only [h_im, nsmul_eq_mul]
   push_cast

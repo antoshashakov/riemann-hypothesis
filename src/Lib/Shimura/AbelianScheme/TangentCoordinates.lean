@@ -498,8 +498,7 @@ lemma IsInfinitesimal.eq_zero_of_isUnit_and_nsmul_eq_zero_of_cast_eq_zero (hy : 
     | succ k ih => rw [succ_nsmul, h_add k, ih, Nat.cast_succ, add_smul, one_smul]
   -- An infinitesimal point with vanishing coordinates is zero.
   refine ⟨fun hm hmy ↦ ?_, fun hm ↦ ?_⟩
-  · have h_smul_zero : (m : C) • tangentCoords z y = 0 := by
-      rw [← h_dv, hmy, tangentCoords_zero]
+  · have h_smul_zero : (m : C) • tangentCoords z y = 0 := by rw [← h_dv, hmy, tangentCoords_zero]
     exact h_lie.isEtaleChart.eq_zero_of_tangentCoords_eq_zero h_in hy
       (hm.smul_eq_zero.1 h_smul_zero)
   · have h_coords_zero : tangentCoords z (m • y) = 0 := by rw [h_dv, hm, zero_smul]

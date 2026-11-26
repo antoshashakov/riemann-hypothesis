@@ -707,11 +707,9 @@ lemma sum_indicator_iwasawaSet_mul_eq_zero {ε : Matrix n n (LocField w)} (hε :
             (ofSplitPlace hw u)⁻¹) * (ofSplitPlace hw k)⁻¹) := by
           simp only [map_mul, _root_.mul_inv_rev, mul_assoc]
       _ = φ (ofSplitPlace hw u * (y * ofSplitPlace hw (radicalHom hε (κ i))) *
-        (ofSplitPlace hw u)⁻¹) := by
-          rw [h_inv k hk, h_conj]
+        (ofSplitPlace hw u)⁻¹) := by rw [h_inv k hk, h_conj]
       _ = φ (ofSplitPlace hw u * y * (ofSplitPlace hw u)⁻¹ * ofSplitPlace hw
-        (radicalHom hε (κ i))) := by
-          simp only [mul_assoc, h_comm.eq]
+        (radicalHom hε (κ i))) := by simp only [mul_assoc, h_comm.eq]
   · simp [mul_radical_mem_iwasawaSet_iff hε (hm _), hg]
 
 /-- Let `φ` be invariant under conjugation by `GL_n(O_w)`, let its right translates by a non-empty

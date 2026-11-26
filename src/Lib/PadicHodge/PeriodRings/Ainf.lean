@@ -865,8 +865,7 @@ lemma mu_dvd_of_theta_frobEnd {a : Ainf} (h_theta : ∀ j : ℕ, theta (frobEnd^
   -- constant coefficient of `x`. By `dvd_of_mem_of_constantCoeff_dvd` it is enough to show
   -- `μ₀ ∣ x₀` for `x ∈ I`.
   let I : Ideal Ainf := ⨅ j : ℕ, ker (theta.comp (frobEnd ^ j))
-  have h_mu : mu ∈ I := by
-    simp [I, theta_iterate_frobEnd_mu]
+  have h_mu : mu ∈ I := by simp [I, theta_iterate_frobEnd_mu]
   -- `I` is saturated for `p`, since `φ p = p` and `p ≠ 0` in `O_C` (`NeZero.ne p`).
   have h_sat : ∀ x : Ainf, (p : Ainf) * x ∈ I → x ∈ I := by simp [I, NeZero.ne p, iterate_fixed]
   have ha : a ∈ I := by simpa [I] using h_theta

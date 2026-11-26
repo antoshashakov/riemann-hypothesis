@@ -290,8 +290,7 @@ omit [Fintype n] [DecidableEq n] in
 /-- An adelic vector `y` is the real vector of its archimedean coordinates plus its finite part. -/
 lemma realVec_realCoord_add : realVec (realCoord y) + (fun i : n ↦ (0, (y i).2)) = y := by
   -- The real part is `κ * (y / κ)` with `κ = scaleIdele E`, and `κ ≠ 0` at every infinite place.
-  have h_ne (w : InfinitePlace E) : (scaleIdele E).val.1 w ≠ 0 := by
-    grind [conj_scaleIdele_mul]
+  have h_ne (w : InfinitePlace E) : (scaleIdele E).val.1 w ≠ 0 := by grind [conj_scaleIdele_mul]
   ext <;> simp [realVec, realCoord, mul_div_cancel₀ _ (h_ne _)]
 
 /-- Along `adelicSum`, real coordinates `y` with zero finite part give the adelic vector
@@ -435,8 +434,7 @@ lemma ext_of_vacElem {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [Com
     simp only [V.map_eq_integral_dataInner f (T ∘L V.ω g),
       V.map_eq_integral_dataInner f (T' ∘L V.ω g), ContinuousLinearMap.comp_apply, h_eq]
   ext f
-  have h_inverse : V.ω g (V.ω g⁻¹ f) = f := by
-    simp [← mul_apply_eq_comp, ← map_mul]
+  have h_inverse : V.ω g (V.ω g⁻¹ f) = f := by simp [← mul_apply_eq_comp, ← map_mul]
   have h_apply : T (V.ω g (V.ω g⁻¹ f)) = T' (V.ω g (V.ω g⁻¹ f)) :=
     DFunLike.congr_fun h_comp (V.ω g⁻¹ f)
   rwa [h_inverse] at h_apply

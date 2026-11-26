@@ -166,8 +166,7 @@ lemma New.integral_rpow_neg_le_of_measure_sublevel_le (hu_meas : Measurable u)
     _ ≤ (ENNReal.ofReal (K ^ d * c) * V).toReal :=
         ENNReal.toReal_mono (by finiteness)
           (lintegral_rpow_neg_le_of_measure_sublevel_le hu_meas hu hK h_vol hA hc)
-    _ = K ^ d * c * V.toReal := by
-        rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]
+    _ = K ^ d * c * V.toReal := by rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]
 
 /-- Let `u ≥ 1` be measurable and suppose that `ν {u ≤ R} ≤ (K R^e)^d V` for all `R ≥ 1`, where
 `K ≥ 0` and `V` is finite. If `e d < A` and `A ≤ c (A - e d)`, then `u^(-A)` is integrable and

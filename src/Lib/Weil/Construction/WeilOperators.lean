@@ -618,8 +618,7 @@ lemma OrthogonalSum.modelInner_tmul [LocallyCompactSpace W] [LocallyCompactSpace
       ring
     _ = (∫ x₁ : W₁, conj (v x₁) * v' x₁ ∂μ₁) * ∫ x₂ : W₂, conj (w x₂) * w' x₂ ∂μ₂ :=
       integral_prod_mul (fun x₁ : W₁ ↦ conj (v x₁) * v' x₁) fun x₂ : W₂ ↦ conj (w x₂) * w' x₂
-    _ = modelInner v v' * modelInner w w' := by
-      rw [modelInner_apply, modelInner_apply]
+    _ = modelInner v v' * modelInner w w' := by rw [modelInner_apply, modelInner_apply]
 
 /-- Let `S` present `W` as the orthogonal sum of `W₁` and `W₂`, with `H` and the vacuum `e` being
 the products of the data on the factors. For model vectors `v` of `e₁` and `w` of `e₂`, the tensor

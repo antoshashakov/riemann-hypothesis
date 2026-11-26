@@ -311,8 +311,7 @@ lemma New.Rows.exists_unitary_mul_triangular {n : Type} [Fintype n] [DecidableEq
         simp [diagChar, b_diag, Complex.norm_exp, ← rpow_intCast, ← exp_mul, div_mul_eq_mul_div,
           ← exp_sum, ← sum_div]
     _ ≤ Real.exp (2 * (B * η) - Real.log y * 2⁻¹) := exp_le_exp.2 h_log
-    _ = _ := by
-      rw [exp_sub, sqrt_eq_rpow, rpow_def_of_pos (one_pos.trans hy), one_div, mul_assoc]
+    _ = _ := by rw [exp_sub, sqrt_eq_rpow, rpow_def_of_pos (one_pos.trans hy), one_div, mul_assoc]
 
 /-- Two transvections `1 - a y y^* J`, `1 - c y y^* J` along one vector `y` isotropic for
 `J = diag s` (`signMatrix s`) multiply by adding their parameters. -/

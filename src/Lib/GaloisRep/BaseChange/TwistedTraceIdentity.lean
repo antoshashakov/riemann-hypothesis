@@ -903,8 +903,7 @@ private lemma New.IsMatchingRoots.exists_bijOn_of_ne_zero [IsGalois E E']
   refine ⟨(y, γ), fun a ↦ (g * j a)⁻¹, fun p ↦
     ⟨fun a ⟨ha_mem, ha_conj⟩ ↦ ?_, ?_, fun a ⟨⟨ha_mem, ha_conj⟩, hp_good⟩ ↦ ?_⟩⟩
   · -- Well defined: `(g * j a)⁻¹` conjugates `ν` to `j p.2`, and `A`, `B` follow the conjugation.
-    have h_semi : SemiconjBy (g * j a)⁻¹ ν (j p.2) := by
-      simp [SemiconjBy, ← ha_conj, hγ, mul_assoc]
+    have h_semi : SemiconjBy (g * j a)⁻¹ ν (j p.2) := by simp [SemiconjBy, ← ha_conj, hγ, mul_assoc]
     obtain ⟨hp_good, hA, hB⟩ := R.good_and_conj_of_semiconjBy (g * j a)⁻¹ hν_good h_semi
     refine ⟨⟨?_, ?_⟩, hp_good⟩
     · simpa [hm, hB, hy, H.map_apply_eq_baseChangeGf, mul_assoc] using inv_mem (mul_mem hk ha_mem)

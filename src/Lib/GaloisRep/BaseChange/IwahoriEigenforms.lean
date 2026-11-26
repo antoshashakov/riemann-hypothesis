@@ -466,8 +466,7 @@ lemma exists_local_norm_eq
     simp +contextual [DFunLike.ext_iff, ← and_forall_ne u, a, ι, h_unique, adeleMap_apply]
   have ha_fixed : intAdeleMap (τ : E' →+* E') a = a :=
     Subtype.ext (mem_range_finAdeleIncl_iff.mp ha_range τ)
-  have h_unit : IsUnit (1 + a) := by
-    simp [v.map_one_add_of_lt, ← reduceAt_eq_zero, ha_red]
+  have h_unit : IsUnit (1 + a) := by simp [v.map_one_add_of_lt, ← reduceAt_eq_zero, ha_red]
   obtain ⟨z, hz_one, -, hz⟩ := (h_tame a ha_fixed fun o _ _ ↦
     ha_red o).exists_prod_range_pow_apply_eq
     (.inr isProfiniteRing_intAdeles) h_unit (by simp [ha_fixed]) (by simp)

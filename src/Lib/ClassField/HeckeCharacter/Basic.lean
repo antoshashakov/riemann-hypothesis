@@ -753,8 +753,7 @@ lemma HasWeight.exists_pow_eq_prod (h : μ.HasWeight e ψ) (hu : (u : 𝔸 E).fs
       eq_of_mem_integralU1 (fun w hw ↦ by simpa [T] using hw) h.apply_eq z hz
     have hμ_g : μ.val g = 1 := μ.property _ hg
     have hμ_z : (μ.val z : ℂ) = (μ.val u : ℂ) ^ H.index := by simp [hz_eq, hμ_g]
-    have hz_fst (v : InfinitePlace E) : (z : 𝔸 E).fst v = Φ v (γ : E) := by
-      simp [hz_eq, ← hγ, hu]
+    have hz_fst (v : InfinitePlace E) : (z : 𝔸 E).fst v = Φ v (γ : E) := by simp [hz_eq, ← hγ, hu]
     simp only [← hμ_z, h_arch, hz_fst]
 
 end AutChar
@@ -787,8 +786,7 @@ lemma exists_conj (h : μ.HasWeight e ψ) {σ : ℂ ≃+* ℂ}
   let χ : unitary (𝔸 E) →* ℂ :=
     { toFun u := (∏ v, (u : 𝔸 E).fst (p v) ^ e v) * σ (μ.val u / ∏ v, (u : 𝔸 E).fst v ^ e v)
       map_one' := by simp
-      map_mul' := by
-        simp [mul_zpow, Finset.prod_mul_distrib, mul_div_mul_comm, mul_mul_mul_comm] }
+      map_mul' := by simp [mul_zpow, Finset.prod_mul_distrib, mul_div_mul_comm, mul_mul_mul_comm] }
   have hχ (u : unitary (𝔸 E)) :
       χ u = (∏ v, (u : 𝔸 E).fst (p v) ^ e v) * σ (μ.val u / ∏ v, (u : 𝔸 E).fst v ^ e v) :=
     rfl
@@ -797,8 +795,7 @@ lemma exists_conj (h : μ.HasWeight e ψ) {σ : ℂ ≃+* ℂ}
     intro u hu
     obtain ⟨y, hy⟩ := exists_unitary_of_mem_rationalU1 hu
     have hμ_u : μ.val u = 1 := μ.property u hu
-    have h_arch (v : NumberField.InfinitePlace E) : (u : 𝔸 E).fst v = Φ v (y : E) := by
-      simp [← hy]
+    have h_arch (v : NumberField.InfinitePlace E) : (u : 𝔸 E).fst v = Φ v (y : E) := by simp [← hy]
     simp [hχ, hμ_u, h_arch, hσp, norm_map_unitary _ y, ← norm_ne_zero_iff]
   have h_level : ∀ w : FinPlace E, w ∉ h.finite_ramification.toFinset →
       (ψ w).ringHomComp (σ : ℂ →+* ℂ) = 1 := by

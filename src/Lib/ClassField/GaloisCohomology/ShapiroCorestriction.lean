@@ -187,8 +187,7 @@ lemma shapiroH2_injective : Injective (M.shapiroH2 U) := by
     congrFun (h_cocycle p q r) x
   -- The identities of `s` and `t` that make the terms match.
   have h_t_mul : (t x g : Γ) * t (g⁻¹ • x) k = t x (g * k) := by simp [t, mul_assoc, mul_smul]
-  have h_st (y : Γ ⧸ U.toSubgroup) (h : Γ) : s y * t y h = h * s (h⁻¹ • y) := by
-    simp [t, mul_assoc]
+  have h_st (y : Γ ⧸ U.toSubgroup) (h : Γ) : s y * t y h = h * s (h⁻¹ • y) := by simp [t, mul_assoc]
   have h_ρ_st (v : M.V) : M.ρ (s x) (M.ρ (t x g) v) = M.ρ g (M.ρ (s (g⁻¹ • x)) v) := by
     simpa using congrArg (fun γ : Γ ↦ M.ρ γ v) (h_st x g)
   -- The value of `F (t x g, t (g⁻¹ • x) k)` at the coset `(s x)⁻¹ • x`, which is `U`, from `hc`.

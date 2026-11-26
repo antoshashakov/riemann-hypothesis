@@ -846,8 +846,7 @@ lemma exists_param_pow_card_eq_zero (hw : D.IsGoodAt (ker x.baseHom))
         ⟨⟨0, map_zero ν⟩, by simpa [ν_eq, not_imp_not] using h_none⟩
     have h_fst : placeTorsionMap (fstHom k k k) z = 0 := Subtype.ext (hL.fstHom_comp 1)
     rw [h_fst, h_card, pow_one] at h_pow
-    have h_L : L 1 = 0 := by
-      simpa [placeTorsionMap, z] using h_zero h_fst k[ε] (.id k k[ε]) h_pow
+    have h_L : L 1 = 0 := by simpa [placeTorsionMap, z] using h_zero h_fst k[ε] (.id k k[ε]) h_pow
     exact hL.apply_one_ne_zero h_L
   · rintro B hB_ring hB_local hB_alg ⟨z, hz⟩ π
     replace hz : ∀ a : 𝓞 E, x.baseHom a = 0 → a • z = 0 := by simpa using hz

@@ -150,8 +150,7 @@ lemma isEquiv [NumberField K] (h : IsPlaceOver A v) :
   -- If the pullback were all of `K`, no nonzero integer would be a nonunit of `A`, so `v = 0`.
   have h_ne : A.comap (algebraMap K Ω) ≠ ⊤ := fun h_top ↦ by
     refine v.ne_bot ((Submodule.eq_bot_iff _).mpr fun y hy ↦ ?_)
-    have h_in : (algebraMap K Ω y)⁻¹ ∈ A := by
-      simpa using SetLike.ext_iff.mp h_top (y : K)⁻¹
+    have h_in : (algebraMap K Ω y)⁻¹ ∈ A := by simpa using SetLike.ext_iff.mp h_top (y : K)⁻¹
     simpa [h_in] using (h_mem_iff y).mp hy
   have h_eq : v.valuationSubringAtPrime K = A.comap (algebraMap K Ω) :=
     ValuationSubring.eq_of_le_of_ne_top _ h_le h_ne

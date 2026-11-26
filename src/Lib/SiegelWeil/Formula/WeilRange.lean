@@ -236,8 +236,7 @@ lemma tsum_div_two_pow_lt_top {ι : Type*} {exps : ι → p → ℕ} {d k N : �
     _ = ∑' x : p → ℕ, ((exps ⁻¹' {x}).encard : ℝ≥0∞) * (A / ((2 ^ d) ^ ∑ i : p, x i) ^ k) := by
       rw [← tsum_fiberwise _ exps]
       exact tsum_congr fun x ↦ by rw [tsum_congr fun L ↦ by rw [L.prop], tsum_set_const]
-    _ ≤ ∑' x : p → ℕ, C * N * A * ∏ i : p, ratio ^ x i := by
-      grw [fibre_le, tsum_congr summand_eq]
+    _ ≤ ∑' x : p → ℕ, C * N * A * ∏ i : p, ratio ^ x i := by grw [fibre_le, tsum_congr summand_eq]
     _ ≤ C * N * A * ∏ _i : p, ∑' a : ℕ, ratio ^ a := by
       grw [ENNReal.tsum_mul_left, tsum_prod_le_prod_tsum]
     _ < ∞ := by

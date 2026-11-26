@@ -157,8 +157,7 @@ lemma New.Space.card_le_card_preimage_of_isotropic {E : Type*} [Field E] [CMType
   let L : Matrix p n ℂ := (l.map toAdele * V.x.val).map (evalInf w)
   have hLX : L * X = 1 := by simp [L, X, ← Matrix.map_mul, Matrix.mul_assoc, hl]
   have h_rank : card p ≤ X.rank := by simpa [hLX] using L.rank_mul_le_right X
-  have h_sign : (stdForm E s).map (evalInf w) = signMatrix s := by
-    simp [signMatrix, stdForm]
+  have h_sign : (stdForm E s).map (evalInf w) = signMatrix s := by simp [signMatrix, stdForm]
   have hX : Xᴴ * signMatrix s * X = 0 :=
     calc Xᴴ * signMatrix s * X
         = ((V.x⁻¹.val * k.map toAdele)ᴴ * stdForm E s * (V.x⁻¹.val * k.map toAdele)).map
@@ -284,8 +283,7 @@ lemma New.Space.exists_splitting_of_perp_eq (V : Space E n s) (V₀ : Space E n�
   have h_ll : lᴴ * V.J * l = 0 := by
     calc lᴴ * V.J * l = eᴴ * V.J * l - Mᴴ * (kᴴ * V.J * l) := by
           simp [l, Matrix.sub_mul, Matrix.mul_assoc]
-      _ = eᴴ * V.J * e - M - M := by
-          simp [l, h_kl, hM, Matrix.mul_sub, ← Matrix.mul_assoc, h_ek]
+      _ = eᴴ * V.J * e - M - M := by simp [l, h_kl, hM, Matrix.mul_sub, ← Matrix.mul_assoc, h_ek]
       _ = 0 := by simp only [M]; module
   have h_card : card n = card n₀ + 2 * card p :=
     V.card_eq_of_perp_subset V₀ h_iso h_ll h_lk h_isom h_ik h_il fun y ↦ (h_perp y).mp

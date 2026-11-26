@@ -630,8 +630,7 @@ matrix. -/
 lemma apply_inr_of_mem_besselU (hx' : x' ∈ T.besselU) (i : 𝔰.MiddleIndex ⊕ Fin 𝔰.ϱ)
     (j : 𝔰.BesselIndex) (hj : ∀ a : Fin 𝔰.ϱ, j ≠ eStar a) :
     (x' : Matrix 𝔰.BesselIndex 𝔰.BesselIndex A) (inr i) j = if inr i = j then 1 else 0 := by
-  have h_level : level j ≤ 𝔰.ϱ := by
-    rcases j with a | c | a <;> simp_all [level]
+  have h_level : level j ≤ 𝔰.ϱ := by rcases j with a | c | a <;> simp_all [level]
   simpa [Matrix.one_apply] using mem_besselU.1 hx' (inr i) j (h_level.trans (le_level_inr i))
 
 /-- Let `besselU` be the group of isometries of the split form `splitGram T` that are block upper

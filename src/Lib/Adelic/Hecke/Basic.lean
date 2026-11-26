@@ -337,8 +337,7 @@ lemma heckeFun_comp {J : Subgroup G'} {F : G' → A} (a : G' →* G)
   have h_cover (g : G) (_ : f g ≠ 0) : ∃ x : G', (a x : G ⧸ K) = g :=
     (ha g).imp fun x hx ↦ congrArg QuotientGroup.mk hx
   have h_inj (x y : G') : (a x)⁻¹ * a y ∈ K ↔ x⁻¹ * y ∈ J := by simp [← hK]
-  have h_zero (q : G' ⧸ J) (hq : q ∉ hF.toFinset) : f (a q.out) = 0 := by
-    simpa [← hF_eq] using hq
+  have h_zero (q : G' ⧸ J) (hq : q ∉ hF.toFinset) : f (a q.out) = 0 := by simpa [← hF_eq] using hq
   obtain ⟨-, h_sum⟩ := heckeFun_eq_sum_pullback hf hv hF.toFinset a h_cover h_inj h_zero
   rw [h_sum, heckeFun_eq_sum_toFinset hF]
   simp [hρ, hF_eq]
@@ -399,8 +398,7 @@ lemma heckeFun_mem_levelSpace (hf_fin : HasFiniteCosets K f)
     heckeFun π K f v ∈ levelSpace π K' χ' := by
   -- `π k` replaces `f` by `f (k⁻¹ * ·)`, which is `χ' k` times `f`
   refine mem_levelSpace.2 fun k ↦ ?_
-  have h_translate (g : G) : f ((k : G)⁻¹ * g) = χ' k * f g := by
-    simp [← hf_left ((k : G)⁻¹ * g) k]
+  have h_translate (g : G) : f ((k : G)⁻¹ * g) = χ' k * f g := by simp [← hf_left ((k : G)⁻¹ * g) k]
   have h_scale : heckeFun π K (fun g : G ↦ f ((k : G)⁻¹ * g)) = χ' k • heckeFun π K f := by
     simp [heckeFun, h_translate, ← smul_smul, ← smul_finsum', fun_smul_left hf_fin]
   rw [← heckeFun_comp_inv_mul hf_fin hf hv k, h_scale, LinearMap.smul_apply]

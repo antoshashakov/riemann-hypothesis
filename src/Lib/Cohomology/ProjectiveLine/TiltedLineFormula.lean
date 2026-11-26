@@ -240,8 +240,7 @@ lemma exists_isLerayHirschBasis_of_isCohomDense [InvertsPrime A ℓ] (M : Torsio
     TotalH (freeAb (onePointFunctor D)) M.functor :=
     pullbackAlong oneLocConst i.snd.toTotalH
   -- `{j} ∩ u.support` is empty if `u j = 0`, and `{j}` with `u j ≠ 0` otherwise.
-  have hj : LinearIndepOn (ZMod ℓ) u ({j} ∩ u.support) := by
-    by_cases h_uj : u j = 0 <;> simp [h_uj]
+  have hj : LinearIndepOn (ZMod ℓ) u ({j} ∩ u.support) := by by_cases h_uj : u j = 0 <;> simp [h_uj]
   obtain ⟨b, -, h_jb, h_span, h_indep⟩ := exists_linearIndepOn_extension hj (Set.subset_univ _)
   -- Every class of the point is pulled back along `oneLocConst`
   -- (`TorsionCoeff.pullbackAlong_oneLocConst_surjective`), so the `u i` span.
@@ -532,8 +531,7 @@ lemma exists_isTodaCancellation {i : W' ⟶ W} [Mono i] {δ' : W' ⟶ W'} {δ : 
   let j : cokernel ι ⟶ S.X₃ := cokernel.desc ι (f ≫ S.g) (by simp [← reassoc_of% hβf])
   -- `τ = (α, κ ≫ T.f)` maps `c₂` to `T`: it lies over `β ≫ n` and restricts to `u` on the kernel.
   let τ : pushout δ' i ⟶ T.X₂ := pushout.desc α (κ ≫ T.f) hα
-  have hτ : τ ≫ T.g = cokernel.π (kernel.ι σ) ≫ β ≫ n := by
-    ext1 <;> simp [τ, hn, reassoc_of% hβ]
+  have hτ : τ ≫ T.g = cokernel.π (kernel.ι σ) ≫ β ≫ n := by ext1 <;> simp [τ, hn, reassoc_of% hβ]
   obtain ⟨u, hu⟩ : ∃ u : kernel σ ⟶ T.X₁, u ≫ T.f = kernel.ι σ ≫ τ :=
     hT.exact.lift' (kernel.ι σ ≫ τ) (by simp [hτ])
   let y : Z₀ ⟶ kernel σ := kernel.lift σ (z ≫ pushout.inr δ' i) (by simp [σ, hz])

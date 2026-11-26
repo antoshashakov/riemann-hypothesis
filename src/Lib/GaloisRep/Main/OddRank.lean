@@ -371,8 +371,7 @@ lemma New.GaloisRep.exists_attached_of_open_subgroups {ℓ : ℕ} [ThePrime ℓ]
   -- So for every `g` there is `σ g ∈ K` with `g * σ g ∈ N₀`. As `ρ₀` kills `K ⊓ N₀`, the map
   -- `R g = ρ₀ (g * σ g)` is a homomorphism that extends `ρ₀`.
   choose σ σ_mem mul_σ_mem using h_gen K I_subset
-  have ρ₀_kills (y : N₀) (hy : y.val ∈ K) : ρ₀ y = 1 := by
-    simpa using h_conj 0 1 y hy (by simp)
+  have ρ₀_kills (y : N₀) (hy : y.val ∈ K) : ρ₀ y = 1 := by simpa using h_conj 0 1 y hy (by simp)
   have ρ₀_congr {x z : N₀} (h : (z.val : Gal(Ω/E) ⧸ K) = x.val) : ρ₀ x = ρ₀ z :=
     ρ₀.eq_iff.2 (ρ₀_kills (z⁻¹ * x) (QuotientGroup.eq.1 h))
   have ρ₀_mul (g g' : Gal(Ω/E)) : ρ₀ ⟨g * g' * σ (g * g'), mul_σ_mem (g * g')⟩ =

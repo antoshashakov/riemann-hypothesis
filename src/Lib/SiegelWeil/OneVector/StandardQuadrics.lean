@@ -80,8 +80,7 @@ lemma Place.isDisintegration_map_quadricMeasure {T : Matrix ι ι A}
         rw [Measure.map_map (by fun_prop) (by fun_prop)]
         simp only [M, comp_def, mulVec_mulVec]
       _ = volume := by rw [P.map_mulVec_volume ι M h_unit, h_mod, inv_one, one_smul]
-  have h_left : planeSumGram S * (Bᴴ * T) * B = 1 := by
-    rw [Matrix.mul_assoc, h_gram, h_plane]
+  have h_left : planeSumGram S * (Bᴴ * T) * B = 1 := by rw [Matrix.mul_assoc, h_gram, h_plane]
   rw [← h_vol]
   exact (isDisintegration_quadricMeasure hS).map h_gram h_left
 

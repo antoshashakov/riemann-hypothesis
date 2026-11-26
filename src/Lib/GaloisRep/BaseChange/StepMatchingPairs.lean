@@ -189,8 +189,7 @@ lemma heckeSplit_comp_baseChangeGf (hu : u.IsSplit) (hw : (u.below E).IsSplit)
           x := by
           rw [mul_inv_cancel_left]
       _ = π (ofSplitPlace hu (φ g)) (π ((ofSplitPlace hu (φ g))⁻¹ * baseChangeGf
-        (ofSplitPlace hw g)) x) := by
-          rw [map_mul, Module.End.mul_apply]
+        (ofSplitPlace hw g)) x) := by rw [map_mul, Module.End.mul_apply]
       _ = π (ofSplitPlace hu (φ g)) x := by rw [h_fix _ h_supp]
   · -- a uniformiser of `E'_u` comes from `E_w`, so valuations and `basicDoubleCoset` are preserved
     have h_unit : ∃ ϖ : LocField (u.below E),

@@ -139,8 +139,7 @@ lemma exists_eq_one_add_mul_mul_and_map_trace_ne_zero (N : ℕ) {a : LocField w}
   obtain ⟨t, rfl⟩ : ∃ t : LocField w, a = (k⁻¹ * b * k) j i * d i * t :=
     ⟨_, (mul_inv_cancel_left₀ (mul_ne_zero h_entry_val_ne hi) a).symm⟩
   have h_ne : i ≠ j := ne_of_apply_ne d fun h ↦ hi (h.trans hj)
-  have h_dt_val : v (d i * t) = .exp (-1) := by
-    rwa [mul_assoc, map_mul, h_unit_val, one_mul] at ha
+  have h_dt_val : v (d i * t) = .exp (-1) := by rwa [mul_assoc, map_mul, h_unit_val, one_mul] at ha
   have h_dt_int : d i * t ∈ v.integer := by simp +decide [v.mem_integer_iff, h_dt_val]
   have h_transv_mem : transvectionGL h_ne (d i * t) ∈ localCongruence (Fin N) w 0 := by
     refine ⟨transvectionGL_mem_intGL h_ne h_dt_int, fun i' j' ↦ ?_⟩

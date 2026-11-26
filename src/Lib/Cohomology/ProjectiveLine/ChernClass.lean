@@ -583,8 +583,7 @@ lemma exists_unit_smul_unimodularRow (x : B × B) :
     linear_combination (x.fst - y.fst) * h_det
   have h_fst : 1 + x.fst * x.snd = (1 + (x.fst - y.fst) * x.snd) * (1 + y.fst * y.snd) := by
     linear_combination y.fst * h_det
-  have h_snd : x.snd = (1 + (x.fst - y.fst) * x.snd) * y.snd := by
-    linear_combination h_det
+  have h_snd : x.snd = (1 + (x.fst - y.fst) * x.snd) * y.snd := by linear_combination h_det
   have h_row : unimodularRow (⟨⟦x⟧⟩ : projLine B) = (1 + y.fst * y.snd, y.snd) := rfl
   refine ⟨Units.mkOfMulEqOne _ _ h_mul_inv, ?_⟩
   simp [h_row, ← h_fst, ← h_snd]

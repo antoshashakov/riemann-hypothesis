@@ -436,8 +436,7 @@ lemma zeroTerm_omega {a : Matrix p p (𝔸 E)} (hk : D.ActsOnFrame g a) (d : (�
     calc D.zeroTerm (V.ω (D.radicalElement c b * m) u)
       _ = z b' • z b • (chiAdelic t.det)⁻¹ • D.zeroTerm u := by
         simp [m, hz, zeroTerm_omega_levi, smul_comm (z b')]
-      _ = D.zeroTerm (V.ω m u) := by
-        simp [m, h_comm, hz, zeroTerm_omega_levi]
+      _ = D.zeroTerm (V.ω m u) := by simp [m, h_comm, hz, zeroTerm_omega_levi]
   -- `ω m` is onto, so `radicalElement c b` can be dropped in front of the Levi factor too.
   rw [← zeroTerm_omega_levi]
   simpa only [rep_apply_apply, mul_assoc, mul_inv_cancel_left] using
@@ -622,8 +621,7 @@ lemma theta_omega_ratEmbed (γ : U V.J) (f : 𝒮 V) : V.θ (V.ω (V.ratEmbed γ
     simp
   refine mul_left_cancel₀ (left_ne_zero_of_mul (by rwa [hc] at h_ne) : c ≠ 0) ?_
   calc c * V.θ (V.ω (V.ratEmbed γ) f)
-    _ = W.θ (W.ω (W.ratEmbed (U.sum rfl (γ, 1))) (boxProd signs_comp_refl f y)) := by
-      rw [h_act, hc]
+    _ = W.θ (W.ω (W.ratEmbed (U.sum rfl (γ, 1))) (boxProd signs_comp_refl f y)) := by rw [h_act, hc]
     _ = W.θ (boxProd signs_comp_refl f y) :=
       theta_omega_ratEmbed_of_splitting _ V.diagonalSplitting _
     _ = c * V.θ f := hc f

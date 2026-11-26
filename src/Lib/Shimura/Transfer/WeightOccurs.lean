@@ -372,8 +372,7 @@ lemma New.Variety.rootCoeffEval_genericSchur_mul_det_zpow {a : ℕ} {r : Fin a �
   have h_exponents :
       (of fun i j : Fin a ↦ r i ^ l j) = of fun i j : Fin a ↦ r i ^ ((m : ℤ) + k j) := by
     simp_rw [← zpow_natCast, hl]
-  have h_vandermonde : vandermonde r = of fun i j : Fin a ↦ r i ^ (j : ℤ) := by
-    simp [vandermonde]
+  have h_vandermonde : vandermonde r = of fun i j : Fin a ↦ r i ^ (j : ℤ) := by simp [vandermonde]
   rw [← h_vandermonde, rootCoeffEval_genericSchur_mul_det, h_exponents, det_zpow_add h_ne,
     zpow_natCast]
 

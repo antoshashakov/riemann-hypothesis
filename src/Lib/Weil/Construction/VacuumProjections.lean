@@ -715,8 +715,7 @@ places and Δ_f = `New.finMultiplier`. -/
 lemma omega_vacElem {g : Gf E n} :
     V.ω g V.vacElem = finMultiplier g • V.ω g (V.projOn univ (V.ω ↑g⁻¹ V.vacElem)) := by
   -- `projOn_omega` for g⁻¹ and the set of all places gives P ω(g⁻¹)vac = Δ_f(g)⁻¹ vac.
-  have h_proj : V.projOn univ (V.ω ↑g⁻¹ V.vacElem) = (finMultiplier g)⁻¹ • V.vacElem := by
-    simp
+  have h_proj : V.projOn univ (V.ω ↑g⁻¹ V.vacElem) = (finMultiplier g)⁻¹ • V.vacElem := by simp
   simp [h_proj, smul_smul, finMultiplier_ne_zero]
 
 /-- For `x`, `y` in the standard lattice with `g y` also in the lattice, the vector

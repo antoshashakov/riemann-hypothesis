@@ -520,8 +520,7 @@ lemma exists_spanning_matrix (hU : c.IsPeriodMatrix U h v) :
       (isHausdorff_of_injective_pi c.maxIdeal P.subtype P.injective_subtype)
       h_sat_P (card d) h_rank h_torsion
   -- pad the basis `b` of `P` to a family `q` indexed by `d`
-  obtain ⟨e⟩ : Nonempty (κ ↪ d) := by
-    rwa [← Cardinal.le_def, b.mk_eq_rank'', Cardinal.mk_fintype]
+  obtain ⟨e⟩ : Nonempty (κ ↪ d) := by rwa [← Cardinal.le_def, b.mk_eq_rank'', Cardinal.mk_fintype]
   obtain ⟨q, hq⟩ : ∃ q : d → P, q ∘ e = b := e.injective.surjective_comp_right b
   have hZ_mem : ∀ i j : d, (of fun j i ↦ (y (q j) i).val)ᵀ i j ∈ c.bicommutant := by simp
   refine ⟨(of fun j ↦ (q j).val)ᵀ, (of fun j i ↦ (y (q j) i).val)ᵀ, hZ_mem,
@@ -533,8 +532,7 @@ lemma exists_spanning_matrix (hU : c.IsPeriodMatrix U h v) :
     Submodule.span_mono (Set.range_comp_subset_range e q) h_span_b
   obtain ⟨s, hs⟩ : ∃ s : d → c.S, ∑ i : d, s i • q i = ⟨x, fun i : d ↦ ⟨y₀ i, hy₀ i⟩, hx⟩ :=
   (Submodule.mem_span_range_iff_exists_fun _).mp h_span
-  have h_vals : ∑ i : d, s i • ((q i : P) : d → Ainf) = x := by
-    simpa using congrArg Subtype.val hs
+  have h_vals : ∑ i : d, s i • ((q i : P) : d → Ainf) = x := by simpa using congrArg Subtype.val hs
   refine ⟨s, funext fun k ↦ ?_⟩
   simpa [mulVec, dotProduct, Finset.sum_apply, Subalgebra.smul_def, mul_comm] using
     congrFun h_vals k

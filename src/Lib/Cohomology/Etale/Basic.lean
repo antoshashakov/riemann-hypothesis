@@ -584,10 +584,8 @@ lemma IsTest.isComparableRing_of_associated (h : IsTest A)
   obtain ⟨b, v, rfl⟩ : ∃ b : A, Associated (f b) z := hf z
   obtain ⟨e, he_idem, h_dvd_ab, h_dvd_ba⟩ :
       ∃ e : A, IsIdempotentElem e ∧ a ∣ e * b ∧ b ∣ (1 - e) * a := h.isComparableRing a b
-  have h_dvd_yz : f a * u ∣ f e * (f b * v) := by
-    simpa [← mul_assoc] using f.map_dvd h_dvd_ab
-  have h_dvd_zy : f b * v ∣ (1 - f e) * (f a * u) := by
-    simpa [← mul_assoc] using f.map_dvd h_dvd_ba
+  have h_dvd_yz : f a * u ∣ f e * (f b * v) := by simpa [← mul_assoc] using f.map_dvd h_dvd_ab
+  have h_dvd_zy : f b * v ∣ (1 - f e) * (f a * u) := by simpa [← mul_assoc] using f.map_dvd h_dvd_ba
   exact ⟨e, he_idem, h_dvd_yz, h_dvd_zy⟩
 
 /-- If any two elements of `B` are comparable by an idempotent `e` of `A` through `f`, then they are
@@ -642,8 +640,7 @@ lemma IsTest.exists_valuationSubring_atPrime (h : IsTest A) (p : Ideal A) [p.IsP
   -- `x * y` divides `x ^ 2` or `y ^ 2`, and `L` is reduced, so `L` has no zero divisors
   have h_sq (x y : L) : x * y ∣ x * x ∨ x * y ∣ y * y :=
     (h_total y x).imp (mul_dvd_mul_left x) fun hxy ↦ mul_dvd_mul_right hxy y
-  have h_zero {x y : L} (hxy : x * y = 0) : x = 0 ∨ y = 0 := by
-    simpa [hxy, ← sq] using h_sq x y
+  have h_zero {x y : L} (hxy : x * y = 0) : x = 0 ∨ y = 0 := by simpa [hxy, ← sq] using h_sq x y
   have : NoZeroDivisors L := ⟨h_zero⟩
   have : IsDomain L := NoZeroDivisors.to_isDomain L
   have h_aic_local : IsAbsIntegrallyClosedLocal L := { h_aic with }

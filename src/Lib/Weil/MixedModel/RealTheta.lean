@@ -539,8 +539,7 @@ lemma IsAdapted.exists_map_vacVector_apply_zero_omega_eq (hT : D.IsMixedLaw T) {
     · rw [hL v f, h_all f, map_zero, map_zero]
   · obtain ⟨f, hf⟩ := not_forall.mp h_all
     set u : 𝒮 V₀ := T 0 (V.ω g (V.projReal f))
-    have h_fix : V₀.projReal u = u := by
-      simpa using (hg.omega_projReal_of_isMixedLaw hT 0 f).symm
+    have h_fix : V₀.projReal u = u := by simpa using (hg.omega_projReal_of_isMixedLaw hT 0 f).symm
     have h_L : V₀.integrated (L Fock.vacVector) u = u := (hL Fock.vacVector f).symm
     have h_vac : V₀.integrated Fock.vacVector u = u := h_fix
     have h_kill : V₀.integrated (L Fock.vacVector - Fock.vacVector) u = 0 := by

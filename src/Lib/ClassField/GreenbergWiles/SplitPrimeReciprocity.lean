@@ -228,8 +228,7 @@ lemma corestrict_mem [IsTopologicalGroup G] (P : OpenSubgroup G) [Fintype (G ⧸
       induction x using QuotientGroup.induction_on with
       | H s => simpa [QuotientGroup.eq] using hI_le _ (hI_conj g hg s)
     refine Finset.sum_eq_zero fun x _ ↦ ?_
-    have h_mem_I : x.out⁻¹ * g * (g⁻¹ • x).out ∈ I := by
-      simpa [h_fix] using hI_conj g hg x.out
+    have h_mem_I : x.out⁻¹ * g * (g⁻¹ • x).out ∈ I := by simpa [h_fix] using hI_conj g hg x.out
     have h_value :
         c ⟨x.out⁻¹ * g * (g⁻¹ • x).out, out_inv_mul_mul_out_mem P.toSubgroup g x⟩ = 0 :=
       h_zero _ h_mem_I

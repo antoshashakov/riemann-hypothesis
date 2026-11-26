@@ -257,8 +257,7 @@ theorem IsHolOfWeight.integral_mul_conj_holMinorsPi (ho : IsPosFirstOrder ε o)
         simp only [r, h_rot, ← mul_assoc, integral_mul_const]
     _ = holMinorsPi ε u h * F 1 * conj (holMinorsPi ε u h) := by
         rw [hF.circle_mean_holMinorsPi ho hu]
-    _ = ((‖holMinorsPi ε u h‖ ^ 2 : ℝ) : ℂ) * F 1 := by
-        rw [mul_right_comm, mul_conj', ofReal_pow]
+    _ = ((‖holMinorsPi ε u h‖ ^ 2 : ℝ) : ℂ) * F 1 := by rw [mul_right_comm, mul_conj', ofReal_pow]
 
 /-- Let the order `o` be injective with signs `1` first, each `u τ` K-dominant (decreasing weakly
 within the indices of each sign), and `F` holomorphic of weight `u` on U(diag ε)^Φ (analytically
@@ -426,8 +425,7 @@ theorem eventually_exists_eq_corner_mul_mul_corner (ε : n → ℤˣ) {P : Set (
     by_cases h_sign : ε i = ε j
     · simp [ha, blockDiagPart, h_sign]
     · -- Entries off the blocks and outside the upper right one lie in the lower left one.
-      have h_signs : ε i = -1 ∧ ε j = 1 := by
-        grind [units_eq_one_or (ε i), units_eq_one_or (ε j)]
+      have h_signs : ε i = -1 ∧ ε j = 1 := by grind [units_eq_one_or (ε i), units_eq_one_or (ε j)]
       simp [ha, blockDiagPart, h_sign, hb.1 ((h_level (ε i) (ε j)).2 h_signs)]
   have h_sub : a⁻¹ * b - 1 = a⁻¹ * (b - a) * 1 := by
     rw [mul_one, mul_sub, nonsing_inv_mul a ha_det.isUnit]

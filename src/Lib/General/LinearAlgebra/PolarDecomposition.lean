@@ -148,8 +148,7 @@ theorem New.exists_polar {ε : n → ℤˣ} (g : USign ε) :
   have z_pos : z.val.val.PosDef :=
     (z.val.isStrictlyPositive_of_le (show 0 ≤ z.val.val by cfc_tac)).posDef
   -- `invOf_eq_inv` is excluded so that `⅟2 • L + ⅟2 • L` simplifies to `L`.
-  have z_sq : z.val.val * z.val.val = P := by
-    simp [z, ← exp_add_of_commute, -invOf_eq_inv, exp_L]
+  have z_sq : z.val.val * z.val.val = P := by simp [z, ← exp_add_of_commute, -invOf_eq_inv, exp_L]
   -- `z² = gᴴ g` and `z` is hermitian, so `g z⁻¹` is unitary.
   have g_adj : g.val.valᴴ = z * z * g⁻¹ := by simp [z_sq, P]
   have k_mem : g * z⁻¹ ∈ maxCompactU ε :=

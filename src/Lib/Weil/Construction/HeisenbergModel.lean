@@ -158,8 +158,7 @@ lemma beta_zero_right : H.β y 0 = 1 := by simpa using beta_mul_beta 0 y
 @[simp]
 lemma beta_neg_left : H.β (-x) y = H.β y x := by
   -- Both sides are inverse to `β x y`.
-  have h_inv : H.β x y * H.β (-x) y = 1 := by
-    rw [← H.add_left, add_neg_cancel, beta_zero_left]
+  have h_inv : H.β x y * H.β (-x) y = 1 := by rw [← H.add_left, add_neg_cancel, beta_zero_left]
   exact inv_unique h_inv (beta_mul_beta x y)
 
 @[simp]

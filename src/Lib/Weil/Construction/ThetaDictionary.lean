@@ -306,8 +306,7 @@ structure IsThetaFunction (Y : AddSubgroup (n → E)) (F : (InfinitePlace E × n
   signedShift_eq : ∀ γ ∈ Y, signedShift γ F = F
 
 omit [DecidableEq n] in
-lemma semichar_neg (x : n → 𝔸f E) : semichar (-x) = semichar x := by
-  simp [semichar]
+lemma semichar_neg (x : n → 𝔸f E) : semichar (-x) = semichar x := by simp [semichar]
 
 /-- If `b` multiplies the coordinates at the place `w` by `conj (Φ w traceOne)`, the canonical
 multiplier `exp (π i R (b u, u))`, with `R` the Riemann form, at the real image `u` of `γ` is the

@@ -339,8 +339,7 @@ lemma exists_pos_mem_pow_of_norm_trace_le (hR : Continuous R.rep) (hR_nondeg : I
     congrArg (fun s ↦ (u s * R.rep g).trace) (F.symm_apply_apply t)
   have hfibre (t : T) (ht : Φ (F t) = 0) : t = 0 := by
     obtain ⟨z, rfl⟩ := hq t
-    have h_trace_zero (g : G) : (groupRingHom R z * R.rep g).trace = 0 := by
-      simp [← hu, ← hΦ, ht]
+    have h_trace_zero (g : G) : (groupRingHom R z * R.rep g).trace = 0 := by simp [← hu, ← hΦ, ht]
     refine hq_ker _ (hR_nondeg _ (span_subset_span ℤ_[p] _ _ ?_) h_trace_zero)
     simp [Finsupp.mem_span_range_iff_exists_finsupp, lift_apply]
   -- So the open set of points whose coordinates all lie in `p ^ k ℤ_p` is a neighbourhood of the
@@ -385,8 +384,7 @@ lemma linearIndependent_of_mem_fixedPeriods {c : Chart} (hc : c.IsChartOf (Γ :=
   let φ : (n →₀ Bmax) →ₗ[Bmax] Bmax ⊗[ℤ_[p]] T :=
     Finsupp.linearCombination Bmax (periodTensorMap Amax Bmax .id ∘ y)
   -- The relations are saturated: if a nonzero multiple of a vector is a relation, so is the vector.
-  have h_sat : ∀ b ≠ (0 : Bmax), ∀ v : n →₀ Bmax, b • v ∈ ker φ → v ∈ ker φ := by
-    simp +contextual
+  have h_sat : ∀ b ≠ (0 : Bmax), ∀ v : n →₀ Bmax, b • v ∈ ker φ → v ∈ ker φ := by simp +contextual
   -- The relations over `B` form a saturated stable submodule, so invariant relations span it:
   -- it is enough that these vanish.
   refine ker_eq_bot.mp (bot_unique

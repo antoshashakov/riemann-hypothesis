@@ -171,8 +171,7 @@ lemma lintegral_inv_add_rpow [h : HasGaussianIntegral a q] {s c : ℝ} (hc : 0 <
   have h_point (x : V) :
       ENNReal.ofReal ((c + q x)⁻¹ ^ s) = ∫⁻ t : ℝ in Set.Ioi 0, ENNReal.ofReal (F x t) := by
     have h_pos : 0 < c + q x := add_pos_of_pos_of_nonneg hc (hq_nonneg x)
-    have h_cancel : (c + q x)⁻¹ ^ s = (Gamma s)⁻¹ * ((1 / (c + q x)) ^ s * Gamma s) := by
-      field_simp
+    have h_cancel : (c + q x)⁻¹ ^ s = (Gamma s)⁻¹ * ((1 / (c + q x)) ^ s * Gamma s) := by field_simp
     rw [h_cancel, lintegral_const_mul_rpow_mul_exp_neg_mul_Ioi hs h_pos (by positivity)]
   have h_slice (t : ℝ) (ht : 0 < t) : ∫⁻ x : V, ENNReal.ofReal (F x t) =
       ENNReal.ofReal (π ^ a / Gamma s * (t ^ (s - a - 1) * rexp (-(c * t)))) := by

@@ -169,15 +169,13 @@ lemma exists_tPeriod : ∃ t : Amax,
     rw [hu, hμ, frobEnd_algebraMap, ← map_mul, ← frobEnd_tau, ← map_mul, xi_mul_tau, frobEnd_tau]
   let t : Amax := μ * (p + μ * c)
   -- expand `t` with `μ w = p u - p` and `c = w + p u² φ c`
-  have t_eq : μ * p * (u + μ * u ^ 2 * frobEnd c) = t := by
-    linear_combination μ * hw - μ ^ 2 * hc
+  have t_eq : μ * p * (u + μ * u ^ 2 * frobEnd c) = t := by linear_combination μ * hw - μ ^ 2 * hc
   -- `φ t = p u μ (p + p u μ φ c)` is `p` times the left side of `t_eq`
   have phi_t : frobEnd t = p * t := by
     rw [map_mul, map_add, map_mul, map_natCast, phi_μ, ← t_eq]
     ring
   -- `p ∣ ξ ∣ μ` in `Amax`, so the last factor in `t_eq` is the unit `u` modulo `p`
-  have h_p_dvd : (p : Amax) ∣ u + μ * u ^ 2 * frobEnd c - u := by
-    simp [μ, ← xi_mul_tau, mul_assoc]
+  have h_p_dvd : (p : Amax) ∣ u + μ * u ^ 2 * frobEnd c - u := by simp [μ, ← xi_mul_tau, mul_assoc]
   have h_unit : IsUnit (u + μ * u ^ 2 * frobEnd c) := isUnit_of_dvd_sub u.isUnit h_p_dvd
   refine ⟨t, ⟨h_unit.unit, t_eq⟩, phi_t, fun g ↦ ?_⟩
   -- `δ = g t - χ(g) t` is divisible by every `p ^ n μ²`, so it vanishes

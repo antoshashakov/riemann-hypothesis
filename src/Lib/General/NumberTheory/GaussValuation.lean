@@ -43,8 +43,7 @@ variable {ℓ : ℕ} [ThePrime ℓ] {ι : Type*} {ρ ρ' : ℚ≥0}
 
 lemma norm_coe_le_one (x : intQpBar ℓ) : ‖x.1‖ ≤ 1 := x.2
 
-lemma ellVal_eq_top_iff {x : PadicAlgCl ℓ} : ellVal x = ⊤ ↔ x = 0 := by
-  simp [ellVal]
+lemma ellVal_eq_top_iff {x : PadicAlgCl ℓ} : ellVal x = ⊤ ↔ x = 0 := by simp [ellVal]
 
 lemma ellVal_zero : ellVal (0 : PadicAlgCl ℓ) = ⊤ := ellVal_eq_top_iff.2 rfl
 

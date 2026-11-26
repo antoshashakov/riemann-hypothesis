@@ -351,8 +351,7 @@ private lemma Core.exists_gram_eq_gram_compl_add_single {J : Matrix n n E} (hJ :
   let J' : Matrix n n E := J - c • J * w * wᴴ * J
   let β : Matrix Unit n E := -c • wᴴ * J * A + Matrix.single () j 1
   have hw_norm : wᴴ * J * w = c • 1 := by simp [← hw, smul_smul, hc]
-  have hJ'_w : J' * w = 0 := by
-    simp [J', Matrix.sub_mul, Matrix.mul_assoc, hw_norm, smul_smul, hc]
+  have hJ'_w : J' * w = 0 := by simp [J', Matrix.sub_mul, Matrix.mul_assoc, hw_norm, smul_smul, hc]
   have hw_J' : wᴴ * J' = 0 := by
     simp [J', Matrix.mul_sub, ← Matrix.mul_assoc, hw_norm, smul_smul, hc]
   have h_pair : wᴴ * J * (A + w * β) = c • Matrix.single () j 1 := by

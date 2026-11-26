@@ -281,8 +281,7 @@ variable [Module.Finite ℂ B] [Module.Finite ℂ B']
 `|det T⁺| ^ 2 = det (T⁺ T⁻) = d ^ dim B * (1 + c) ^ rank e`. -/
 lemma norm_det_sq (h : LineRelation d c A Tp Tm e) :
     ‖Tp.det‖ ^ 2 = d ^ finrank ℂ B * (1 + c) ^ finrank ℂ (range e) := by
-  have h_adjoint : Tp.adjoint = Tm := by
-    rw [(eq_adjoint_iff Tp Tm).2 h.adjoint, adjoint_adjoint]
+  have h_adjoint : Tp.adjoint = Tm := by rw [(eq_adjoint_iff Tp Tm).2 h.adjoint, adjoint_adjoint]
   apply Complex.ofReal_injective
   calc _ = (Tm * Tp).det := by
         rw [← normDet_eq_norm_det, ← h_adjoint]

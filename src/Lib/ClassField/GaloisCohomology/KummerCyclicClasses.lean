@@ -300,8 +300,7 @@ lemma New.Period.mem_span_fixed {G Γ A V R : Type*} [Group G] [Group Γ] [Field
     span_flip_eq_top_iff_linearIndependent.mpr ((linearIndependent_monoidHom _ A).comp χ χ_inj)
   -- The image of `(j q • b)_q` is the trace `∑ q, τ q (b • y)`, unchanged by left translation.
   have h_trace (b : submonoid U A) (g : Γ) : τ g (Λ fun q ↦ χ q b) = Λ fun q ↦ χ q b := by
-    have h_Λ : (Λ fun q ↦ χ q b) = ∑ q : Γ ⧸ U', τ q.out ((b : A) • y) := by
-      simp [Λ, χ, h_semilin]
+    have h_Λ : (Λ fun q ↦ χ q b) = ∑ q : Γ ⧸ U', τ q.out ((b : A) • y) := by simp [Λ, χ, h_semilin]
     -- `γ ↦ τ γ (b • y)` is right `U'`-invariant, since `U'` fixes both `b` and `y`
     have h_right_inv : ∀ᵉ (x : Γ) (u ∈ U'), τ (x * u) ((b : A) • y) = τ x ((b : A) • y) := by
       intro x u hu

@@ -263,8 +263,7 @@ lemma isAdmissible_extensionRep {F : Filter Γ} (h : IsAdmissible ρ F) :
   -- Let `i` be the equivariant inclusion of `Bmax ⊗ T` in `Bmax ⊗ (T × C)`, and `y` a period
   -- whose coboundary is `1 ⊗ a x`. Then `1 ⊗ (l, x)` is the sum of `i (1 ⊗ l + y)`, which lies in
   -- the span of the invariants because `ρ` is admissible, and an element fixed by all of `Γ`.
-  have h_inl (g : Γ) (t : T) : inl ℤ_[p] T C (ρ g t) = extensionRep a g (inl ℤ_[p] T C t) := by
-    simp
+  have h_inl (g : Γ) (t : T) : inl ℤ_[p] T C (ρ g t) = extensionRep a g (inl ℤ_[p] T C t) := by simp
   let i : TensorProduct ℤ_[p] Bmax T →ₗ[Bmax] TensorProduct ℤ_[p] Bmax (T × C) :=
     periodTensorMap Bmax Bmax (inl ℤ_[p] T C)
   have h_image : i (1 ⊗ₜ l + y) ∈ span Bmax (fixedPeriods (extensionRep a) Bmax F) :=
@@ -295,8 +294,7 @@ lemma jump_extensionRep_le [Module.Finite R T] {γ : R →ₐ[ℤ_[p]] ℂ_[p]} 
   have h_vanish (t : T) : f.val (inl R T C t) = 0 :=
     LinearMap.congr_fun (congrArg Subtype.val hf) t
   have h_fix (g : Γ) : f.val (extensionRep a g y) = f.val y := by
-    have h_diff : extensionRep a g y - y = inl R T C (extensionRep a g y - y).fst := by
-      ext <;> simp
+    have h_diff : extensionRep a g y - y = inl R T C (extensionRep a g y - y).fst := by ext <;> simp
     rw [← sub_eq_zero, ← map_sub, h_diff, h_vanish]
   -- Near `1`, `f y` is therefore fixed by the twisted Galois action of weight `u`.
   have h_twist : ∀ᶠ g : Γ in nearOne Γ, (cyclotomicGp (toGp g) ^ (-u)).val • toGp g • f.val y =

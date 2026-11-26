@@ -261,8 +261,7 @@ lemma New.Variety.exists_eq_lift_of_comp_whiskerRight_eq {S : Scheme.{0}} {A A�
     ∃ (s : Y ⟶ S) (x y : Over.mk s ⟶ A) (z : Over.mk s ⟶ A'),
       x ≫ f = y ≫ f ∧ (lift x z).left = t ∧ (lift y z).left = t' := by
   let s : Y ⟶ S := t ≫ (A ⊗ A').hom
-  have ht' : t' ≫ (A ⊗ A').hom = s := by
-    rw [← Over.w (f ▷ A'), ← reassoc_of% same_image, Over.w]
+  have ht' : t' ≫ (A ⊗ A').hom = s := by rw [← Over.w (f ▷ A'), ← reassoc_of% same_image, Over.w]
   -- `t` and `t'` underlie points `u` and `u'` over `s`; take their components
   obtain ⟨u, hu⟩ : ∃ u : Over.mk s ⟶ A ⊗ A', u.left = t := ⟨homMk t, rfl⟩
   obtain ⟨u', hu'⟩ : ∃ u' : Over.mk s ⟶ A ⊗ A', u'.left = t' := ⟨homMk t' ht', rfl⟩

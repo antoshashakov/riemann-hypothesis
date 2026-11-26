@@ -86,8 +86,7 @@ noncomputable instance : PadicField ℂ_[p] p where
 
 noncomputable instance : PadicField (PadicAlgCl p) p where
 
-lemma norm_p_eq_inv : ‖(p : F)‖ = (↑p)⁻¹ := by
-  simpa using norm_algebraMap' F (p : ℚ_[p])
+lemma norm_p_eq_inv : ‖(p : F)‖ = (↑p)⁻¹ := by simpa using norm_algebraMap' F (p : ℚ_[p])
 
 lemma norm_p_lt_one : ‖(p : F)‖ < 1 := by simp [norm_p_eq_inv, ← norm_p]
 
@@ -328,8 +327,7 @@ lemma smulDistribClass_of_tower [Algebra A B] [Algebra B R] [IsScalarTower A B R
     [MulSemiringAction M B] [SMulDistribClass M A B]
     (h_equiv : ∀ {m : M} (b : B), m • (b : R) = ↑(m • b)) :
     SMulDistribClass M A R where
-  smul_distrib_smul m a r := by
-    simp [smul_def, IsScalarTower.algebraMap_apply A B R, h_equiv]
+  smul_distrib_smul m a r := by simp [smul_def, IsScalarTower.algebraMap_apply A B R, h_equiv]
 
 /-- The `π`-adic completion of a ring `R`: its completion at the principal ideal `(π)`. -/
 abbrev PrincipalCompletion.{u} (R : Type u) [CommRing R] (π : R) : Type u :=

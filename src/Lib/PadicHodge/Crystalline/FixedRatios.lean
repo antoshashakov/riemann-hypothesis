@@ -93,8 +93,7 @@ lemma Bmax.exists_padic_eq_of_frobEnd_fixed {y : Bmax} (hy : frobEnd y = y) {x :
   have h_mem (n : ℕ) :
       ↑((⟨Multiplicative.ofAdd n, 1⟩ : FrobGal) • y) ∈ hodgeFil (-((0 : ℕ) : ℤ)) := by
     simp [FrobGal.smul_def, iterate_fixed hy, hx]
-  obtain ⟨c, rfl⟩ : ∃ c : BPlus, c = y := by
-    simpa using pow_smul_mem_range_BPlus y 0 dvd_rfl h_mem
+  obtain ⟨c, rfl⟩ : ∃ c : BPlus, c = y := by simpa using pow_smul_mem_range_BPlus y 0 dvd_rfl h_mem
   have hc : frobEnd c = c := by simpa [injective_BPlus_Bmax.eq_iff] using hy
   obtain ⟨m, w, hw⟩ : ∃ (m : ℕ) (w : Amax), p ^ m * c = w := c.exists_p_pow_mul_eq_amax
   have h_amax : ∀ v ∈ ({p ^ m * c} : Set BPlus), v ∈ amaxImage :=

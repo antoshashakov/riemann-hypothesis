@@ -371,8 +371,7 @@ lemma New.exists_measurable_mul_eq_of_scale {X : Type*} [MeasurableSpace X]
   obtain ⟨s, hs_zero, -, hs⟩ := h_scale x
   have hx_zero : J f x ≠ 0 := fun h ↦ h_zero (by rw [← hs f hf, h, mul_zero])
   have hx_top : J f x ≠ ∞ := fun h ↦ h_top (by rw [← hs f hf, h, mul_top hs_zero])
-  have h_div : J f x₀ / J f x = s := by
-    rw [← hs f hf, ENNReal.mul_div_cancel_right hx_zero hx_top]
+  have h_div : J f x₀ / J f x = s := by rw [← hs f hf, ENNReal.mul_div_cancel_right hx_zero hx_top]
   simp only [h_div, mul_assoc, hs φ hφ]
 
 /-- A function that is integrable for `∞ • q` vanishes `q`-almost everywhere. -/
@@ -380,8 +379,7 @@ lemma New.ae_eq_zero_of_integrable_top_smul {X : Type*} [MeasurableSpace X] {q :
     {F : X → ℂ} (h_int : Integrable F (∞ • q)) : F =ᵐ[q] 0 := by
   have hF : AEStronglyMeasurable F q :=
     h_int.aestronglyMeasurable.mono_ac (absolutelyContinuous_smul top_ne_zero)
-  have h_lt : ∞ * ∫⁻ x, ‖F x‖ₑ ∂q < ∞ := by
-    simpa [HasFiniteIntegral] using h_int.hasFiniteIntegral
+  have h_lt : ∞ * ∫⁻ x, ‖F x‖ₑ ∂q < ∞ := by simpa [HasFiniteIntegral] using h_int.hasFiniteIntegral
   have h_norm : ∫⁻ x, ‖F x‖ₑ ∂q = 0 := by simpa [mul_lt_top_iff] using h_lt
   filter_upwards [(lintegral_eq_zero_iff' hF.enorm).1 h_norm] with x hx using by simpa using hx
 

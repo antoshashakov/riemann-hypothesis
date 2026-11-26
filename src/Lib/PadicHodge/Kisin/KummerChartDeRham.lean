@@ -61,8 +61,7 @@ lemma val_frobE : (k.frobE a).val = φ ^ a • k.E := by
 lemma not_p_dvd_val_frobE : ¬↑p ∣ (k.frobE a).val := by
   -- Undoing `φ ^ a` would give `p ∣ E`, and `E` divides `ξ`.
   rintro ⟨y, hy⟩
-  have h_E : k.E.val = ↑p * ((φ ^ a)⁻¹ • y) := by
-    simpa [val_frobE, ← eq_inv_smul_iff] using hy
+  have h_E : k.E.val = ↑p * ((φ ^ a)⁻¹ • y) := by simpa [val_frobE, ← eq_inv_smul_iff] using hy
   exact not_p_dvd_xi ((Dvd.intro _ h_E.symm).trans k.associated_E_xi.dvd)
 
 /-- The image in W(C^♭) of p_a = φ^a(E), as a unit; it is invertible because p does not divide
@@ -98,8 +97,7 @@ lemma exists_derivative_dvd_p_pow :
   choose rem h_rem h_uniq using h_division
   set R : (WittFq k.f)[X] := (rem (k.z ^ k.e)).val
   have hR : k.frobE 0 ∣ k.z ^ k.e - R.aeval k.z := h_rem (k.z ^ k.e)
-  have hR_deg : ∀ i, k.e ≤ i → R.coeff i = 0 := by
-    simpa [degreeLT] using (rem (k.z ^ k.e)).property
+  have hR_deg : ∀ i, k.e ≤ i → R.coeff i = 0 := by simpa [degreeLT] using (rem (k.z ^ k.e)).property
   have hP_dvd : k.E ∣ aeval k.z (X ^ k.e - R) := by simpa [Chart.frobE] using hR
   refine ⟨X ^ k.e - R, hP_dvd, ?_⟩
   unfold differentBound
@@ -115,8 +113,7 @@ lemma exists_derivative_dvd_p_pow :
   apply pow_succ_padicValNat_not_dvd (p := p) (NeZero.ne k.e)
   -- the quotient can be taken in `S` modulo `E`: apply `exists_frobE_dvd_sub_of_dvd` to an
   -- `S`-linear retraction of `A_inf` onto `S`
-  have h_theta_zero (r : Ainf) : thetaPhiInv 0 r = theta r := by
-    simpa using thetaPhiInv_phi_pow 0 r
+  have h_theta_zero (r : Ainf) : thetaPhiInv 0 r = theta r := by simpa using thetaPhiInv_phi_pow 0 r
   have h_dvd_zero : thetaPhiInv 0 ((p ^ m : k.S) : Ainf) ∣
       thetaPhiInv 0 (aeval k.z (X ^ k.e - R).derivative).val := by simpa [h_theta_zero] using h_dvd
   -- (the type of `hx` is left to the elaborator: stated, it sends the check into long unfolding)
@@ -167,8 +164,7 @@ lemma not_frobE_dvd_frobE_of_ne (h_ne : a ≠ b) : ¬(k.frobE a).val ∣ k.frobE
   -- Both elements are prime, so each would divide the other. The one of smaller index divides
   -- `φ ^ n τ`, with `n` the larger index; the one of index `n` does not.
   intro h_dvd
-  have prime (n : ℕ) : Prime (k.frobE n).val := by
-    simp [Prime, isUnit_iff_dvd_one, frobE_dvd_iff]
+  have prime (n : ℕ) : Prime (k.frobE n).val := by simp [Prime, isUnit_iff_dvd_one, frobE_dvd_iff]
   have not_dvd (n : ℕ) : ¬(k.frobE n).val ∣ φ ^ n • tau := by simp [frobE_dvd_iff]
   obtain hab | hba := h_ne.lt_or_gt
   · exact not_dvd b (((prime a).associated_of_dvd (prime b) h_dvd).dvd'.trans

@@ -295,8 +295,7 @@ lemma exists_matrix_torsionPoint_eq_expMap {V : Type} [FinComplexSpace V]
     exact x.exists_apply_eq_of_torsion e.injective _
       ⟨k, hk, by simpa [hky, -nsmul_eq_mul] using h_half (k • y)⟩
   choose f hf using h_tors_pt
-  have hf_add (y y' : D.Index → E) : f (y + y') = f y + f y' := by
-    simp [← e.injective.eq_iff, hf]
+  have hf_add (y y' : D.Index → E) : f (y + y') = f y + f y' := by simp [← e.injective.eq_iff, hf]
   have hf_smul (c : 𝓞 E) (y : D.Index → E) : f (c • y) = c • f y := by
     simp [← e.injective.eq_iff, hf, h_smul]
   obtain ⟨m, hm⟩ : ∃ m : Matrix D.Index D.Index (𝔸f E), ∀ y : D.Index → E,

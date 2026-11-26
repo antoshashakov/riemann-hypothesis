@@ -196,8 +196,7 @@ private lemma IsExponent.quadratic_relation_stepTorus {ξ : (Fin N → Fˣ) →*
   have hij : i < j := hcov.lt
   -- The order of `w i / w j` is `1`, so `IsExponent.apply_permGL_swap_diagGL_compactMean` turns the
   -- first term on the right into `l (s (U_w z))`.
-  have h_order : log (v (stepTorus ϖ j j / stepTorus ϖ j i).val) ≤ 1 := by
-    simp [stepTorus, hij, hϖ]
+  have h_order : log (v (stepTorus ϖ j j / stepTorus ϖ j i).val) ≤ 1 := by simp [stepTorus, hij, hϖ]
   rw [← hl.apply_permGL_swap_diagGL_compactMean hϖ hcov (stepTorus_mem_dominantTorus hϖ j) h_order
     z]
   -- The transvections `1 + c E_ji` with `c` integral fix `U_w z`.

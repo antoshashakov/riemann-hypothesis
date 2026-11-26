@@ -121,8 +121,7 @@ lemma classInner_induceClassFn_of_surjective [Finite Γ] (h_surj : Surjective (�
     simp only [conjCount, mul_sum, mul_ite, mul_one, mul_zero]
     rw [sum_comm]
     simp [ite_and, hχ, ← sum_filter, Fintype.card_subtype]
-  have h_conj_count (s t : E) : conj (conjCount π s t) = conjCount π s t := by
-    simp [conjCount]
+  have h_conj_count (s t : E) : conj (conjCount π s t) = conjCount π s t := by simp [conjCount]
   simp only [classInner, finMean, induceClassFn, h_index, h_conj_count, comp_apply,
     finsum_eq_sum_of_fintype, mul_sum, sum_div]
   rw [sum_comm]
@@ -514,8 +513,7 @@ lemma DescendsOnCoset.induce [Finite Γ]
     rw [h_at_root, R.conjCount_root γ δ]
   have h_count_class : IsClassFunction (conjCount π s ∘ r) := by grind [R.apply_emb_eq_one]
   -- the count is real, so swapping the two sides of a pairing with it conjugates the pairing
-  have h_count_real (t : E) : conj (conjCount π s t) = conjCount π s t := by
-    simp [conjCount]
+  have h_count_real (t : E) : conj (conjCount π s t) = conjCount π s t := by simp [conjCount]
   -- `F` is a class function, so the mean over `δ` of the count at `r δ` times `F δ` is `F γ`
   have h_mean_count : classInner (conjCount π s ∘ r) F = F γ := by
     -- each `v` contributes `F (v⁻¹ * γ * v) = F γ`

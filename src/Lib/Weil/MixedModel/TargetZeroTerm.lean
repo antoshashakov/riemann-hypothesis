@@ -76,8 +76,7 @@ lemma frameAt_homTarget :
   have h_basis : (adaptedTargetBasis W).val = 1 ⊗ₖ W.dualFrame⁻¹.valᵀ := rfl
   have h_inv : (adaptedTargetBasis W)⁻¹.val = 1 ⊗ₖ W.dualFrame.valᵀ := rfl
   have h_dual : W.x.valᵀ * W.dualFrame.valᵀᴴ = stdForm E s := by
-    have h_pair : W.dualFrame.valᴴ * W.x.val = stdForm E s := by
-      simp [dualFrame, Matrix.mul_assoc]
+    have h_pair : W.dualFrame.valᴴ * W.x.val = stdForm E s := by simp [dualFrame, Matrix.mul_assoc]
     rw [conjTranspose_transpose_eq_transpose_conjTranspose, ← transpose_mul, h_pair, stdForm,
       diagonal_transpose]
   rw [Splitting.frameAt, h_l, homTarget_kAdelic, homTarget_iAdelic, h_basis, h_inv,
@@ -158,8 +157,7 @@ lemma lineTermReal_true_eq_realTargetZeroTerm [IsBaseAdapted A] [IsBaseAdapted X
     let y : LineIndex n r → 𝔸 E := 0 ⊕ᵥ matrixToVec (scalar Unit x)
     have h_coord : realCoord y = fun p ↦ a p.1 * p.2.isRight.toNat := by
       ext ⟨w, i | i⟩ <;> simp [y, x, realCoord, matrixToVec, scaleIdele_fst_apply_ne_zero]
-    have h_fin : (fun i ↦ ((0, (y i).2) : 𝔸 E)) = 0 := by
-      simp [funext_iff, y, x, matrixToVec]
+    have h_fin : (fun i ↦ ((0, (y i).2) : 𝔸 E)) = 0 := by simp [funext_iff, y, x, matrixToVec]
     rw [lineTerm_eq_slice, slice_integrated h_adapted, lineTermReal, h_coord, h_fin,
       mulVec_zero, slice_zero]
   have h_slice : A.homSlice V' (x • X.kAdelic) ((W'.hom V').integrated v f) =

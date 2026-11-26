@@ -284,8 +284,7 @@ lemma charpoly_eq_pow_of_isNilpotent {P : k[X]} (hP_irred : Irreducible P) (hP_m
     (dvd_prime_pow hP_irred.prime _).mp h_dvd
   have h_eq : charpoly g = P ^ j :=
     eq_of_monic_of_associated (charpoly_monic g) (hP_monic.pow j) hj
-  have h_deg : finrank k V = j * P.natDegree := by
-    rw [← charpoly_natDegree g, h_eq, natDegree_pow]
+  have h_deg : finrank k V = j * P.natDegree := by rw [← charpoly_natDegree g, h_eq, natDegree_pow]
   rw [h_eq, h_deg, Nat.mul_div_cancel _ hP_irred.natDegree_pos]
 
 /-- Let `F` be a cuspidal element of `Hall k`, the complex-valued functions on similarity classes of

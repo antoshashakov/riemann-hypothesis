@@ -181,8 +181,7 @@ lemma New.GaloisRep.IsSplitPrimeToDisc.isSplit_and_prime_q {w : FinPlace (QuadFi
   -- `w` contains `QuadField.betaK d - b` but not its conjugate, which is coprime to it.
   have h_ne : star w ≠ w := by
     intro h_eq
-    have h_mem_star : QuadField.betaK d - (b : 𝓞 (QuadField d)) ∈ (star w).asIdeal := by
-      rwa [h_eq]
+    have h_mem_star : QuadField.betaK d - (b : 𝓞 (QuadField d)) ∈ (star w).asIdeal := by rwa [h_eq]
     have h_star_mem : star (QuadField.betaK d - (b : 𝓞 (QuadField d))) ∈ w.asIdeal :=
       mem_star_place.mp h_mem_star
     exact w.isPrime.notMem_of_isCoprime_of_mem hx_coprime hx h_star_mem
@@ -703,8 +702,7 @@ lemma IsSignedFrameFor.conjTranspose_mul_mul_eq_smul (h : IsSignedFrameFor x ℓ
   have h_prod : toFinGL y * (x * (x'⁻¹ * toFinGL y * x)⁻¹) = x' := by group
   -- the common frame of the two forms
   set x₁ : GL n (𝔸f E) := x * (x'⁻¹ * toFinGL y * x)⁻¹
-  have h_frame_conj : IsFrameFor (y.valᴴ * β' * y.val) x₁ := by
-    rwa [IsFrameFor.conj_iff, h_prod]
+  have h_frame_conj : IsFrameFor (y.valᴴ * β' * y.val) x₁ := by rwa [IsFrameFor.conj_iff, h_prod]
   have hβ_pos : (β.map (Φ w)).PosDef := by simpa [hw] using h_pos_x w
   have hβ'_pos : (β'.map (Φ w)).PosDef := by simpa [hw] using h_pos_x' w
   have h_frame_smul : IsFrameFor ((c : E) • β) x₁ := h_frame_x.mul_iff.2 h_frame_c
@@ -809,8 +807,7 @@ private lemma abs_norm_le_pow_finrank_of_forall_norm_le {E : Type} [Field.{0} E]
       ≤ ∏ _v : InfinitePlace E, B ^ 2 := by
         gcongr with v
         exact h_le v
-    _ = B ^ finrank ℚ E := by
-        simp [finrank_eq_two_mul_card_infinitePlace, pow_mul]
+    _ = B ^ finrank ℚ E := by simp [finrank_eq_two_mul_card_infinitePlace, pow_mul]
 
 omit [Nonempty n] Ψ in
 /-- Let `x⁻¹ y x` be congruent to `1` modulo the ideal `J` of `Ô E`, where `J` meets `𝓞 E` inside an

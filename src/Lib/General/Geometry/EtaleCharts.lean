@@ -878,8 +878,7 @@ lemma EtaleChart.exists_eq_iff_coordinate_eq (a : EtaleChart d X) :
         simp [h_elem, show p' s = p s from rfl]
       _ = productMap p' q' ((1 ⊗ₜ s) * elem (MvPolynomial (Fin d) k) a.coordRing) := by
         rw [one_tmul_mul_elem]
-      _ = q s * ∑ j ∈ T, p j.1 * q j.2 := by
-        simp [h_elem, show q' s = q s from rfl]
+      _ = q s * ∑ j ∈ T, p j.1 * q j.2 := by simp [h_elem, show q' s = q s from rfl]
 
 /-- For a monomorphism u: Y → X and a point y of Y over the ring of a
 chart a with u(y) the point of a, the image of y is the preimage under u of the image of a. -/

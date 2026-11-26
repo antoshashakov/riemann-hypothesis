@@ -450,8 +450,7 @@ lemma New.SiegelWeil.siegel_weil_fourierCoeff {E κ : Type} [Field E] [CMType E]
   have hg (ξ : κ → E) (h : G E (1 : κ → ℤˣ)) :
       mixedValue (stdSpace E κ) D (replicateCol Unit (1 *ᵥ toAdele ∘ ξ))
         (splitWeil (hyperbolicSpace E Unit) (stdSpace E κ) (1, h) g) = σ h ξ := by
-    have h_selfAdjoint : star (star ξ ⬝ᵥ ξ - α) = star ξ ⬝ᵥ ξ - α := by
-      simp [hα, ← star_dotProduct]
+    have h_selfAdjoint : star (star ξ ⬝ᵥ ξ - α) = star ξ ⬝ᵥ ξ - α := by simp [hα, ← star_dotProduct]
     simp_rw [one_mulVec, mixedValue_splitWeil, ← replicateCol_mulVec, g, map_smul,
       ← (mixedValue (stdSpace E κ) D _).integral_comp_comm h_twist_int, h_twist, σ,
       star_adeleMatrix_mulVec_dotProduct, ← map_sub, integral_const_mul]
@@ -573,8 +572,7 @@ lemma New.integral_fourierChar_mul_inv_pow {k : ℕ} (hk : 1 ≤ k) {x : ℝ} (h
     _ = (1 + (2 * π * z) ^ 2)⁻¹ := by rw [Real.sq_sqrt (by positivity)]
   have g_int : Integrable g := (integrable_inv_one_add_sq.comp_mul_left' two_pi_pos.ne').mono'
     (by fun_prop) (.of_forall h_norm)
-  have h_inv : 𝓕⁻ g x = p x := by
-    rw [hg, p_int.fourierInv_fourier_eq (by rwa [← hg]) (by fun_prop)]
+  have h_inv : 𝓕⁻ g x = p x := by rw [hg, p_int.fourierInv_fourier_eq (by rwa [← hg]) (by fun_prop)]
   simpa [fourierInv_eq, hx, g, p, Circle.smul_def] using h_inv
 
 /-- For `n ≥ 2` and `a ≥ 0`, the integral over real `t` of `𝐞 (a t)` times the `n`-th power of the
@@ -838,8 +836,7 @@ lemma New.norm_sub_one_le_of_normDensity_eq {E n : Type} [Field E] [CMType E] [W
     calc ‖∫ z in C, F z‖ₑ + ‖∫ z in Cᶜ, F z‖ₑ ≤ (∫⁻ z in C, ‖F z‖ₑ) + ∫⁻ z in Cᶜ, ‖F z‖ₑ :=
         add_le_add (enorm_integral_le_lintegral_enorm _) (enorm_integral_le_lintegral_enorm _)
       _ = ∫⁻ z, ‖F z‖ₑ := lintegral_add_compl _ meas
-      _ ≤ .ofReal (1 + 2⁻¹ ^ (u + 1)) * volÔ E ^ Fintype.card n := by
-        grw [gauss, ← zeta, pow_one]
+      _ ≤ .ofReal (1 + 2⁻¹ ^ (u + 1)) * volÔ E ^ Fintype.card n := by grw [gauss, ← zeta, pow_one]
   rw [main, h_compl] at h_bound
   have rd_pos : 0 < rootDiscr E := rootDiscr_pos E
   simpa (disch := finiteness) [rd_pos, abs_of_pos, volÔ_eq, ← ENNReal.toReal_le_toReal,

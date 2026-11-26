@@ -420,8 +420,7 @@ lemma norm_map_stdClassSum_gramForm_le {κ : InfinitePlace E → ℕ → ℕ} (K
     rw [← sqrt_mul (h_nonneg N _)]
     refine le_sqrt_of_sq_le ?_
     calc ‖σ ((N : ℚ)⁻¹ • gramForm u v)‖ ^ 2
-      _ = (N : ℝ)⁻¹ ^ 2 * ‖gramForm (σ' ∘ u) (σ ∘ v)‖ ^ 2 := by
-        simp [h_map, Rat.smul_def, mul_pow]
+      _ = (N : ℝ)⁻¹ ^ 2 * ‖gramForm (σ' ∘ u) (σ ∘ v)‖ ^ 2 := by simp [h_map, Rat.smul_def, mul_pow]
       _ ≤ (N : ℝ)⁻¹ ^ 2 * (weylNormSq (σ ∘ v) * weylNormSq (σ' ∘ u)) := by gcongr
       _ = _ := by simp only [Rat.smul_def, Rat.cast_inv, Rat.cast_natCast]; ring
   let m (c : DoubleCosets (stdSpace E n).Γf K) : ℕ := Nat.card (classAut (stdSpace E n).Γf K c.out)

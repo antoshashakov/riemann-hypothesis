@@ -190,8 +190,7 @@ lemma exists_isNoetherian_pow_le_fg (hts : (t * s : D) = 1)
   have h_mul (a b c d : ℤ) : M a b * M c d ≤ M (a + c + -k) (b + d + k) :=
     calc M a b * M c d = span R (T '' Icc a b * T '' Icc c d * (S * S : Set D)) := by
           rw [span_mul_span, mul_mul_mul_comm]
-      _ ≤ span R (T '' Icc a b * T '' Icc c d) * M (-k) k := by
-          grw [← span_mul_span, h_SS, span_eq]
+      _ ≤ span R (T '' Icc a b * T '' Icc c d) * M (-k) k := by grw [← span_mul_span, h_SS, span_eq]
       _ ≤ M (a + c + -k) (b + d + k) := by
           grw [span_mul_span, ← mul_assoc, hT, hT, Icc_add_Icc_subset, Icc_add_Icc_subset]
   have h_noeth : IsNoetherianRing R := is_noetherian_subring_closure _ U.finite_toSet
@@ -513,8 +512,7 @@ private lemma exists_pow_eq_mul_of_away {a : A} (ha : algebraMap A B a * (1 - t)
     simpa [U, ← algebraMap_apply, ← mul_pow] using congrArg (fun x : B ↦ (x : D) ^ m) ha
   have h_V : ((a : D) - 1) ^ m * V = 1 := by
     simpa [V, ← algebraMap_apply, ← mul_pow] using congrArg (fun x : C ↦ (x : D) ^ m) ha_sub
-  have h_cd : (c : D) * a ^ m + d * (a - 1) ^ m = 1 := by
-    simpa using congrArg (algebraMap A D) hcd
+  have h_cd : (c : D) * a ^ m + d * (a - 1) ^ m = 1 := by simpa using congrArg (algebraMap A D) hcd
   have h_j : G * (a ^ m * (a - 1) ^ m) = j := by rwa [map_mul, map_sub, map_one, mul_pow] at hj
   have h_ε : (ε : D) + c * d * j * ϖ * ε ^ 2 = 1 := by simpa using congrArg (algebraMap A D) hε
   have h_sum : d * U + c * V = U * V := by

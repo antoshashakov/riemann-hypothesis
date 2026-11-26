@@ -327,8 +327,7 @@ lemma tsum_toReal_smul_of_tsum_eq_one {I : Type*} {f : I → ℝ≥0∞} (h : �
     ∑' x : I, (f x).toReal • z = z := by
   -- Each `f x` is finite, so `toReal` and the cast to `ℂ` commute with the sum.
   have h_fin (x : I) : f x ≠ ∞ := ENNReal.ne_top_of_tsum_ne_top (by simp [h]) x
-  have h_real : ∑' x : I, (f x).toReal = 1 := by
-    rw [← tsum_toReal_eq h_fin, h, toReal_one]
+  have h_real : ∑' x : I, (f x).toReal = 1 := by rw [← tsum_toReal_eq h_fin, h, toReal_one]
   simp [tsum_mul_right, ← Complex.ofReal_tsum, h_real]
 
 variable (Γ N : Subgroup G) [DiscreteTopology Γ] [Group H] [MulAction H X] [MeasurableMul H]

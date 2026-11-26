@@ -96,10 +96,8 @@ lemma baseChange_mul_upsilon_zpow_inv_apply [WeilData E] (k : ℤ) (y : (𝔸 E)
   have h_upsilon : (υ.val y : ℂ) = ∏ w, u w :=
     υ_unit y (by simp [show y.map (MonoidHom.snd _ (𝔸f E)) = 1 from Units.ext hy_fin])
   calc ((ν.baseChange * (υ ^ k)⁻¹).val y : ℂ)
-      = (ν.baseChange.val y : ℂ) / (υ.val y : ℂ) ^ k := by
-        cases k <;> simp [div_eq_mul_inv]
-    _ = ∏ w, u w ^ (2 * e w) / u w ^ k := by
-        rw [h_base, h_upsilon, ← prod_zpow, prod_div_distrib]
+      = (ν.baseChange.val y : ℂ) / (υ.val y : ℂ) ^ k := by cases k <;> simp [div_eq_mul_inv]
+    _ = ∏ w, u w ^ (2 * e w) / u w ^ k := by rw [h_base, h_upsilon, ← prod_zpow, prod_div_distrib]
     _ = ∏ w, u w ^ (2 * e w - k) := prod_congr rfl fun w _ ↦ (zpow_sub₀ (hu_ne w) ..).symm
 
 /-- Let `ν` be a character of `U(1)(𝔸)` of weight `e` with tame part `ψ`, and let `υ` be the
@@ -361,8 +359,7 @@ lemma polyKillsAt_scalarRep_cyclotomicCharIn_pow_mul [PadicIso ℓ]
       funext_iff]
   · -- Above `ℓ` we have `q = ℓ ^ k`, and the linear Frobenius of `μ` is `ℓ ^ (k * d)` times that
     -- of the twist.
-    have h_frob : IsFrob (intQpBar ℓ) q (L.toGp ⟨s, hs_dec⟩)⁻¹ := by
-      rwa [← map_inv, L.isFrob_iff]
+    have h_frob : IsFrob (intQpBar ℓ) q (L.toGp ⟨s, hs_dec⟩)⁻¹ := by rwa [← map_inv, L.isFrob_iff]
     have hq_pow : q = ℓ ^ k := hk.eq_pow_of_isFrob h_frob
     obtain ⟨h_pcr, h_killed⟩ :
         IsKilledBy (decompRep (scalarRep μ) A) ⟨s, hs_dec⟩ k (X - C (q ^ d * c)) :=

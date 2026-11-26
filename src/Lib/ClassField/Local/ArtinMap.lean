@@ -1083,8 +1083,7 @@ lemma exists_isTameUnit : ∃ u : (LocField w)ˣ, h.IsTameUnit u := by
   -- Take a unit `u` with symbol `γ = h.tameGenerator` and a root `y ^ (q - 1) = π`. By
   -- `valuation_sub_lt_one_iff_of_localArtin_eq`, `u ^ d ≡ 1` forces `(γ y / y) ^ d = 1`, so the
   -- residue of `u` has order at least `q - 1`.
-  have hq : A.valuation (w.q - 1 : ℕ) = 1 := by
-    simp [map_sub_eq_of_lt_right, h.valuation_q_lt_one]
+  have hq : A.valuation (w.q - 1 : ℕ) = 1 := by simp [map_sub_eq_of_lt_right, h.valuation_q_lt_one]
   let γ : decompGroup Gal(Ω/K) A := ⟨h.tameGenerator, h.tameGenerator.property.left⟩
   obtain ⟨u, hu : v u.val = 1, hu_art : localArtin Gal(Ω/K) A w u = γ⟩ :=
     h.exists_localArtin_eq_of_mem_inertiaGroup h.tameGenerator.property

@@ -322,8 +322,7 @@ lemma IsPlaceOver.smul_root_eq_of_local_pow {A : ClosurePlace} {v : FinPlace K}
     rw [div_pow, ← map_pow j, hr, ← map_pow (algebraMap (LocField v) (PadicAlgCl p)), hz_val,
       ← hj.map_algebraMap]
     exact div_self (by simp)
-  have h_jr : j (g • r) = j r := by
-    simpa [smul_div₀', ← hj.equivariant] using h_fix_roots _ h_root
+  have h_jr : j (g • r) = j r := by simpa [smul_div₀', ← hj.equivariant] using h_fix_roots _ h_root
   exact j.injective h_jr
 
 omit [Algebra K Ω] in
@@ -899,8 +898,7 @@ lemma exists_comp_artinMap [IsTotallyComplex K] [T1Space C] (θ : (𝔸f K)ˣ �
   have hψ_fin : (ker ψ).FiniteIndex := finiteIndex_idele_subgroup_of_isOpen (ker ψ) (isOpen_ker ψ)
     fun x _ ↦ (QZChar.mem_ker_iff_val_eq_zero ψ _).mpr (hψ_rat x)
   have hn : NeZero (ker ψ).index := ⟨hψ_fin.index_ne_zero⟩
-  have hψ_pow : ∀ b : (𝔸f K)ˣ, toHom ψ b ^ (ker ψ).index = 1 := by
-    simpa using (ker ψ).pow_index_mem
+  have hψ_pow : ∀ b : (𝔸f K)ˣ, toHom ψ b ^ (ker ψ).index = 1 := by simpa using (ker ψ).pow_index_mem
   exact QZChar.apply_eq_zero_of_pow_eq_one_of_artinMap_eq_one Γ ψ hψ_rat hψ_pow ha
 
 variable {Γ} in

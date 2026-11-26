@@ -612,8 +612,7 @@ lemma exists_remaining_places (H : ∀ w ∈ T, w ∉ S ∧ star w ∉ S)
     · simp [hu]
   · intro g hg u hu
     obtain ⟨-, hu_T⟩ : u ∉ placesAbove E' S ∧ u ∉ placesAbove E' T := (h_mem_Y u).1 hu
-    have hu_star : star u ∉ placesAbove E' T := by
-      simpa [below_star, and_comm] using hu_T
+    have hu_star : star u ∉ placesAbove E' T := by simpa [below_star, and_comm] using hu_T
     rw [mem_supportedOn.1 hg u hu_T hu_star]
     exact one_mem _
   · rw [h_compl]

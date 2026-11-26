@@ -82,8 +82,7 @@ theorem three_mul_sum_twoRho_sq {l : n → ℤ} (hl : l.Injective) :
   classical
   have h_count (i : n) : (#{j | l j < l i} + #{j | l i < l j} + 1 : ℤ) = card n :=
     mod_cast card_lt_add_card_gt_add_one hl i
-  have h_value (i : n) : twoRho l ⊤ i = #{j | l j < l i} - #{j | l i < l j} := by
-    simp [twoRho]
+  have h_value (i : n) : twoRho l ⊤ i = #{j | l j < l i} - #{j | l i < l j} := by simp [twoRho]
   have h_inj : Function.Injective (twoRho l ⊤) := by
     intro a b hab
     obtain h | h | h := lt_trichotomy (l a) (l b)
@@ -262,8 +261,7 @@ theorem GlModule.centredCasimir_apply {M : Type*} [AddCommGroup M] [Module ℂ M
       ρ.casimirK 1 v - (2 * w * ∑ a : R, (ν a : ℂ)) • v + (card R * w ^ 2) • v := by
   have h_expand : ρ.centredCasimir w =
       ρ.casimirK 1 + (2 * -w) • ∑ a, ρ.E a a + (card R * (-w) ^ 2) • 1 := by
-    have h_casimir : ρ.casimirK 1 = ∑ a, ∑ b, ρ.E a b * ρ.E b a := by
-      simp [GlModule.casimir]
+    have h_casimir : ρ.casimirK 1 = ∑ a, ∑ b, ρ.E a b * ρ.E b a := by simp [GlModule.casimir]
     rw [h_casimir, ← sum_add_scalar_mul_add_scalar]
     simp only [centredCasimir, sub_eq_add_neg, neg_ite, neg_zero, neg_smul]
   simp [h_expand, hv, ← sum_smul]

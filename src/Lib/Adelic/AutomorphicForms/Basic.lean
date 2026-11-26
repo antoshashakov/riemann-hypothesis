@@ -353,8 +353,7 @@ theorem exists_mul_height_pow_le (hK : IsCompact K) (C : ℝ) :
 
 /-! ### Rapidly decaying functions -/
 
-theorem IsRapid.bounded (hF : V.IsRapid F) : ∃ C : ℝ, ∀ g : G E s, ‖F g‖ ≤ C := by
-  simpa using hF 0
+theorem IsRapid.bounded (hF : V.IsRapid F) : ∃ C : ℝ, ∀ g : G E s, ‖F g‖ ≤ C := by simpa using hF 0
 
 /-- The product of a function M of moderate growth (|M| ≤ C·ht^b for some C and b) and a function F
 of rapid decay (|F|·ht^B bounded for every B) has rapid decay. Here ht is the height of V. -/

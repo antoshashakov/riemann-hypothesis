@@ -158,8 +158,7 @@ lemma sum_eq_sum_divisors_of_changeLevel_eq {M r : ℕ} {ψ : DirichletCharacter
     ∑ v ∈ Ioc 0 X, χ v = ∑ d ∈ r.divisors, μ d * ψ d * ∑ v ∈ Ioc 0 (X / d), ψ v := by
   have hr0 : r ≠ 0 := right_ne_zero_of_mul (hr.symm.trans_ne (NeZero.ne q))
   -- Swap the sums and write `v = d * e` with `1 ≤ e ≤ X / d`.
-  have h_gcd (v : ℕ) : (v.gcd r).divisors = {d ∈ r.divisors | d ∣ v} := by
-    grind [Nat.dvd_gcd_iff]
+  have h_gcd (v : ℕ) : (v.gcd r).divisors = {d ∈ r.divisors | d ∣ v} := by grind [Nat.dvd_gcd_iff]
   calc ∑ v ∈ Ioc 0 X, χ v
       = ∑ v ∈ Ioc 0 X, ∑ d ∈ r.divisors with d ∣ v, μ d • ψ v := by
         simp only [apply_eq_sum_moebius_smul_of_changeLevel_eq hr h_ind, h_gcd]
@@ -189,8 +188,7 @@ theorem polya_vinogradov (hχ : χ ≠ 1) (X : ℕ) :
       ≤ #r.divisors • (√M * (1 + Real.log q)) := by
         grw [sum_eq_sum_divisors_of_changeLevel_eq hr h_ind, norm_sum_le]
         exact sum_le_card_nsmul _ _ _ fun (d : ℕ) _ ↦ h_term d
-    _ ≤ 2 * √r * (√M * (1 + Real.log q)) := by
-        grw [nsmul_eq_mul, card_divisors_le_two_mul_sqrt]
+    _ ≤ 2 * √r * (√M * (1 + Real.log q)) := by grw [nsmul_eq_mul, card_divisors_le_two_mul_sqrt]
     _ = 2 * √q * (1 + Real.log q) := by
         rw [hr, Nat.cast_mul, Real.sqrt_mul hM_pos.le]
         ring

@@ -772,8 +772,7 @@ lemma finsum_markedTerm_eq_of_irreducible (hn : Odd (Fintype.card n)) (f : hecke
       ⟦markedTriple (levelGU n 𝔑) (U * x) y μ⟧ := hU_move x
   -- The move keeps the argument of `f`; it remains to match the two sign conditions.
   have h_aut : invAutInFrame y (U * x) = invAutInFrame y x := by
-    have h_comm : Commute (toFinGL y)⁻¹ U := by
-      simpa using hU_comm y⁻¹ (Commute.refl y).inv_right
+    have h_comm : Commute (toFinGL y)⁻¹ U := by simpa using hU_comm y⁻¹ (Commute.refl y).inv_right
     simp [invAutInFrame, mul_assoc, h_comm.left_comm]
   change countTerm True f u ⟦markedTriple (levelGU n 𝔑) x y μ⟧ =
     countTerm False f u (σ ⟦markedTriple (levelGU n 𝔑) x y μ⟧)

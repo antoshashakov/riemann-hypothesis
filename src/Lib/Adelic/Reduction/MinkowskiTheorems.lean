@@ -689,8 +689,7 @@ lemma encard_le_of_dyadic_box {α : Type*} {B : Set (n → 𝔸 E)} (hB : IsComp
     obtain ⟨r, ⟨ξ, rfl⟩, hξ : toAdele ∘ ξ + v ∈ F⟩ := h_move v
     refine encard_le_encard_of_injOn (f := fun a ↦ f a + ξ) (fun a ha ↦ ?_)
       ((add_left_injective ξ).comp_injOn h_inj)
-    have h_add : toAdele ∘ (f a + ξ) + v = toAdele ∘ f a + (toAdele ∘ ξ + v) := by
-      simp [add_assoc]
+    have h_add : toAdele ∘ (f a + ξ) + v = toAdele ∘ f a + (toAdele ∘ ξ + v) := by simp [add_assoc]
     rw [mem_ofPred_eq, h_add]
     exact dyadicDiag_toNat_inv_mulVec_add_mem x (h_mem a ha) hξ
   -- the mean of these counts over `v` is `|det D| * volume K`

@@ -378,8 +378,7 @@ theorem FockDualPair.IsTermwiseHarmonic.isLaplaceHarmonic {Φ : MvPolynomial ι 
   rw [fockLaplacian, LinearMap.sum_apply]
   refine sum_eq_zero fun c hc ↦ ?_
   have sign_a : T.varSign (a, c) = -1 := (mem_filter.1 hc).2
-  have sign_b : T.varSign (b, c) = 1 := by
-    simpa [pairSign, units_ne_iff_eq_neg.1 hab] using sign_a
+  have sign_b : T.varSign (b, c) = 1 := by simpa [pairSign, units_ne_iff_eq_neg.1 hab] using sign_a
   simp [glOp, raiseOp, lowerOp, sign_a, sign_b, hΦ a b c hab]
 
 /-- Let `Φ ≠ 0` be termwise harmonic along rows and columns and `K`-highest for both actions, with

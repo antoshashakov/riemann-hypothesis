@@ -247,8 +247,7 @@ lemma grunwald [IsTotallyComplex E] {p : ℕ} {S : Set (FinPlace E)} (hp : p.Pri
   have hU_open : U.IsOpen := by
     simpa [U, Subgroup.IsOpen] using
       (isOpen_idelesUnitOff T).inter (isOpen_iInter_of_finite hR_open)
-  have h_pow_mem (b : (𝔸f E)ˣ) (hb : b ∈ idelesUnitOff T) : b ^ p ∈ U := by
-    simp [U, R, pow_mem hb]
+  have h_pow_mem (b : (𝔸f E)ˣ) (hb : b ∈ idelesUnitOff T) : b ^ p ∈ U := by simp [U, R, pow_mem hb]
   obtain ⟨χ, hχ_pow, hχ_eq : ∀ a ∈ U, abelianLift χ (artinMap Gal(Ω/E) a) = ψ a⟩ :=
     exists_nsmul_eq_zero_abelianLift_artinMap_eq_of_apply_principalIdele_eq_one ψ hψ_open hψ_pow
       h_sup hU_open h_pow_mem h_principal
@@ -724,8 +723,7 @@ lemma New.nonempty_weilData_of_not_dvd_differentIdeal {E L : Type} [Field E] [CM
     simp [hβ, j_ne_zero]
   -- the two halves add up to `-(v (s u)).log`: exactly one gets the `1` if `u ≠ star u`, and the
   -- order is even if `u = star u`
-  have h_halves : halfOrder u + halfOrder (star u) = -(v (s.val u)).log := by
-    grind [star_star]
+  have h_halves : halfOrder u + halfOrder (star u) = -(v (s.val u)).log := by grind [star_star]
   rw [h_log_eq]
   linarith [h_halves, hs_ord u]
 

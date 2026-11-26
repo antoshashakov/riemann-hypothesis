@@ -307,8 +307,7 @@ noncomputable abbrev localFieldOf : IntermediateField ℚ_[p] (PadicAlgCl p) :=
   fixedFieldOf 𝒥.toGp.range
 
 /-- An element of ℚ̄_p lies in `localFieldOf Γ` if and only if every `j(g)` fixes it. -/
-lemma mem_localFieldOf {x : PadicAlgCl p} : x ∈ localFieldOf Γ ↔ ∀ g : Γ, 𝒥.toGp g x = x := by
-  simp
+lemma mem_localFieldOf {x : PadicAlgCl p} : x ∈ localFieldOf Γ ↔ ∀ g : Γ, 𝒥.toGp g x = x := by simp
 
 /-- Every `ℤ_p`-algebra map from `Q̄_p` to `ℂ_p` is an element of the Galois group `Gp p` followed
 by the inclusion. -/

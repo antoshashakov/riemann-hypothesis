@@ -242,8 +242,7 @@ private lemma exists_averagedPullback_eq_smul (hd : star c = d)
   obtain ⟨μ, hμ⟩ : ∃ μ : ℂ, Q = μ • 1 :=
     h.isAppellHumbert.schur_lemma (hp := h.isAmpleType.isPosRiemann) Q_commute
   refine ⟨μ, fun t ht ↦ ?_⟩
-  have Q_apply : Q ⟨t, ht⟩ = μ • ⟨t, ht⟩ := by
-    rw [hμ, LinearMap.smul_apply, Module.End.one_apply]
+  have Q_apply : Q ⟨t, ht⟩ = μ • ⟨t, ht⟩ := by rw [hμ, LinearMap.smul_apply, Module.End.one_apply]
   simpa [Q] using congrArg Subtype.val Q_apply
 
 /-- Let `d = star c` with `c` and `d` non-zero, and let `c` and `d` act as the identity on the dual
@@ -839,8 +838,7 @@ lemma _root_.New.ThetaTori.hasMultiplicativeNorm_of_expanding [CharZero R] {n p 
   have hpi : ¬p ∣ n * i := hp.not_dvd_mul hn (mt (hi.dvd_iff dvd_rfl).mp hn)
   have h_cop_pow_p : IsCoprime ((p : R) ^ k) ((n * i : ℕ) : R) :=
     (hp.coprime_iff_not_dvd.mpr hpi).cast.pow_left
-  have h_cop_ni : IsCoprime c (n * i) := by
-    exact_mod_cast h_cop_pow_p.mono h_dvd dvd_rfl
+  have h_cop_ni : IsCoprime c (n * i) := by exact_mod_cast h_cop_pow_p.mono h_dvd dvd_rfl
   have h_finite : Finite (R ⧸ span {(n * i : R)}) := finiteQuotientOfFreeOfNeBot _ (by aesop)
   have h_unit : IsUnit (Ideal.Quotient.mk (span {(n * i : R)}) c) :=
     (h_cop_ni.map _).isUnit_of_dvd (by simp)

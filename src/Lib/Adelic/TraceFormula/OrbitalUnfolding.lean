@@ -575,8 +575,7 @@ lemma integrable_mul_tripleKernel [Nonempty n] (hB : 13 * card n ^ 3 ≤ B)
   have hN_mul (a b : GInf E s) : N (a * b) ≤ N a * N b := (prod_le_prod₀
     (fun _ _ ↦ norm_nonneg _) fun _ _ ↦ norm_mul_le _ _).trans_eq prod_mul_distrib
   -- The kernel `‖·‖ ^ (-B)` has decay of order `B`, so its orbital integral converges.
-  have h_inv_decay (y : GInf E s) : ‖((N y : ℂ) ^ B)⁻¹‖ * N y ^ B ≤ 1 := by
-    simp [N, inv_mul_le_one]
+  have h_inv_decay (y : GInf E s) : ‖((N y : ℂ) ^ B)⁻¹‖ * N y ^ B ≤ 1 := by simp [N, inv_mul_le_one]
   have h_orb : Integrable (V.orbitalIntegrand (fun y ↦ ((N y : ℂ) ^ B)⁻¹) φ γ)
       ((centralizer {γ}).map V.ratEmbed).quotMeasure :=
     (V.orbitalIntegral_unfold hB φ ⟨1, h_inv_decay⟩ (by fun_prop) hγ).1

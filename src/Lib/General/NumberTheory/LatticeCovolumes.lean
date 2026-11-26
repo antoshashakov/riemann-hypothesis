@@ -401,8 +401,7 @@ lemma gram_coord (h : IsQuotientBasis R J ι B q) (hJ : Jᴴ = J) (hx : ιᴴ * 
   -- Replace the class of `y` by `y`, transpose, and then replace the class of `x` by `x`.
   calc (q * x)ᴴ * (Bᴴ * J * B) * (q * y)
     _ = (q * x)ᴴ * (Bᴴ * J * y) := by rw [Matrix.mul_assoc, h.mul_basis_mul_coord hB hy]
-    _ = (yᴴ * J * B * (q * x))ᴴ := by
-      rw [conjTranspose_mul (yᴴ * J * B), h_swap y B]
+    _ = (yᴴ * J * B * (q * x))ᴴ := by rw [conjTranspose_mul (yᴴ * J * B), h_swap y B]
     _ = (yᴴ * J * x)ᴴ := by rw [h.mul_basis_mul_coord hy' hx]
     _ = xᴴ * J * y := h_swap y x
 
@@ -667,8 +666,7 @@ lemma Filling.mem_imSkewLattice_iff_exists_real {t : InfinitePlace E → ℝ} {�
       (fun v : InfinitePlace E ↦ t v * ((Φ v ι.val).im * (Φ v a.val.val).re)) = l := by
   have hι_unit : IsUnit ι := isUnit_of_mul_isUnit_left (y := ι) (by simp [hι_sq])
   -- substitute `s = ι * a`; then `star s = -s` says that `a` is fixed by complex conjugation
-  have h_skew (a : 𝓞 E) : star (ι * a) = -(ι * a) ↔ star a = a := by
-    simp [hι_star, hι_unit.ne_zero]
+  have h_skew (a : 𝓞 E) : star (ι * a) = -(ι * a) ↔ star a = a := by simp [hι_star, hι_unit.ne_zero]
   have h_val (a : 𝓞 E) : (fun v : InfinitePlace E ↦ t v * (Φ v (ι * a).val).im) =
       fun v ↦ t v * ((Φ v ι.val).im * (Φ v a.val).re) := by simp [h_re]
   -- the integers `a` of `E` with `star a = a` are the integers of the real subfield

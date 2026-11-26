@@ -545,8 +545,7 @@ lemma scalar_mul_mem_basicDoubleCoset_iff (hϖ : Valued.v ϖ.val = exp (-1))
   -- The two integrality conditions trade places: `v (ϖ y) = exp (-1) * v y`. And
   -- `det (ϖ x) = ϖ ^ n * det x`.
   refine Iff.trans ?_ and_left_comm
-  have h_entry (y : LocField w) : (exp 1)⁻¹ * Valued.v y ≤ 1 ↔ Valued.v y ≤ exp 1 := by
-    simp [field]
+  have h_entry (y : LocField w) : (exp 1)⁻¹ * Valued.v y ≤ 1 ↔ Valued.v y ≤ exp 1 := by simp [field]
   have h_det : (exp (j : ℤ))⁻¹ * (exp (i : ℤ))⁻¹ * Valued.v x.val.det = (exp (j : ℤ))⁻¹ ↔
       Valued.v x⁻¹.val.det = (exp (i : ℤ))⁻¹ := by
     simp [field]

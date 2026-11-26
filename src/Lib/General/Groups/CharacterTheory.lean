@@ -130,11 +130,9 @@ lemma finMean_sum (s : Finset ι) (f : ι → α → ℂ) :
   simp [finMean_eq, s.sum_comm, sum_div]
 
 @[simp]
-lemma finMean_const [Nonempty α] (c : ℂ) : finMean (fun _ : α ↦ c) = c := by
-  simp [finMean_eq]
+lemma finMean_const [Nonempty α] (c : ℂ) : finMean (fun _ : α ↦ c) = c := by simp [finMean_eq]
 
-lemma finMean_conj : finMean (fun x : α ↦ conj (f x)) = conj (finMean f) := by
-  simp [finMean_eq]
+lemma finMean_conj : finMean (fun x : α ↦ conj (f x)) = conj (finMean f) := by simp [finMean_eq]
 
 lemma finMean_equiv (e : β ≃ α) (hfg : ∀ x : β, f (e x) = g x) : finMean f = finMean g := by
   simp [finMean_eq, ← hfg, card_congr e, Equiv.sum_comp]
@@ -563,8 +561,7 @@ lemma eq_of_eq_sum_of_classInner_eq_intCast {ι : Type*} [Fintype ι] {χ : ι �
       single_lt_sum (f := fun k ↦ ‖classInner (χ k) f‖ ^ 2) hj (mem_univ i) (mem_univ j)
         (by positivity) (by simp)
     linarith
-  have hf_eq : f = (m : ℂ) • χ i := by
-    simpa +contextual [sum_eq_single i, h_other, hm] using hf
+  have hf_eq : f = (m : ℂ) • χ i := by simpa +contextual [sum_eq_single i, h_other, hm] using hf
   obtain rfl | hm_neg : m = 1 ∨ (m : ℝ) = -1 := by
     simpa +contextual [sum_eq_single i, h_other, hm] using h_sum
   · simpa using hf_eq

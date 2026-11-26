@@ -88,8 +88,7 @@ lemma piPrimeValuation_le_one (d p : ℕ) : piPrimeValuation d p ≤ 1 := by
 lemma half_le_piPrimeValuation (d p : ℕ) : 1 / 2 ≤ piPrimeValuation d p := by
   grind [piPrimeValuation]
 
-lemma chiK_self (d : ℕ) [Fact d.Prime] : chiK d d = 0 := by
-  simpa using chiK_cases d d
+lemma chiK_self (d : ℕ) [Fact d.Prime] : chiK d d = 0 := by simpa using chiK_cases d d
 
 lemma ne_of_chiK_ne_zero {d p : ℕ} [Fact d.Prime] (hp : chiK d p ≠ 0) : p ≠ d :=
   fun h ↦ hp (by rw [h, chiK_self])

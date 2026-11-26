@@ -1032,8 +1032,7 @@ lemma finMultiplier_eq_of_supportedOn {S : Set (FinPlace E)} (hS : Set.IsConjDis
       (star a⁻¹).map (evalAt w) = if star w ∈ S then g.atPlace w else 1 := by
     by_cases hw : star w ∈ S <;> simp [h_a, hw, Units.ext_iff, evalAt_star_GL (star_star _),
       g.atPlace_star (star_star w), -star_inv, -coe_units_inv]
-  have h_supp (w : FinPlace E) : (star a⁻¹).map (evalAt w) = 1 ∨ a.map (evalAt w) = 1 := by
-    grind
+  have h_supp (w : FinPlace E) : (star a⁻¹).map (evalAt w) = 1 ∨ a.map (evalAt w) = 1 := by grind
   have h_eq : g.val = star a⁻¹ * a := by
     refine GL_ext_evalAt fun w ↦ ?_
     change g.atPlace w = (star a⁻¹ * a).map (evalAt w)

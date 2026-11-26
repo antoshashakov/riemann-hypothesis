@@ -314,8 +314,7 @@ lemma exists_forall_eq_mul_map_det_pow (c : Φ → ℕ) (q : MvPolynomial (Φ ×
         congr with u
         simp only [_root_.mul_inv_rev, hχ_mul]
         linear_combination -(χ u⁻¹ * value (x * u) q) * hχ_inv x
-      _ = a * χ x := by
-        rw [integral_mul_const, integral_mul_left_eq_self fun u ↦ χ u⁻¹ * value u q]
+      _ = a * χ x := by rw [integral_mul_const, integral_mul_left_eq_self fun u ↦ χ u⁻¹ * value u q]
   refine ⟨a, fun M t hM ↦ ?_⟩
   calc t = ∫ u, χ u⁻¹ * (t * χ u) := by simp [mul_left_comm _ t, hχ_inv]
     _ = M mean := by simp only [h_mean, hM, χ]

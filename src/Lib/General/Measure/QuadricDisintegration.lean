@@ -606,8 +606,7 @@ lemma lintegral_flatChart_le {f : (Fin 2 ⊕ ι → A) → NNReal} (hf : Continu
         setLIntegral_eq_of_support_subset fun a ha ↦ subset_closure (by simpa using ha)
     _ ≤ ∫⁻ _ in S b, ofNNReal (iSup f) ∂skewMeasure :=
         lintegral_mono fun a ↦ coe_le_coe.2 (le_ciSup (hf_supp.isCompact_range hf).bddAbove _)
-    _ ≤ ofNNReal (iSup f) * ⨆ β, skewMeasure (S β) := by
-        grw [setLIntegral_const, ← le_iSup _ b]
+    _ ≤ ofNNReal (iSup f) * ⨆ β, skewMeasure (S β) := by grw [setLIntegral_const, ← le_iSup _ b]
 
 /-- Let `T` be hermitian and let h be the form with Gram matrix `planeSumGram T` (a hyperbolic plane
 plus T). The measures `quadricMeasure T b` are the images of dt dw dν(a) under the flat chart. They

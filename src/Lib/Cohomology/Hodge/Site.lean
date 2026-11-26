@@ -57,8 +57,7 @@ def exteriorMap : ExteriorAlgebra T M →+* ExteriorAlgebra T' M' :=
   (ExteriorAlgebra.lift T ⟨⟨(ι T' ∘ₛₗ m).toAddHom, (ι T' ∘ₛₗ m).map_smul'⟩, by simp⟩).toRingHom
 
 @[simp]
-lemma exteriorMap_iota (x : M) : exteriorMap m (ι T x) = ι T' (m x) := by
-  simp [exteriorMap]
+lemma exteriorMap_iota (x : M) : exteriorMap m (ι T x) = ι T' (m x) := by simp [exteriorMap]
 
 @[simp]
 lemma exteriorMap_smul (r : T) (x : ExteriorAlgebra T M) :

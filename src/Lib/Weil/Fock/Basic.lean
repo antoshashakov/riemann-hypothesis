@@ -151,16 +151,13 @@ namespace New.Fock
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {ε : ι → ℤˣ} (u : USign ε)
 
-lemma posProj_mul_posProj : posProj ε * posProj ε = posProj ε := by
-  simp [posProj]
+lemma posProj_mul_posProj : posProj ε * posProj ε = posProj ε := by simp [posProj]
 
 omit [Fintype ι] in
-lemma conjTranspose_posProj : (posProj ε)ᴴ = posProj ε := by
-  simp [posProj]
+lemma conjTranspose_posProj : (posProj ε)ᴴ = posProj ε := by simp [posProj]
 
 omit [Fintype ι] in
-lemma conjTranspose_signMatrix : (signMatrix ε)ᴴ = signMatrix ε := by
-  simp [signMatrix]
+lemma conjTranspose_signMatrix : (signMatrix ε)ᴴ = signMatrix ε := by simp [signMatrix]
 
 /-- The projection P₊ is idempotent and Hermitian, and the matrix of signs is Hermitian: the three
 facts `posProj_mul_posProj`, `conjTranspose_posProj` and `conjTranspose_signMatrix` together. -/

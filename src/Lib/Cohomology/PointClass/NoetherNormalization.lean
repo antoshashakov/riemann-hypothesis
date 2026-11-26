@@ -510,8 +510,7 @@ lemma IsNoetherNormalization.nonempty_galoisClosure (hΛ : IsNoetherNormalizatio
   -- So scaling `φ ∘ b` by `u` is induced by a map `χ` on `B`; it agrees with `ψ` on `A`.
   obtain ⟨χ, hχb⟩ : ∃ χ : B →ₐ[k] K, ∀ σ : Gal(B/A), χ ∘ b σ = u • φ ∘ b σ :=
     exists_algHom_comp_eq_smul ht ht_ne j hj_ker b hw_int f hfin 1 (hΛb 1) φ u
-  have hχf : χ ∘ f ∘ X = u • φ ∘ f ∘ X := by
-    simpa [hΛb] using congrArg (evalForms Λ) (hχb 1)
+  have hχf : χ ∘ f ∘ X = u • φ ∘ f ∘ X := by simpa [hΛb] using congrArg (evalForms Λ) (hχb 1)
   have h_agree : χ.comp f = ψ.comp f := algHom_ext (congrFun (hχf.trans hu))
   obtain ⟨τ, hτ⟩ : ∃ τ : Gal(B/A), ∀ a : B, ψ a = χ (τ a) := exists_algEquiv_of_comp_eq hinv h_agree
   refine ⟨τ, fun σ ↦ ?_⟩

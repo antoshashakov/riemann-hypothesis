@@ -203,8 +203,7 @@ lemma New.IsValuationPair.exists_pivot_dvd {A n : Type*} [CommRing A] {R : Subri
   obtain ⟨c, hc⟩ : ∃ c : GL n R × GL n R,
       ∀ ij : n × n, R ∙ B (.swap R p ij.fst, .swap R p ij.snd) p p ≤ R ∙ B c p p :=
     (hR.directed_span_pivot y p).finite_le fun ij : n × n ↦ (.swap R p ij.fst, .swap R p ij.snd)
-  have y_mem (i j : n) : y i j ∈ R ∙ B c p p := by
-    simpa [B, -val_map_apply] using hc (i, j)
+  have y_mem (i j : n) : y i j ∈ R ∙ B c p p := by simpa [B, -val_map_apply] using hc (i, j)
   -- The entries of `B c` are `R`-linear combinations of those of `y`, so the pivot divides them.
   refine ⟨c.fst, c.snd, fun i j ↦ mem_span_singleton.1 ?_⟩
   change B c i j ∈ R ∙ B c p p
@@ -354,8 +353,7 @@ lemma IsHeckeFunction.heckeFun_adjoint (hf : IsHeckeFunction (intGL n O.toSubrin
     -- Move `invTransposeGL k` and `g⁻¹` to the left side of `B`; `k` fixes `v'` and
     -- `(invTransposeGL k)⁻¹` fixes `v`.
     have move (g : GL n F) (x : W) (y : W') : B x (π' g y) = B (π g⁻¹ x) y := by simp [← hB g⁻¹ x]
-    have fix_v : π (invTransposeGL k)⁻¹ v = v := by
-      simpa using mem_levelSpace.1 hv ⟨_, inv_mem hk'⟩
+    have fix_v : π (invTransposeGL k)⁻¹ v = v := by simpa using mem_levelSpace.1 hv ⟨_, inv_mem hk'⟩
     have fix_v' : π' k v' = v' := by simpa using mem_levelSpace.1 hv' ⟨k, hk⟩
     exact ⟨by simp [hg, hf_inv, hk, hk'],
       by simp only [hg, map_mul, Module.End.mul_apply, fix_v', move, fix_v, inv_inv]⟩

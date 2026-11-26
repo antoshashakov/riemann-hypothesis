@@ -45,8 +45,7 @@ lemma exists_exp_neg_sq_mul_rpow_mul_one_add_log_sq_le {c : ℝ} (hc : 0 < c) :
       ∀ y : ℝ, 0 < y → (y ^ 2) ^ c * (1 + log y ^ 2) ≤ C * (1 + y) ^ M :=
     exists_sq_rpow_mul_one_add_log_sq_le hc
   refine ⟨C * rexp (M + M ^ 2), fun y hy ↦ ?_⟩
-  have h_exp : (1 + y) ^ M ≤ rexp (M * y) := by
-    grw [exp_nat_mul, add_comm, add_one_le_exp]
+  have h_exp : (1 + y) ^ M ≤ rexp (M * y) := by grw [exp_nat_mul, add_comm, add_one_le_exp]
   have h_exponent : -y ^ 2 + M * y ≤ M + M ^ 2 := by
     nlinarith [sq_nonneg (y - M), sq_nonneg y, (Nat.cast_nonneg M : (0 : ℝ) ≤ M)]
   calc rexp (-y ^ 2) * (y ^ 2) ^ c * (1 + log y ^ 2)
@@ -104,11 +103,9 @@ lemma integrable_gammaWeight_mul_rpow (hk : ∀ w : InfinitePlace E, k ≤ m w) 
     (hx : -(k : ℝ) < x) :
     Integrable (fun a : (InfinitePlace E → ℂ)ˣ ↦ gammaWeight E m a * ideleAbs (realIdele a) ^ x)
       haar := by
-  have h_pos (w : InfinitePlace E) : 0 < m w + x := by
-    linarith [(Nat.cast_le (α := ℝ)).2 (hk w)]
+  have h_pos (w : InfinitePlace E) : 0 < m w + x := by linarith [(Nat.cast_le (α := ℝ)).2 (hk w)]
   refine (integrable_prod_exp_neg_sq_mul_rpow h_pos).congr (.of_forall fun a ↦ ?_)
-  have h_sq (w : InfinitePlace E) : 0 < ‖a.val w‖ ^ 2 := by
-    simp [piUnits_val_apply_ne_zero a w]
+  have h_sq (w : InfinitePlace E) : 0 < ‖a.val w‖ ^ 2 := by simp [piUnits_val_apply_ne_zero a w]
   have h_abs : ideleAbs (realIdele a) = ∏ w : InfinitePlace E, ‖a.val w‖ ^ 2 := by
     simp [ideleAbs, finAdele_one_apply]
   change ∏ w : InfinitePlace E, rexp (-‖a.val w‖ ^ 2) * (‖a.val w‖ ^ 2) ^ (m w + x) =

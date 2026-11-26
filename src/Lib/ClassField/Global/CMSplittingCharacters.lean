@@ -88,8 +88,7 @@ these two elements only. -/
 lemma gal_maximalReal_induction {P : Gal(L/maximalRealSubfield L) → Prop} (h_one : P 1)
     (h_conj : P (complexConj L)) (σ : Gal(L/maximalRealSubfield L)) : P σ := by
   classical
-  have h_cases : σ = 1 ∨ σ = complexConj L := by
-    simpa [← pair_complexConj_eq_univ] using mem_univ σ
+  have h_cases : σ = 1 ∨ σ = complexConj L := by simpa [← pair_complexConj_eq_univ] using mem_univ σ
   rcases h_cases with rfl | rfl
   · exact h_one
   · exact h_conj

@@ -69,8 +69,7 @@ lemma isUnit_star_sub_and_card_of_isGoodOver {E : Type} [Field E] [CMBase E] {D 
   -- coprimality.
   have h_diff : algebraMap (𝓞 E) R (star D.β - D.β) ∈ m :=
     (hm.isPrime.mem_or_mem h_mem).resolve_right (by simpa using hT)
-  have h_conj : star D.β - b ∈ m.comap (algebraMap (𝓞 E) R) := by
-    simpa using add_mem h_diff hβ
+  have h_conj : star D.β - b ∈ m.comap (algebraMap (𝓞 E) R) := by simpa using add_mem h_diff hβ
   exact notMem_of_isCoprime_of_mem h_coprime hβ h_conj
 
 /-- The charts of the bundles `c l`, for `l` in `D.dualTorsion` seen inside the larger

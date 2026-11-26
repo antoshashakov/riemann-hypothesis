@@ -501,8 +501,7 @@ lemma New.Patching.chain_lemma (hB : IsUnitary ρ.ρ B)
   set H : End ℂ ρ := heckeCoset ρ.ρ proIwahori (diagGL (mulSingle 0 ϖ))
   have hecke_adj (z : ρ) (hz : z ∈ levelSpace ρ.ρ proIwahori) :
       H z ∈ levelSpace ρ.ρ proIwahori ∧ ∀ a, B (u ϖ⁻¹ a) z = B a (H z) := by
-    have hecke_z : H z = u ϖ z := by
-      simp [H, u, (heckeCoset_mulSingle_zero_eq hϖ hz).right, hz]
+    have hecke_z : H z = u ϖ z := by simp [H, u, (heckeCoset_mulSingle_zero_eq hϖ hz).right, hz]
     rw [hecke_z]
     exact ⟨by simp [u], fun a ↦ adj ϖ a z⟩
   -- The cofactor of the first `k` roots, conjugated and evaluated at `U'`, kills `x`.

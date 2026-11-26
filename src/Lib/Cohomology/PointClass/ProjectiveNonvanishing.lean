@@ -394,8 +394,7 @@ lemma teichmullerCoordinate_comp_proj_charTwist (c : PadicTest) (i : Bool)
     (proj (k := k) c).hom.toRingHom.toMonoidHom.comp
       ((teichmullerLift c).comp ((algebraMap OFlat _).toMonoidHom.comp epsPow))
   let sign : Multiplicative ℚ := .ofAdd ((cond i coeHom (-coeHom) : ℚ≥0 →+ ℚ) 1)
-  have h_eps : sign ∈ θ.ker := by
-    cases i <;> simp [θ, sign, teichmullerLift_epsTilt, proj_mulMu]
+  have h_eps : sign ∈ θ.ker := by cases i <;> simp [θ, sign, teichmullerLift_epsTilt, proj_mulMu]
   -- After unfolding, the goal reads `proj [ε ^ (±1)] * proj [u] = proj [u]`.
   -- The first two exclusions keep `algebraMap` on the monoid algebra and `cond` as they stand;
   -- `mul_eq_right₀` and `mul_eq_mul_right_iff` would cancel `b` in `a * b = b`.
@@ -489,8 +488,7 @@ private lemma projSpace.map_unitsExtClass_eq_map_of_comp_eq {B : AbFunctor Padic
         exact (H.map_comp ..).symm
       _ = unitsExtClass := by rw [h_section, whiskerLeft_id', H.map_id]
   calc
-    _ = H.map genericCoeff (j ≫ genericOver.whiskerLeft (s ≫ r)) 2 ξT := by
-      rw [H.map_comp, h_local]
+    _ = H.map genericCoeff (j ≫ genericOver.whiskerLeft (s ≫ r)) 2 ξT := by rw [H.map_comp, h_local]
     _ = H.map genericCoeff
           (j' ≫ genericOver.whiskerLeft (relFreeAb.π (offPoints {affinePoint 0 0}))) 2 ξT := by
       rw [hj']

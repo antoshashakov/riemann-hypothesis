@@ -175,8 +175,7 @@ lemma HasLatticeBounds.latticeMinus_componentOn {V : Space E ι ε} {Y : Grading
     have h_smul : c • idem Tᶜ • y ∈ Y.latticeMinus g' :=
       smul_le_iff_forall.1 h_le _ (mem_latticeMinus.2 ⟨hg, by rw [map_smul, hy]⟩)
     exact (V.smul_idem_smul_mem_lattice hc).1 (latticeMinus_le_lattice h_smul)
-  have hq_pow : ∀ w ∈ Tᶜ, v ((q ^ k) w) = 1 := by
-    simp +contextual [T, finAdele_pow_apply, hq]
+  have hq_pow : ∀ w ∈ Tᶜ, v ((q ^ k) w) = 1 := by simp +contextual [T, finAdele_pow_apply, hq]
   have hq_star_pow : ∀ w ∈ Tᶜ, v ((star q ^ k) w) = 1 := by
     simp +contextual [T, finAdele_pow_apply, hq]
   have h_agree : idem Tᶜ • y ∈ V.lattice 1 ↔ idem Tᶜ • y ∈ V.lattice x :=

@@ -138,8 +138,7 @@ lemma exists_matched_of_entries_eq {C R : Type} [Fintype C] [Fintype R] {s : C �
       rw [← heq]
       exact Finset.disjoint_left.1 hdisjoint (Finset.mem_image_of_mem a (mem_univ c))
     -- The modulus has the parity of d − 1 and is not below d, so it exceeds d.
-    have houtside : (d : ℤ) < |b r| := by
-      grind [mem_doubledBlock, hparity r, lt_abs, abs_lt]
+    have houtside : (d : ℤ) < |b r| := by grind [mem_doubledBlock, hparity r, lt_abs, abs_lt]
     exact ⟨heq.symm, lt_sign_mul_iff.2 ⟨houtside, fun h ↦ hpos c r heq (h.trans_eq heq.symm),
       fun h ↦ hneg c r heq (heq.trans_lt h)⟩⟩
   refine ⟨fun r ↦ ?_, fun c ↦ ?_⟩

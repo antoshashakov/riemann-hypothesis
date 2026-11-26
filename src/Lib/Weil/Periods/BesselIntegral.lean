@@ -660,8 +660,7 @@ lemma agreesWithStringMap_mul_iff {w : Matrix ι' ι (𝔸 E)} {γ : G E ε} (h�
   refine int_weight_induction (fun l : ι' ↦ -Y'.gradeOf l) fun k ih hk hbk ↦ ?_
   obtain ⟨a, ha, unit, col⟩ := Y.exists_gradeOf_succ_isUnit_stringMap Y' k hk
   -- By `ih`, row `b` of `δ - 1` vanishes in the weights above that of `k`.
-  have h_row : ∀ l : ι', Y'.gradeOf l ≤ Y'.gradeOf k ∨ (V'.ratCoordMatrix δ - 1) b l = 0 := by
-    grind
+  have h_row : ∀ l : ι', Y'.gradeOf l ≤ Y'.gradeOf k ∨ (V'.ratCoordMatrix δ - 1) b l = 0 := by grind
   -- The entry `(b, a)` of `(δ - 1) * (w * γ)` is this entry times a unit (`col`, using `ih`), and
   -- it vanishes because `δ * (w * γ)` and `w * γ` both agree with `stringMap` there.
   rw [← unit.mul_left_eq_zero, ← col agrees _ h_row, ← Matrix.mul_apply', Matrix.sub_mul]

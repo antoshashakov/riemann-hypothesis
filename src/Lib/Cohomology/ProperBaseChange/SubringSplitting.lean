@@ -164,8 +164,7 @@ lemma _root_.Subring.exists_notMem_and_inv_notMem_of_not_isUnit {F : Type*} [Fie
   refine ⟨1 - (b : F)⁻¹, fun h_mem ↦ hb ?_, fun h_mem ↦ h_one_sub ?_, by simp [hb_ne_zero]⟩
   · exact Subring.isUnit_of_inv_mem b hb_ne_zero (by simpa using S.sub_mem S.one_mem h_mem)
   · have h_inv : (1 - (b : F))⁻¹ = 1 - (1 - (b : F)⁻¹)⁻¹ := by grind
-    have h_inv_mem : (1 - (b : F))⁻¹ ∈ S := by
-      simpa only [h_inv] using S.sub_mem S.one_mem h_mem
+    have h_inv_mem : (1 - (b : F))⁻¹ ∈ S := by simpa only [h_inv] using S.sub_mem S.one_mem h_mem
     exact Subring.isUnit_of_inv_mem (1 - b) h_sub_ne_zero h_inv_mem
 
 /-- Let `K` be an algebraically closed field, `S` an absolutely integrally closed subring of `K`

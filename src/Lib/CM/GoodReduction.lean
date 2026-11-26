@@ -629,12 +629,10 @@ lemma scaledDisc_two_isogeny (hb : b = quadGen d ∨ b = conj (quadGen d)) {c : 
     D.scaledDisc (b * D.t) * D.scaledDisc D.t = -C.scaledDisc (b * C.t) := by
   have hb' : 1 - b = quadGen d ∨ 1 - b = conj (quadGen d) := one_sub_eq_quadGen_or_conj hb
   have h₂ : C.IsOrderTwo ((1 - b) * C.t) := C.isOrderTwo_mul_t hb'
-  have h_notMem : c * ((1 - b) * C.t) ∉ D.Λ := by
-    simp [hD, ← add_mul, C.t_notMem, h₂.notMem]
+  have h_notMem : c * ((1 - b) * C.t) ∉ D.Λ := by simp [hD, ← add_mul, C.t_notMem, h₂.notMem]
   -- The point `(1 - b) t` of `C` goes to the point `(1 - b) t` of `D`.
   have h_point : c * ((1 - b) * C.t) - (1 - b) * D.t ∈ D.Λ := by
-    have h_two : c * C.t + c * C.t ∈ D.Λ := by
-      simpa only [← mul_add, hD] using Or.inr C.two_t_mem
+    have h_two : c * C.t + c * C.t ∈ D.Λ := by simpa only [← mul_add, hD] using Or.inr C.two_t_mem
     have h_cases : (1 - b) * (c * C.t) ∈ D.Λ ∨ (1 - b) * (c * C.t - D.t) ∈ D.Λ :=
       D.mul_mem_or_mul_sub_t_mem hb' (c * C.t) h_two
     simpa only [mul_sub (1 - b), mul_left_comm (1 - b) c, h_notMem, false_or] using h_cases
@@ -692,8 +690,7 @@ lemma IsInClass.exists_eq_scaledIdeal_mul {𝒞 : ClassGroup (𝓞 (QuadField d)
       = scaledIdeal d (w, 𝔟 * 𝔞 / 𝔞') * scaledIdeal d (v, 𝔞') := by
         rw [← hD]
         exact hw
-    _ = scaledIdeal d (w * v, 𝔟 * 𝔞) := by
-        rw [← map_mul, Prod.mk_mul_mk, div_mul_cancel]
+    _ = scaledIdeal d (w * v, 𝔟 * 𝔞) := by rw [← map_mul, Prod.mk_mul_mk, div_mul_cancel]
     _ = scaledIdeal d (w * v / u, 𝔟) * C.latticeModule := by
         rw [hC, ← map_mul, Prod.mk_mul_mk, div_mul_cancel]
 
