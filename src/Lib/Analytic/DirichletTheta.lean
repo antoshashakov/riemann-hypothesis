@@ -70,66 +70,43 @@ lemma mellin_differentiableOn_and_bounded {D : ℝ} {f : ℝ → ℂ}
     (h_bound : ∀ t : ℝ, 0 < t → ‖f t‖ ≤ D * rexp (-t)) (h_meas : Measurable f) :
     DifferentiableOn ℂ (mellin f) {z : ℂ | 0 < z.re} ∧
     ∃ G : ℝ, ∀ z : ℂ, z.re ∈ Icc 2⁻¹ 2 → ‖mellin f z‖ ≤ G := by
-  -- In the strip the integrand is at most the sum of those at `z = 1/2` (which serves for
-  -- `t ≤ 1`) and at `z = 2` (for `t ≥ 1`).
-  obtain ⟨h_half, -⟩ := mellinConvergent_and_differentiableAt (s := 2⁻¹) h_bound h_meas (by simp)
-  obtain ⟨h_two, -⟩ := mellinConvergent_and_differentiableAt (s := 2) h_bound h_meas (by simp)
-  have h_integrand (z : ℂ) (hz : z.re ∈ Icc (2⁻¹ : ℝ) 2) (t : ℝ) (ht : 0 < t) :
-      ‖(t : ℂ) ^ (z - 1) • f t‖ ≤
-        ‖(t : ℂ) ^ ((2⁻¹ : ℂ) - 1) • f t‖ + ‖(t : ℂ) ^ ((2 : ℂ) - 1) • f t‖ := by
-    have h_pow : t ^ (z.re - 1) ≤ t ^ ((2⁻¹ : ℝ) - 1) + t ^ ((2 : ℝ) - 1) := by
-      obtain h | h := le_total t 1
-      · exact le_add_of_le_of_nonneg
-          (rpow_le_rpow_of_exponent_ge ht h (by linarith [hz.1])) (by positivity)
-      · exact le_add_of_nonneg_of_le (by positivity)
-          (rpow_le_rpow_of_exponent_le h (by linarith [hz.2]))
-    simpa [norm_cpow_eq_rpow_re_of_pos ht, ← add_mul] using
-      mul_le_mul_of_nonneg_right h_pow (norm_nonneg (f t))
-  exact ⟨fun z hz ↦
-      (mellinConvergent_and_differentiableAt h_bound h_meas hz).2.differentiableWithinAt,
-    _, fun z hz ↦ norm_integral_le_of_norm_le (h_half.norm.add h_two.norm)
-      (ae_restrict_of_forall_mem measurableSet_Ioi (h_integrand z hz))⟩
+  let b {t : ℝ} (ht : 0 < t) := h_bound t ht
+  have m : AEStronglyMeasurable f volume := h_meas.aestronglyMeasurable
+  refine (fun o p a ↦ have c s := mellinConvergent_of_isBigO_rpow_exp (s := s) one_pos a o p
+    ⟨fun _ ↦ (mellin_differentiableAt_of_isBigO_rpow_exp one_pos a o p · |>.differentiableWithinAt),
+    _, fun z _ ↦ norm_integral_le_of_norm_le ((c 2⁻¹ ?_).prodMk (c 2 ?_)).norm
+    (ae_restrict_of_forall_mem ?_ fun t ↦ ?_)⟩) ?_ ?_ fun _ _ ↦ (volume.finiteAt_nhdsWithin
+    ..).integrableAtFilter ⟨⊤, ?_⟩ ?_ <;> simp_all [Asymptotics.isBigO_iff]
+  use D, 1, by grind
+  iterate 2 exact ⟨_, mem_inf_of_right fun t k ↦ (b k).trans (by grw [le_abs_self D, ← k.out])⟩
+  intro ht
+  obtain h | h := le_total t 1
+  · left
+    simpa [norm_cpow_eq_rpow_re_of_pos ht] using mul_le_mul_of_nonneg_right
+      (rpow_le_rpow_of_exponent_ge ht h (by linarith : (2⁻¹ : ℝ) - 1 ≤ z.re - 1))
+      (norm_nonneg (f t))
+  · right
+    simpa [norm_cpow_eq_rpow_re_of_pos ht] using mul_le_mul_of_nonneg_right
+      (rpow_le_rpow_of_exponent_le h (by linarith : z.re - 1 ≤ (2 : ℝ) - 1))
+      (norm_nonneg (f t))
 
 /-- For `t ≥ 0` the weight `w(t) = t ^ j e^(-π t²)` satisfies `|w(t)| ≤ 3 e^(-2t)`. -/
 lemma norm_gaussianMonomial_le (ht : 0 ≤ t) : ‖gaussianMonomial j t‖ ≤ 3 * rexp (-t) ^ 2 := by
-  have h_pow : t ^ j.val ≤ rexp t :=
-    calc t ^ j.val ≤ t + 1 := by fin_cases j <;> simp [ht]
-      _ ≤ rexp t := add_one_le_exp t
-  -- As `π > 3`, this follows from `3 t² - 3 t + 1 = 3 (t - 1/2)² + 1/4 ≥ 0`.
-  have h_exp : t + -π * t ^ 2 ≤ 1 + (-t + -t) := by
-    nlinarith [pi_gt_three, sq_nonneg (t - 2⁻¹), sq_nonneg t]
-  calc ‖gaussianMonomial j t‖ = t ^ j.val * rexp (-π * t ^ 2) := by
-        simp [gaussianMonomial, abs_of_nonneg ht]
-    _ ≤ rexp t * rexp (-π * t ^ 2) := by gcongr
-    _ ≤ rexp (1 + (-t + -t)) := by grw [← Real.exp_add, h_exp]
-    _ = rexp 1 * rexp (-t) ^ 2 := by rw [Real.exp_add, Real.exp_add, sq]
-    _ ≤ 3 * rexp (-t) ^ 2 := by grw [exp_one_lt_three]
+  grw [gaussianMonomial, norm_of_nonneg (by bound), show t ^ j.1 ≤ t + 1 by fin_cases j <;> grind,
+    add_one_le_exp, ← exp_one_lt_three, ← pi_gt_three]
+  simp [sq, ← Real.exp_add]; grind [sq_nonneg (t - 2⁻¹)]
 
 /-- If `|c(n)| ≤ 1` and `t > 0`, the series `∑_{n ≥ 1} c(n) w(n t)`, with
 `w(z) = z ^ j e^(-π z²)`, converges and is at most `3 e^(-t) / t` in absolute value. -/
 lemma summable_and_norm_gaussianTheta_le (hc : ∀ n : ℕ, ‖c n‖ ≤ 1) (ht : 0 < t) :
     (Summable fun n : ℕ+ ↦ c n * gaussianMonomial j (n * t)) ∧
       ‖gaussianTheta j c t‖ ≤ 3 * rexp (-t) / t := by
-  -- By `norm_gaussianMonomial_le` the terms are bounded by those of the geometric series
-  -- `∑ 3 r ^ n`, `r = e^(-2t)`.
-  let r : ℝ := rexp (-t) ^ 2
-  have hr : |r| < 1 := by simpa [r] using ht
-  have h_geom : HasSum (fun n : ℕ+ ↦ 3 * r ^ (n : ℕ)) (3 * (1 - r)⁻¹ - 3) :=
-    (hasSum_pnat_iff_hasSum_succ (f := fun n : ℕ ↦ 3 * r ^ n)).2 <| by
-      simpa using (hasSum_nat_add_iff' 1).2 ((hasSum_geometric_of_abs_lt_one hr).mul_left 3)
-  have h_term (n : ℕ+) : ‖c n * gaussianMonomial j (n * t)‖ ≤ 3 * r ^ (n : ℕ) := by
-    grw [norm_mul, hc, norm_real, norm_gaussianMonomial_le (by positivity)]
-    simp [r, ← Real.exp_nat_mul, field]
-  -- As `t + 1 ≤ e^t`, we have `(t + e^(-t)) e^(-t) ≤ 1`.
-  have h_mul_exp_le : t * rexp (-t) ≤ 1 - r := by
-    nlinarith [add_one_le_exp t, exp_pos (-t), exp_le_one_iff.2 (neg_nonpos.2 ht.le),
-      show rexp t * rexp (-t) = 1 by simp [← Real.exp_add]]
-  have h_sum : 3 * (1 - r)⁻¹ - 3 ≤ 3 * rexp (-t) / t := by
-    have h_one_sub : 0 < 1 - r := (mul_pos ht (exp_pos _)).trans_le h_mul_exp_le
-    calc 3 * (1 - r)⁻¹ - 3 = 3 * r / (1 - r) := by field
-      _ ≤ 3 * r / (t * rexp (-t)) := by gcongr
-      _ = 3 * rexp (-t) / t := by simp [r, field]
-  exact ⟨h_geom.summable.of_norm_bounded h_term, (tsum_of_norm_bounded h_geom h_term).trans h_sum⟩
+  have H := hasSum_pnat_iff_hasSum_succ.2 ((hasSum_nat_add_iff' 1).2
+    ((hasSum_geometric_of_abs_lt_one (by simpa : |rexp (-t) ^ 2| < 1)).mul_left 3))
+  refine (fun b ↦ ⟨H.summable.of_norm_bounded b, (tsum_of_norm_bounded H b).trans ?_⟩) fun n ↦ ?_
+  · grw [norm_mul, hc, norm_real, norm_gaussianMonomial_le] <;> simp [← Real.exp_nat_mul, field,
+      ht.le]
+  simp [t.exp_neg, field, *]; nlinarith [t.add_one_le_exp]
 
 /-- The absolute value of `θ(u) = u ^ (1/2) ∑_{n ≥ 1} c(n) w(n u)` is `u ^ (1/2)` times that of
 the sum. -/
@@ -184,46 +161,23 @@ lemma mellin_pow_mul_comp_sq (F : ℝ → ℂ) (k : ℕ) (s : ℂ) :
 /-- For `re s > 0` the Mellin transform `Γ_j` of `w(z) = z ^ j e^(-π z²)` is
 `Γ_j(s) = π ^ (-(s + j) / 2) Γ((s + j) / 2) / 2`. -/
 lemma gaussianMellin_eq (hs : 0 < s.re) : gaussianMellin j s = Gammaℝ (s + j.val) / 2 := by
-  -- `w(t) = t ^ j F(t²)` with `F(u) = e^(-π u)`, a series of Gaussians with a single term.
-  let F (u : ℝ) : ℂ := rexp (-π * u)
-  have h_re : 0 < (s + j.val).re := by simpa using hs.trans_le (by simp)
-  have h_single : HasSum (fun _ : Unit ↦ Gammaℝ (s + j.val)) (mellin F ((s + j.val) / 2)) := by
-    simpa using hasSum_mellin_pi_mul_sq (a := 1) (r := 1) (F := F) h_re (by simp [F]) .of_finite
-  rw [(hasSum_unique _).unique h_single, ← mellin_pow_mul_comp_sq]
-  simp [gaussianMellin, gaussianMonomial, F]
+  simpa [gaussianMellin, gaussianMonomial, field] using (mellin_cpow_smul _ s j).trans
+    ((mellin_comp_rpow _ _ 2).trans (congrArg _ (@hasSum_mellin_pi_mul_sq Unit _ 1 1
+    (rexp <| -π * ·) _ (by simp; bound) (by simp) .of_finite).tsum_eq.symm))
 
 /-- Integration term by term: if `|c(n)| ≤ 1` and `re s > 1`, the Mellin transform of
 `∑_{n ≥ 1} c(n) w(n u)` at `s` is `Γ_j(s) L(s, c)`, where `Γ_j` is the Mellin transform of the
 weight `w(z) = z ^ j e^(-π z²)`. -/
 lemma mellin_gaussianTheta (hc : ∀ n : ℕ, ‖c n‖ ≤ 1) (hs : 1 < s.re) :
     mellin (gaussianTheta j c) s = gaussianMellin j s * LSeries c s := by
-  -- `gaussianTheta j c t = t ^ j F(t²)` with `F(u) = ∑ a(n) e^(-π n² u)`, `a(n) = c(n) n ^ j`, and
-  -- the Mellin transform of `F` may be taken term by term.
-  let a (n : ℕ+) : ℂ := c n * n ^ j.val
-  let F (u : ℝ) : ℂ := ∑' n : ℕ+, a n * rexp (-π * n ^ 2 * u)
-  have h_theta : gaussianTheta j c = fun t : ℝ ↦ t ^ j.val * F (t ^ 2) := funext fun t ↦ by
-    simp [gaussianTheta, gaussianMonomial, F, a, ← tsum_mul_left, mul_pow, mul_assoc, mul_left_comm]
-  have h_series (u : ℝ) (hu : 0 < u) : Summable fun n : ℕ+ ↦ a n * rexp (-π * n ^ 2 * u) :=
-    ((summable_and_norm_gaussianTheta_le (j := j) hc (sqrt_pos.2 hu)).1.div_const
-      (√u ^ j.val)).congr fun n ↦ by
-        have h_sqrt : (√u : ℂ) ≠ 0 := ofReal_ne_zero.2 (sqrt_pos.2 hu).ne'
-        simp [a, gaussianMonomial, mul_pow, mul_assoc, hu.le, field]
-  have h_coeff : Summable fun n : ℕ+ ↦ ‖a n‖ / |(n : ℝ)| ^ (s + j.val).re :=
-    (summable_pnat_iff_summable_nat.2 (summable_nat_rpow_inv.2 hs)).of_nonneg_of_le
-      (fun _ ↦ by positivity) fun n ↦ by simp [a, rpow_add, field, hc]
-  have h_re : 0 < (s + j.val).re := by simpa using (one_pos.trans hs).trans_le (by simp)
-  have h_mellin : HasSum (fun n : ℕ+ ↦ Gammaℝ (s + j.val) * a n / |(n : ℝ)| ^ (s + j.val))
-      (mellin F ((s + j.val) / 2)) :=
-    hasSum_mellin_pi_mul_sq h_re (fun u hu ↦ by simpa [F] using (h_series u hu).hasSum) h_coeff
-  have h_term (n : ℕ+) : Gammaℝ (s + j.val) * a n / |(n : ℝ)| ^ (s + j.val) / 2 =
-      gaussianMellin j s * LSeries.term c s n := by
-    simp [gaussianMellin_eq (one_pos.trans hs), a, cpow_add, field]
-  calc mellin (gaussianTheta j c) s = mellin F ((s + j.val) / 2) / 2 := by
-        rw [h_theta, mellin_pow_mul_comp_sq]
-    _ = ∑' n : ℕ+, gaussianMellin j s * LSeries.term c s n := by
-        rw [← h_mellin.tsum_eq, ← tsum_div_const, tsum_congr h_term]
-    _ = gaussianMellin j s * LSeries c s := by
-        rw [tsum_mul_left, tsum_pnat_eq_tsum_of_eq_zero (LSeries.term_zero c s), LSeries]
+  rw [gaussianMellin_eq (by bound), LSeries, ← tsum_pnat_eq_tsum_of_eq_zero rfl]
+  convert (mellin_cpow_smul _ s j.1).trans ((mellin_comp_rpow _ _ 2).trans (congrArg _
+    (@hasSum_mellin_pi_mul_sq ℕ+ _ (fun n ↦ c n * n ^ j.1) (·) _ _ (by simp; bound)
+    (fun u (h : 0 < u) ↦ (((@summable_and_norm_gaussianTheta_le j c √u hc ?_).1.div_const
+    (√u ^ j.1)).congr ?_).hasSum) ((summable_pnat_iff_summable_nat.2 (summable_nat_rpow_inv.2
+    hs)).of_nonneg_of_le ?_ ?_)).tsum_eq.symm)) using 1 <;> simp [← tsum_mul_left, cpow_add,
+    rpow_add, field, mellin, gaussianTheta, gaussianMonomial, mul_pow, division_def, mul_assoc,
+    mul_left_comm, le_of_lt, ne_of_gt, *]
 
 /-- Riemann's formula `∫_0^∞ θ(u) u ^ (s - 1/2) du / u = Γ_j(s) L(s, c)` for `re s > 1` and
 `|c(n)| ≤ 1`, where `θ` is the theta series of `c` and `Γ_j` the Mellin transform of its weight
@@ -268,25 +222,12 @@ lemma poisson_summation_gaussianMonomial (a : ℝ) (ht : 0 < t) : ∃ S : ℝ,
     HasSum (fun n : ℤ ↦ gaussianMonomial j ((n + a) * t)) S ∧
     HasSum (fun n : ℤ ↦ cexp (2 * π * I * a * n) * gaussianMonomial j (n * t⁻¹))
       (I ^ j.val * t * S) := by
-  -- Up to a factor when `j = 1`, the two sums are the theta kernels of Mathlib at `t²` and
-  -- `1 / t²`, and the functional equations of these kernels compare them.
-  have h_sq : 0 < t ^ 2 := by positivity
-  fin_cases j
-  · have h_fe : (cosKernel a (t ^ 2)⁻¹ : ℂ) = t * evenKernel a (t ^ 2) := by
-      simp [evenKernel_functional_equation, ← rpow_natCast_mul ht.le, ht.ne']
-    refine ⟨evenKernel a (t ^ 2), (hasSum_int_evenKernel a h_sq).congr_fun fun n ↦ ?_, ?_⟩
-    · simp [gaussianMonomial, mul_pow, mul_assoc]
-    · simpa [gaussianMonomial, mul_pow, mul_assoc, h_fe] using
-        hasSum_int_cosKernel a (inv_pos.2 h_sq)
-  · have h_fe : I / t * sinKernel a (t ^ 2)⁻¹ = I * t * (t * oddKernel a (t ^ 2)) := by
-      simp [oddKernel_functional_equation, ← rpow_natCast_mul ht.le, field, mul_div_cancel₀]
-    refine ⟨t * oddKernel a (t ^ 2),
-      ((hasSum_int_oddKernel a h_sq).mul_left t).congr_fun fun n ↦ ?_, ?_⟩
-    · simp [gaussianMonomial, mul_pow, field]
-    · -- Termwise `(I / t) (-I n) = n / t`, the factor in front of the Gaussian in `w(n / t)`.
-      have h_dual := (hasSum_int_sinKernel a (inv_pos.2 h_sq)).mul_left (I / t)
-      rw [h_fe] at h_dual
-      simpa using h_dual.congr_fun fun n ↦ by simp [gaussianMonomial, mul_pow, mul_assoc, field]
+  have h := pow_pos ht 2
+  fin_cases j <;> [obtain ⟨u, v⟩ := hasSum_int_evenKernel a h, hasSum_int_cosKernel a (inv_pos.2
+                h); obtain ⟨u, v⟩ := (hasSum_int_oddKernel a h).mul_left t, (hasSum_int_sinKernel a
+    (inv_pos.2 h)).mul_left (I / t)] <;> refine ⟨_, u.congr_fun ?_, (v.congr_fun ?_).trans_eq
+    (congrArg _ ?_)⟩ <;> simp [gaussianMonomial, mul_pow, mul_assoc, evenKernel_functional_equation,
+    ht.ne', oddKernel_functional_equation, ← rpow_natCast_mul ht.le, field, mul_div_cancel₀]
 
 /-- The Mellin transform `Γ_j` of the weight `w(z) = z ^ j e^(-π z²)` is holomorphic in
 `re s > 0` and bounded on `1/2 ≤ re s ≤ 2`. -/
@@ -444,20 +385,15 @@ is `Γ_j(s) L(s, χ)`, where `Γ_j` is the Mellin transform of `w(z) = z ^ j e^(
 `mellin_gaussianTheta` by analytic continuation. -/
 lemma mellin_gaussianTheta_char (hχ_ne : χ ≠ 1) (hχ_parity : χ (-1) = (-1) ^ j.val)
     (hs : 0 < s.re) :
-    mellin (gaussianTheta j fun n : ℕ ↦ χ n) s = gaussianMellin j s * χ.LFunction s := by
-  -- Both sides are holomorphic for `re s > 0` and agree for `re s > 1` by `mellin_gaussianTheta`.
-  let f : ℂ → ℂ := mellin (gaussianTheta j fun n : ℕ ↦ χ n)
-  let g (z : ℂ) : ℂ := gaussianMellin j z * χ.LFunction z
-  have hf : DifferentiableOn ℂ f {z : ℂ | 0 < z.re} :=
-    (mellin_differentiableOn_and_bounded
-      (fun _ ↦ norm_gaussianTheta_char_le hχ_ne hχ_parity) measurable_gaussianTheta).1
-  have hg : DifferentiableOn ℂ g {z : ℂ | 0 < z.re} :=
-    gaussianMellin_differentiableOn_and_bdd.1.mul (by fun_prop)
-  have h_near_two : f =ᶠ[nhds 2] g := .mono ((isOpen_re_gt 1).mem_nhds (by simp)) fun z hz ↦ by
-    simp only [f, g, mellin_gaussianTheta (fun n ↦ χ.norm_le_one n) hz, χ.LFunction_eq_LSeries hz]
-  exact (hf.analyticOnNhd (isOpen_re_gt 0)).eqOn_of_preconnected_of_eventuallyEq
-    (hg.analyticOnNhd (isOpen_re_gt 0)) (convex_halfSpace_re_gt 0).isPreconnected
-    (by simp) h_near_two hs
+    mellin (gaussianTheta j fun n : ℕ ↦ χ n) s = gaussianMellin j s * χ.LFunction s :=
+  have o := isOpen_re_gt
+  ((mellin_differentiableOn_and_bounded (fun _ ht ↦ norm_gaussianTheta_char_le hχ_ne hχ_parity
+    ht) measurable_gaussianTheta).1.analyticOnNhd
+    (o 0)).eqOn_of_preconnected_of_eventuallyEq
+  ((gaussianMellin_differentiableOn_and_bdd.1.mul (by fun_prop)).analyticOnNhd (o 0))
+    (convex_halfSpace_re_gt 0).isPreconnected (by simp : 0 < re 2) (.mono ((o 1).mem_nhds (by simp))
+  (by intro z hz; simp only [Pi.mul_apply, mellin_gaussianTheta (fun n ↦ χ.norm_le_one n) hz,
+    χ.LFunction_eq_LSeries hz])) hs
 
 /-- **Riemann's formula.** For `χ ≠ 1` with `χ(-1) = (-1) ^ j` and `re s > 0` the
 identity `∫_0^∞ θ_χ(u) u ^ (s - 1/2) du / u = Γ_j(s) L(s, χ)` holds with absolute convergence
