@@ -643,25 +643,14 @@ lemma legendreSym_eq_jacobiSym_ordCompl {d : ℕ} [Fact d.Prime] (h8 : d % 8 = 7
 prime `d` that does not divide `M` is primitive. -/
 lemma isPrimitive_quadTwist {M d : ℕ} [NeZero M] [Fact d.Prime] {ψ : DirichletCharacter ℂ M}
     (hψ : ψ.IsPrimitive) (h2 : d ≠ 2) (hM : M.Coprime d) : (quadTwist ψ d).IsPrimitive := by
-  -- Dividing the twist by one factor leaves the other, so `M` divides `n d` and `d` divides `n M`,
-  -- where `n` is the conductor of the twist.
-  let ε : DirichletCharacter ℂ d := (chiK d).ringHomComp (algebraMap ℤ ℂ)
-  have h_twist (χ : DirichletCharacter ℂ M) :
-      quadTwist χ d = χ.changeLevel ⟨d, rfl⟩ * ε.changeLevel (by simp) := rfl
-  have hε_ne : ε ≠ 1 := fun h ↦ quadTwist_ne_one 1 d h2 hM (by simp [h_twist, h])
-  have hε : ε.conductor = d := ((dvd_prime Fact.out).1 ε.conductor_dvd_level).resolve_left
-    (mt eq_one_iff_conductor_eq_one.2 hε_ne)
-  have h_dvd (χ : DirichletCharacter ℂ (M * d)) :
-      (quadTwist ψ d * χ⁻¹).conductor ∣ (quadTwist ψ d).conductor * χ.conductor := by
-    grw [conductor_mul_dvd_lcm_conductor, Nat.lcm_dvd_mul, conductor_inv]
-  have hψ_cond : ψ.conductor = M := hψ
-  have hMn : M ∣ (quadTwist ψ d).conductor * d := by
-    simpa [h_twist, conductor_changeLevel, hε, hψ_cond] using h_dvd (ε.changeLevel (by simp))
-  have hdn : d ∣ (quadTwist ψ d).conductor * M := by
-    simpa [h_twist, conductor_changeLevel, mul_comm, hε, hψ_cond]
-      using h_dvd (ψ.changeLevel ⟨d, rfl⟩)
-  exact (quadTwist ψ d).conductor_dvd_level.antisymm
-    (hM.mul_dvd_of_dvd_of_dvd (hM.dvd_mul_right.mp hMn) (hM.symm.dvd_mul_right.mp hdn))
+  have h1 (ξ : DirichletCharacter ℂ M) := quadTwist_ne_one ξ d h2 hM
+  have H (B : DirichletCharacter ℂ (M * d)) :=
+    (conductor_mul_dvd_lcm_conductor (quadTwist ψ d) B⁻¹).trans (Nat.lcm_dvd_mul ..)
+  obtain _ := H (quadTwist 1 d), H (ψ.changeLevel ⟨d, rfl⟩), h1 1,
+    (@quadTwist 1 1 d _).conductor_dvd_level, (quadTwist ψ d).conductor_dvd_level.antisymm
+  simp_all [quadTwist, dvd_prime Fact.out, mul_comm, hM.dvd_mul_left,
+    eq_one_iff_conductor_eq_one, hM.symm.dvd_mul_left, conductor_inv,
+    hM.mul_dvd_of_dvd_of_dvd, conductor_changeLevel, IsPrimitive]
 
 /-- The number `d` is a prime, and the `L`-function of the twist `ψ (·/d)` (`quadTwist ψ d`) has a
 zero in the box `re s ≥ β`, `|im s| ≤ H`. -/
@@ -799,21 +788,15 @@ lemma exists_entireL_quadTwist_ne_zero {N : ℕ} [NeZero N] {β : ℝ} (H : ℝ)
     ∃ d : Primes, ((d : ℕ) : ZMod N) = a ∧ ∀ (ξ : DirichletCharacter ℂ N) (s : ℂ),
       β ≤ s.re → |s.im| ≤ H → entireL (quadTwist ξ d) s ≠ 0 := by
   classical
-  -- We may assume `β < 1`, as a smaller `β` gives a larger box.
-  wlog hβ_lt : β < 1 generalizing β with h_lt_one
-  · obtain ⟨d, hd, h_ne⟩ := h_lt_one (β := 3 / 4) (by norm_num) (by norm_num)
-    exact ⟨d, hd, fun ξ s h_re ↦ h_ne ξ s (by linarith)⟩
-  obtain ⟨δ, rfl⟩ : ∃ δ, β = 1 / 2 + 9 * δ := ⟨(β - 1 / 2) / 9, by ring⟩
-  have hδ : 0 < δ := by linarith
-  -- If every prime of the class were bad, only `O(X ^ (1 - δ / 2))` of them would be at most `X`,
-  -- so `∑ log d / d` over the class would converge.
+  obtain ⟨δ, hδ, hδbound⟩ := exists_pos_mul_lt (lt_min one_pos (sub_pos.2 hβ)) 9
+  obtain ⟨hδsmall, hδβ⟩ := lt_min_iff.1 hδbound
   by_contra! h_all
   have h_bad (d : Primes) (hd_class : ((d : ℕ) : ZMod N) = a) :
       IsBadPrime a (1 / 2 + 9 * δ) H d := by
     obtain ⟨ξ, s, h_re, h_im, h_zero⟩ := h_all d hd_class
     obtain ⟨h8, h_coprime⟩ := h_class d hd_class
     rw [entireL, ite_eq_right (quadTwist_ne_one ξ _ (by omega) h_coprime)] at h_zero
-    exact ⟨hd_class, ξ, ⟨s, h_re, h_im, h_zero⟩⟩
+    exact ⟨hd_class, ξ, ⟨s, by linarith, h_im, h_zero⟩⟩
   let f (n : ℕ) : ℂ := if n.Prime ∧ n = a then 1 else 0
   have h_count : (fun X ↦ ∑ n ∈ Icc 1 X, ‖f n‖) =O[atTop] fun X : ℕ ↦ (X : ℝ) ^ (1 - δ / 2) := by
     refine .trans (.of_norm_le fun X ↦ ?_) (zero_density_quadTwist hδ H fun d hd ↦ h_class ⟨d, hd⟩)
