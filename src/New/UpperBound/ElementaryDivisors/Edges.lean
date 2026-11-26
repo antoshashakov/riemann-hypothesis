@@ -101,8 +101,7 @@ lemma card_le_mul_finrank_of_dual_rows {O X I E : Type*} [CommRing O] [IsLocalRi
     have h_entry (y : X × I) : ∑ j : s, c j * residue O (Q y j) = 0 := by
       simpa [v] using congrArg (fun f : X → S ↦ S.subtype (f y.1) y.2) hc
     -- Pair the relation with row `i` of `R`: only the coefficient `c i` survives.
-    calc c i = ∑ j : s, c j * residue O ((R * Q) i j) := by
-          simp [h_dual, apply_ite (residue O)]
+    calc c i = ∑ j : s, c j * residue O ((R * Q) i j) := by simp [h_dual, apply_ite (residue O)]
       _ = ∑ y : X × I, residue O (R i y) * ∑ j : s, c j * residue O (Q y j) := by
           simp only [Matrix.mul_apply, map_sum, map_mul, mul_sum, mul_left_comm]
           exact sum_comm

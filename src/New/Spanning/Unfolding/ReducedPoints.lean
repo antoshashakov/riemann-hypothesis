@@ -64,8 +64,7 @@ lemma conjTranspose_eichler_mul_mul {n m : Type} [Fintype n] [DecidableEq n] [Fi
     (1 + g • (x * (uᴴ * J) - (u + x * (τ • (uᴴ * J * u) - s)) * (xᴴ * J)))ᴴ * J *
       (1 + g • (x * (uᴴ * J) - (u + x * (τ • (uᴴ * J * u) - s)) * (xᴴ * J))) = J := by
   -- Expand: the products through `xᴴ J u`, `xᴴ J x`, `uᴴ J x` vanish, and the rest cancels.
-  have hux : uᴴ * J * x = 0 := by
-    simpa [Matrix.mul_assoc, hJ] using congrArg conjTranspose hxu
+  have hux : uᴴ * J * x = 0 := by simpa [Matrix.mul_assoc, hJ] using congrArg conjTranspose hxu
   have h_zero (v : Matrix m n E) : xᴴ * (J * (u * v)) = 0 ∧ xᴴ * (J * (x * v)) = 0 ∧
       uᴴ * (J * (x * v)) = 0 := by
     simp only [← Matrix.mul_assoc, hxu, hxx, hux, Matrix.zero_mul, and_self]
@@ -339,10 +338,8 @@ lemma exists_classUnipotent_frameMatrix_eq [HasPrimitiveRoot5040 E] (c : S.Class
     rw [frameMatrix_unitriangular hu_unip _ j j.le_last, Matrix.add_apply,
       single_apply_of_row_ne a.castSucc_ne_last, add_zero]
   | cast i =>
-    have h_star : 𝔰.besselFrame j ≠ eStar a := by
-      induction j using Fin.lastCases <;> simp
-    have h_range : 𝔰.besselFrame j ∉ range 𝔰.indexX₀ := by
-      induction j using Fin.lastCases <;> simp
+    have h_star : 𝔰.besselFrame j ≠ eStar a := by induction j using Fin.lastCases <;> simp
+    have h_range : 𝔰.besselFrame j ∉ range 𝔰.indexX₀ := by induction j using Fin.lastCases <;> simp
     have h_diag : Sum.inl i = 𝔰.besselFrame j ↔ i.castSucc = j := by
       rw [← besselFrame_castSucc, besselFrame_injective.eq_iff]
     rw [frameMatrix, submatrix_apply, besselFrame_castSucc, hu i _ (.inl h_star)]

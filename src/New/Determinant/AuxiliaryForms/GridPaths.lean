@@ -66,8 +66,7 @@ def squares : ∀ {a b : ℕ}, GridPath a₀ b₀ a b → Finset (ℕ × ℕ)
   | a, b, down p => p.squares ∪ range a ×ˢ {b}
   | _, _, right p => p.squares
 
-lemma column_self : column (le_refl m) = nil := by
-  rw [column, Nat.decreasingInduction_self]
+lemma column_self : column (le_refl m) = nil := by rw [column, Nat.decreasingInduction_self]
 
 /-- The path down the first column from `(0, m)` to `(0, b)`, for `b < m`, is the one to
 `(0, b + 1)` followed by a step down. -/
@@ -76,8 +75,7 @@ lemma column_of_lt (hb : b < m) : column hb.le = (column hb).down := by
 
 /-- Along a path from `(a₀, b₀)` to `(a, b)` the first index does not fall and the second does
 not grow. -/
-lemma le_and_le (p : GridPath a₀ b₀ a b) : a₀ ≤ a ∧ b ≤ b₀ := by
-  induction p <;> omega
+lemma le_and_le (p : GridPath a₀ b₀ a b) : a₀ ≤ a ∧ b ≤ b₀ := by induction p <;> omega
 
 /-- The only path from `(0, m)` to `(a, m)` is `row m a`, the one that stays in the row `m`. -/
 lemma eq_row (p : GridPath 0 m a m) : p = row m a := by
@@ -108,8 +106,7 @@ lemma bounds_of_mem_squares {p : GridPath a₀ b₀ a b} {s : ℕ × ℕ} (hs : 
   | right p ih => grind [squares]
 
 /-- The path along a row has no step down, hence no squares. -/
-lemma squares_row (m a : ℕ) : (row m a).squares = ∅ := by
-  induction a <;> simp [row, squares, *]
+lemma squares_row (m a : ℕ) : (row m a).squares = ∅ := by induction a <;> simp [row, squares, *]
 
 /-- Let a path follow `q` to `(i, j + 1)`, step down to `(i, j)`, step right to `(i + 1, j)` and
 follow `r`. Then the unit square with lower left corner `(i, j)` is not among the `squares` of the

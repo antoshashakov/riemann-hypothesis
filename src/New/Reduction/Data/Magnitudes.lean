@@ -84,8 +84,7 @@ lemma scale_inequalities :
     D.log_logX₁_le_log_logB⟩
 
 /-- As a real number, `D.a` is the product of the scales `D.x` and `D.b`. -/
-lemma cast_a : (D.a : ℝ) = D.x * D.b := by
-  rw [a, cast_mul, ← D.exp_logX, ← D.exp_logB]
+lemma cast_a : (D.a : ℝ) = D.x * D.b := by rw [a, cast_mul, ← D.exp_logX, ← D.exp_logB]
 
 /-- `q₁ x₁` divides `a = x b`. Here `x₁ = D.natX₁` is the second scale of the data and
 `q₁ = D.q₁` is the order of the root of unity that generates the field `E` of the data over `K`. -/

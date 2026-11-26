@@ -1070,8 +1070,7 @@ lemma re_sum_coeff_mul_trace_besselTranslate_le {i : Fin 2}
         simp only [← h_mean, h_trace, mul_left_comm (x.coeff _), mul_sum]
     _ ≤ S.sourceDim * ‖∑ s, x.coeff s * S.reducedCharMean (mulSingle i s)‖ := by
         grw [re_le_norm, norm_mul, norm_natCast]
-    _ ≤ (S.b ^ 4)⁻¹ * S.sourceDim := by
-        grw [h_bound, mul_comm]
+    _ ≤ (S.b ^ 4)⁻¹ * S.sourceDim := by grw [h_bound, mul_comm]
 
 end BesselTrace
 

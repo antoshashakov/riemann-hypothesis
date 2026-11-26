@@ -78,8 +78,7 @@ lemma norm_mul_sub_mul_le {a c t : ℝ} {u v : ℂ} (ha : a ∈ Set.Icc 0 1) (hc
 `‖z‖ ≤ 2 re z + 12 t`. -/
 lemma norm_le_two_mul_re_add {p t : ℝ} {z : ℂ} (hp : 0 ≤ p) (hz : ‖z - p‖ ≤ 0.21 * p + 4 * t) :
     ‖z‖ ≤ 2 * z.re + 12 * t := by
-  have h_norm : ‖z‖ ≤ p + ‖z - p‖ := by
-    simpa [abs_of_nonneg hp] using norm_le_insert' z p
+  have h_norm : ‖z‖ ≤ p + ‖z - p‖ := by simpa [abs_of_nonneg hp] using norm_le_insert' z p
   have h_re : -‖z - p‖ ≤ z.re - p := by simpa using neg_le_of_abs_le (abs_re_le_norm (z - p))
   linarith
 

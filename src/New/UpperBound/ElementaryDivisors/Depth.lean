@@ -702,8 +702,7 @@ lemma New.mul_sum_exponentOf {N k : ℕ} [NeZero N] (n : ℕ) (x : Fin k × ZMod
     rw [← swapRows.bijective.comp_left.sum_comp]
     simp only [h_swap]
   calc k * ∑ β : Exponents N k n, (exponentOf β x : ℝ)
-      = ∑ b : Fin k, ∑ β : Exponents N k n, (exponentOf β (b, x.2) : ℝ) := by
-        simp [h_symm _ x.1]
+      = ∑ b : Fin k, ∑ β : Exponents N k n, (exponentOf β (b, x.2) : ℝ) := by simp [h_symm _ x.1]
     _ = ∑ β : Exponents N k n, (n : ℝ) := by
         simp [Finset.sum_comm (γ := Fin k), exponentOf, ← cast_sum, ← degree_eq_sum,
           Monomials.degree_eq]

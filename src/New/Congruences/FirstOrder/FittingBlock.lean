@@ -201,8 +201,7 @@ lemma exists_mul_prod_X_mem_fittingIdeal [DecidableEq G] [Finite J] {z : G → n
       fun j hj ↦ Ψ.sub_mem_ker_iff.1 (hΨ (mem_sup_left (hvT hj)))⟩
   refine ⟨(e * C ^ #I) • d, ?_, ?_⟩
   · calc addVal O (constantCoeff ((e * C ^ #I) • d))
-      _ = addVal O e + addVal O (constantCoeff d) + #I * addVal O C := by
-        simp [add_right_comm]
+      _ = addVal O e + addVal O (constantCoeff d) + #I * addVal O C := by simp [add_right_comm]
       _ ≤ b + (#I + #s) * addVal O C := by
         grw [he, hd_val, ← add_assoc, h_lengths, add_assoc, add_mul, add_comm (#s * addVal O C)]
   · -- From `fittingIdeal T` back to `fittingIdeal K` costs `∏ j ∈ I, C • X j`, and back to

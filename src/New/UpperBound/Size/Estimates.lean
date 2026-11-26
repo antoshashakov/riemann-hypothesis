@@ -304,8 +304,7 @@ lemma card_stdClasses_le_exp {n : Type} [Fintype n] [DecidableEq n] {K : Subgrou
     (hK : principalLevel n (D.piM * D.piN) ≤ K) (hn : Fintype.card n ≤ D.n D.m) :
     Nat.card (StdClasses K) ≤ exp (D.x ^ 30) := by
   -- `K` contains the principal level of `M * N`, which is `piM * piN` times its conjugate.
-  have h_dvd : D.piM * D.piN ∣ ↑(D.M * D.N) := by
-    simp [← piM_mul_star, ← piN_mul_star, mul_dvd_mul]
+  have h_dvd : D.piM * D.piN ∣ ↑(D.M * D.N) := by simp [← piM_mul_star, ← piN_mul_star, mul_dvd_mul]
   calc (Nat.card (StdClasses K) : ℝ)
     _ ≤ exp (D.x ^ 29 * (1 + .log ↑(D.M * D.N))) := D.card_stdClasses_le_exp_mul_log _
       (by lia) ((principalLevel_le_of_dvd h_dvd).trans hK)

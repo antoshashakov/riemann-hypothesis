@@ -232,8 +232,7 @@ lemma scaledSiegelConst_mul_decayConst_le [S.IsAdmissible] :
       ((Finset.one_le_prod₀ fun v _ ↦ S.one_le_abs_realM v).trans_eq h_kappa)
   have h_place : A = B * ((2 / s ^ 2) ^ (𝔰.n + 2 * 𝔰.ϱ ^ 2) * (s / s ^ (2 * 𝔰.ϱ)) /
       (2 * S.M ^ (𝔰.ϱ * (2 * 𝔰.ϱ + 1))) * x⁻¹ ^ 𝔰.n ^ 7) := by
-    have h_x : x ^ K = x ^ 𝔰.k * x⁻¹ ^ 𝔰.n ^ 7 := by
-      simp [hK, pow_add, field]
+    have h_x : x ^ K = x ^ 𝔰.k * x⁻¹ ^ 𝔰.n ^ 7 := by simp [hK, pow_add, field]
     simp only [A, B, h_x]
     generalize x⁻¹ ^ 𝔰.n ^ 7 = y
     simp only [x, Q, D, Shape.openCellConst, Shape.scaledVolumeRatio, sphereDensity, one_pow,

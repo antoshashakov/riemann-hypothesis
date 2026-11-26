@@ -137,8 +137,7 @@ lemma QuadField.exists_algebraMap_eq_of_star_eq {d : ℕ} [PrimeSevenModEight d]
   have h_mem {x : QuadField d} : x ∈ R ↔ star x = x := mem_maximalRealSubfield_iff_star_eq
   have h_prime : (Module.finrank ℚ (QuadField d)).Prime := by
     simp [QuadField.finrank_eq_two, Nat.prime_two]
-  have h_sqrt : QuadField.sqrtNegD d ∉ R := by
-    simp [h_mem, neg_eq_self, Subtype.ext_iff, NeZero.ne]
+  have h_sqrt : QuadField.sqrtNegD d ∉ R := by simp [h_mem, neg_eq_self, Subtype.ext_iff, NeZero.ne]
   rcases (IntermediateField.isSimpleOrder_of_finrank_prime ℚ (QuadField d) h_prime).eq_bot_or_eq_top
     R with h_bot | h_top
   · exact IntermediateField.mem_bot.1 (h_bot.le (h_mem.2 ha))
@@ -215,8 +214,7 @@ the infinite places `τ` of `E`, with `Φ` the CM type, is a natural number: it 
 real and nonnegative. -/
 lemma exists_natCast_eq_sum_norm_sq {y : P.E s} (hy : finiteImage id y ∈ Ô (P.E s)) :
     ∃ ν : ℕ, (ν : ℝ) = ∑ τ : InfinitePlace (P.E s), ‖Φ τ y‖ ^ 2 := by
-  have h_real : conj (∑ τ, Φ τ y * conj (Φ τ y)) = ∑ τ, Φ τ y * conj (Φ τ y) := by
-    simp [mul_comm]
+  have h_real : conj (∑ τ, Φ τ y * conj (Φ τ y)) = ∑ τ, Φ τ y * conj (Φ τ y) := by simp [mul_comm]
   obtain ⟨n, hn⟩ : ∃ n : ℤ, ∑ τ, Φ τ y * conj (Φ τ y) = n :=
     exists_eq_intCast_of_mem_quadInt_of_conj_eq (sum_mul_conj_mem_quadInt hy hy) h_real
   have hn_real : (n : ℝ) = ∑ τ, ‖Φ τ y‖ ^ 2 :=

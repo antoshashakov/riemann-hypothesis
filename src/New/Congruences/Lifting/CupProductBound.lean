@@ -965,8 +965,7 @@ lemma mem_liftIdeal_of_mul_E_pow {S : PairingSide O} {r : ℕ} {i : Letter} {a c
     have h_smul : g • (↑(p ^ c * k.z ^ a * k.E ^ (n + 1) : k.S) : Ainf) =
         p ^ c * (k.z.1 ^ a * (1 + tau * k.E * v * b₂)) * (ω ^ (n + 1) * k.E.1 ^ (n + 1)) := by
       simp [hE', hz, mul_pow, eq_add_of_sub_eq hb₂, add_comm]
-    have hq' : k.z.1 * tau * q = (ω : Ainf) ^ (n + 1) - 1 := by
-      simpa [zTau, mul_comm tau] using hq
+    have hq' : k.z.1 * tau * q = (ω : Ainf) ^ (n + 1) - 1 := by simpa [zTau, mul_comm tau] using hq
     -- The derivation by `g`, with multiplier `z υ`, trades one `E` for `p ^ cost z`.
     let β : Ainf := k.z * b₁ + υ * v * b₂ * ω ^ (n + 1)
     have h_der : k.zTau * k.E *

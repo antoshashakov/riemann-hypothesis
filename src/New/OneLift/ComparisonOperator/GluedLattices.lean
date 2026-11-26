@@ -628,8 +628,7 @@ lemma isBlockNormalised_iff (V : DividedSplitting N m a O z)
   rw [IsBlockNormalised, h_rows, mul_inclMatrix, h_split]
   constructor
   · rintro ⟨h_m : X' = inclMatrix O.chosenModulusSq.ResidueRing z, h_N⟩
-    have h_top : X'.submatrix z id = 1 := by
-      simp [h_m, inclMatrix]
+    have h_top : X'.submatrix z id = 1 := by simp [h_m, inclMatrix]
     exact ⟨h_top, by rwa [h_top, Matrix.mul_one], (h_diag_mul_eq_iff h_top).2 h_m⟩
   · rintro ⟨h_top : X'.submatrix z id = 1, h_N, h_m⟩
     exact ⟨(h_diag_mul_eq_iff h_top).1 h_m, by rwa [h_top, Matrix.mul_one] at h_N⟩

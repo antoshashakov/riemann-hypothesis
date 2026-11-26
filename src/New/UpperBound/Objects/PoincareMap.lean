@@ -237,8 +237,7 @@ theorem integral_mul_poincareAt (g : GInf D.E (D.signsY 0))
   calc J.relIndex D.chosenLevel * ∫ x, z x * (D.poincareAt g t φ).1 x ∂(D.spaceY 0).quotMeasure
     _ = ∫ x, z.levelTrace J D.chosenLevel x * (D.poincareAt g t φ).1 x ∂(D.spaceY 0).quotMeasure :=
         (z.integral_levelTrace_mul D.chosenLevel h_level).symm
-    _ = ∫ x, conj (y.1 x) * (D.poincareAt g t φ).1 x ∂(D.spaceY 0).quotMeasure := by
-        simp only [hy]
+    _ = ∫ x, conj (y.1 x) * (D.poincareAt g t φ).1 x ∂(D.spaceY 0).quotMeasure := by simp only [hy]
     -- The inner product on `𝒜(Y₀)` is `⟨y, y'⟩ = ∫ conj y · y'` by definition.
     _ = inner ℂ y (D.poincareAt g t φ) := rfl
     _ = ∫ r, ∑ q : D.chosenLevel ⧸ J.subgroupOf D.chosenLevel,

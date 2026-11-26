@@ -51,8 +51,7 @@ namespace New
 `p + 1` if `p` is inert. -/
 def leastFlatDegree (d p : ℕ) : ℕ := if p = d then 2 else p + 1
 
-lemma leastFlatDegree_pos (d p : ℕ) : 0 < leastFlatDegree d p := by
-  grind [leastFlatDegree]
+lemma leastFlatDegree_pos (d p : ℕ) : 0 < leastFlatDegree d p := by grind [leastFlatDegree]
 
 /-- Let `G` be a series over the ring of integers `𝒪 = valRingCp p` of `ℂ_p`, read over `ℂ_p` by
 `seriesToCp`, and let `i < m`. The part `congruencePart m i` of `G` in the degrees `≡ i` mod `m` is
@@ -212,8 +211,7 @@ lemma expSubst_negLogThetaPart_sub_mem :
     (ζ ^ i)⁻¹ ^ (p + 1) • rescale (ζ ^ i) C.negLogTheta - C.negLogTheta
   have h_zero : constantCoeff (C.negLogThetaPart - C.negLogTheta : ℂ_[p]⟦X⟧) = 0 := by
     simp [constantCoeff_negLogThetaPart, constantCoeff_negLogTheta]
-  have h_term_zero (i : ℕ) : constantCoeff (term i) = 0 := by
-    simp [term, constantCoeff_negLogTheta]
+  have h_term_zero (i : ℕ) : constantCoeff (term i) = 0 := by simp [term, constantCoeff_negLogTheta]
   have h_sum : ∑ _i ∈ range (primeNorm d p - 1), (C.negLogThetaPart - C.negLogTheta) =
       ∑ i ∈ range (primeNorm d p - 1), term i := by
     rw [sum_sub_distrib, sum_sub_distrib, negLogThetaPart, congruencePart_eq_sum hζ, sum_const,
@@ -380,8 +378,7 @@ lemma exists_functional_equation_exponentSeries {ϖ : ℂ_[p]} {Y : (valRingCp p
     rw [← mul_right_inj' hq0]
     linear_combination (norm := field) -(ϖ ^ (p + 1) / p)⁻¹ * h_scaled_coeff
   calc ‖(1 - π ^ n / q) * coeff n (C.exponentSeries ϖ) - u * l * (coeff n (Y ^ i)).val‖
-    _ = ‖π‖ * ‖(coeff n R).val‖ := by
-      rw [h_coeff, norm_mul, norm_mul, hu, one_mul, norm_pow, hϖπ]
+    _ = ‖π‖ * ‖(coeff n R).val‖ := by rw [h_coeff, norm_mul, norm_mul, hu, one_mul, norm_pow, hϖπ]
     _ ≤ ‖π‖ := mul_le_of_le_one_right (norm_nonneg π) (coeff n R).property
 
 /-! ## Step 3: solving the functional equation -/

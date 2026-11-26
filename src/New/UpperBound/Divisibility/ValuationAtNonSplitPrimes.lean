@@ -607,8 +607,7 @@ where the rank grows by `t + 1` at each lift. Put `z = p ^ h` and `q = z ^ 2` wi
 `p ^ (f r t)`. -/
 lemma pow_mul_pow_choose_two_dvd {h i r : ℕ} (h_le_f : 2 * h ≤ D.f) (hi : i ≤ r) (hr : r ≤ D.t) :
     (p ^ h) ^ ((D.t + 1) * i) * ((p ^ h) ^ 2) ^ i.choose 2 ∣ p ^ (D.f * r * D.t) := by
-  have h_choose : i + 2 * i.choose 2 = i * i := by
-    induction i <;> grind [Nat.choose_one_right]
+  have h_choose : i + 2 * i.choose 2 = i * i := by induction i <;> grind [Nat.choose_one_right]
   have h_power : (p ^ h) ^ ((D.t + 1) * i) * ((p ^ h) ^ 2) ^ i.choose 2 =
       p ^ (h * (D.t * i + i * i)) := by
     rw [← h_choose]

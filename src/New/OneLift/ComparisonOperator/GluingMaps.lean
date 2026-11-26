@@ -815,8 +815,7 @@ lemma normSqAt_glue_le (ζ : FormTuples j) (σ : ℂ ≃+* ℂ) :
         grw [classSum_le_card_mul_sq h_value, h_classes]
     _ = c * (exp D.b * (N * (exp D.b * D.chosenGroupOrder)) ^ 2) * S := by
         simp (disch := positivity) [mul_pow, sq_sqrt, mul_assoc]
-    _ ≤ exp (D.f * D.m * D.b * D.logB ^ 2) * S := by
-        grw [M_pow_denominatorExponent_sq_mul_le_exp j]
+    _ ≤ exp (D.f * D.m * D.b * D.logB ^ 2) * S := by grw [M_pow_denominatorExponent_sq_mul_le_exp j]
 
 /-! ### Periods of false lifts -/
 

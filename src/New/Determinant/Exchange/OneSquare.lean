@@ -838,8 +838,7 @@ theorem exists_sum_pairLift_comp_pairTransposedLift_eq_smul
       exact integral_congr_ae (.of_forall h_exch_at)
     simpa only [smul_eq_mul, mul_left_comm (Ψ _), ← Finset.mul_sum] using h_eq
   calc
-    inner ℂ z ((∑ y, Ψ' y • Θ' i y) f₁) = ∑ y, Ψ' y * inner ℂ z (Θ' i y f₁) := by
-      simp
+    inner ℂ z ((∑ y, Ψ' y • Θ' i y) f₁) = ∑ y, Ψ' y * inner ℂ z (Θ' i y f₁) := by simp
     _ = κ / c * ∑ x, Ψ x * inner ℂ z (Θ i x f₁) := by
       rw [div_mul_eq_mul_div, h_scalar, mul_div_cancel_left₀ _ hc]
     _ = inner ℂ z (((κ / c) • ∑ x, Ψ x • Θ i x) f₁) := by simp

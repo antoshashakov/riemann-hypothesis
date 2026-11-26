@@ -492,8 +492,7 @@ lemma one_add_norm_sq_le_norm_det_one_add (A : Matrix n n ℂ) :
     calc ‖(1 + Aᴴ * A).det‖ = ‖(Aᴴ * A).charpoly.eval (-1)‖ := by
           rw [eval_charpoly, map_neg, map_one, ← neg_add', det_neg]
           simp
-      _ = ∏ i : n, ‖(-1 : ℂ) - μ i‖ := by
-          simp [μ, hA.isHermitian.charpoly_eq, Polynomial.eval_prod]
+      _ = ∏ i : n, ‖(-1 : ℂ) - μ i‖ := by simp [μ, hA.isHermitian.charpoly_eq, Polynomial.eval_prod]
       _ = ∏ i : n, (1 + μ i) := prod_congr rfl fun i _ ↦ by
           rw [← neg_add', norm_neg, ← ofReal_one, ← ofReal_add,
             Complex.norm_of_nonneg (add_nonneg zero_le_one (hμ i))]

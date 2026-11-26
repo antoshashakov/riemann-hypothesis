@@ -315,8 +315,7 @@ theorem exists_adjoint_chain_comp_eq_smul_rallisProduct (D : Data P) :
   · have h_injective : Function.Injective (D.Θ 1) :=
       (D.lowerChainAtLevel_injective 1).comp D.targetForms.injective_subtype
     have h_forms_zero (y : D.targetForms) : y = 0 := by
-      have h_inner : inner ℂ (D.Θ 1 y) (D.Θ 1 y) = 0 := by
-        rw [h_gram, hc_one, zero_mul, zero_mul]
+      have h_inner : inner ℂ (D.Θ 1 y) (D.Θ 1 y) = 0 := by rw [h_gram, hc_one, zero_mul, zero_mul]
       have h_image : D.Θ 1 y = 0 := inner_self_eq_zero.1 h_inner
       exact (map_eq_zero_iff (D.Θ 1) h_injective).1 h_image
     have h_end (S : End ℂ D.targetForms) : S = 0 := LinearMap.ext fun y ↦ h_forms_zero (S y)

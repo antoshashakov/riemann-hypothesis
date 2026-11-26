@@ -728,8 +728,7 @@ lemma floorMeasure_ne_zero {F : PlaceData ι T m} (l : ℕ) : F.floorMeasure l �
   · -- the measure maps onto a non-zero quadric measure
     have h_map : (F.floorMeasure l).map (orbitPoint ⟨l, hl⟩) = F.floorQuadricMeasure ⟨l, hl⟩ :=
       (measurePreserving_orbitPoint ⟨l, hl⟩).map_eq
-    have h_quadric : F.floorQuadricMeasure ⟨l, hl⟩ ≠ 0 := by
-      simp (disch := fun_prop) [NeZero.ne]
+    have h_quadric : F.floorQuadricMeasure ⟨l, hl⟩ ≠ 0 := by simp (disch := fun_prop) [NeZero.ne]
     intro h_zero
     rw [h_zero, Measure.map_zero] at h_map
     exact h_quadric h_map.symm

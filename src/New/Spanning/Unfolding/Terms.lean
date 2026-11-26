@@ -312,8 +312,7 @@ lemma map_termDisc_eq_norm {γ : S.G E} (v : InfinitePlace E) :
   have h_eq : S.N * ∑ i : 𝔰.κ, ‖Φ v ((frameImage γ.val.val *ᵥ y) (𝔰.indexX₀ i))‖ ^ 2 = q :=
     mul_sum_norm_sq_frameImage_mulVec_eq hy v
   have h_nonneg : 0 ≤ q := h_eq.le.trans' (by positivity)
-  have h_disc : Φ v (S.termDisc γ) = (q : ℂ) := by
-    simp [hq, h_last, mul_pow, frameDisc, mul_conj']
+  have h_disc : Φ v (S.termDisc γ) = (q : ℂ) := by simp [hq, h_last, mul_pow, frameDisc, mul_conj']
   exact eq_coe_norm_of_nonneg (by rwa [h_disc, zero_le_real])
 
 /-- If `S.termDisc γ` is nonzero, then `γ` has cell rank `ϱ + 1` (`S.HasCellRank` at

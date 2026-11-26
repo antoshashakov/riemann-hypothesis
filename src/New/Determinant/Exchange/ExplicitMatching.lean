@@ -905,8 +905,7 @@ lemma modKernel_one_of_isEmpty [IsEmpty b] {t : b → ℤˣ} {s : n → ℤˣ} (
   obtain rfl : x = 1 := Subsingleton.eq_one x
   have h_triv : G.onHom ((1 : G E t), g) = 1 := Subsingleton.eq_one _
   have h_coe (z : Circle) : Circle.coeHom z = (z : ℂ) := rfl
-  have h_char : pairChar α β ((1 : G E t), g) = (α.val g.det : ℂ) := by
-    simp [pairChar, h_coe]
+  have h_char : pairChar α β ((1 : G E t), g) = (α.val g.det : ℂ) := by simp [pairChar, h_coe]
   -- The datum is the vacuum, and the only lattice vector is `0`.
   have h_vac : (V'.hom W).vacElem 0 = 1 := by
     simp [vacElem_apply_eq_prod_lineTheta, funext_iff, Fintype.prod_empty]

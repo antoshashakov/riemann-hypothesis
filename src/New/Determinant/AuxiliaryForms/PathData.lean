@@ -369,8 +369,7 @@ lemma gridChar_det {ϑ : D.MFoldTwist} (c : Bool) (l : ℕ) (n : Type) [Fintype 
         ((gridModulus ϑ).reductionGL k).val.det := by
   refine (gridChar_hasWeight ϑ c l n).apply_det_eq_charOfTamePart (fun w hw ↦ ?_) _
   -- outside the modulus `w` is neither a chosen place nor in `ϑ.Q`, so the tame part is trivial
-  obtain ⟨hw_chosen, hw_twist⟩ : ¬D.IsChosen w ∧ w ∉ ϑ.Q := by
-    simpa [places_twistModulus] using hw
+  obtain ⟨hw_chosen, hw_twist⟩ : ¬D.IsChosen w ∧ w ∉ ϑ.Q := by simpa [places_twistModulus] using hw
   have h_one : TameChar.one.tamePart w = (1 : MulChar (ResField w) ℂ) := rfl
   cases c <;> simp [liftTamePart, TameChar.pow, hw_chosen, h_one, ϑ.tamePart_eq_one w hw_twist]
 

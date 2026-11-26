@@ -311,8 +311,7 @@ lemma omega_mem_standardData {g : Gf (P.E s) n} (hg : g ∈ integralAbove n p)
     obtain ⟨x, hx, rfl⟩ := h_gen
     -- The image is a multiple of the translate by `g x` of a sum of translates of the vacuum by the
     -- `g y`, with `y` integral. The factor is a unit, as `g⁻¹` is integral above `p` too.
-    have h_unit : ‖ιₚ (finMultiplier g⁻¹)⁻¹‖ = 1 := by
-      simp [norm_finMultiplier_eq_one (inv_mem hg)]
+    have h_unit : ‖ιₚ (finMultiplier g⁻¹)⁻¹‖ = 1 := by simp [norm_finMultiplier_eq_one (inv_mem hg)]
     rw [omega_finHeisenbergOp_intVacuum]
     refine smul_mem_standardData_of_norm_le_one h_unit.le
       (finHeisenbergOp_mem_standardData (mulVec_mem_integralAfter hg hx) ?_)

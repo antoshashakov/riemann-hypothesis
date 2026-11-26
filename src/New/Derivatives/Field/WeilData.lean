@@ -433,8 +433,7 @@ lemma weilData_j_eq : (WeilData.j : P.E s) = -(P.sqrtNegDInE s : P.E s)⁻¹ := 
 
 /-- Every embedding of the CM type sends `ȷ` to `i / √d`. -/
 lemma phi_weilData_j (τ : P.Φ s) : Φ τ (WeilData.j : P.E s) = Complex.I / √P.d := by
-  have h_sqrt : Φ τ (P.sqrtNegDInE s : P.E s) = Complex.I * √P.d := by
-    simp
+  have h_sqrt : Φ τ (P.sqrtNegDInE s : P.E s) = Complex.I * √P.d := by simp
   rw [weilData_j_eq, map_neg, map_inv₀, h_sqrt, mul_inv, Complex.inv_I, neg_mul, neg_neg,
     div_eq_mul_inv]
 

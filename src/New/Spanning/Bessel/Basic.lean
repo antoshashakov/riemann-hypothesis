@@ -162,8 +162,7 @@ lemma continuous_besselLength : Continuous (besselLength : 𝔰.G₁ → ℝ) :=
     (div_le_iff₀' (Units.norm_pos _)).2 (besselLength_le_norm_inv_mul_mul_besselLength x y)
   have h_lower : ContinuousAt (fun x : 𝔰.G₁ ↦ besselLength y / ‖(x⁻¹ * y).val.val‖) y := by
     fun_prop (disch := simp)
-  have h_upper : ContinuousAt (fun x : 𝔰.G₁ ↦ ‖(y⁻¹ * x).val.val‖ * besselLength y) y := by
-    fun_prop
+  have h_upper : ContinuousAt (fun x : 𝔰.G₁ ↦ ‖(y⁻¹ * x).val.val‖ * besselLength y) y := by fun_prop
   exact Filter.Tendsto.squeeze (by simpa using h_lower.tendsto) (by simpa using h_upper.tendsto)
     h_div_le (besselLength_le_norm_inv_mul_mul_besselLength y)
 
@@ -232,8 +231,7 @@ theorem norm_add_one_le_of_mem_frameBox (h_box : y ∈ frameBox M) (hM_one : 1 �
   have h_sq : ‖A‖ * ‖A‖ ≤ (1 + (4 * 𝔰.ϱ + 2) * M) * ‖A‖ := calc
     _ = ‖𝔰.J₁ + A * (1 - 𝔰.J₁) * star A‖ := by
       simp [← norm_self_mul_star, mul_sub, sub_mul, mul_assoc, h_form]
-    _ ≤ 1 + ‖A * (1 - 𝔰.J₁)‖ * ‖A‖ := by
-      grw [norm_add_le, norm_J₁, norm_mul_le, norm_star]
+    _ ≤ 1 + ‖A * (1 - 𝔰.J₁)‖ * ‖A‖ := by grw [norm_add_le, norm_J₁, norm_mul_le, norm_star]
     _ ≤ (1 + (4 * 𝔰.ϱ + 2) * M) * ‖A‖ := by nlinarith
   -- Cancel `‖A‖`; then `1 + (4 ϱ + 2) M + 1 ≤ 8 (ϱ + 1) M` as `M ≥ 1`.
   grw [← U.norm_inv, ← hA,

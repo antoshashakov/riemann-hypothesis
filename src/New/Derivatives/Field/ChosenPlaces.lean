@@ -97,8 +97,7 @@ lemma exists_piM_mul_star_eq_levelPrime_mul_coprime {i : Fin 2} : ∃ c : ℕ,
   have h_coprime : (D.levelPrime i).Coprime (D.levelPrime i.rev) :=
     (coprime_primes (D.levelPrime_prime i) (D.levelPrime_prime i.rev)).2
       (D.levelPrime_injective.ne h_ne)
-  have h_prod : D.M = D.levelPrime i * D.levelPrime i.rev := by
-    fin_cases i <;> simp [M, mul_comm]
+  have h_prod : D.M = D.levelPrime i * D.levelPrime i.rev := by fin_cases i <;> simp [M, mul_comm]
   exact ⟨D.levelPrime i.rev, by rw [piM_mul_star, h_prod, Nat.cast_mul], h_coprime⟩
 
 /-- If a finite place w of E is chosen, that is, its prime ideal contains `D.piM` (an integer of E

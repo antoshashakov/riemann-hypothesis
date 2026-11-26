@@ -123,8 +123,7 @@ lemma inv_sub_one_smul_eq (hc : ∀ g h : Gal(Ω/E), c (g * h) = c g + ρ g • 
     (ρ φ⁻¹ - 1) • c γ = -(ρ φ⁻¹ • (ρ φ - 1) • c γ) := by
       rw [← mul_smul, mul_sub, h_inv, mul_one, ← neg_smul, neg_sub]
     _ = -(ρ φ⁻¹ • (ρ γ - 1) • c φ) := by rw [h_rel]
-    _ = (ρ γ - 1) • c φ⁻¹ := by
-      rw [cocycle_apply_inv hc, smul_neg, ← mul_smul, h_comm, mul_smul]
+    _ = (ρ γ - 1) • c φ⁻¹ := by rw [cocycle_apply_inv hc, smul_neg, ← mul_smul, h_comm, mul_smul]
 
 /-- The relation from tame inertia. Let `q` be prime to the place `A`, let `ρ` be trivial on
 inertia near `1`, and let each inertial element act by a scalar `α` with `∑ i < q, α ^ i = 0`. If

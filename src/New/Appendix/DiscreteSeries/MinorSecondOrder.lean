@@ -309,8 +309,7 @@ lemma expMinor_mul_mem_slitPlane (hQ : IsStarProjection Q) (hρ : ρ ≤ 1 / 10)
   obtain ⟨r, h_minor, hr⟩ := exists_expMinor_eq_cexp hQ hρ h₁ h₂ h₃
   have hρ_nonneg : 0 ≤ ρ := (norm_nonneg A₁).trans h₁
   have hr_small : ‖r‖ ≤ 216 * (1 / 10) ^ 3 := hr.trans (by gcongr)
-  have h_near : ‖cexp r - 1‖ < 1 := by
-    linarith [Complex.norm_exp_sub_one_le (x := r) (by linarith)]
+  have h_near : ‖cexp r - 1‖ < 1 := by linarith [Complex.norm_exp_sub_one_le (x := r) (by linarith)]
   rw [h_minor, ← Complex.exp_add, add_neg_cancel_comm, ← add_sub_cancel 1 (cexp r)]
   exact mem_slitPlane_of_norm_lt_one h_near
 
@@ -495,8 +494,7 @@ lemma norm_le_mul_sq_of_even {f : ℂ → ℂ} {R C : ℝ} {z : ℂ}
     (h_zero : f 0 = 0) (h_bound : ∀ w ∈ Metric.ball (0 : ℂ) R, ‖f w‖ ≤ C)
     (hz : z ∈ Metric.ball (0 : ℂ) R) : ‖f z‖ ≤ C * (‖z‖ / R) ^ 2 := by
   have hR : 0 < R := Metric.nonempty_ball.1 ⟨z, hz⟩
-  have h_deriv_zero : deriv f 0 = 0 := by
-    simpa [h_even, self_eq_neg] using deriv_comp_neg f 0
+  have h_deriv_zero : deriv f 0 = 0 := by simpa [h_even, self_eq_neg] using deriv_comp_neg f 0
   have h_order : (fun w : ℂ ↦ f w - f 0) =o[nhds 0] fun w : ℂ ↦ ‖w - 0‖ ^ 1 := by
     simpa [h_deriv_zero] using
       (hf.differentiableAt (Metric.ball_mem_nhds 0 hR)).hasDerivAt.isLittleO.norm_right

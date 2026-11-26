@@ -41,8 +41,7 @@ variable {P : Parameters} (D : Data P)
 
 /-- The ideal of `E` spanned by `D.piM`, an integer of `K` of norm `p₀ p₁` viewed in `E`, has norm
 `M ^ f`, where `M = D.M = p₀ p₁` and `f = D.f` is the number of infinite places of `E`. -/
-lemma absNorm_piM : absNorm (span {D.piM}) = D.M ^ D.f := by
-  simp [span_piM, prod_q_chosenPlace]
+lemma absNorm_piM : absNorm (span {D.piM}) = D.M ^ D.f := by simp [span_piM, prod_q_chosenPlace]
 
 /-- At each finite place `w` of `E`, the finite idele `D.chosenIdele` has the same valuation `v` as
 `D.piM`, an integer of `K` of norm `p₀ p₁` viewed in `E`, whose ideal the idele generates. -/

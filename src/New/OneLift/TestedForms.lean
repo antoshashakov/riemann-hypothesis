@@ -521,8 +521,7 @@ lemma innerAt_heckePolyOnForms_eq_zero {w : FinPlace E} (hw : star w ≠ w)
     (hz : O.heckePolyOnForms hw hw_off X z = 0) (v : O.FormV) :
     innerAt σ (O.heckePolyOnForms hw hw_off X v) z = 0 := by
   obtain ⟨A', h_adj, h_comm⟩ := O.exists_adjoint_heckePolyOnForms_comm hw hw_off X σ
-  have h_self : innerAt σ (A' z) (A' z) = 0 := by
-    simp [← h_adj, h_comm, hz]
+  have h_self : innerAt σ (A' z) (A' z) = 0 := by simp [← h_adj, h_comm, hz]
   rw [h_adj, eq_zero_of_innerAt_self σ (A' z) h_self, map_zero]
 
 /-- A form orthogonal to the image of the Hecke polynomial operator H_w(X) lies in its kernel. -/

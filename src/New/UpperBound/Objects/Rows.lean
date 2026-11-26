@@ -682,8 +682,7 @@ lemma hcParameter_descentPair (ϑ : D.TameChar) (τ : D.Φ) (j : D.LiftIndex) {p
         (card (D.RowIndex ⊕ Fin D.t)) τ a := by
     -- The columns above height `a` cancel the exponent `detExp`.
     have h_odd : D.t % 2 = 1 := Nat.odd_iff.1 D.t_odd
-    have hL : L a = D.r - 2 * a + 2 * (D.t / 2) := by
-      simp [L, ℓ, D.t_odd.pos]
+    have hL : L a = D.r - 2 * a + 2 * (D.t / 2) := by simp [L, ℓ, D.t_odd.pos]
     rw [hL, hcParameter, diagramWeight_apply, sum_Ioo_posRank_columnCount_descentPair,
       DescentPair.detExp, h_card]
     omega

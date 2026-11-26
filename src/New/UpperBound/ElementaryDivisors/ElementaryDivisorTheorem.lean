@@ -586,8 +586,7 @@ lemma mul_defectThreshold_le_mul_degree (h_large : T.IsLargeDegree k n r θ) :
     (mul_comm _ _).trans_le (mul_le_mul_of_nonneg_left hL (by positivity))
   have hc : (T.congruencePrecision k : ℝ) ≤ 15 / 2 * (k * u) :=
     (T.congruencePrecision_le_mul_log k).trans_eq (by ring)
-  have h_const : (180 : ℝ) ≤ 27 ^ 4 * N ^ 3 * k := by
-    nlinarith [pow_le_pow_left₀ zero_le_two hN 3]
+  have h_const : (180 : ℝ) ≤ 27 ^ 4 * N ^ 3 * k := by nlinarith [pow_le_pow_left₀ zero_le_two hN 3]
   have h_power : (180 * N * k ^ 3 : ℝ) ≤ u ^ 4 :=
     calc (180 * N * k ^ 3 : ℝ) ≤ 27 ^ 4 * N ^ 3 * k * N * k ^ 3 := by gcongr
       _ = (27 * (N * k)) ^ 4 := by ring

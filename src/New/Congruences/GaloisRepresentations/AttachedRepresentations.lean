@@ -333,8 +333,7 @@ lemma New.Selmer.coeff_zero_mul_coeff_star {P : Parameters} {D : Data P} {n M : 
     simpa [σ, smul_left_inj, smul_smul, hf, h_top, hs, hu] using h_rel 1 k (by omega)
   have h_zero : (Q w).coeff 0 = (-1) ^ (k + 1) * (w.q : ℂ) ^ (k + k.choose 2) * s (k + 1) := by
     simp [hQs, h_card, Nat.choose]
-  have h_first : (Q w).coeff 1 = (-1) ^ k * (w.q : ℂ) ^ k.choose 2 * s k := by
-    simp [hQs, h_card]
+  have h_first : (Q w).coeff 1 = (-1) ^ k * (w.q : ℂ) ^ k.choose 2 * s k := by simp [hQs, h_card]
   have h_star : (Q (star w)).coeff k = -u 1 := by simp [hQu, h_card]
   rw [h_zero, h_first, h_star, ← h_one]
   ring

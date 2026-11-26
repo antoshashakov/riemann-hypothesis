@@ -48,10 +48,8 @@ lemma norm_det_sq_le_exp (Y : Matrix n n ℂ) :
   have trace_eq : (Yᴴ * Y - 1).trace.re = ∑ i, (hY.eigenvalues i - 1) := by
     rw [trace_sub, hY.trace_eq_sum_eigenvalues]
     simp
-  calc ‖Y.det‖ ^ 2 = ‖(Yᴴ * Y).det‖ := by
-        rw [det_mul, det_conjTranspose, norm_mul, norm_star, sq]
-    _ = ∏ i, hY.eigenvalues i := by
-        simp [hY.det_eq_prod_eigenvalues, abs_of_nonneg (nonneg _)]
+  calc ‖Y.det‖ ^ 2 = ‖(Yᴴ * Y).det‖ := by rw [det_mul, det_conjTranspose, norm_mul, norm_star, sq]
+    _ = ∏ i, hY.eigenvalues i := by simp [hY.det_eq_prod_eigenvalues, abs_of_nonneg (nonneg _)]
     _ ≤ ∏ i, Real.exp (hY.eigenvalues i - 1) :=
         prod_le_prod₀ (fun i _ ↦ nonneg i) fun i _ ↦ by
           linarith [Real.add_one_le_exp (hY.eigenvalues i - 1)]

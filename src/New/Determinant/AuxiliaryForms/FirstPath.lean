@@ -263,8 +263,7 @@ lemma gridLevelForms_eq_map_transposedChain :
   -- As `φ` and `y` are the conjugates of `U` and `z`, both integrals are inner products.
   have transpose : inner ℂ U U = inner ℂ z (D.transposedChain 1 true 0 φ) := h_integral
   -- The right side vanishes, as `z` is orthogonal to the image.
-  have U_zero : U = 0 := by
-    simpa [inner_eq_zero_symm.1 (hz_orth _ ⟨φ, φ_mem, rfl⟩)] using transpose
+  have U_zero : U = 0 := by simpa [inner_eq_zero_symm.1 (hz_orth _ ⟨φ, φ_mem, rfl⟩)] using transpose
   have h_conj : conjForm (isConjKernelPair_gridKernel (by simp) true).2 z = 0 :=
     congrArg Subtype.val (D.eq_zero_of_weightedChain_triangleLift_eq_zero U_zero)
   exact Subtype.ext (star_eq_zero.1 (congrArg Subtype.val h_conj))

@@ -905,8 +905,7 @@ lemma _root_.New.finrank_ker_mul_le {V : Type} [AddCommGroup V] [Module ℂ V] [
   rw [End.mul_eq_comp, LinearMap.ker_comp]
   exact_mod_cast h_rank
 
-lemma ramifyingOp_empty {P : Parameters} (D : Data P) : D.ramifyingOp ∅ = 1 := by
-  simp [ramifyingOp]
+lemma ramifyingOp_empty {P : Parameters} (D : Data P) : D.ramifyingOp ∅ = 1 := by simp [ramifyingOp]
 
 /-- Adding a prime `w ∉ s` to `s` multiplies `D.ramifyingOp s` on the left by `1 - z_w`, where
 `z_w = D.scalingGenerator w` acts on source forms through `D.centralRep`. -/

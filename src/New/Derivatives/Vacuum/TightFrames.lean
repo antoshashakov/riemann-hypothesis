@@ -485,8 +485,7 @@ lemma taylor_line_eq_subst_jetSeries (hf : f ∈ V.finitePart) (a : ℂ)
   -- Its derivatives at `0` are `∫ L w ^ k * g w`, and these are jets of `V.jetSeries a f`.
   ext k
   let L : (InfinitePlace E × n → ℂ) →L⋆[ℂ] ℂ := a • ∑ p, innerSLFlip ℂ (v p) ∘SL .proj p
-  have hL (w : InfinitePlace E × n → ℂ) : L w = a * ∑ p, v p * star (w p) := by
-    simp [L]
+  have hL (w : InfinitePlace E × n → ℂ) : L w = a * ∑ p, v p * star (w p) := by simp [L]
   let g (w : InfinitePlace E × n → ℂ) : ℂ := realVac w * f (realVec w)
   have h_line (t : ℂ) : entireTheta f (a • t • v) =
       ∫ w, exp (t * L w) * g w ∂normalizedVolume (InfinitePlace E × n) := by

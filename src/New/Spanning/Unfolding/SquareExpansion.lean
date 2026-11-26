@@ -208,8 +208,7 @@ lemma exists_scalar_mul_besselS {γ : S.G E} {c c' : S.Classes} {s : S.ResidueGL
   let γ₀ : S.G E := (scalarIsometry (S.ratMiddle E).splitGram ζ hζ)⁻¹ * γ
   have hγ₀ : γ₀ ∈ besselS := scalarIsometry_inv_mul_mem_besselS hζ fun a ↦ h_flag a bot_le
   -- The scalar `ζ` as an element `z` of the stabilizer of the lattice; `k = z k₀`.
-  have hζ_fin : (ζ : 𝔸f E) * star (ζ : 𝔸f E) = 1 := by
-    simpa using congrArg (algebraMap E (𝔸f E)) hζ
+  have hζ_fin : (ζ : 𝔸f E) * star (ζ : 𝔸f E) = 1 := by simpa using congrArg (algebraMap E (𝔸f E)) hζ
   let z : S.latticeStabilizer := ⟨scalarIsometry _ (ζ : 𝔸f E) hζ_fin,
     mem_intGL.2 ⟨IsIntMatrix.smul h_int .one, IsIntMatrix.smul (star_mem_Ô h_int) .one⟩⟩
   let k₀ : S.latticeStabilizer := z⁻¹ * k
@@ -665,8 +664,7 @@ theorem secondMoment_compl_besselS_le [HasPrimitiveRoot5040 E] [hS : S.IsAdmissi
       grw [h_meetBound_def, prod_const, card_univ, Fintype.card_prod, S.card_chosenPlaces,
           Fintype.card_bool,
         Nat.cast_pow, pow_mul', M_div_b_le_levelPrime_sq]
-    have h_exp : 30 ≤ 3 * (𝔰.k * Core.numInfPlaces E) := by
-      linarith [S.forty_le_k_mul_numInfPlaces]
+    have h_exp : 30 ≤ 3 * (𝔰.k * Core.numInfPlaces E) := by linarith [S.forty_le_k_mul_numInfPlaces]
     calc _ ≤ (S.b ^ (2 * Core.numInfPlaces E) / (S.M / S.b) ^ Core.numInfPlaces E) ^ 𝔰.k *
           ((S.M / S.b ^ 6) ^ (𝔰.k * Core.numInfPlaces E) * S.identitySecondMoment) := by
           grw [hS.mainSecondMoment_le, ← h_meetBound_ge]

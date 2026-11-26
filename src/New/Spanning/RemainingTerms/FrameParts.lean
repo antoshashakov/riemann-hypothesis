@@ -541,8 +541,7 @@ lemma HasCellRank.sum_norm_sq_sub_mul_inv_lt_one (hγ : S.HasCellRank j γ)
   calc ∑ i : 𝔰.κ, ‖Φ w (((framePartX₀ γ' - framePartX₀ γ) *
           (paddedLeading j (S.frameProducts γ))⁻¹) i k)‖ ^ 2
       = ∑ i : 𝔰.κ, ‖Φ w (y γ' i) - Φ w (y γ i)‖ ^ 2 := by simp only [h_col, map_sub]
-    _ ≤ ∑ i : 𝔰.κ, 2 * (‖Φ w (y γ' i)‖ ^ 2 + ‖Φ w (y γ i)‖ ^ 2) := by
-      grw [norm_sub_le, add_sq_le]
+    _ ≤ ∑ i : 𝔰.κ, 2 * (‖Φ w (y γ' i)‖ ^ 2 + ‖Φ w (y γ i)‖ ^ 2) := by grw [norm_sub_le, add_sq_le]
     _ < 1 := by
       rw [← Finset.mul_sum, Finset.sum_add_distrib]
       linarith

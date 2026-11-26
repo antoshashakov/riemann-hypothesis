@@ -282,8 +282,7 @@ lemma one_add_logb_boxes_le (hj : j < D.m) :
   have h_log : 1 / 2 ≤ Real.log p := by
     grw [← q.out.two_le]
     linarith [Real.log_two_gt_d9]
-  calc _ ≤ 1 + Real.log (D.f * D.a + D.f * D.M + 1) / (1 / 2) := by
-        grw [logb, ← h_log, h_boxes]
+  calc _ ≤ 1 + Real.log (D.f * D.a + D.f * D.M + 1) / (1 / 2) := by grw [logb, ← h_log, h_boxes]
     _ ≤ D.logB ^ 2 := D.le_of_hasLogBound
 
 /-- Let `j < m`, let the prime `p` be below the cut-off `x₁` and non-split in `K = ℚ(√-d)`, let

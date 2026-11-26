@@ -250,8 +250,7 @@ theorem Gauge.lintegral_le_of_shells {S : ℕ → Set T.G}
     (hr : 9 * 10 ^ 7 * 𝔰.n ^ 4 + r ≤ F.volumeExponent) :
     F.headDensity j p q * ∫⁻ x : T.G, f x ∂F.groupMeasure ≤
       V * min 1 e ^ r * Γ.loss ^ (4 * 10 ^ 8 * 𝔰.n ^ 4) * F.shellNormalization W := by
-  have h_sum : ∑' i : ℕ, ((2 : ℝ≥0∞) ^ i)⁻¹ ≤ 2 := by
-    simp [ENNReal.inv_pow, ENNReal.tsum_geometric]
+  have h_sum : ∑' i : ℕ, ((2 : ℝ≥0∞) ^ i)⁻¹ ≤ 2 := by simp [ENNReal.inv_pow, ENNReal.tsum_geometric]
   set B : ℝ≥0∞ := V * min 1 e ^ r * Γ.loss ^ (3 * 10 ^ 8 * 𝔰.n ^ 4) * F.shellNormalization W with hB
   have h_shell (i : ℕ) :
       F.headDensity j p q * ∫⁻ x in S i, f x ∂F.groupMeasure ≤ (2 ^ i)⁻¹ * B := by

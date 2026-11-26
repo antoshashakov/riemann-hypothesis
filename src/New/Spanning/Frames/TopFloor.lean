@@ -505,8 +505,7 @@ lemma floorForm_top_eq_integral_floorQuadric {F : PlaceData ι T (m + 1)} (Z : F
       simp only [h_fiber, ← integral_const_mul]
       refine integral_congr_ae (F.ae_measureH_mem_besselH.mono fun k hk ↦ ?_)
       simp only [f, h_entry l k hk]
-    _ = _ := by
-      rw [← h_pres.map_eq, integral_map h_pres.aemeasurable (by fun_prop)]
+    _ = _ := by rw [← h_pres.map_eq, integral_map h_pres.aemeasurable (by fun_prop)]
 
 end IntegralPlace.IsLargeLatticeData
 

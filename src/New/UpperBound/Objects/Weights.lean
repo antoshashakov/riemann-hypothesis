@@ -360,8 +360,7 @@ lemma weightX_eq (j : ℕ) (τ : D.Φ) {p : ℕ} (hp : p < D.n j) :
 lemma lastEntry_eq (j : ℕ) (τ : D.Φ) :
     D.lastEntry j τ = D.n (j + 1) / 2 - D.liftWeight (j + 1) τ + D.columnCount τ (D.n j) := by
   have h_last : D.n j - 1 < D.n j := Nat.sub_one_lt (D.n_pos j).ne'
-  have h_empty : Ioo (D.n j - 1) (D.n j) = ∅ := by
-    grind
+  have h_empty : Ioo (D.n j - 1) (D.n j) = ∅ := by grind
   -- The last row of the lift diagram has one box for each column of height `n_j`.
   have h_row : D.liftDiagram j τ (D.n j - 1) = D.columnCount τ (D.n j) := by
     simp [liftDiagram_eq_sum_columnCount, D.sum_columnCount_Ioo_succ j τ h_last, h_empty]

@@ -154,8 +154,7 @@ lemma coe_weylRatio :
       floorOf (oppositeIndex k) = floorOf k ∧ level (oppositeIndex k) + level k = 2 * 𝔰.ϱ :=
     oppositeIndex_involutive_and_floorOf_level k
   by_cases hk : floorOf k < j ∧ floorOf k < 𝔰.ϱ
-  · have h_swap : level (oppositeIndex k) < 𝔰.ϱ ↔ ¬level k < 𝔰.ϱ := by
-      grind [floorOf_level_cases k]
+  · have h_swap : level (oppositeIndex k) < 𝔰.ϱ ↔ ¬level k < 𝔰.ϱ := by grind [floorOf_level_cases k]
     obtain rfl | hik := eq_or_ne i k
     · by_cases hi : level i < 𝔰.ϱ
       · rw [diagonal_apply_eq, div_eq_inv_mul]

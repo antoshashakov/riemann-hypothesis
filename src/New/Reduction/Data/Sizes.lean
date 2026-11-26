@@ -100,8 +100,7 @@ The numbers `m`, `k` are even and `r`, `t` are odd by the imported lemmas `m_eve
 
 /-- The numbers `r ≥ x⁵` and `m ≤ 2 √x` of admissible data satisfy `r ≤ 2 k` for
 `k = r + 1 - m`. -/
-lemma r_le_two_mul_k : D.r ≤ 2 * D.k := by
-  linarith [D.r_add_one, D.hundred_mul_m_le_k]
+lemma r_le_two_mul_k : D.r ≤ 2 * D.k := by linarith [D.r_add_one, D.hundred_mul_m_le_k]
 
 /-- The rank `m = D.m` and the exponent `s = D.towerExp` of the field `E = P.E s` of the data `D`
 satisfy `m ^ 22 = 2 ^ s`. -/

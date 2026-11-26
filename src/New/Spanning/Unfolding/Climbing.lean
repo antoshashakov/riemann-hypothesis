@@ -326,8 +326,7 @@ lemma isIntMatrix_middleInclusionMatrix_mul_iff {m : Type*} {l : Matrix 𝔰.κ 
   rw [h_rows, isIntMatrix_scaleAt_mul_iff]
   constructor
   · rintro ⟨⟨-, h_other⟩, h_div⟩
-    have h_row (j : m) : l 𝔰.k₀ j ∈ Ô E := by
-      simpa using mul_mem S.piN_mem (h_div j)
+    have h_row (j : m) : l 𝔰.k₀ j ∈ Ô E := by simpa using mul_mem S.piN_mem (h_div j)
     have h_int : IsIntMatrix (Ô E) l := by
       intro i j
       obtain rfl | hi := eq_or_ne i 𝔰.k₀

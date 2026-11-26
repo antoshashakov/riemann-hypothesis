@@ -193,8 +193,7 @@ lemma Selmer.mul_aeval_eq_zero_of_adjugate {Q : Type*} [Ring Q] (π : Λ →+* Q
   have h_row (l : N) : ∑ j, (B.map C - (X : Λ[X]) • B₁.map C) l j • π (y j) = 0 := by
     calc _ = ∑ j, (π (B l j * y j) - π (B₁ l j * y j * ρ₀)) := by
           simp [sub_smul, mul_smul, hC, hX, mul_assoc]
-      _ = π ((B *ᵥ y) l) - π ((B₁ *ᵥ y) l * ρ₀) := by
-          simp [mulVec, dotProduct, Finset.sum_mul]
+      _ = π ((B *ᵥ y) l) - π ((B₁ *ᵥ y) l * ρ₀) := by simp [mulVec, dotProduct, Finset.sum_mul]
       _ = 0 := sub_eq_zero.2 (h_kill l)
   calc π (y i * aeval ρ₀ P) = ∑ j, (diagonal fun _ ↦ P.map (algebraMap R Λ)) i j • π (y j) := by
         simp [diagonal_apply, h_poly]

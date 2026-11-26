@@ -533,8 +533,7 @@ lemma frameImage_mulVec_mem_commonIsotropic {x x' : Fin (𝔰.ϱ + 1) → E}
     frameImage 1 *ᵥ x ∈ commonIsotropic γ := by
   have h_norm : star (x 𝔰.top) * x 𝔰.top = star (x' 𝔰.top) * x' 𝔰.top :=
     star_mul_last_eq_of_frameImage_eq hxx'
-  obtain ⟨hx, hx'⟩ : x 𝔰.top = 0 ∧ x' 𝔰.top = 0 := by
-    obtain h | h := h_top <;> simp_all
+  obtain ⟨hx, hx'⟩ : x 𝔰.top = 0 ∧ x' 𝔰.top = 0 := by obtain h | h := h_top <;> simp_all
   exact mem_commonIsotropic_iff.2
     ⟨mem_isotropicSpan.2 ⟨x, hx, rfl⟩, mem_isotropicSpan.2 ⟨x', hx', hxx'.symm⟩⟩
 
@@ -752,8 +751,7 @@ theorem commonIsotropic_besselU_mul {u u' : S.G E} (hu : u ∈ besselU) (hu' : u
       (commonIsotropic γ).map (u : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E).mulVecLin := by
   let mat (g : S.G E) : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E := g
   ext y
-  have h_inv : mat (u * γ * u')⁻¹ *ᵥ y = mat u'⁻¹ *ᵥ mat γ⁻¹ *ᵥ mat u⁻¹ *ᵥ y := by
-    simp [mat]
+  have h_inv : mat (u * γ * u')⁻¹ *ᵥ y = mat u'⁻¹ *ᵥ mat γ⁻¹ *ᵥ mat u⁻¹ *ᵥ y := by simp [mat]
   have h_mem : y ∈ commonIsotropic (u * γ * u') ↔ mat u⁻¹ *ᵥ y ∈ commonIsotropic γ := by
     rw [mem_commonIsotropic_iff, mem_commonIsotropic_iff, mem_isotropicSpan_coe,
       mem_isotropicSpan_coe, h_inv, mulVec_mem_isotropicSpan_one_iff (inv_mem hu),

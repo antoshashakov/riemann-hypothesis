@@ -88,8 +88,7 @@ lemma measurable_boxCutoff {c : S.Classes} [S.IsAdmissible] : Measurable (S.boxC
 
 omit [HasPrimitiveRoot5040 E] in
 @[fun_prop]
-lemma measurable_besselCutNormSq : Measurable S.besselCutNormSq := by
-  fun_prop [besselCutNormSq]
+lemma measurable_besselCutNormSq : Measurable S.besselCutNormSq := by fun_prop [besselCutNormSq]
 
 /-- The weight of Schur's test is measurable. -/
 @[fun_prop]

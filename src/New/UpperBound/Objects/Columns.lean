@@ -655,8 +655,7 @@ def lastIndexEquiv : D.Y D.m ≃ D.InitIndex D.m :=
     simp only [BlockIndex.card, card_sum, Fintype.card_fin, card_unique]
     grind [ϱ, n]
 
-lemma card_X : card (D.X j) = D.n j := by
-  simpa using Nat.sub_add_cancel (by grind [n] : 1 ≤ D.n j)
+lemma card_X : card (D.X j) = D.n j := by simpa using Nat.sub_add_cancel (by grind [n] : 1 ≤ D.n j)
 
 lemma card_Y_m : card (D.Y D.m) = D.n D.m - 1 :=
   (card_congr D.lastIndexEquiv).trans (Fintype.card_fin _)

@@ -432,8 +432,7 @@ lemma exists_mem_besselU_eq_eichlerMap {v : 𝔰.BesselIndex → A} [hJ : IsHerm
   have h_low (b c : Fin 𝔰.ϱ) (hcb : c ≤ b) : j b.castSucc = 0 ∨ v (inr (inr c)) = 0 := by
     refine (le_or_gt a b.castSucc).imp (hj _) fun hb ↦ ?_
     simpa [← hm, splitGram, vecMul, dotProduct, Matrix.one_apply] using hm_low c.castSucc (by grind)
-  have hxx : star x ⬝ᵥ T.splitGram *ᵥ x = 0 := by
-    simp [hx, splitGram, mulVec, dotProduct]
+  have hxx : star x ⬝ᵥ T.splitGram *ᵥ x = 0 := by simp [hx, splitGram, mulVec, dotProduct]
   have hvx : star v ⬝ᵥ T.splitGram *ᵥ x = 0 := by
     have h_term (b : Fin 𝔰.ϱ) : star (v (inr (inr b))) * (r * j b.castSucc) = 0 := by
       obtain h | h := h_low b b le_rfl <;> simp [h]

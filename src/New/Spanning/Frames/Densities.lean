@@ -167,8 +167,7 @@ theorem frameGram_diag_mul {x : T.G} {b : Fin 𝔰.n}
       T.frameGram (y * x : T.G) b b = T.frameGram y b b := by
   set f : 𝔰.BesselIndex → A := Pi.single (𝔰.besselFrame b) 1
   let mat (z : T.G) : Matrix 𝔰.BesselIndex 𝔰.BesselIndex A := z
-  have h_mul (z z' : T.G) : mat (z * z') *ᵥ f = mat z *ᵥ mat z' *ᵥ f := by
-    simp [mat, mulVec_mulVec]
+  have h_mul (z z' : T.G) : mat (z * z') *ᵥ f = mat z *ᵥ mat z' *ᵥ f := by simp [mat, mulVec_mulVec]
   -- The entry is `h(f, z f)`, and `x` fixes the vector `f`.
   have h_entry (z : T.G) :
       T.frameGram z b b = star f ⬝ᵥ T.splitGram *ᵥ mat z *ᵥ f := by
@@ -181,8 +180,7 @@ theorem frameGram_diag_mul {x : T.G} {b : Fin 𝔰.n}
     orbitPoint_eq_iff.1 ((mem_partialUnitriangularGroup_succ_iff h_floor).1 h_unitri)
   constructor
   · calc T.frameGram (x * y : T.G) b b
-        = star (mat x *ᵥ f) ⬝ᵥ T.splitGram *ᵥ mat x *ᵥ mat y *ᵥ f := by
-          rw [h_fix, h_entry, h_mul]
+        = star (mat x *ᵥ f) ⬝ᵥ T.splitGram *ᵥ mat x *ᵥ mat y *ᵥ f := by rw [h_fix, h_entry, h_mul]
       _ = T.frameGram y b b := by rw [U.form_mulVec_mulVec, h_entry]
   · rw [h_entry, h_mul, h_fix, h_entry]
 
@@ -232,8 +230,7 @@ theorem Place.IsBessel.besselOrbitalIntegral_besselU_mul {W : T.G → EuclideanS
         besselOrbitalIntegral μ W γ := by
   let χ (v : T.G) : ℂ := P.ψ (η * simpleRootSum v)
   have h_inv {v : T.G} (hv : v ∈ T.besselU) (y : T.G) : W (v⁻¹ * y) = conj (χ v) • W y := by
-    have h_law : W y = χ v • W (v⁻¹ * y) := by
-      rw [← hW.map_unipotent_mul v hv, mul_inv_cancel_left]
+    have h_law : W y = χ v • W (v⁻¹ * y) := by rw [← hW.map_unipotent_mul v hv, mul_inv_cancel_left]
     rw [h_law, smul_smul, RCLike.conj_mul, P.norm_psi, RCLike.ofReal_one, one_pow, one_smul]
   ext ⟨i, i'⟩
   simp only [besselOrbitalIntegral, PiLp.smul_apply, smul_eq_mul]
@@ -636,8 +633,7 @@ lemma PlaceData.integrable_and_integral_succ_eq_mul_floorForm {W : T.G → Eucli
       _ = t * ((F.headDensity b p q).toReal *
           ∫ c : A, (ρ c).toReal • ∫ z : T.G × T.G, succTerm (z, c) ∂ν) := by
         simp [succTerm, χ, ν, integral_congr_ae hΨ, mul_assoc, integral_const_mul]
-      _ = t * F.floorForm b p q W χ := by
-        simp only [h_fubini, formTerm, floorForm, formIntegrand]
+      _ = t * F.floorForm b p q W χ := by simp only [h_fubini, formTerm, floorForm, formIntegrand]
 
 /-- Descent. Let the place datum F have a gauge, let W be a cut Bessel function, `p q : ℕ → Aˣ`
 sequences of units and a < ϱ. Let the majorant `F.formMajorant a p q W` have a finite integral

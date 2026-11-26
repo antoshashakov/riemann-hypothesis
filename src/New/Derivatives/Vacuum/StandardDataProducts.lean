@@ -459,8 +459,7 @@ lemma mem_thetaMultiples_of_jetSeries_eq_prod {δ : 𝓞 P.K} {N : ℕ} (hδ_ne 
       (P.cmCurve.thetaProd (daggerForms (resolutionVectors w (b * k))) (fun _ : I × n ↦ k * k) ^
         N) := by
   set μ : I × n → InfinitePlace (P.E s) × n → ℂ_[p] := daggerForms (resolutionVectors w (b * k))
-  have h_norm : (k * δ : ℂ) * conj (k * δ : ℂ) = (k * k * N : ℕ) := by
-    simp [← hN, mul_mul_mul_comm]
+  have h_norm : (k * δ : ℂ) * conj (k * δ : ℂ) = (k * k * N : ℕ) := by simp [← hN, mul_mul_mul_comm]
   obtain ⟨H, hH, h_prod⟩ : ∃ H ∈ P.cmCurve.multiSeriesRing μ,
       ∏ i : I × n, (taylorVia ιₚ (P.cmCurve.twistedTranslate 1 (t i) P.cmCurve.θ)).subst
         (linearSeries (ιₚ (conj (k * δ : ℂ)) • μ i)) =

@@ -742,8 +742,7 @@ theorem exists_isTestForm_le_norm_inner_trivialLift {j : D.LiftIndex} {p q₂ : 
   obtain ⟨L, hL_ne, hL_pow, hL_le⟩ := exists_root_prod_integralAlgebraicPart hq₁ hq₃
   let L_twist : ℂ := q₂.integralAlgebraicPart hq₂.2 .one
   refine ⟨t * L_twist * L, by simp [L_twist, ht_ne, hL_ne], fun σ ↦ ?_, ?_⟩
-  · calc ‖σ (t * L_twist * L)‖ = ‖σ t‖ * ‖σ L_twist‖ * ‖σ L‖ := by
-          simp only [map_mul, norm_mul]
+  · calc ‖σ (t * L_twist * L)‖ = ‖σ t‖ * ‖σ L_twist‖ * ‖σ L‖ := by simp only [map_mul, norm_mul]
       _ ≤ exp (D.f * D.m / D.k * D.b) * exp (D.x ^ 34) * exp (D.x ^ 34) ^ 2 := by
           gcongr
           exacts [ht σ, norm_map_integralAlgebraicPart_le hq₂ σ, hL_le σ]
@@ -819,8 +818,7 @@ theorem exists_isTestForm_le_norm_inner_trivialLift {j : D.LiftIndex} {p q₂ : 
       simp only [h_term]
     -- The scalars of `c` and of `trivialLift` agree up to `T / t` and a power of `V`.
     have h_c : c = V ^ 12 / t * T * J := by
-      have h_degree : α.degree = p.rowLengthSum := by
-        simp [α.degree_eq_sum, sum_prod_type, hα]
+      have h_degree : α.degree = p.rowLengthSum := by simp [α.degree_eq_sum, sum_prod_type, hα]
       simp only [c, V, T, J, h_degree]
       ring
     have h_lift : inner ℂ Ξ (CriticalPair.trivialLift hp.hasLiftRank ϑ) =

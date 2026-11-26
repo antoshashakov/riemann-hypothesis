@@ -192,8 +192,7 @@ lemma New.Selmer.exists_apply_eq_prod_mul {ℓ : ℕ} {E : Type} [ThePrime ℓ] 
         = (c⁻¹).val * (c.val ^ (d + 1) * ψ b) + -c.val ^ a.val * ψ b := by
           rw [hψ.map_mul (by simp [hb]) (by simp [hb]), hψ.map_pow (by simp [hb]), hψ.map_pow hb,
             hψ.map_conj γ hb, ← hc, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]
-      _ = (c.val ^ d - c.val ^ a.val) * ψ b := by
-          linear_combination (c.val ^ d * ψ b) * c.inv_mul
+      _ = (c.val ^ d - c.val ^ a.val) * ψ b := by linear_combination (c.val ^ d * ψ b) * c.inv_mul
       _ = (∏ a' ∈ insert a s, (c.val ^ d - c.val ^ a'.val)) * ψ g := by
           rw [hbψ hψ, prod_insert ha, mul_assoc]
 

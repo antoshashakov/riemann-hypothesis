@@ -356,8 +356,7 @@ theorem exists_unit_common_divisor (ξ β : Aˣ) :
         e ∈ P.integers ∧ ∃ y ∈ P.integers, β = (ξ - e * (ξ - β)) * y := by
     simpa using isValuationPair ξ.val β
   -- Since `e d = e β`, one has `d = ξ + (e - x e) β`, with inverse `ξ⁻¹ x`.
-  have h_ed : e * (ξ - e * (ξ - β) : A) = e * β := by
-    linear_combination (β - ξ : A) * he_idem
+  have h_ed : e * (ξ - e * (ξ - β) : A) = e * β := by linear_combination (β - ξ : A) * he_idem
   have hd_eq : (ξ + (e - x * e) * β : A) = ξ - e * (ξ - β) := by
     linear_combination e * hξ + x * h_ed
   have hd_inv : (ξ - e * (ξ - β) : A) * (ξ⁻¹.val * x) = 1 := by
@@ -366,8 +365,7 @@ theorem exists_unit_common_divisor (ξ β : Aˣ) :
   have hη_inv : η⁻¹.val = ξ⁻¹.val * x := rfl
   refine ⟨η, ?_, ?_, e - x * e, sub_mem he (mul_mem hx he), rfl⟩
   · rwa [hη_inv, Units.mul_inv_cancel_left]
-  · have hy_eq : ξ⁻¹.val * x * β = y := by
-      linear_combination (ξ⁻¹.val * x) * hβ + y * hd_inv
+  · have hy_eq : ξ⁻¹.val * x * β = y := by linear_combination (ξ⁻¹.val * x) * hβ + y * hd_inv
     rwa [hη_inv, hy_eq]
 
 /-- The unit that gives the gain for the weights of `enorm_floorForm_le`. Let `F` be a large lattice
@@ -411,8 +409,7 @@ theorem exists_unit_formIntegrandL1Norm_sq_le {F : PlaceData ι T (m + 1)} (Z : 
           ∃ c ∈ P.integers, η = ξ + c * β :=
       exists_unit_common_divisor ξ β
     have hψ (z : A) (hz : z ∈ Γ.ofSize (200 * 𝔰.n ^ 2)) : P.ψ (ξ * z) = P.ψ (η * z) := by
-      have hβz : P.ψ (c * (β * z)) = 1 := by
-        simpa [mul_comm] using (self_dual (β * z)).2 hz c hc
+      have hβz : P.ψ (c * (β * z)) = 1 := by simpa [mul_comm] using (self_dual (β * z)).2 hz c hc
       rw [hη, add_mul, P.ψ.map_add_eq_mul, mul_assoc, hβz, mul_one]
     have hwξ : ξ * (η⁻¹ * β).val ∈ integers := by simpa [mul_assoc] using mul_mem hξη hβ
     refine ⟨η, η⁻¹ * β, hηβ, hwξ, hξη,

@@ -287,8 +287,7 @@ theorem mem_reducedImage_besselU {s : S.ResidueGL} :
   obtain ⟨k, hk_one, hk_red⟩ := S.exists_reduction_eq_of_invAdjoint Set.univ h_adj
   refine ⟨k, fun a b hab ↦ hk_one a b (hu a b hab) (hu' a b hab), funext₂ fun i w ↦ Units.ext ?_⟩
   calc
-    _ = u.val.map (reduceAt (w : FinPlace E)) := by
-      rw [hk_red ⟨i, w⟩, ite_eq_left (Set.mem_univ _)]
+    _ = u.val.map (reduceAt (w : FinPlace E)) := by rw [hk_red ⟨i, w⟩, ite_eq_left (Set.mem_univ _)]
     _ = (s i w).val := congrArg Units.val (hu_red ⟨i, w⟩)
 
 /-- Let the shape `𝔰` have `ϱ = 𝔰.ϱ` hyperbolic planes and a summand `X₀` of rank `k = 𝔰.k`. The

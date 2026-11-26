@@ -108,8 +108,7 @@ lemma exists_isKernelExtension {A : Matrix σ P k} {x : Matrix P σ k} (h_det : 
   have hCy : C * y = 0 := by simp [C, Matrix.mul_assoc, hAy]
   have hDx : (l - l * x * C) * x = 0 := by simp [Matrix.sub_mul, Matrix.mul_assoc, hCx]
   have hDy : (l - l * x * C) * y = 1 := by simp [Matrix.sub_mul, Matrix.mul_assoc, hCy, hl]
-  have h_left : fromRows C (l - l * x * C) * fromCols x y = 1 := by
-    simp [*]
+  have h_left : fromRows C (l - l * x * C) * fromCols x y = 1 := by simp [*]
   refine ⟨_, y, {
     hasLeftInv := ⟨_, h_left⟩
     colSpan_fromCols := le_antisymm ?_ fun v hv ↦ ?_

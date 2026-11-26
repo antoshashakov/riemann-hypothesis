@@ -141,8 +141,7 @@ lemma HasAbsUpToNormPower.mul (hcf : D.HasAbsUpToNormPower c f)
   obtain ⟨C, k, hc⟩ := hcf
   obtain ⟨C', k', hc'⟩ := hcf'
   refine ⟨C * C', k + k', fun ϑ ↦ ?_⟩
-  have h_ne : (ϑ.normQ : ℝ) ≠ 0 := by
-    simp [prod_eq_zero_iff]
+  have h_ne : (ϑ.normQ : ℝ) ≠ 0 := by simp [prod_eq_zero_iff]
   rw [Pi.mul_apply, Pi.mul_apply, norm_mul, mul_pow, hc, hc', zpow_add₀ h_ne]
   ring
 

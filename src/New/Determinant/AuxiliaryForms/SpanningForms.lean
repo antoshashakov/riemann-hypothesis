@@ -723,8 +723,7 @@ lemma exists_lowerChain_integral_and_weylNormSq_le : ∃ c : D.MFoldTwist → �
     calc _ = ‖σ (D.dualHook * (ε * (N * Ξ 1 φ x v)))‖ := by
           rw [← h_pair, div_self (c 1).ne_zero, one_smul]
           rfl
-      _ = D.dualHook * ‖σ ε‖ * N * ‖σ (Ξ 1 φ x v)‖ := by
-          simp [abs_of_nonneg h_hook, mul_assoc]
+      _ = D.dualHook * ‖σ ε‖ * N * ‖σ (Ξ 1 φ x v)‖ := by simp [abs_of_nonneg h_hook, mul_assoc]
       _ ≤ D.dualHook * 1 * exp (D.x ^ 99 * D.b ^ 2) *
           (exp (D.x ^ 200 * D.b ^ 2) * √(weylNormSq (σ ∘ v)) * √B) := by
           grw [hε_le, hN_le, hΞ_le]

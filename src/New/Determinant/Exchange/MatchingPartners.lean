@@ -312,8 +312,7 @@ lemma sameSectionPairs.translate_mem (χ : MulChar F ℂ) (e : b ⊕ a ≃ n)
     exact schwartzBruhat.comp hΨ (fun y ↦ g.val * y) (fun y ↦ by simp) fun y ⟨L, hL⟩ ↦
       ⟨L * g⁻¹.val, by simpa [Matrix.mul_assoc] using hL⟩
   · -- The matching identity at `k` is `χ (det g)` times that of `(Φ, Ψ)` at `g⁻¹ k`.
-    have h_det : χ g.val.det * χ (g⁻¹ * k).val.det = χ k.val.det := by
-      simp [← map_mul, ← det_mul]
+    have h_det : χ g.val.det * χ (g⁻¹ * k).val.det = χ k.val.det := by simp [← map_mul, ← det_mul]
     calc localSection χ (invLastRows e k)ᵀ (χ g.val.det • fun y ↦ Φ (yᵀ * g.val))
       _ = χ g.val.det * localSection χ (invLastRows e (g⁻¹ * k))ᵀ (fun y ↦ Φ yᵀ) := by
         simp [invLastRows, localSection, Pi.mul_def, Matrix.mul_assoc]

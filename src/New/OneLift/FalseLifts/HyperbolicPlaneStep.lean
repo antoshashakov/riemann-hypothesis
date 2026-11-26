@@ -406,13 +406,11 @@ lemma lift_eq_zero_of_heckePolyOp_eq_zero (hY : V.IsAutomorphic Y) {w : FinPlace
   have h_sqrt_pos : 0 < √(w.q : ℝ) := sqrt_pos.2 (mod_cast w.one_lt_q.le)
   have h_norm₀ : ‖X₀‖ = √w.q ^ card m * ‖X‖ := by simp [hX₀, norm_frobValue]
   have h_norm' : ‖X'‖ = √w.q ^ k * ‖X‖ := by
-    have h_ratio : √(w.q : ℝ) ^ (2 * k) * √w.q ^ card m / √w.q ^ (card m + k) = √w.q ^ k := by
-      field
+    have h_ratio : √(w.q : ℝ) ^ (2 * k) * √w.q ^ card m / √w.q ^ (card m + k) = √w.q ^ k := by field
     simp [hX', norm_frobValue, h_sqrt, hk, h_ratio]
   have h_factor : qPochhammer w.q k X₀ ≠ 0 := qPochhammer_ne_zero w.one_lt_q <| by
     rwa [h_norm₀, h_sqrt, ← mul_assoc, ← pow_add, add_comm]
-  have h_small : w.q ^ (card m + 1) * ‖X'‖ ≤ 1 := by
-    rwa [h_norm', h_sqrt, ← mul_assoc, ← pow_add]
+  have h_small : w.q ^ (card m + 1) * ‖X'‖ ≤ 1 := by rwa [h_norm', h_sqrt, ← mul_assoc, ← pow_add]
   exact eq_zero_of_heckePolyOp_eq_zero hw hF_sph
     ((smul_eq_zero.1 h_hecke).resolve_left h_factor) h_small h_bdd
 

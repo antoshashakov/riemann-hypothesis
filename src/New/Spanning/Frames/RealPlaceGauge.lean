@@ -545,8 +545,7 @@ lemma RealPlaceSizes.lintegral_quotientMeasureFrom_eq_haarRatio_mul (hF : RealPl
   calc ∫⁻ g : 𝔰.G₁, f g ∂θ
       = ∫⁻ g : 𝔰.G₁, f g ∂orbitMeasure 𝔰.besselHaar (hF.haarRatio • volume) :=
         h_law.lintegral_eq.symm
-    _ = hF.haarRatio * ∫⁻ g : 𝔰.G₁, f g ∂besselQuotMeasure := by
-        simp [withDensity_smul_measure]
+    _ = hF.haarRatio * ∫⁻ g : 𝔰.G₁, f g ∂besselQuotMeasure := by simp [withDensity_smul_measure]
 
 open PlaceData Shape in
 /-- Assume the numerical hypotheses `hF` on the ranks and the box radius. The measure `groupMeasure`
@@ -875,8 +874,7 @@ lemma volume_le_of_subset_closedBall {W : Set ℂ} {t : ℝ} (ht : 0 < t)
     _ ≤ ENNReal.ofReal (36 / t) := by
         gcongr
         linarith [pi_le_four]
-    _ = (ENNReal.ofReal (t / 36))⁻¹ := by
-        rw [← ofReal_inv_of_pos (by positivity), inv_div]
+    _ = (ENNReal.ofReal (t / 36))⁻¹ := by rw [← ofReal_inv_of_pos (by positivity), inv_div]
 
 /-- The Gram matrix `J₁` swaps `e_a` with `e*_a`, fixes the `x_i` and negates `z`. So it fixes a
 vector `w` with equal coordinates at `e_a` and `e*_a` and with coordinate `0` at `z`. -/
@@ -1032,8 +1030,7 @@ lemma RealPlaceSizes.exists_isCommonBound (hF : RealPlaceSizes 𝔰 ρ s b) (hρ
     { measurable := by fun_prop
       inv_volume_le u := ?_
       volume_le u := ?_
-      lintegral_le j := by
-        simpa only [vecsOfSize, hS, mem_ofPred_eq, exponent_eq] using h_int j }⟩
+      lintegral_le j := by simpa only [vecsOfSize, hS, mem_ofPred_eq, exponent_eq] using h_int j }⟩
   · obtain h_zero | h_pos : 0 = q u ∨ 0 < q u := (norm_nonneg _).eq_or_lt
     · simp [← h_zero]
     · exact inv_volume_le_of_closedBall_subset h_pos (h_disc u h_pos)

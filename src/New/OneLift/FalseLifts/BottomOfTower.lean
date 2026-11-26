@@ -422,8 +422,7 @@ lemma exists_fixed_forall_linearMap_eq_of_finite {J V : Type*} [Group J] [AddCom
   let T : Finset V := h_fin.toFinset
   have mem_T {u : V} : u ∈ T ↔ ∃ h : J, ρ h f = u := h_fin.mem_toFinset
   have h_card : (#T : ℂ) ≠ 0 := mod_cast card_ne_zero.2 ⟨ρ 1 f, mem_T.2 ⟨1, rfl⟩⟩
-  have h_maps (g : J) : ∀ u ∈ T, ρ g u ∈ T := by
-    simpa [mem_T] using fun k : J ↦ ⟨g * k, by simp⟩
+  have h_maps (g : J) : ∀ u ∈ T, ρ g u ∈ T := by simpa [mem_T] using fun k : J ↦ ⟨g * k, by simp⟩
   refine ⟨(#T : ℂ)⁻¹ • ∑ u ∈ T, u, fun h ↦ ?_, fun L c hL ↦ ?_⟩
   · -- `ρ h` permutes the translates, with inverse `ρ h⁻¹`.
     have h_perm : ∑ u ∈ T, ρ h u = ∑ u ∈ T, u :=
@@ -1089,8 +1088,7 @@ def BlockDescentVanishes (y : O.FormV) : Prop :=
 
 omit [WeilData E] [DecidableEq n] in
 /-- No place of the descent pair `O` is the conjugate of itself or of another place of `O`. -/
-lemma isConjDisjoint_places : O.places.IsConjDisjoint := by
-  grind [O.apart.star_ne]
+lemma isConjDisjoint_places : O.places.IsConjDisjoint := by grind [O.apart.star_ne]
 
 /-- Let `O` be a descent pair with spaces `W` and `V`, and `O.FormV` the forms on `V` of weight
 `(O.columnCount, O.detExp)` and of the level of `O`. For a linear functional `u` on the values of

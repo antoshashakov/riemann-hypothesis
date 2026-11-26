@@ -620,8 +620,7 @@ lemma shell_bound_le_dampedPower (hF : IsCutBessel F rep ρ s b F₀ f) {r H : �
     -- Both sides are powers of `b`, as `ρ = b ^ (6 * 𝔰.n + 2)`: compare exponents.
     simp only [hF.rho_eq, ← pow_mul, ← pow_add]
     exact pow_le_pow_right₀ one_le_b (by lia)
-  have div_le : ρ ^ 24 / t ≤ r⁻¹ := by
-    rwa [div_le_iff₀ (by positivity), le_inv_mul_iff₀' r_pos]
+  have div_le : ρ ^ 24 / t ≤ r⁻¹ := by rwa [div_le_iff₀ (by positivity), le_inv_mul_iff₀' r_pos]
   have inv_le : t⁻¹ ≤ min 1 r⁻¹ :=
     le_min (inv_le_one_of_one_le₀ one_le_t) (inv_anti₀ r_pos
       ((le_mul_of_one_le_left r_pos.le (one_le_pow₀ one_le_ρ)).trans mul_le_t))

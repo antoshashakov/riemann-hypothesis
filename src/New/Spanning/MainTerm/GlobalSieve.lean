@@ -659,8 +659,7 @@ lemma re_le_of_last_entries_ne [S.IsAdmissible]
       ε * (Λ (i + 1) (S.scaledHead T p t) * Λ (i + 1) (S.scaledHead T q s)) := by
   let y : E := (S.M : E)⁻¹ * (t.1⁻¹.1 - s.1⁻¹.1)
   let ξ : (InfinitePlace E → ℂ) × LocProd T := ratPoint T (fun v ↦ S.M / S.frameScaleSq v i) y
-  have y_ne : y ≠ 0 := by
-    simp [y, sub_eq_zero, Units.val_inj, hts, Nat.Prime.ne_zero]
+  have y_ne : y ≠ 0 := by simp [y, sub_eq_zero, Units.val_inj, hts, Nat.Prime.ne_zero]
   have y_mem : y ∈ ratIntegralOff T := mul_mem hM_inv (sub_mem (hA t t.2) (hA s s.2))
   have ξ_unit : IsUnit ξ := by
     simp [ξ, y_ne, ratPoint, Prod.isUnit_iff, Pi.isUnit_iff, IsUnit.map,

@@ -287,8 +287,7 @@ lemma det_conjTranspose_mul_linkForm_mul_ne_zero {ρ : Type} [Fintype ρ] {i : �
   suffices h_mem : y' *ᵥ t ∈ link γ from ht_ne (hy'_indep t ⟨h_mem', h_mem⟩)
   have h_orth_m : mᴴ *ᵥ S.linkForm *ᵥ y' *ᵥ t = 0 := by
     rw [mulVec_mulVec, mulVec_mulVec, gram_linkForm_eq_zero_of_le_link hm hy', zero_mulVec]
-  have h_orth_y : yᴴ *ᵥ S.linkForm *ᵥ y' *ᵥ t = 0 := by
-    rw [mulVec_mulVec, mulVec_mulVec, ht]
+  have h_orth_y : yᴴ *ᵥ S.linkForm *ᵥ y' *ᵥ t = 0 := by rw [mulVec_mulVec, mulVec_mulVec, ht]
   rw [mem_link_iff_orthogonal, ← hmy]
   rintro _ ⟨w, rfl⟩
   rw [mulVecLin_apply, star_mulVec_dotProduct, conjTranspose_fromCols_eq_fromRows_conjTranspose,

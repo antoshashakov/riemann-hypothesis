@@ -663,8 +663,7 @@ theorem hasLevel_mul_right {S : Filling E 𝔰} {z : New.G E ε → ℂ}
   have h_conj : ((k⁻¹ * u * k : stdLevel E 𝔰.BesselIndex) : Gf E 𝔰.BesselIndex) ∈
       S.stdPrincipalLevel.toSubgroup :=
     ⟨k⁻¹ * u * k, Normal.conj_mem' inferInstance u hu k, rfl⟩
-  have h_swap : g * (1, u.1) * (1, k.1) = g * (1, k.1) * (1, (k⁻¹ * u * k).1) := by
-    simp [mul_assoc]
+  have h_swap : g * (1, u.1) * (1, k.1) = g * (1, k.1) * (1, (k⁻¹ * u * k).1) := by simp [mul_assoc]
   exact (congrArg z h_swap).trans (hz _ h_conj (g * (1, k.1)))
 
 omit [HasPrimitiveRoot5040 E] in

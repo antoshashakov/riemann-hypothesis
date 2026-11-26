@@ -353,8 +353,7 @@ theorem isAdmissibleCombination_finHeisenbergOp_sum_neighbourCosetRep
       integralAway n := by
     simpa [K, div_eq_mul_inv] using
       div_mem_integralAway ((card_awayLatticeQuotient_dvd (X' := X') hπ hκ).mul_right (n ^ 0))
-  have h_size (σ : ℂ ≃+* ℂ) : ∑ _q : AwayLatticeQuotient X' hπ hκ, ‖σ (1 / K)‖ ≤ 1 := by
-    simp [K]
+  have h_size (σ : ℂ ≃+* ℂ) : ∑ _q : AwayLatticeQuotient X' hπ hκ, ‖σ (1 / K)‖ ≤ 1 := by simp [K]
   rw [h_terms, h_mean]
   refine (IsAdmissibleCombination.of_sum (fun _ _ ↦ h_int)
     fun _ ↦ h_size).of_eq_isOfFinOrder_smul fun q _ ↦ ?_

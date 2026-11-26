@@ -201,8 +201,7 @@ lemma exists_int_eq_sum_re {E : Type} [Field E] [CMType E] [HasPrimitiveRoot5040
     h_trace (i.2.mul hx)
   let t (v : InfinitePlace E) : ℂ := if Φ v i = Complex.I then Φ v x else star (Φ v x)
   have h_term (v : InfinitePlace E) : t v = (Φ v x).re - (Φ v (i * x)).re * Complex.I := by
-    have h_sq : Φ v i ^ 2 = Complex.I ^ 2 := by
-      simpa [sq] using congrArg (fun y : 𝓞 E ↦ Φ v y) hi
+    have h_sq : Φ v i ^ 2 = Complex.I ^ 2 := by simpa [sq] using congrArg (fun y : 𝓞 E ↦ Φ v y) hi
     obtain h_eq_I | h_eq_neg_I : Φ v i = Complex.I ∨ Φ v i = -Complex.I :=
       sq_eq_sq_iff_eq_or_eq_neg.1 h_sq
     · simp [t, h_eq_I, Complex.ext_iff]

@@ -176,8 +176,7 @@ def translatesIn (τ : Fin k → ℕ) (I : Ideal R) (B : Set (Exponents N k n)) 
   { carrier := {F : Exponents N k n → R | ∀ g ∈ levi W τ, ∀ β ∈ B, (T.letterRep n g *ᵥ F) β ∈ I}
     add_mem' hF hG g hg β hβ := by simpa [mulVec_add] using add_mem (hF g hg β hβ) (hG g hg β hβ)
     zero_mem' := by simp
-    smul_mem' c F hF g hg β hβ := by
-      simpa [mulVec_smul] using I.mul_mem_left c (hF g hg β hβ) }
+    smul_mem' c F hF g hg β hβ := by simpa [mulVec_smul] using I.mul_mem_left c (hF g hg β hβ) }
 
 /-- The coefficient vectors F such that (ρ(g)F)_β lies in I, with ρ = `New.FrobeniusCycle.letterRep`
 n. This must hold whenever g is block diagonal with blocks of sizes a' and k − a' and β has defect

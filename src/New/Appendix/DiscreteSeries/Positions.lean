@@ -260,8 +260,7 @@ lemma trace_mul_eq_of_mul_initCols_eq_zero (hP : IsPosition ε η d v i₀) {M Y
   obtain ⟨T, rfl⟩ : ∃ T : Matrix (m ⊕ Fin (d + 1)) n ℂ, M = fromCols i₀ v * T :=
     hP.exists_eq_of_orthogonal h_range
   have hT_coord : T = W * (fromCols i₀ v * T) := by rw [← Matrix.mul_assoc, hW, Matrix.one_mul]
-  have hT_ker : T * initCols v = 0 := by
-    rw [hT_coord, Matrix.mul_assoc, h_ker, Matrix.mul_zero]
+  have hT_ker : T * initCols v = 0 := by rw [hT_coord, Matrix.mul_assoc, h_ker, Matrix.mul_zero]
   have hT_top : formAdjoint ε η i₀ * (fromCols i₀ v * T) = toRows₁ T := by
     rw [← Matrix.mul_assoc, mul_fromCols, hP.formAdjoint_mul_self, hP.formAdjoint_mul_vec,
       ← fromRows_toRows T, fromCols_mul_fromRows]

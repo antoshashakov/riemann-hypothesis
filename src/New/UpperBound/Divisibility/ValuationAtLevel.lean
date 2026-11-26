@@ -551,8 +551,7 @@ lemma gaugeLe_compositeLift_at_N {ϑ : D.Twist} {Ψ : D.Translations →₀ ℂ}
   refine GaugeLe.restrictToY_of_diag D (D.map_adeleExtension_diagPoint _ _) fun g ↦ ?_
   calc _ = ‖ιₚ c‖ * weylGauge _ (D.lastEntry D.m) (g * D.diagPointN D.m)
           ((chainCombination ϑ Ψ direct D.m ψ).1 g) := weylGauge_smul ..
-    _ ≤ D.N ^ (D.m * D.f * D.b) * D.N ^ ∑ _ ∈ Finset.range D.m, D.f * D.b := by
-      grw [h_direct g, hc]
+    _ ≤ D.N ^ (D.m * D.f * D.b) * D.N ^ ∑ _ ∈ Finset.range D.m, D.f * D.b := by grw [h_direct g, hc]
     _ = D.N ^ (2 * D.m * D.f * D.b) := by
       simp [← rpow_add (Nat.cast_pos.2 D.N_prime.pos), two_mul, add_mul, mul_assoc]
 

@@ -132,8 +132,7 @@ lemma alternatingSignForm_polyVec (h : AreOppositeNodes μ μ') (F₁ F₂ : ℝ
     rw [hw, mul_mul_mul_comm]
     exact mul_pos (derivative_nodal_sign_of_strictAnti h.strictAnti i)
       (h.neg_one_pow_mul_eval_nodal_pos i)
-  have h_abs : |w| = (-1) ^ (i : ℕ) * (-1) ^ L' * w := by
-    simpa [abs_mul] using abs_of_pos h_sign
+  have h_abs : |w| = (-1) ^ (i : ℕ) * (-1) ^ L' * w := by simpa [abs_mul] using abs_of_pos h_sign
   have hw_ne : w ≠ 0 := right_ne_zero_of_mul h_sign.ne'
   calc
     (-1) ^ (i : ℕ) * (polyVec μ μ' F₁ i * polyVec μ μ' F₂ i)
@@ -253,8 +252,7 @@ lemma isometryScale_mul_alternatingSignForm (h : AreOppositeNodes μ μ') (hL : 
   have hQ_sign : 0 < (-1) ^ (L' - 1 - (j : ℕ)) * Q :=
     derivative_nodal_sign_of_strictMono h.strictMono j
   have hQ_ne : Q ≠ 0 := right_ne_zero_of_mul hQ_sign.ne'
-  have hQ_abs : |Q| = (-1) ^ (L' - 1 - (j : ℕ)) * Q := by
-    simpa [abs_mul] using abs_of_pos hQ_sign
+  have hQ_abs : |Q| = (-1) ^ (L' - 1 - (j : ℕ)) * Q := by simpa [abs_mul] using abs_of_pos hQ_sign
   have h_scale : isometryScale μ μ' j * isometryScale μ μ' j =
       P / ((-1) ^ (L' - 1 - (j : ℕ)) * Q) := by
     rw [isometryScale, ← hP, ← hQ, Real.mul_self_sqrt (abs_nonneg _), abs_div, abs_of_pos hP_pos,
@@ -340,8 +338,7 @@ lemma abs_polyVec_le (h : AreSeparatedNodes μ μ' D) (hL : L = L' + 2 * d + 1) 
       gcongr
       · exact h.abs_le i
       · exact abs_eval_nodal_le h.one_le (h.abs_sub_le i)
-    _ ≤ (D ^ L) ^ 2 := by
-      simpa [← pow_mul, ← pow_add] using pow_le_pow_right₀ h.one_le (by lia)
+    _ ≤ (D ^ L) ^ 2 := by simpa [← pow_mul, ← pow_add] using pow_le_pow_right₀ h.one_le (by lia)
 
 /-- Let the roots `μ i` of `p` and `μ' j` of `q` differ by at least `1`, with each `μ i` within
 `D ≥ 1` of `0` and of the `μ' j`, and let `L = L' + 2 d + 1` and `q_j = q / (t - μ' j)`. The entry
@@ -565,16 +562,14 @@ lemma IsSteep.isPosition [DecidableEq X]
     (h_pos : ∀ x : X, η (e' (Sum.inl x)) = 1)
     (h_alt : ∀ j : Fin L', η (e' (Sum.inr j)) = (-1) ^ j.val) :
     IsPosition ε η d (positionVec e μ μ' d) (positionIsometry e e' μ μ') where
-  card_eq := by
-    simp [← Fintype.card_congr e, ← Fintype.card_congr e', hL, add_assoc]
+  card_eq := by simp [← Fintype.card_congr e, ← Fintype.card_congr e', hL, add_assoc]
   independent := h.linearIndependent_positionVec (by lia)
   gram_eq_zero a b hab := by
     have h_ne : a.val + b.val ≠ 2 * d := by
       simp only [ne_eq, Fin.ext_iff, Fin.val_last] at hab
       lia
     rw [hl.gram_positionVec h hL, ite_eq_right h_ne]
-  gram_last_eq_sign := by
-    simpa [hl.gram_positionVec h hL, two_mul] using neg_one_pow_eq_or ℂ L'
+  gram_last_eq_sign := by simpa [hl.gram_positionVec h hL, two_mul] using neg_one_pow_eq_or ℂ L'
   isometry := by
     ext j j'
     obtain ⟨x | j, rfl⟩ := e'.surjective j

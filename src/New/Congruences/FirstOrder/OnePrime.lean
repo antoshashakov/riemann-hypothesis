@@ -287,8 +287,7 @@ lemma map_top_coeff_mul_C_sub_X_mul_C_eq_zero {N : Finset J → R} {der : J → 
   have hj : j ∉ S := fun h ↦ notMem_erase j _ (mem_powerset.1 hS h)
   obtain ⟨N', h_insert, h_S⟩ : ∃ N' : R, N (insert j S)ᶜ = N' * Nm j ∧ N Sᶜ = N' * der j := by
     simpa only [insert_compl_insert hj] using h_factor j (insert j S)ᶜ (by simp)
-  have kill (b : T) : N' * Nm j * ac (t * b) = 0 := by
-    simp [mul_assoc, ← mul_assoc (Nm j), h_norm]
+  have kill (b : T) : N' * Nm j * ac (t * b) = 0 := by simp [mul_assoc, ← mul_assoc (Nm j), h_norm]
   have tie (b : T) : σ (N' * der j * ac (t * b)) = σ (N' * Nm j * ac (r * b)) := by
     simpa only [map_mul, mul_assoc] using congrArg (σ N' * · * σ (ac b)) h_tie
   let b : T := G.coeff (∑ i ∈ S, .single i 1)
@@ -347,8 +346,7 @@ lemma exists_map_pow_mul_family_eq_mul_norm {ρ : (∀ j : J, Γ j) →* R} {N :
       calc σ (A * (ρ (Pi.mulSingle j g) - 1))
           = σ (δ' * δ ^ e * N') * σ (n • (der j * (ρ (Pi.mulSingle j g) - 1))) := by
             simp only [hA, h_S, ← map_mul, smul_mul_assoc, mul_smul_comm, mul_assoc]
-        _ = σ (δ' * δ ^ e * N (S.erase j)) * σ Z := by
-            simp only [hZ, h_erase, map_mul, mul_assoc]
+        _ = σ (δ' * δ ^ e * N (S.erase j)) * σ Z := by simp only [hZ, h_erase, map_mul, mul_assoc]
         _ = σ (Y * (δ' * (∑ g, ρ g) * Z)) := by
             rw [h_move, map_mul, hY, ← map_mul, ← map_mul, mul_assoc Y, ← hδ'_norm.eq]
             simp only [mul_assoc]
@@ -749,8 +747,7 @@ lemma map_cosetNorm_mul_weightedSum_mul_cosetNormInv (hm : (m : S) = 0)
       (valMinAbs (a.transfer g).toAdd : ZMod m) = (∑ η : Γ ⧸ H, weight η) g := by
     simp [weight, transfer_eq_prod_cosetComponent, toAdd_prod]
   calc σ (cosetNorm ρ H * weightedSum (ρ.comp H.subtype) a valMinAbs * cosetNormInv ρ H)
-      = σ (C (∑ η : Γ ⧸ H, weight η)) := by
-        simp only [cosetNormInv, map_sum C, mul_sum, h_term]
+      = σ (C (∑ η : Γ ⧸ H, weight η)) := by simp only [cosetNormInv, map_sum C, mul_sum, h_term]
     _ = σ (weightedSum ρ a.transfer valMinAbs) := map_eq_of_weights_modEq hm C _ _ h_weights
 
 /-- Let `ρ` map the finite group `Γ` to the ring `R`, and let `σ : R → S` be a ring map with `m = 0`

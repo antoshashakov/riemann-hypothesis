@@ -721,12 +721,9 @@ lemma exists_isHomogeneousOverEntries_smul_stackedDetProdCoords (j : D.LiftIndex
     -- Count the boxes at each place, reversing the order of summation.
     refine hookNumber_le (sum_mono fun τ ↦ ?_)
     calc
-      _ ≤ ∑ h ∈ range (N + 1), h * κ τ (N - h) := by
-        grw [range_mono le_self_add]
-      _ = ∑ h ∈ range (N + 1), (N - h) * κ τ (N - (N - h)) := by
-        rw [← sum_flip]
-      _ ≤ ∑ h ∈ range N, (N - h) * κ τ h := by
-        grind only [sum_range_succ]
+      _ ≤ ∑ h ∈ range (N + 1), h * κ τ (N - h) := by grw [range_mono le_self_add]
+      _ = ∑ h ∈ range (N + 1), (N - h) * κ τ (N - (N - h)) := by rw [← sum_flip]
+      _ ≤ ∑ h ∈ range N, (N - h) * κ τ h := by grind only [sum_range_succ]
   refine ⟨d, hd_le, H, hookNumber_pos, hH_le, fun i Y l ↦ ⟨fun c hc ↦ ?_, fun A hA ↦ ?_⟩⟩
   · -- Homogeneity.
     rw [map_zsmul, aeval_smul_X_stackedDetProdCoords j i Y l hc, smul_comm]

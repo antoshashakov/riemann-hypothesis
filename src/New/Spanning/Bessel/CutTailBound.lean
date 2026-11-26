@@ -442,8 +442,7 @@ lemma exists_isCutPair_besselAverage {m : ℕ} {b : ℝ} {x : 𝔰.G₁} {v : Eu
     simp [F, enorm_smul, mul_pow, lintegral_const_mul', ← hc]
   have hF_repr : convolve F e = F := by
     funext y
-    calc convolve F e y = c • convolve W e y := by
-          simp [F, convolve, smul_comm _ c, integral_smul]
+    calc convolve F e y = c • convolve W e y := by simp [F, convolve, smul_comm _ c, integral_smul]
       _ = c • W y := by rw [h_repr]
   obtain ⟨w, a, hw⟩ : ∃ (w : 𝔰.G₁ → ℝ≥0∞) (a : ℝ≥0∞),
       IsDecayMajorant b f (FullOrCut.select F (besselCut b F)) w a :=

@@ -318,8 +318,7 @@ lemma exists_norm_apply_eq_smul (hQ : ∀ j : J, D.IsOffLevel ![] (Q.place j)) :
     mem_formsOfLevel_empty_iff_residueRep_fixed.1 hy g
   rw [← Equiv.sum_comp (.inv _) (D.residueRep Q)]
   calc _ = (∑ g, D.residueRep Q g⁻¹ * Ψ * D.residueRep Q g).1 y := by simp [fixed]
-    _ = c • y := by
-        rw [hΨ, SubringClass.coe_natCast, Module.End.natCast_apply]
+    _ = c • y := by rw [hΨ, SubringClass.coe_natCast, Module.End.natCast_apply]
 
 /-! ### From the top coefficient to the denominator -/
 

@@ -301,8 +301,7 @@ lemma isBesselFunction_sub {A B : 𝔰.G₁ → EuclideanSpace ℂ I} (hA : IsBe
     obtain ⟨a, A_le⟩ := hA.bounded
     obtain ⟨c, B_le⟩ := hB.bounded
     exact ⟨a + c, fun y ↦ norm_sub_le_of_le (A_le y) (B_le y)⟩
-  map_unipotent_mul u hu y := by
-    rw [hA.map_unipotent_mul u hu, hB.map_unipotent_mul u hu, smul_sub]
+  map_unipotent_mul u hu y := by rw [hA.map_unipotent_mul u hu, hB.map_unipotent_mul u hu, smul_sub]
   map_unitary_mul h y := by rw [hA.map_unitary_mul, hB.map_unitary_mul, map_sub]
 
 /-- Let `F` be the cut of the Bessel function `W` with base `b` and degree `f`, so that their L²

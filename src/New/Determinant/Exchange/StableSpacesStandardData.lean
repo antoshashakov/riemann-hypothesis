@@ -130,8 +130,7 @@ lemma match_mul_stdColDatum_translate (hΦΨ : AreMatched V.O e χ Φ Ψ) {p : M
       Matrix.sub_mul]
   have h_int : IsIntMatrix O (k' * (z - x * g.val)) :=
     k⁻¹.prop.isIntMatrix.mul (hz_int.sub (hx.mul hg.isIntMatrix))
-  have hΨy : Ψ (k' * x) = Ψ y * χ g.val.det := by
-    rw [← h_congr, hc _ h_int, hΦΨ.right_mul _ hg]
+  have hΨy : Ψ (k' * x) = Ψ y * χ g.val.det := by rw [← h_congr, hc _ h_int, hΦΨ.right_mul _ hg]
   have h_value : p z = r z * (χ g.val.det)⁻¹ := by
     rw [hp_eq, stdColDatum, ite_eq_left hz_int, ← hg_eq, invOnUnits, ite_eq_left h_unit,
       nsmul_eq_mul]

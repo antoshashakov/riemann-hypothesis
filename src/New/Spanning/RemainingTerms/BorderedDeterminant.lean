@@ -659,8 +659,7 @@ lemma New.det_updateRow_of_mulVec_eq_single {R n : Type*} [CommRing R] [Fintype 
   calc (B.updateRow i r).det = (r ᵥ* B.adjugate) ⬝ᵥ Pi.single i 1 := by
         rw [← cramer_transpose_apply, cramer_eq_adjugate_mulVec, ← adjugate_transpose,
           mulVec_transpose, dotProduct_single, mul_one]
-    _ = r ⬝ᵥ y * B.det := by
-        rw [← dotProduct_mulVec, h_col, dotProduct_smul, smul_eq_mul, mul_comm]
+    _ = r ⬝ᵥ y * B.det := by rw [← dotProduct_mulVec, h_col, dotProduct_smul, smul_eq_mul, mul_comm]
 
 namespace New.Filling
 

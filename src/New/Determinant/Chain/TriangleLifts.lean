@@ -203,8 +203,7 @@ theorem Exchange.IsEdgeFamily.exists_inner_modLift_eq_inner_modTransposedLift
         rw [← inner_conj_symm, ← conj_petersson, ← map_mul]
         simp [inner_eq_petersson, petersson, h_conj, mul_assoc, integral_const_mul]
     _ = ⟪(c * conj κ) • modTransposedLift S.neg T b Φ' Ψ₀ (k' false) (typeKernel l (-s)) x,
-      y'⟫ := by
-        rw [h_trade, inner_smul_left, map_mul, conj_conj, mul_assoc]
+      y'⟫ := by rw [h_trade, inner_smul_left, map_mul, conj_conj, mul_assoc]
     _ = _ := by simp [b, y', modTransposedLift, modDatum, Pi.smul_comp, smul_smul]
 
 namespace Data
@@ -434,8 +433,7 @@ lemma mem_triangleBase_of_inner_eq_inner_triangleFirstLift {P : Parameters} (D :
   refine ext_inner_right ℂ ((π.apply_bijective u).surjective.forall.mpr fun x ↦ ?_)
   calc ⟪π u v, π u x⟫ = ⟪a y, a x⟫ := by rw [inner_formRep, hv]
     _ = ⟪c • a (π u y), c • a (π u x)⟫ := by rw [← h_move, ← h_move, inner_formRep]
-    _ = ⟪a y, a (π u x)⟫ := by
-      simp [h_fixed, mul_comm _ (conj c), ← mul_assoc, conj_mul', hc]
+    _ = ⟪a y, a (π u x)⟫ := by simp [h_fixed, mul_comm _ (conj c), ← mul_assoc, conj_mul', hc]
     _ = ⟪v, π u x⟫ := (hv _).symm
 
 /-- For `i < D.m`, the first lift of row `i` is injective on `New.Data.triangleBase`. -/

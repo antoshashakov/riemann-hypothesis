@@ -390,8 +390,7 @@ lemma exists_mem_form_cocycle_eq_coboundary (W : Submodule BdRPlus BdR) {μ : S.
   have Λ_cob (g : k.subgroup) :
       μ (DiagTensor.mk 1 ((S.cocycleMap c).val g)) = toGp (g : Γ.G) • Λ v - Λ v := by
     simp [← Λ_equiv, ← map_sub, ← hv, Λ]
-  have Λ_mem (g : k.subgroup) : toGp (g : Γ.G) • Λ v - Λ v ∈ W := by
-    simpa only [← Λ_cob] using hW _
+  have Λ_mem (g : k.subgroup) : toGp (g : Γ.G) • Λ v - Λ v ∈ W := by simpa only [← Λ_cob] using hW _
   obtain ⟨a, ha⟩ : ∃ a : localFieldOf k.subgroup, Λ v - Algebra.cast a ∈ W :=
     BdR.exists_sub_mem_of_smul_sub_mem k.subgroup W Λ_mem
   refine ⟨Λ v - Algebra.cast a, ha, fun g ↦ ?_⟩
