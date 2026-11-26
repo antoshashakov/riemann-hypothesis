@@ -491,13 +491,11 @@ lemma frobEnd_eq_frobenius : frobEnd a = WittVector.frobenius a := by
   show frobEnd (a.coeff n) = (WittVector.frobenius a).coeff n
   rw [OFlat.frobEnd_apply, coeff_frobenius_charP]
 
-lemma smul_teichmuller : m • teichmuller p t = teichmuller p (m • t) :=
-  map_teichmuller p (toRingHom FrobGal OFlat m) t
+lemma smul_teichmuller : m • teichmuller p t = teichmuller p (m • t) := map_teichmuller ..
 
 @[simp]
 lemma frobEnd_teichmuller : frobEnd (teichmuller p t) = teichmuller p t ^ p := by
-  rw [show frobEnd (teichmuller p t) = teichmuller p (frobEnd t) from smul_teichmuller _ t,
-    OFlat.frobEnd_apply, map_pow]
+  erw [map_teichmuller, frobEnd_apply, map_pow]
 
 lemma iterate_frobEnd_teichmuller (j : ℕ) (x : OFlat) :
     frobEnd^[j] (teichmuller p x) = teichmuller p (x ^ p ^ j) := by
@@ -519,8 +517,7 @@ lemma untilt_frobGal_smul : (m • t).untilt = (m.2 • t.untilt) ^ p ^ m.1.toAd
 lemma theta_smul : theta (g • a) = g • theta a :=
   (fontaineTheta_map_tiltMap (toRingHom ..) a).subst (by congr with; apply pow_one)
 
-lemma constantCoeff_frobEnd : constantCoeff (frobEnd a) = constantCoeff a ^ p := by
-  rw [frobEnd_eq_frobenius, constantCoeff_apply, constantCoeff_apply, coeff_frobenius_charP]
+lemma constantCoeff_frobEnd : constantCoeff (frobEnd a) = constantCoeff a ^ p := frobEnd_apply _
 
 lemma constantCoeff_iterate_frobEnd (n : ℕ) :
     constantCoeff (frobEnd^[n] a) = constantCoeff a ^ p ^ n := by
@@ -635,8 +632,7 @@ lemma theta_iterate_frobEnd_xi (j : ℕ) : theta (frobEnd^[j + 1] xi) = p := by
 
 /-- `θ ξ = 0`, because `θ ξ * θ τ = θ μ = 0` and `θ τ ≠ 0`. -/
 @[simp]
-lemma theta_xi : theta xi = 0 := by
-  exact (mul_eq_zero.mp (by rw [← map_mul, xi_mul_tau, theta_mu])).resolve_right theta_tau_ne_zero
+lemma theta_xi : theta xi = 0 := by simpa [-tau, ↓← xi_mul_tau] using theta_iterate_frobEnd_mu 0
 
 /-- `τ` reduces to zero in the Witt vectors of the residue field of `O^♭`. -/
 lemma toWittResidue_tau : toWittResidue tau = 0 := by

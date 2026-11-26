@@ -77,8 +77,7 @@ abbrev ainfToBPlus : Ainf →+* BPlus := algebraMap Ainf BPlus
 lemma theta_z_dvd_p : theta c.z ∣ p := by grw [c.dvd_iff_coe_dvd.1 c.z_dvd_E_sub_p]; simp [theta_E]
 
 /-- θ(z) is not zero, as it divides `p`. -/
-lemma theta_z_ne_zero : theta c.z ≠ 0 :=
-  ne_zero_of_dvd_ne_zero (out : (p : OC) ≠ 0) c.theta_z_dvd_p
+lemma theta_z_ne_zero : theta c.z ≠ 0 := ne_zero_of_dvd_ne_zero out c.theta_z_dvd_p
 
 /-- The ring S_B of the chart: the elements of `BPlus` whose multiplication commutes with every
 `c.S`-linear map of `BPlus` that keeps `amaxImage`, the image of A_max. By

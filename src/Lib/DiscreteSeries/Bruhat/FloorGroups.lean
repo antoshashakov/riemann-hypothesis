@@ -253,8 +253,7 @@ lemma mem_partialUnitriangularGroup :
   forall₂_congr fun _ _ ↦ and_imp
 
 /-- The floor of the frame vector number `b` is `b`. -/
-lemma floorOf_besselFrame : floorOf (𝔰.besselFrame b) = b := by
-  induction b using Fin.lastCases <;> simp
+lemma floorOf_besselFrame : floorOf (𝔰.besselFrame b) = b := b.lastCases (by simp) (by simp)
 
 attribute [grind .] mem_floorGroup mem_unipotentBelow mem_partialUnitriangularGroup
   floorOf_besselFrame
@@ -262,8 +261,7 @@ attribute [grind .] mem_floorGroup mem_unipotentBelow mem_partialUnitriangularGr
 
 /-- The vector `g⁻¹ f_b` is `e` if and only if `g` sends `e` to the frame vector `f_b`. -/
 lemma orbitPoint_eq_iff : orbitPoint b g = e ↔ g *ᵥ e = Pi.single (𝔰.besselFrame b) 1 :=
-  -- Matrices act on vectors by `*ᵥ`, so this is `g⁻¹ • f_b = e ↔ g • e = f_b`.
-  (inv_smul_eq_iff (g := g)).trans eq_comm
+  inv_smul_eq_iff (g := g).trans comm
 
 /-- The frame vector `b` is the only basis vector of floor `b` and level at most `b`. -/
 lemma eq_besselFrame_of_floorOf_eq {i : 𝔰.BesselIndex} (h_floor : floorOf i = b)
@@ -602,10 +600,7 @@ lemma commute_weylElem (hs : s ∈ floorGroup l) : Commute (weylElem l p) s :=
 
 /-- Conjugating the parameters inverts the Weyl element. -/
 @[simp]
-lemma weylElem_star : (weylElem l (star p) : T.G) = (weylElem l p)⁻¹ := by
-  -- In `weylOn` the inverse matrix is by definition the one with the parameters `star p`.
-  ext
-  rfl
+lemma weylElem_star : (weylElem l (star p) : T.G) = (weylElem l p)⁻¹ := by ext; rfl
 
 lemma weylElem_left_comm (hs : s ∈ floorGroup l) :
     weylElem l p * (s * g) = s * (weylElem l p * g) :=

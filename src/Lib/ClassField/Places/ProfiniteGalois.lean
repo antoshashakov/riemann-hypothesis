@@ -251,9 +251,8 @@ lemma fixingSubgroup_fixedFieldOf : fixingSubgroup Γ (fixedFieldOf H : Set Ω) 
   rwa [h_range, eq_comm] at h_eq
 
 /-- The fixed field of a closed subgroup `H` has degree the index of `H` (`0` if infinite). -/
-lemma finrank_fixedFieldOf : finrank K (fixedFieldOf H) = H.index := by
-  obtain ⟨-, h_index⟩ := eq_fixingSubgroup_of_isProGalois (K := K) (L := fixedFieldOf H) (V := H)
-  exact h_index.symm
+lemma finrank_fixedFieldOf : finrank K (fixedFieldOf H) = H.index :=
+  eq_fixingSubgroup_of_isProGalois.2.symm
 
 /-- The fixed field of an open subgroup is finite over `K`. -/
 instance finiteDimensional_fixedFieldOf : FiniteDimensional K (fixedFieldOf U) := by

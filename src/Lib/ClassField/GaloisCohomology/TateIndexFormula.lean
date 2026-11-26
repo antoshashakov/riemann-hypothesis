@@ -125,15 +125,8 @@ lemma cokerKerIndex_mul_of_exact (hf : Function.Injective f) (h_exact : Exact f 
 /-- If `f : A → B` has finite kernel and cokernel, then `#(A/lA) / #A[l] = #(B/lB) / #B[l]`, each
 side read as `0` when one of its groups is infinite. -/
 lemma cokerKerIndex_natCast_eq_of_ne_zero (h : cokerKerIndex f ≠ 0) :
-    cokerKerIndex (l : End ℤ A) = cokerKerIndex (l : End ℤ B) := by
-  -- Take indices in `f ∘ l = l ∘ f` and cancel the nonzero index of `f`.
-  have h_comm : f ∘ₗ (l : End ℤ A) = (l : End ℤ B) ∘ₗ f := by aesop
-  apply mul_right_cancel₀ h
-  calc cokerKerIndex (l : End ℤ A) * cokerKerIndex f
-    _ = cokerKerIndex (f ∘ₗ (l : End ℤ A)) :=
-      ((cokerKerIndex_comp (l : End ℤ A) f).right (.inr h)).symm
-    _ = cokerKerIndex (l : End ℤ B) * cokerKerIndex f := by
-      rw [h_comm, (cokerKerIndex_comp f (l : End ℤ B)).right (.inl h), mul_comm]
+    cokerKerIndex (l : End ℤ A) = cokerKerIndex (l : End ℤ B) := mul_right_cancel₀ h (by
+  simp [← (cokerKerIndex_comp ..).2, h, mul_comm]; congr!; aesop)
 
 variable [NeZero l] [Module.Finite ℤ A]
 

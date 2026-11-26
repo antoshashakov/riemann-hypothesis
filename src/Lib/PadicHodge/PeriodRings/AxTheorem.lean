@@ -102,14 +102,8 @@ variable [IsAdicComplete (span {(p : R)}) R] [IsAdicComplete (span {(p : R')}) R
 /-- The untilt commutes with the maps of tilts: `(tiltMap f x)^♯ = f (x^♯)` for `p`-adically
 complete `R` and `R'`. -/
 @[simp]
-lemma untilt_tiltMap : (tiltMap f x).untilt = f x.untilt := by
-  -- The `n`-th component of `tiltMap f x` lifts to `f` of the untilt of the `p ^ n`-th root `root`
-  -- of `x`, and the `p ^ n`-th power of this lift is `f x.untilt`.
-  refine teichmuller_spec fun n ↦ ?_
-  let root : PreTilt R p := (powMulEquiv _ p).symm^[n] x
-  have h_root_lift : (root.untilt : ModP R p) = Perfection.coeff (ModP R p) p n x := by aesop
-  have h_pow : f root.untilt ^ p ^ n = f x.untilt := by simp [root, ← map_pow]
-  exact ⟨f root.untilt, coeff_tiltMap f h_root_lift, by rw [h_pow]⟩
+lemma untilt_tiltMap : (tiltMap f x).untilt = f x.untilt := teichmuller_spec
+    (⟨f <| (powMulEquiv _ p).symm^[·] x |>.untilt, coeff_tiltMap f (by aesop), by simp [← map_pow]⟩)
 
 /-- Fontaine's `θ` is natural: it commutes with a ring map `f` and the map of Witt vectors of
 the tilts that `f` induces. -/

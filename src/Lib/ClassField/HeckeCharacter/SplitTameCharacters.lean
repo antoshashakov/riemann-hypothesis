@@ -176,11 +176,7 @@ instance _root_.New.AutChar.HasWeight.hasWeight_rankTwist [h : μ.HasWeight e ψ
 equals the Hecke character υ². -/
 @[simp]
 lemma baseChange_upsilonU1 : upsilonU1.baseChange = υ (E := E) ^ 2 := by
-  -- `υ (x / x̄) = υ x ^ 2`, since `υ x̄ = (υ x)⁻¹`.
-  ext x : 2
-  have h_div : Unitary.toUnits (divStar x) = x / star x := by aesop
-  change upsilonU1.val (divStar x) = υ.val x ^ 2
-  rw [upsilonU1_apply, h_div, map_div, υ_star, div_inv_eq_mul, sq]
+  ext x : 2; simpa [sq, υ_star] using! congrArg υ.1 (by bound : _ = x / star x)
 
 end WeilData
 

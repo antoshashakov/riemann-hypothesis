@@ -200,8 +200,7 @@ lemma dim_simClassOf : (simClassOf g).dim = finrank k V :=
   SimClass.dim_mk (k := k) _
 
 @[simp]
-lemma charpoly_simClassOf : (simClassOf g).charpoly = g.charpoly :=
-  charpoly_conj (finBasis k V).equivFun g
+lemma charpoly_simClassOf : (simClassOf g).charpoly = g.charpoly := charpoly_conj ..
 
 /-! ### Values of sums and products -/
 

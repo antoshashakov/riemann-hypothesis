@@ -385,8 +385,7 @@ def symm : V.Splitting V₀ p where
   gram_il := D.gram_ik
   card_eq := D.card_eq
 
-lemma gram_li : D.lᴴ * V.J * D.i = 0 := by
-  rw [V.conjTranspose_mul_J_mul_swap, D.gram_il, conjTranspose_zero]
+lemma gram_li : D.lᴴ * V.J * D.i = 0 := D.symm.gram_ki
 
 end
 

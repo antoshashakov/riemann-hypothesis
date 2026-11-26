@@ -126,9 +126,8 @@ lemma trans (h : IsCohomDense F V) (k : IsCohomDense F (U.preimage V.ι)) : IsCo
     isCohomEquiv_iff_range] at * <;> aesop
 
 /-- A subfunctor that contains a dense subfunctor is dense. -/
-lemma mono (h : IsCohomDense F U) (hU : U ≤ V) : IsCohomDense F V := by
-  -- the preimage of `V` in the dense subfunctor `U` is all of `U`
-  exact h.trans (of_top_le fun A x _ ↦ hU A x.prop)
+lemma mono (h : IsCohomDense F U) (hU : U ≤ V) : IsCohomDense F V :=
+  h.trans (of_top_le (fun _ ↦ hU · ·.2))
 
 /-- A subfunctor W of E that contains the preimage under p : E → Y of a dense subfunctor is
 dense. -/

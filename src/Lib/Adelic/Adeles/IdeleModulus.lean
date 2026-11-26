@@ -79,13 +79,11 @@ lemma ideleAbs_apply (x : (𝔸 E)ˣ) :
       (∏ w : InfinitePlace E, ‖(x : 𝔸 E).1 w‖ ^ 2) * ∏ᶠ w : FinPlace E, ‖(x : 𝔸 E).2 w‖ := rfl
 
 @[simp]
-lemma ideleAbs_nonneg_and_ne_zero : 0 ≤ ideleAbs x ∧ ideleAbs x ≠ 0 := by
-  refine ⟨mul_nonneg ?_ (finprod_nonneg fun w ↦ norm_nonneg _), (toHomUnits ideleAbs x).ne_zero⟩
-  positivity
+lemma ideleAbs_nonneg_and_ne_zero : 0 ≤ ideleAbs x ∧ ideleAbs x ≠ 0 :=
+    ⟨mul_nonneg (by positivity) (finprod_nonneg (by simp)), (toHomUnits _ x).ne_zero⟩
 
 @[simp]
-lemma ideleAbs_pos : 0 < ideleAbs x :=
-  lt_of_le_of_ne' ideleAbs_nonneg_and_ne_zero.1 ideleAbs_nonneg_and_ne_zero.2
+lemma ideleAbs_pos : 0 < ideleAbs x := by simp [lt_of_le_of_ne']
 
 /-- If the idele `x` has valuation `1` at every finite place, then its module is the product of the
 squared norms of its components at the infinite places. -/
@@ -397,10 +395,8 @@ variable {E : Type*} [Field E] [NumberField E]
 the absolute value of the norm of `x` to `ℚ`. -/
 @[simp]
 lemma New.genIndex_algebraMap (x : E) : genIndex (x : 𝔸f E) = |↑(Algebra.norm ℚ x)| := by
-  obtain rfl | hx := eq_or_ne x 0
-  · simp [genIndex.map_nonunit]
-  · -- `genIndex` is the inverse of `finIdeleAbs` on ideles, which the product formula computes
-    simpa using genIndex_eq_inv_finIdeleAbs (principalIdele (Units.mk0 x hx))
+  by_cases x = 0; simp_all [genIndex.map_nonunit]
+  simpa using! genIndex_eq_inv_finIdeleAbs (principalIdele (.mk0 x ‹_›))
 
 /-- For a natural number `k` the generalised index `New.genIndex` of `k` as a finite adele is
 `(k ^ r) ^ 2`, with `r = Core.numInfPlaces E` the number of infinite places of the CM field `E`. The

@@ -107,13 +107,9 @@ def tiltPiEquiv :
       (split.trans (Equiv.piCongrRight fun _ ↦ (quotientMulEquiv ..).1)).bijective
 
 /-- Divisibility in the tilt of a test can be checked after untilting. -/
-lemma dvd_of_untilt_dvd {x y : c.TiltRing} (h : x.untilt ∣ y.untilt) : x ∣ y := by
-  -- Divisibility is tested in each cell, where it is `untilt_dvd_iff`.
-  refine (map_dvd_iff c.tiltPiEquiv).mp (pi_dvd_iff.mpr fun i ↦ untilt_dvd_iff.mp ?_)
-  -- The `i`-th component of the tilt of `z` untilts to the `i`-th component of `z.untilt`.
-  have h_comp (z : c.TiltRing) : PreTilt.untilt (c.tiltPiEquiv z i) = z.untilt i :=
-    untilt_tiltMap (Pi.evalRingHom c.Cell i) z
-  simpa [h_comp] using pi_dvd_iff.mp h i
+lemma dvd_of_untilt_dvd {x y : c.TiltRing} (h : x.untilt ∣ y.untilt) : x ∣ y :=
+  (map_dvd_iff c.tiltPiEquiv).1 <|
+  pi_dvd_iff.2 (untilt_dvd_iff.1 <| by convert pi_dvd_iff.1 h · <;> apply untilt_tiltMap)
 
 /-- The tilt of a p-adic test c is a perfect O^♭-algebra without `pFlat`-torsion, in the sense of
 `New.Variety.IsPerfectTorsionFree`. -/

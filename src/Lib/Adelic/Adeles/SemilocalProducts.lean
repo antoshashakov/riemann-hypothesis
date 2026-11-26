@@ -122,14 +122,9 @@ lemma adeleOfLocal_apply (y : LocProd P) (w : FinPlace E) :
   rfl
 
 @[fun_prop]
-lemma continuous_adeleOfLocal : Continuous (adeleOfLocal P) := by
-  classical
-  -- `adeleOfLocal P` factors through the restricted product for the principal filter of `Pᶜ`, which
-  -- has the subspace topology of the product; there each component is a projection or `0`.
-  have h_components : Continuous fun (y : LocProd P) (w : FinPlace E) ↦
-      if h : w ∈ P then y ⟨w, h⟩ else 0 := continuous_pi fun w ↦ by split <;> fun_prop
-  exact (continuous_inclusion (R := LocField) (by simp)).comp
-    (continuous_rng_of_principal.2 h_components)
+lemma continuous_adeleOfLocal : Continuous (adeleOfLocal P) :=
+  (continuous_inclusion (R := _) (by
+  simp)).comp (continuous_rng_of_principal.2 (continuous_pi fun _ ↦ by simp; split <;> fun_prop))
 
 @[fun_prop]
 lemma continuous_evalPlaces : Continuous (evalPlaces P) :=

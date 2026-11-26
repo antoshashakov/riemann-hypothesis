@@ -109,10 +109,8 @@ instance : MulSemiringAction (FrobGroup Γ) OFlat :=
       fun n g ↦ Commute.zpow_left (RingEquiv.ext fun x ↦ by simp [frobenius_def]) _
 
 /-- The element φ = (1, 1) of ℤ × Γ acts on O^♭ as the Frobenius x ↦ x^p. -/
-lemma phi_smul_oFlat (x : OFlat) : FrobGroup.φ • x = frobEnd x := by
-  -- by definition `FrobGroup.φ • x` is `(1 • x) ^ p`
-  change ((1 : FrobGroup Γ) • x) ^ p = frobEnd x
-  rw [one_smul, frobEnd_apply]
+lemma phi_smul_oFlat (x : OFlat) : FrobGroup.φ • x = frobEnd x :=
+  x.frobEnd_apply ▸ congr($(one_smul (FrobGroup Γ) x) ^ p)
 
 lemma phi_smul_ainf (x : Ainf) : FrobGroup.φ • x = frobEnd x :=
   ext fun (n : ℕ) ↦ phi_smul_oFlat (x.coeff n)
@@ -295,10 +293,8 @@ def KummerChart.IsUnramified : Prop := k.E = k.z + p ∧ k.e = 1 ∧ k.different
 
 /-- The chart of a Kummer chart belongs to the field fixed by j(Γ): every element of G_p that fixes
 Λ pointwise and fixes θ(z) lies in j(Γ). -/
-lemma KummerChart.chart_isChartOf : k.chart.IsChartOf Γ.overGp.toGp := by
-  intro σ hσ
-  obtain ⟨g, hg⟩ := k.isChartOf σ hσ
-  exact ⟨g, hg⟩
+lemma KummerChart.chart_isChartOf : k.chart.IsChartOf Γ.overGp.toGp :=
+  (k.isChartOf · · |>.elim (⟨·, ·⟩))
 
 /-- Let Γ act on Q̄_p through j : Γ → G_p, and let c be a chart whose element ϖ^♭ of O^♭ has untilt
 π₀ ∈ Q̄_p. If j(Γ) is transitive on the n-th roots of π₀ for every n > 0, then for every l some

@@ -417,16 +417,12 @@ lemma ker_frameTorsionClass_one : (frameTorsionClass (1 : GL n (𝔸f E))).ker =
     frameCoords]
 
 /-- The coordinates `g⁻¹ y` of the rational vectors `y` are dense in `(𝔸f E)ⁿ`. -/
-lemma denseRange_frameCoords : DenseRange (frameCoords g) :=
-  -- `frameCoords g` is the coordinatewise map `E → 𝔸f E`, of dense range, followed by `g⁻¹`.
-  (MulAction.surjective g⁻¹).denseRange.comp (.piMap fun _ ↦ denseRange_algebraMap_finAdele)
-    (by fun_prop)
+lemma denseRange_frameCoords : DenseRange (frameCoords g) := (MulAction.surjective
+  g⁻¹).denseRange.comp (.piMap (const _ denseRange_algebraMap_finAdele)) (by fun_prop)
 
 /-- Every class in `(𝔸f / Ô)ⁿ` is the class of `g⁻¹ y` for a rational vector `y`. -/
-lemma frameTorsionClass_surjective : Surjective (frameTorsionClass g) := fun t ↦
-  -- each fibre of `torsionClass` is open and nonempty, so it meets the dense range of
-  -- `frameCoords g`
-  denseRange_frameCoords.exists_mem_open (isOpen_preimage_torsionClass {t}) (Quot.exists_rep t)
+lemma frameTorsionClass_surjective : Surjective (frameTorsionClass g) :=
+  (denseRange_frameCoords.exists_mem_open (isOpen_preimage_torsionClass {_}) <| Quot.exists_rep ·)
 
 end
 

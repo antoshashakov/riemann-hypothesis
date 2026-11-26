@@ -388,8 +388,7 @@ theorem isKHighest_dsGenerator (hg : l.HasGap h) :
 parity of `card n - 1`, and `|λ i - λ j| ≥ h` when `ε i ≠ ε j`. Then the function `c_λ = l.dsCoeff`
 satisfies `‖c_λ(g)‖ ≤ 1` for every `g` in `U(diag ε)`. -/
 theorem DiscreteSeries.norm_dsCoeff_le_one (hg : l.HasGap h) (g : USign ε) : ‖l.dsCoeff g‖ ≤ 1 := by
-  -- with exponent `0` the determinant factor is `1`
-  simpa using norm_dsCoeff_sq_mul_det_pow_le_one hg (Nat.zero_le h) g
+  simpa using norm_dsCoeff_sq_mul_det_pow_le_one (c := 0) ⟨hg.1, hg.2, by simp⟩ le_rfl g
 
 /-! ### Smearing -/
 

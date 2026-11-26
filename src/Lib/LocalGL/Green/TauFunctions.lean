@@ -647,9 +647,7 @@ lemma IsLabel.induction_irreducible_mul [IsAlgClosed K] {p : ℕ → Polynomial 
 
 /-- A label stays a label over an extension field, as a finite field is perfect. -/
 lemma IsLabel.map (hc : IsLabel r c) : IsLabel r (c.map (algebraMap k K)) := by
-  obtain ⟨h_monic, h_sqfree, h_deg, h_coeff⟩ := hc
-  have h_sep : c.Separable := PerfectField.separable_iff_squarefree.mpr h_sqfree
-  exact ⟨h_monic.map _, h_sep.map.squarefree, by simpa, by simpa⟩
+    simp_all [IsLabel, (PerfectField.separable_iff_squarefree.2 _).map.squarefree]
 
 /-- For a real number q > 1 and m : ℕ, (q - m) q^m ∏_{i<m} q^i ≤ q ∏_{i<m} (q^(i+1) - 1). Divided by
 q^(m+1) ∏_{i<m} q^i, this says that ∏_{i<m} (1 - q^(-(i+1))) is at least 1 - m/q. -/

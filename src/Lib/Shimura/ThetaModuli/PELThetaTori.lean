@@ -642,8 +642,7 @@ instance discreteTopology_latticeOver_lagrangian : DiscreteTopology (x.latticeOv
 exactly when `y` and `z` have the same torsion class. -/
 lemma sub_mem_periodLattice_iff :
     x.periodPoint y - x.periodPoint z ∈ x.periodLattice ↔
-      frameTorsionClass g y = frameTorsionClass g z := by
-  simp [← map_sub, ← sub_eq_zero]
+      frameTorsionClass g y = frameTorsionClass g z := by simp [← map_sub, ← sub_eq_zero]
 
 lemma torsionLift_mem_latticeOver : x.torsionLift s ∈ x.latticeOver D.dualTorsion := by
   simp [torsionLift]

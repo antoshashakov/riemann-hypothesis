@@ -142,8 +142,7 @@ lemma FinPlace.q_ne_zero : w.q ≠ 0 := w.q_pos.ne'
 
 /-- The four consequences of `1 < w.q` for the order `w.q` of the residue field at `w`, collected
 for `simp`. -/
-@[simp] lemma FinPlace.q_bounds : 0 < w.q - 1 ∧ w.q ≠ 0 ∧ 1 ≤ w.q ∧ 0 < w.q :=
-  ⟨w.q_sub_one_pos, w.q_ne_zero, w.one_le_q, w.q_pos⟩
+@[simp] lemma FinPlace.q_bounds : 0 < w.q - 1 ∧ w.q ≠ 0 ∧ 1 ≤ w.q ∧ 0 < w.q := by grind [one_lt_q]
 
 /-- A chosen uniformiser of the completion of E at the finite place w. -/
 def uniformizer : (adicCompletion E w)ˣ :=
@@ -361,9 +360,8 @@ lemma adeleMap_apply {u : FinPlace K} {w : FinPlace L} (hw : w.comap f = u) (x :
   subst hw
   rfl
 
-@[fun_prop] lemma continuous_adeleMap : Continuous (adeleMap f) :=
-  mapAlong_continuous LocField LocField (FinPlace.comap f) (tendsto_place_comap_cofinite f) _
-    (by simp [MapsTo, mem_LocInt]) fun _ ↦ continuous_locMap f rfl
+@[fun_prop] lemma continuous_adeleMap : Continuous (adeleMap f) := by apply
+  mapAlong_continuous <;> simp [tendsto_place_comap_cofinite, MapsTo, mem_LocInt, continuous_locMap]
 
 /-- The homomorphism of finite adeles induced by f extends f. -/
 @[simp] lemma adeleMap_algebraMap (x : K) : adeleMap f x = f x := by
@@ -957,8 +955,7 @@ lemma v_star_apply : v (star x w) = v (x (star w)) := by simp
 /-- Conjugate places have residue fields of the same order. -/
 @[simp]
 lemma q_star : (star w).q = w.q :=
-  -- conjugation of `𝓞 E` induces a bijection of the quotients by the two prime ideals
-  Nat.card_eq_of_bijective _ ⟨quotientMap_injective, quotientMap_surjective starRingAut.surjective⟩
+  Nat.card_congr (quotientEquiv _ _ _ (comap_symm starRingAut)).1.symm
 
 /-- Complex conjugation carries the idempotent of a set of places to that of its conjugate. -/
 lemma star_idem (S : Set (FinPlace E)) : star (idem S : 𝔸f E) = idem (star ⁻¹' S) := by aesop

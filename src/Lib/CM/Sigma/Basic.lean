@@ -128,10 +128,8 @@ lemma exists_riemannForm_periods_eq_sign :
 
 lemma half_mem_lattice_iff_even (m n : ℤ) :
     (m * L.ω₁ + n * L.ω₂) / 2 ∈ L.lattice ↔ Even m ∧ Even n := by
-  have split : (m * L.ω₁ + n * L.ω₂) / 2 = (m / 2 : ℚ) * L.ω₁ + (n / 2 : ℚ) * L.ω₂ := by
-    simp [field]
-  rw [split, L.mul_ω₁_add_mul_ω₂_mem_lattice]
-  simp [even_iff_two_dvd, ← Rat.den_div_intCast_eq_one_iff]
+  simp [even_iff_two_dvd, ← Rat.den_div_intCast_eq_one_iff, ← L.mul_ω₁_add_mul_ω₂_mem_lattice]
+  ring_nf
 
 variable {L}
 
@@ -468,8 +466,7 @@ lemma exists_odd_mem_thetaSpace_deriv_eq_one :
 def _root_.PeriodPair.σ (L : PeriodPair) : ℂ → ℂ :=
   (exists_odd_mem_thetaSpace_deriv_eq_one (L := L)).choose
 
-lemma sigma_mem_thetaSpace : L.σ ∈ L.hermitianForm.thetaSpace (sigmaSign L) :=
-  exists_odd_mem_thetaSpace_deriv_eq_one.choose_spec.1
+lemma sigma_mem_thetaSpace : L.σ ∈ L.hermitianForm.thetaSpace (sigmaSign L) := by grind [σ]
 
 /-- The functional equation of the sigma function: for a lattice point `l` and
 `H = L.hermitianForm`, `σ (z + l) = sigmaSign L l * exp (H l z + H l l / 2) * σ z`. -/
@@ -485,12 +482,9 @@ lemma sigma_neg (z : ℂ) : L.σ (-z) = -L.σ z := by
   obtain ⟨-, h_odd, -⟩ := (exists_odd_mem_thetaSpace_deriv_eq_one (L := L)).choose_spec
   exact h_odd z
 
-@[simp] lemma sigma_apply_zero : L.σ 0 = 0 :=
-  Function.Odd.map_zero sigma_neg
+@[simp] lemma sigma_apply_zero : L.σ 0 = 0 := by grind [@sigma_neg L 0]
 
-@[simp] lemma deriv_sigma_zero : deriv L.σ 0 = 1 := by
-  obtain ⟨-, -, h_deriv⟩ := (exists_odd_mem_thetaSpace_deriv_eq_one (L := L)).choose_spec
-  exact h_deriv
+@[simp] lemma deriv_sigma_zero : deriv L.σ 0 = 1 := by grind [σ]
 
 lemma _root_.PeriodPair.sigma_ne_zero : L.σ ≠ 0 :=
   fun h_zero ↦ by simpa [h_zero] using deriv_sigma_zero (L := L)

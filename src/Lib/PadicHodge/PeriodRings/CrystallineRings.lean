@@ -912,8 +912,7 @@ instance [FaithfulSMul R BPlus] : FaithfulSMul R BdRPlus := by
 /-! ### `B_dR⁺` is a discrete valuation ring; the period rings are domains -/
 
 /-- The element `ξ` is prime in `B_dR⁺`. -/
-lemma BdRPlus.prime_xi : Prime (xi : BdRPlus) := by
-  simp [Prime, Ainf.prime_xi.ne_zero, -isUnit_map_iff]
+lemma BdRPlus.prime_xi : Prime (xi : BdRPlus) := by simp [Prime, Ainf.prime_xi.1]
 
 instance : IsDomain BdRPlus := by
   have h_nontrivial : Nontrivial BdRPlus := ⟨xi, 0, prime_xi.ne_zero⟩

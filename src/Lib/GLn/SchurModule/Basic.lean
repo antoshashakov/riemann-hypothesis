@@ -487,9 +487,8 @@ lemma Monomials.degree_eq : α.val.degree = a := by
   simpa [degree_eq_sum] using (mem_finsuppAntidiag.mp α.property).left
 
 lemma Monomials.isHomogeneous_linSubst : (linSubst A (monomial α 1)).IsHomogeneous a := by
-  rw [linSubst_eq_bind₁, ← aeval_eq_bind₁]
-  simpa only [one_mul] using
-    (isHomogeneous_monomial (1 : R) α.degree_eq).aeval _ Aᵀ.toMvPolynomial_isHomogeneous
+  simpa [linSubst_eq_bind₁] using!
+    (isHomogeneous_monomial 1 α.degree_eq).aeval _ Aᵀ.toMvPolynomial_isHomogeneous
 
 /-- A polynomial `f`, homogeneous of degree `a` in finitely many variables, is the sum of its terms
 `f.coeff β • X ^ β` over the exponents `β` of degree `a`. -/

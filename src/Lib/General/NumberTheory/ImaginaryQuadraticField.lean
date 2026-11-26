@@ -179,9 +179,7 @@ lemma coe_star_eq_conj (y : QuadField d) : ((star y : QuadField d) : ℂ) = star
   map_star_complex (QuadField d).val y
 
 @[simp]
-lemma star_sqrtNegD : star (sqrtNegD d) = -sqrtNegD d := by
-  ext
-  simp
+lemma star_sqrtNegD : star (sqrtNegD d) = -sqrtNegD d := by aesop
 
 /-- For d ≡ 3 mod 4, the absolute value of the norm of x ∈ K ⊂ ℂ is |x|², as K has a single,
 complex, infinite place. -/
@@ -428,9 +426,7 @@ abbrev primeNorm : ℕ := if chiK d p = -1 then p ^ 2 else p
 `1` or `-1` otherwise. -/
 lemma chiK_cases (d p : ℕ) [hp : Fact p.Prime] [Fact d.Prime] :
     p = d ∧ chiK d p = 0 ∨ p ≠ d ∧ (chiK d p = 1 ∨ chiK d p = -1) := by
-  obtain rfl | hne := eq_or_ne p d
-  · exact .inl ⟨rfl, by rw [chiK, natCast_self, quadraticChar_apply, quadraticCharFun_zero]⟩
-  · exact .inr ⟨hne, quadraticChar_dichotomy (prime_ne_zero d p hne.symm)⟩
+  simp [chiK, quadraticCharFun]; grind [prime_ne_zero, natCast_self d]
 
 /-! ### Lifting the exponent at `2` -/
 
