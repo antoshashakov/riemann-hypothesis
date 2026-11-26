@@ -282,8 +282,7 @@ lemma EtaleChart.mem_range_jetTangent_of_injective {X : CommAlg E ⥤ Type 1} (A
     (h_inj : Function.Injective (jetTangent v))
     (w : (restrictAlg E k ⋙ X).obj (CommAlgCat.of k k[ε]))
     (hw : (restrictAlg E k ⋙ X).map SqZeroExt.fst w = (restrictAlg E k ⋙ X).map SqZeroExt.fst v) :
-    w ∈ range (jetTangent v) := by
-  exact (A.tangent_mem_range_of_jet hT v hv h_inj).left w hw
+    w ∈ range (jetTangent v) := (A.tangent_mem_range_of_jet hT v hv h_inj).left w hw
 
 /-- Let `v` be a jet of `X` with values in `k ⊕ T*`, where `T` has dimension `d`, whose base point
 lies in a chart `A` and whose tangent vectors in distinct directions are distinct. Then there is a

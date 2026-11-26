@@ -600,8 +600,7 @@ private lemma IsTransferLevel.isSplit_of_below_mem
 /-- At a place of `E'` above a place of `X`, `𝓛` contains the maximal compact subgroup. -/
 private lemma IsTransferLevel.maxCompactAt_le_of_below_mem
     (h_level : IsTransferLevel σ μ f Z X K L₁ K₁ C 𝓛) {u : FinPlace E'} (hu : u.below E ∈ X) :
-    maxCompactAt n u ≤ 𝓛 := by
-  exact h_level.kf_inf_supportedOn_le (u.below E) hu (by simp [placesAbove])
+    maxCompactAt n u ≤ 𝓛 := h_level.kf_inf_supportedOn_le (u.below E) hu (by simp [placesAbove])
 
 /-- The elements over `E` supported at a place of `X` and its conjugate map into `C`. -/
 private lemma IsTransferLevel.supportedOn_le_comap

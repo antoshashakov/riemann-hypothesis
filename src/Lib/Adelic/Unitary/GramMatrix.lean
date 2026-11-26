@@ -67,8 +67,7 @@ lemma conjTranspose_stdForm : (stdForm E s)ᴴ = stdForm E s := by
 type, commutes with the conjugate transpose of matrices. -/
 @[simp]
 lemma conjTranspose_map_toAdele {m k : Type*} (a : Matrix m k E) :
-    (a.map toAdele)ᴴ = aᴴ.map toAdele := by
-  exact (conjTranspose_map _ fun x ↦ (star_toAdele x).symm).symm
+    (a.map toAdele)ᴴ = aᴴ.map toAdele := (conjTranspose_map _ fun x ↦ (star_toAdele x).symm).symm
 
 namespace Space
 /-- A space `V` is a matrix `J` over `E` with an invertible adelic matrix `x` such that
