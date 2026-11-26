@@ -278,6 +278,16 @@ theorem IsPolar.compactLandauConstOne {r} (h : IsPolar E r) {β : ℝ} (hβ : 0 
 
 end CompactLandauStage
 
+theorem eventually_const_mul_rpow_le (A β γ : ℝ) (h : β < γ) :
+    ∀ᶠ x : ℝ in atTop, A * x ^ (β - 1) ≤ x ^ (γ - 1) := by
+  have h_large : ∀ᶠ x : ℝ in atTop, A ≤ x ^ (γ - β) :=
+    (tendsto_rpow_atTop (sub_pos.mpr h)).eventually_ge_atTop A
+  filter_upwards [h_large, eventually_gt_atTop (0 : ℝ)] with x hx hx_pos
+  calc
+    A * x ^ (β - 1) ≤ x ^ (γ - β) * x ^ (β - 1) :=
+      mul_le_mul_of_nonneg_right hx (rpow_nonneg hx_pos.le _)
+    _ = x ^ (γ - 1) := by rw [← rpow_add hx_pos]; congr 1; ring
+
 /-- **No pole to the right of `β`**, by Landau's lemma and the sign of the residues at real points.
 Suppose `IsPolar E r`: `|E v| ≤ C e^v` for `v ≥ 0` and the transform
 `∫₀^∞ E(v) e^{(1-s)v} dv` has a meromorphic continuation with at most simple poles of residue `r ρ`
