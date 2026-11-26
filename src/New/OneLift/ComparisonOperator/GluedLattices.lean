@@ -380,41 +380,22 @@ lemma DividedLattice.exists_reducedInverse_eq (C G : Matrix n n (Ô E))
     (hCG : C * G = O.genIntAdele • 1) :
     ∃ L : DividedLattice O, L.reducedInverse = G.map O.chosenModulusSq.reduction := by
   classical
-  have hC : C.map (Ô E).subtype * O.genIdele⁻¹.1 • G.map (Ô E).subtype = 1 := by
-    ext
-    simp [← Matrix.map_mul, hCG, apply_ite, -Subring.coe_subtype, Matrix.one_apply]
-  let c : GL n (𝔸f E) :=
-    cutGL (idem_mul_self O.chosenModulusSq.places) ⟨_, _, hC, mul_eq_one_comm.1 hC⟩
-  set e := idem O.chosenModulusSq.places with he
-  -- No chosen place is conjugate to a chosen place, so `c` and `cᴴ` commute and `γ` is unitary.
-  have h_disj : e * star e = 0 := idem_mul_star O.chosenModulusSq.isConjDisjoint_places
-  have h_comm : Commute (star c) c := Units.ext <| by
-    -- Since `e * star e = 0`, both products are the same combination of `C`, `Cᴴ` and `1`.
-    simp [c, cutGL, mul_add, add_mul, smul_smul, h_disj, mul_comm, ← he]
-    ac_rfl
-  let γ : Gf E n := ⟨star c⁻¹ * c, val_inj.2 <|
-    show star (star c⁻¹ * c) * 1 * (star c⁻¹ * c) = 1 by simp [h_comm.inv_right.eq]⟩
-  -- `ϖ γ⁻¹` is `G` at the chosen places, `ϖ Cᴴ` at their conjugates and `ϖ` elsewhere.
-  have h_entry (a b : n) : O.genIdele * γ⁻¹.1.1 a b =
-      e * G a b + star e * (O.genIdele * star (C b a).1) +
-        if a = b then (1 - e - star e) * O.genIdele else 0 := by
-    simp [γ, c, cutGL, mul_add, add_mul, h_disj, mul_left_comm O.genIdele.1, ← mul_assoc (star _),
-      mul_comm (star _), ← he, Matrix.one_apply]
-    -- The remaining identity follows from `e * star e = 0`.
-    grind
-  have h_support : γ ∈ supportedOn n (Set.range O.chosenPlace) := by
-    simp +contextual [atPlace, γ, c, map_evalAt_cutGL, Units.ext_iff, evalAt_star_GL (star_star _),
-      places_levelModulus_false]
-  refine ⟨⟨γ, h_support, fun a b ↦ ?_⟩, ext fun a b ↦ reduction_congr _ fun w hw ↦ ?_⟩
-  · rw [h_entry]
-    simp (maxDischargeDepth := 5) [e, star_mem_Ô, O.genIntAdele.2, add_mem, mul_mem, sub_mem,
-      ite_mem]
-  -- At a chosen place `e` is `1` and its conjugate is `0`.
-  have h_star : star e w = 0 := by
-    simpa [e, idem_apply, hw] using congrArg (fun x : 𝔸f E ↦ x w) h_disj
-  change (O.genIdele * γ⁻¹.1.1 a b) w = (G a b).1 w
-  rw [h_entry]
-  split_ifs <;> simp [h_star, e, hw, -finAdele_star_apply]
+  let c := cutGL (idem_mul_self O.chosenModulusSq.places)
+    ⟨C.map (Ô E).subtype, O.genIdele⁻¹.1 • G.map (Ô E).subtype, ?e, mul_eq_one_comm.1 ?e⟩
+  case e => ext; simp [← Matrix.map_mul, hCG, apply_ite, -Subring.coe_subtype, Matrix.one_apply]
+  -- Disjoint conjugate supports make star(c) commute with c, giving a unitary element.
+  have e := idem_mul_star O.chosenModulusSq.isConjDisjoint_places
+  have k : Commute (star c) c := Units.ext (by
+    simp [c, cutGL, mul_add, add_mul, smul_smul, e, mul_comm]; ac_rfl)
+  refine ⟨⟨⟨star c⁻¹ * c, Units.val_inj.2 (by simp [k.inv_right.eq] : star (_ * c) * 1 * _ = 1)⟩,
+    by simp +contextual [Gf.atPlace, c, map_evalAt_cutGL, Units.ext_iff,
+      evalAt_star_GL (star_star _), places_levelModulus_false], fun a b ↦ ?_⟩,
+    Matrix.ext fun a b ↦ reduction_congr _ fun w m ↦ ?_⟩ <;>
+    simp (maxDischargeDepth := 5) [c, cutGL, mul_add, add_mul,
+      e, mul_left_comm O.genIdele.1, ← mul_assoc (star _), mul_comm (star _),
+      star_mem_Ô, O.genIntAdele.2, add_mem, mul_mem, sub_mem, ite_mem, Matrix.one_apply]
+  -- At a chosen place the idempotent is one, and its conjugate vanishes.
+  split <;> simp [idem_apply] <;> grind [isConjDisjoint_places]
 
 /-- The rows of `s`, indexed by `a`, stacked above the rows of `ϖ • 1`, indexed by `N`. With this
 matrix `w`, the one equation `w x = w x'` modulo `ϖ²` says that `s x ≡ s x'` modulo `ϖ²` and
