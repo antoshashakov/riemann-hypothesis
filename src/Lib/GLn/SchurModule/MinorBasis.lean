@@ -377,37 +377,17 @@ section Interlacing
 
 open MvPolynomial Finset Finsupp Algebra MonomialOrder
 
-/-- The map `aevalTower g y` is `eval₂` with the coefficient map `g`. -/
-private lemma MvPolynomial.aevalTower_apply {S R A σ : Type*} [CommSemiring S] [CommSemiring R]
-    [CommSemiring A] [Algebra S R] [Algebra S A] (g : R →ₐ[S] A) (y : σ → A)
-    (p : MvPolynomial σ R) : aevalTower g y p = eval₂ (g : R →+* A) y p :=
-  rfl
-
 namespace New.GL
-
-/-- Let the exponents `n` and `γ` agree outside the columns `i` and `i + 1` and have the same sum
-`n i + n (i + 1) = γ i + γ (i + 1)`, in the pointwise form that a comparison of coefficients
-gives. If `n i ≤ γ i` and `n ≠ γ`, then `γ` is below `n` for `columnOrder`. -/
-private lemma columnOrder_lt_of_forall_add_ite_eq {γ n : ℕ →₀ ℕ} {i : ℕ}
-    (h_eq : ∀ a : ℕ, (if i + 1 = a then n i else 0) + ((if i = a then n (i + 1) else 0) + n a) =
-      (if i + 1 = a then γ i else 0) + ((if i = a then γ (i + 1) else 0) + γ a))
-    (h_le : n i ≤ γ i) (h_ne : n ≠ γ) : γ ≺[columnOrder] n := by
-  have h_sum : n (i + 1) + n i = γ (i + 1) + γ i := by simpa using h_eq i
-  have h_off (a : ℕ) (ha : a ≠ i) (ha' : a ≠ i + 1) : n a = γ a := by
-    simpa [Ne.symm ha, Ne.symm ha'] using h_eq a
-  -- `n i = γ i` would force `n = γ`, so `n i < γ i` and hence `γ (i + 1) < n (i + 1)`.
-  have h_lt_i : n i < γ i := by
-    refine h_le.lt_of_ne fun h_eq_i ↦ h_ne (Finsupp.ext fun a ↦ ?_)
-    rcases eq_or_ne a i with rfl | ha
-    · exact h_eq_i
-    rcases eq_or_ne a (i + 1) with rfl | ha'
-    · lia
-    exact h_off a ha ha'
-  have h_lt_succ : γ (i + 1) < n (i + 1) := by lia
-  exact columnOrder_lt_of_eq_above (i + 1) n (fun a ha ↦ (h_off a (by lia) (by lia)).symm) h_lt_succ
 
 variable {Φ m : Type} [DecidableEq m] {R : Type} [CommRing R]
   {c : m → Φ} {x : m} {l : Φ × ℕ →₀ ℕ} {f : MatrixPoly m R}
+
+section CompactInterlacing
+
+attribute [local irreducible] Finset.univ Finset.sum Finset.prod
+attribute [local simp] Finset.prod_mul_distrib Finset.sum_add_distrib
+attribute [local simp] borelMul coeff_map mul_assoc algHom prod single_apply mul_pow ite_apply
+attribute [local simp ←] map_pow map_prod C_pow Finsupp.sum.eq_1 pow_mul
 
 /-- Let `f` be a Borel semi-invariant of weight `l` for the row colouring `c` (`f ∈ nabla R c l`),
 and let `γ` be the leading exponent of `f` in the variables `X (x, i)` of the row `x`, for the order
@@ -417,108 +397,33 @@ colour of `x`. -/
 lemma degree_rowExpansion_mem_interlacing (hf : f ∈ nabla R c l) :
     columnOrder.degree (rowExpansion x f) ∈ interlacing (l.curry (c x)) := by
   classical
-  -- Let `v, v'` be the columns `i, i + 1` of the colour of `x`. Semi-invariance under the block
-  -- `!![s, -1; 0, T]` gives `f (s v + s T v', -v) = s ^ l i * T ^ l (i + 1) * f (v + T v', v')`.
-  -- On the left `T` enters only as `s T`, so no term has more `T` than `s`. On the right, if
-  -- `G X_x ^ γ` is the leading term of `f` in row `x`, then `G` is a coefficient of
-  -- `T ^ (l (i + 1) + γ i) * s ^ l i`.
-  set γ : ℕ →₀ ℕ := columnOrder.degree (rowExpansion x f)
-  suffices h_bound : ∀ i : ℕ, γ i ≤ l.curry (c x) i - l.curry (c x) (i + 1) by
-    exact (mem_interlacing_iff _).mpr h_bound
-  intro i
-  rw [Finsupp.curry_apply, Finsupp.curry_apply]
-  by_contra! h_lt : l (c x, i) - l (c x, i + 1) < γ i
-  -- As `γ ≠ 0`, the polynomial `rowExpansion x f` is not zero, nor is its leading coefficient `G`.
-  have hG : (rowExpansion x f).coeff γ ≠ 0 := by grind [degree_zero, coeff_degree_eq_zero_iff]
-  -- Coefficients lie in `P`, polynomials in `s` and `T`: `T` is `Polynomial.X` and `s` is `.C .X`.
-  -- `θ` replaces `v` by `v + T v'` in the rows other than `x`.
-  let P : Type _ := Polynomial (Polynomial (MatrixPoly {a // a ≠ x} R))
-  let θ : MatrixPoly {a // a ≠ x} R →ₐ[R] P :=
-    aeval fun y ↦ .CC (X y) + .X * .CC (single (c x, i) (X (y.1, i + 1)) (c y.1, y.2))
-  have hθ (p : MatrixPoly {a // a ≠ x} R) : (θ p).coeff 0 = .C p := by
-    induction p using MvPolynomial.induction_on with
-    | C r => simp [P, θ, Polynomial.algebraMap_apply]
-    | add p q hp hq => rw [map_add, Polynomial.coeff_add, hp, hq, map_add]
-    | mul_X p y hp =>
-      have h_X : (θ (X y)).coeff 0 = .C (X y) := by simp [P, θ]
-      rw [map_mul, Polynomial.mul_coeff_zero, hp, h_X, map_mul]
-  -- `Ψ` does the same in row `x`, at `v = 0` and `v' = X i * X (i + 1)`.
-  let Ψ : MatrixPoly m R →ₐ[R] MvPolynomial ℕ P :=
-    (aevalTower ((mapAlgHom θ).comp
-        (algHom R (MatrixPoly {a // a ≠ x} R) (MvPolynomial ℕ (MatrixPoly {a // a ≠ x} R)))) fun j ↦
-        (C Polynomial.X * X (i + 1)) ^ single i 1 j * X i ^ single (i + 1) 1 j * X j).comp
-      (rowExpansion x).toAlgHom
-  -- `b` is the identity matrix but for the block `!![s, -1; 0, T]`.
-  let b : Φ × ℕ × ℕ → MvPolynomial ℕ P := fun (τ, j, k) ↦
-    single j (C (.C .X ^ single (c x, i) 1 (τ, j) * .X ^ single (c x, i + 1) 1 (τ, j))) k -
-      single (c x, i) (single (j + 1) 1 k) (τ, j)
-  -- `Ψ` sends `X_x ^ γ` to `T ^ γ i` times the monomial of exponent `δ`.
-  let δ : ℕ →₀ ℕ := single (i + 1) (γ i) + (single i (γ (i + 1)) + γ)
-  -- Left side: the substitution factors through `scale : T ↦ s T`. An entry of `y b` (`y = Ψ ∘ X`)
-  -- is `scale` of the entry of `y` plus the value at `T = 0` of the entry of `y b - y`.
-  let scale : P →ₐ[R] P :=
-    .restrictScalars R (Polynomial.aeval (R := Polynomial (MatrixPoly {a // a ≠ x} R)) (.C .X * .X))
-  have h_factor : aeval (borelMul c b (Ψ ∘ X)) = (mapAlgHom scale).comp
-      (aeval (mapAlgHom (Polynomial.aeval 0) ∘ (borelMul c b (Ψ ∘ X) - Ψ ∘ X) + Ψ ∘ X)) := by
-    refine algHom_ext fun ⟨y, j⟩ ↦ ?_
-    -- Casework on the row `y` and on the column `j` against `i` and `i + 1`; each case is a ring
-    -- identity.
-    by_cases hy : y = x
-    · simp +zetaDelta [rowExpansion, ite_and, mul_sub, hy, single_apply, algHom, mul_assoc,
-        borelMul]
-      split_ifs <;> subst_vars <;> simp_all [sub_eq_zero, mul_assoc] <;> ring
-    · simp +zetaDelta [rowExpansion, ite_and, mul_sub, hy, single_apply, algHom, mul_assoc,
-        borelMul]
-      split_ifs <;> subst_vars <;> simp_all
-      ring
-  -- After `T ↦ s T` the coefficient of `T ^ a` is divisible by `s ^ a`.
-  have h_scale (p : P) {a k : ℕ} (hk : k < a) : ((scale p).coeff a).coeff k = 0 := by
-    simp [P, scale, ← Polynomial.comp_eq_aeval, Polynomial.coeff_mul_X_pow', hk.not_ge]
-  have h_left : (((aeval (borelMul c b (Ψ ∘ X)) f).coeff δ).coeff (l (c x, i + 1) + γ i)).coeff
-      (l (c x, i)) = 0 := by
-    have h_deg_lt : l (c x, i) < l (c x, i + 1) + γ i := by lia
-    rw [h_factor, AlgHom.comp_apply, mapAlgHom_apply, coeff_map]
-    exact h_scale _ h_deg_lt
-  -- Right side: the weight factor, and the coefficient of `T ^ γ i` at `δ` in `Ψ f`.
-  have h_weight :
-      (l.prod fun p k ↦ b (p.1, p.2, p.2) ^ k) = C (.C .X ^ l (c x, i) * .X ^ l (c x, i + 1)) := by
-    -- The flags stop `simp` from splitting the powers `s ^ [p = (c x, i)]` into cases, and from
-    -- rewriting `C (a ^ n)` as `C a ^ n`.
-    simp [b, prod_mul_distrib, -pow_ite, -Prod.mk.injEq, prod_pow_eq_pow_sum, ↓if_mem_support, prod,
-      single_apply, mul_pow, ← pow_mul, -C_pow]
-  have h_top : (((Ψ f).coeff δ).coeff (γ i)).coeff 0 = (rowExpansion x f).coeff γ := by
-    -- Expand `f` along row `x` and apply `Ψ` term by term; only the term of `γ` contributes.
-    have h_expand : (Ψ f).coeff δ = ∑ n ∈ (rowExpansion x f).support,
-        θ ((rowExpansion x f).coeff n) *
-          (.X ^ n i * (X (i + 1) ^ n i * (X i ^ n (i + 1) * monomial n 1) : MvPolynomial ℕ P).coeff
-            δ) := by
-      rw [AlgHom.comp_apply, MvPolynomial.aevalTower_apply, eval₂_eq]
-      -- Flags as in `h_weight`; `-map_aeval` keeps `θ` applied to the coefficients.
-      simp [prod_mul_distrib, -pow_ite, prod_pow_eq_pow_sum, -map_aeval, ↓if_mem_support,
-        algHom, single_apply, mul_pow, ← map_pow, mul_assoc, ← pow_mul, ← map_prod, -C_pow]
-    rw [h_expand, Polynomial.finsetSum_coeff, Polynomial.finsetSum_coeff, Finset.sum_eq_single γ]
-    · simp [P, δ, hθ, X_pow_eq_monomial, Polynomial.coeff_mul_X_pow']
-    · -- Another exponent `n` reaching `δ` with `n i ≤ γ i` has `n i < γ i`, hence
-      -- `γ (i + 1) < n (i + 1)` and equal entries beyond: it exceeds the leading exponent `γ`.
-      intro n hn hne
-      have h_not_lt : ¬ γ ≺[columnOrder] n := fun h_lt ↦
-        MvPolynomial.mem_support_iff.mp hn (coeff_eq_zero_of_lt h_lt)
-      -- The term of `n` is nonzero only if `n` reaches `δ` with `n i ≤ γ i`.
-      suffices h_vanish : (∀ a : ℕ,
-          (if i + 1 = a then n i else 0) + ((if i = a then n (i + 1) else 0) + n a) =
-            (if i + 1 = a then γ i else 0) + ((if i = a then γ (i + 1) else 0) + γ a)) →
-          n i ≤ γ i → ((θ ((rowExpansion x f).coeff n)).coeff (γ i - n i)).coeff 0 = 0 by
-        simpa [P, δ, X_pow_eq_monomial, Polynomial.coeff_mul_X_pow', Finsupp.ext_iff,
-          apply_ite Polynomial.coeff, DFunLike.ite_apply, single_apply, ite_apply] using h_vanish
-      intro h_shape h_le
-      exact absurd (columnOrder_lt_of_forall_add_ite_eq h_shape h_le hne) h_not_lt
-    · intro hγ
-      exact absurd (MvPolynomial.mem_support_iff.mpr hG) hγ
-  -- By semi-invariance the coefficient in `h_left` is the one in `h_top`, so `G = 0`.
-  apply hG
-  rw [← h_top, ← h_left, mem_nabla.mp hf (MvPolynomial ℕ P) b (Ψ ∘ X), h_weight, ← aeval_unique]
-  -- `← map_pow` gathers powers inside `C`, which `C_pow` would undo.
-  simp [P, Polynomial.coeff_X_pow_mul', ← map_pow, mul_assoc, -C_pow]
+  set γ := columnOrder.degree (rowExpansion x f); simp [interlacing, le_def]; by_contra! ⟨i, _⟩
+  let θ := aeval (R := R) fun y ↦ Polynomial.CC (X y : MatrixPoly {a // a ≠ x} R) +
+    .X * .CC (single (c x, i) (X (y.1, i + 1)) (c y.1, y.2))
+  have {p} : (θ p).coeff 0 = .C p := by apply p.induction_on <;> aesop
+  let Ψ := (aevalTower ((mapAlgHom θ).comp (algHom ..)) fun j ↦ (C .X * X (i + 1)) ^
+    single i 1 j * X i ^ single (i + 1) 1 j * X j).comp (rowExpansion x).toAlgHom
+  let b : Φ × _ → type_of% (Ψ f) | (τ, j, k) => single j (C (.C .X ^ single (c x, i) 1 (τ, j) * .X ^
+    single (c x, i + 1) 1 (τ, j))) k - single (c x, i) (single (j + 1) 1 k) (τ, j)
+  apply absurd congr((($(mem_nabla.1 hf _ b (Ψ ∘ X)).coeff (single (i + 1) (γ i) + single i
+    (γ (i + 1)) + γ)).coeff (l (c x, i + 1) + γ i)).coeff (l (c x, i)))
+  rw [← aeval_unique, (algHom_ext fun ⟨y, _⟩ ↦ by
+    simp +zetaDelta [rowExpansion, ite_and, mul_sub]
+    split_ifs <;> subst_vars <;> simp_all <;> ring : aeval _ = (mapAlgHom (.restrictScalars _
+    (Polynomial.aeval (.C .X * .X)))).comp (aeval (mapAlgHom (Polynomial.aeval 0) ∘ (borelMul c b
+    (Ψ ∘ X) - Ψ ∘ X) + Ψ ∘ X)))]
+  simp [Ψ, aevalTower, eval₂_eq, b, -pow_ite, -Prod.mk.injEq, prod_pow_eq_pow_sum, -map_aeval,
+    ↓if_mem_support, coeff_sum, Polynomial.coeff_X_pow_mul', ← Polynomial.comp_eq_aeval]
+  rw [sum_eq_ite γ] <;> simp_all [X_pow_eq_monomial, Polynomial.coeff_mul_X_pow',
+    Finsupp.ext_iff, apply_ite Polynomial.coeff, DFunLike.ite_apply] <;> grind [coeff_eq_zero_of_lt,
+    degree_zero, coeff_degree_eq_zero_iff, columnOrder_lt_of_eq_above]
+
+end CompactInterlacing
+
+section CompactLeadingCoeff
+
+attribute [local simp] borelMul coeff_map mul_assoc algHom prod single_apply mul_pow ite_apply
+attribute [local simp ←] map_pow map_prod C_pow Finsupp.sum.eq_1 pow_mul
 
 /-- Let `γ` be the leading exponent of `f` in the variables of the row `x` (for `columnOrder`, the
 lexicographic order that compares exponents at the highest column first), and let `f` be a Borel
@@ -529,74 +434,19 @@ lemma HasLeadingTerm.leadingCoeff_mem_nabla
     (hf : f ∈ nabla R c
       ((columnOrder.degree (rowExpansion x f)).mapDomain (fun i : ℕ ↦ (c x, i)) + l)) :
     columnOrder.leadingCoeff (rowExpansion x f) ∈ nabla R (c ∘ (↑)) l := by
-  -- Let `G X_x ^ γ` be the leading term of `f` in row `x`. Compare the coefficients of `X_x ^ γ`
-  -- in `f (y β) = ∏ β ^ (γ + l) * f y` for a generic upper triangular `β`. As `(y β) (x, j)` is
-  -- `β j j * y (x, j)` plus smaller terms, the left one is `G (y β) * ∏ β j j ^ γ j`; the factor
-  -- `∏ β j j ^ γ j` cancels.
-  set γ : ℕ →₀ ℕ := columnOrder.degree (rowExpansion x f)
-  let A : Type _ := MatrixPoly {a // a ≠ x} (MvPolynomial (Φ × ℕ × ℕ) R)
-  let β : Φ × ℕ × ℕ → A := C ∘ X
-  -- `ρ` substitutes `y β` in the rows other than `x`; `u j` is the entry `(x, j)` of `y β`.
-  let ρ : MatrixPoly {a // a ≠ x} R →ₐ[R] A := aeval (borelMul (c ∘ (↑)) β X)
-  let u (j : ℕ) : MvPolynomial ℕ A := borelMul c (C ∘ β) (fun p ↦ X p.2) (x, j)
-  have hu_lead (j : ℕ) : HasLeadingTerm (u j) (single j 1) (β (c x, j, j)) := by
-    -- `u j` is the sum of the `X i * C (β (c x, i, j))` over `i ≤ j`.
-    have h_term (i : ℕ) :
-        HasLeadingTerm (X i * C (β (c x, i, j))) (single i 1) (β (c x, i, j)) := by
-      rw [X, C_apply, monomial_mul_monomial, add_zero, one_mul]
-      exact of_monomial
-    have h_lt : ∀ i ∈ range (j + 1), i ≠ j → single i 1 ≺[columnOrder] single j 1 := by
-      grind [columnOrder_lt_of_eq_above j]
-    simpa only [u, borelMul, Function.comp_apply] using
-      sum (t := range (j + 1)) h_term j h_lt (absurd (self_mem_range_succ j))
-  -- `subst` substitutes `y β` in `f` and expands along row `x`; by the definitions of
-  -- `aevalTower` and `eval₂`, `subst f` is a sum over the exponents of `f` in row `x`.
-  let subst : MatrixPoly m R →ₐ[R] MvPolynomial ℕ A :=
-    (aevalTower ((algHom R A (MvPolynomial ℕ A)).comp ρ) u).comp (rowExpansion x).toAlgHom
-  have h_eval : subst f = ∑ n ∈ (rowExpansion x f).support,
-      C (ρ ((rowExpansion x f).coeff n)) * n.prod fun j e ↦ u j ^ e :=
-    rfl
-  -- In this sum the term of `γ` leads.
-  have h_lead : HasLeadingTerm (subst f) γ
-      (ρ ((rowExpansion x f).coeff γ) * γ.prod fun j e ↦ β (c x, j, j) ^ e) := by
-    rw [h_eval]
-    refine sum (δ := fun n ↦ n)
-      (G := fun n ↦ ρ ((rowExpansion x f).coeff n) * n.prod _) (fun n ↦ ?_) γ
-      (fun n hn hne ↦ ?_) fun hγ ↦ ?_
-    · simpa using mul (of_monomial (γ := 0)) (finsuppProd_pow hu_lead n)
-    · exact lt_of_le_of_ne (columnOrder.le_degree hn) (columnOrder.toSyn.injective.ne hne)
-    · simp [MvPolynomial.notMem_support_iff.mp hγ]
-  -- The semi-invariance of `f`, with both sides expanded along row `x`; `W` is the weight factor.
-  let Ψ : MatrixPoly m R →ₐ[R] MvPolynomial ℕ A :=
-    (mapAlgHom (aeval X)).comp (rowExpansion x).toAlgHom
-  let W : MvPolynomial ℕ A := (γ.mapDomain (fun i : ℕ ↦ (c x, i)) + l).prod
-    fun (p : Φ × ℕ) (k : ℕ) ↦ (C ∘ β) (p.1, p.2, p.2) ^ k
-  have h_subst : aeval (borelMul c (C ∘ β) (Ψ ∘ X)) = subst := by
-    refine algHom_ext fun ⟨y, j⟩ ↦ ?_
-    by_cases hy : y = x <;> simp [rowExpansion, Ψ, ρ, u, subst, hy, borelMul, algHom]
-  have h_semi : subst f = W * Ψ f := by
-    have h_nabla : aeval (borelMul c (C ∘ β) (Ψ ∘ X)) f = W * aeval (Ψ ∘ X) f :=
-      mem_nabla.mp hf (MvPolynomial ℕ A) (C ∘ β) (Ψ ∘ X)
-    rwa [← aeval_unique, h_subst] at h_nabla
-  -- The factor to cancel is a monomial in the generic entries, hence regular.
-  have h_reg : IsRegular (γ.prod fun j e ↦ β (c x, j, j) ^ e) := by
-    simpa [β, Finsupp.prod, ← map_pow, ← map_prod, -C_pow] using .monomial (.prod (by simp))
-  -- Membership in `nabla` is by definition the identity `ρ G = ∏ β ^ l * G` for the generic `β`.
-  -- Multiplied by the regular factor, its left side is the coefficient at `γ` of `subst f` (by
-  -- `h_lead`), and the right side that of `W * Ψ f`.
-  have h_rhs : (W * Ψ f).coeff γ =
-      ((l.prod fun (p : Φ × ℕ) (k : ℕ) ↦ (X (p.1, p.2, p.2) : MvPolynomial (Φ × ℕ × ℕ) R) ^ k) •
-        (aeval X : MatrixPoly {a // a ≠ x} R →ₐ[R] A)
-          (columnOrder.leadingCoeff (rowExpansion x f))) *
-        γ.prod fun j e ↦ β (c x, j, j) ^ e := by
-    -- `W` is a constant, so it comes out of the coefficient; it is the product of the factors for
-    -- `l` and for `γ`. `↓` splits this product before the definitions unfold.
-    simp [A, β, Ψ, γ, W, leadingCoeff, ↓prod_add_index', pow_add, ↓prod_mapDomain_index,
-      ← map_pow, Finsupp.prod, ← map_prod, mul_assoc, coeff_map, -C_pow, Algebra.smul_def,
-      MvPolynomial.algebraMap_eq]
-    ring
-  rw [← h_semi, h_lead.coeff_eq] at h_rhs
-  exact h_reg.right h_rhs
+  classical
+  have H := New.mem_nabla.1 hf _ (C ∘ C ∘ @X R _ _) ((mapAlgHom (aeval X)).comp (rowExpansion
+    x).toAlgHom ∘ @X R _ _); rw [← aeval_unique, (algHom_ext (by simp [rowExpansion]; aesop) :
+    aeval _ = (aevalTower ((algHom ..).comp (aeval (borelMul (c ∘ (↑)) (C ∘ @X R _ _) X)))
+    (borelMul c (C ∘ C ∘ @X R _ _) (X ·.2) ⟨x, ·⟩)).comp (rowExpansion x).toAlgHom)] at H
+  refine (IsRegular.right · ((sum (fun n ↦ mul of_monomial (prod fun j ↦ by
+    simpa only [pow_eq_prod_const] using! prod fun _ ↦ sum (fun _ ↦ mul of_monomial of_monomial) j
+      (by grind [columnOrder_lt_of_eq_above j]) (by simp))) _ ?_ ?_).2.symm.trans
+      ((congrArg (AddMonoidAlgebra.coeff · _) H).trans ?_)))
+    (by simpa using .monomial (.prod (by simp))) <;> simp_all [leadingCoeff, ↓prod_add_index',
+    pow_add, ↓prod_mapDomain_index, ← C_mul', lt_iff_le_and_ne] <;> grind [columnOrder.le_degree]
+
+end CompactLeadingCoeff
 
 end New.GL
 
