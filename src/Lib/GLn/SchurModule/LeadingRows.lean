@@ -419,8 +419,7 @@ variable [DecidableEq Φ] [∀ τ : Φ, DecidableEq (n τ)] [∀ τ : Φ, Decida
 at an integer array `y` (a vector indexed by `WeylIndexFamily n κ`) has as coordinates the products
 of minors `fillingPoly` of the fillings, evaluated at `y`. -/
 lemma fillingMatrix_mulVec_weylEval_int (y : (Σ τ : Φ, n τ) × ℕ → ℤ) :
-    fillingMatrix n κ *ᵥ weylEval n κ y =
-      fun T : ColumnFilling n κ ↦ aeval y (fillingPoly ℤ T) :=
+    fillingMatrix n κ *ᵥ weylEval n κ y = fun T : ColumnFilling n κ ↦ aeval y (fillingPoly ℤ T) :=
   funext fun T ↦ by rw [← fillingMatrixOver_int, fillingMatrixOver_mulVec_weylEval, aeval_eq_eval]
 
 /-- Here `fillingMatrix` embeds the Weyl module into tensors, with basis the fillings, and

@@ -167,8 +167,7 @@ lemma HasNoSmallRelations.inv_scalar_on_blocks {c : N → Fin n} (he : HasNoSmal
     (hc : Surjective c) {x : GL N k} (hm_le : m ≤ n + 1)
     (h_vanish : ∀ a : Fin m → N × N,
       powMinor (diagonal (T ∘ e ∘ c) * (x : Matrix N N k).map LaurentPolynomial.C) m a = 0) :
-    n < m ∧
-      ∀ {a b : N}, c a = c b → a ≠ b → x⁻¹ a b = 0 ∧ x⁻¹ a a = x⁻¹ b b := by
+    n < m ∧ ∀ {a b : N}, c a = c b → a ≠ b → x⁻¹ a b = 0 ∧ x⁻¹ a a = x⁻¹ b b := by
   -- Replace `T (e i)` by variables `X i`. The minors still vanish, so a factor `p` of the
   -- characteristic polynomial of the resulting matrix `y` has degree `< m` and kills `y`.
   -- Its constant term is divisible by every `X i`, which forces the degree `n` and the monomial

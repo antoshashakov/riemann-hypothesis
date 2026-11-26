@@ -452,8 +452,7 @@ lemma tsum_representative_weight_eq_one {c c' : S.Classes}
     (hT : S.IsStable T) (h_disc : ∀ γ ∈ T, S.termDisc γ ≠ 0) {γ : S.G E} (hγ : γ ∈ T)
     (y : NumberField.InfinitePlace E → 𝔰.G₁) :
     ∑' u : S.classUnipotent c × S.classUnipotent c',
-      (if ρ ⟦u.1 * γ * u.2⁻¹⟧ = u.1 * γ * u.2⁻¹ then 1 else 0) *
-        ω (S.ratToInf u.1 * y) = 1 := by
+      (if ρ ⟦u.1 * γ * u.2⁻¹⟧ = u.1 * γ * u.2⁻¹ then 1 else 0) * ω (S.ratToInf u.1 * y) = 1 := by
   let repIndicator (g : S.G E) : ℝ≥0∞ := if ρ ⟦g⟧ = g then 1 else 0
   let repCount (x : S.classUnipotent c) : ℝ≥0∞ :=
     ∑' u : S.classUnipotent c', repIndicator (x * γ * (u : S.G E)⁻¹)

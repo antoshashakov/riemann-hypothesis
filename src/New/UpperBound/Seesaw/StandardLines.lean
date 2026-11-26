@@ -316,8 +316,7 @@ lemma mem_latticePlus_iff {y : ι → 𝔸f E} (hL : Y.SpansLattice a π u)
       have h_star_eq : star π.val = algebraMap E (𝔸f E) N * π⁻¹.val := by
         rw [hπ.algebraMap_eq_mul_star, mul_comm, Units.inv_mul_cancel_left]
       rw [h_star_eq, mul_assoc] at h_last
-      simpa only [mul_sub, sub_add_cancel] using
-        add_mem (mul_mem hπ.algebraMap_mem_Ô h_line) h_last
+      simpa only [mul_sub, sub_add_cancel] using add_mem (mul_mem hπ.algebraMap_mem_Ô h_line) h_last
     · simpa [hb] using h_line
   · rintro ⟨hy, h_line⟩
     have hy_zero := stringProj_eq_self_iff.1 hy

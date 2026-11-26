@@ -583,8 +583,7 @@ lemma Space.encard_profileBases_mul_le_lintegral {N : Set (GL n (𝔸 E))} {x : 
     (h_basis : ∀ g : G E s, ∀ Z ∈ profileBases N x (V.move g).x,
       r (Z.valᴴ * V.J * Z.val) ∈ profileBases N x (V.move (A (Z.valᴴ * V.J * Z.val))).x)
     (h_gram_basis : ∀ g : G E s, ∀ Z ∈ profileBases N x (V.move g).x,
-      (r (Z.valᴴ * V.J * Z.val)).valᴴ * V.J * (r (Z.valᴴ * V.J * Z.val)).val =
-        Z.valᴴ * V.J * Z.val)
+      (r (Z.valᴴ * V.J * Z.val)).valᴴ * V.J * (r (Z.valᴴ * V.J * Z.val)).val = Z.valᴴ * V.J * Z.val)
     (w : ℝ≥0∞) (g : G E s) :
     (profileBases N x (V.move g).x).encard * w ≤
       ∫⁻ γ : V.Γ, ∑' T : 𝒯,

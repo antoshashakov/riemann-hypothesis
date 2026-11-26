@@ -139,8 +139,7 @@ lemma New.trace_eq_weighted_sum {A G Γ W M I : Type*} [Field A] [Group G] [Grou
       ι (T ψ) = (rightRegular A G W).asAlgebraHom a fun g : G ↦ s (ι ψ (σ.symm g))) :
     Module.Finite A M ∧
     trace A M T =
-      ∑ i : I, w i *
-        ∑ᶠ γ : Γ, cosetFn K a ((r i)⁻¹ * σ (e γ) * σ (r i)) * trace A W (s * ρ γ) := by
+      ∑ i : I, w i * ∑ᶠ γ : Γ, cosetFn K a ((r i)⁻¹ * σ (e γ) * σ (r i)) * trace A W (s * ρ γ) := by
   classical
   -- For `v : W` the function `g ↦ ∑ γ ∈ S i g, ρ γ v` lies in `M`; call it `J i v`. The maps
   -- `ψ ↦ J i (ι ψ (r i))`, weighted by `w i`, add up to the identity of `M`. So `M` is a quotient
@@ -423,8 +422,7 @@ lemma eq_and_eq_of_coset_eq (hN : IsNeat n 𝔑) {i j : DefiniteClass n 𝔑} {y
 
 /-- The definite frames are the elements of the cosets `y x_j K`. -/
 lemma isSignedFrame_one_iff (g : GL n (𝔸f E)) :
-    IsSignedFrame g 1 ↔
-      ∃ (j : DefiniteClass n 𝔑) (y : GL n E), j.coset y = QuotientGroup.mk g := by
+    IsSignedFrame g 1 ↔ ∃ (j : DefiniteClass n 𝔑) (y : GL n E), j.coset y = QuotientGroup.mk g := by
   refine ⟨fun hg ↦ ?_, ?_⟩
   · obtain ⟨c, y, k, rfl⟩ := exists_eq_map_mul_rep_mul toFinGL (levelGU n 𝔑) out_eq g
     -- Here `g = y x k` with `x = c.out`; moving it by `y⁻¹` and `k⁻¹` gives `x`.

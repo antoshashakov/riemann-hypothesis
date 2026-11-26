@@ -519,8 +519,7 @@ lemma eq_of_comp_eq_of_pull_picClass_eq (h_rigid : x'.HasSpanningCoords)
   have hj_pair : ∀ ⦃T : Over (Spec (CommRingCat.of k))⦄ (u v : T ⟶ x'.groupScheme),
       x'.lineBundle.picClass.pairing u v = x.lineBundle.picClass.pairing (u ≫ j) (v ≫ j) :=
     pairing_eq_of_fpqc_cover (.id_horiz _) g' (𝟙 _) (𝟙 _) j j fun T a v ↦ by
-      simpa [pairing_comm, hj] using
-        pairing_smul_eq_of_comp_eq_smul hg' hg 1 hj_one v a
+      simpa [pairing_comm, hj] using pairing_smul_eq_of_comp_eq_smul hg' hg 1 hj_one v a
   exact h_rigid.eq_and_comp_toFamily_eq_of_hom (id_comp x') h_base j hj_pair h_level
 
 end Multiplier

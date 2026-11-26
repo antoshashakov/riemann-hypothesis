@@ -758,8 +758,7 @@ lemma isUnit_totient_mul (hl : N < l) : IsUnit (φ (N * l) : O) := by
 /-- For `l > N` some `a ≡ 1 mod N` prime to `l` (a primitive root modulo `l`) makes `a ^ k - 1` a
 unit of `O` for all `0 < k < l - 1`. -/
 lemma exists_modEq_one_forall_isUnit_pow_sub_one (hl : N < l) :
-    ∃ a : ℕ, a ≡ 1 [MOD N] ∧ l.Coprime a ∧
-      ∀ k : ℕ, 0 < k → k < l - 1 → IsUnit (a ^ k - 1 : O) := by
+    ∃ a : ℕ, a ≡ 1 [MOD N] ∧ l.Coprime a ∧ ∀ k : ℕ, 0 < k → k < l - 1 → IsUnit (a ^ k - 1 : O) := by
   obtain ⟨b, hb⟩ : ∃ b : ZMod l, IsPrimitiveRoot b (l - 1) :=
     exists_isPrimitiveRoot (ZMod l) (l - 1)
   -- `a` is `b` modulo `l` and `1` modulo `N`.
@@ -887,8 +886,7 @@ lemma mem_vanishingCocycles_of_mem_insert {a m : ℕ} (ha : a ≡ 1 [MOD N]) (hl
       hAr
     -- A place that is not above `r` lies above no prime of `insert r T`, or `z` is trivial there.
     have h_away (B : ClosurePlace) (hB : B.valuation (r : Ω) = 1) :
-        (∀ t ∈ insert r T, ¬B.valuation (t : Ω) < 1) ∨
-          ∀ g ∈ decompGroup Gal(Ω/ℚ) B, z g = 0 := by
+        (∀ t ∈ insert r T, ¬B.valuation (t : Ω) < 1) ∨ ∀ g ∈ decompGroup Gal(Ω/ℚ) B, z g = 0 := by
       rw [or_iff_not_imp_right, forall_mem_insert]
       exact fun h_nontrivial ↦ ⟨hB.not_lt, fun t ht hBt ↦ h_nontrivial (hzT t ht B hBt)⟩
     -- `z σ ≠ 0`, since `σ` detects triviality above `r`.

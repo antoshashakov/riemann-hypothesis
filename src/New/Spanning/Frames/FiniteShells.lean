@@ -294,8 +294,7 @@ theorem lintegral_shells_le {F : PlaceData ι T (m + 1)} (Z : F.IntermediateGrou
     exact Set.mem_iUnion.2 ⟨Nat.clog 2 J.cardQuot, Set.mem_iUnion₂.2 ⟨J, ⟨hJ_finite, rfl⟩, hxJ⟩⟩
   -- The mass of floor `j`, bounded in the gauge of scale `1`, where the loss is `2`.
   have h_mass : F.FloorMassLe j (2 ^ (99 * (𝔰.n * 13))) 1 := by
-    simpa [SemilocalField.volume_O, mul_assoc] using
-      h.gauge.floorMassLe_one ⟨j, by lia⟩
+    simpa [SemilocalField.volume_O, mul_assoc] using h.gauge.floorMassLe_one ⟨j, by lia⟩
   have one_le_mass : (1 : ℝ≥0∞) ≤ 2 ^ (99 * (𝔰.n * 13)) := one_le_pow₀ one_le_two
   have h_gain (he_lt : e < 1) (x : T.G) (hx : x ∈ F.positions) : f x ^ 2 ≤
       (2 ^ (99 * (𝔰.n * 13)) * e ^ F.volumeExponent) ^ 2 *

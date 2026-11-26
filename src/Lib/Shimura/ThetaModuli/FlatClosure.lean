@@ -409,8 +409,7 @@ lemma eq_map_and_flat_of_isCutOut [Finite J]
     (hI₀ : IsCutOut r i σ c (fun a : ι ↦ φ ∘ P a) I₀)
     (hI : ∀ n : κ, IsCutOut r i σ c (fun a : ι ↦ ψ n ∘ P a) (I n))
     (hT : ∀ f : MvPolynomial J A, f ∈ T ↔ ∀ n : κ, MvPolynomial.map (ψ n) f ∈ I n) :
-    I₀ = T.map (MvPolynomial.map φ) ∧
-      Flat A (MvPolynomial J A ⧸ T) := by
+    I₀ = T.map (MvPolynomial.map φ) ∧ Flat A (MvPolynomial J A ⧸ T) := by
   -- Fix a monomial order. Call an exponent leading if it leads the nonzero reduction of a form in
   -- `T₀ = T ⊓ φ⁻¹ I₀`, else standard. In degrees `r ^ j` the standard monomials span modulo `T₀`
   -- (division) and number at most `σ j` (determinants), so are independent modulo `I₀` and `T`;

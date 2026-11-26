@@ -164,8 +164,7 @@ lemma integral_algFormCoeff_blockEmb {s : ι → ℤˣ}
   let j : G E (1 : ι → ℤˣ) × G E (1 : Unit → ℤˣ) →* G E (1 : X → ℤˣ) := G.blockEmb hσ
   -- The archimedean group of the block acts on weight `(κ, e)` through `x ↦ diag(x, 1)`.
   let R : GInf E (1 : ι → ℤˣ) →* Matrix (WeylIndex X κ) (WeylIndex X κ) ℂ :=
-    (conjWeylMatrix κ e).comp
-      ((MonoidHom.fst _ _).comp (j.comp ((MonoidHom.inl _ _).prod 1)))
+    (conjWeylMatrix κ e).comp ((MonoidHom.fst _ _).comp (j.comp ((MonoidHom.inl _ _).prod 1)))
   let M : Matrix (WeylIndex ι κ₀) (WeylIndex X κ) ℂ := (t.smulRight c).toMatrix'
   have hR : Continuous R := (continuous_conjWeylMatrix κ e 1).comp
     (by fun_prop : Continuous fun x : GInf E (1 : ι → ℤˣ) ↦ (j ((x, 1), 1)).1)

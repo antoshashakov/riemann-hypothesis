@@ -72,8 +72,7 @@ lemma norm_prod_factorial_le (d : σ →₀ ℕ) :
   have h_legendre (x : σ) :
       (d x / (p - 1) - padicValNat p (d x).factorial : ℝ) ≤ p.log d.degree + 1 := by
     have h_mem : (d x / (p - 1) - (p.log d.degree + 1 : ℕ) : ℝ) ≤ padicValNat p (d x).factorial :=
-      (padicValNat_factorial_mem_Icc
-        ((d.le_degree x).trans_lt (p.lt_pow_succ_log_self hp _))).1
+      (padicValNat_factorial_mem_Icc ((d.le_degree x).trans_lt (p.lt_pow_succ_log_self hp _))).1
     push_cast at h_mem
     linarith
   have h_sum : ∑ x, (d x / (p - 1) - padicValNat p (d x).factorial : ℝ) ≤
@@ -341,8 +340,7 @@ lemma dvd_subst_coupling_directionSubst_of_charges (hπ : π ∣ p) {N : ℕ} {m
     {w : Φ → ℕ → n' → ℕ} {β : Φ → ∀ h : ℕ, Fin h → n → valRingCp p}
     (hw : IsChargeExponent (pr e) marked w)
     (h_pair : ∀ (τ : Φ) (h : ℕ) (k : Fin h) (h' : ℕ) (k' : Fin h'),
-      ¬IsExemptPair marked τ (pr e τ) h h' →
-        π ∣ ∑ a : n, β τ h k a ^ p ^ e * β (pr e τ) h' k' a) :
+      ¬IsExemptPair marked τ (pr e τ) h h' → π ∣ ∑ a : n, β τ h k a ^ p ^ e * β (pr e τ) h' k' a) :
     MvPowerSeries.C π ∣ (coupling pr e : MvPowerSeries (Φ × n' × n) (valRingCp p)).subst
       fun x : Φ × n' × n ↦ linearSeries (directionSubst (N := N)
         (fun (τ : Φ) (h : ℕ) (b : n') ↦ (p : valRingCp p) ^ w τ h b) β x) := by

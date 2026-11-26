@@ -394,8 +394,7 @@ lemma encard_rowVanishesModPiN_le (u : Gf E 𝔰.κ) {y : S.LatticeStabilizerCos
     choose a ha h_value using h_entry
     exact ⟨a, ha, funext h_value⟩
   have h_apart (φ : S.LatticeStabilizerCoset) (_ : φ ∈ B) (φ' : S.LatticeStabilizerCoset)
-    (_ : φ' ∈ B)
-      (h_congr : row φ - row φ' ∈ S.piN • intVectors (Ô E) 𝔰.κ) : φ = φ' := by
+    (_ : φ' ∈ B) (h_congr : row φ - row φ' ∈ S.piN • intVectors (Ô E) 𝔰.κ) : φ = φ' := by
     obtain ⟨a, ha, h_value⟩ := h_congr
     rw [← hy φ, ← hy φ']
     refine QuotientGroup.eq.2 (inv_mul_mem_of_inverseRowsCongruent (colLattice_le fun i ↦ ?_))

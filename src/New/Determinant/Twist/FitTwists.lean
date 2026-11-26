@@ -67,8 +67,7 @@ lemma MFoldTwist.toTwist_one : (1 : D.MFoldTwist).toTwist = 1 :=
 /-- Let `D` be admissible data, with CM field `E = D.E` and number of lifts `m = D.m`. The trivial
 twist has the trivial character, underlies the trivial `m`-fold twist, and has empty modulus. -/
 lemma toAutChar_one_and_toTwist_one_and_Q_one :
-    ((1 : D.Twist).toAutChar = 1 ∧ (1 : D.MFoldTwist).toTwist = 1) ∧
-      (1 : D.Twist).Q = ∅ :=
+    ((1 : D.Twist).toAutChar = 1 ∧ (1 : D.MFoldTwist).toTwist = 1) ∧ (1 : D.Twist).Q = ∅ :=
   ⟨⟨Twist.toAutChar_one, MFoldTwist.toTwist_one⟩, Twist.Q_one⟩
 
 /-- For a pair `p = (ν, z)`, a tame character `ϑ` and a sign `s` (by default `1`), the ratio

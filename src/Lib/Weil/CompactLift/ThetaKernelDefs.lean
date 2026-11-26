@@ -310,8 +310,7 @@ lemma aeval_smul_X_schur {Φ : Type} [Fintype Φ] [DecidableEq Φ] {κ : Φ → 
     (i : WeylIndex n κ) :
     aeval (R := ℂ) (fun x : Φ × n' × n ↦ c • X (R := ℂ) x)
         (schur κ (fun τ : Φ ↦ of fun (b : n') (a : n) ↦ X (τ, b, a)) i' i) =
-      c ^ boxes κ (card n') •
-        schur κ (fun τ : Φ ↦ of fun (b : n') (a : n) ↦ X (τ, b, a)) i' i := by
+      c ^ boxes κ (card n') • schur κ (fun τ : Φ ↦ of fun (b : n') (a : n) ↦ X (τ, b, a)) i' i := by
   let R : Type := MvPolynomial (Φ × n' × n) ℂ
   have h_smul : schur κ (fun τ ↦ (C c : R) • of fun (b : n') (a : n) ↦ (X (τ, b, a) : R)) =
       (C c : R) ^ boxes κ (card n') • schur κ fun τ ↦ of fun b a ↦ (X (τ, b, a) : R) := by

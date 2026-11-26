@@ -108,8 +108,7 @@ lemma norm_principalMinor_mul_gain_le (h : ℕ) (u : GL n ℂ) (l f : n → ℤ)
   let q (k : n) : Prop := t ∈ Ioc (l i - h) (l i) ∧ k = j
   let p (k : n) : Prop := l k < t ∧ ¬q k
   have gain : (if t ∈ Ioc (l i - h) (l i) then ‖u i j‖ ^ 2 * 2 ^ m else 1) ≤
-      (∏ k : n, if q k then (2 : ℝ) ^ f c else 1) *
-        ‖principalMinor (twoPowDiagConj u g)⁻¹ q‖ := by
+      (∏ k : n, if q k then (2 : ℝ) ^ f c else 1) * ‖principalMinor (twoPowDiagConj u g)⁻¹ q‖ := by
     grw [inv_twoPowDiagConj u g hu, ← re_le_norm]
     split_ifs with hsep
     · -- the `(j, j)` entry of the inverse is at least its term `‖u i j‖ ^ 2 * 2 ^ (-g i)`,

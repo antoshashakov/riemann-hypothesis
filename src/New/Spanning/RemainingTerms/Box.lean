@@ -52,8 +52,7 @@ lemma _root_.New.exists_measurableSet_existsUnique_add_mem {V : Type*} [AddCommG
   refine ⟨B ∩ ⋂ l : L, least l, inter_subset_left, hB.inter (.iInter h_meas), fun w ↦ ?_⟩
   obtain ⟨l₀, hl₀, h_least⟩ : ∃ l₀ : L, l₀.val + w ∈ B ∧
       ∀ l : L, l.val + w ∈ B → f (l₀.val + w) ≤ f (l.val + w) :=
-    exists_min_image {l : L | l.val + w ∈ B} (fun l : L ↦ f (l.val + w)) (h_finite w)
-      (h_nonempty w)
+    exists_min_image {l : L | l.val + w ∈ B} (fun l : L ↦ f (l.val + w)) (h_finite w) (h_nonempty w)
   refine ⟨l₀, ⟨hl₀, mem_iInter.2 fun l hl ↦ ?_⟩, ?_⟩
   · -- `l₀ + w` is least in its coset.
     show f (l₀.val + w) ≤ f (l.val + (l₀.val + w))

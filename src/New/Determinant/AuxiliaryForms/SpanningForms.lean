@@ -308,8 +308,7 @@ lemma sqrt_weylNormSq_lastPathKernel_le (σ : ℂ ≃+* ℂ) (S : EdgeTuple (1 :
         (q.1, q.2.val) ≤
         D.natB * D.r ^ 4 :=
     (single_le_sum (by simp) (mem_univ q)).trans
-      (h_liftWeight.1.sum_diagramWeight_eq_boxes.trans_le
-        (boxes_lastPathColumns_le_natB_mul z hj))
+      (h_liftWeight.1.sum_diagramWeight_eq_boxes.trans_le (boxes_lastPathColumns_le_natB_mul z hj))
   grw [le_abs_self (log (‖σ 1‖ ^ 2 / P.bigOmega D.towerExp)), one_mul, h_row]
   gcongr
   -- 'le_of_hasLogBound' uses these two bounds for the ranks as local instances.

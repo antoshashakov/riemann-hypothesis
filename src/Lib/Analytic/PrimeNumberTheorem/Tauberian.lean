@@ -228,8 +228,7 @@ lemma abs_sub_le_of_unit_steps
   have ht_le_one : t ≤ 1 := (div_le_one hn_pos).2 hn.le
   have h_step (i : ℕ) : dist (R (u + i * t)) (R (u + (i + 1 : ℕ) * t)) ≤ L * t := by
     rw [dist_comm, Real.dist_eq, Nat.cast_succ, add_one_mul, ← add_assoc]
-    simpa using
-      h_step_le (u + i * t) (u + i * t + t) (by positivity) (by linarith) (by linarith)
+    simpa using h_step_le (u + i * t) (u + i * t + t) (by positivity) (by linarith) (by linarith)
   calc |R v - R u| = dist (R (u + (0 : ℕ) * t)) (R (u + n * t)) := by
         simp [t, mul_div_cancel₀ _ hn_pos.ne', Real.dist_eq, abs_sub_comm]
     _ ≤ ∑ _ ∈ Finset.range n, L * t :=

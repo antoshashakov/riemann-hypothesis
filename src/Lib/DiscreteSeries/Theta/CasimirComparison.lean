@@ -373,8 +373,7 @@ theorem swap_oscRows_E_sub_centre (a b : C) :
 `D₄ + (n + n') D₂ + n n'² / 4`, where `D₄ = T.quarticOp`, `D₂ = T.quadraticOp`, `n = card R` and
 `n' = card C`. -/
 theorem centredCasimir_oscRows : T.oscRows.centredCasimir T.centre =
-    T.quarticOp + (card R + card C : ℂ) • T.quadraticOp +
-      (card R * card C ^ 2 / 4 : ℂ) • 1 := by
+    T.quarticOp + (card R + card C : ℂ) • T.quadraticOp + (card R * card C ^ 2 / 4 : ℂ) • 1 := by
   have h_comm (r : R) (c c' : C) : T.lower r c * T.raise r c' =
       T.raise r c' * T.lower r c + if c = c' then 1 else 0 := by simp [lower_mul_raise]
   -- The sign factors cancel in the products.
@@ -389,8 +388,7 @@ theorem centredCasimir_oscRows : T.oscRows.centredCasimir T.centre =
 removed is `D₄ + (n + n') D₂ + n² n' / 4`, where `D₄ = T.quarticOp`, `D₂ = T.quadraticOp`,
 `n = card R` and `n' = card C`. -/
 theorem centredCasimir_swap_oscRows : T.swap.oscRows.centredCasimir T.swap.centre =
-    T.quarticOp + (card R + card C : ℂ) • T.quadraticOp +
-      (card R ^ 2 * card C / 4 : ℂ) • 1 := by
+    T.quarticOp + (card R + card C : ℂ) • T.quadraticOp + (card R ^ 2 * card C / 4 : ℂ) • 1 := by
   -- Normal ordering with the roles of rows and columns exchanged gives the same `D₄` and `D₂`.
   have h_comm (c : C) (r r' : R) : T.lower r c * T.raise r' c =
       T.raise r' c * T.lower r c + if r = r' then 1 else 0 := by simp [lower_mul_raise]

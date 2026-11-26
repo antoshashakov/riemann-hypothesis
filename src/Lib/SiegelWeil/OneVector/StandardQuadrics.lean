@@ -48,8 +48,7 @@ lemma Place.isDisintegration_map_quadricMeasure {T : Matrix ι ι A}
     {S : Matrix κ κ A} {B : Matrix ι (Fin 2 ⊕ κ) A} (h_gram : Bᴴ * T * B = planeSumGram S)
     (h_card : card ι = card (Fin 2 ⊕ κ)) (hT : P.modulus T.det = 1) (hS : Sᴴ = S)
     (hS_sq : S * S = 1) :
-    P.IsDisintegration volume T
-      fun b : skewAdjoint A ↦ (P.quadricMeasure S b).map (B *ᵥ ·) := by
+    P.IsDisintegration volume T fun b : skewAdjoint A ↦ (P.quadricMeasure S b).map (B *ᵥ ·) := by
   have h_plane : planeSumGram S * planeSumGram S = 1 := by
     simp [fromBlocks_multiply, hS_sq, ← one_fin_two]
   -- Reindex the columns of `B` to get a square matrix `M`. Its Gram matrix has square one.

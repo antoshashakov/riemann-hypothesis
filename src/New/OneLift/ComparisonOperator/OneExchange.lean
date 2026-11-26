@@ -126,8 +126,7 @@ lemma columnDatum_mul_ite_eq_ite_mem_rowStabilizer (χ : MulChar R ℂ) (φ : R 
         (mul_left_injective_of_inv _ _ (inclMatrix_transpose_mul_self e)).eq_iff'
           (Matrix.zero_mul _)]
     simp only [columnDatum, h_cols, h_det, h_w_cols, h_w_all]
-  have h_mem (Z : GL N R) :
-      Z ∈ rowStabilizer φ w e ↔ FixesColsOff e Z.1 ∧ w * Z.1.map φ = w := .rfl
+  have h_mem (Z : GL N R) : Z ∈ rowStabilizer φ w e ↔ FixesColsOff e Z.1 ∧ w * Z.1.map φ = w := .rfl
   split_ifs with h_fixes hz hz
   · obtain ⟨Z, hZ, rfl⟩ := hz
     have hF_inv : F (Z.val⁻¹ * y) = F y := by simpa [coe_units_inv] using hF Z⁻¹ (inv_mem hZ) y

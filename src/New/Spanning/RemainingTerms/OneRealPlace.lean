@@ -133,8 +133,7 @@ lemma measurable_volumeRatio : Measurable (volumeRatio γ) := by fun_prop [volum
 minus the Gram matrix for `J₁` of the columns of `γ f a` is positive semidefinite. -/
 lemma RealPlace.posSemidef_neg_gram_mul_frameCols (γ : 𝔰.G₁) {m : Type} [Fintype m]
     (a : Matrix (Fin 𝔰.n) m ℂ) :
-    (-((γ.val.val * (𝔰.frameCols * a))ᴴ * 𝔰.J₁ *
-      (γ.val.val * (𝔰.frameCols * a)))).PosSemidef := by
+    (-((γ.val.val * (𝔰.frameCols * a))ᴴ * 𝔰.J₁ * (γ.val.val * (𝔰.frameCols * a)))).PosSemidef := by
   have h_gram : (𝔰.frameCols * a)ᴴ * 𝔰.J₁ * (𝔰.frameCols * a) =
       -((𝔰.zColᴴ * 𝔰.frameCols * a)ᴴ * (𝔰.zColᴴ * 𝔰.frameCols * a)) := by
     simp [J₁_eq, Matrix.mul_sub, Matrix.mul_add, Matrix.mul_assoc, forall_fin_succ',

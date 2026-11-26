@@ -102,8 +102,7 @@ lemma New.dvd_sum_pow_mul_of_root_dvd {p : ℕ} [Fact p.Prime] {O n : Type*} [Co
 with the combination of the vectors `y · k` given by `u`. -/
 lemma New.dotProduct_sum_mul {O n : Type*} [CommRing O] [Fintype n] {h : ℕ} (u : Fin h → O)
     (x : n → O) (y : n → ℕ → O) :
-    (u ⬝ᵥ fun k : Fin h ↦ ∑ a : n, x a * y a k) =
-      ∑ a : n, x a * (u ⬝ᵥ fun k : Fin h ↦ y a k) := by
+    (u ⬝ᵥ fun k : Fin h ↦ ∑ a : n, x a * y a k) = ∑ a : n, x a * (u ⬝ᵥ fun k : Fin h ↦ y a k) := by
   simp only [dotProduct, mul_sum, mul_left_comm]
   exact sum_comm
 

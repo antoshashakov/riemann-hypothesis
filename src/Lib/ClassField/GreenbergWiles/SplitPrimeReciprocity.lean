@@ -888,8 +888,7 @@ theorem IsLargeLevel.SplitPlaces.exists_powerResidueSymbols (γ : ι → G)
     (Submodule.mem_inf.mp y.prop).right
   let b : IsLargeLevel.fixedSUnits N U →+ ι → ZMod m :=
     .mk' (fun y i ↦ (κ ⟨y, h_fix y⟩).val ⟨s.φ i, (s.isFrob i).right⟩) fun y y' ↦ funext fun i ↦
-      congrArg (fun c ↦ c.val ⟨s.φ i, (s.isFrob i).right⟩)
-        (κ.map_add ⟨y, h_fix y⟩ ⟨y', h_fix y'⟩)
+      congrArg (fun c ↦ c.val ⟨s.φ i, (s.isFrob i).right⟩) (κ.map_add ⟨y, h_fix y⟩ ⟨y', h_fix y'⟩)
   have hb : ∀ (y : ↥(fixedSUnits N U)) (r : DiscreteUnits Ω), m • r = ↑y → ∀ i : ι,
       (rootPowHom Ω m).val (b y i) = unitsRep (s.φ i) r - r :=
     fun y r hr i ↦ hκ _ r hr _

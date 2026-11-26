@@ -165,8 +165,7 @@ continuous. -/
 lemma continuous_rallisSeries (h_rank : 2 * card n < card m) (b : AutChar E)
     (A : Set (FinPlace E)) (hy_cont : Continuous y) (hy_bdd : ∃ C : ℝ, ∀ g : G E s, ‖y g‖ ≤ C) :
     Continuous (rallisSeries (card m) b A y) :=
-  (tendstoUniformly_rallisSeries h_rank b A hy_bdd).continuous
-    (.of_forall fun _ ↦ by fun_prop)
+  (tendstoUniformly_rallisSeries h_rank b A hy_bdd).continuous (.of_forall fun _ ↦ by fun_prop)
 
 /-- The series `rallisSeries M b A y` is `∑_q vacuumCoeff M b (cosetRep q) · R(cosetRep q) y`, a sum
 of right translates of a function `y` on the adelic points `G E s`. The sum runs over the cosets
@@ -559,8 +558,7 @@ disjoint from `A₁` and its conjugate, and let `b ∘ det` be unramified on `A�
 `A₁ ∪ A₂` is the product of the sums at `A₁` and at `A₂`. -/
 lemma vacuumSum_union {A₁ A₂ : Set (FinPlace E)} (h_rank : 2 * card n < card m)
     (h_disj : Disjoint A₁.conjClosure A₂) (hb : IsUnramifiedOn b n (A₁ ∪ A₂)) :
-    vacuumSum n (card m) b (A₁ ∪ A₂) =
-      vacuumSum n (card m) b A₁ * vacuumSum n (card m) b A₂ := by
+    vacuumSum n (card m) b (A₁ ∪ A₂) = vacuumSum n (card m) b A₁ * vacuumSum n (card m) b A₂ := by
   let one : G E (1 : n → ℤˣ) → ℂ := fun _ ↦ 1
   have h_series : rallisSeries (card m) b (A₁ ∪ A₂) one =
       rallisSeries (card m) b A₁ (rallisSeries (card m) b A₂ one) :=
@@ -664,7 +662,6 @@ lemma vacuumSum_eq_of_hasProd (h_rank : 2 * card n < card m)
   have h_frequently : ∃ᶠ R : Finset (FinPlace E) in Filter.atTop,
       vacuumSum n (card m) b (A ∩ R) = ∏ u ∈ R, loc u :=
     Filter.frequently_atTop.2 fun R ↦ ⟨T R, le_sup_right, h_finite R⟩
-  exact tendsto_nhds_unique_of_frequently_eq (tendsto_vacuumSum_inter h_rank hb) h_prod
-    h_frequently
+  exact tendsto_nhds_unique_of_frequently_eq (tendsto_vacuumSum_inter h_rank hb) h_prod h_frequently
 
 end New.SiegelWeil

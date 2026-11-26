@@ -77,8 +77,7 @@ lemma frameImage_conjTranspose_mulVec_eq_zero_iff (γ : S.G E) (y : 𝔰.BesselI
       (∀ a : Fin 𝔰.ϱ,
         ((↑(γ⁻¹ : S.G E) : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ y) (eStar a) = 0) ∧
       ((↑(γ⁻¹ : S.G E) : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ y) 𝔰.z = 0 := by
-  set x : 𝔰.BesselIndex → E := (↑(γ⁻¹ : S.G E) : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ y
-    with hx
+  set x : 𝔰.BesselIndex → E := (↑(γ⁻¹ : S.G E) : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ y with hx
   have h_move : ((frameImage (γ : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E))ᴴ * S.ratGram) *ᵥ y =
       (S.ratGram *ᵥ x) ∘ 𝔰.besselFrame := by
     rw [hx, mulVec_mulVec, U.form_mul_inv_eq γ]

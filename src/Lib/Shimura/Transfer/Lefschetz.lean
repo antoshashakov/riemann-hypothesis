@@ -312,8 +312,7 @@ private lemma exists_isFixedPair_of_countTerm_ne_zero {b : heckeAlgebra n ℂ �
     (h_reg : IsRegularHecke b) (α : Fin ν → 𝓞 E) {ω : E[X] → n → ℂ}
     {c : MulAction.orbitRel.Quotient (GL n E) (MarkedTriple (levelGU n 𝔑) n)}
     (hc : countTerm True b ω c ≠ 0) :
-    ∃ p : ModuliPoint E n ν, IsFixedPair b α p c.out.snd ∧
-      tripleClass 𝔑 p.frame c.out.snd = c := by
+    ∃ p : ModuliPoint E n ν, IsFixedPair b α p c.out.snd ∧ tripleClass 𝔑 p.frame c.out.snd = c := by
   obtain ⟨h_sig, h_term⟩ := ite_ne_right_iff.mp hc
   have h_ne := left_ne_zero_of_mul h_term
   let p : ModuliPoint E n ν := ⟨_, _, 0, h_sig,
@@ -406,8 +405,7 @@ private lemma Model.isTangentPoly_localTerm (i : Finset (nonZeroDivisors (𝓞 E
       ⟨y⟩ (localTerm (2 * α) (t.fst : Matrix n n E).charpoly t.snd) := by
   subst hy
   have h_iso : (act p ⟨γ.out, hγ⟩ (2 * α)).IsLevelIso (levelGU n 𝔑) t.fst p :=
-    (isLevelIso_act_iff hγ α t.fst).mpr
-      ⟨ht_coset, ht.ratConj_reflection_eq, ht.mem_solutionLattice⟩
+    (isLevelIso_act_iff hγ α t.fst).mpr ⟨ht_coset, ht.ratConj_reflection_eq, ht.mem_solutionLattice⟩
   exact X.tangent i ⟨γ.out, hγ⟩ (2 * α) p t.fst t.snd hγ_level (h_reg ht.heckeCosetFn_ne_zero)
     ht.reflection_eq h_iso
 

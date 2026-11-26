@@ -371,8 +371,7 @@ lemma Period.exists_pow_mul_eq_wittFq_mul_of_isChartOf (hc : c.IsChartOf 𝒥.to
     simpa only [← hγ l] using c.extendedCoord_mem_bicommutant i (![B, C] l)
   -- as `B = a C`, the `i`-th coordinates satisfy `z ^ n γ 0 = a z ^ n γ 1`; cancel `z ^ n`
   have h_coord : algebraMap BPlus BdR (Chart.ainfToBPlus c.z ^ n * γ 0) =
-      algebraMap (PadicAlgCl p) BdR a *
-        algebraMap BPlus BdR (Chart.ainfToBPlus c.z ^ n * γ 1) := by
+      algebraMap (PadicAlgCl p) BdR a * algebraMap BPlus BdR (Chart.ainfToBPlus c.z ^ n * γ 1) := by
     rw [← hγ, ← hγ]
     exact hc.extendedCoord_eq_mul_of_eq_mul ha hBC i
   rw [map_mul, map_mul, mul_left_comm, mul_right_inj' (by simpa using hzn)] at h_coord

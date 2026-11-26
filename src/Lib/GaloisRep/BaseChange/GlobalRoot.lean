@@ -96,8 +96,7 @@ lemma New.exists_principalIdele_div_mul_adeleMap_eq {E L : Type} [Field E] [Numb
     [NumberField L] [Algebra E L] {g : Gal(L/E)} {t : (𝔸f L)ˣ} {k : (fixedField (zpowers g))ˣ}
     (hk_pos : IsTotallyPositive (k : fixedField (zpowers g)))
     (hk : principalIdele k = t.map (adeleNorm (fixedField (zpowers g)) L)) :
-    ∃ (z : Lˣ) (c : 𝔸f L), IsUnit c ∧
-      ↑(principalIdele z / t) * adeleMap (g : L →+* L) c = c := by
+    ∃ (z : Lˣ) (c : 𝔸f L), IsUnit c ∧ ↑(principalIdele z / t) * adeleMap (g : L →+* L) c = c := by
   let K : IntermediateField E L := fixedField (zpowers g)
   have : IsGalois K L := of_fixed_field L (zpowers g)
   have : IsCyclic Gal(L/K) := (subgroupEquivAlgEquiv (zpowers g)).isCyclic.mp (isCyclic_zpowers g)

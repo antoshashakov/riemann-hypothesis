@@ -416,8 +416,7 @@ def lineStabilizer : Subgroup (G E t') :=
 /-- The rational stabiliser of the isotropic line of `X` consists of the rational points (`V'.Γ`)
 that multiply the vector `X.kAdelic` spanning the line by a unit of `E`. -/
 lemma mem_lineStabilizer_iff (g : G E t') :
-    g ∈ lineStabilizer X ↔
-      g ∈ V'.Γ ∧ ∃ ξ : Eˣ, X.ActsOnFrame g (scalar Unit (toAdele ξ.val)) := by
+    g ∈ lineStabilizer X ↔ g ∈ V'.Γ ∧ ∃ ξ : Eˣ, X.ActsOnFrame g (scalar Unit (toAdele ξ.val)) := by
   -- A rational point `γ` fixes the span of `X.k` iff it multiplies `X.k` by a unit `ξ`; pass to
   -- the adeles by the injective map `vecAtPoint`.
   have h_rat (γ : U V'.J) : γ ∈ stabilizer (U V'.J) (splittingLine X) ↔

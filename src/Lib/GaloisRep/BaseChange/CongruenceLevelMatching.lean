@@ -717,8 +717,7 @@ lemma isMatchingLevel_congruenceLevel {m : Ô E'} {k : 𝔸f E'} (hmk : m * k = 
   have h_mem_ker (y y' : Ô E') (h_inv : (1 + (m * y).val) * (1 + (m * y').val) = 1) :
       .mkOfMulEqOne _ _ h_inv ∈ kerCompNorm E' μ := by
     have h_unit : Units.mkOfMulEqOne _ _ h_inv ∈ idelesUnitOff (∅ : Set (FinPlace E')) :=
-      idelesUnitOff_empty.ge ((Submonoid.mem_units_iff ..).2
-        ⟨(1 + m * y).prop, (1 + m * y').prop⟩)
+      idelesUnitOff_empty.ge ((Submonoid.mem_units_iff ..).2 ⟨(1 + m * y).prop, (1 + m * y').prop⟩)
     exact h_idele y y.prop _ h_unit (add_sub_cancel_right _ _)
   -- The inputs on `Ô E'`: `σ` is tame at level `0`, and commutes with `star` and with the
   -- inclusion into `𝔸f E'`.

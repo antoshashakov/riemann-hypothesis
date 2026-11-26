@@ -199,8 +199,7 @@ has no such form. Then `φ (colVector m x c)` depends only on the last non-zero 
 private lemma map_colVector_eq_sum
     (hx : ∀ p ∈ blockParahoric (min m), (∀ r ≠ m, v (p r m) < 1) → ρ p x = x)
     (hφ : ∀ k ∈ blockParahoric (min N), ∀ z : ρ, φ (ρ k z) = φ z) (c : Fin N → 𝓀[F]) :
-    φ (colVector m x c) =
-      ∑ j ≥ m with c j ≠ 0 ∧ ∀ r > j, c r = 0, φ (ρ (permGL (swap m j)) x) := by
+    φ (colVector m x c) = ∑ j ≥ m with c j ≠ 0 ∧ ∀ r > j, c r = 0, φ (ρ (permGL (swap m j)) x) := by
   classical
   by_cases! h_vanish : ∀ r ≥ m, c r = 0
   · -- Column `m` of `p ∈ blockParahoric (min m)` has a unit entry in a row `r ≥ m`: take `r`

@@ -152,8 +152,7 @@ lemma hasIntegrableTerms_localDatum_of_eq_stdDatum (hπ : ReadsAt A π) (β γ :
       ε * invOnUnits χ (y * N).det)
     (hv : IsSchwartzVector v) (c : Matrix n b (𝔸 E)) (z : Matrix b b (𝔸 E)) (q : GL b (𝔸 E))
     (g : G E s) :
-    D.HasIntegrableTerms V β γ (localDatum X V v Φ hπ)
-      (D.radicalElement c z * D.levi (q, g)) := by
+    D.HasIntegrableTerms V β γ (localDatum X V v Φ hπ) (D.radicalElement c z * D.levi (q, g)) := by
   -- `hasIntegrableTerms_integrated_schrodingerOp` asks that `y` times the frame `(k | i)` moved by
   -- the inverse of the point be right invertible (after `π`) where `Φ` is non-zero; there
   -- `det (y (K | I) N)` is a unit
@@ -631,8 +630,7 @@ lemma thetaTerm_stdRowDatum_mul_of_mem_stdLevel (σ : b ⊕ a ≃ m) {v : PairFo
     {z₀ : Matrix b m (LocProd 𝔠.ramifiedPlaces)} (hz₀ : IsIntMatrix O z₀) {u : Gf E a}
     (hu : u ∈ stdLevel E a) (P : G E r) (x : Matrix a b E) (k : G E t) :
     D.thetaTerm V (rankTwist 𝔠.character⁻¹ m) γ
-      (localDatum X V v (stdRowDatum σ 𝔠.semilocalChar z₀) 𝔠.readsAt) P x
-        (k * (1, u)) =
+      (localDatum X V v (stdRowDatum σ 𝔠.semilocalChar z₀) 𝔠.readsAt) P x (k * (1, u)) =
       D.thetaTerm V (rankTwist 𝔠.character⁻¹ m) γ
         (localDatum X V v (stdRowDatum σ 𝔠.semilocalChar z₀) 𝔠.readsAt) P x
         k := by

@@ -321,8 +321,7 @@ lemma exists_isGraded [Fintype X] [HasPrimitiveRoot5040 E] (x : Gf E ι) :
   rw [h_lattice] at hy ⊢
   rw [Y.degreeZeroPart_mulVec_gradeProj]
   intro i
-  simpa [gradeProj, mulVec_diagonal, ite_mem, d', w] using
-    fun (_ : Y.gradeOf i = e) ↦ hy i
+  simpa [gradeProj, mulVec_diagonal, ite_mem, d', w] using fun (_ : Y.gradeOf i = e) ↦ hy i
 
 end Grading
 

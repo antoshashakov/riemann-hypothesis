@@ -54,8 +54,7 @@ lemma New.norm_det_sq_le_of_posSemidef {A B : Matrix ι ι ℂ} (h : (fromBlocks
     -- so `A v = 0` and `det A = 0`.
     obtain ⟨v, hv, hQv⟩ := exists_mulVec_eq_zero_iff.2 hQ
     have h_kernel : fromBlocks P A B Q *ᵥ (0 ⊕ᵥ v) = 0 :=
-      (h.dotProduct_mulVec_zero_iff (x := 0 ⊕ᵥ v)).1
-        (by simp [fromBlocks_mulVec, hQv, dotProduct])
+      (h.dotProduct_mulVec_zero_iff (x := 0 ⊕ᵥ v)).1 (by simp [fromBlocks_mulVec, hQv, dotProduct])
     have hAv : A *ᵥ v = 0 := by simpa [fromBlocks_mulVec, hQv, funext_iff] using h_kernel
     simp [hQ, exists_mulVec_eq_zero_iff.1 ⟨v, hv, hAv⟩]
   -- Otherwise `Q` is positive definite and the Schur complement `P - A Q⁻¹ Aᴴ` is semidefinite.

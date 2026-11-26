@@ -200,8 +200,7 @@ lemma exists_z_smul_eq_sum_tameGen {p : ℕ} [ThePrime p] [Γ : GroupOverGp p] {
   have hw_mem : w ∈ L.kisinAinf := sum_mem fun k _ ↦ smul_of_tower_mem _ (q.coeff k) <|
     smul_mem_kisinAinf (fun h hh ↦ d.normal.conj_mem h hh _) hx_ainf
   rw [← mem_smul_pointwise_iff_exists]
-  refine mem_smul_kisinAinf_of_crysForms d.z_dvd_of_dvd_E_pow_mul hw_mem (n := 2 * n)
-    fun μ hμ ↦ ?_
+  refine mem_smul_kisinAinf_of_crysForms d.z_dvd_of_dvd_E_pow_mul hw_mem (n := 2 * n) fun μ hμ ↦ ?_
   have h_term (k : ℕ) :
       d.E.val ^ (2 * n) •
           (toGp (d.tameGen ^ k) • conjForm μ (d.tameGen ^ k) x - conjForm μ (d.tameGen ^ k) x) ∈
@@ -342,8 +341,7 @@ lemma aeval_tameMultiplier_pow_mul_mem_liftIdeal {p : ℕ} [ThePrime p] [Γ : Gr
     have h_fix : FrobGroup.inr (d.tameGen ^ j) • S.constantAt i c = S.constantAt i c := by
       simp [constantAt, smul_letterProj (m := inr _) (d.fixesLambda_tameGen_pow j _), -map_pow]
     have hz : toGp (d.tameGen ^ j) • d.z.val = ξ ^ j * d.z := by
-      simpa [ξ, -map_pow, ← map_pow (algebraMap (WittFq d.f) Ainf)] using
-        d.tameGen_pow_smul_z j
+      simpa [ξ, -map_pow, ← map_pow (algebraMap (WittFq d.f) Ainf)] using d.tameGen_pow_smul_z j
     have h_scalar : toGp (d.tameGen ^ j) •
         (p ^ t * d.z ^ (k + 1) - r • (algebraMap (WittFq d.f) d.S w + d.z * v)).val = a j := by
       simp [a, v', w', -map_pow, hz, fixesLambda_tameGen_pow, smul_sub, mul_assoc, mul_comm,

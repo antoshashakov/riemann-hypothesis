@@ -242,8 +242,7 @@ lemma IsNearIsometry.proj_comp {A : S →ₗ[ℂ] T} {ε δ : ℝ} (hA : IsNearI
     IsNearIsometry (pr ∘ₗ A) (ε + δ) := by
   intro U
   have h_split : hilbertSchmidtNorm (A ∘ₗ orthoProj U) ^ 2 = hilbertSchmidtNorm
-    ((pr ∘ₗ A) ∘ₗ orthoProj U) ^ 2 +
-      hilbertSchmidtNorm (((1 - pr) ∘ₗ A) ∘ₗ orthoProj U) ^ 2 := by
+    ((pr ∘ₗ A) ∘ₗ orthoProj U) ^ 2 + hilbertSchmidtNorm (((1 - pr) ∘ₗ A) ∘ₗ orthoProj U) ^ 2 := by
     simp only [hilbertSchmidtNorm_sq_eq_sum (stdOrthonormalBasis ℂ S), ← sum_add_distrib,
       comp_apply]
     exact sum_congr rfl fun i _ ↦ norm_sq_eq_add_of_isSymmetricProjection hpr _

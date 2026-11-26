@@ -502,8 +502,7 @@ lemma New.Selmer.exists_mFoldTwist_hasDenominatorsLe {P : Parameters} (D : Data 
     denominatorLe_range_goodLift ι j (h_aux j) fun q hq ↦
       ⟨R (j, ⟨q, hq⟩), hR (j, ⟨q, hq⟩), h_selmer j (j, ⟨q, hq⟩)⟩
   have h_free : ∀ g : Gf D.E Unit, classAut stdRatPoints D.chosenLevel g = ⊥ :=
-    D.classAut_eq_bot_of_le_chosenLevel le_rfl
-      (Fintype.card_unit.trans_le D.nat_le_of_hasLogBound)
+    D.classAut_eq_bot_of_le_chosenLevel le_rfl (Fintype.card_unit.trans_le D.nat_le_of_hasLogBound)
   refine ⟨τ, h_coprime, h_ratio, fun j ↦ ⟨?_, fun p hp Ξ Ξ' hΞ hΞ' ↦ ?_⟩⟩
   · exact (h_lifts j).clearsProjection (le_add_of_nonneg_right (by positivity))
   · -- main pairs: the denominator for the line of `trivialLift` bounds the inner product

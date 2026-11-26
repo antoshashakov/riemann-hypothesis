@@ -207,8 +207,7 @@ by all `1 + r E_ba` with `r` integral. Let `φ (ρ(d) x) = c` for every diagonal
 lemma quadratic_relation [CompactSpace 𝒪[F]] [IsSmoothRep ρ.ρ]
     (hab : a ⋖ b) (c : W) (hφ : ∀ k ∈ proIwahori, ∀ z : ρ, φ (ρ k z) = φ z)
     (hx : ∀ r : F, v r ≤ 1 → ρ (transvectionGL hab.ne' r) x = x)
-    (hc : ∀ u : Fˣ, v u.val = 1 →
-      φ (ρ (diagGL (Pi.mulSingle a (-u⁻¹) * Pi.mulSingle b u)) x) = c) :
+    (hc : ∀ u : Fˣ, v u.val = 1 → φ (ρ (diagGL (Pi.mulSingle a (-u⁻¹) * Pi.mulSingle b u)) x) = c) :
     Nat.card 𝓀[F] • φ (ρ (permGL (Equiv.swap a b)) (compactMean ρ.ρ proIwahori x)) =
       φ (ρ (permGL (Equiv.swap a b)) x) + (Nat.card 𝓀[F] - 1) • c := by
   classical

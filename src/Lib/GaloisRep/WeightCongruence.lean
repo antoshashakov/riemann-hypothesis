@@ -295,8 +295,7 @@ lemma New.hasNoSmallRelations_of_lacunary {n : ℕ} (y : Fin n → ℕ)
     simpa [← sum_mul, hα_sum, hβ_sum, sum_add_distrib] using sum_mono h_term
   -- The loss is at most `y j`, since `d ≤ (n + 1) ^ 2`.
   have h_loss : d * (y j / (n + 1) ^ 2) ≤ y j := by grw [hd, Nat.mul_div_le]
-  simpa [Finsupp.weight_eq_sum] using
-    Int.ofNat_lt.mpr (show ∑ i, α i * y i < ∑ i, β i * y i by lia)
+  simpa [Finsupp.weight_eq_sum] using Int.ofNat_lt.mpr (show ∑ i, α i * y i < ∑ i, β i * y i by lia)
 
 /-- Column multiplicities `κ h` that equal `(N + 1) ^ (4 * (N - h))` for `h ≥ 2` and are at least
 that for `h = 1` give a weight whose shifted entries `-∑_{j < h < N} (κ h + 1)`, `j < N`, are free

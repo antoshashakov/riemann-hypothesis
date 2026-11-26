@@ -658,11 +658,9 @@ private lemma isMatchingPairAbove_proIwahori
       rw [← map_twistedNorm ρ hρ_gal, hb]
     refine ⟨fun x hx hNm ↦ ?_, fun δ hδ_norm hδ_ne ↦ ?_⟩
     · -- (a): `x` is in the double coset of `N(t)` at `w` iff `a` is in that of `t` at `u`
-      exact if_congr
-        (hz_iff _ _ hγ_u ha_u _ (by rw [← hx, hρ_baseChange]) (h_norm_u a hNm)) rfl rfl
+      exact if_congr (hz_iff _ _ hγ_u ha_u _ (by rw [← hx, hρ_baseChange]) (h_norm_u a hNm)) rfl rfl
     · -- (b): a point `δ` of the double coset of `t` of norm `γ` lies in `a * proIwahori`
-      simpa using hz_coset _ _ hγ_u ha_u _ (Set.mem_of_indicator_ne_zero hδ_ne)
-        (h_norm_u δ hδ_norm)
+      simpa using hz_coset _ _ hγ_u ha_u _ (Set.mem_of_indicator_ne_zero hδ_ne) (h_norm_u δ hδ_norm)
 
 /-- Matching local data at a place with one place above. Let `E'/E` be a step, `w = u.below E` split
 (`hw`) with `μ` trivial at `w` (`hμ_loc`), and `u` the only place above `w` (`h_unique`), split

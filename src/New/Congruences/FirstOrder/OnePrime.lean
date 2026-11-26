@@ -579,8 +579,7 @@ lemma firstEntry_reduceGL {N : ℕ} [NeZero N] {g : localIntGL (Fin N) w}
 /-- The determinant of the reduction of `g ∈ GL_N(O_w)` is the reduction `residueUnit` of the
 determinant of `g`, a unit of `O_w`. -/
 lemma det_reduceGL {N : ℕ} (g : localIntGL (Fin N) w) :
-    GeneralLinearGroup.det (reduceGL g) =
-      residueUnit (g : GL (Fin N) (LocField w)).val.det :=
+    GeneralLinearGroup.det (reduceGL g) = residueUnit (g : GL (Fin N) (LocField w)).val.det :=
   eq_residueUnit (RingHom.map_det ..).symm (𝒪[LocField w].subtype.map_det _)
 
 /-- If `g ∈ GL_N(O_w)` lies in the pro-`p` Iwahori subgroup (its reduction is upper triangular with

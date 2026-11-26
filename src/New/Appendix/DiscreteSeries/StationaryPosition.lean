@@ -150,8 +150,7 @@ of `q = nodal univ μ'`. Here `polyVec μ μ' G` is the vector with the entries
 the residues of `t ^ a F / p`. -/
 lemma alternatingSignForm_polyVec_X_pow_mul (h : AreOppositeNodes μ μ') (F : ℝ[X]) (a : ℕ) :
     alternatingSignForm (polyVec μ μ' F) (polyVec μ μ' (X ^ a * nodal univ μ')) =
-      (-1) ^ L' *
-        ∑ i : Fin L, (X ^ a * F).eval (μ i) / (derivative (nodal univ μ)).eval (μ i) := by
+      (-1) ^ L' * ∑ i : Fin L, (X ^ a * F).eval (μ i) / (derivative (nodal univ μ)).eval (μ i) := by
   have h_quotient (i : Fin L) : (F * (X ^ a * nodal univ μ')).eval (μ i) /
       ((derivative (nodal univ μ)).eval (μ i) * (nodal univ μ').eval (μ i)) =
       (X ^ a * F).eval (μ i) / (derivative (nodal univ μ)).eval (μ i) := by
@@ -645,8 +644,7 @@ lemma exists_intDiagonal_mul_positionIsometry
     (hμ : ∀ i : Fin L, (l.lowestKType (e (Sum.inr i)) : ℝ) = μ i)
     (hμ' : ∀ j : Fin L', (k.lowestKType (e' (Sum.inr j)) : ℝ) = μ' j) :
     ∃ C : Matrix (Fin (d + 1)) m ℂ, intDiagonal l.lowestKType * positionIsometry e e' μ μ' =
-      positionIsometry e e' μ μ' * intDiagonal k.lowestKType +
-        positionVec e μ μ' d * C := by
+      positionIsometry e e' μ μ' * intDiagonal k.lowestKType + positionVec e μ μ' d * C := by
   -- Only `v₁` is needed: its coefficient in the column of index `e' (Sum.inr j)` is the scale.
   let coeff (j : m) : ℂ :=
     Sum.elim 0 (fun j : Fin L' ↦ (isometryScale μ μ' j : ℂ)) (e'.symm j)

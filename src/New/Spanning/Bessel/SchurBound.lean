@@ -240,8 +240,7 @@ theorem IsBesselFunction.lintegral_enorm_sq_integral_inner_translate
     (F_int : Integrable F besselQuotMeasure)
     (F_conv : convolve F (fun g : 𝔰.G₁ ↦ l.formalDegree * l.dsCoeffInFrame g) = F) :
     ∫⁻ g : 𝔰.G₁, ‖∫ y : 𝔰.G₁, ⟪F y, F (y * g)⟫_ℂ ∂besselQuotMeasure‖ₑ ^ 2 =
-      ENNReal.ofReal l.formalDegree⁻¹ *
-        (∫⁻ y : 𝔰.G₁, ‖F y‖ₑ ^ 2 ∂besselQuotMeasure) ^ 2 := by
+      ENNReal.ofReal l.formalDegree⁻¹ * (∫⁻ y : 𝔰.G₁, ‖F y‖ₑ ^ 2 ∂besselQuotMeasure) ^ 2 := by
   have h_deg : 0 < l.formalDegree := formalDegree_pos h_gap
   -- The matrix coefficient of `F` is `c_λ` times its squared norm.
   have h_coeff (g : 𝔰.G₁) : ∫ y, ⟪F y, F (y * g)⟫_ℂ ∂besselQuotMeasure =

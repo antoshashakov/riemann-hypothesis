@@ -106,8 +106,7 @@ lemma exists_isAdditive_comp_eq_of_isIsogeny {k : Type} [CommRing k] [IsArtinian
       have J_noeth : IsNoetherianRing (Localization.AtPrime J) := EssFiniteType.isNoetherianRing k _
       let y : specOver k (Localization.AtPrime J) ⟶ A :=
         specOver.map ⟨algebraMap S _, fun _ ↦ rfl⟩ ≫ ι
-      exact (hI _).mpr
-        (eq_zero_iff_factors_zero_section.mp (h_loc _ y (by simp [y, ι_ker]))) hs
+      exact (hI _).mpr (eq_zero_iff_factors_zero_section.mp (h_loc _ y (by simp [y, ι_ker]))) hs
     simpa [eq_zero_iff_factors_zero_section] using (hI (.id S)).mp I_zero
   have g_zero {T : Over (Spec (of k))} (a : T ⟶ A) (ha : a ≫ f = 0) : a ≫ g = 0 := by
     obtain ⟨z, rfl⟩ := ι_lift a ha

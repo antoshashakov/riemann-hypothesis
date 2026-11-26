@@ -47,8 +47,7 @@ lemma sumInvPow_four_of_mul_mem_iff {L L' : PeriodPair} {c y z : ℂ} (hc : c �
       HasSum (fun x : ℂ ↦ term M w (w + x)) (M.sumInvPow w 4) := by
     have h_lattice : HasSum (term M w) (M.sumInvPow w 4) :=
       hasSum_subtype_iff_indicator.1 (M.hasSum_sumInvPow w (by norm_num))
-    simpa only [Function.comp_def, Equiv.coe_addLeft]
-      using (Equiv.addLeft w).hasSum_iff.2 h_lattice
+    simpa only [Function.comp_def, Equiv.coe_addLeft] using (Equiv.addLeft w).hasSum_iff.2 h_lattice
   have h_term (x : ℂ) : term L' z (z + c * x) = term L y (y + x) / c ^ 4 := by
     have h_mem : z + c * x ∈ L'.lattice ↔ y + x ∈ L.lattice := by
       rw [← hL', ← add_mem_cancel_left hz, ← add_assoc, sub_add_cancel, mul_add]
@@ -82,8 +81,7 @@ lemma mul_t_sub_t_mem {c : ℂ} (h_mem : ∀ x : ℂ, c * x ∈ D.Λ ↔ x ∈ C
   have h_two : c * C.t + c * C.t ∈ D.Λ := by simpa [← mul_add, h_mem] using C.two_t_mem
   have h_mul {a : ℂ} (ha : a = quadGen d ∨ a = conj (quadGen d)) (hat : a * C.t ∉ C.Λ) :
       a * (c * C.t - D.t) ∈ D.Λ :=
-    (D.mul_mem_or_mul_sub_t_mem ha (c * C.t) h_two).resolve_left
-      (by rwa [mul_left_comm, h_mem])
+    (D.mul_mem_or_mul_sub_t_mem ha (c * C.t) h_two).resolve_left (by rwa [mul_left_comm, h_mem])
   obtain ⟨hω, hω_conj⟩ := C.quadGen_mul_t_notMem
   -- Conclude with `ω + ω̄ = 1`.
   simpa [← add_mul, conj_quadGen] using add_mem (h_mul (.inl rfl) hω) (h_mul (.inr rfl) hω_conj)

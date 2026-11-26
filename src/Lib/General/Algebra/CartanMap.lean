@@ -510,8 +510,7 @@ lemma apply_restrictAlong_eq_of_inv_mul_mem [Fact l.Prime] (h_mul : IsMultiplica
   have hB : B.FiniteKilledFixedInj l ⊥ 1 0 :=
     ⟨hs.finite, hs.nsmul_eq_zero, by simp [TrivialOn], fun x y ↦ by simp⟩
   revert hs ht
-  refine devissage_induction (pow_one l) P ⊥ (fun g hg ↦ ⟨1, by simpa using hP_pow g hg⟩)
-    ?_ ?_ B hB
+  refine devissage_induction (pow_one l) P ⊥ (fun g hg ↦ ⟨1, by simpa using hP_pow g hg⟩) ?_ ?_ B hB
   · intro B _ hB_fixed hs ht
     have h_action (g : G) : B.ρ (s g) = B.ρ (t g) :=
       B.ρ.eq_iff.2 (LinearMap.ext (hB_fixed.trivialOn _ (h_st g)))

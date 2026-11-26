@@ -129,8 +129,7 @@ of `P.K` of norm `D.M`. -/
 lemma smul_kernelForm_apply (H : p.HasLiftRank n) (ϑ : D.TameChar) (g : Gf D.E Unit)
     (h : Gf D.E n) :
     (P.vacuumScale D.towerExp ^ card n * (star (D.piMBar : ℂ) * P.jetScale D.towerExp) ^
-      p.rowLengthSum) •
-        (lValueData H ϑ).kernelForm g h =
+      p.rowLengthSum) • (lValueData H ϑ).kernelForm g h =
       ∑ A : TwistGL (D.levelPlaces ϑ) Unit,
         pointKernel H ϑ (g * (D.levelPlaces ϑ).twistResidueLift A) h := by
   let X : LValueData D.E n := lValueData H ϑ

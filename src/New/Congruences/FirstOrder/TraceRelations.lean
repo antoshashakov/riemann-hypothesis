@@ -648,8 +648,7 @@ lemma isTameType_of_mem_placesAboveM {V : DescentPair D.E r n}
         ∀ R : GalRep ℓ D.E n,
           IsRepOfType V t J (fun i : V.ChosenIndex ↦ scaledTypePoly V c i * (X - 1) ^ t) S R →
           IsKilledBy (decompRep R (placeOver v.1)) s 0 (Q.map O.1.val) := by
-  have ⟨k, hk⟩ :
-      ∃ k : Fin 2, (D.levelPrime k : NumberField.RingOfIntegers D.E) ∈ v.1.asIdeal := hv
+  have ⟨k, hk⟩ : ∃ k : Fin 2, (D.levelPrime k : NumberField.RingOfIntegers D.E) ∈ v.1.asIdeal := hv
   have hℓ : D.levelPrime k = ℓ := (v.1.charP_quotient hk).eq _ (v.1.charP_quotient v.2)
   refine ⟨k, hℓ.symm, fun s hs ↦ ?_⟩
   obtain ⟨γ, -, hγ⟩ := exists_inertiaGroup_isInertiaSpectrum n hc hk v.1.isPlaceOver_placeOver t

@@ -109,8 +109,7 @@ lemma exists_unit_forall_apply_eq_of_inv_smul_sub_mem {A n : Type} [SemilocalFie
   -- Units are dense, since almost every element is a unit.
   obtain ⟨_, ⟨u, rfl⟩, hu⟩ : ∃ b : A, IsUnit b ∧ ∀ z ∈ C ×ˢ L,
       z.1 ∈ Q → z.1 + b • z.2 ∈ Q → φ (z.1 + b • z.2) = φ z.1 :=
-    (dense_of_ae P.ae_isUnit).inter_nhds_nonempty
-      (eventually_forall_apply_add_smul_eq hC hL h_loc)
+    (dense_of_ae P.ae_isUnit).inter_nhds_nonempty (eventually_forall_apply_add_smul_eq hC hL h_loc)
   refine ⟨u, fun x hx y ⟨hyC, hyQ⟩ hxy ↦ ?_⟩
   have h_point : y + (u : A) • (u⁻¹ • (x - y)) = x := by simp [← Units.smul_def]
   have h_step : y + (u : A) • (u⁻¹ • (x - y)) ∈ Q → φ (y + (u : A) • (u⁻¹ • (x - y))) = φ y :=
@@ -164,8 +163,7 @@ theorem exists_step_function_extension {A n : Type} [SemilocalField A] [StarRing
       rw [Φ_eq x y hy, Φ_eq x' y' hy', h_eq]
     · rw [Φ_zero x hx, Φ_zero x' fun ⟨y', hy'⟩ ↦ hx (h' y' hy')]
   have move (k : G) (hk : k ∈ H) (x y : n → A) (hy : Near x y) :
-      Near ((k : GL n A).val *ᵥ x) ((k : GL n A).val *ᵥ y) ∧
-        φ ((k : GL n A).val *ᵥ y) = φ y := by
+      Near ((k : GL n A).val *ᵥ x) ((k : GL n A).val *ᵥ y) ∧ φ ((k : GL n A).val *ᵥ y) = φ y := by
     obtain ⟨hy_ne, hy_int⟩ := hy
     have h_value : φ ((k : GL n A).val *ᵥ y) = φ y := h_inv k hk y hy_ne
     refine ⟨⟨h_value.trans_ne hy_ne, ?_⟩, h_value⟩
@@ -428,8 +426,7 @@ lemma eventually_scaledOrbitalIntegral_mul_eq_self {F : PlaceData ι T (m + 1)}
       · exact Γ.hasMatrixSize_of_ne_zero (isCut_besselVector Z) head_p.self_of_nhds (inv_mem hl) hy
           h_p
     have h_arg : (weylElem 𝔰.ϱ r * (l * s)⁻¹)⁻¹ * y =
-        (weylElem 𝔰.ϱ p * l⁻¹)⁻¹ * y *
-          (y⁻¹ * weylElem 𝔰.ϱ p * s * (weylElem 𝔰.ϱ r)⁻¹ * y) := by
+        (weylElem 𝔰.ϱ p * l⁻¹)⁻¹ * y * (y⁻¹ * weylElem 𝔰.ϱ p * s * (weylElem 𝔰.ϱ r)⁻¹ * y) := by
       group
     exact h_ne (by rw [h_arg, besselVector_mul_right Z _ (h_cong y hC)])
   rw [scaledOrbitalIntegral, scaledOrbitalIntegral, density_eq,

@@ -636,8 +636,7 @@ lemma eq_top_of_schurMap_eq_leviMonomialValues {k : ℕ} {W O : Type} [CommRing 
       IsUnit (eval (vec (1 : Matrix (Fin k) (Fin k) W)) (leviGeneric W τ).det) := by
     simp [RingHom.map_det, show (leviGeneric W τ).map (eval (vec 1)) = 1 from
       leviGeneric_map_eval τ 1]
-  refine eq_top_of_eval_monomial ι d (isHomogeneous_det_leviGeneric τ) hW h_unit_one
-    fun b hb ↦ ?_
+  refine eq_top_of_eval_monomial ι d (isHomogeneous_det_leviGeneric τ) hW h_unit_one fun b hb ↦ ?_
   rw [RingHom.map_det, RingHom.mapMatrix_apply] at hb
   let g : GL (Fin k) W := GeneralLinearGroup.mk'' ((leviGeneric W τ).map (eval b)) hb
   have hg_levi : g ∈ levi W τ := by

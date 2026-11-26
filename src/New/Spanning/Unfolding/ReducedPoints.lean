@@ -119,8 +119,7 @@ lemma isIntMatrix_ideleM_inv_smul_eichler (c : S.Classes) {m : Type} [Fintype m]
       Matrix.mul_sub, Matrix.add_mul, Matrix.sub_mul, finAdeleMatrix_conjTranspose,
       map_splitGram_ratMiddle, classCoord, Matrix.mul_add]
   rw [h_eq]
-  exact ((hx.mul hu.conjTranspose).sub
-    ((hu.add (hx.mul h_inner)).mul hx.conjTranspose)).mul hJ
+  exact ((hx.mul hu.conjTranspose).sub ((hu.add (hx.mul h_inner)).mul hx.conjTranspose)).mul hJ
 
 /-- A general element of `𝖴_c(M)`, given by Eichler's formula, when `E` contains a primitive 5040th
 root of unity. Let `J = S.ratGram`. Let `x` have the columns `e_{p b}`. Let the columns of `u` lie

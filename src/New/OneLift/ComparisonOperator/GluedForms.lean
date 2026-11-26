@@ -461,8 +461,7 @@ lemma norm_schur_diagonal_piecewise_inv_le [DecidableEq l] (S : Finset l)
     (κ : NumberField.InfinitePlace E → ℕ → ℕ) (i j : WeylIndex l κ) :
     ‖schur κ (fun _ : NumberField.InfinitePlace E ↦
         diagonal (S.piecewise (M : l → ℂ_[p])⁻¹ 1)) i j‖ ≤
-      ‖(M : ℂ_[p])‖⁻¹ ^
-        (∑ τ : NumberField.InfinitePlace E, #S * (range (card l)).sum (κ τ)) := by
+      ‖(M : ℂ_[p])‖⁻¹ ^ (∑ τ : NumberField.InfinitePlace E, #S * (range (card l)).sum (κ τ)) := by
   -- The diagonal entry at a filling `i` is `M⁻¹` to the number of entries of `i` in `S`. These
   -- number at most the boxes in the first `#S` rows, and a row has one box at most in each column.
   simp only [schur_diagonal, diagonal_apply]
@@ -611,8 +610,7 @@ lemma weylGauge_cartanProduct_le [DecidableEq m] [DecidableEq N]
     show ιₚ ∘ η = ιₚ.comp conj ∘ star η by
       aesop, weylRep_mulVec_cartanProduct V.hasColumnsBelow.1 V.hasColumnsBelow.2]
   rw [denominatorExponent, sum_add_distrib, pow_add, mul_mul_mul_comm]
-  refine (norm_mulVec_le (c := 1) (by simp [norm_intCast_le_one]) _).trans
-    ((one_mul _).trans_le ?_)
+  refine (norm_mulVec_le (c := 1) (by simp [norm_intCast_le_one]) _).trans ((one_mul _).trans_le ?_)
   -- `g` is unitary, so the transpose of `g` is the conjugate of `g⁻¹`, and conjugation on `E`
   -- turns the conjugate embedding back into the given one.
   have h_conj (τ : NumberField.InfinitePlace E) :

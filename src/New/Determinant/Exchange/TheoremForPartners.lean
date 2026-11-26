@@ -220,8 +220,7 @@ lemma exists_mul_thetaSmall_adjointDatum_eq_mul_integral (W : Space E n s) (U : 
   obtain ⟨k, hk⟩ := h_even
   -- `G.neg` carries the integral over `[U(U⁻)]` to the one over `[U(U)]`; compare the characters.
   have h_neg (F : G E (-u) → ℂ) :
-      ∫ h : G E (-u), F h ∂(flipSpace U).quotMeasure =
-        ∫ h : G E u, F (G.neg h) ∂U.quotMeasure :=
+      ∫ h : G E (-u), F h ∂(flipSpace U).quotMeasure = ∫ h : G E u, F (G.neg h) ∂U.quotMeasure :=
     (isForm_neg_iff_and_integral_neg U (flipSpace U) (neg_mem_flipSpace_Gamma_iff U)).2 F
   rw [thetaSmall, thetaIntegral, h_datum Φ Ψ hΨ hΦΨ, h_neg, ← integral_const_mul,
     ← integral_const_mul]

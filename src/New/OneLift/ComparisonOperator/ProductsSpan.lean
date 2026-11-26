@@ -237,8 +237,7 @@ lemma exists_eval_smul_paddedMinorProd : ∃ d : ℕ, d ≤ D.b * √D.b ∧
     simpa using D.le_of_hasLogBound
   · have h_minor {p : Type} [Fintype p] [DecidableEq p] (τ : D.Φ)
         (row : p → D.RowIndex ⊕ PadIndex j) (col : p → D.CarrierIndex) :
-        (variableMinor τ row col).eval (r • y) =
-          r ^ card p * (variableMinor τ row col).eval y := by
+        (variableMinor τ row col).eval (r • y) = r ^ card p * (variableMinor τ row col).eval y := by
       simp [variableMinor, det_apply', mul_sum, prod_mul_distrib, mul_left_comm]
     simp only [paddedMinorProd, map_prod, ← prod_pow_eq_pow_sum, ← prod_mul_distrib]
     refine prod_congr rfl fun w _ ↦ ?_
@@ -572,8 +571,7 @@ lemma integral_mul_polyMatrixCoeff_paddedMinorProd {o : D.CarrierIndex → ℤ}
   have h_dom₂ (w : D.Φ) : IsKDominant (1 ⊕ᵥ -1) o (holomorphicWeight j w) := by
     simp [holomorphicWeight, IsKDominant]
   have h_weight : antiholomorphicWeight j =
-      (fun _ ↦ (0 ⊕ᵥ 3 * D.m : D.CarrierIndex → ℤ)) + flatKernelWeight D +
-        holomorphicWeight j := by
+      (fun _ ↦ (0 ⊕ᵥ 3 * D.m : D.CarrierIndex → ℤ)) + flatKernelWeight D + holomorphicWeight j := by
     ext w (_ | _) <;> simp [antiholomorphicWeight, flatKernelWeight, holomorphicWeight, -card_sum]
     grind [card_firstFactorIndex j]
   have h_const : IsHolOfWeight (1 ⊕ᵥ -1) o (holomorphicWeight j) fun h ↦ cP 1 1 * m₂ h := by
@@ -869,8 +867,7 @@ theorem eq_zero_of_integral_choiceFn_thetaKernelPairing (F : D.goodForms (D.spac
   -- `conj F` has level `M √(-d)`, so its peaks are not deep in a cusp.
   have F_level : star (F : New.G D.E (D.signsW j) → ℂ) ∈
       rapidOfLevel (D.spaceW j) (D.M * sqrtNegDInE P D.towerExp) :=
-    star_mem_rapidOfLevel
-      (goodForms_mem_rapidOfLevel F (.mul_right ⟨_, D.piM_mul_star.symm⟩ _))
+    star_mem_rapidOfLevel (goodForms_mem_rapidOfLevel F (.mul_right ⟨_, D.piM_mul_star.symm⟩ _))
   have gap_one (τ : D.Φ) : HasHolGap (D.signsW j) (conjHolomorphicWeight j τ) 1 := fun a b ha hb ↦
     by
     have h_one : 1 ≤ 300 * nStar D := by linarith [D.nStar_pos]

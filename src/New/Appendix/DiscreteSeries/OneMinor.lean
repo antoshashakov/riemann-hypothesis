@@ -437,8 +437,7 @@ lemma norm_crossTraceSum_sub_le {A₁ A₂ A₃ : Matrix n n ℂ} (hP : IsStarPr
 `crossTrace P A B = tr (P A (1 - P) B)` is the sum of `A i j * B j i` over `i` inside and `j`
 outside the set. -/
 lemma crossTrace_coordProj :
-    crossTrace (coordProj p) A B =
-      ∑ i : n, ∑ j : n, if p i ∧ ¬p j then A i j * B j i else 0 := by
+    crossTrace (coordProj p) A B = ∑ i : n, ∑ j : n, if p i ∧ ¬p j then A i j * B j i else 0 := by
   simp only [crossTrace, trace, diag_apply, mul_apply (M := coordProj p * A * (1 - coordProj p))]
   refine sum_congr rfl fun i _ ↦ sum_congr rfl fun j _ ↦ ?_
   by_cases hi : p i <;> by_cases hj : p j <;> simp [coordProj, mul_sub, hi, hj]

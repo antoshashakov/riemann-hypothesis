@@ -284,8 +284,7 @@ lemma trivialLift_eq_stdClassSum_translate (X : LValueData E n) (z : Gf E Unit) 
   obtain ⟨h_left : stdRatPoints.FixesLeft X.kernelForm,
     h_right : X.chosenLevel ≤ rightStabilizer X.kernelForm⟩ := X.kernelForm_invariant
   have h_out (g : Gf E Unit) :
-      X.kernelForm (DoubleCoset.mk stdRatPoints X.chosenLevel (g * z)).out =
-        X.kernelForm (g * z) :=
+      X.kernelForm (DoubleCoset.mk stdRatPoints X.chosenLevel (g * z)).out = X.kernelForm (g * z) :=
     apply_doubleCoset_out h_left h_right (g * z)
   have h_conj : X.chosenLevel.comap (MulAut.conj z : Gf E Unit →* Gf E Unit) = X.chosenLevel := by
     simp [SetLike.ext_iff, mul_comm' z]
@@ -751,8 +750,7 @@ lemma LValueData.map_trivialLift {P : Parameters} {s : ℕ} (n : Type) [Fintype 
             one_lt_card := X.one_lt_card
             unramified := hψ_unramified }
         ∀ (_hm : Fintype.card n = 2 * m) (_he : placePerm s σ = e)
-          (_hμ : ∀ v : unitary (𝔸 (P.E s)), (v : 𝔸 (P.E s)).fst = 1 →
-            μ.val v = σ (X.u1Char.val v))
+          (_hμ : ∀ v : unitary (𝔸 (P.E s)), (v : 𝔸 (P.E s)).fst = 1 → μ.val v = σ (X.u1Char.val v))
           (h : Gf (P.E s) n) (i : WeylIndex n X.descentPair.columnCount),
           σ ((P.jetScale s ^ (∑ τ : NumberField.InfinitePlace (P.E s), X.rowLength τ) •
               X.trivialLift) h i) =

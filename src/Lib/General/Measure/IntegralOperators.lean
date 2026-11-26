@@ -147,8 +147,7 @@ lemma New.integrable_rpow_neg_of_measure_sublevel_le (hu_meas : Measurable u)
     lintegral_rpow_neg_le_of_measure_sublevel_le hu_meas hu hK h_vol hA
       (div_mul_cancel₀ A (sub_pos.2 hA).ne').ge
   refine ⟨(hu_meas.pow_const (-A)).aestronglyMeasurable, ?_⟩
-  rw [hasFiniteIntegral_iff_ofReal
-    (.of_forall fun s ↦ rpow_nonneg (zero_le_one.trans (hu s)) (-A))]
+  rw [hasFiniteIntegral_iff_ofReal (.of_forall fun s ↦ rpow_nonneg (zero_le_one.trans (hu s)) (-A))]
   exact h_le.trans_lt (by finiteness)
 
 /-- Let `u ≥ 1` be measurable and suppose that `ν {u ≤ R} ≤ (K R^e)^d V` for all `R ≥ 1`, where

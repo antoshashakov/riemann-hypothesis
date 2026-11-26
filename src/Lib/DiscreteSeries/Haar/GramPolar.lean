@@ -197,8 +197,7 @@ theorem abs_det_skewAddHerm_symm_comp (hσ : IsGramSection J V σ) {t y : Matrix
     {T : Matrix ι ι ℝ × Matrix ι ι ℝ →ₗ[ℝ] Matrix ι ι ℂ}
     (hT : ∀ p : Matrix ι ι ℝ × Matrix ι ι ℝ, T p =
       (σ t)ᴴ * logDerivU (cayleyChart J) y p.2 * σ t + (σ t)ᴴ * J * fderiv ℝ σ t p.1) :
-    |(skewAddHerm.symm.toLinearMap ∘ₗ T).det| =
-      ‖(σ t).det‖ ^ (2 * card ι) * cayleyDensity J y := by
+    |(skewAddHerm.symm.toLinearMap ∘ₗ T).det| = ‖(σ t).det‖ ^ (2 * card ι) * cayleyDensity J y := by
   -- The first summand is skew-hermitian and the hermitian part of the second is `dt / 2`.
   obtain ⟨h_diff, h_density⟩ := abs_det_logDerivU_cayleyChart hy
   let W (v : Matrix ι ι ℝ) : Matrix ι ι ℂ := (σ t)ᴴ * logDerivU (cayleyChart J) y v * σ t
@@ -412,8 +411,7 @@ theorem lintegral_eq (hσ : IsGramSection J V σ) {K : Matrix ι ι ℂ → ℝ�
   have h_inner (t : Matrix ι ι ℝ) :
       (2 ^ card ι)⁻¹ * ∫⁻ y : Matrix ι ι ℝ in {y | (cayleyDenom J y).det ≠ 0},
           ENNReal.ofReal (cayleyDensity J y) * K ((cayleyChart J y : Matrix ι ι ℂ) * σ t) =
-        ENNReal.ofReal (volU (card ι) / 2 ^ card ι) *
-          ∫⁻ g : U J, K ((g : Matrix ι ι ℂ) * σ t) := by
+        ENNReal.ofReal (volU (card ι) / 2 ^ card ι) * ∫⁻ g : U J, K ((g : Matrix ι ι ℂ) * σ t) := by
     simp (disch := finiteness) only [lintegral_eq_cayleyChart, ← lintegral_const_mul',
       ← mul_assoc, h_const]
   rw [hσ.lintegral_eq_cayleyChart_mul hK, volume_eq_prod, ← prod_restrict,

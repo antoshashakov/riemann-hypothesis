@@ -283,8 +283,7 @@ lemma HasAbsUpToNormPower.exists_norm_div_eq_mul_prod_quotientRatio {D : Data P}
     (h_modulus : D.HasAbsUpToNormPower c (∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j))
     (hc : c 1 ≠ 0) :
     ∃ e : ℤ, ∀ ϑ : D.MFoldTwist, ‖c ϑ / c 1‖ =
-      (ϑ.normQ : ℝ) ^ (e / 2 : ℝ) *
-        ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ := by
+      (ϑ.normQ : ℝ) ^ (e / 2 : ℝ) * ∏ i ∈ Ioc 0 D.m, ∏ j ∈ Ioc i D.m, D.quotientRatio i j ϑ := by
   simpa only [Finset.prod_apply] using h_modulus.exists_norm_div_eq
     (by simp [prod_quotientRatio_one]) (by simp [prod_quotientRatio_nonneg]) hc
 

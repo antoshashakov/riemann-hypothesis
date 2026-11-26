@@ -294,8 +294,7 @@ contains both is all of `H`. -/
 lemma exists_generator_mod_ker (hκ : Continuous κ) (hκ_four : ∀ g : Gal(Ω/K), 4 ∣ (κ g).1 - 1)
     (H : Subgroup Gal(Ω/K)) (hH : IsClosed (H : Set Gal(Ω/K))) :
     ∃ γ : H, ∀ F ≥ (κ.domRestrict H).ker, F.IsOpen → γ ∈ F → ∀ g : H, g ∈ F :=
-  Selmer.exists_procyclic_generator (κ.domRestrict H) hκ.continuousOn.domRestrict
-    fun g ↦ hκ_four g
+  Selmer.exists_procyclic_generator (κ.domRestrict H) hκ.continuousOn.domRestrict fun g ↦ hκ_four g
 
 open Classical in
 /-- Let `κ` be continuous with values in `1 + 4 ℤ_ℓ`. Suppose the local condition at each prime `v`

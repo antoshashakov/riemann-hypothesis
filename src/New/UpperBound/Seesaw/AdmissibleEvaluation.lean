@@ -466,8 +466,7 @@ lemma latticeUnitary_mulVec_conjTranspose_latticeLift_mulVec (hP : IsSplitLevel 
       let r₁ : 𝔸f E := (1 : Matrix (X' ⊕ Unit) (X' ⊕ Unit) (𝔸f E)) r.2 j.2
       change e * (flipScale E * u * neighbourCoeff X X'' P π j.1 * r₁) =
         flipScale E * u * neighbourCoeff X X'' P π j.1 * r₁
-      linear_combination (flipScale E : 𝔸f E) * u * r₁ *
-        idem_conjClosure_mul_neighbourCoeff hπ j.1
+      linear_combination (flipScale E : 𝔸f E) * u * r₁ * idem_conjClosure_mul_neighbourCoeff hπ j.1
   have h_isotropic : cᴴ *ᵥ D.splitting.isotropicBasisFinᴴ *ᵥ y = 0 := by
     rw [← h_support, conjTranspose_smul, he, star_idem_conjClosure, smul_mulVec, ← mulVec_smul,
       mem_vanishingAbove.1 (mulVec_mem_vanishingAbove _ hy), mulVec_zero]

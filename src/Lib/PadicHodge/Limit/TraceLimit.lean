@@ -853,14 +853,12 @@ theorem isKilledBy (h : IsTraceLimit r A F a ρ) [L : PadicPlaceEmbedding E A �
     · -- For r the element M does not depend on θ.
       have h_indep : M θ none hP v = M t₀ none hP v :=
         periodTensorMap_injective ((hM θ none hP v).trans (hM t₀ none hP v).symm)
-      exact (h_read θ none hP v f).symm.trans
-        ((congrArg _ h_indep).trans (h_read t₀ none hP v f))
+      exact (h_read θ none hP v f).symm.trans ((congrArg _ h_indep).trans (h_read t₀ none hP v f))
   -- The coordinates of `Amax` separate points, so M vanishes; δ and ℓ are cancelled.
   have hMr : M t₀ none hP v = 0 := by
     refine tensor_eq_zero_of_separating c.eq_zero_of_coord _ fun i ↦ ?_
     -- each coordinate reads `M` as the relation `h_zero` applied to `v`
-    exact (h_read t₀ none hP v _).trans
-      ((congrArg (· *ᵥ v) (h_zero _)).trans (zero_mulVec v))
+    exact (h_read t₀ none hP v _).trans ((congrArg (· *ᵥ v) (h_zero _)).trans (zero_mulVec v))
   -- `hM` at `t₀` for `r` (`X t₀ none` unfolds to `r`): the scaled value is `0`
   have h_scaled : (δ • (ℓ ^ (k * d) : Bmax) ^ n) •
       P.eval₂ (coeffEnd (PadicAlgCl ℓ) (m → PadicAlgCl ℓ)) (linearFrob (decompRep r A) ⟨s, hs⟩ k)

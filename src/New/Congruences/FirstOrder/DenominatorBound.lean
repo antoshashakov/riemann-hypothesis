@@ -504,8 +504,7 @@ lemma exists_isCommonRibetElement_ellVal_le {P : Parameters} {D : Data P} {ℓ :
       IsCommonRibetElement 𝒥
         (fun (g : AbsGal D) (x : Y) ↦ (1 - (normalisedRep O (sys x).galRep g).val).det) x₀ d ∧
       ellVal (ℓ := ℓ) (D.chosenGroupOrder ^ 2 * d) ≤ liftValuationBound ℓ O ram sel := by
-  choose jumps R hR h_trace γ y h_lattice h_selmer using
-    fun x : sys ⁻¹' 𝓧 ↦ h_lift (sys x) x.prop
+  choose jumps R hR h_trace γ y h_lattice h_selmer using fun x : sys ⁻¹' 𝓧 ↦ h_lift (sys x) x.prop
   obtain ⟨d, hd, hd_le⟩ :=
     ribet_columns hc hϑ h_le h_tri h_isRepOfType h_quad hR h_trace h_lattice h𝒥 he
     x₀ (h_selmer x₀ rfl) h_sel_ne_top
@@ -661,8 +660,7 @@ lemma exists_heckePolyOnForms_eq_zero {P : Parameters} {D : Data P} {ℓ : ℕ} 
       (frequently_isSplit_notMem_places O)).exists
   refine ⟨w, hw, hS, fun x v hv hv₀ h_weak ↦ ?_⟩
   have h_hecke : HasHeckePolyAt (toSmoothForm v :
-    Gf D.E n → WeylIndex n (O.columnCount, O.detExp).1 → ℂ) w hw
-      (x.heckePolyAt w) :=
+    Gf D.E n → WeylIndex n (O.columnCount, O.detExp).1 → ℂ) w hw (x.heckePolyAt w) :=
     hasHeckePolyAt_of_mem_eigenformsAt (h_eigen x ⟨v.toSmoothForm, hv, hv₀⟩ hv) hw
   -- The numbers `O.charW.frobValue r w * q ^ i`, `i < O.rankDiff`, are roots of the Hecke
   -- polynomial of `v` at `w`. The last of them is `(O.liftHeckeRoot w)⁻¹`, so the reversed

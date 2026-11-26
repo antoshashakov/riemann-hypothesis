@@ -653,8 +653,7 @@ lemma IsComparisonOperator.norm_padic_det_liftCompression_le {j : D.LiftIndex}
     {U : ∀ ϑ : D.Twist, End ℂ (D.descentPair ϑ j).FormV} (hU : IsComparisonOperator j U)
     (ϑ : D.Twist) (ι : PrimePadicIso) (hι : (ι.prime : ℕ).Coprime ϑ.normQ) {β : ℝ}
     (h_clears : D.ClearsProjection ι.iso ϑ j β) :
-    ‖ι.iso (liftCompression U ϑ).det‖ ≤
-      exp (finrank ℂ (D.goodForms (D.spaceW j)) * (D.r * β)) := by
+    ‖ι.iso (liftCompression U ϑ).det‖ ≤ exp (finrank ℂ (D.goodForms (D.spaceW j)) * (D.r * β)) := by
   -- If `Λ` clears the denominator of the projection, then `Λ pr U_ϑ` keeps the integral lifts, so
   -- its eigenvalues are integral.
   obtain ⟨Λ, h_det, hΛ_integral⟩ := h_clears
@@ -754,8 +753,7 @@ lemma heightLe_liftDeterminant_ratio {θ : PrimePadicIso → D.MFoldTwist} (hθ 
   -- Take `Δ 1` as the denominator; its conjugates and the norms of `Δ ξ` at `ι` bound the height.
   have h_height : HeightLe (d * (3 * A) + d * (D.r * D.denominatorBudget))
       fun ι : PrimePadicIso ↦ Δ ((θ ι).powTwist j) / Δ 1 := by
-    refine .of_mul_le (e := fun l : ℕ ↦ d * (D.r * β l)) (hΔ_ne 1) h_arch (fun ι ↦ ?_)
-      fun T hT ↦ ?_
+    refine .of_mul_le (e := fun l : ℕ ↦ d * (D.r * β l)) (hΔ_ne 1) h_arch (fun ι ↦ ?_) fun T hT ↦ ?_
     · simpa only [mul_div_cancel₀ _ (hΔ_ne 1)] using h_padic ι
     · grw [← mul_sum, ← mul_sum, hβ_sum T hT]
   refine (h_height.mul ((heightLe_inv_heckeValueProd_div hθ j).pow d)).mono ?_ fun ι ↦ ?_

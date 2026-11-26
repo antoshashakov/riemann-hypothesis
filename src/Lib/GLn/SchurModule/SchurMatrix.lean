@@ -120,8 +120,7 @@ lemma exists_isTableauBasis {ι : Type} [Fintype ι] {M : ℕ} {k : ℕ → ℕ}
     have h_tableau : tableauPoly R id T = minorProduct R cols_T := by
       simp [tableauPoly, minorProduct, cols_T, J, Fintype.prod_sigma]
     rw [h_tableau]
-    simpa [← Set.range_comp, h_prod] using
-      hI.nabla_le_span R (minorProduct_mem_nabla cols_T)
+    simpa [← Set.range_comp, h_prod] using hI.nabla_le_span R (minorProduct_mem_nabla cols_T)
   · simpa [fill, J, Fintype.prod_sigma, ← diagramWeight_eq_columnWeight, diagramWeight_apply] using
       hI.character ()
 

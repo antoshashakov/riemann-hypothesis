@@ -460,8 +460,7 @@ theorem smul_top_coeff_mem_ellIntegralForms (hQ : ∀ j : J, D.IsOffLevel ![] (Q
     (hd : d • l.val ∈ ellIntegralForms)
     (h_proj : (heckeAction (A * δ₀)).val l = n₀ • (heckeAction A).val y)
     (h_lift : (heckeAction δ₀).val y = n₀ • y)
-    (h_low : ∀ S : Finset J, S ≠ univ →
-      (heckeAction (𝒟.coeff (∑ j ∈ S, .single j 1))).val y = 0) :
+    (h_low : ∀ S : Finset J, S ≠ univ → (heckeAction (𝒟.coeff (∑ j ∈ S, .single j 1))).val y = 0) :
     d • c • ((heckeAction (A ^ (Fintype.card J + 1) * 𝒟.coeff (∑ j : J, .single j 1))).val y :
       V.forms κ) ∈ ellIntegralForms := by
   -- Put `δ = c² A δ₀`, `n₁ = n₀ c²` and `i₀ = i + 1`, and let `G` be the coefficient of `∏ α j` in
@@ -509,8 +508,7 @@ theorem smul_top_coeff_mem_ellIntegralForms (hQ : ∀ j : J, D.IsOffLevel ![] (Q
           rw [σ.map_mul, factor, ← σ.map_mul, mul_assoc]
   obtain ⟨W, hW⟩ := ker _ _ (congr_ideal.trans congr_factor)
   obtain ⟨Ψ, hΨ⟩ : ∃ Ψ : D.integralEnd Q.place, ∀ z : D.formsOfLevel Q.place,
-    z.1 ∈ D.formsOfLevel ![] →
-      ((∑ g, D.residueRep Q g) * Ψ).1 z = c • z :=
+    z.1 ∈ D.formsOfLevel ![] → ((∑ g, D.residueRep Q g) * Ψ).1 z = c • z :=
     exists_norm_apply_eq_smul Q hQ
   let u : D.formsOfLevel Q.place := Ψ.1 (d • l)
   have norm_u : (∑ g, D.residueRep Q g).1 u = d • c • l := by

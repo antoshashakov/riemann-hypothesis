@@ -218,8 +218,7 @@ points of height below `N`. -/
 lemma _root_.New.tsum_ite_lt_succ_le_of_walk {X Step : Type*} {f : X → ℝ≥0∞}
     {c : Step → ℝ≥0∞} {height : X → ℕ} {step : Step → X → X} {x₀ : X}
     (h_inj : ∀ σ : Step, Function.Injective (step σ))
-    (h_step : ∀ x : X, x ≠ x₀ →
-      ∃ σ : Step, height (step σ x) < height x ∧ f x ≤ c σ * f (step σ x))
+    (h_step : ∀ x : X, x ≠ x₀ → ∃ σ : Step, height (step σ x) < height x ∧ f x ≤ c σ * f (step σ x))
     (N : ℕ) :
     (∑' x : X, if height x < N + 1 then f x else 0) ≤
       f x₀ + (∑' σ : Step, c σ) * ∑' x : X, if height x < N then f x else 0 := by
@@ -258,8 +257,7 @@ every `B` with `f x₀ + (∑ c) * B ≤ B`, such as `f x₀` times the geometri
 lemma _root_.New.tsum_le_of_walk {X Step : Type*} {f : X → ℝ≥0∞} {c : Step → ℝ≥0∞}
     {height : X → ℕ} {step : Step → X → X} {x₀ : X} {B : ℝ≥0∞}
     (h_inj : ∀ σ : Step, Function.Injective (step σ))
-    (h_step : ∀ x : X, x ≠ x₀ →
-      ∃ σ : Step, height (step σ x) < height x ∧ f x ≤ c σ * f (step σ x))
+    (h_step : ∀ x : X, x ≠ x₀ → ∃ σ : Step, height (step σ x) < height x ∧ f x ≤ c σ * f (step σ x))
     (hB : f x₀ + (∑' σ : Step, c σ) * B ≤ B) :
     ∑' x : X, f x ≤ B := by
   -- Bound the sum over the points of height below `N` by induction on `N`.
@@ -345,8 +343,7 @@ means having component `1` at every other place. -/
 lemma vacuumCoeff_mul_of_disjoint (h_disj : Disjoint A₁.conjClosure A₂) (M : ℕ) (b : AutChar E)
     {u₁ u₂ : Gf E n} (hu₁ : u₁ ∈ supportedOn n A₁) (hu₂ : u₂ ∈ supportedOn n A₂) :
     vacuumCoeff M b (u₁ * u₂) = vacuumCoeff M b u₁ * vacuumCoeff M b u₂ :=
-  vacuumCoeff_mul_of_atPlace M b
-    (atPlace_eq_one_or hu₁ (supportedOn_le_trivialOn_left h_disj hu₂))
+  vacuumCoeff_mul_of_atPlace M b (atPlace_eq_one_or hu₁ (supportedOn_le_trivialOn_left h_disj hu₂))
 
 -- Keeps definitional checks from unfolding the finite sums.
 seal Finset.sum in

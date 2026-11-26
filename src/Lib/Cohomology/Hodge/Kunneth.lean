@@ -205,8 +205,7 @@ private lemma cross_comp_eq_comp_cross {C : Type 1} [Category C] {M N F : AbFunc
   subst h_factor
   -- The two morphisms `F ⊗ M → F` agree by `h_balanced` and the bifunctoriality of `⊗`.
   have h_morphism :
-      (abTensor.flip.map (f ≫ ρ)).app F ≫ μ =
-        (abTensor.flip M).map ρ ≫ (abTensor F).map f ≫ μ :=
+      (abTensor.flip.map (f ≫ ρ)).app F ≫ μ = (abTensor.flip M).map ρ ≫ (abTensor F).map f ≫ μ :=
     calc (abTensor.flip.map (f ≫ ρ)).app F ≫ μ
         = (abTensor F).map f ≫ (abTensor F).map ρ ≫ μ := by simp
       _ = (abTensor F).map f ≫ (abTensor.flip F).map ρ ≫ μ := by rw [h_balanced]

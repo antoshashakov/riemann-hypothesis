@@ -220,8 +220,7 @@ lemma IsAppellHumbert.exists_proportional_orbit_lattice {O : Type*} [CommRing O]
     exact smul_mem (A t (g k₀)) (A_mem t (g k₀) (hg_mem k₀)) (f j) (f_max j)
   · -- take `x = A s (γ • f i₀)`, `y = g j` and `q = A t (g k₀) z`, so that `x z / q = 1`
     have h_ratio : γ * (A s (f i₀)).val z / (A t (g k₀)).val z = 1 := by simp [γ, f_ne, g_ne]
-    simpa [h_ratio] using
-      smul_mem (A s (γ • f i₀)) (A_mem s (γ • f i₀) (hf_mem i₀)) (g j) (g_max j)
+    simpa [h_ratio] using smul_mem (A s (γ • f i₀)) (A_mem s (γ • f i₀) (hf_mem i₀)) (g j) (g_max j)
 
 end New
 
@@ -572,8 +571,7 @@ lemma finrank_reduction_eq (G : HasGoodReduction B χ v r) (hf : f ∈ B.thetaSp
   -- `b` of it spans `B.thetaSpace χ` over `ℂ`, and its reduction is a basis of the image
   -- of `reduction`.
   have h_flat : Flat v.valuationSubring ballMap.range :=
-    Flat.flat_iff_torsion_eq_bot_of_isBezout.mpr
-      (isTorsionFree_iff_torsion_eq_bot.mp inferInstance)
+    Flat.flat_iff_torsion_eq_bot_of_isBezout.mpr (isTorsionFree_iff_torsion_eq_bot.mp inferInstance)
   have h_free : Free v.valuationSubring ballMap.range := free_of_flat_of_isLocalRing
   have h_surj : RingHomSurjective φ := ⟨hφ⟩
   have h_flat_ℂ : Flat v.valuationSubring ℂ :=

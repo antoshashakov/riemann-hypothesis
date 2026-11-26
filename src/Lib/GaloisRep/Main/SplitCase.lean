@@ -646,8 +646,7 @@ lemma New.GaloisRep.sphericalCompat_of_split {ℓ : ℕ} {E : Type} {a D : ℕ} 
   have neg_pair_mem (w : FinPlace E) (hw : star w ≠ w) (X : ℂ[X]) (j : ℕ) (h₁ : w ∉ U)
       (h₂ : star w ∉ U) (hℓ : ↑ℓ ∉ w.asIdeal) (hX : HasHeckePolyAt f w hw X) :
       (-ιℓ (X.coeff j), fun i ↦ -ιℓ ((Q i w).coeff j)) ∈ N := by
-    simpa only [hb' w hw j hℓ, neg_one_mul] using
-      pair_mem w hw X j h₁ h₂ (fun h ↦ absurd h hℓ) hX
+    simpa only [hb' w hw j hℓ, neg_one_mul] using pair_mem w hw X j h₁ h₂ (fun h ↦ absurd h hℓ) hX
   obtain ⟨R, attached, R_mem⟩ :=
     exists_attached_of_coeff_mem apx hf h_eig y_cont y_frob neg_pair_mem
   -- Any attached `ρ` has the trace of `R`, the limit of combinations of the traces of the `r i`.
@@ -656,8 +655,7 @@ lemma New.GaloisRep.sphericalCompat_of_split {ℓ : ℕ} {E : Type} {a D : ℕ} 
     hK.notMem_of_maxCompactAt_le u hv.ne_right hv.star_ne_right hx.ne_right hx.star_ne_right
       fun g hg ↦ mem_rightStabilizer.2 (by simpa [funext_iff] using f_sph ⟨g, hg⟩)
   have coeff_mem (u_split : star u ≠ u) (X : ℂ[X]) (hX : HasHeckePolyAt f u u_split X) (j : ℕ) :
-      ∃ c : PadicAlgCl ℓ, c ≠ 0 ∧
-        (c * ιℓ (X.coeff j), fun i ↦ c * ιℓ ((Q i u).coeff j)) ∈ N :=
+      ∃ c : PadicAlgCl ℓ, c ≠ 0 ∧ (c * ιℓ (X.coeff j), fun i ↦ c * ιℓ ((Q i u).coeff j)) ∈ N :=
     ⟨b u u_split j, hb u u_split j,
       pair_mem u u_split X j u_good.left u_good.right (fun _ ↦ rfl) hX⟩
   have trace_mem (g : Gal(Ω/E)) : ((ρ g).val.trace, fun i ↦ (r i g).val.trace) ∈ N := by

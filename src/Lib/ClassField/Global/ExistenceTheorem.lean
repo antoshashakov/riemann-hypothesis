@@ -137,8 +137,7 @@ lemma index_pow_local_le (v : FinPlace K) :
         i = n * Nat.card (valRingBelow (LocField v) (intQpBar p) ⧸
             Ideal.span {(n : valRingBelow (LocField v) (intQpBar p))}) *
           Nat.card (powMonoidHom n : (LocField v)ˣ →* (LocField v)ˣ).ker :=
-    index_range_pow_eq
-      (mod_cast cokerKerIndex_local_units hF.toIsLocalGalois n (AddEquiv.refl _))
+    index_range_pow_eq (mod_cast cokerKerIndex_local_units hF.toIsLocalGalois n (AddEquiv.refl _))
   have h_roots_le :
       Nat.card (powMonoidHom n : (LocField v)ˣ →* (LocField v)ˣ).ker ≤ n :=
     card_rootsOfUnity (LocField v) n
@@ -147,8 +146,7 @@ lemma index_pow_local_le (v : FinPlace K) :
 /-- For `n ≠ 0` and a finite set `S` of finite places of `K`, the ideles that are `n`-th powers at
 the places of `S` have finite index, at most `n ^ (2 |S| + [K : ℚ])`. -/
 lemma index_idelesPowAt_ne_zero_and_le [Fintype S] :
-    (idelesPowAt S n).index ≠ 0 ∧
-      (idelesPowAt S n).index ≤ n ^ (2 * S.ncard + finrank ℚ K) := by
+    (idelesPowAt S n).index ≠ 0 ∧ (idelesPowAt S n).index ≤ n ^ (2 * S.ncard + finrank ℚ K) := by
   have h_index_comap (v : FinPlace K) (H : Subgroup (LocField v)ˣ) :
       (H.comap (ideleAt v)).index = H.index :=
     index_comap_of_surjective _ fun x ↦ ⟨locIdele v x, ideleAt_locIdele v x⟩

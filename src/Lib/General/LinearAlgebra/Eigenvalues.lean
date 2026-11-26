@@ -383,8 +383,7 @@ lemma trace_restrict_iInf_maxGenEigenspace_ne_zero {p : Submodule ℂ V} {f : I 
     {g : End ℂ V} (hf_maps : ∀ a : I, ∀ v ∈ p, f a v ∈ p) (hg_maps : ∀ v ∈ p, g v ∈ p) (θ : I → ℂ)
     (h_stable : ∀ v ∈ p ⊓ ⨅ a : I, maxGenEigenspace (f a) (θ a),
       g v ∈ p ⊓ ⨅ a : I, maxGenEigenspace (f a) (θ a))
-    (h_trace_ne :
-      trace ℂ ↥(p ⊓ ⨅ a : I, maxGenEigenspace (f a) (θ a)) (g.restrict h_stable) ≠ 0)
+    (h_trace_ne : trace ℂ ↥(p ⊓ ⨅ a : I, maxGenEigenspace (f a) (θ a)) (g.restrict h_stable) ≠ 0)
     (h_stable_restrict : ∀ v ∈ ⨅ a : I, maxGenEigenspace ((f a).restrict (hf_maps a)) (θ a),
       g.restrict hg_maps v ∈ ⨅ a : I, maxGenEigenspace ((f a).restrict (hf_maps a)) (θ a)) :
     trace ℂ ↥(⨅ a : I, maxGenEigenspace ((f a).restrict (hf_maps a)) (θ a))

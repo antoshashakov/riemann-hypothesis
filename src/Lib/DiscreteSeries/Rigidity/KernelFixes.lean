@@ -409,8 +409,7 @@ theorem re_integratedRep_dsKernel_pos (hg : l.HasLargeGap A) (hu : IsUnitaryRep 
   -- For fixed `u`, substitute `(κ u k₁, u k₂)` for `(k₁, k₂)` and use `h_left`, `h_right`.
   have h_inner (u : maxCompactU ε) :
       ∫ k, Ψ k u ∂μ = Λ.kTypeNormSq * l.formalDegree *
-        (weightMinors (-paramAddRho l) (u.val.val.valᴴ * z * u))⁻¹ *
-          B x (π (u⁻¹ * z * u) x) := by
+        (weightMinors (-paramAddRho l) (u.val.val.valᴴ * z * u))⁻¹ * B x (π (u⁻¹ * z * u) x) := by
     let c : ℂ := l.formalDegree / weightMinors (-paramAddRho l) (u.val.val.valᴴ * z * u) /
       Λ.kTypeNormSq
     have h_subst (k₁ k₂ : maxCompactU ε) : Ψ ((κ * u, u) * (k₁, k₂)) u = c *

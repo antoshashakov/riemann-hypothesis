@@ -206,8 +206,7 @@ lemma New.sobolev_trace_cube {Ω I L D : Type*} [MeasurableSpace Ω] {σ : Measu
   let μ (_ : D) : Measure ℝ := volume.restrict (Icc 0 ε)
   have normSq_meas (i : List L) : Measurable (normSq i) := by fun_prop
   let bound (i : List L) (d : D) (x : D → ℝ) : ℝ≥0∞ := ∫⁻ t, .ofReal (2 / ε) *
-    (normSq i (update x d t) +
-      .ofReal (card L * Λ ^ 2) * ∑ l, normSq (l :: i) (update x d t)) ∂μ d
+    (normSq i (update x d t) + .ofReal (card L * Λ ^ 2) * ∑ l, normSq (l :: i) (update x d t)) ∂μ d
   -- The trace inequality for the slice of `f i` through `x` in the direction `d`.
   have trace (i : List L) (d : D) (x : D → ℝ) (hx : x ∈ Icc 0 fun _ : D ↦ ε) (hxd : x d = 0) :
       normSq i x ≤ bound i d x := by

@@ -109,8 +109,7 @@ lemma image_neg_centredBlock (e : ℤ) (d : ℕ) :
 /-- For a natural number d, signs u, v and an integer y: u v y > d says that |y| > d and that
 u v is the sign of y. -/
 lemma lt_sign_mul_iff {d : ℕ} {u v : ℤˣ} {y : ℤ} :
-    (d : ℤ) < (u * v : ℤˣ) * y ↔
-      (d : ℤ) < |y| ∧ (0 < y → v = u) ∧ (y < 0 → v = -u) := by
+    (d : ℤ) < (u * v : ℤˣ) * y ↔ (d : ℤ) < |y| ∧ (0 < y → v = u) ∧ (y < 0 → v = -u) := by
   -- In each of the four cases u v y is y or −y.
   rcases Int.units_eq_one_or u with rfl | rfl <;> rcases Int.units_eq_one_or v with rfl | rfl <;>
     simp [lt_abs] <;> omega
@@ -196,8 +195,7 @@ lemma even_shiftedEntry_add_sub_one {g : ℕ} (hl : l.HasGap g) {m d : ℕ} (hd 
 omit [Fintype n] in
 /-- The centred column parameter of −λ for the oscillator pair is minus the shifted entry. -/
 lemma centredParam_swap_std (c : n) :
-    (FockDualPair.std t s γ (-γ')).swap.centredParam (-l) c =
-      -shiftedEntry γ' (card n') l c := by
+    (FockDualPair.std t s γ (-γ')).swap.centredParam (-l) c = -shiftedEntry γ' (card n') l c := by
   simp only [shiftedEntry, FockDualPair.centredParam, Pi.neg_apply]
   ring
 
@@ -382,8 +380,7 @@ theorem isBlockRule_iff_of_offsets {e p p' : ℤ} (hle : card n ≤ card n')
       l.HasGap (500 * (card n + card n') ^ 3) ∧
       l'.HasGap (500 * (card n + card n') ^ 3) ∧
       univ.image (fun r : n' ↦ l' r + p) =
-        univ.image (fun c : n ↦ l c + p') ∪
-          centredBlock e (card n' - card n) ∧
+        univ.image (fun c : n ↦ l c + p') ∪ centredBlock e (card n' - card n) ∧
       ∀ (c : n) (r : n'), l c + p' = l' r + p → (s c ≠ t r ↔ l c + p' < 2 * e) := by
   have hrow (r : n') : l' r + p = 2 * e + shiftedEntry γ (card n) l' r := by grind [shiftedEntry]
   have hcol (c : n) : l c + p' = 2 * e + shiftedEntry γ' (card n') l c := by grind [shiftedEntry]
@@ -418,8 +415,7 @@ theorem isBlockRule_iff_of_character {e : ℤ} (hle : card n ≤ card n')
       l.HasGap (500 * (card n + card n') ^ 3) ∧
       l'.HasGap (500 * (card n + card n') ^ 3) ∧
       univ.image (fun r : n' ↦ l' r + (card n : ℤ) % 2) =
-        univ.image (fun c : n ↦ l c + (card n' : ℤ) % 2) ∪
-          centredBlock e (card n' - card n) ∧
+        univ.image (fun c : n ↦ l c + (card n' : ℤ) % 2) ∪ centredBlock e (card n' - card n) ∧
       ∀ (c : n) (r : n'), l c + (card n' : ℤ) % 2 = l' r + (card n : ℤ) % 2 →
         (s c ≠ t r ↔ l c + (card n' : ℤ) % 2 < 2 * e) :=
   isBlockRule_iff_of_offsets hle (by omega) (by omega)
@@ -436,8 +432,7 @@ theorem isBlockRule_iff_of_character_conj {e : ℤ} (hle : card n ≤ card n')
       l.HasGap (500 * (card n + card n') ^ 3) ∧
       l'.HasGap (500 * (card n + card n') ^ 3) ∧
       univ.image (fun r : n' ↦ l' r - (card n : ℤ) % 2) =
-        univ.image (fun c : n ↦ l c - (card n' : ℤ) % 2) ∪
-          centredBlock e (card n' - card n) ∧
+        univ.image (fun c : n ↦ l c - (card n' : ℤ) % 2) ∪ centredBlock e (card n' - card n) ∧
       ∀ (c : n) (r : n'), l c - (card n' : ℤ) % 2 = l' r - (card n : ℤ) % 2 →
         (s c ≠ t r ↔ l c - (card n' : ℤ) % 2 < 2 * e) := by
   have hp : (card n : ℤ) - 2 * γ = -((card n : ℤ) % 2) - 2 * e := by omega

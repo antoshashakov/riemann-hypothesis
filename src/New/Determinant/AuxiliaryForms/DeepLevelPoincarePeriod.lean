@@ -687,8 +687,7 @@ lemma New.Exchange.norm_poincare_period_sub_le {E n : Type} {s : n → ℤˣ} [F
       exact h_ne (Subtype.ext (hC.leftQuotientEquiv.symm.injective
         (QuotientGroup.eq.2 ((hy γ).inv_mul_mem_range hγ'))))
     rw [← map_sub]
-    exact h_sep.trans
-      ((hy γ).le_norm_archCoords_sub (hy γ') y_ne ha (hk γ) (hk γ') hR_nonneg hR_le)
+    exact h_sep.trans ((hy γ).le_norm_archCoords_sub (hy γ') y_ne ha (hk γ) (hk γ') hR_nonneg hR_le)
   have norm_base_le : ‖col base‖ ≤ d := ((hy 1).norm_archCoords_one_le x).trans hd
   obtain ⟨summable, tsum_le⟩ : Summable (fun γ : Elem {base}ᶜ ↦ (d / ‖col γ‖) ^ A) ∧
       ∑' γ : Elem {base}ᶜ, (d / ‖col γ‖) ^ A ≤ 10 / d :=

@@ -410,8 +410,7 @@ lemma sum_dataInner_traceChar_div_card {𝔪 : Modulus E} (p : G E (homSigns s s
     let x : n' × n → 𝔸 E := ((S.hom T).move p).vecAtPoint y
     (∑ t : Matrix n n' 𝔪.ResidueRing,
         (S.hom T).dataInner ((S.hom T).ω p (modDatum S T 𝔪 (traceChar t) v))
-          ((S.hom T).ϱ ((S.hom T).vecAtPoint y)
-            ((S.hom T).ω p (modDatum S T 𝔪 (traceChar t) w)))) /
+          ((S.hom T).ϱ ((S.hom T).vecAtPoint y) ((S.hom T).ω p (modDatum S T 𝔪 (traceChar t) w)))) /
         Fintype.card (Matrix n n' 𝔪.ResidueRing) =
       if ∃ hx : ∀ i : n' × n, finCoord x i ∈ Ô E,
           ∀ i : n' × n, 𝔪.reduction ⟨finCoord x i, hx i⟩ = 0 then
@@ -425,8 +424,7 @@ lemma sum_dataInner_traceChar_div_card {𝔪 : Modulus E} (p : G E (homSigns s s
       𝔪.reduction ⟨idem 𝔪.places * r, hr'⟩ = 𝔪.reduction ⟨r, hr⟩ := 𝔪.reduction_idem_mul ⟨r, hr⟩
   have h_term (t : Matrix n n' 𝔪.ResidueRing) :
       (S.hom T).dataInner ((S.hom T).ω p (modDatum S T 𝔪 (traceChar t) v))
-          ((S.hom T).ϱ ((S.hom T).vecAtPoint y)
-            ((S.hom T).ω p (modDatum S T 𝔪 (traceChar t) w))) =
+          ((S.hom T).ϱ ((S.hom T).vecAtPoint y) ((S.hom T).ω p (modDatum S T 𝔪 (traceChar t) w))) =
         𝔪.liftFn (traceChar t ∘ vecToMatrix) (finCoord x) *
           (fockInner v (realHeisenbergOp (realCoord x) w) * vacuumFn (finVec (finCoord x))) := by
     simp [x, dataInner_omega_left, omega_rho, rep_apply_apply, dataInner_traceChar, vecAtPoint_move]

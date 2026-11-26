@@ -508,8 +508,7 @@ with `Θ = C.thetaProd μ m = ∏ θ(μ_j z) ^ m j` and `H_c ∈ C.multiSeriesRi
 `ℚ(√-d)`. -/
 lemma leastValLE_of_unit_coefficients (C : CMLattice d) {μ : J → X → ℂ_[p]} (m : J → ℕ) {i₀ : J}
     (h_unit : ∀ x : X, ‖μ i₀ x‖ = 1) (ν : X →₀ ℕ) :
-    C.LeastValLE μ m 6 ν
-      (gammaPrime d p * ν.degree - ∑ x : X, (padicValNat p (ν x)! : ℝ)) := by
+    C.LeastValLE μ m 6 ν (gammaPrime d p * ν.degree - ∑ x : X, (padicValNat p (ν x)! : ℝ)) := by
   have hp : (0 : ℝ) < p := mod_cast (Fact.out : p.Prime).pos
   obtain ⟨g, hg, hg_deriv⟩ := C.katz_divisibility_limit (p := p) ν.degree
   -- `δ 0 = 1`, and `V` is an inverse of `∏ Θ(δ_c z)` in `C.multiSeriesRing μ`

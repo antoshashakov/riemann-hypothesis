@@ -449,8 +449,7 @@ is at most `h`, then `v(ζ ^ j - 1) = ℓ ^ t / φ(ℓ ^ (h + 1))`; here `v = el
 Euler's function. -/
 lemma ellVal_pow_sub_one_of_isPrimitiveRoot {h j : ℕ} {ζ : intQpBar ℓ}
     (hζ : IsPrimitiveRoot ζ (ℓ ^ (h + 1))) (hj : j ≠ 0) (hjh : padicValNat ℓ j ≤ h) :
-    ellVal (ζ ^ j - 1).1 =
-      (ℓ ^ padicValNat ℓ j : ℕ) * (Nat.totient (ℓ ^ (h + 1)) : ℝ≥0∞)⁻¹ := by
+    ellVal (ζ ^ j - 1).1 = (ℓ ^ padicValNat ℓ j : ℕ) * (Nat.totient (ℓ ^ (h + 1)) : ℝ≥0∞)⁻¹ := by
   -- write `j = ℓ ^ t j'` and `h = t + k`; then `ζ ^ j` has order `ℓ ^ (k + 1)`
   have hℓ : ℓ.Prime := Fact.out
   obtain ⟨t, j', hj', rfl⟩ := Nat.exists_eq_pow_mul_and_not_dvd hj ℓ hℓ.ne_one

@@ -47,8 +47,7 @@ the map `(a, b) ↦ diag(a, b)`. -/
 lemma U.mem_range_sum_left {R : Type*} [CommRing R] [StarRing R] {J : Matrix n n R}
     {J' : Matrix m m R} {J'' : Matrix (n ⊕ m) (n ⊕ m) R} (h : fromBlocks J 0 0 J' = J'')
     {g : U J''} (hJ' : IsUnit J') :
-    (∃ a : U J, sum h (a, 1) = g) ↔
-      (g : Matrix (n ⊕ m) (n ⊕ m) R).toCols₂ = fromRows 0 1 := by
+    (∃ a : U J, sum h (a, 1) = g) ↔ (g : Matrix (n ⊕ m) (n ⊕ m) R).toCols₂ = fromRows 0 1 := by
   subst h
   refine ⟨?_, fun h_cols ↦ ?_⟩
   · rintro ⟨a, rfl⟩
@@ -71,8 +70,7 @@ is that of the identity matrix. Here `U.sum h` is the map `(a, b) ↦ diag(a, b)
 lemma U.mem_range_sum_right {R : Type*} [CommRing R] [StarRing R] {J : Matrix n n R}
     {J' : Matrix m m R} {J'' : Matrix (n ⊕ m) (n ⊕ m) R} (h : fromBlocks J 0 0 J' = J'')
     {g : U J''} (hJ : IsUnit J) :
-    (∃ a : U J', sum h (1, a) = g) ↔
-      (g : Matrix (n ⊕ m) (n ⊕ m) R).toCols₁ = fromRows 1 0 := by
+    (∃ a : U J', sum h (1, a) = g) ↔ (g : Matrix (n ⊕ m) (n ⊕ m) R).toCols₁ = fromRows 1 0 := by
   subst h
   refine ⟨?_, fun h_cols ↦ ?_⟩
   · rintro ⟨a, rfl⟩
@@ -184,8 +182,7 @@ lemma ratEmbed_mulVec_vecAtPoint (γ : U V.J) (y : n → E) :
 /-- The standard form on the coordinates `x⁻¹ y`, `x⁻¹ z` of rational vectors `y`, `z` at the point
 `x` of `V` is the image of `yᴴ J z` in the adeles. -/
 lemma stdForm_vecAtPoint (y z : n → E) :
-    star (V.vecAtPoint y) ⬝ᵥ stdForm E s *ᵥ V.vecAtPoint z =
-      toAdele (star y ⬝ᵥ V.J *ᵥ z) := by
+    star (V.vecAtPoint y) ⬝ᵥ stdForm E s *ᵥ V.vecAtPoint z = toAdele (star y ⬝ᵥ V.J *ᵥ z) := by
   have h_star : star (toAdele ∘ y) = toAdele ∘ star y := funext fun i ↦ by simp
   calc _ = star (toAdele ∘ y) ⬝ᵥ V.J.map toAdele *ᵥ (toAdele ∘ z) := by
         simp [star_mulVec_dotProduct, vecAtPoint, map_J, mul_assoc]

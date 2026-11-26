@@ -175,8 +175,7 @@ lemma adeleMatrix_closurePart (g : G E s) :
     (closurePart (s := s) S g).adeleMatrix =
       idemAdele S.conjClosure • g.adeleMatrix + (1 - idemAdele S.conjClosure) • 1 := by
   -- compare entries at the infinite and at the finite places
-  ext i k <;> by_cases h : i = k <;>
-    simp [closurePart, componentOn, U.cutAt, cutGL, h]
+  ext i k <;> by_cases h : i = k <;> simp [closurePart, componentOn, U.cutAt, cutGL, h]
 
 variable [WeilData E]
 

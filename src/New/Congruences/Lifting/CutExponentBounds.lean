@@ -326,8 +326,7 @@ lemma pointsOver_cutOrders_nonempty {s β : k.Letter → ℕ} {η V W X δ κ b 
     (hU : ∀ i : k.Letter, FitsWindows η (σ i) (β i) V (S.jumpSet i))
     (h_sizes : k.CutSizes s β W X δ κ b n J s₀ G) {i : k.Letter} (h_shift : s i + W ≤ p * n)
     (h_cut : i.IsKillingCut s β W J G s₀ κ) {l : ℕ} (hl : l ≤ 2 * J + 1) (c : S.paramLattice) :
-    (S.pointsOver c i (25 * κ) (cutOrders (s i) η l)
-      (standardDepth (s i) η (l + 1))).Nonempty := by
+    (S.pointsOver c i (25 * κ) (cutOrders (s i) η l) (standardDepth (s i) η (l + 1))).Nonempty := by
   obtain ⟨x, hx⟩ : (S.pointsOver c i κ (raisedOrdersAtZero (-s i))
     (raisedOrdersAtZero (-s i))).Nonempty :=
     pointsOver_nonempty_of_killsCokernel

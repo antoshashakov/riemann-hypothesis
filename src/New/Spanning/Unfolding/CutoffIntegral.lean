@@ -376,8 +376,7 @@ lemma star_inv_mul_apply_eStar_eq_neg {c : S.Classes} (γ : S.classUnipotent c) 
 `S.M` times an algebraic integer. -/
 lemma isIntegral_inv_mul_apply_eStar [HasPrimitiveRoot5040 E] [S.IsAdmissible] {c : S.Classes}
     (γ : S.classUnipotent c) (a : Fin 𝔰.ϱ) :
-    IsIntegral ℤ
-      ((S.M : E)⁻¹ * (γ : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) (inl a) (eStar a)) := by
+    IsIntegral ℤ ((S.M : E)⁻¹ * (γ : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) (inl a) (eStar a)) := by
   obtain ⟨M, h_basis, -⟩ := exists_classBasis_eq_fromBlocks c
   -- `using!` identifies the entry of `finAdeleMatrix` with the image under `algebraMap`.
   exact algebraMap_mem_Ô.1

@@ -310,8 +310,7 @@ lemma derivative_derivative_taylorVia_translatedX :
     d⁄dX (d⁄dX (taylorVia ι C.translatedX)) = 6 * taylorVia ι C.translatedX ^ 2 +
       .C (ι C.a₁) ^ 2 * taylorVia ι C.translatedX + 2 := by
   have h_deriv : d⁄dX (d⁄dX (taylorVia ι C.translatedX)) =
-      2 * d⁄dX (taylorVia ι C.translatedY) +
-        .C (ι C.a₁) * d⁄dX (taylorVia ι C.translatedX) := by
+      2 * d⁄dX (taylorVia ι C.translatedY) + .C (ι C.a₁) * d⁄dX (taylorVia ι C.translatedX) := by
     conv_lhs => rw [derivative_taylorVia_translatedX]
     simp [two_mul, Derivation.leibniz]
   rw [h_deriv, derivative_taylorVia_translatedY, derivative_taylorVia_translatedX]

@@ -101,8 +101,7 @@ lemma exists_mul_mul_eq_of_rank_le {A : Matrix N N k} {A' : Matrix n n k} (h : A
   obtain ⟨lift, h_lift⟩ : ∃ lift : R' →ₗ[k] N → k, A.mulVecLin.rangeRestrict ∘ₗ lift = J :=
     Module.projective_lifting_property _ J A.mulVecLin.surjective_rangeRestrict
   obtain ⟨L, hL⟩ : ∃ L : (N → k) →ₗ[k] R', L ∘ₗ R.subtype ∘ₗ J = .id :=
-    (R.subtype ∘ₗ J).exists_leftInverse_of_injective
-      (ker_eq_bot.2 (R.injective_subtype.comp J_inj))
+    (R.subtype ∘ₗ J).exists_leftInverse_of_injective (ker_eq_bot.2 (R.injective_subtype.comp J_inj))
   have left_inv (y : R') : L (A *ᵥ lift y) = y := by
     rw [show A *ᵥ lift y = J y from congrArg Subtype.val (LinearMap.congr_fun h_lift y)]
     exact LinearMap.congr_fun hL y

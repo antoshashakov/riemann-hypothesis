@@ -54,8 +54,7 @@ lemma four_mul_le_norm_stdAddChar_sub_one {k : ZMod q} {x : ℝ} (hx : (k.val : 
 `stdAddChar k = exp (2 π i k / q)` has absolute value at most `q / 2 · (1 / k + 1 / (q - k))`,
 where `k` is read as its representative `k.val` in `[1, q - 1]`. -/
 lemma norm_sum_stdAddChar_pow_le {k : ZMod q} (hk : k ≠ 0) (X : ℕ) :
-    ‖∑ v ∈ Ioc 0 X, stdAddChar k ^ v‖ ≤
-      q / 2 * ((k.val : ℝ)⁻¹ + ((q - k.val : ℕ) : ℝ)⁻¹) := by
+    ‖∑ v ∈ Ioc 0 X, stdAddChar k ^ v‖ ≤ q / 2 * ((k.val : ℝ)⁻¹ + ((q - k.val : ℕ) : ℝ)⁻¹) := by
   have hq_pos : (0 : ℝ) < q := mod_cast NeZero.pos q
   let x : ℝ := k.val / q
   have hx : (k.val : ℝ) = q * x := (mul_div_cancel₀ _ hq_pos.ne').symm

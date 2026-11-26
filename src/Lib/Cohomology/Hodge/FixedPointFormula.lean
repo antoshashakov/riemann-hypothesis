@@ -616,8 +616,7 @@ private lemma map_pointMap_map_scaledGraph_eq_smul_symbolClass [IsSeparatedFunct
   refine (h_eqv d).injective ?_
   let P : HodgeTest E := ⟨a.coordRing, Fin d⟩
   let e : relFreeAb (someUnitLocus (c := P) f) ⟶ sqZeroExt ⋙ relFreeAb V :=
-    (relFreeAb.map (𝟙 _) h_unit ≫
-      relFreeAb.map (U := V.whisker sqZeroExt) (pointMap ⟨ν⟩) le_rfl :)
+    (relFreeAb.map (𝟙 _) h_unit ≫ relFreeAb.map (U := V.whisker sqZeroExt) (pointMap ⟨ν⟩) le_rfl :)
   let ρ := relFreeAb.map (U := offPoints s) (pointMap a.point) V_le
   let τ := relFreeAb.map (U := unimodular) (pointMap (A := a.coordRing) ⟨f⟩)
     f_cut.preimage_fieldLocus_not.le
@@ -647,8 +646,7 @@ private lemma map_pointMap_map_scaledGraph_eq_smul_symbolClass [IsSeparatedFunct
   let β : relFreeAb (someUnitLocus (c := P) f) ⟶ sqZeroExt ⋙ r ⋙ relFreeAb V' :=
     (relFreeAb.map _ unit_le :)
   let γ := relFreeAb.map (U := offDiagonal X) (pointMap y) h_refl
-  let γ' := relFreeAb.map (U := unimodular) (pointMap (A := S) ⟨F⟩)
-    F_cut.preimage_fieldLocus_not.le
+  let γ' := relFreeAb.map (U := unimodular) (pointMap (A := S) ⟨F⟩) F_cut.preimage_fieldLocus_not.le
   have h_square : (e ≫ sqZeroExt.whiskerLeft ρ) ≫ q =
       β ≫ sqZeroExt.whiskerLeft (r.whiskerLeft γ) := by
     refine relFreeAb.hom_ext fun C σ ↦ congrArg (relFreeAb.mk _) ?_
@@ -725,8 +723,7 @@ lemma exists_diagonal_local_terms (hX : HasAtlas d X) :
       HodgeH.baseChange_map ..
     have forget_pull : H.map _ (freeAb.map (scaledGraph t u c)) d
         (HodgeH.map (r.whiskerLeft (relFreeAb.π (offDiagonal X))) δ.baseChange) =
-        H.map _ (sqZeroExt.whiskerLeft (relFreeAb.π (offPoints (X := W) s)) ≫ q) d
-          δ.baseChange :=
+        H.map _ (sqZeroExt.whiskerLeft (relFreeAb.π (offPoints (X := W) s)) ≫ q) d δ.baseChange :=
       (map_comp ..).symm
     exact (congrArg _ forget_bc).trans (forget_pull.trans (map_comp ..))
   intro w hw
@@ -766,8 +763,7 @@ lemma exists_diagonal_local_terms (hX : HasAtlas d X) :
       (offPoints s).preimage (pointMap a.point) := by
     -- A point that avoids `w` avoids `s`, as the chart `a` avoids `s \ {w}`.
     intro C p hp K κ hK ⟨z, hz, hκz⟩
-    exact (offPoints _).map p.down ha_off K κ hK
-      ⟨z, ⟨hz, fun hzw ↦ hp K κ hK ⟨z, hzw, hκz⟩⟩, hκz⟩
+    exact (offPoints _).map p.down ha_off K κ hK ⟨z, ⟨hz, fun hzw ↦ hp K κ hK ⟨z, hzw, hκz⟩⟩, hκz⟩
   -- On the chart `a`, the class is `n w` times the symbol of `f`.
   exact ⟨a, f, ⟨_, rfl⟩, f_cut, V_le,
     map_pointMap_map_scaledGraph_eq_smul_symbolClass hO h_near off_le ha_O hφ hψ rfl ker_le f_cut

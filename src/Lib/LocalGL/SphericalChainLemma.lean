@@ -81,8 +81,7 @@ omit [IsSmoothRep ρ.ρ] in
 private lemma New.Patching.eq_apply_partialHecke_one_top
     (hx : x ∈ levelSpace ρ.ρ (localIntGL (Fin N) w)) {ϖ : (LocField w)ˣ}
     (hϖ : v ϖ.val = WithZero.exp (-1)) :
-    x = ρ.ρ (diagGL fun i : Fin N ↦ if i = 0 then 1 else ϖ⁻¹)
-      (partialHecke ρ.ρ 1 (N - 1) x) := by
+    x = ρ.ρ (diagGL fun i : Fin N ↦ if i = 0 then 1 else ϖ⁻¹) (partialHecke ρ.ρ 1 (N - 1) x) := by
   let ρ' : Representation ℂ (GL (Fin N) (LocField w)) ρ := ρ.ρ.comp invTransposeGL.toMonoidHom
   have hx' : x ∈ levelSpace ρ' (localIntGL (Fin N) w) := by simp_all [ρ']
   have h_sum : 1 + (N - 1 + 0) = N := by grind [NeZero.ne N]

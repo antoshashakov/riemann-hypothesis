@@ -78,8 +78,7 @@ lemma summable_posPart_sub_weight (D : Data P) (p : ℕ) [Fact p.Prime] (y : ℝ
     Summable fun e : ℕ ↦ if e ∈ positivePartnerExponents P.d p then
       (y / p ^ e - D.weight (D.placeOfInt (-p ^ e) * σ))⁺ else 0 := by
   -- Compare with the series of the norms of `y / p ^ e` over the same `e`.
-  refine (hasSum_div_pow_positivePartnerExponents P.d p y).summable.norm.of_norm_bounded
-    fun e ↦ ?_
+  refine (hasSum_div_pow_positivePartnerExponents P.d p y).summable.norm.of_norm_bounded fun e ↦ ?_
   -- The bound at each `e` is `(y / p ^ e - κ)⁺ ≤ |y / p ^ e|`, as `κ ≥ 0`.
   split_ifs
   · rw [Real.norm_of_nonneg (posPart_nonneg _), posPart_def]

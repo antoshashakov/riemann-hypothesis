@@ -532,8 +532,7 @@ lemma mem_span_of_forall_mem_span_preimage {Λ : Type} [CommRing Λ] [Algebra Λ
       ∑ i, b m i ⊗ₜ[Λ] (⟨_, hanti k m _ hkm (y m i).prop⟩ : D' k)
     have hv : v k le_rfl = v m hkm := hinj k (by simpa [v, ← hy m] using congrArg (Q' k) (hy k))
     -- Apply the `s`-th coordinate to both sides of `hv`.
-    simpa [U, v, sub_eq_zero] using
-      congrArg (fun t ↦ (lift (lsmul Λ (D' k) ∘ₗ c.coord s) t).val) hv
+    simpa [U, v, sub_eq_zero] using congrArg (fun t ↦ (lift (lsmul Λ (D' k) ∘ₗ c.coord s) t).val) hv
   -- So `Q (U s k)` converges to some `z s`, which lies in `D`.
   choose z hz using fun s ↦ exists_forall_sub_mem_nsmulRange_of_sub_mem (s := fun k ↦ Q (U s k))
     fun hkm ↦ by simpa using hker _ _ (hU_compat s hkm)

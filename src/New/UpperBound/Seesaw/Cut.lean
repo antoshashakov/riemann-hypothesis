@@ -257,8 +257,7 @@ def cutSum : ∀ k : ℕ, k ≤ 2 * D.ϱ + 2 → ((∀ i : ℕ, Gf D.E (D.Y i) �
 `Ω_i = cutPoints ϑ i`, with each term divided by the multiplicities of its coordinates. -/
 lemma map_cutSum (L : M →ₗ[ℂ] M') (k : ℕ) (hk : k ≤ 2 * D.ϱ + 2)
     (S : (∀ i : ℕ, Gf D.E (D.Y i) ⧸ levelY ϑ i) → M) :
-    L (cutSum ϑ k hk S) =
-      cutSum ϑ k hk fun c : ∀ i : ℕ, Gf D.E (D.Y i) ⧸ levelY ϑ i ↦ L (S c) := by
+    L (cutSum ϑ k hk S) = cutSum ϑ k hk fun c : ∀ i : ℕ, Gf D.E (D.Y i) ⧸ levelY ϑ i ↦ L (S c) := by
   induction k generalizing S with
   | zero => rfl
   | succ k ih =>

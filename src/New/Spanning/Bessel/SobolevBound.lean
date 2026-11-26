@@ -264,8 +264,7 @@ lemma New.RealPlace.lintegral_lintegral_gramSection_le {𝔰 : Shape} {P c : ℝ
       norm_frameMatrix_le_of_isBoundedInCell hs (χQ_cell y hy) (χQ_cell _ hsy)) (one_le_pow₀ hP)
   -- The integrand of `∫ χQ w` in the coordinates `γ_Z` of the open cell.
   let J (Z : 𝔰.FrameMatrix) : ENNReal := .ofReal (𝔰.openCellConst * gramDiscReal Z ^ (𝔰.k - 1)) *
-    ∫⁻ s', ∫⁻ s, χQ (s' * gramSection Z * s) * w (s' * gramSection Z * s)
-      ∂fixerHaar 𝔰 ∂fixerHaar 𝔰
+    ∫⁻ s', ∫⁻ s, χQ (s' * gramSection Z * s) * w (s' * gramSection Z * s) ∂fixerHaar 𝔰 ∂fixerHaar 𝔰
   have le_J (Z : 𝔰.FrameMatrix) (hZ : Z ∈ Q) :
       ∫⁻ ω, w (gramSection Z * ((ω.2 : 𝔰.G₁) * embedH ω.1)⁻¹) ∂𝔰.fixerMeasure c ≤ J Z := by
     -- Along an orbit of the fixer only `χ` changes, and its integral over `𝖴⁰` is `1`.

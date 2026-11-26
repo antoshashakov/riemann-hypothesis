@@ -590,8 +590,7 @@ squared norm `normSqAt` at most that of y, at every σ. -/
 lemma normSqAt_starProjection_le {w : FinPlace E} (hw : star w ≠ w)
     (hw_off : w ∉ O.places.conjClosure) {e₀ : MonoidAlgebra ℂ (O.ChosenGL r)}
     {Z : Submodule ℂ O.FormV} (he : IsCentralProj e₀)
-    (hZ : Z ≤ (O.groupAlgAction e₀).range ⊓
-      (O.heckePolyOnForms hw hw_off (O.liftHeckeRoot w)).ker)
+    (hZ : Z ≤ (O.groupAlgAction e₀).range ⊓ (O.heckePolyOnForms hw hw_off (O.liftHeckeRoot w)).ker)
     {y : O.FormV} (hy : O.IsOrthogonalToFalseLifts e₀ Zᗮ y) (σ : ℂ ≃+* ℂ) :
     normSqAt (Z.starProjection y) σ ≤ normSqAt y σ := by
   -- Write y = z + x with z in Z and x in ker e₀ + range A, where A = H_w(X_*). This space is

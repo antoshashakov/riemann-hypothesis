@@ -292,8 +292,7 @@ lemma norm_iota_vacuumRoot (τ : P.Φ s) :
 generates the module spanned by `τ(𝔞̄₀)⁻¹`, the set of the `τ ȳ` with `y` in `𝔞₀⁻¹`. -/
 lemma span_vacuumRoot_eq (τ : P.Φ s) :
     Submodule.span embValRing {P.vacuumRoot s} =
-      Submodule.span embValRing
-        {conj (Φ τ y) | (y : P.E s) (_ : (P.α s).val * y ∈ Ô (P.E s))} := by
+      Submodule.span embValRing {conj (Φ τ y) | (y : P.E s) (_ : (P.α s).val * y ∈ Ô (P.E s))} := by
   -- With `φ` the embedding `y ↦ ιₚ (τ ȳ)`, extended to the finite adeles, we have
   -- `‖φ y‖ = ‖φ (α y)‖ ‖ιₚ vacuumRoot‖`. So each `τ ȳ` is an integral multiple of `vacuumRoot`,
   -- and a unit multiple if `‖φ (α y)‖ = 1`.

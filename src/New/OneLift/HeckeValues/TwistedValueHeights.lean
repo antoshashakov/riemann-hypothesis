@@ -495,8 +495,7 @@ theorem isTestForm_trivialLiftClassSum_pointForm {l : ℕ} [Fact l.Prime]
   let X₁ : LValueData D.E (Fin (2 * p.z - 20)) := lValueData hq.2 u
   have h_period (g : Gf D.E Unit) :
       stdClassSum X₁.descentPair.levelGroup (fun x ↦
-        starRingEnd ℂ (gramForm 1 (evalForm x (X₁.kernelForm g))) *
-          innerSLFlip ℂ y (F x)) = 0 := by
+        starRingEnd ℂ (gramForm 1 (evalForm x (X₁.kernelForm g))) * innerSLFlip ℂ y (F x)) = 0 := by
     refine stdClassSum_period_eq_zero X.fitsParams_descentPair
       (by simpa [X, tamePart_eq_one, h_not_chosen] using! fun i ↦ ϑ.tamePart_ne_one _ i.2)
           (fun i v hv ↦ ?_)
@@ -893,8 +892,7 @@ theorem heightLe_inv_ratio {θ : PrimePadicIso → D.MFoldTwist} (hθ : D.IsRegu
     have h_mul : ‖ι.2 (c₀ * ρ ι)‖ * ι.1 ^ (-D.localPrimeSumTotal ι.1) *
         (‖ι.2 (star c₀ * ρ ι)‖ * ι.1 ^ (-D.localPrimeSumTotal ι.1)) ≤
         ‖ι.2 (inner ℂ Ξ (φ ι))‖ * ‖ι.2 (inner ℂ (φ ι) Ξ')‖ := by
-      simpa [φ, ρ, star_ratio] using
-        mul_le_mul h_le h_le' (by positivity) (norm_nonneg _)
+      simpa [φ, ρ, star_ratio] using mul_le_mul h_le h_le' (by positivity) (norm_nonneg _)
     simp only [map_mul, map_pow, norm_mul, norm_pow] at h_mul ⊢
     linarith
   choose Ξ Ξ' hΞ hΞ' h_both using exists_tests

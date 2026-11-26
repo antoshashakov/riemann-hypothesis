@@ -358,8 +358,7 @@ lemma divisibleLength_pointChar_le {O : Type} [CommRing O] [PadicIntegerRing O �
     (hP : BoundsSelmer ℓ M lam T.ρ (unionWithConj T.places J) T.classRelations P) (e : O →+* O')
     {ζ : σ → O'} (hζ : ∀ v : σ, ζ v ^ q = 1)
     (h_lt : addVal O' (P.eval₂ e fun v : σ ↦ ζ v - 1) < addVal O' (ℓ ^ M)) :
-    T.divisibleLength J e (pointChar lam ζ hζ) ≤
-      addVal O' (P.eval₂ e fun v : σ ↦ ζ v - 1) := by
+    T.divisibleLength J e (pointChar lam ζ hζ) ≤ addVal O' (P.eval₂ e fun v : σ ↦ ζ v - 1) := by
   have h_level : length O' (T.twistedSelmer J e (pointChar lam ζ hζ) (ℓ ^ M)) ≤
       addVal O' (P.eval₂ e fun v ↦ ζ v - 1) := by
     rw [twistedSelmer, coe_twistRep_pointChar]
@@ -392,8 +391,7 @@ theorem exists_boundsSelmer_ellVal_eval_le {O : CoeffRing ℓ} (T : SelmerDatum 
     (hs₀ : 2 * Fintype.card n * #J ≤ s₀) (hr : r ≤ 1) (hN : M ≤ N * r) :
     ∃ (P : MvPolynomial J O.val) (x₀ : J → intQpBar ℓ),
       (∀ v : J, (r : ℝ≥0) ≤ ellVal (x₀ v).val) ∧
-      ellVal (MvPolynomial.eval x₀ (P.map O.toIntQpBar)).val ≤
-        O.normLength T.β + s₀ * (r : ℝ≥0) ∧
+      ellVal (MvPolynomial.eval x₀ (P.map O.toIntQpBar)).val ≤ O.normLength T.β + s₀ * (r : ℝ≥0) ∧
       BoundsSelmer ℓ M (fun v : J ↦ (d v).1.character) T.ρ (unionWithConj T.places J)
         T.classRelations P := by
   -- Take `x₀` on the line at a parameter `y` that is generic for `p₀ = P⁰` and `p₁ = P¹`: they

@@ -272,8 +272,7 @@ lemma HasNormalForm.norm_coeff_subst_le_one (hF : HasNormalForm S pr ϖ l F) {π
     constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hZ) hZ constantCoeff_couplingSum
   have h_exp (d : τ →₀ ℕ) (hd : d.degree ≤ B) :
       ‖coeff d (expSubst ((ϖ ^ (p + 1) / p) • seriesToCp Ξ))‖ ≤ 1 :=
-    norm_coeff_expSubst_smul_le_one hπ h_zero
-      (fun _ hd' ↦ dvd_coeff_subst_couplingSum hZ hΓ hd') hd
+    norm_coeff_expSubst_smul_le_one hπ h_zero (fun _ hd' ↦ dvd_coeff_subst_couplingSum hZ hΓ hd') hd
   obtain ⟨W, hW⟩ : ∃ W : MvPowerSeries τ (valRingCp p),
       F.subst (fun x : Φ × c ↦ ϖ • seriesToCp (Z x)) =
         seriesToCp W * expSubst ((ϖ ^ (p + 1) / p) • seriesToCp Ξ) :=

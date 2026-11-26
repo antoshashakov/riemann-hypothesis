@@ -151,8 +151,7 @@ the exponential factor of the standard Hermitian form) obey the law of compositi
 `T_γ T_γ' F = exp (π i {γ, γ'}) T_(γ + γ') F`. Here `{γ, γ'} = ratRiemannForm γ γ' = Im (u* u') / π`
 is the Riemann form of the real images `u`, `u'`. -/
 lemma ratShift_ratShift (γ γ' : n → E) :
-    ratShift γ (ratShift γ' F) =
-      exp (Real.pi * I * ratRiemannForm γ γ') • ratShift (γ + γ') F := by
+    ratShift γ (ratShift γ' F) = exp (Real.pi * I * ratRiemannForm γ γ') • ratShift (γ + γ') F := by
   rw [ratShift, ratShift, ratShift, realImage_add]
   exact isAppellHumbert_fockForm.thetaShift_thetaShift _ _
 

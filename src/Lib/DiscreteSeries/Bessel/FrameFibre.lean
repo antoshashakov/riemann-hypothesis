@@ -305,8 +305,7 @@ theorem _root_.New.LeGramFibre.mconv_fixerHaar_le {m : Measure 𝔰.G₁} [SFini
     simp [hq, val_unipotentOf_coe, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc,
       inclMatrix_gram_eq_zero, Fin.forall_fin_succ']
   have h_pairs : LeGramFibre 𝔰.J₁ (inclMatrix ℂ (e ∘ Sum.inl)) (m ∗ₘ (((2 : ℝ≥0∞) ^ 𝔰.ϱ)⁻¹ • ν)) :=
-    hm.append (.refl _) (by ext i (j | j) <;> rfl) leFibreMeasure_dualCols
-      (ae_smul_measure h_fix _)
+    hm.append (.refl _) (by ext i (j | j) <;> rfl) leFibreMeasure_dualCols (ae_smul_measure h_fix _)
   have h_const : (2 : ℝ) ^ 𝔰.ϱ * (volU 𝔰.r / volU 𝔰.k / 2 ^ (2 * 𝔰.ϱ + 1)) =
       volU 𝔰.r / volU 𝔰.k / 2 ^ (𝔰.ϱ + 1) := by field
   calc

@@ -245,8 +245,7 @@ lemma exists_length_le_loss_add_crystallineSelmerLength {ν : ℕ} {w : K → Fi
     grw [← h_sum, sum_option, map_sum]
     refine add_le_add le_rfl (sum_le_sum fun e _ ↦ ?_)
     rw [← map_sum]
-    exact normLength_mono
-      (crystallineColength_le_sum_dualDefect hu_cl (fun v ↦ hT_cl v (some e)) ν)
+    exact normLength_mono (crystallineColength_le_sum_dualDefect hu_cl (fun v ↦ hT_cl v (some e)) ν)
   -- modulo every `ℓ ^ M` the cocycles are counted by the loss and the Selmer group
   have h_main (M : ℕ) : length O (ribetCocyclesVanishingOn u T (QuotSpan (ℓ ^ M : ↑O))
       (.range (withConjInv τ)) γ) ≤ lossT + crystallineSelmerLength T Q γ :=

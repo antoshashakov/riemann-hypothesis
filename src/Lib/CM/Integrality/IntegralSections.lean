@@ -420,8 +420,7 @@ lemma norm_coeff_le_one_of_hasIntegralValues {P₀ P₁ : Polynomial ℂ}
     have h_sum : ιₚ (P₀.eval (C.translatedX (v i))) + ιₚ (C.translatedY (v i)) *
         ιₚ (P₁.eval (C.translatedX (v i))) ∈ valRingCp p := by
       simpa only [F, map_add, map_mul] using hF (hv i) (hθ i)
-    exact (add_mem_cancel_right
-      (mul_mem (C.norm_translatedY_le_one (hv i) (hθ i)) (h₁ i))).1 h_sum
+    exact (add_mem_cancel_right (mul_mem (C.norm_translatedY_le_one (hv i) (hθ i)) (h₁ i))).1 h_sum
   exact ⟨C.norm_coeff_le_one_of_norm_eval_halvingPoint_le_one h₀,
     C.norm_coeff_le_one_of_norm_eval_halvingPoint_le_one h₁⟩
 

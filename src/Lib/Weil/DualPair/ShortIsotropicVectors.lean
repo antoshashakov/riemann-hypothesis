@@ -465,8 +465,7 @@ lemma Space.exists_rho_eq_realHeisenbergOp {E n : Type} [Field E] [CMType E] [We
       have h_coord : ‖((V.move g).vecAtPoint (z i) k).1 τ‖ ≤ ‖(V.move g).archCoords (z i)‖ :=
         PiLp.norm_apply_le ((V.move g).archCoords (z i)) (τ, k)
       grw [norm_mul, norm_le_pi_norm (w i).1 τ, hw_le i, h_coord, hz_le i]
-    simpa [u, Finset.sum_apply, Prod.fst_sum] using
-      norm_sum_le_of_le Finset.univ fun i _ ↦ h_term i
+    simpa [u, Finset.sum_apply, Prod.fst_sum] using norm_sum_le_of_le Finset.univ fun i _ ↦ h_term i
   have h_size : ‖realCoord (M • u)‖ ≤ M * Fintype.card ι * R * ‖σ⁻¹‖ * δ := by
     refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun ⟨τ, k⟩ ↦ ?_
     calc ‖realCoord (M • u) (τ, k)‖

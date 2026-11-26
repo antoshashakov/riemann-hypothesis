@@ -226,8 +226,7 @@ lemma hasSum_gammaPrime (d p : ℕ) [Fact d.Prime] [Fact p.Prime] :
   have hp : (1 : ℝ) < p := mod_cast (Fact.out : p.Prime).one_lt
   have h_inv : |(p : ℝ)⁻¹| < 1 := by simp [inv_lt_one_of_one_lt₀ hp]
   have h_quot : |(chiK d p / p : ℝ)| < 1 := by
-    obtain ⟨-, hχ⟩ | ⟨-, hχ | hχ⟩ := chiK_cases d p <;>
-      simp [hχ, neg_div, inv_lt_one_of_one_lt₀ hp]
+    obtain ⟨-, hχ⟩ | ⟨-, hχ | hχ⟩ := chiK_cases d p <;> simp [hχ, neg_div, inv_lt_one_of_one_lt₀ hp]
   have h_term (e : ℕ) :
       (if e ∈ positivePartnerExponents d p then piPrimeValuation d p / p ^ e else 0) =
         ((p : ℝ)⁻¹ ^ e - (chiK d p / p) ^ e) / 2 := by

@@ -128,8 +128,7 @@ triangular `N`. Here `frameCols` has columns `e₁, …, e_ϱ, z` and `isotropic
 lemma exists_sub_one_mul_frameCols_eq (s : 𝔰.besselGraph) :
     ∃ N : Matrix (Fin 𝔰.ϱ) (Fin (𝔰.ϱ + 1)) ℂ,
       (∀ (a : Fin 𝔰.ϱ) (b : Fin (𝔰.ϱ + 1)), b.val ≤ a.val → N a b = 0) ∧
-      ((s.val.fst : Matrix 𝔰.BesselIndex 𝔰.BesselIndex ℂ) - 1) * 𝔰.frameCols =
-        𝔰.isotropicCols * N ∧
+      ((s.val.fst : Matrix 𝔰.BesselIndex 𝔰.BesselIndex ℂ) - 1) * 𝔰.frameCols = 𝔰.isotropicCols * N ∧
       ∑ a : Fin 𝔰.ϱ, N a a.succ = simpleRootSum s.val.fst := by
   -- Write `s = h u` with `u` in `𝖴`; the factor `h` fixes the frame, and `u` is unitriangular
   -- on it.
@@ -653,8 +652,7 @@ lemma convolve_besselAverage (h_cont : Continuous rep) (hv_norm : ‖v‖ = 1)
 `|c_λ(x⁻¹ s y)|` over `s` in `R`, where `c_λ = l.dsCoeffInFrame`. -/
 lemma enorm_besselAverage_le (hv_norm : ‖v‖ = 1) (y : 𝔰.G₁) :
     ‖besselAverage l rep x v y‖ₑ ≤
-      ∫⁻ s : 𝔰.besselGraph, ‖l.dsCoeffInFrame (x⁻¹ * (s.val.fst * y))‖ₑ
-        ∂𝔰.besselGraphMeasure := by
+      ∫⁻ s : 𝔰.besselGraph, ‖l.dsCoeffInFrame (x⁻¹ * (s.val.fst * y))‖ₑ ∂𝔰.besselGraphMeasure := by
   simp_rw [← enorm_besselIntegrand (rep := rep) x hv_norm]
   exact enorm_integral_le_lintegral_enorm _
 

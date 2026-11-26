@@ -348,8 +348,7 @@ lemma insepDegree_le {α : ℂ} (hα : α ∈ quadInt d) (hα₀ : α ≠ 0) {ν
   have hv_order : C.reducedOrder (v * v) = 0 :=
     C.reducedOrder_eq_zero (mul_mem hv hv) (by simp [hv₀])
   have hx_rescale : rescale (ιₚ α) x ∈ C.integralSeriesRing :=
-    C.isSeriesGenerator_translatedY.rescale_mem
-      (C.rescale_translatedY_mem_of_mem_quadInt hα) hx
+    C.isSeriesGenerator_translatedY.rescale_mem (C.rescale_translatedY_mem_of_mem_quadInt hα) hx
   have h_two : 2 * C.insepDegree α ≤ 2 * ν := calc
     2 * C.insepDegree α = C.reducedOrder (rescale (ιₚ α) x * (v * v)) := by
       rw [C.reducedOrder_mul hx_rescale (mul_mem hv hv), hv_order, add_zero,

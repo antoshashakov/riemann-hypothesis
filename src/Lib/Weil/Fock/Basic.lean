@@ -357,8 +357,7 @@ lemma exists_norm_eval_le_exp (P : MvPolynomial ι ℂ) :
     simp
   calc
     ‖eval l P‖ ≤ ∑ d ∈ P.support, ‖P.coeff d‖ * ∏ i, ‖l i‖ ^ d i := by
-      simpa [eval_eq', norm_prod] using
-        norm_sum_le P.support fun d ↦ P.coeff d * ∏ i, l i ^ d i
+      simpa [eval_eq', norm_prod] using norm_sum_le P.support fun d ↦ P.coeff d * ∏ i, l i ^ d i
     _ ≤ ∑ d ∈ P.support, ‖P.coeff d‖ * Real.exp ‖l‖ ^ ∑ i, P.degreeOf i := by
       gcongr with d hd_support
       exact h_mono d hd_support

@@ -76,8 +76,7 @@ open scoped Classical in
 `(c b) ⋆ 1_K` given by `convIndicator` is `c` on the coset `b K` and zero elsewhere. -/
 lemma convIndicator_single {K : Subgroup G} (hK_open : IsOpen (K : Set G))
     (hK_compact : IsCompact (K : Set G)) (b : G) (c : ℂ) (x : G) :
-    (convIndicator hK_open hK_compact (.single b c) : G → ℂ) x =
-      if b⁻¹ * x ∈ K then c else 0 := by
+    (convIndicator hK_open hK_compact (.single b c) : G → ℂ) x = if b⁻¹ * x ∈ K then c else 0 := by
   simp [convIndicator, TestFunction.indicator, Set.indicator_apply]
 
 /-- For a compact open subgroup `K` and an element `a` of the group algebra, write `a ⋆ 1_K` for

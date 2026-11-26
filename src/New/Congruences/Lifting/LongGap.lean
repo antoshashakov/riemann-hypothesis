@@ -192,8 +192,7 @@ lemma JumpLattice.letterProj_mem_constantsModE (hl : 0 < l) (i : k.Letter)
   refine ⟨h_part, fun g ↦ ?_⟩
   obtain ⟨⟨h_value, -⟩, h_std⟩ := h_part
   obtain ⟨_, γ, rfl⟩ := g
-  refine mem_withOrders_of_mem_hodgeFil (smul_sub_mem_withOrders h_std _)
-    fun a u _ h_lt μ hμ ↦ ?_
+  refine mem_withOrders_of_mem_hodgeFil (smul_sub_mem_withOrders h_std _) fun a u _ h_lt μ hμ ↦ ?_
   obtain rfl : 0 = a := by_contra fun h_ne ↦ by simp [shiftedStdOrders, h_ne] at h_lt
   obtain ⟨hμ_form, -⟩ := hμ
   -- The hypothesis on `x` applies to the form `μ ∘ letterProj i`.

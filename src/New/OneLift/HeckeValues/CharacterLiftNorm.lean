@@ -323,8 +323,7 @@ points has a factor `q ^ N - 1` at each place `X.chosenPlace`, where a vector is
 `N = card n` and `q` is the norm of the place. -/
 lemma LValueData.relIndex_descentResidueLevel :
     ((levelOf X.descentPair.placeAt (descentResidueLevel X.descentPair.toLevelPlaces
-      X.descentPair.incl)).relIndex
-        (stdLevel E n) : ℂ) =
+      X.descentPair.incl)).relIndex (stdLevel E n) : ℂ) =
       (∏ i : X.ChosenIndex, (((X.chosenPlace i).q : ℂ) ^ card n - 1)) *
         ∏ i : X.TwistIndex, ∑ j ∈ range (card n), ((X.twistPlace i).q : ℂ) ^ j := by
   simp +instances [descentResidueLevel, ↓relIndex_levelOf, Seesaw.index_pi_univ,

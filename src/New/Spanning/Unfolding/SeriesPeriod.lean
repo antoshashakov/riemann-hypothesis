@@ -604,8 +604,7 @@ omit [WeilData E] in
 representative of the class `c`. -/
 lemma sourceFormCoords_apply (h : S.Fits V l kw Y η)
     (ψ : levelSpace (algFormRep kw 0) S.sourceLevel) (c : S.Classes) (i : S.BesselCoord) :
-    h.sourceFormCoords ψ (c, i) =
-      h.weylBesselEquiv ((ψ : AlgForm (E := E) 𝔰.κ kw 0).val c.out) i :=
+    h.sourceFormCoords ψ (c, i) = h.weylBesselEquiv ((ψ : AlgForm (E := E) 𝔰.κ kw 0).val c.out) i :=
   rfl
 
 /-- **The Poincaré series represents a Bessel period.** Suppose `V` with the grading `Y` fits the

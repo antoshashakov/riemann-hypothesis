@@ -441,8 +441,7 @@ lemma New.Exchange.IsEquivariantLift.apply_eq_zero_of_centreCoeff_eq_zero
   let τ (T : Matrix b b E) : Matrix b b (LocProd 𝔠.ramifiedPlaces) :=
     ((invDifferentIdele E)⁻¹.val • T.map toAdele).map (componentsAt 𝔠)
   have hΛ_eq (T : Matrix b b E) (x : G E r) {f : Matrix m b (LocProd 𝔠.ramifiedPlaces) → ℂ}
-    (hf : f ∈ M) :
-      Λ T x f = D.centreCoeff T (𝒟 f) x := (hΛ T x f hf).1
+    (hf : f ∈ M) : Λ T x f = D.centreCoeff T (𝒟 f) x := (hΛ T x f hf).1
   have hΛ_shear (T : Matrix b b E) (x : G E r) (w : Matrix b b (LocProd 𝔠.ramifiedPlaces)) :
       let Ψ' (y : Matrix m b (LocProd 𝔠.ramifiedPlaces)) : ℂ :=
         Ψ₀ (y + (x⁻¹.adeleMatrix * D.kAdelic).map

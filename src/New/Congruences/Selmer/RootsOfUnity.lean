@@ -70,8 +70,7 @@ lemma rootRadius_injOn : Set.InjOn (rootRadius ℓ) (Set.Ici 1) := by
   intro h hh h' hh' h_eq
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le' hh
   obtain ⟨k', rfl⟩ := Nat.exists_eq_add_of_le' hh'
-  exact congrArg (· + 1)
-    (strictMono_totient_pow_succ.injective (by simpa [rootRadius] using h_eq))
+  exact congrArg (· + 1) (strictMono_totient_pow_succ.injective (by simpa [rootRadius] using h_eq))
 
 /-- For `ρ > 0`, all large `h` have `rootRadius ℓ h = 1 / φ(ℓ ^ h) ≤ ρ`. -/
 lemma eventually_rootRadius_le {ρ : ℚ≥0} (hρ : 0 < ρ) :
@@ -146,8 +145,7 @@ subtraction. -/
 lemma ellVal_eval_add_card_mul (g : (intQpBar ℓ)[X]) {r : ℚ≥0} {y : intQpBar ℓ}
     (hy : ellVal y.val = (r : ℝ≥0)) :
     ellVal (g.eval y).val + (rootsOfValuation g r).card * ((r : ℝ≥0) : ℝ≥0∞) =
-      gaussVal r g +
-        ((rootsOfValuation g r).map fun α : intQpBar ℓ ↦ ellVal (y - α).val).sum := by
+      gaussVal r g + ((rootsOfValuation g r).map fun α : intQpBar ℓ ↦ ellVal (y - α).val).sum := by
   classical
   set R : Multiset (intQpBar ℓ) := rootsOfValuation g r
   set R' : Multiset (intQpBar ℓ) := g.roots.filter fun α ↦ ¬ellVal α.1 = (r : ℝ≥0)

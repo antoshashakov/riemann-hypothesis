@@ -634,8 +634,7 @@ lemma exists_quadInt_of_twistedTranslate_theta_eq_zero (C : CMLattice d) {n : �
   replace hz : n * z + s * (2 * n ^ 2 * w) + C.t ∈ C.Λ := by simpa [thetaShift_apply] using hz
   -- Twice a point congruent to `C.t` modulo the lattice is a period.
   obtain ⟨b, hb, hb_eq⟩ : ∃ b ∈ quadInt d, 2 * n ^ 2 * w * b =
-      n • (n * z + s * (2 * n ^ 2 * w) + C.t + (n * z + s * (2 * n ^ 2 * w) + C.t -
-        (C.t + C.t))) :=
+      n • (n * z + s * (2 * n ^ 2 * w) + C.t + (n * z + s * (2 * n ^ 2 * w) + C.t - (C.t + C.t))) :=
     hΛ.1 (zsmul_mem (add_mem hz (sub_mem hz C.two_t_mem)) n)
   refine ⟨b, hb, mul_left_cancel₀ (a := (2 * n ^ 2 : ℂ)) (by simp [hn]) ?_⟩
   rw [zsmul_eq_mul] at hb_eq

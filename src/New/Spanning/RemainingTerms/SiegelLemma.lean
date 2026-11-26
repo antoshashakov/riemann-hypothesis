@@ -385,8 +385,7 @@ lemma genIndex_sq_mul_abs_norm_eq [HasPrimitiveRoot5040 E] (u : Gf E κ) {t s : 
       (show IsUnimodular (Ô E) (1 : Matrix κ κ (𝔸f E)) by simp [IsUnimodular]) hm_int hy_prim
       (by rwa [Matrix.mul_one]) (by simp [hts]) rfl (.inl ⟨p, hp⟩)
     have h_block : (fromCols F 0)ᴴ * (1 : Matrix κ κ (𝔸f E)) * fromCols F (0 : Matrix κ κ (𝔸f E)) +
-        fromBlocks 0 0 0 ((1 : (𝔸f E)ˣ) • 1) =
-          fromBlocks (Fᴴ * F) 0 0 (1 : Matrix κ κ (𝔸f E)) := by
+        fromBlocks 0 0 0 ((1 : (𝔸f E)ˣ) • 1) = fromBlocks (Fᴴ * F) 0 0 (1 : Matrix κ κ (𝔸f E)) := by
       rw [Matrix.mul_one, conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols]
       simp [fromBlocks_add]
     rw [h_index, h_block] at h_jacobi
@@ -471,8 +470,7 @@ lemma mulVec_mem_baseLattice (u : Gf E κ) {s : ℕ} {y : Matrix κ (Fin s) E}
   -- `vecAtPoint_move` must fire before `vecAtPoint` is unfolded.
   intro j
   change (((stdSpace E κ).move (1, u)).vecAtPoint (y *ᵥ B i) j).2 ∈ Ô E
-  simpa [↓vecAtPoint_move, mulVec, mul_apply, Space.vecAtPoint, dotProduct, snd_sum] using
-    h_int j i
+  simpa [↓vecAtPoint_move, mulVec, mul_apply, Space.vecAtPoint, dotProduct, snd_sum] using h_int j i
 
 /-- Let `u` be a finite adelic unitary matrix. A nonzero vector of the lattice
 `((stdSpace E κ).move (1, u)).baseLattice`, which is `E^κ ∩ u Ô^κ`, has Euclidean length at least

@@ -108,8 +108,7 @@ lemma New.Kernel.omega_mem_raises_iff {K : Subgroup (Gf (P.E s) n)}
   -- `ω(g, h) ω(g₀, h₀) = ω(g g₀, h h₀)`, and `(g, h) ↦ (g g₀, h h₀)` is a bijection.
   refine ⟨fun hΦ g h ξ ↦ ?_, fun hΦ g h ξ ↦ ?_⟩
   · simpa only [k.omega_omega, Prod.mk_mul_mk, mul_assoc, inv_mul_cancel_left, inv_mul_cancel,
-    mul_one]
-      using hΦ (g * g₀⁻¹) (h * h₀⁻¹) ξ
+    mul_one] using hΦ (g * g₀⁻¹) (h * h₀⁻¹) ξ
   · simpa only [k.omega_omega, Prod.mk_mul_mk, mul_assoc] using hΦ (g * g₀) (h * h₀) ξ
 
 end Raises
@@ -224,8 +223,7 @@ lemma omega_mem_raises_of_schurJet_le {c : ℂ} {K : Subgroup (Gf (P.E s) n)}
         (schurJet κ (V.jetSeries c Ψ'.val)).map ιₚ)
   have hA (i' : WeylIndex n' κ) (i : WeylIndex n κ) : ‖A i' i‖ ≤ max B 0 :=
     le_max_of_le_left <| by
-      simpa [A, diagonalWeight, Finset.prod_mul_distrib, mul_assoc]
-        using h_bound Ψ'.val h_std i' i
+      simpa [A, diagonalWeight, Finset.prod_mul_distrib, mul_assoc] using h_bound Ψ'.val h_std i' i
   calc weylGauge κ ea (g' * 1) (k.jetMap (k.ω (g, g') (k.ω (1, x * d * y) Ψ)) ξ)
     _ = weylGauge κ ea ((stdSpace (P.E s) n').embFin ε * g') (k.jetMap Ψ' η) := by
       rw [← weylGauge_embFin (γ := ε), ← k.equivariant γ ε]

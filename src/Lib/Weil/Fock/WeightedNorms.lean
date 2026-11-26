@@ -78,8 +78,7 @@ lemma fockMoment_smul : fockMoment N (c • v) = ‖c‖ₑ * fockMoment N v := 
   simp [fockMoment, mul_comm, ← lintegral_const_mul', ← mul_assoc]
 
 lemma fockMoment_eq :
-    fockMoment N v =
-      ∫⁻ y : ι → ℂ, ENNReal.ofReal ((1 + ‖y‖) ^ N * ‖v y‖) ∂normalizedVolume ι := by
+    fockMoment N v = ∫⁻ y : ι → ℂ, ENNReal.ofReal ((1 + ‖y‖) ^ N * ‖v y‖) ∂normalizedVolume ι := by
   simp (disch := bound) [fockMoment, ENNReal.ofReal_add]
 
 /-- The Heisenberg translation by `y` multiplies the moment of order `N` by at most
@@ -291,8 +290,7 @@ private lemma smul_one_sub_partialKernelOp_apply (v : fockSpace ε) (n : ℕ) (y
   -- Pairing the vectors of the monomial of a word `p` gives two Gaussians times a product.
   have h_word {k : ℕ} (p : Fin k → ι) :
       starRingEnd ℂ (polyVector ε (prodX p) y) * polyVector ε (prodX p) w = realVac w *
-        (realVac y *
-          ∏ j, Star.star (holomorphicCoord ε y (p j)) * holomorphicCoord ε w (p j)) := by
+        (realVac y * ∏ j, Star.star (holomorphicCoord ε y (p j)) * holomorphicCoord ε w (p j)) := by
     simp [prodX, (isVacuum_realVac (ε := ε)).conj_apply, prod_mul_distrib]
     ring
   -- Their sum over all words of length `k` is the multinomial expansion of `s ^ k`.
@@ -317,8 +315,7 @@ private lemma norm_smul_mul_sum_le (N m n : ℕ) (v : fockSpace ε) (y w : ι �
     ‖(1 + ‖w‖) ^ N • (v y * realVac w * realVac y *
         ∑ k ∈ range n, (Star.star (holomorphicCoord ε y) ⬝ᵥ holomorphicCoord ε w) ^ k /
           k.factorial)‖ ≤
-      rexp ((m + N : ℕ) ^ 2) * ((1 + ‖y‖ₑ) ^ (m + N) * ‖v y‖ₑ).toReal *
-        (1 + ‖w‖) ^ (-(m : ℝ)) := by
+      rexp ((m + N : ℕ) ^ 2) * ((1 + ‖y‖ₑ) ^ (m + N) * ‖v y‖ₑ).toReal * (1 + ‖w‖) ^ (-(m : ℝ)) := by
   set s : ℂ := Star.star (holomorphicCoord ε y) ⬝ᵥ holomorphicCoord ε w with hs_def
   have h_series : ‖∑ k ∈ range n, s ^ k / k.factorial‖ ≤ rexp ‖s‖ := by
     grw [norm_sum_le, ← sum_le_exp_of_nonneg (norm_nonneg _) n]

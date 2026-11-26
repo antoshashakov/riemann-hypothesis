@@ -344,8 +344,7 @@ lemma norm_det_eq_one_of_iterate_doublingForms {c : ℂ_[p]} (hc : ‖c‖ ≤ 1
   refine le_antisymm (norm_coe_valRingCp_le_one det) (not_lt.1 fun h_lt ↦ ?_)
   -- If the determinant is not a unit, the reduction of `w` is a multiple of that of `w'`.
   obtain ⟨a, ha⟩ : ∃ a : ResidueField (valRingCp p), red v = a • red v' := by
-    refine exists_eq_smul_of_det_eq_zero
-      (norm_map_subtype_eq_one_iff_map_residue_ne_zero.1 hw') ?_
+    refine exists_eq_smul_of_det_eq_zero (norm_map_subtype_eq_one_iff_map_residue_ne_zero.1 hw') ?_
     simpa [red, det] using residue_eq_zero_iff_norm_lt_one.2 h_lt
   -- The same holds after `j` steps, so both coordinates of the image of `w` reduce to `0`.
   have h_iter : red ((doublingForms c)^[j] v) = a ^ 4 ^ j • red ((doublingForms c)^[j] v') := by

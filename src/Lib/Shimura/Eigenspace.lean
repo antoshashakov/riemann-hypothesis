@@ -464,8 +464,7 @@ lemma New.Variety.Model.isNullHecke_mul_of_kills_weight {E : Type} [Field E] [CM
   have h_word (L : List (SafePlace 𝔑 × ℕ)) (hL : L ∈ c.support) :=
     hi L hL n (.mk' (fun u ↦ Θ ((u.restrictScalars ℤ_[ℓ]).baseChange ℂ_[ℓ] v)) (by simp))
   -- the sum is `∑_L c_L ∑_g (b L(τ))_g Θ (u_g^* v) = ∑_g b_g Θ (u_g^* c(T) v) = 0`
-  refine .trans ?_
-    ((sum_congr rfl fun L hL ↦ congrArg (ε.symm (c L) • ·) (h_word L hL)).trans ?_)
+  refine .trans ?_ ((sum_congr rfl fun L hL ↦ congrArg (ε.symm (c L) • ·) (h_word L hL)).trans ?_)
   · simp [n, legPullback, ← hΘ, HodgeH.map_comp, cosetFn, cosetSum]
   · simpa [legPullback, Finsupp.linearCombination, Finsupp.sum, c.support.sum_comm,
       smul_comm (ε.symm _), cosetSum, baseChange_comp, smul_sum] using
@@ -521,8 +520,7 @@ lemma New.Variety.Model.jumpsRelAt_of_isEigenQuotient {E : Type} [Field E] [CMBa
       ∀ (n : Set.Iic (X.dimension + X.dimension))
         (y : TensorProduct ℤ_[ℓ] ℂ_[ℓ] ((ellAdicCohom (.of R) Ω n).obj (.op X.base))),
         HasHodgeTateWeight (galoisAction (.of R) Ω (decompGroup Gal(Ω/E) A) X.base n) h y →
-          (c.sum fun L z ↦ z • ((L.map (T n)).prod.restrictScalars ℤ_[ℓ]).baseChange ℂ_[ℓ]) y =
-            0 :=
+          (c.sum fun L z ↦ z • ((L.map (T n)).prod.restrictScalars ℤ_[ℓ]).baseChange ℂ_[ℓ]) y = 0 :=
     exists_sum_baseChange_eq_zero_of_jump_eq_zero h_cut (h_crys ·) hs (fun n s g ↦ hT_gal n s g)
       (fun n ↦ (hT n).commute) h_jump
   have hc_one' : ∑ L ∈ c.support, ε.symm (c L) * (L.map ↿θ).prod = 1 := by
@@ -556,8 +554,7 @@ lemma New.Variety.Model.aeval_heckePoly_eq_zero_of_isEigenQuotient {E : Type} [F
         ∑ c ∈ Finset.univ.filter
             fun c : Submodule (ResField w.val.val) (Fin a → ResField w.val.val) ↦
               finrank (ResField w.val.val) c = j,
-          ((ellAdicCohom (.of R) Ω n).map
-            (X.leg (l w) ⟦invHeckeIsogeny w.val c⟧).op).hom x)
+          ((ellAdicCohom (.of R) Ω n).map (X.leg (l w) ⟦invHeckeIsogeny w.val c⟧).op).hom x)
     {N : ℕ} {r : Gal(Ω/E) →* GL (Fin N) (PadicAlgCl ℓ)}
     {F : ∀ n : Set.Iic (X.dimension + X.dimension),
       (ellAdicCohom (.of R) Ω n).obj (.op X.base) →ₗ[ℚ_[ℓ]] Fin N → PadicAlgCl ℓ}

@@ -450,8 +450,7 @@ lemma exists_mul_apply_eq_apply_matchedPoly (f : p ⊕ l ≃ b) (j : m ⊕ l ≃
       realPairWeil γ 0 (posBlockEmb j (t z), fun _ ↦ diagTorus 1 (const a z⁻¹)) y
   let c (τ : InfinitePlace E) : ℕ := card (ι τ)
   refine ⟨matchedPoly f j η, fun v ↦
-    (exists_mul_eq_circle_mean j e hγ v (Ω := Ω v) fun _ ↦ rfl).imp
-      fun κ hκ ℓ ℓ' hℓ h_match ↦ ?_⟩
+    (exists_mul_eq_circle_mean j e hγ v (Ω := Ω v) fun _ ↦ rfl).imp fun κ hκ ℓ ℓ' hℓ h_match ↦ ?_⟩
   -- The identity for the translate of `η` by a unitary `k`.
   have h_unitary (k : GInf E (1 : m → ℤˣ)) :
       let ξ (τ : InfinitePlace E) (i : ι τ) : Matrix p m ℂ := η τ i * (k τ : Matrix m m ℂ)ᵀ

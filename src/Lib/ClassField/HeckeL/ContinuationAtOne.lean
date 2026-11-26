@@ -497,8 +497,7 @@ lemma exists_radius_tent_integral_ne_zero {χ : (mixedEmbedding.mixedSpace K)ˣ 
   have hA_cont (ρ s : ℝ) : Continuous (A ρ s) := by fun_prop (disch := simp [ne_of_gt])
   -- On a closed ball of radius `r` at `1` all points are units and `χ` has positive real part.
   have h_nhds : val '' (χ ⁻¹' {z : ℂ | 0 < z.re}) ∈ nhds (1 : mixedEmbedding.mixedSpace K) :=
-    isOpenMap_val.image_mem_nhds
-      (hχ_cont.tendsto 1 ((isOpen_re_gt 0).mem_nhds (by simp [hχ_one])))
+    isOpenMap_val.image_mem_nhds (hχ_cont.tendsto 1 ((isOpen_re_gt 0).mem_nhds (by simp [hχ_one])))
   obtain ⟨r, hr, h_ball⟩ := Metric.nhds_basis_closedBall.mem_iff.mp h_nhds
   -- As `0` is not a unit, it is not in the ball, so `r < 1`.
   have hr_one : r < 1 := by
@@ -581,8 +580,7 @@ lemma exists_level_tate_integral (h : IsHeckeOfType ψ n) :
     refine ⟨fun w _ ↦ mem_Ô.mp (h_level x hx_mem).1 w, fun w hw ↦ ?_⟩
     -- At `w ∈ T`, `1 < v (d w)` and `v (d w) * v (x w - 1) ≤ 1` give `v (x w) = 1`.
     have hd : 1 < v (d.val w) := not_le.mp ((hT w).mp hw)
-    exact Valuation.map_eq_one_of_one_lt_of_mul_map_sub_one_le Valued.v hd
-      ((h_mem x).mp hx_mem w)
+    exact Valuation.map_eq_one_of_one_lt_of_mul_map_sub_one_le Valued.v hd ((h_mem x).mp hx_mem w)
   -- On a unit `u` with `d (u - 1) ∈ Ô` the tent is `1` and `ψ u = 1` (`h_level`); else it is `0`.
   have h_units : ∀ u : (𝔸f K)ˣ, u ∈ idelesUnitOff ∅ →
       f u * ψ u = if u ∈ {y : (𝔸f K)ˣ | d * (y.val - 1) ∈ Ô K} then 1 else 0 := by

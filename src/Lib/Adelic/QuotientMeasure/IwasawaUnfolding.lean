@@ -288,8 +288,7 @@ lemma New.integral_tsum_orbit_eq_integral_stabilizer (hi : Function.Injective i)
   have h_block : ∫⁻ x, ∑' z : orbit Λ y, ‖k z x‖ₑ ∂i.range.quotMeasure μ < ∞ ∨
       ∫⁻ x, ∑' z : ({y} : Set Y), ‖k z x‖ₑ ∂((stabilizer Λ y).map i).quotMeasure μ < ∞ :=
     h_fin.imp_right fun h_int ↦ by simpa [HasFiniteIntegral] using h_int.hasFiniteIntegral
-  simpa using
-    integral_tsum_block hi rfl ((stabilizer Λ y).map_le_range i) hC hD hk_meas hk h_block
+  simpa using integral_tsum_block hi rfl ((stabilizer Λ y).map_le_range i) hC hD hk_meas hk h_block
 
 /-- Unfolding of a sum over an orbit, with the subgroups and the orbit given by equations: `Γ` is
 the discrete range of the injective map `i`, `S` the image of the stabiliser of `y`, and `D` the
@@ -608,8 +607,7 @@ lemma New.integral_quotMeasure_iwasawa [PolishSpace M] [LocallyCompactSpace M]
     ∃ c ≠ (0 : ℝ), ∀ F : G → ℂ, Measurable F → N.FixesLeft F → Γ.FixesLeft F →
       Integrable (fun p : M × K ↦ (w p.1 : ℂ) * F (i p.1 * p.2)) (α.prod κ) →
       Integrable F (Γ.quotMeasure μ) ∧
-      ∫ g : G, F g ∂Γ.quotMeasure μ =
-        c * ∫ p : M × K, (w p.1 : ℂ) * F (i p.1 * p.2) ∂α.prod κ := by
+      ∫ g : G, F g ∂Γ.quotMeasure μ = c * ∫ p : M × K, (w p.1 : ℂ) * F (i p.1 * p.2) ∂α.prod κ := by
   -- The Iwasawa formula with factor `r`, unfolded along `Γ = {i (δ d) * γ}`, says that the measure
   -- `w · (α × κ) × (Γ ∩ N)\N` in the coordinates `n * i m * k` is the quotient of `r • μ` by `Γ`.
   -- The cocompact subgroup `Γ ∩ N` is a lattice in `N`, so `N` is unimodular.

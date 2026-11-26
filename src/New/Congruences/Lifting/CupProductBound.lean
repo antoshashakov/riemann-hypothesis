@@ -976,8 +976,7 @@ lemma mem_liftIdeal_of_mul_E_pow {S : PairingSide O} {r : ℕ} {i : Letter} {a c
       simp only [h_smul, zTau, β]
       push_cast
       -- The `b₂` terms cancel; what is left is `υ * hq'` rewritten by `hb₁'`.
-      linear_combination ↑p ^ c * k.z.1 ^ (a + 1) * k.E.1 ^ (n + 1) *
-        (υ * hq' - tau * k.z.1 * hb₁')
+      linear_combination ↑p ^ c * k.z.1 ^ (a + 1) * k.E.1 ^ (n + 1) * (υ * hq' - tau * k.z.1 * hb₁')
     have h_step :
         ↑(p ^ (c + cost 0 (n + 1)) * k.z ^ (a + 1) * k.E ^ n : k.S) ∈ S.liftIdeal r 1 i :=
       mem_liftIdeal_of_eq_mul_smul_sub _ β g h_mem h_der
@@ -1075,8 +1074,7 @@ lemma exists_forall_z_pow_mem_liftIdeal (S : PairingSide O) (κ : ℕ) :
         S.extensionLattice.letterProj i (tau ^ S.extensionLattice.jumpBound • DiagTensor.mk 1
           (0, c)) ∈
           S.extensionLattice.withOrders i (stdOrders 0) :=
-      letterProj_mem_withOrders
-        (frobKisinAinf_zero.ge (h_frame _ (mk_one_mem_ainfLattice _)))
+      letterProj_mem_withOrders (frobKisinAinf_zero.ge (h_frame _ (mk_one_mem_ainfLattice _)))
     refine mem_liftIdeal_iff.2 ⟨0, fun c ↦ ⟨_, h_lift c, ?_⟩⟩
     simp [constantAt]
   -- The ideals contain powers of `p` and `τ`, and `z` lies in the radical of `(p, τ)`.
@@ -1226,8 +1224,7 @@ lemma killsCokernel_zero_of_jumps_le {S : PairingSide O} {ω ω' J κ : ℕ} {i 
   -- Start from a power `z ^ a` in the ideals modulo `p ^ (κ + 1)`, come back through the `J`
   -- letters, remove the power of `z` that is left, and use Nakayama's lemma.
   obtain ⟨a, ha_mem, ha_le⟩ : ∃ a : ℕ,
-      (∀ j : Letter, k.z.val ^ a ∈ S.liftIdeal (p ^ (κ + 1)) 0 j) ∧
-        (p - 1) * a ≤ k.e * (ω + κ) :=
+      (∀ j : Letter, k.z.val ^ a ∈ S.liftIdeal (p ^ (κ + 1)) 0 j) ∧ (p - 1) * a ≤ k.e * (ω + κ) :=
     exists_z_pow_mem_liftIdeal h_jumps κ
   obtain ⟨c, n, h_mem, hc_le, hn_le⟩ : ∃ c n : ℕ,
       (p : Ainf) ^ c * k.z.val ^ n ∈ S.liftIdeal (p ^ (κ + 1)) 0 i ∧

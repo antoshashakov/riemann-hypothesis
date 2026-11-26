@@ -678,8 +678,7 @@ lemma relLength_deepConstants_negativeWindowDepth_le {k : KummerChart Γ} {O : k
   let d (l : ℕ) (u : ℤ) : ℤ := if l = 0 then q * p else -u
   -- Level `0`: far lines are free, and a low line costs at most `a + 1`.
   have h_cost_zero : ∀ u ∈ S.jumpSet i, ∑ y ∈ Ico (raisedOrdersAtZero (2 * a + η) 0 u) (d 0 u),
-    k.cost 0 y ≤
-      0 + if u ∈ Icc (-η : ℤ) η then a + 1 else 0 := fun u hu ↦ by
+    k.cost 0 y ≤ 0 + if u ∈ Icc (-η : ℤ) η then a + 1 else 0 := fun u hu ↦ by
     simpa [d, raisedOrdersAtZero] using sum_cost_zero_Ico_multiple_le hk hp (hb_le i) (hb_gap i)
       (h_win u hu)
       (dvd_mul_left _ q) hq_ge hq_lt
@@ -697,8 +696,7 @@ lemma relLength_deepConstants_negativeWindowDepth_le {k : KummerChart Γ} {O : k
   set m : Letter := i.stepBack 1
   have hm_far : 6 * (a + η + W) < b m := hb_gt m
   have h_cost_one : ∀ u ∈ S.jumpSet m, ∑ y ∈ Ico (d 1 u) (negativeWindowDepth a η W (b i) 1 u),
-    k.cost 1 y ≤
-      3 * (W + 1) + if u ∈ Icc (-η : ℤ) η then 6 * a else 0 := fun u hu ↦ by
+    k.cost 1 y ≤ 3 * (W + 1) + if u ∈ Icc (-η : ℤ) η then 6 * a else 0 := fun u hu ↦ by
     simpa [d] using
       sum_cost_one_Ico_negativeWindowDepth_le hk (b i) hm_far (hb_gap m) (h_window m) hu
   have h_anti : AntitoneOn (negativeWindowDepth a η W (b i) 1) (S.jumpSet m) := fun u hu v hv h_le ↦
@@ -746,15 +744,13 @@ lemma relLength_constantAt_deepConstants_le {k : KummerChart Γ} {O : k.Coeffs}
     relLength (S.constantAt i).range (S.deepConstants i 0 (fewLowJumpsDepth a η W (b i) (ε i))) ≤
       ↑((2 * a + 1) * n i + (3 * (W + 1) * r (i.stepBack 1) + 6 * a * n (i.stepBack 1))) := by
   have h_pole : relLength (S.constantAt i).range
-    (S.deepConstants i 0 (raisedOrdersAtZero (2 * a + η))) ≤
-      ↑(a * n i) :=
+    (S.deepConstants i 0 (raisedOrdersAtZero (2 * a + η))) ≤ ↑(a * n i) :=
     relLength_constantAt_range_deepConstants_le hk hp hb_le hb_gt hb_gap h_window hn i
   rw [fewLowJumpsDepth]
   split_ifs with hε
   · exact h_pole.trans (mod_cast by lia)
   · exact (relLength_trans h_pole (relLength_deepConstants_negativeWindowDepth_le hk hp hb_le hb_gt
-    hb_gap
-      h_window hn hr i ((units_eq_one_or _).resolve_left hε))).trans (mod_cast by lia)
+    hb_gap h_window hn hr i ((units_eq_one_or _).resolve_left hε))).trans (mod_cast by lia)
 
 /-- Let the jumps of `T` and `S` at a letter `i` lie in `[-η, η]` or in far windows `∓σ [β, β + W]`
 of opposite signs. Then each jump `u` of the Tate dual side of a pairing of `T` and `S` lies near

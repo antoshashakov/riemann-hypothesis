@@ -202,8 +202,7 @@ lemma QZChar.eventually_artinAt_eq_one :
     refine (finite_ramified (isOpen_ker χ)).isOpen_biInter fun v _ ↦
       IsOpen.preimage (by fun_prop) ?_
     exact continuous_iff_forall_isOpen_ker_comp.mp (continuous_hom_locField_units _) χ
-  filter_upwards [((isOpen_idelesUnitOff ∅).inter h_open).mem_nhds (by simp)]
-    with a ⟨h_unit, h_ram⟩
+  filter_upwards [((isOpen_idelesUnitOff ∅).inter h_open).mem_nhds (by simp)] with a ⟨h_unit, h_ram⟩
   refine ⟨h_unit, fun v ↦ ?_⟩
   by_cases hv : v ∈ R
   · exact mem_iInter₂.1 h_ram v hv

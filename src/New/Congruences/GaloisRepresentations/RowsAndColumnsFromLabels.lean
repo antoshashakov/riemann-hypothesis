@@ -626,8 +626,7 @@ lemma invAvatar_eq_of_isTameExponent {w : FinPlace D.E} (hw : w ∈ ϑ.Q) (h_spl
   have h_star : ϑ.tamePart⁻¹ (star w) = 1 := by simp [ϑ.tamePart_eq_one _ (ϑ.star_notMem w hw)]
   -- the avatar, as a one-dimensional representation, is labelled by `X - x⁻¹` at `w`
   have h_kill : aeval
-      ((GeneralLinearGroup.scalar (Fin 1)).comp
-        (ϑ.hasWeight.inv.toAlgebraic 0 0).avatar s).val
+      ((GeneralLinearGroup.scalar (Fin 1)).comp (ϑ.hasWeight.inv.toAlgebraic 0 0).avatar s).val
       ((((X - C (charName (faithfulChar (ResField w)) (ϑ.tamePart⁻¹ w)).val).aroots
         (AlgebraicClosure (ResField w))).map fun x ↦
           X - C (ιℓ ((faithfulChar (ResField w) ^ a) x))).prod : (PadicAlgCl ℓ)[X]) = 0 :=

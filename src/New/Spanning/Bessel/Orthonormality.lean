@@ -76,8 +76,7 @@ lemma New.IsBesselFunction.integral_mul_conj_eq {𝔰 : Shape} {I : Type} [Finty
     {W : 𝔰.G₁ → EuclideanSpace ℂ I} (hW : IsBesselFunction rep W)
     (h_int : Integrable W besselQuotMeasure)
     (h_irred : ∀ M : Matrix I I ℂ,
-      (∀ h : U (1 : Matrix 𝔰.κ 𝔰.κ ℂ), Commute M (rep h : Matrix I I ℂ)) →
-        M ∈ Set.range (scalar I))
+      (∀ h : U (1 : Matrix 𝔰.κ 𝔰.κ ℂ), Commute M (rep h : Matrix I I ℂ)) → M ∈ Set.range (scalar I))
     (i j : I) :
     ∫ y : 𝔰.G₁, W y i * conj (W y j) ∂besselQuotMeasure =
       if i = j then (((∫ y : 𝔰.G₁, ‖W y‖ ^ 2 ∂besselQuotMeasure) / Fintype.card I : ℝ) : ℂ)
@@ -184,8 +183,7 @@ theorem New.IsCutPair.lintegral_sq_inner_cut_le {𝔰 : Shape} {I : Type} [Finty
     [Nonempty I] {b : ℝ} {f : ℕ} {rep : U (1 : Matrix 𝔰.κ 𝔰.κ ℂ) →* unitaryGroup I ℂ}
     {W : FullOrCut → C(𝔰.G₁, EuclideanSpace ℂ I)} (hW : IsCutPair b f rep W)
     (h_irred : ∀ M : Matrix I I ℂ,
-      (∀ h : U (1 : Matrix 𝔰.κ 𝔰.κ ℂ), Commute M (rep h : Matrix I I ℂ)) →
-        M ∈ Set.range (scalar I))
+      (∀ h : U (1 : Matrix 𝔰.κ 𝔰.κ ℂ), Commute M (rep h : Matrix I I ℂ)) → M ∈ Set.range (scalar I))
     (v : EuclideanSpace ℂ I) :
     ∫⁻ y : 𝔰.G₁, ‖inner ℂ v (W .cut y)‖ₑ ^ 2 ∂besselQuotMeasure ≤ ‖v‖ₑ ^ 2 := by
   -- The operator is a scalar `c ≤ 1`, so the integral is `c * ‖v‖ ^ 2`.

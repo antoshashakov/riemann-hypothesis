@@ -407,8 +407,7 @@ lemma IsTiedPrimes.frob_sub_one_smul_tie_eq_zero_of_selmerOnLine [ThePrime ℓ]
   obtain ⟨hv_off, -, -, hv_star_off⟩ := hp.auxiliary v v.2
   have hγ : reduceModPow ℓ M ρ γ = 1 :=
     have hd : IsAuxPrimeDataAt (placesDividing E ℓ) v (d v).1 := hp.isAuxPrimeDataAt v v.2
-    h_unr γ (idOrConjInv_mem_inertiaAbove hd.isPlaceOver hd.tame_gen.left
-      ⟨hv_off, hv_star_off⟩ b)
+    h_unr γ (idOrConjInv_mem_inertiaAbove hd.isPlaceOver hd.tame_gen.left ⟨hv_off, hv_star_off⟩ b)
   let Φ : Matrix n n O' := (1 + y) • (ρ φ).map e
   have hγ_act (u : n → QuotSpan (ℓ ^ M : O')) :
       pointTwist lam x e ρ γ • u = (1 + e ((d v).2 i) * y) • u := by

@@ -127,8 +127,7 @@ lemma AnalyticFamily.isHolomorphicImmersionAt_of_holomorphicAt {f : AnalyticFami
   -- The torsion sections `b' ↦ ψ (b', k⁻¹ • T l b')`, `l` in the lattice, are still: their `k`-th
   -- multiple is the zero section over the base point, and multiplication by `k` is an immersion.
   have h_torsion (l : BallFibre E D.Index) (hl : l ∈ (m b).uniformisation.lattice) (k : ℕ)
-    (hk : k ≠ 0) :
-      IsFirstOrderConst ψ (b, (k : ℂ)⁻¹ • T l b) (v, (k : ℂ)⁻¹ • T' l) := by
+    (hk : k ≠ 0) : IsFirstOrderConst ψ (b, (k : ℂ)⁻¹ • T l b) (v, (k : ℂ)⁻¹ • T' l) := by
     have h_curve : HasFDerivAt (fun b' : BallBase D.Index ↦ (b', (k : ℂ)⁻¹ • T l b'))
         ((ContinuousLinearMap.id ℂ (BallBase D.Index)).prod ((k : ℂ)⁻¹ • fderiv ℂ (T l) b)) b :=
       (hasFDerivAt_id b).prodMk
@@ -360,8 +359,7 @@ lemma exists_arc (C : U.GraphClosure γ ν) (z : C.scheme.left) :
     (C.scheme.left.SpecToEquivOfField _).left_inv (specMap _ ≫ α), ?_⟩
   intro 𝔪 u a h_u
   -- The generic point of `α ≫ u` is the point of `a`.
-  refine .of_generic (?_ : U.family.IsPointOf 𝔪 a
-    (specMap V.valuationSubring.subtype ≫ α ≫ u.left))
+  refine .of_generic (?_ : U.family.IsPointOf 𝔪 a (specMap V.valuationSubring.subtype ≫ α ≫ u.left))
   rw [reassoc_of% h_start, ← comp_left, h_u]
   exact isPointOf_datumPoint
 

@@ -229,8 +229,7 @@ lemma exists_gauss_sum_finProjAction (g s : Gf E ι) :
     simp_rw [finProjAction, ← h_integrand]
     have h_double :
         ∫ x : ι → 𝔸f E, ∫ y : ι → 𝔸f E, (SetLike.coe M.toAddSubgroup).indicator
-          (selfDualAddChar E ∘ F) (x, y)
-            ∂latticeMeasure E ι ∂latticeMeasure E ι =
+          (selfDualAddChar E ∘ F) (x, y) ∂latticeMeasure E ι ∂latticeMeasure E ι =
           ν.real ((L.prod L).toAddSubgroup ∩ M.toAddSubgroup) •
             ∑ q : M.toAddSubgroup ⧸ (L.prod L).toAddSubgroup.addSubgroupOf M.toAddSubgroup,
               selfDualAddChar E (F q.out.1) := by

@@ -553,8 +553,7 @@ lemma sphericalMean_mem (hy : y ∈ levelSpace ρ (lineStabilizer w i)) :
     rw [apply_liftMatrix_eq hy h_reduce, Subgroup.coe_mul, map_mul, Module.End.mul_apply]
   -- Left multiplication by the reduction of `k` permutes the terms of the mean.
   rw [sphericalMean_apply, map_smul, map_sum, MonoidHom.one_apply, one_smul,
-    Fintype.sum_equiv (Equiv.mulLeft (reduceGL k)) _
-      (fun g ↦ ρ (liftMatrix g.1).1 y) h_term]
+    Fintype.sum_equiv (Equiv.mulLeft (reduceGL k)) _ (fun g ↦ ρ (liftMatrix g.1).1 y) h_term]
 
 /-- A vector fixed by `J_line` and its translates by `GL_n(𝒪)` have the same image under
 `e_sph = sphericalMean ρ`. -/
@@ -568,8 +567,7 @@ lemma sphericalMean_apply_translate (hy : y ∈ levelSpace ρ (lineStabilizer w 
     rw [apply_liftMatrix_eq hy h_reduce, Subgroup.coe_mul, map_mul, Module.End.mul_apply]
   -- Right multiplication by the reduction of `k` permutes the terms of the mean.
   rw [sphericalMean_apply, sphericalMean_apply,
-    Fintype.sum_equiv (Equiv.mulRight (reduceGL k)) _
-      (fun g ↦ ρ (liftMatrix g.1).1 y) h_term]
+    Fintype.sum_equiv (Equiv.mulRight (reduceGL k)) _ (fun g ↦ ρ (liftMatrix g.1).1 y) h_term]
 
 /-- Let `y` be fixed by the stabiliser `J_line` of the line of `e_i` modulo `w`. Then
 `T⁺ y = lineRaise i ρ y` is the sum of its translates by the coset representatives

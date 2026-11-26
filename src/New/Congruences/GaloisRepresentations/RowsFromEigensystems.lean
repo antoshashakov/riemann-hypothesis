@@ -551,8 +551,7 @@ theorem exists_isMainSummand_descentPair {ℓ : ℕ} [ThePrime ℓ] (ι : PadicI
         p (w, 1) = -(heckePoly w.q (card D.RowIndex) fun i : ℕ ↦ p (w, i)).coeff (D.r - 1) := by
       rw [card_rowIndex]
       simp [Nat.sub_sub_self D.r_odd.pos]
-    simpa only [h_trace, h_hecke, map_neg, id_eq] using
-      (hR.tendsto_charpoly_coeff g (D.r - 1)).neg
+    simpa only [h_trace, h_hecke, map_neg, id_eq] using (hR.tendsto_charpoly_coeff g (D.r - 1)).neg
   · -- the shifted jumps are those of `isMainSummandWeights_descentPair`
     have h_weight (v : D.Φ) : O.weight v = -D.liftWeight j v := rfl
     have h_rankDiff : O.rankDiff = D.t := by simp [DescentPair.rankDiff]

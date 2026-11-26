@@ -419,8 +419,7 @@ lemma exists_lifts_linkDiscSq_le [HasPrimitiveRoot5040 E] [DecidableEq τ]
     exact (pow_pos hj.minorNorm_pos 2).ne' h_minor
   obtain ⟨h_ne, h_le⟩ :
       S.isotropicRowsIndex j k * S.isotropicRowsIndex j k⁻¹ * S.torsionIndex k ≠ 0 ∧
-        S.isotropicRowsIndex j k * S.isotropicRowsIndex j k⁻¹ * S.torsionIndex k ≤
-          latticeIndex :=
+        S.isotropicRowsIndex j k * S.isotropicRowsIndex j k⁻¹ * S.torsionIndex k ≤ latticeIndex :=
     ne_zero_and_le_of_dvd h_index_ne h_dvd
   have h_lift_int : IsIntMatrix (Ô E) (S.classCoord c * finAdeleMatrix u * (w' * e.val)) := by
     rw [← Matrix.mul_assoc, ← h_rep, Matrix.mul_assoc]

@@ -461,8 +461,7 @@ lemma exists_pel (n : ℕ) {d : ℕ} {E : Type} [Field E] [NumberField E] [IsCMF
     ∃ Ψ : CMBase E,
       (Ψ.Φ Ψ.v₀ = σ ∧
        ∀ v : InfinitePlace E, v ≠ Ψ.v₀ →
-         (Ψ.Φ v).comp (algebraMap (QuadField d) E) ≠
-           (Ψ.Φ Ψ.v₀).comp (algebraMap (QuadField d) E)) ∧
+         (Ψ.Φ v).comp (algebraMap (QuadField d) E) ≠ (Ψ.Φ Ψ.v₀).comp (algebraMap (QuadField d) E)) ∧
       ∃ N : ℕ+, (∀ w ∈ B, ↑N ∉ w.asIdeal) ∧
         ∀ 𝔑 : 𝓞 E, 𝔑 ≠ 0 → ↑N ∣ 𝔑 → ∃ D : PEL E, IsSafeGoodPEL d n 𝔑 D := by
   obtain ⟨Ψ, hΨ_base, hΨ_restrict⟩ := exists_cmBase_restrict_ne (d := d) σ

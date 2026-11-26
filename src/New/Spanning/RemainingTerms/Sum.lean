@@ -474,8 +474,7 @@ theorem sum_termSize_mul_inSameLinkClass_le {E : Type} [Field E] [CMType E]
   have h_top : 𝔰.ϱ < S.cellRank γ := h_cell.lt_iff_termDisc_ne_zero.2 h_disc
   have h_gain : (S.pairDiscriminant c c' γ γ' * z) ^ 2 ≤
       S.levelGauge (S.cellRank γ) c c' γ * S.levelGauge (S.cellRank γ') c c' γ' := by
-    simpa [h_zero, h_top] using
-      pairDiscriminant_sq_le h_agrees h_meet h_over h_over' h_cell h_cell'
+    simpa [h_zero, h_top] using pairDiscriminant_sq_le h_agrees h_meet h_over h_over' h_cell h_cell'
   have h_corank : 𝔰.k - finrank E (commonLink γ γ') ≤ 1 := by
     have h_rank : 𝔰.k ≤ finrank E (commonLink γ γ') + S.linkCorank γ γ' +
         (S.cellRank γ - 𝔰.ϱ) := le_finrank_commonLink_add h_cell γ'

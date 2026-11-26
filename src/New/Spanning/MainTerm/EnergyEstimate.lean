@@ -530,8 +530,7 @@ lemma IsFillingData.mul_sum_norm_sum_cosetAmplitude_sq_le [S.IsAdmissible] {T : 
       rw [h_tail j, j.2]
     have h_fiber_gram (j : {j // t j = t i}) : R (t i) = .gram ℂ fun p : Fin 𝔰.ϱ → T₀ ↦
         ρ (t i) p • besselOrbitalIntegral volume (fun g ↦ .toLp 2 (S.besselFn .cut g))
-          (S.ratToInf
-            (Floors.FloorGroups.weylElem 𝔰.ϱ (padTuple (fun a ↦ (p a).1) (t i)) * σ j)) :=
+          (S.ratToInf (Floors.FloorGroups.weylElem 𝔰.ϱ (padTuple (fun a ↦ (p a).1) (t i)) * σ j)) :=
       prod_bandLimit_eq_gram (hσ j) (h_fiber_tail j)
     have h_head (p : Fin 𝔰.ϱ → T₀) (l : ℕ) (hl : l < 𝔰.ϱ) :
         (padTuple (fun a ↦ (p a).1) (t i) l).1 ∈ ratIntegralOff T ∧
@@ -655,8 +654,7 @@ theorem linkSecondMoment_isOpenElement_le [S.IsAdmissible] (Sg : Finset (S.chose
       S.NamesLink T (c j) (s j) (c' j) (Λ j) t σ n ∧
       classSum j = ∑ p : Fin 𝔰.ϱ → S.entrySet, S.cosetAmplitude .cut (c j) (s j) (c' j)
         (Floors.FloorGroups.weylElem 𝔰.ϱ (padTuple (fun a ↦ (p a).1) t) * σ) :=
-    exists_amplitudeSum_eq_sum_cosetAmplitude hT₀ (h_ne j)
-      fun _ ↦ (hs j).right.leadingMinor_ne_zero
+    exists_amplitudeSum_eq_sum_cosetAmplitude hT₀ (h_ne j) fun _ ↦ (hs j).right.leadingMinor_ne_zero
   choose t σ n h_names h_sum using h_class
   have h_red (j : F) : S.reduction (n j) = s j := (h_names j).reduction_eq
   -- distinct blocks give distinct tuples `(c j, c' j, S.reduction (n j), σ j)`: `S.reduction (n j)`

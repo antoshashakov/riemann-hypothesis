@@ -105,8 +105,7 @@ lemma New.Variety.ThetaNull.exists_isLinearSystem {Z : Scheme} {J X : Type} {Q :
   have σ_section (j : J) : L.IsSection (σ j) := by
     refine ⟨σ_reg j, fun i k A t hi hk ↦ ?_⟩
     have h_agree (a : X) (ha : LandsIn (ξ a) (L.opens i ⊓ L.opens k)) :
-        σ j i (CommRingCat.of ℂ) (ξ a) =
-          (L.transition i k * σ j k) (CommRingCat.of ℂ) (ξ a) := by
+        σ j i (CommRingCat.of ℂ) (ξ a) = (L.transition i k * σ j k) (CommRingCat.of ℂ) (ξ a) := by
       obtain ⟨ha_i, ha_k⟩ := landsIn_inf.mp ha
       simp [L_transition, M_transition, σ_val, m_ne, ha_i, ha_k, field]
     exact hξ.pointFn_ext ((σ_reg j i).mono inf_le_left)
@@ -470,8 +469,7 @@ lemma PEL.hasClassLaws_of_riemann_relation {S : Scheme} {A : Over S} [AddObj A]
       star d * d + 3 + ∑ l : Fin (D.paddedNorm - 3),
         star (a l) * a l = D.paddedNorm → ∀ (T : Over S) (y z : T ⟶ A),
         c.atPoint (d • y + z) + c.atPoint (y - star d • z) +
-          ∑ l : Fin (D.paddedNorm - 3), c.atPoint (a l • y) +
-            c.atPoint (0 : T ⟶ A) =
+          ∑ l : Fin (D.paddedNorm - 3), c.atPoint (a l • y) + c.atPoint (0 : T ⟶ A) =
           c.atPoint z + c.atPoint (-(star d • z)) + c.atPoint y + (D.paddedNorm - 3) • c.atPoint
             y) :
     D.HasClassLaws c := by
@@ -512,8 +510,7 @@ lemma PEL.hasClassLaws_of_riemann_relation {S : Scheme} {A : Over S} [AddObj A]
   · -- Take `d = -star β` at `(z, z)`: as `star β = 1 - β`, `-star β • z + z = β • z`.
     have h_ev : c.atPoint (D.β • z) + c.atPoint (z + D.β • z) + 2 • c.atPoint (0 : T ⟶ A) =
         c.atPoint (D.β • z) + c.atPoint z + c.atPoint z + c.atPoint (D.β • z) := by
-      simpa [D.star_beta, sub_smul, add_comm z] using
-        h_diff hb (-star D.β) (by simp [mul_comm]) z z
+      simpa [D.star_beta, sub_smul, add_comm z] using h_diff hb (-star D.β) (by simp [mul_comm]) z z
     rw [Pic.pairing, add_comm (D.β • z) z]
     linear_combination (norm := abel) -h_ev
 

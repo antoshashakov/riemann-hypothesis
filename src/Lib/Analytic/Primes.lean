@@ -66,8 +66,7 @@ lemma New.le_totient_mul_log {n : ℕ} (hn : 0 < n) : n ≤ φ n * (2 * Real.log
       div_add_card_le_prod_one_sub_inv _ 1 fun _ hp ↦ (prime_of_mem_primeFactors hp).one_lt
     suffices h_rat : (n : ℚ) ≤ φ n * (1 + j) from mod_cast h_rat
     rw [totient_eq_mul_prod_factors, mul_assoc]
-    exact le_mul_of_one_le_right (by positivity)
-      ((div_le_iff₀ (by positivity)).1 (mod_cast h_prod))
+    exact le_mul_of_one_le_right (by positivity) ((div_le_iff₀ (by positivity)).1 (mod_cast h_prod))
   refine totient_ge.trans (mul_le_mul_of_nonneg_left ?_ (by positivity))
   nlinarith [log_two_gt_d9]
 

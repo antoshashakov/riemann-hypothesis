@@ -259,8 +259,7 @@ principal idele `γ`, the sum of `adelicTent ρ d` at the points `b * γ * y`, `
 `K`, is its sum at the points `γ' * b`, `γ'` principal. The term of `y = 0` vanishes, and the
 nonzero `y` are the principal ideles. -/
 lemma hasSum_adelicTent_mul_range
-    (h_disc :
-      DiscreteTopology ((mixedEmbedding K).prod (algebraMap K (𝔸f K))).toAddMonoidHom.range)
+    (h_disc : DiscreteTopology ((mixedEmbedding K).prod (algebraMap K (𝔸f K))).toAddMonoidHom.range)
     {ρ : ℝ} (hρ : ρ ≤ 1) (b : (mixedSpace K)ˣ × (𝔸f K)ˣ) (γ : principalIdeles K) :
     HasSum (fun y : ((mixedEmbedding K).prod (algebraMap K (𝔸f K))).toAddMonoidHom.range ↦
         adelicTent ρ d ((b * γ.val).map val val * y))

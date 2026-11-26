@@ -247,8 +247,7 @@ def logMinorRemainder (Q A₁ A₂ A₃ : Matrix n n ℂ) : ℂ :=
 exponential of `logMinorQuadratic Q A₁ A₂ A₃ + r` for some `r` with `‖r‖ ≤ 216 ρ³`. -/
 lemma exists_expMinor_eq_cexp (hQ : IsStarProjection Q) (hρ : ρ ≤ 1 / 10)
     (h₁ : ‖A₁‖ ≤ ρ) (h₂ : ‖A₂‖ ≤ ρ) (h₃ : ‖A₃‖ ≤ ρ) :
-    ∃ r : ℂ, expMinor Q A₁ A₂ A₃ = cexp (logMinorQuadratic Q A₁ A₂ A₃ + r) ∧
-      ‖r‖ ≤ 216 * ρ ^ 3 := by
+    ∃ r : ℂ, expMinor Q A₁ A₂ A₃ = cexp (logMinorQuadratic Q A₁ A₂ A₃ + r) ∧ ‖r‖ ≤ 216 * ρ ^ 3 := by
   have h_exp {A : Matrix n n ℂ} (hA : ‖A‖ ≤ ρ) :
       IsExpansion Q (NormedSpace.exp A - 1) A ((2 : ℂ)⁻¹ • (A * A)) ρ :=
     isExpansion_exp hQ hA (by linarith)

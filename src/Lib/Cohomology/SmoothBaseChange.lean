@@ -214,8 +214,7 @@ from tests over `A` to tests over `Ω` (`New.Variety.TestOver.restrictScalars`) 
 private lemma isBijective_restrict_restrictScalars_iff {A : ClosurePlace} {p : ℕ} [Fact p.Prime]
     (hp : A.valuation p < 1) [InvertsPrime A ℓ] {X : TestOver A ⥤ Type 1} :
     (Comparison.restrict (TestOver.restrictScalars A Ω)
-      (locConstAlong (𝟭 (TestOver A)))).IsBijective
-        (𝟙 (TestOver.restrictScalars A Ω ⋙ freeAb X)) ↔
+      (locConstAlong (𝟭 (TestOver A)))).IsBijective (𝟙 (TestOver.restrictScalars A Ω ⋙ freeAb X)) ↔
       ∀ n : ℕ,
         Subsingleton (H (relFreeAb (offClosedFibre X)) (locConstAlong (𝟭 (TestOver A))) n) := by
   let κ := Comparison.restrict (TestOver.restrictScalars A Ω) (locConstAlong (𝟭 (TestOver A)))

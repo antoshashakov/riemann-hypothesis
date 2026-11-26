@@ -147,8 +147,7 @@ lemma DiscreteSeries.IsAnalyticFamily.analyticAt_integral {mK : MeasurableSpace 
     AnalyticAt ℂ (fun x : E ↦ ∫ k : K, f x k ∂μ) p := by
   obtain ⟨g, hg, h_eq⟩ := hf
   -- The integral is the continuous functional `strongIntegral μ (evalCLM ℂ)` applied to `g`.
-  refine (((strongIntegral μ (evalCLM ℂ)).analyticAt (g p)).comp hg).congr
-    (h_eq.mono fun x hx ↦ ?_)
+  refine (((strongIntegral μ (evalCLM ℂ)).analyticAt (g p)).comp hg).congr (h_eq.mono fun x hx ↦ ?_)
   simp [strongIntegral_eval, hx]
 
 /-- Cauchy's integral formula with the circle parametrised by the angle: for g differentiable on
@@ -587,8 +586,7 @@ lemma New.hua_integral_le {ι κ : Type} [DecidableEq ι] [Fintype κ] [Decidabl
     -- the induction hypothesis for `M' v = M + wᴴ w`, `w = v S + a i`, and `r + 1` bounds the inner
     -- integral.
     let F (A : Matrix κ κ ℂ) (t : Finset ι) (n : ℕ) (x' : ι → κ → ℂ) : ENNReal :=
-      .ofReal (c *
-        ‖(A + ∑ j ∈ t, vecMulVec (star (x' j ᵥ* S + a j)) (x' j ᵥ* S + a j)).det‖⁻¹ ^ n)
+      .ofReal (c * ‖(A + ∑ j ∈ t, vecMulVec (star (x' j ᵥ* S + a j)) (x' j ᵥ* S + a j)).det‖⁻¹ ^ n)
     let M' (v : κ → ℂ) : Matrix κ κ ℂ := M + vecMulVec (star (v ᵥ* S + a i)) (v ᵥ* S + a i)
     have h_pos (v : κ → ℂ) : (M' v).PosDef := hM.add_posSemidef (posSemidef_vecMulVec_star_self _)
     have inner_eq (v : κ → ℂ) :

@@ -580,8 +580,7 @@ theorem IsRepOfType.twist_avatar {O : DescentPair D.E r n} {ϑ : D.Twist}
   have h_twist (g : Gal(Ω/D.E)) : (twistByChar μ R g).val = (μ g).val • (R g).val := rfl
   have h_dual : IsConjSelfDual b (twistByChar μ R) := by
     have h_cont : Continuous fun g : Gal(Ω/D.E) ↦ (μ g).val • (R g).val :=
-      (Units.continuous_val.comp θ.continuous_avatar).smul
-        (Units.continuous_val.comp hR.continuous)
+      (Units.continuous_val.comp θ.continuous_avatar).smul (Units.continuous_val.comp hR.continuous)
     refine ⟨.of_coeHom_comp h_cont, hR.nondeg.twist μ, fun g ↦ ?_⟩
     -- The twist shifts the power of the cyclotomic character by `2 * j - k'`, as `hb` requires.
     have hμ_conj : μ (conjGal g) =

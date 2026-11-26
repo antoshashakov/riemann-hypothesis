@@ -128,8 +128,7 @@ lemma quotMean_eq_ite [hχ : IsDualFamily B₀ χ] [DecidableEq I] (i : I) :
   · simp [hi, quotMean, hχ.zero_apply]
   · -- The mean `m` satisfies `m * χ i a = m` for all `a`, and `χ i` is not trivial.
     have h_translate (a : B) : quotMean B₀ (χ i) * χ i a = quotMean B₀ (χ i) := by
-      simpa [hχ.add_right, quotMean, integral_mul_const] using
-        quotMean_translate (hχ.periodic i) a
+      simpa [hχ.add_right, quotMean, integral_mul_const] using quotMean_translate (hχ.periodic i) a
     by_contra h_ne
     exact hi (hχ.eq_zero_of_forall_eq_one i fun a ↦ (mul_eq_left₀ h_ne).1 (h_translate a))
 

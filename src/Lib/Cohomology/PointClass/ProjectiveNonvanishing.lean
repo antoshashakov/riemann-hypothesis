@@ -806,8 +806,7 @@ lemma New.Variety.hodgeTateMap_pointClass_eq_zero_of_ne {p : ℕ} {k : Type} [Fi
     calc
       _ = H.map _ (freeAb.map (scaledGraph t (𝟙 X) (constMap z))) d δ.baseChange :=
         -- `scale t` and pull-back along the graph compose to pull-back along the scaled graph.
-        (H.map_comp ..).symm.trans
-          (congrArg (fun f ↦ H.map _ f d δ.baseChange) freeAb.hom_ext)
+        (H.map_comp ..).symm.trans (congrArg (fun f ↦ H.map _ f d δ.baseChange) freeAb.hom_ext)
       _ = ∑ w ∈ {z}, (Matrix.scalar (Fin d) t).det • pointClass d w :=
         hδ _ _ _ t _ h_coincidence fun w _ ↦ h_jacobian t w
       _ = t ^ d • pointClass d z := by simp

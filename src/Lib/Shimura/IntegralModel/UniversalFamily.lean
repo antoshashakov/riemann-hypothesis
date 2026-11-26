@@ -365,8 +365,7 @@ of `M` on `y` to those on `x`. If the pulled-back coordinates of `N ^ (c ^ 2)` s
 private lemma apply_mem_of_forall_apply_sectionLift_mem (hx : x.IsPullbackAlong (Spec.map b) y)
     (h_cst : HasConstFunctions x.groupScheme.hom) (c : ℕ)
     (h_lin : (y.lineBundle.pow (c ^ 2)).IsLinearSystem)
-    (h_span :
-      span B (range (coordSection (X := x.groupScheme) (h_lin.pull hx.schemeMap.left))) = ⊤)
+    (h_span : span B (range (coordSection (X := x.groupScheme) (h_lin.pull hx.schemeMap.left))) = ⊤)
     (Q : (y.lineBundle.pull (c • 𝟙 y.groupScheme).left).H0 O →ₛₗ[b.hom]
       (x.lineBundle.pull (c • 𝟙 x.groupScheme).left).H0 B)
     (hQ : IsSectionLift (x.lineBundle.pull (c • 𝟙 x.groupScheme).left)

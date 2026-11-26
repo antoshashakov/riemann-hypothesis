@@ -433,8 +433,7 @@ diagonal entry of `k t k⁻¹`. -/
 lemma row_mul_eq_smul_of_commute {A t : Matrix n n ℂ} {k : (Matrix n n ℂ)ˣ} {d : n ↪ ℂ}
     (hk : SemiconjBy (k : Matrix n n ℂ) A (diagonal d)) (ht : Commute t A) (i : n) :
     diagonal (Pi.single i 1) * (k : Matrix n n ℂ) * t =
-      (k * t * (k⁻¹ : (Matrix n n ℂ)ˣ)) i i •
-        (diagonal (Pi.single i 1) * (k : Matrix n n ℂ)) := by
+      (k * t * (k⁻¹ : (Matrix n n ℂ)ˣ)) i i • (diagonal (Pi.single i 1) * (k : Matrix n n ℂ)) := by
   -- `k t k⁻¹` commutes with `diagonal d`, so its `i`-th row vanishes off the diagonal.
   let M : Matrix n n ℂ := k * t * k⁻¹.1
   have h_comm : diagonal d * M = M * diagonal d := by

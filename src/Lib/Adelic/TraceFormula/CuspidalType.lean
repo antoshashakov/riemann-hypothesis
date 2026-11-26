@@ -75,8 +75,7 @@ lemma simClassOf_radicalHom (T : Finset n) (Z : Matrix n n k) :
     ext (⟨i, hi⟩ | ⟨i, hi⟩) (⟨j, hj⟩ | ⟨j, hj⟩) <;> simp [h_entry, e, one_apply] <;> grind
   rw [← simClassOf_submatrix e, h_blocks]
   -- splitting a vector into its coordinates outside and in `T` intertwines the two endomorphisms
-  refine simClassOf_eq_iff.2
-    ⟨LinearEquiv.sumArrowLequivProdArrow _ _ k k, fun x ↦ Prod.ext ?_ ?_⟩
+  refine simClassOf_eq_iff.2 ⟨LinearEquiv.sumArrowLequivProdArrow _ _ k k, fun x ↦ Prod.ext ?_ ?_⟩
   all_goals
     ext i
     simp [fromBlocks_mulVec, upperRightBlock, Function.comp_def,

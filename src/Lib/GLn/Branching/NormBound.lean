@@ -552,8 +552,7 @@ with `B ξ` is `c` times the pairing of the extended tensor of `y` with the tens
 lemma det_mul_dotProduct_mulVec_eq_extendedTensor {c : ℤ}
     {B : Matrix (WeylIndexFamily n κ₀) (WeylIndexFamily N (γ + κ')) ℤ}
     (B_top : nablaCombination (γ + κ') ((weylGramOver *ᵥ weylEval n κ₀
-        (permArray fun (τ : Φ) (i : n τ) ↦ (rowEquivFin n τ i : ℕ))) ᵥ*
-          B.map (Int.cast : ℤ → ℂ)) =
+        (permArray fun (τ : Φ) (i : n τ) ↦ (rowEquivFin n τ i : ℕ))) ᵥ* B.map (Int.cast : ℤ → ℂ)) =
       (c : ℂ) • branchVector ℂ ι γ κ')
     (B_block : ∀ g : ∀ τ : Φ, Matrix (n τ) (n τ) ℂ,
       B.map (Int.cast : ℤ → ℂ) * schur (γ + κ') (blockScalar ι g 1) =
@@ -657,8 +656,7 @@ lemma weylNormSq_mulVec_le_of_equivariant {c : ℤ}
     (hκ₀ : ∀ τ : Φ, ∀ h ∈ Ioo 0 (rankAt n τ), κ₀ τ h = κ' τ h + γ τ (h + 1))
     {B : Matrix (WeylIndexFamily n κ₀) (WeylIndexFamily N (γ + κ')) ℤ}
     (B_top : nablaCombination (γ + κ') ((weylGramOver *ᵥ weylEval n κ₀
-        (permArray fun (τ : Φ) (i : n τ) ↦ (rowEquivFin n τ i : ℕ))) ᵥ*
-          B.map (Int.cast : ℤ → ℂ)) =
+        (permArray fun (τ : Φ) (i : n τ) ↦ (rowEquivFin n τ i : ℕ))) ᵥ* B.map (Int.cast : ℤ → ℂ)) =
       (c : ℂ) • branchVector ℂ ι γ κ')
     (B_block : ∀ g : ∀ τ : Φ, Matrix (n τ) (n τ) ℂ,
       B.map (Int.cast : ℤ → ℂ) * schur (γ + κ') (blockScalar ι g 1) =

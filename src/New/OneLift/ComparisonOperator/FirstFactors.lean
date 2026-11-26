@@ -216,8 +216,7 @@ lemma modKernelBilin_stackedDetProdCoords_equivariant (j : D.LiftIndex) (i : D.R
   -- of `γ'⁻¹`, to those for `Y` up to determinants, and these cancel against the change of the
   -- characters.
   have h_char : (firstFactorChar ϑ j).HasWeight
-    (fun τ : D.Φ ↦ firstFactorCharExp j + -D.liftWeight j τ)
-      (D.liftTamePart ϑ j) := inferInstance
+    (fun τ : D.Φ ↦ firstFactorCharExp j + -D.liftWeight j τ) (D.liftTamePart ϑ j) := inferInstance
   -- `A`, `B` and `B'` are the images of `γ'⁻¹`, `Γ` and diag(1, Γ) at the infinite places.
   let A (τ : D.Φ) : Matrix (FirstFactorIndex j) (FirstFactorIndex j) ℂ :=
     (↑γ'⁻¹ : Matrix (FirstFactorIndex j) (FirstFactorIndex j) D.E).map (Φ τ)
@@ -677,8 +676,7 @@ lemma exists_isIntegralAndSmall_leftSideSeries (j : D.LiftIndex) :
   -- p-integral points and has bounded conjugates.
   obtain ⟨c₀, hc₀, K₀⟩ := exists_ne_zero_isModKernelScale (Fin D.m) D.CarrierIndex D 0
   obtain ⟨c₁, hc₁, K₁⟩ := exists_ne_zero_isModKernelScale (Fin j) (FirstFactorIndex j) D 0
-  obtain ⟨c₂, hc₂, K₂⟩ := exists_ne_zero_isModKernelScale (AddedIndex j) (FirstFactorIndex j) D
-    n
+  obtain ⟨c₂, hc₂, K₂⟩ := exists_ne_zero_isModKernelScale (AddedIndex j) (FirstFactorIndex j) D n
   obtain ⟨c, hc, h_expand⟩ := exists_star_leftSideSeries_eq_classSum j
   let scale : ℂ := D.chosenGroupOrder * D.chosenGroupOrder * c₂ * H * c₀ * conj c₁ * c
   refine ⟨scale, ?_, ?_⟩

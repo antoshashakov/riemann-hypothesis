@@ -477,8 +477,7 @@ lemma exponent_eq_of_inertia {γ : Gal(Ω/ℚ)} {y y' r : DiscreteUnits Ω} {b t
     cyclotomicCharMod_eq_iff_unitsRep.mp hγ hgy
   have h_mem : galUnitsRep g (y' - s' • r) - 1 • (y' - s' • r) -
       a • (galUnitsRep g (y - s • r) - 1 • (y - s • r)) ∈ principalUnits B :=
-    sub_mem (hg.sub_nsmul_mem_principalUnits hy')
-      (nsmul_mem (hg.sub_nsmul_mem_principalUnits hy) a)
+    sub_mem (hg.sub_nsmul_mem_principalUnits hy') (nsmul_mem (hg.sub_nsmul_mem_principalUnits hy) a)
   have h_eq : (rootPowHom Ω m).val (a • (s * b) - t - s' * b) =
       galUnitsRep g (y' - s' • r) - 1 • (y' - s' • r) -
         a • (galUnitsRep g (y - s • r) - 1 • (y - s • r)) := by
@@ -882,8 +881,7 @@ private lemma sum_mul_commutatorLog_eq_of_isJacobiFamily {q : Nat.Primes}
   have hx_q : M • ((q : ℕ) • x) = 0 := by simp [smul_comm M, hx]
   have h_unit (A' : ClosurePlace) (hqA' : A'.valuation (q : Ω) < 1) (b : ZMod q) :
       A'.valuation (l ^ n • Y b).toMul.val = 1 :=
-    hJ_q.valuation_eq_one (h_level b) A'
-      (hpq.coprime_of_modEq_one.symm.valuation_eq_one hqA')
+    hJ_q.valuation_eq_one (h_level b) A' (hpq.coprime_of_modEq_one.symm.valuation_eq_one hqA')
   have h_cong (A' : ClosurePlace) (hqA' : A'.valuation (q : Ω) < 1) (b : ZMod q) :
       l ^ n • (Y b - Y 0) ∈ principalUnits A' := by
     simpa [Y, smul_sub] using hJ.sub_mem_principalUnits hx q A' (ofZMod q b)

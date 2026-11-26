@@ -358,8 +358,7 @@ lemma substitutionOperator_mem (G : ℝ → AddSubgroup R) [IsRealFiltration G]
       x (b, s) = (if T.isEven s then 1 else -1) * α s (ℓ + T.deepIndicator r (b, s)) b)
     (hψ : ∀ s : ZMod N, ∀ d ≤ ℓ, ∀ b c : Fin k, ψ s d b c ∈ G (α s (d + 1) b - α s d c - u))
     (hu : 0 ≤ u) :
-    T.substitutionOperator r ℓ n ψ β γ ∈
-      G (weight x (exponentOf β) - N * n * k * (ℓ + 2) * u) := by
+    T.substitutionOperator r ℓ n ψ β γ ∈ G (weight x (exponentOf β) - N * n * k * (ℓ + 2) * u) := by
   let K : ℝ := k * ((ℓ + 2) * u)
   -- The potentials telescope along the product of `m ≤ ℓ + 1` factors.
   have h_prod (s : ZMod N) (m : ℕ) (hm : m ≤ ℓ + 1) (b c : Fin k) :
@@ -440,8 +439,7 @@ lemma mul_defectWeight_eq_indexWeight_mul (ha : (a : ℕ) + 1 = (a' : ℕ)) (i :
 its coefficient at each monomial `μ` is divisible by `w ^ ⌈t - weight ω μ⌉₊`. -/
 lemma _root_.New.mem_gaussFiltration_adicFiltration_iff {σ : Type*} {w : O} {ω : σ → ℝ} {t : ℝ}
     {f : MvPolynomial σ O} :
-    f ∈ gaussFiltration (adicFiltration w) ω t ↔
-      ∀ μ : σ →₀ ℕ, w ^ ⌈t - weight ω μ⌉₊ ∣ f.coeff μ :=
+    f ∈ gaussFiltration (adicFiltration w) ω t ↔ ∀ μ : σ →₀ ℕ, w ^ ⌈t - weight ω μ⌉₊ ∣ f.coeff μ :=
   Iff.rfl
 
 /-- If `f` lies at level `t` of the Gauss filtration with variable weights `ω` over

@@ -816,8 +816,7 @@ lemma _root_.New.Variety.finrank_tangent_le_card_index_sub_one [IsAlgClosed k]
       ω (c • Y y.1) = ω (c • Z) := by
     have h_diff : IsInfinitesimal (ofHom (fstHom C C _).1) (Z - Y y.1) :=
       isInfinitesimal_of_comp_eq_zero _ (by simp [hY, hZ, AddGrpObj.comp_sub])
-    simpa [← smul_add, ω_smul h_diff, hc] using
-      (ω_add (h_diff.smul c) (c_Y_infinitesimal y)).symm
+    simpa [← smul_add, ω_smul h_diff, hc] using (ω_add (h_diff.smul c) (c_Y_infinitesimal y)).symm
   let f (C : Type) [CommRing C] [Algebra k C] [IsLocalRing C] :
       placeTorsion x₀ C →ₛₗ[x₀.baseHom] M →ₗ[k] C :=
     { toFun y := snd (ω (c • Y y.1))

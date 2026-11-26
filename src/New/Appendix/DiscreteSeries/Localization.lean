@@ -501,8 +501,7 @@ lemma one_add_norm_sq_le_norm_det_one_add (A : Matrix n n ℂ) :
 /-- The part of `gᴴ ε g = ε` that commutes with `ε` reads `aᴴ a = 1 + yᴴ y`, for the compact part
 `a = blockDiagPart ε g` and the noncompact part `y = noncompactPart ε g`. -/
 lemma conjTranspose_blockDiagPart_mul_blockDiagPart (g : USign ε) :
-    (blockDiagPart ε g)ᴴ * blockDiagPart ε g =
-      1 + (noncompactPart ε g)ᴴ * noncompactPart ε g := by
+    (blockDiagPart ε g)ᴴ * blockDiagPart ε g = 1 + (noncompactPart ε g)ᴴ * noncompactPart ε g := by
   -- With `g' = ε g ε` one has `a = (g + g') / 2`, `y = (g - g') / 2` and `gᴴ g' = g'ᴴ g = 1`.
   set g' : Matrix n n ℂ := signMatrix ε * g * signMatrix ε with hg'
   have h_right : (g : Matrix n n ℂ)ᴴ * g' = 1 := by

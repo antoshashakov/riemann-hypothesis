@@ -204,8 +204,7 @@ R(α)F(g) = ∫_{G_∞} α(x)F(gx) dx (`realConv`). If C ≥ 0 and |F(gx)| ≤ C
 lemma norm_realConv_mul_sub_le (hF : IsBoundedMeasurable F) (hα : Integrable α) (g : G E s)
     (u : GInf E s) {C : ℝ} (_hC_nonneg : 0 ≤ C)
     (hC : ∀ x : GInf E s, α (u⁻¹ * x) ≠ α x → ‖F (g * (x, 1))‖ ≤ C) :
-    ‖realConv α F (g * (u, 1)) - realConv α F g‖ ≤
-      (∫ x : GInf E s, ‖α (u⁻¹ * x) - α x‖) * C := by
+    ‖realConv α F (g * (u, 1)) - realConv α F g‖ ≤ (∫ x : GInf E s, ‖α (u⁻¹ * x) - α x‖) * C := by
   -- The difference of the averages is ∫ (α(u⁻¹x) - α(x)) F(gx) dx.
   have h_int {β : GInf E s → ℂ} (hβ : Integrable β) :
       Integrable fun x : GInf E s ↦ β x * F (g * (x, 1)) :=

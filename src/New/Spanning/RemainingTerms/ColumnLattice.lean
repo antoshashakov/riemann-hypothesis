@@ -163,8 +163,7 @@ lemma span_columnLattice {E : Type} [Field E] [CMType E] {𝔰 : Shape} {ι : Ty
       exists_natCast_smul_mem_of_isCompact E (Set.finite_range _).isCompact
         (isOpen_Ô.mem_nhds (zero_mem _))
     have h_int : IsIntMatrix (Ô E) (S.classCoordX₀ c * finAdeleMatrix (N • q)) := fun a l ↦ by
-      simpa [Function.uncurry, mul_apply, Finset.mul_sum, mul_left_comm] using
-        h_mem _ ⟨(a, l), rfl⟩
+      simpa [Function.uncurry, mul_apply, Finset.mul_sum, mul_left_comm] using h_mem _ ⟨(a, l), rfl⟩
     have h_point : conjColumnsAtInfinity E 𝔰 ι (N • q) ∈ S.columnLattice ι c :=
       mem_columnLattice.2 ⟨N • q, h_int, rfl⟩
     rw [SetLike.mem_coe, ← Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 hN : (N : ℝ) ≠ 0),

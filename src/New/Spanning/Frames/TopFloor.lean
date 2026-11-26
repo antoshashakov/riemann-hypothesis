@@ -615,8 +615,7 @@ lemma continuous_lastEntryDensity {F : PlaceData ι (latticeMiddleGram 𝔰 N) (
   have h_shift : Tendsto (fun z : (ℕ → Aˣ) × (ℕ → Aˣ) ↦
       vectorOfLastEntry π ((z.1 𝔰.ϱ : A) - p 𝔰.ϱ) (0 : 𝔰.κ → A)) (nhds (p, q)) (nhds 0) :=
     Continuous.tendsto' (by fun_prop) (p, q) 0 (by simp [vectorOfLastEntry, ← Pi.zero_def])
-  filter_upwards [prod_mem_nhds (h_corr p) (h_corr q), h_shift.eventually Φ_unif]
-    with z ⟨hp, hq⟩ hΦ
+  filter_upwards [prod_mem_nhds (h_corr p) (h_corr q), h_shift.eventually Φ_unif] with z ⟨hp, hq⟩ hΦ
   -- `z` is a pair of heads near `(p, q)`; the density at `z` is the integral of `Φ` on its sphere
   have h_pairing (e : 𝔰.BesselIndex → A) : fiberPairing Z z.1 z.2 e = fiberPairing Z p q e := by
     by_cases h_orbit : ∃ l ∈ (latticeMiddleGram 𝔰 N).floorGroup 𝔰.ϱ, orbitPoint 𝔰.top l = e

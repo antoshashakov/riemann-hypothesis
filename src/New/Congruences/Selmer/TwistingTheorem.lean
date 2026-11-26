@@ -322,8 +322,7 @@ lemma exists_selmerData_isTorsionLevel {ℓ : ℕ} [ThePrime ℓ] {P : Parameter
         IsLatticeIn (R i) T.ρ ∧
         ↑T.places = placesDividing D.E ℓ ∪ placesAboveM D ∧
         T.localRelations = crysRelations T.ρ ∧
-        O.normLength T.β ≤
-          (4 * D.f + 3) * Fintype.card (r i) * padicValNat ℓ D.chosenGroupOrder :=
+        O.normLength T.β ≤ (4 * D.f + 3) * Fintype.card (r i) * padicValNat ℓ D.chosenGroupOrder :=
     eventually_all.2 fun i ↦ (h_main i).eventually_exists_selmerDatum hw hwℓ
   obtain ⟨O, h_card, h_data⟩ :=
     ((frequently_lt_card_residueField ℓ (2 * D.r * (c + 2))).and_eventually h_large).exists

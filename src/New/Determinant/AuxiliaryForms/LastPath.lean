@@ -376,8 +376,7 @@ theorem exists_isLiftWeight_isHCParam :
   let κ₁ : ℕ → ℕ := (Set.range fun j ↦ card (ι j)).indicator fun _ ↦ D.gap - D.t - z.toNat
   obtain ⟨κ, h_param, h_above⟩ :
       ∃ κ : D.Φ → ℕ → ℕ,
-        IsHCParam κ (fun w ↦ D.gridWeight z 0 (ι 1) w + κ w (card (ι 0)))
-          (-D.gridParam z 0 0 D.m) ∧
+        IsHCParam κ (fun w ↦ D.gridWeight z 0 (ι 1) w + κ w (card (ι 0))) (-D.gridParam z 0 0 D.m) ∧
         ∀ w : D.Φ, ∀ k > card (ι 0), κ w k = κ₁ k :=
     exists_isHCParam_of_le (fun _ ↦ κ₁) (fun w ↦ (D.hasGap_gridParam w z 0 0 D.m).neg)
       (le_div_two_add_of_paramsCorrespond (h_edge 0 hm) (h_mono one_pos))
@@ -606,8 +605,7 @@ theorem lastPathLevel_le_principalLevel (ϑ : D.MFoldTwist) (z : Bool) (j : ℕ)
   have h_factor : GeneralLinearGroup.map (reduceToTriangle ϑ true)
       ((gridModulus ϑ).reductionGL k) = (gridModulus 1).reductionGL k :=
     Units.ext Modulus.factor_reductionGL
-  exact (Modulus.mem_principalLevel_iff gridModulus_one_ideal k).2
-    (h_factor.symm.trans (h_le hk))
+  exact (Modulus.mem_principalLevel_iff gridModulus_one_ideal k).2 (h_factor.symm.trans (h_le hk))
 
 /-- The character at the lower end of the edge from `(z, j, m)` to `(z, j + 1, m)` has as its weight
 the exponent of the determinant at `(z, j + 1, m)`. Its tame part, the family of characters of the

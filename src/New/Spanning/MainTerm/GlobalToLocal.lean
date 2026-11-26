@@ -791,8 +791,7 @@ lemma IsFillingData.extendedBesselChar_toPlaces_translateByClassReps [hF : S.IsF
   have hu' : S.translateByClassReps c c u ∈ besselU := hu.translateByClassReps_mem_besselU c
   -- The character is trivial on the integral points off `T`, and conjugation by `h_c` keeps it.
   rw [P.extendedBesselChar_eq (u := S.toPlaces T (S.translateByClassReps c c u))
-    (hu'.map_mem_agreeWithOneOn _)
-      (by simp),
+    (hu'.map_mem_agreeWithOneOn _) (by simp),
     hF.psi_simpleRootSum_eq_unipotentChar h_off,
     unipotentChar_eq_of_mem_principalLevel hu' (ratToFin_mem_besselU_iff.mpr hu) c.out
       (by simp [translateByClassReps, mul_assoc])]
@@ -807,8 +806,7 @@ of `u` at the finite places. -/
 lemma besselOrbitalIntegral_ratToInf_besselU_mul {side : FullOrCut} {u u' : S.G E}
     (hu : u ∈ besselU) (hu' : u' ∈ besselU) (γ : S.G E) :
     besselOrbitalIntegral volume (fun y : InfinitePlace E → 𝔰.G₁ ↦
-      WithLp.toLp 2 (S.besselFn side y))
-        (S.ratToInf (u⁻¹ * γ * u')) =
+      WithLp.toLp 2 (S.besselFn side y)) (S.ratToInf (u⁻¹ * γ * u')) =
       (S.unipotentChar (S.ratToFin u) * star (S.unipotentChar (S.ratToFin u'))) •
         besselOrbitalIntegral volume
           (fun y : InfinitePlace E → 𝔰.G₁ ↦ WithLp.toLp 2 (S.besselFn side y)) (S.ratToInf γ) := by

@@ -625,8 +625,7 @@ lemma lintegral_heisenbergMeasure_inv_depth_le {g y : T.G} (hg : g ∈ F.boxSet)
     setLIntegral_orthonormalPart_le (.inl rfl) (hφ.lintegral_le (17 + 4))
   -- The skew variable adds `17 + 2` to the exponent, and the sum is at most `4600 n` as `n ≥ 1`.
   rw [← one_mul (F.floorModulus a * _)]
-  refine lintegral_heisenbergMeasure_le (j := 17) F.levelUnit h_volume
-    fun t h_ne ↦ ?_
+  refine lintegral_heisenbergMeasure_le (j := 17) F.levelUnit h_volume fun t h_ne ↦ ?_
   have h_close : P.heisenbergElem a t * y ∈ Γ.closeBelow a g := mem_of_indicator_ne_zero h_ne
   constructor
   · exact Γ.exists_lift_of_mem_closeBelow a hg hy (heisenbergElem_mem_floorUnipotent a t) h_close

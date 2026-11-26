@@ -278,8 +278,7 @@ lemma New.Variety.eq_zero_of_eventually_ofSection_eq_zero {R : Type*} [CommRing 
     Q = 0 := by
   -- The derivative of `Z` is injective, hence onto, so `Z` is a submersion at `b`.
   have Z_imm (v : Fin d → ℂ) (hv : fderiv ℂ Z b v = 0) : v = 0 := by
-    refine eq_zero_of_fderiv_ofSection_eq_zero hW h_imm hb hb_f
-      fun P : MvPolynomial (Fin d) R ↦ ?_
+    refine eq_zero_of_fderiv_ofSection_eq_zero hW h_imm hb hb_f fun P : MvPolynomial (Fin d) R ↦ ?_
     rw [(h_eval P).fderiv_eq, fderiv_comp b
       (AnalyticOnNhd.eval_mvPolynomial _ _ ⟨⟩).differentiableAt hZ.differentiableAt]
     simp [hv]

@@ -241,8 +241,7 @@ every chosen place `w`: its column there is that of the identity matrix. -/
 lemma apply_besselFrame_zero_of_mem_reducedImage {t : S.ResidueGL} (ht : t ∈ S.reducedImage besselS)
     (i : Fin 2) (w : S.chosenPlaces i) (j : 𝔰.BesselIndex) :
     (t i w).val j (𝔰.besselFrame 0) =
-      (1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex (ResField (w : FinPlace E))) j
-        (𝔰.besselFrame 0) := by
+      (1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex (ResField (w : FinPlace E))) j (𝔰.besselFrame 0) := by
   obtain ⟨k, hk, rfl⟩ := ht
   simpa using reduction_apply_congr 1 i w (apply_besselFrame_zero_of_mem_besselS hk j)
 

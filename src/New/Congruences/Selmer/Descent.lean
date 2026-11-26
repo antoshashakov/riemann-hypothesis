@@ -107,8 +107,7 @@ lemma tilting {O m B : Type*} [CommRing O] [DVR O] [Fintype m] [AddCommGroup B]
     refine ⟨σ u, (σ u).property, ?_⟩
     simpa [hσ_apply, hU_apply] using congrArg Subtype.val hu
   have h_ker : C' ⊓ evγ.ker ≤ C ⊓ evγ.ker ⊓ (C.map evγ).comap evφ :=
-    le_inf (inf_le_inf_right _ hC')
-      (inf_le_left.trans (h_image.trans (comap_mono (map_mono hC'))))
+    le_inf (inf_le_inf_right _ hC') (inf_le_left.trans (h_image.trans (comap_mono (map_mono hC'))))
   -- Every map splits the length of `C'` into the lengths of image and kernel.
   have h_split (Φ : B →ₗ[O] m → O ⧸ I) :
       length O (C'.map Φ) + length O ↥(C' ⊓ Φ.ker) = length O C' := by

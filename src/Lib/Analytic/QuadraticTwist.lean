@@ -816,8 +816,7 @@ lemma exists_entireL_quadTwist_ne_zero {N : ℕ} [NeZero N] {β : ℝ} (H : ℝ)
     exact ⟨hd_class, ξ, ⟨s, h_re, h_im, h_zero⟩⟩
   let f (n : ℕ) : ℂ := if n.Prime ∧ n = a then 1 else 0
   have h_count : (fun X ↦ ∑ n ∈ Icc 1 X, ‖f n‖) =O[atTop] fun X : ℕ ↦ (X : ℝ) ^ (1 - δ / 2) := by
-    refine .trans (.of_norm_le fun X ↦ ?_)
-      (zero_density_quadTwist hδ H fun d hd ↦ h_class ⟨d, hd⟩)
+    refine .trans (.of_norm_le fun X ↦ ?_) (zero_density_quadTwist hδ H fun d hd ↦ h_class ⟨d, hd⟩)
     simp only [f, apply_ite norm, norm_one, norm_zero, sum_boole, Real.norm_natCast, Nat.cast_le]
     -- Every prime of the class is bad, so it is counted by `zero_density_quadTwist`.
     refine card_le_card fun d hd ↦ ?_

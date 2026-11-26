@@ -138,8 +138,7 @@ lemma skewMeasure_setOf_mul_mem (u : Aˣ) (h : star u.val = u) :
   -- `element + star element = 1`, `star u = u` and `b` is skew, `skewPart` sends `element * u * b`
   -- to `u * b`.
   have h_scale : P.skewMeasure ((fun b ↦ skewPart (P.element * u * b.1)) ⁻¹' {b | b.1 ∈ P.integers})
-    =
-      ((P.modulus u ^ (2⁻¹ : ℝ))⁻¹ • P.skewMeasure) {b | b.1 ∈ P.integers} := by
+    = ((P.modulus u ^ (2⁻¹ : ℝ))⁻¹ • P.skewMeasure) {b | b.1 ∈ P.integers} := by
     rw [← map_skewMeasure_mul_unit u h]
     exact (map_apply (by fun_prop) isOpen_O.preimage_val.measurableSet).symm
   have h_part (b : skewAdjoint A) : P.element * u * b.1 - star (P.element * u * b.1) = u * b.1 := by
@@ -645,8 +644,7 @@ theorem IntegralPlace.integral_skewMeasure_eq_toReal_lintegral (h : P.IsDisinteg
       (mass_fin : ∀ b : skewAdjoint A, ∫⁻ x, f x ∂l b < ∞)⟩ := h.continuous_and_lt_top hf h_supp
   -- Units are dense, so they can tend to zero.
   have units_neBot : (comap Units.val (𝓝 (0 : A))).NeBot := comap_neBot fun s hs ↦ by
-    simpa [Set.Nonempty, IsUnit, and_comm] using
-      (dense_of_ae P.ae_isUnit).inter_nhds_nonempty hs
+    simpa [Set.Nonempty, IsUnit, and_comm] using (dense_of_ae P.ae_isUnit).inter_nhds_nonempty hs
   let cut (y : Aˣ) : Set (skewAdjoint A) := {b | (y * star y).1 * b.1 ∈ O}
   have cover : AECover P.skewMeasure (comap Units.val (𝓝 0)) cut := by
     refine ⟨.of_forall fun b ↦ ?_, fun _ ↦ isOpen_O.measurableSet.preimage (by fun_prop)⟩

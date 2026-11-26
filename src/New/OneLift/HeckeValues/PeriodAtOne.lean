@@ -94,8 +94,7 @@ lemma liftFn_charOfTamePart_det_eq_residueDatum {ψ : (w : FinPlace E) → MulCh
       residueDatum Subtype.val fun S : (w : 𝔫.places) → Matrix n n (ResField w.1) ↦
         ∏ᶠ w : 𝔫.places, ψ w (S w).det := by
   simpa [← mapMatrix_apply, ← map_det] using!
-    liftFn_eq_residueDatum (𝔪 := 𝔫) Subtype.range_coe.symm
-      fun S ↦ ∏ᶠ w, ψ _ (det (n := n) (S w))
+    liftFn_eq_residueDatum (𝔪 := 𝔫) Subtype.range_coe.symm fun S ↦ ∏ᶠ w, ψ _ (det (n := n) (S w))
 
 /-- Let `ψ` be a family of multiplicative characters `ψ w` of the residue fields of `E`. The residue
 datum (`New.residueDatum`) of a function at some places is that function of the reductions of an

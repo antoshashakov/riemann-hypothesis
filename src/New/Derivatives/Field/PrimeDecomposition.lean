@@ -561,8 +561,7 @@ element of the infinite place `v`. Then `φ (σ v x) = φ (c x) ^ pⁿ` for all 
 `(p/d) p` in `(ℤ/q₁)ˣ` and the Legendre symbol `(p/d)`. -/
 lemma map_galOfPlaceInt_eq_pow_iff_eq_frobElem_pow [IsDomain R] (φ : 𝓞 (P.E s) →+* R) (n : ℕ)
     (h_sign : IsIdOrConjWithSign c e) (hp_not_dvd : ¬p ∣ P.q₁ s * P.d) :
-    (∀ x : 𝓞 (P.E s), φ (galOfPlaceInt v x) = φ (c x) ^ p ^ n) ↔
-      (v, e) = P.frobElem s p ^ n := by
+    (∀ x : 𝓞 (P.E s), φ (galOfPlaceInt v x) = φ (c x) ^ p ^ n) ↔ (v, e) = P.frobElem s p ^ n := by
   -- The first condition of `forall_map_galOfPlaceInt_eq_pow_iff` determines `v`; as
   -- `φ sqrtNegDInE ≠ 0`, the second one determines `e`.
   obtain ⟨hp_not_dvd_q₁, hp_not_dvd_d⟩ : ¬p ∣ P.q₁ s ∧ ¬p ∣ P.d := by
@@ -809,8 +808,7 @@ lemma natCast_eq_neg_one_of_star_eq (hp_mem : (p : 𝓞 (P.E s)) ∈ w.asIdeal) 
       exists_mk_galOfPlaceInt_eq_pow_of_smul_eq hp_mem h_one
     have h_zeta : π (galOfPlaceInt 1 (P.zetaInt s)) =
         π (galOfPlaceInt (P.placeOfInt s (-1 * P.d ^ n)) (P.zetaInt s)) :=
-      ((forall_map_galOfPlaceInt_eq_pow_iff hp_not_dvd_q₁ π n isIdOrConjWithSign_star).1
-        h_frob).1
+      ((forall_map_galOfPlaceInt_eq_pow_iff hp_not_dvd_q₁ π n isIdOrConjWithSign_star).1 h_frob).1
     have h_place : 1 = P.placeOfInt s (-P.d ^ n) := by
       simpa using (map_galOfPlaceInt_zetaInt_inj π hp_not_dvd_q₁ _).1 h_zeta
     have h_class : ((-P.d ^ n : ℤ) : ZMod P.q₀) = 1 := by

@@ -125,8 +125,7 @@ Then the infinite places of `E` (the type `P.Φ s`) are in bijection with the fi
 that contain `a`. -/
 lemma nonempty_infinitePlace_equiv_finPlace (hp_mod : p ≡ 1 [MOD P.q₁ s * P.d]) {a : 𝓞 (P.E s)}
     {c : ℕ} (h_norm : a * star a = p * c) (h_coprime : p.Coprime c) :
-    Nonempty
-      (P.Φ s ≃ {w : FinPlace (P.E s) // a ∈ w.asIdeal ∧ (p : 𝓞 (P.E s)) ∈ w.asIdeal}) := by
+    Nonempty (P.Φ s ≃ {w : FinPlace (P.E s) // a ∈ w.asIdeal ∧ (p : 𝓞 (P.E s)) ∈ w.asIdeal}) := by
   classical
   -- Fix `w` above `p` and send `v` to the one of `v • w`, `star (v • w)` that contains `a`.
   obtain ⟨w, hw⟩ : ∃ w : FinPlace (P.E s), (p : 𝓞 (P.E s)) ∈ w.asIdeal :=

@@ -200,8 +200,7 @@ lemma exists_siegel_set :
   have x_le (i : p) : x i ≤ -c i := by
     refine le_neg.1 (not_lt.1 fun hi ↦ y.det_ne_zero (det_eq_zero_of_row_eq_zero i fun j ↦ ?_))
     -- It suffices that `2 ^ x i * y i j` is an entry of a product that defines `entries i`.
-    refine hc i (-x i) hi
-      (mem_biUnion mem_F (mem_iUnion₂.2 ⟨I, j, (_, _), ⟨hκ, mem_C⟩, ?_⟩))
+    refine hc i (-x i) hi (mem_biUnion mem_F (mem_iUnion₂.2 ⟨I, j, (_, _), ⟨hκ, mem_C⟩, ?_⟩))
     simp [R, move, adeleMatrix.eq_1 g, radicalElement_inv, mul_assoc, Matrix.mul_assoc, dyadicDiag,
       ↓ ← Matrix.map_mul, -coe_units_inv] at h_act ⊢
     rw [h_act]
@@ -622,8 +621,7 @@ lemma New.SiegelWeil.bddAbove_norm_sub_tsum_norm_zeroTerm {ℓ : 𝒮 (S.hom T) 
         ∀ z : (p → ℕ) × K, z.1 ι = j → ‖ℓ (normalisedTorus T P z.1 z.2)‖ ≤ 1 :=
       Nat.cofinite_eq_atTop.le (eventually_comap.mp
         ((h_lim K hK ι).norm.eventually_le_const (by simp)))
-    exact (Finite.pi' h_ev).subset
-      fun x ⟨v, hv, h_gt⟩ ι h_le ↦ h_gt.not_ge (h_le (x, ⟨v, hv⟩) rfl)
+    exact (Finite.pi' h_ev).subset fun x ⟨v, hv, h_gt⟩ ι h_le ↦ h_gt.not_ge (h_le (x, ⟨v, hv⟩) rfl)
   let a (x : p → ℕ) : G E s := P.levi (dyadicDiag (x ·), 1)
   obtain ⟨B, hB₀, hB⟩ :
       ∃ B > (0 : ℝ),

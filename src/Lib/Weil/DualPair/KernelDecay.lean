@@ -289,8 +289,7 @@ lemma exists_norm_schrodingerOp_le_of_isShortPair {S : Space E n s} {T : Space E
       refine map_schrodingerOp_eq_zero_of_invariant hP _ _ (ℓ := Λ₀ ∘L (S.hom T).ω k) (fun w f ↦ ?_)
         h_ne _
       rw [ContinuousLinearMap.comp_apply, omega_rho, ← coordMatrix_rankOneMaps]
-      exact subspaceMean_rho h_iso h_inv h_mean
-        ((mem_adelicPoints_span_col_iff k _).2 ⟨w, rfl⟩) _
+      exact subspaceMean_rho h_iso h_inv h_mean ((mem_adelicPoints_span_col_iff k _).2 ⟨w, rfl⟩) _
     · have := (S.hom T).compactSpace_adelicPoints_quotient Z
       rw [h_mean]
       exact (quotMean_const_mul _ _).trans (mul_eq_zero_of_right _ (h_mean_zero _))

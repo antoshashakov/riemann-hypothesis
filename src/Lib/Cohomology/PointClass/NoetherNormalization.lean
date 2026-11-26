@@ -470,8 +470,7 @@ lemma IsNoetherNormalization.nonempty_galoisClosure (hΛ : IsNoetherNormalizatio
   -- The values of `Λ` at `t • g` are `t` times those at `g`, which satisfy no nonzero homogeneous
   -- relation. (`using!`: the algebra instance comes from `algebraize`.)
   have h_faithful : FaithfulSMul A Ω := by
-    refine (faithfulSMul_iff_algebraMap_injective A Ω).mpr
-      (algebraicIndependent_iff.mpr fun F ↦ ?_)
+    refine (faithfulSMul_iff_algebraMap_injective A Ω).mpr (algebraicIndependent_iff.mpr fun F ↦ ?_)
     simpa using! h_no_rel.aeval_eq_zero_of_transcendental ht
   have h_forms_X : evalForms Λ (t • inc ∘ g) = aeval (R := k) (evalForms Λ (t • inc ∘ g)) ∘ X :=
     funext fun l ↦ (aeval_X _ l).symm

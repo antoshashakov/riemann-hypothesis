@@ -76,8 +76,7 @@ lemma exists_local_universal_point {p : NumberField.RingOfIntegers E} (hp : x.ba
   have hκ_fin : IsFinite κ.left := by
     -- `κ` followed by the first projection is `p • 𝟙`, which is finite.
     have : IsFinite (κ.left ≫ (fst x.groupScheme x.groupScheme).left) := by
-      simpa only [κ, ← Over.comp_left, lift_fst] using
-        (x.isIsogeny_smul_id hp₀).toIsFinite
+      simpa only [κ, ← Over.comp_left, lift_fst] using (x.isIsogeny_smul_id hp₀).toIsFinite
     exact IsFinite.of_comp κ.left (fst x.groupScheme x.groupScheme).left
   have hκ {C : Type} [CommRing C] [Algebra k C] {y : specOver k C ⟶ x.groupScheme} :
       y ∈ placeTorsion x C ↔ y ≫ κ = 0 := by

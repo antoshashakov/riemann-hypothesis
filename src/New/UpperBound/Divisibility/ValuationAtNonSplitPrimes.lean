@@ -257,8 +257,7 @@ lemma IsMarked.sum_neighborExponent_add_neighborCharge_le (hΛ : D.IsMarked Λ) 
     {J : FinPlace D.E → Finset (D.X (j + 1))} (hJ : ∀ l ∈ Λ, #(J l) ≤ r)
     (T : WeylIndex (D.X (j + 1)) D.columnCount) :
     ∑ τ : D.Φ, ∑ h : Fin (Fintype.card (D.X (j + 1))), ∑ c : Fin (D.columnCount τ h), ∑ b : Fin h,
-      ((neighborExponent Λ J τ ((T τ).1 h c b) : ℝ) +
-        neighborCharge Λ J τ h.1 ((T τ).1 h c b)) ≤
+      ((neighborExponent Λ J τ ((T τ).1 h c b) : ℝ) + neighborCharge Λ J τ h.1 ((T τ).1 h c b)) ≤
     ∑ l ∈ Λ, heckeScalingExponent l + r * ∑ τ ∈ placesInducing Λ, D.lowColumns j τ := by
   classical
   let cost (τ : D.Φ) (h : ℕ) (b : D.X (j + 1)) : ℝ :=
@@ -446,8 +445,7 @@ lemma IsMarked.norm_baseChange_atUniformizer (hΛ : D.IsMarked Λ) {l : FinPlace
     rpow_sum_of_pos hp_pos]
   refine prod_congr rfl fun τ _ ↦ ?_
   -- At each `τ` compare the norm of `a / star a` with the corresponding power of `p`.
-  change ‖adeleExtension (ιₚ.comp (Φ τ))
-    ((a : 𝔸f D.E) * star ((a⁻¹ : (𝔸f D.E)ˣ) : 𝔸f D.E))‖ ^ _ = _
+  change ‖adeleExtension (ιₚ.comp (Φ τ)) ((a : 𝔸f D.E) * star ((a⁻¹ : (𝔸f D.E)ˣ) : 𝔸f D.E))‖ ^ _ = _
   rw [map_mul, adeleExtension_star, inducedPlace, ← placeOfEmb_comp_star, map_units_inv, norm_mul,
     norm_inv, h_unif, h_unif]
   split_ifs <;> simp_all [norm_p_eq_inv, NeZero.ne]

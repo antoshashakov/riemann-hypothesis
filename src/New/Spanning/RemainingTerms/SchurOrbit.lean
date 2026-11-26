@@ -175,8 +175,7 @@ lemma HasCellRank.norm_det_subframeBlock (h_rank : S.HasCellRank j γ) (v : Infi
         ‖Φ v (leadingMinor (S.frameProducts γ) j)‖ := by
   have h_pair : NormOnePairOccursFrom j (S.ratToInf γ v) := h_rank.normOnePairOccursFrom.ratToInf v
   rw [← norm_det_submatrix_realFrameGram]
-  exact RealPlace.norm_det_subframeBlock (min_le_left 𝔰.ϱ j) (hZ := rfl) h_pair j.is_le
-    (hij := rfl)
+  exact RealPlace.norm_det_subframeBlock (min_le_left 𝔰.ϱ j) (hZ := rfl) h_pair j.is_le (hij := rfl)
 
 /-- A matrix product `P * M` with `P` integral has the conjugates of its rows in every `Ô`-module
 that contains the conjugates of the rows of `M`. -/
@@ -458,8 +457,7 @@ lemma tsum_orbit_le_of_isLatticeTranslate (h_over : γ ∈ S.termsOver c s c')
       ∃ l : Matrix 𝔰.κ (Fin (min 𝔰.ϱ j)) E, IsLatticeTranslate c γ p₀ p l := by
     refine h_rank.exists_isLatticeTranslate (c' := c') (hZ hp₀) (hZ hp) fun r ↦ ?_
     have h_diff : frameMiddle (S.translateByClassReps c c' p) - frameMiddle
-      (S.translateByClassReps c c' p₀) =
-        S.classCoordX₀ c * a.1 * (Q * D p - Q * D p₀) := by
+      (S.translateByClassReps c c' p₀) = S.classCoordX₀ c * a.1 * (Q * D p - Q * D p₀) := by
       rw [Matrix.mul_sub, h_basis hp, h_basis hp₀, sub_sub_sub_cancel_right]
     have h_mem (i : 𝔰.κ) : (Q * D p - Q * D p₀)ᴴ.col i ∈
         S.ideleM • colLattice (Ô E) ((isotropicRows Z).submatrix (initialIsotropicIndex j)

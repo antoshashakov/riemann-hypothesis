@@ -239,8 +239,7 @@ lemma inf_supportedOn_le_inf_localLevel {Z : Set (FinPlace E)} {M : Subgroup (Gf
     stdLevel E' n ⊓ supportedOn n S ≤ M ⊓ localLevel n (placesAbove E' Z)ᶜ m := by
   rintro g ⟨g_int, g_supp⟩
   have g_one (u : FinPlace E') (hu : u ∉ placesAbove E' {w}) : g.atPlace u = 1 :=
-    mem_supportedOn.mp g_supp u (fun h ↦ hu (hS h))
-      (fun h ↦ hu (star_mem_placesAbove.mp (hS h)))
+    mem_supportedOn.mp g_supp u (fun h ↦ hu (hS h)) (fun h ↦ hu (star_mem_placesAbove.mp (hS h)))
   have h_disjoint (u : FinPlace E') (huZ : u ∈ placesAbove E' Z) : u ∉ placesAbove E' {w} := by
     intro hu_w
     have h_Z : u.below E ∈ Z ∨ star (u.below E) ∈ Z := by simpa [placesAbove] using huZ

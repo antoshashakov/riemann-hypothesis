@@ -214,8 +214,7 @@ lemma SidePairing.isSafeMoveSnd_of_orders {l κ e : ℕ}
     ⟨smul_sub_mem_withOrders y_exp g, by simp [k.galMonoid.smul_def, y_zero]⟩
   have gy_mem : g • y ∈ S'.kerWithOrders i yOrders := (sub_mem_iff_left _ hy).1 cocycle_mem
   have safe : P.IsSafe κ (k.zTauUnit • k.zTauUnit⁻¹ • (g • x - x)) (g • y) :=
-    (P.isSafe_of_orders hν h_anti (zTauUnit_inv_smul_sub_mem_kerWithOrders hx g) gy_mem
-      h_pos).left
+    (P.isSafe_of_orders hν h_anti (zTauUnit_inv_smul_sub_mem_kerWithOrders hx g) gy_mem h_pos).left
   simpa using safe
 
 lemma mem_letterPart_of_mem_pointsOver (hx : x ∈ S.pointsOver c i e o o') :

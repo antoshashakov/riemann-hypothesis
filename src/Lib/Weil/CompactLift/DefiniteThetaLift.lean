@@ -345,7 +345,6 @@ lemma isThetaLift_thetaKernel [Nonempty n] [Nonempty n'] [DecidableEq n'] [Decid
     obtain ⟨t', ht'⟩ := ht
     -- The integral is linear in `t` and the coefficient of the lift is linear in `t'`.
     refine ⟨r • t', fun o Φ φ h ↦ ?_⟩
-    simpa [algFormCoeff, mul_left_comm _ r, integral_const_mul] using
-      congrArg (r * ·) (ht' o Φ φ h)
+    simpa [algFormCoeff, mul_left_comm _ r, integral_const_mul] using congrArg (r * ·) (ht' o Φ φ h)
 
 end New

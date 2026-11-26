@@ -279,8 +279,7 @@ lemma exists_contDiff_witt_and_bump {ι : Type*} [Fintype ι] {J : Matrix m m �
     Continuous.tendsto (f := fun y : Matrix m b ℂ ↦ yᴴ * J * y) (by fun_prop) x₀
       (γ_inv.and (ContinuousAt.eventually_ne (by fun_prop) hdet))
   obtain ⟨σ, σ_supp, σ_cpt, σ_smooth, σ_range, σ_one⟩ :=
-    exists_contDiff_tsupport_subset
-      (nhds_pi.le (eventually_pi fun _ : ι ↦ span_near.and gram_near))
+    exists_contDiff_tsupport_subset (nhds_pi.le (eventually_pi fun _ : ι ↦ span_near.and gram_near))
   have near (x : ι → Matrix m b ℂ) (hx : σ x ≠ 0) (i : ι) :
       (∃ c : Matrix b b ℂ, (k (x i) : Matrix m m ℂ) * x₀ * c = x i) ∧
         γ ((x i)ᴴ * J * x i) = ((x i)ᴴ * J * x i)⁻¹ ∧ ((x i)ᴴ * J * x i).det ≠ 0 :=

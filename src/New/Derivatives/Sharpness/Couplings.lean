@@ -138,8 +138,7 @@ lemma exists_pderiv_mul_eq_smul {κ : ℂ_[p]} (hκ : 1 < ‖κ‖) {G : MvPower
     simp [κInv, ← map_mul, norm_pos_iff.1 (one_pos.trans hκ)]
   refine ⟨g * A + C κInv * (pderiv y g + g * B), ?_, by simp [h_residue]⟩
   simp only [Derivation.leibniz, hG, smul_eq_mul, smul_eq_C_mul, map_add, map_mul, map_pderiv]
-  linear_combination
-    -(pderiv y (seriesToCp g) + seriesToCp g * seriesToCp B) * G * h_cancel
+  linear_combination -(pderiv y (seriesToCp g) + seriesToCp g * seriesToCp B) * G * h_cancel
 
 /-- Let `κ ∈ ℂ_[p]` have norm greater than `1`. If `∂_(t i) G = (κ A_i + B_i) G` with `A_i`, `B_i`
 integral, then `(∏_(i ∈ T) ∂_(t i)) G = κ ^ #T g G` with `g` integral and congruent to `∏ A_i`
@@ -201,8 +200,7 @@ family (`e τ₁` is odd on `Φ₀`, and no other pair of an odd `a ≤ e τ` an
 lemma IsCouplingFamily.isLowestTerm_pderiv_couplingSum {pr : ℕ → Φ → Φ} {Φ₀ : Finset Φ}
     {e : Φ → ℕ} {l : ℕ → ℕ → valRingCp p} (he : IsCouplingFamily pr Φ₀ e) {τ : Φ} (hτ : τ ∈ Φ₀) :
     IsLowestTerm 1 (rescale (fun x : Φ × Unit ↦ if x.1 ∈ Φ₀ then 1 else 0)
-        ((pderiv (pr (e τ) τ, ()) (couplingSum {a : ℕ | Odd a} pr l)).map
-          (residue (valRingCp p))))
+        ((pderiv (pr (e τ) τ, ()) (couplingSum {a : ℕ | Odd a} pr l)).map (residue (valRingCp p))))
       (.single (τ, ()) (p ^ e τ)) (residue (valRingCp p) (l (e τ) 0)) := by
   have hp : 1 < p := Fact.out (p := p.Prime).one_lt
   have h_zero : 0 ∉ {a : ℕ | Odd a} := by simp

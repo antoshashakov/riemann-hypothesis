@@ -230,8 +230,7 @@ characters given by `rankTwist` of `D.chainChar ϑ (j + 1)`, the pair of the poi
 with archimedean part `1` and finite part `u`, and the identity of `G_(j+1)` fixes this datum. -/
 lemma twistedPairWeil_datumY_of_mem_levelY (ϑ : D.TameChar) {j : ℕ} {u : Gf D.E (D.Y j)}
     (hu : u ∈ levelY ϑ j) :
-    twistedPairWeil (rankTwist (D.chainChar ϑ (j + 1))) ((1, u), 1) (datumY ϑ j) =
-      datumY ϑ j := by
+    twistedPairWeil (rankTwist (D.chainChar ϑ (j + 1))) ((1, u), 1) (datumY ϑ j) = datumY ϑ j := by
   -- The finite part `pointDatumY` of the datum is fixed by `(u, 1)`; the other part is archimedean.
   have h_fin : twistedPairWeil (rankTwist (D.chainChar ϑ (j + 1))) ((1, u), 1)
       (pointDatumY ϑ j).val = (pointDatumY ϑ j).val := by

@@ -73,8 +73,7 @@ lemma lintegral_enorm_integral_kernel_sq_le {f : W × Z → ℂ} (hf : Measurabl
   refine lintegral_mono fun w ↦ ?_
   have h_cs : ‖∫ z : Z, f (w, z) ∂ζ w‖ₑ ^ 2 ≤
       ζ w V * ∫⁻ z : Z in V, ‖f (w, z)‖ₑ ^ 2 ∂ζ w :=
-    enorm_integral_sq_le (hf.comp measurable_prodMk_left).aestronglyMeasurable
-      fun z ↦ h_supp (w, z)
+    enorm_integral_sq_le (hf.comp measurable_prodMk_left).aestronglyMeasurable fun z ↦ h_supp (w, z)
   grw [h_cs, h_fibre w, setLIntegral_le_lintegral]
 
 /-- The integral over the fibres of an integrable function is integrable. -/
@@ -229,8 +228,7 @@ lemma setLIntegral_le_of_le_comp_fst {Y Z : Type} [MeasurableSpace Y] [Measurabl
     (h_fibre : ∀ q : Y × (ι → A), ζ q V ≤ M) (hH : Measurable H)
     (hT : ∀ p : (Y × (ι → A)) × Z, T p ≤ K * H p.1)
     (hD : ∀ y : Y, ∫⁻ w : ι → A, H (y, w) ≤ D) :
-    ∫⁻ p : (Y × (ι → A)) × Z in (S ×ˢ U) ×ˢ V, T p ∂(μ.prod volume) ⊗ₘ ζ ≤
-      K * (M * (D * μ S)) := by
+    ∫⁻ p : (Y × (ι → A)) × Z in (S ×ˢ U) ×ˢ V, T p ∂(μ.prod volume) ⊗ₘ ζ ≤ K * (M * (D * μ S)) := by
   calc _ ≤ K * (M * ∫⁻ q : Y × (ι → A) in S ×ˢ univ, H q ∂μ.prod volume) := by
         grw [lintegral_mono hT, lintegral_const_mul _ (by fun_prop),
           setLIntegral_comp_fst_le (hS.prod hU) hV h_fibre hH,

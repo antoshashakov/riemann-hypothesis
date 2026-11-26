@@ -119,8 +119,7 @@ lemma comp_restrict_pull_map {D D' : Type 1} [Category D] [Category D'] (φ : D'
     {N N₁ F : AbFunctor D} {N' K : AbFunctor D'} (α : N' ⟶ (restrictAlong φ).obj N) (f : N ⟶ N₁)
     {n : ℕ} (x : H N₁ F n) (T : TotalH ((restrictAlong φ).obj F) K) :
     comp ((Comparison.restrict φ F).pull α n (H.map F f n x)).toTotalH T =
-      pullbackAlong (α ≫ (restrictAlong φ).map f)
-        (mapThenComp (restrictAlong φ) T x.toTotalH) := by
+      pullbackAlong (α ≫ (restrictAlong φ).map f) (mapThenComp (restrictAlong φ) T x.toTotalH) := by
   -- Restriction along `φ` commutes with pull-back, and the coefficient map of the comparison is
   -- the identity.
   have h_map : (H.map F f n x).mapExactFunctor (restrictAlong φ) =

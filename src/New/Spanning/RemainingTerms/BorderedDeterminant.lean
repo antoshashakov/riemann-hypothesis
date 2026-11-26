@@ -323,8 +323,7 @@ lemma framePair_translateByClassReps_mul_classCoord {S : Filling E 𝔰} {ι ρ 
     [Fintype ρ] (c c' : S.Classes) (γ : S.G E) (g : ι → Fin (𝔰.ϱ + 1) ⊕ Fin (𝔰.ϱ + 1))
     (t : Matrix 𝔰.BesselIndex ρ E) :
     ((framePair (S.translateByClassReps c c' γ)).submatrix id g)ᴴ *
-      (S.latticeMiddle (𝔸f E)).splitGram *
-        (S.classCoord c * finAdeleMatrix t) =
+      (S.latticeMiddle (𝔸f E)).splitGram * (S.classCoord c * finAdeleMatrix t) =
       finAdeleMatrix (((framePair γ).submatrix id g)ᴴ * S.ratGram * t) := by
   classical
   -- selecting columns commutes with the change of coordinates
@@ -700,8 +699,7 @@ lemma HasCellRank.abs_norm_det_updateRow_paddedLeading {S : Filling E 𝔰} {j :
   have h_last : S.frameProducts γ 𝔰.top ⬝ᵥ y = -S.N * x 𝔰.top := by
     simpa [mulVec] using congrFun (frameProducts_mulVec_of_frameImage_eq hxy) 𝔰.top
   have h_unit (v : NumberField.InfinitePlace E) : ‖Φ v (x 𝔰.top)‖ ^ 2 = 1 := by
-    simpa [hy_top, sq] using
-      congrArg (fun t : E ↦ ‖Φ v t‖) (star_mul_last_eq_of_frameImage_eq hxy)
+    simpa [hy_top, sq] using congrArg (fun t : E ↦ ‖Φ v t‖) (star_mul_last_eq_of_frameImage_eq hxy)
   rw [det_updateRow_of_mulVec_eq_single h_padded, det_paddedLeading, h_last, minorNorm,
     show j.val - 𝔰.ϱ = 0 by omega, abs_norm_eq_prod_norm_sq, abs_norm_eq_prod_norm_sq]
   simp [mul_pow, h_unit, Finset.prod_mul_distrib, ← pow_mul]

@@ -670,8 +670,7 @@ lemma coeff_alternant (hs : IsStraightening l s ν) (hl : l.Injective) {μ : n �
 already straight: its weight is μ and its sign is `1`. Here δ = `l.lowerCount Eq`. -/
 lemma apply_add_lowerCount (hs : IsStraightening l s ν) (hl : l.Injective) {μ : n → ℤ}
     (hμ : IsKDominant ε (-l) μ) : ν (μ + l.lowerCount Eq) = μ ∧ s (μ + l.lowerCount Eq) = 1 := by
-  simpa [hs.coeff_alternant hl hμ, ite_eq_iff] using
-    alternant_coeff_of_isKDominant hl hμ hμ
+  simpa [hs.coeff_alternant hl hμ, ite_eq_iff] using alternant_coeff_of_isKDominant hl hμ hμ
 
 /-- For a straightening `s`, `ν` of exponents and injective `l`, the virtual characters
 `s γ • kTypeChar (ν γ)` satisfy Weyl's formula for suitable Laurent polynomials `Y γ`. -/

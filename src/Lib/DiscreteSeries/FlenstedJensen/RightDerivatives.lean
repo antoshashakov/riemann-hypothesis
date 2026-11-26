@@ -383,8 +383,7 @@ bounded by `‖F y‖ * L * ‖y⁻¹‖ * ‖g - g₀‖` on `K⁻¹` and vanis
 theorem norm_bump_smul_sub_le_indicator (F : USign ε → E) (α : Bumps ε)
     {A : smoothMatrixFunctions n ℂ}
     (hA : smoothMatrixFunctions.restrictU ε ℂ A = α.val.val) {N : Set (USign ε)} {L : ℝ≥0}
-    (hL : LipschitzOnWith L A.val
-      ((fun x : USign ε ↦ x.val.val) '' (tsupport α.val.val * N⁻¹ * N)))
+    (hL : LipschitzOnWith L A.val ((fun x : USign ε ↦ x.val.val) '' (tsupport α.val.val * N⁻¹ * N)))
     (y : USign ε) {g g₀ : USign ε} (hg : g ∈ N) (hg₀ : g₀ ∈ N) :
     ‖α.val.val (y⁻¹ * g) • F y - α.val.val (y⁻¹ * g₀) • F y‖ ≤
       (tsupport α.val.val * N⁻¹)⁻¹.indicator (fun z : USign ε ↦ ‖F z‖ * L * ‖z⁻¹.val.val‖) y *

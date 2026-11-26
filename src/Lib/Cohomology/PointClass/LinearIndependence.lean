@@ -596,8 +596,7 @@ lemma New.Variety.exists_map_separating_class {p : ℕ} {k : Type} [Field k] [Em
   have h_sep : IsSeparatedFunctor O.toFunctor := isSeparatedFunctor_of_injective j hj
   -- Pull-back along `proj` is injective, by the Noether normalisation `Λ`.
   have h_inj :
-      Function.Injective
-        (H.map genericCoeff (genericOver.whiskerLeft (freeAb.map proj)) (n + n)) :=
+      Function.Injective (H.map genericCoeff (genericOver.whiskerLeft (freeAb.map proj)) (n + n)) :=
     hΛ.pullback_injective hg (O := O) fun hv hx ↦
       ⟨⟨_, _, hx, rfl⟩, mem_offPoints_of_isHomogeneousSolution hg hz₀ hv₀ hx hv _, fun K φ hK e ↦ by
         obtain ⟨u, hu⟩ := mk_eq_mk_iff_exists_unit.mp e.symm

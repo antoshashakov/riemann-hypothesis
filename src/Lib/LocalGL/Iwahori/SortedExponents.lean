@@ -696,8 +696,7 @@ private lemma New.exists_reindexGL_apply_eq_smul_of_finsum_ne_zero {F : Type*} [
   have h_act (g z : intGL n 𝒪[F]) (w : GL n (IsLocalRing.ResidueField 𝒪[F]))
       (hw : w = intGL.map (residue 𝒪[F]) g * intGL.map (residue 𝒪[F]) z) :
       ρ (reindexGL e g.val) (ρ (reindexGL e z.val) x) = ρ (reindexGL e (s w).val) x := by
-    simpa [inv_mul_eq_one, h_lift, hw, Representation.inv_apply_eq_iff] using
-      hx ((s w)⁻¹ * (g * z))
+    simpa [inv_mul_eq_one, h_lift, hw, Representation.inv_apply_eq_iff] using hx ((s w)⁻¹ * (g * z))
   obtain ⟨g₀, hy_ne⟩ :
       ∃ g₀ : GL n (IsLocalRing.ResidueField 𝒪[F]),
         ∑ p : parabolic b, (∏ a : Fin r, star ((detChar (χ a)).evalGL (blockHom b a p))) •

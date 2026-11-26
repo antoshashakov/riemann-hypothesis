@@ -372,8 +372,7 @@ lemma exists_isLift {c c' : S.Classes} {γ : S.G E} {r : ℕ} {y : Matrix 𝔰.�
   -- By the definition of `L_γ`, each vector of the basis `y a` has a lift over the finite adeles.
   let lift : Matrix (Fin (𝔰.ϱ + 1)) (Fin 𝔰.ϱ) E := (S.M : E) • (isotropicRows (S.frameProducts γ))ᴴ
   obtain ⟨W, hW_int, hW⟩ : ∃ W : Matrix (Fin 𝔰.ϱ) (Fin r) (𝔸f E), IsIntMatrix (Ô E) W ∧
-      finAdeleMatrix lift * W =
-        (finAdeleMatrix (framePartX₀ γ))ᴴ * (finAdeleMatrix y * a.val) := by
+      finAdeleMatrix lift * W = (finAdeleMatrix (framePartX₀ γ))ᴴ * (finAdeleMatrix y * a.val) := by
     refine exists_isIntMatrix_mul_eq_of_col_mem fun k ↦ ?_
     have h_lift : finAdeleMatrix lift =
         S.ideleM • (isotropicRows (finAdeleMatrix (S.frameProducts γ)))ᴴ := by

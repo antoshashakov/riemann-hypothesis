@@ -136,8 +136,7 @@ lemma length_torsionBy_selmerModule_divisibleQuot {a : O} (ha : a ≠ 0) :
 `L`) with coefficients in `O / a` is no longer than the one with coefficients in
 `DivisibleQuot O = Frac(O) / O`. -/
 lemma length_selmerModule_le_divisibleQuot {a : O} (ha : a ≠ 0) :
-    length O (selmerModule ρ S L (QuotSpan a)) ≤
-      length O (selmerModule ρ S L (DivisibleQuot O)) :=
+    length O (selmerModule ρ S L (QuotSpan a)) ≤ length O (selmerModule ρ S L (DivisibleQuot O)) :=
   (length_torsionBy_selmerModule_divisibleQuot ρ S L ha).symm.trans_le
     (length_le_of_injective _ (subtype_injective _))
 

@@ -183,8 +183,7 @@ lemma form_frameImage_mulVec (γ : S.G E) (y : Fin (𝔰.ϱ + 1) → E) :
 
 /-- If `f · x = γ f · y`, then the `z`-coefficients of `x` and `y` have the same norm. -/
 lemma star_mul_last_eq_of_frameImage_eq
-    (hxy : frameImage (1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ x =
-      frameImage γ.val.val *ᵥ y) :
+    (hxy : frameImage (1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ x = frameImage γ.val.val *ᵥ y) :
     star (x 𝔰.top) * x 𝔰.top = star (y 𝔰.top) * y 𝔰.top := by
   -- `γ` is unitary, so `frameImage 1 *ᵥ x` and `frameImage 1 *ᵥ y` have the same norm
   have h_norm := form_frameImage_mulVec γ y
@@ -199,8 +198,7 @@ lemma star_mul_last_eq_of_frameImage_eq
 /-- If `γ f · y = f · x`, then its products with the frame vanish except the one with `z`, which
 is `-N` times the `z`-coefficient of `x`. -/
 lemma frameProducts_mulVec_of_frameImage_eq
-    (hxy : frameImage (1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ x =
-      frameImage γ.val.val *ᵥ y) :
+    (hxy : frameImage (1 : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ x = frameImage γ.val.val *ᵥ y) :
     S.frameProducts γ *ᵥ y = Pi.single 𝔰.top (-S.N * x 𝔰.top) := by
   -- the products of `γ f · y = f · x` with the frame are read off from the Gram matrix
   simp only [frameGram_eq_frameImage, ← mulVec_mulVec, ← hxy]

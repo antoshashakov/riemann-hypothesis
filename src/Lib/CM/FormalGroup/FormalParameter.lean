@@ -86,8 +86,7 @@ lemma expSubst_rescale_sub_mem_of_pow_eq_one {ζ : ℂ_[p]} (hζ : ζ ^ (primeNo
   have h_inv : expSubst f ∈ C.integralSeriesRing :=
     C.expSubst_sub_rescale_mem (mem_normPairClosure_of_pow_eq_one (by rw [inv_pow, hζ, inv_one]))
   have h_rescale : rescale ζ (expSubst f) ∈ C.integralSeriesRing :=
-    C.isSeriesGenerator_translatedY.rescale_mem
-      (C.rescale_translatedY_mem_of_pow_eq_one hζ) h_inv
+    C.isSeriesGenerator_translatedY.rescale_mem (C.rescale_translatedY_mem_of_pow_eq_one hζ) h_inv
   have h_eq : rescale ζ f = ζ⁻¹ ^ (p + 1) • rescale ζ C.negLogTheta - C.negLogTheta := by
     simp [hf, rescale_smul, rescale_rescale, inv_mul_cancel₀ hζ₀, rescale_one]
   rwa [rescale_subst (by simp [hf, constantCoeff_rescale, constantCoeff_negLogTheta]), h_eq]
@@ -112,8 +111,7 @@ lemma isSeriesGenerator_formalParam :
     rw [formalParam, congruencePart_eq_sum hζ]
     refine hy.smul_mem (by simp [(coprime_primeNorm_sub_one d p).norm_natCast_eq_one])
       (sum_mem fun i _ ↦ hy.smul_mem (by simp [(hζ.isOfFinOrder (NeZero.ne _)).norm_eq_one]) ?_)
-    exact C.rescale_translatedY_mem_of_pow_eq_one
-      (by rw [pow_right_comm, hζ.pow_eq_one, one_pow])
+    exact C.rescale_translatedY_mem_of_pow_eq_one (by rw [pow_right_comm, hζ.pow_eq_one, one_pow])
   refine hy.of_mem h_mem ?_ ?_
   · simp [formalParam, ← coeff_zero_eq_constantCoeff_apply, coeff_congruencePart]
   · simp [formalParam, coeff_congruencePart, hy.coeff_one, Nat.ModEq.refl]

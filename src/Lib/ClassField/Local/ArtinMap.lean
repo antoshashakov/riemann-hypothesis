@@ -552,8 +552,7 @@ lemma isNormCompatible (ψ : Γ →* Γ') (j : Ω →+* Ω)
   have gal_W : IsProGalois D W (PadicAlgCl p) := emb_w.toIsProGalois
   have gal_V : IsProGalois D' V (PadicAlgCl p) := emb_u.toIsProGalois
   obtain ⟨⟨φ, φ_cont⟩, hφ : ∀ (g : D) (x : PadicAlgCl p), φ g • x = g • x⟩ :=
-    exists_galois_restrict D' (G := gal_V) D (L := W) (.id _)
-      fun g _ ↦ smul_algebraMap g (_ : W)
+    exists_galois_restrict D' (G := gal_V) D (L := W) (.id _) fun g _ ↦ smul_algebraMap g (_ : W)
   have over_u : IsPlaceOver (A.comap j) u := by
     simp [IsPlaceOver, hj, comap_apply_lt_one_iff, ← h _, u]
   have art_u : IsLocalArtin D' V (intQpBar p) (localArtin Γ' (A.comap j) u) :=
@@ -705,8 +704,7 @@ map on units. That is, there is a unit `x` of the completion `K_w` with `v x = 1
 symbol `localArtin Γ A w x` equals the image of `g` in the abelianised decomposition group of
 `A`. -/
 lemma exists_localArtin_eq_of_mem_inertiaGroup {g : Γ} (hg : g ∈ inertiaGroup Γ A) :
-    ∃ x : (LocField w)ˣ, v x.val = 1 ∧
-      localArtin Γ A w x = (⟨g, hg.left⟩ : decompGroup Γ A) :=
+    ∃ x : (LocField w)ˣ, v x.val = 1 ∧ localArtin Γ A w x = (⟨g, hg.left⟩ : decompGroup Γ A) :=
   h.exists_localArtin_eq_of_isFrob_pow (n := 0) (inv_mem hg : IsFrob A 1 g⁻¹)
 
 /-- For a place `A` of `Ω` lying over the finite place `w` of the number field `K` (hypothesis `h`),

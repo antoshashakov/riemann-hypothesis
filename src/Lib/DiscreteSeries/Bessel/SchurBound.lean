@@ -241,8 +241,7 @@ theorem IsBoundedMeasurable.integral_inner_convolve (hν : orbitMeasure ρ volum
     (hc : ∀ s : G, ‖c s‖ = 1) (hF : IsBoundedMeasurable F)
     (hF_left : ∀ s ∈ S, ∀ y : G, F (s * y) = c s • F y) (hF_int : Integrable F ν)
     (hx : Integrable x) {h : G → E} (hh : IsBoundedMeasurable h) :
-    ∫ y : G, ⟪h y, convolve F x y⟫_ℂ ∂ν =
-      ∫ a : G, x a⁻¹ * ∫ y : G, ⟪h y, F (y * a)⟫_ℂ ∂ν := by
+    ∫ y : G, ⟪h y, convolve F x y⟫_ℂ ∂ν = ∫ a : G, x a⁻¹ * ∫ y : G, ⟪h y, F (y * a)⟫_ℂ ∂ν := by
   obtain ⟨h_meas, C, hC⟩ := hh
   have h_prod := hF.integrable_prod_translate hν hc hF_left hF_int hx
   have h_int : Integrable (fun p : G × G ↦ ⟪h p.2, x p.1⁻¹ • F (p.2 * p.1)⟫_ℂ) (volume.prod ν) :=

@@ -334,8 +334,7 @@ lemma SidePairing.isScaledCupCoboundary_of_jumps_nonpos (P : S.SidePairing S') {
   have h_radius' : a + t + η ≤ 6 * (t + W) := by omega
   have h_left (i : Letter) : ∃ x : S.extensionLattice.Ambient,
       x ∈ S.pointsOver c i κ (raisedOrdersAtZero (-t)) (plainDepth a t 1 0) :=
-    pointsOver_nonempty_of_fitsWindows hk (h_kill i) (hb_gap i) (h_window i) (by omega)
-      h_radius c
+    pointsOver_nonempty_of_fitsWindows hk (h_kill i) (hb_gap i) (h_window i) (by omega) h_radius c
   have h_right (i : Letter) : ∃ x' : S'.extensionLattice.Ambient,
       x' ∈ S'.pointsOver c' i 0 (raisedOrdersAtZero 0) (plainDepth a t 1 0) :=
     pointsOver_nonempty_of_jumps_nonpos hk (hb_gap i) h_radius' h_nonpos c' i

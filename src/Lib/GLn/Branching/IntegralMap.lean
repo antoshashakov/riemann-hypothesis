@@ -376,8 +376,7 @@ lemma spansBranchingMaps_of_equivariant {c : ℤ} (hc : c ≠ 0) {e e₀ : Φ �
     (he₀ : ∀ τ : Φ, e₀ τ = e τ + κ' τ (rankAt n τ))
     {B : Matrix (WeylIndexFamily n κ₀) (WeylIndexFamily N (γ + κ')) ℤ}
     (B_top : nablaCombination (γ + κ') ((weylGramOver *ᵥ weylEval n κ₀
-        (permArray fun (τ : Φ) (i : n τ) ↦ (rowEquivFin n τ i : ℕ))) ᵥ*
-          B.map (Int.cast : ℤ → ℂ)) =
+        (permArray fun (τ : Φ) (i : n τ) ↦ (rowEquivFin n τ i : ℕ))) ᵥ* B.map (Int.cast : ℤ → ℂ)) =
       (c : ℂ) • branchVector ℂ ι γ κ')
     (B_block : ∀ g : ∀ τ : Φ, Matrix (n τ) (n τ) ℂ,
       B.map (Int.cast : ℤ → ℂ) * schur (γ + κ') (blockScalar ι g 1) =

@@ -240,8 +240,7 @@ lemma IsCutBessel.descent_last_entry_of_norm_le_one [Nonempty I] (hF : IsCutBess
     grind [formConst, toReal_ne_zero, Shape.openCellConst, 𝔰.openCellConst_pos, pow_right_comm]
   -- Both sides are φ z times the constant times the integral.
   simp [normalizedCellIntegral, inner_besselOrbitalIntegral _ hF.isCut_complexData
-    F.continuous_toFun head_p
-      head_q, prod_smul_left, prod_smul_right,
+    F.continuous_toFun head_p head_q, prod_smul_left, prod_smul_right,
     realFrameGram_cellChart norm_z, mul_left_comm _ (φ _), ← mul_assoc _ _ (integral ..),
     normalizedOrbitalIntegral, cellChart_mem_floorGroup, weylRatio]
   rw [integral_eq]

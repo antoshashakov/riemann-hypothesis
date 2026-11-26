@@ -250,8 +250,7 @@ lemma zeroTerm_doubleDatum_rho {p : Type} [Fintype p] [DecidableEq p]
       coordMatrix, fromRows_map, fromBlocks_mul_fromRows,
       conjTranspose_fromRows_eq_fromCols_conjTranspose, fromCols_mul_fromBlocks]
   have h_along : (D.homSource T).kAdelic *ᵥ matrixToVec (Z * (c.map toAdele)ᴴ) = matrixToVec
-    (fromCols
-      (T.dualFrame⁻¹.val * Z * ((S.coordMatrix 1 (K * c))ᴴ * stdForm E s)) 0) := by
+    (fromCols (T.dualFrame⁻¹.val * Z * ((S.coordMatrix 1 (K * c))ᴴ * stdForm E s)) 0) := by
     rw [homSource_kAdelic, kronecker_mulVec_eq_matrixToVec]
     simp [h_block, Matrix.mul_assoc, -conjTranspose_map_toAdele]
   rw [← rho_fromCols_zero_doubleDatum, ← h_along, zeroTerm_lagrangian_eq_theta,
@@ -271,8 +270,7 @@ lemma pairWeil_rho_shiftMatrix (a b : AutChar E) (g : G E s) (X : Matrix m m (�
       rw [← Matrix.mul_assoc, conjTranspose_adeleMatrix_mul_stdForm_mul_adeleMatrix]
     simp [coordMatrix, h_form, Matrix.mul_assoc]
   have h_vec : (1 : Matrix m m (𝔸 E)) ⊗ₖ g⁻¹.adeleMatrixᵀ *ᵥ shiftMatrix s X (S.coordMatrix g c) *ᵥ
-    z =
-      matrixToVec (X * vecToMatrix z * ((S.coordMatrix 1 c)ᴴ * stdForm E s)) := by
+    z = matrixToVec (X * vecToMatrix z * ((S.coordMatrix 1 c)ᴴ * stdForm E s)) := by
     rw [kronecker_mulVec_eq_matrixToVec, kronecker_mulVec_eq_matrixToVec, ← h_coord]
     simp [Matrix.mul_assoc]
   simp [pairWeil, omega_rho, ← h_vec]

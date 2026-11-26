@@ -591,8 +591,7 @@ lemma CMLattice.sum_kronecker_terms {E : ClassGroup (𝓞 (QuadField d)) → CML
   have hd_pos : 0 < d := NeZero.pos d
   -- `F c s = (s - 1) ∑ (|l|² / (k · area))^(-s)` over the lattice of `E c`, `k = 2/√d`; at `1`
   -- its value is `π k` (`hF₁`), its right derivative `π k` times the summand of the claim (`hF`)
-  choose F hF₁ hF hS using
-    fun c ↦ kronecker_limit (E c).periodPair (2 / √d) (by positivity)
+  choose F hF₁ hF hS using fun c ↦ kronecker_limit (E c).periodPair (2 / √d) (by positivity)
   set L : ℂ → ℂ := entireL (quadTwist (N := 1) 1 d) with hL
   set U : ℂ := (Nat.card (𝓞 (QuadField d))ˣ : ℂ)
   let Z (s : ℝ) : ℂ := riemannZeta₁ s * (U * L s)

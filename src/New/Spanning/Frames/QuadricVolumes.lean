@@ -241,8 +241,7 @@ lemma lintegral_heisenbergElem_skewMeasure_le {Φ : T.G → ℝ≥0∞} {Ψ : (�
     (hΦ : ∀ t : ({k : 𝔰.BesselIndex // a + 1 ≤ floorOf k} → A) × skewAdjoint A,
       Φ (heisenbergElem a t) ≠ 0 →
         (∃ w : 𝔰.BesselIndex → A,
-          CongrBelow a
-            (((heisenbergElem (T := T) a t)⁻¹.val.val - 1) *ᵥ Pi.single (eStar a) 1) w ∧
+          CongrBelow a (((heisenbergElem (T := T) a t)⁻¹.val.val - 1) *ᵥ Pi.single (eStar a) 1) w ∧
           u⁻¹.val • w ∈ Γ.vecsOfSize j) ∧
         Φ (heisenbergElem a t) ≤ C * Ψ (u⁻¹.val • inclMatrix A Subtype.val *ᵥ t.1))
     (v : {k : 𝔰.BesselIndex // a + 1 ≤ floorOf k} → A) :
@@ -292,8 +291,7 @@ lemma lintegral_heisenbergMeasure_le {Φ : T.G → ℝ≥0∞} {Ψ : (𝔰.Besse
     (hΦ : ∀ t : ({k : 𝔰.BesselIndex // a + 1 ≤ floorOf k} → A) × skewAdjoint A,
       Φ (heisenbergElem a t) ≠ 0 →
         (∃ v : 𝔰.BesselIndex → A,
-          CongrBelow a
-            (((heisenbergElem (T := T) a t)⁻¹.val.val - 1) *ᵥ Pi.single (eStar a) 1) v ∧
+          CongrBelow a (((heisenbergElem (T := T) a t)⁻¹.val.val - 1) *ᵥ Pi.single (eStar a) 1) v ∧
           u⁻¹.val • v ∈ Γ.vecsOfSize j) ∧
         Φ (heisenbergElem a t) ≤ C * Ψ (u⁻¹.val • inclMatrix A Subtype.val *ᵥ t.1))
     (hB : F.floorModulus a u * (Γ.loss ^ (j + 2) * I) ≤ B := by

@@ -414,8 +414,7 @@ private lemma pow_pow_eq_of_isWeilPair {p : ℕ} [ThePrime p] {R : CommRingCat} 
   -- `s` fixes `r`, and `s⁻¹`, a Frobenius for `p ^ f`, moves `r` to `r ^ p ^ f` modulo `𝔭`.
   obtain ⟨r⟩ := z
   refine Ideal.Quotient.eq.mpr ?_
-  simpa [← map_inv, h𝔭, hj, norm_sub_rev] using
-    hs.2 _ ((New.intQpBar p).valuation_le_one ⟨_, hR r⟩)
+  simpa [← map_inv, h𝔭, hj, norm_sub_rev] using hs.2 _ ((New.intQpBar p).valuation_le_one ⟨_, hR r⟩)
 
 /-- Let `k` be a perfect domain of characteristic `p` and `πk : R →+* k`. The ring map
 `R → W(k) ⧸ pdIdeal W(k)` that sends `z` to the class of the Teichmüller lift of `πk z`. -/

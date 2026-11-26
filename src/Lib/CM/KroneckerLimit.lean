@@ -258,8 +258,7 @@ lemma New.tsum_meanError_row_one {x y : ℝ} (hy : 0 < y) (m : ℕ) :
 /-- At `s = 1` the errors sum to `-2 π / y * log |∏ (1 - q^(j+1))|`, `q = exp (2 π i τ)`,
 `τ = x + i y`; the errors are `meanError x y p 1` summed over `p : ℕ+ × ℤ`. -/
 lemma New.tsum_meanError_one {x y : ℝ} (hy : 0 < y) :
-    ∑' p : ℕ+ × ℤ, meanError x y p 1 =
-      -2 * π / y * Real.log ‖∏' j : ℕ, (1 - eta_q j ⟨x, y⟩)‖ := by
+    ∑' p : ℕ+ × ℤ, meanError x y p 1 = -2 * π / y * Real.log ‖∏' j : ℕ, (1 - eta_q j ⟨x, y⟩)‖ := by
   let c (m j : ℕ) : ℂ := eta_q m ⟨x, y⟩ ^ j.succ / ofReal m.succ
   obtain ⟨hc, h_prod⟩ := tprod_one_sub_eta_q (x := x) hy
   have h_rows : HasSum (fun m : ℕ+ ↦ ∑' n : ℤ, meanError x y (m, n) 1)
@@ -280,8 +279,7 @@ noncomputable def New.regularPart (x y s : ℝ) : ℝ :=
 lemma New.continuousWithinAt_regularPart {x y : ℝ} (hy : 0 < y) :
     ContinuousWithinAt (regularPart x y) (Ioi 1) 1 := by
   have h_error : ContinuousWithinAt (fun s : ℝ ↦ ∑' p : ℕ+ × ℤ, meanError x y p s) (Ioi 1) 1 :=
-    (continuousOn_tsum_meanError hy 1 (by simp)).mono_of_mem_nhdsWithin
-      (Icc_mem_nhdsGT one_lt_two)
+    (continuousOn_tsum_meanError hy 1 (by simp)).mono_of_mem_nhdsWithin (Icc_mem_nhdsGT one_lt_two)
   have h_beta : ContinuousAt (betaFactor y) 1 := (hasDerivAt_betaFactor hy).continuousAt
   have h_zeta : Continuous riemannZeta₀ := differentiable_riemannZeta₀.continuous
   unfold regularPart

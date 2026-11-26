@@ -721,8 +721,7 @@ lemma exists_stdLevelIndex_lastLevel_eq {P : Parameters} (D : Data P) :
     ∃ (C : ℂ) (k : ℤ), ∀ ϑ : D.MFoldTwist,
       (stdLevelIndex (D.lastLevel ϑ) : ℂ) =
         C * Fintype.card (D.twistModulus ϑ 0).ResidueRing ^ k * (D.descentPair ϑ 1).gramFactor ^ D.m
-          *
-            D.triangleGLCard false ϑ D.m /
+          * D.triangleGLCard false ϑ D.m /
           (D.triangleGLCard false ϑ 0 * D.triangleGLCard false ϑ 1 ^ D.m) := by
   -- Every quantity is a product over the chosen places times a product over `TwistIndex`. The
   -- former factors do not depend on `ϑ`; the constant (values at the trivial twist) absorbs

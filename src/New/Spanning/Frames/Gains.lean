@@ -90,8 +90,7 @@ theorem Gauge.sq_lintegral_le_mul_lintegral (hj : j ≤ 𝔰.ϱ) (hp : Γ.IsHead
     ring
   -- In the first integral put `w_p g` for `g`.
   have h_first : ∫⁻ g, B' ((weylElem j p)⁻¹ * g) * F.invDepthWeight j x g ∂F.partialGroupMeasure 0 j
-    ≤
-      D * ∫⁻ g, B' g ∂descConv F.floorMeasure 0 j := by
+    ≤ D * ∫⁻ g, B' g ∂descConv F.floorMeasure 0 j := by
     let Φ (g : T.G) : ℝ≥0∞ := B' g * F.invDepthWeight j x (weylElem j p * g)
     have hΦ_inv : (floorGroup j).FixesLeft Φ := by
       simp +contextual [Φ, weylElem_mul_left_comm, hB'.1]
@@ -104,8 +103,7 @@ theorem Gauge.sq_lintegral_le_mul_lintegral (hj : j ≤ 𝔰.ϱ) (hp : Γ.IsHead
           exact Γ.lintegral_mul_invDepthWeight_le hj hp hx .refl hB' hB'_meas
   -- In the second, `w_p⁻¹` is the Weyl element of the head `star p`.
   have h_second : ∫⁻ g, B g * F.invDepthWeight j x ((weylElem j p)⁻¹ * g) ∂F.partialGroupMeasure 0 j
-    ≤
-      D * ∫⁻ g, B g ∂descConv F.floorMeasure 0 j := by
+    ≤ D * ∫⁻ g, B g ∂descConv F.floorMeasure 0 j := by
     grw [← weylElem_star, partialGroupMeasure_zero_eq,
       Γ.lintegral_mul_invDepthWeight_le hj hp.star_head hx .refl hB hB_meas]
     simp [D, floorModulus]
@@ -530,8 +528,7 @@ theorem Gauge.formIntegrandL1Norm_sq_le_of_char (hk : F.IsCut W) (hj : j ≤ �
       (fun a _ ↦ Γ.neg_mem_iff_and_star_mem_iff.2.2 (hσ a))
       (Size.HasMatrixSize.mulVec Γ.splitGram_and_inv_mem.1 hτ)))
   let G (v : 𝔰.BesselIndex → A) : ℂ :=
-    ∫ τ, ψ ((-ξ).val * star (v + 0) ⬝ᵥ T.splitGram *ᵥ t *ᵥ orbitPoint j τ) * f' τ
-      ∂F.floorMeasure j
+    ∫ τ, ψ ((-ξ).val * star (v + 0) ⬝ᵥ T.splitGram *ᵥ t *ᵥ orbitPoint j τ) * f' τ ∂F.floorMeasure j
   have hG : Measurable G := by
     unfold G f'
     fun_prop
@@ -590,8 +587,7 @@ lemma Gauge.sub_one_mulVec_eStar_mem_vecsOfSize {a : Fin 𝔰.ϱ} {s : ℕ} {t�
     (ht₀ : t₀ ∈ floorGroup (a + 1)) (ht : t ∈ floorGroup (a + 1))
     (h_size₀ : Γ.HasMatrixSize s (t₀ * n₀ * g).val.val)
       (h_size : Γ.HasMatrixSize s (t * n * g).val.val) :
-    ((t₀ * n₀ * (t₀ * n)⁻¹).val.val - 1) *ᵥ Pi.single (eStar a) 1 ∈
-      Γ.vecsOfSize (2 * s + 6) := by
+    ((t₀ * n₀ * (t₀ * n)⁻¹).val.val - 1) *ᵥ Pi.single (eStar a) 1 ∈ Γ.vecsOfSize (2 * s + 6) := by
   -- The inverses of `t₀` and `t` fix `eStar a`, so the column can be read off
   -- `(t₀ n₀ g) (t n g)⁻¹ - 1`.
   have h_fix (r : T.G) (hr : r ∈ floorGroup (a + 1)) (b : 𝔰.BesselIndex) :

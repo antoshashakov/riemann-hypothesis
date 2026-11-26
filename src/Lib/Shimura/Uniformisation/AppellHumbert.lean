@@ -316,8 +316,7 @@ private lemma New.Uniformisation.isPosRiemann_of_hasThetaCoords
     exact OverMorphism.ext (hN.eq_of_isHomogeneousCoords (by simp)
       (by simpa only [h_mult, atGeneric_eq] using h_theta.hasFieldCoords (t • v))
       ((h_theta.hasFieldCoords 0).smul (exp_ne_zero _).isUnit) (N.exists_landsIn _))
-  exact ContinuousLinearMap.toSpanSingleton_inj.1
-    (u.linear_ext fun t : ℂ ↦ by simpa using h_line t)
+  exact ContinuousLinearMap.toSpanSingleton_inj.1 (u.linear_ext fun t : ℂ ↦ by simpa using h_line t)
 
 /-- Let `e : V → G` be additive and zero on the lattice `L`. Let `Φ x x = 1`, with `Φ (e z) ∘ e` not
 zero near `z` and `(Φ (e 0) / Φ (e z)) ∘ e` analytic at `z`. Let `C` have no zero, with `C 0 0 = 1`,

@@ -538,8 +538,7 @@ theorem New.IsJointHarmonic.howe_argument [DecidableEq C] [DecidableEq R] {Φ : 
     (hG_cols : ∀ Y : Matrix C C ℂ, G ∈ (T.swap.oscRows Y).invtSubmodule) (hΦ_mem : Φ ∈ G)
     (h_off_cone : ∀ (ν : R → ℤ) (P : MvPolynomial ι ℂ), l.IsKHighest T.oscRows ν P →
       ν - l.lowestKType ∉ l.rootCone → ∀ X : Matrix R R ℂ, T.oscRows X P ∈ G)
-    (h_lower : ∀ a b : R, ε a = ε b → l b < l a →
-      ∀ P : MvPolynomial ι ℂ, T.oscRows.E b a P ∈ G)
+    (h_lower : ∀ a b : R, ε a = ε b → l b < l a → ∀ P : MvPolynomial ι ℂ, T.oscRows.E b a P ∈ G)
     (h_diag : ∀ (a : R) (P : MvPolynomial ι ℂ),
       T.oscRows.E a a P - (l.lowestKType a : ℂ) • P ∈ G) :
     G = ⊤ := by
@@ -575,8 +574,7 @@ theorem New.IsJointHarmonic.howe_argument [DecidableEq C] [DecidableEq R] {Φ : 
   -- of weight `Λ + e_a - e_b`.
   have h_harm_row : T.IsLaplaceHarmonic Q := by
     refine isLaplaceHarmonic_of_isKHighest h_highest fun a b hab h_highest' ↦ ?_
-    by_cases h_cone :
-        l.lowestKType + Pi.single a 1 - Pi.single b 1 - l.lowestKType ∈ l.rootCone
+    by_cases h_cone : l.lowestKType + Pi.single a 1 - Pi.single b 1 - l.lowestKType ∈ l.rootCone
     · -- In the cone `l b ≤ l a` (pair with `-l`), so row `b` or row `a` of `Q` has variables of
       -- one sign only.
       have h_le : l b ≤ l a := by simpa [add_assoc] using h_cone (-l) (by simp)

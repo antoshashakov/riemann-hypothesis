@@ -264,8 +264,7 @@ lemma sum_smul_frameVector_eq (γ : S.G E) (y : InfinitePlace E → 𝔰.G₁) (
 `S.basisScale v` of the normalised basis at two vectors of the frame differ in norm by a factor at
 most `b ^ (23 ϱ)`. -/
 lemma norm_basisScale_besselFrame_le [S.IsAdmissible] (v : InfinitePlace E) (a k : Fin (𝔰.ϱ + 1)) :
-    ‖S.basisScale v (𝔰.besselFrame a)‖ ≤
-      S.b ^ (23 * 𝔰.ϱ) * ‖S.basisScale v (𝔰.besselFrame k)‖ := by
+    ‖S.basisScale v (𝔰.besselFrame a)‖ ≤ S.b ^ (23 * 𝔰.ϱ) * ‖S.basisScale v (𝔰.besselFrame k)‖ := by
   have hκ : 1 ≤ |S.realM v| := one_le_abs_realM v
   have h_pow : |S.realM v| ^ (𝔰.ϱ - a) ≤ S.b ^ (23 * 𝔰.ϱ) * |S.realM v| ^ (𝔰.ϱ - k) :=
     calc |S.realM v| ^ (𝔰.ϱ - a) ≤ |S.realM v| ^ 𝔰.ϱ := pow_le_pow_right₀ hκ (𝔰.ϱ.sub_le a)
@@ -309,8 +308,7 @@ embedding `Φ v`, the entries of the adjugate of `Y` have norm at most
 `S.b ^ ((2 + 134 𝔰.n) 𝔰.ϱ)`. -/
 lemma IsNear.norm_adjugate_paddedLeading_le [S.IsAdmissible] {γ : S.G E} (h_near : S.IsNear γ)
     (j : Fin (𝔰.ϱ + 2)) (v : InfinitePlace E) (k l : Fin (𝔰.ϱ + 1)) :
-    ‖Φ v ((paddedLeading j (S.frameProducts γ)).adjugate k l)‖ ≤
-      S.b ^ ((2 + 134 * 𝔰.n) * 𝔰.ϱ) := by
+    ‖Φ v ((paddedLeading j (S.frameProducts γ)).adjugate k l)‖ ≤ S.b ^ ((2 + 134 * 𝔰.n) * 𝔰.ϱ) := by
   have h_entry (i m : Fin (𝔰.ϱ + 1)) :
       ‖(Φ v).mapMatrix (paddedLeading j (S.frameProducts γ)) i m‖ ≤ S.b ^ (134 * 𝔰.n) := by
     rw [RingHom.mapMatrix_apply, map_apply, paddedLeading, of_apply]
@@ -340,8 +338,7 @@ lemma HasCellRank.exists_frameImage_one_mulVec_eq {S : Filling E 𝔰} [HasPrimi
     {j : Fin (𝔰.ϱ + 2)} {γ : S.G E} (h : S.HasCellRank j γ) {k : Fin (𝔰.ϱ + 1)}
     (hk : j.val ≤ k.val) :
     ∃ w : Fin (𝔰.ϱ + 1) → E,
-      frameImage 1 *ᵥ w =
-        frameImage γ *ᵥ (paddedLeading j (S.frameProducts γ)).adjugate.col k := by
+      frameImage 1 *ᵥ w = frameImage γ *ᵥ (paddedLeading j (S.frameProducts γ)).adjugate.col k := by
   set Y : Matrix (Fin (𝔰.ϱ + 1)) (Fin (𝔰.ϱ + 1)) E := paddedLeading j (S.frameProducts γ)
   obtain ⟨w, hw⟩ : ∃ w : Fin (𝔰.ϱ + 1) → E, frameImage 1 *ᵥ w = frameImage γ *ᵥ Y⁻¹.col k :=
     h.exists_shared_frame_vector hk

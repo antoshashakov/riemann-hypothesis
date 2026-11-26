@@ -567,8 +567,7 @@ lemma leastValLE_twelve_of_lt (D : Data P) {p : ℕ} [hp : Fact p.Prime] {l : D.
   -- The last six copies supply the remaining degree `η` at valuation at most `0`.
   have h_twelve : P.cmCurve.LeastValLE (p := p) (P.resolutionForms D.towerExp w) c 12 l
       (-∑ τ : D.Φ, (j τ : ℝ)) := by
-    simpa only [h_decomp, add_zero] using
-      h_couple.add (D.leastValLE_six_zero_of_inert hw h_inert η)
+    simpa only [h_decomp, add_zero] using h_couple.add (D.leastValLE_six_zero_of_inert hw h_inert η)
   refine h_twelve.mono ?_
   have h_sum : ∑ τ : D.Φ, (padicValNat p (l (τ, ()))! : ℝ) - ∑ τ : D.Φ, (j τ : ℝ) ≤
       D.localPrimeSumTotal p + 2 * ∑ τ : D.Φ, (padicValNat p (D.lossProduct (l (τ, ()))) : ℝ) := by

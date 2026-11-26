@@ -441,8 +441,7 @@ lemma New.Rows.norm_le_of_transvection_invariant {E n : Type} [Field E] [CMType 
     (η_pos : ∀ w : InfinitePlace E, 0 < (a w).im * ∑ i : n, ‖y w i‖ ^ 2)
     (η_sum : A * ∑ w : InfinitePlace E, (a w).im * ∑ i : n, ‖y w i‖ ^ 2 ≤ 1)
     (t_eq : ∀ w : InfinitePlace E,
-      ((t w : USign s) : Matrix n n ℂ) =
-        1 - a w • vecMulVec (y w) (star (y w)) * signMatrix s)
+      ((t w : USign s) : Matrix n n ℂ) = 1 - a w • vecMulVec (y w) (star (y w)) * signMatrix s)
     (t_fix : ∀ h : GInf E s, F (t * h) = F h) :
     ‖F 1‖ ≤ C * exp (2 + -(2 * π)) := by
   -- Along the one-parameter group of `t`, `F` continues to a periodic holomorphic function `f` on

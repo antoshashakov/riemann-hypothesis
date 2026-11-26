@@ -501,8 +501,7 @@ lemma mulVec_sub_mem_colSpan_isotropicFramePair {a : Fin 𝔰.ϱ → E} {v : �
     · exact sub_eq_zero.2 (h_inv_z.trans h_inv_z'.symm)
     · exact sub_eq_zero.2 ((h_inv_dual b).trans (h_inv_dual' b).symm)
   have h_decomp : (γ' : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E) *ᵥ (γinv *ᵥ t) - t =
-      t' - t +
-        (γ' : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E).mulVecLin (γinv *ᵥ t - γinv' *ᵥ t') := by
+      t' - t + (γ' : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E).mulVecLin (γinv *ᵥ t - γinv' *ᵥ t') := by
     simp [γinv', mulVec_sub]
   rw [colSpan_isotropicFramePair, isotropicSpan_eq_map (γ' : Matrix 𝔰.BesselIndex 𝔰.BesselIndex E),
     h_decomp]
@@ -898,8 +897,7 @@ lemma IsNear.levelGauge_le [S.IsAdmissible] (h_near : S.IsNear γ) (h_over : γ 
     exact (div_le_self (le_sup_of_le_right (by positivity))
       (one_le_mul_of_one_le_of_one_le h_index h_index_inv)).trans h_max
   have h_exponent : 23 * (2 * min 𝔰.ϱ j * numInfPlaces E) +
-      (60 * 𝔰.n * numInfPlaces E + 270 * 𝔰.n ^ 2 * numInfPlaces E) ≤
-        𝔰.n ^ 3 * numInfPlaces E := by
+      (60 * 𝔰.n * numInfPlaces E + 270 * 𝔰.n ^ 2 * numInfPlaces E) ≤ 𝔰.n ^ 3 * numInfPlaces E := by
     have h_min : min 𝔰.ϱ j ≤ 𝔰.n := (min_le_left _ _).trans (Nat.le_succ _)
     have h_square : 𝔰.n ≤ 𝔰.n ^ 2 := Nat.le_self_pow two_ne_zero _
     have h_cube : 376 * 𝔰.n ^ 2 ≤ 𝔰.n ^ 3 := S.mul_sq_le_cube (by norm_num)

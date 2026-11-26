@@ -408,8 +408,7 @@ lemma torsionIndex_dvd_submoduleIndex
     exact sub_mem ⟨y, hy, rfl⟩ (h_correction (hk.mulVec hy))
   · rintro _ ⟨hx, y, rfl⟩
     rw [mulVecLin_apply, h_class y]
-    refine add_mem (mem_sup_right (h_correction hx))
-      (mem_sup_left ⟨P *ᵥ y, ⟨?_, y, rfl⟩, rfl⟩)
+    refine add_mem (mem_sup_right (h_correction hx)) (mem_sup_left ⟨P *ᵥ y, ⟨?_, y, rfl⟩, rfl⟩)
     rw [← mulVec_mulVec]
     exact hq.isIntMatrix_coord.mulVec hx
 

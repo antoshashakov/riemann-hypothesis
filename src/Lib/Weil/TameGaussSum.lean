@@ -299,6 +299,5 @@ lemma New.invOnUnits_mul {F : Type} [V : SemilocalField F] {χ : MulChar F ℂ} 
   classical
   -- A product in `O` is a unit of `O` exactly when both factors are.
   have h_unit : IsIntegralUnit (x * y) ↔ IsIntegralUnit x ∧ IsIntegralUnit y := by
-    simpa [← isIntegralUnit_iff_isUnit] using
-      (IsUnit.mul_iff (x := (⟨x, hx⟩ : V.O)) (y := ⟨y, hy⟩))
+    simpa [← isIntegralUnit_iff_isUnit] using (IsUnit.mul_iff (x := (⟨x, hx⟩ : V.O)) (y := ⟨y, hy⟩))
   simp only [invOnUnits, h_unit, map_mul, mul_inv, ite_zero_mul_ite_zero]

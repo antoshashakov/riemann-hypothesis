@@ -538,8 +538,7 @@ lemma integral_besselGroup_unfold (hW : Y.IsEquivariant W) {y : G E ε' → ℂ}
       k δ h = Y.unfoldStep Y' α Φ W ((δ : G E ε')⁻¹ * h) * y h := by
     have h_mem : (δ : V'.Γ ⧸ Y'.ratBessel.subgroupOf V'.Γ).out⁻¹ * δ ∈
         Y'.ratBessel.subgroupOf V'.Γ := QuotientGroup.eq.1 (QuotientGroup.out_eq' _)
-    simpa [k, mul_assoc] using
-      congrArg (· * y h) (unfoldStep_rat_mul _ h_mem ((δ : G E ε')⁻¹ * h))
+    simpa [k, mul_assoc] using congrArg (· * y h) (unfoldStep_rat_mul _ h_mem ((δ : G E ε')⁻¹ * h))
   have k_smul (δ : V'.Γ) (q : V'.Γ ⧸ Y'.ratBessel.subgroupOf V'.Γ) (h : G E ε') :
       k (δ • q) (δ * h) = k q h := by
     rw [← Quotient.mk_smul_out, k_eq]

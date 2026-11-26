@@ -104,8 +104,7 @@ lemma re_sum_addChar_dotProduct_mul_le [Fintype k] [DecidableEq k] {ψ : AddChar
     (hu : ∀ a b : G, ⟪u a, u b⟫_ℂ = Θ (a⁻¹ * b)) {x z : n → k} {Y : ℝ}
     (hx : ∑ s : G with x = invTransposeGL (π s) • x, Θ s ≤ Y)
     (hz : ∑ s : G with z = π s • z, Θ s ≤ Y) :
-    (∑ s : G, ψ (x ⬝ᵥ (π s • z)) * Θ s).re ≤
-      √((Fintype.card k : ℝ) ^ Fintype.card n) * Y := by
+    (∑ s : G, ψ (x ⬝ᵥ (π s • z)) * Θ s).re ≤ √((Fintype.card k : ℝ) ^ Fintype.card n) * Y := by
   -- Up to the factor `r / |G|` the sum is an inner product `⟪X₁, X₀⟫`, and
   -- `2 ‖X₁‖ ‖X₀‖ ≤ ‖X₁‖² + ‖X₀‖²`, where the squares are `|G|` times the masses of the stabilisers.
   set r : ℝ := √((card k : ℝ) ^ card n)
@@ -154,8 +153,7 @@ lemma card_mul_sum_det_eq_zero_le [DecidableEq m] [Fintype k] [DecidableEq k] (�
     (A₀ A₁ : Matrix n m k) {Θ : G → ℝ} (hΘ : ∀ s : G, 0 ≤ Θ s)
     (hu : ∀ a b : G, ⟪u a, u b⟫_ℂ = Θ (a⁻¹ * b)) (Y : ℝ) (hY : 0 ≤ Y)
     (h_fix₀ : ∀ v : m → k, v ≠ 0 → ∑ s : G with A₀ *ᵥ v = π s • A₀ *ᵥ v, Θ s ≤ Y)
-    (h_fix₁ : ∀ v : m → k, v ≠ 0 →
-      ∑ s : G with A₁ *ᵥ v = invTransposeGL (π s) • A₁ *ᵥ v, Θ s ≤ Y) :
+    (h_fix₁ : ∀ v : m → k, v ≠ 0 → ∑ s : G with A₁ *ᵥ v = invTransposeGL (π s) • A₁ *ᵥ v, Θ s ≤ Y) :
     Fintype.card k * ∑ s : G with (A₁ᵀ * (π s).val * A₀).det = 0, Θ s ≤
       2 * ∑ s : G, Θ s +
         Fintype.card k ^ Fintype.card m * √(Fintype.card k ^ Fintype.card n) * Y := by
