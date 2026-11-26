@@ -501,11 +501,9 @@ lemma isCentralProj_tupleIdem : IsCentralProj (tupleIdem n c) :=
 product ⊗_w e_{c_w} of the label idempotents of the group algebras of GL_n(k_w). It lies in the
 group algebra of ∏_w GL_n(k_w). These elements are idempotents, and those of distinct tuples have
 product zero. -/
-lemma tupleIdem_orthogonal : OrthogonalIdempotents (tupleIdem (k := k) n) := by
-  refine ⟨fun c ↦ (isCentralProj_tupleIdem c).left, fun c d hcd ↦ ?_⟩
-  -- Distinct tuples differ at some `w`, where the label idempotents are orthogonal.
-  obtain ⟨w, hw⟩ : ∃ w : ι, c w ≠ d w := ne_iff.mp hcd
-  exact piTensorElem_mul_eq_zero w (labelIdem_orthogonal.ortho hw)
+lemma tupleIdem_orthogonal : OrthogonalIdempotents (tupleIdem (k := k) n) :=
+  ⟨(isCentralProj_tupleIdem · |>.1),
+  fun _ _ e ↦ piTensorElem_mul_eq_zero _ (labelIdem_orthogonal.2 (ne_iff.1 e).choose_spec)⟩
 
 /-- Let `tupleIdem n c` be the tensor product of the label idempotents `e_{c_w}` for a tuple
 `c = (c_w)` of polynomials over the finite fields `k w`, an element of the complex group algebra of

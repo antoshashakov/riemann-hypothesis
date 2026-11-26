@@ -74,10 +74,7 @@ namespace Chart
 abbrev ainfToBPlus : Ainf →+* BPlus := algebraMap Ainf BPlus
 
 /-- θ(z) divides p in O_C. -/
-lemma theta_z_dvd_p : theta c.z ∣ p := by
-  -- `z` divides `E - p`, and `θ E = 0`.
-  grw [c.dvd_iff_coe_dvd.mp c.z_dvd_E_sub_p]
-  simp [theta_E]
+lemma theta_z_dvd_p : theta c.z ∣ p := by grw [c.dvd_iff_coe_dvd.1 c.z_dvd_E_sub_p]; simp [theta_E]
 
 /-- θ(z) is not zero, as it divides `p`. -/
 lemma theta_z_ne_zero : theta c.z ≠ 0 :=

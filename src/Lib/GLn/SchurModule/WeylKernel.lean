@@ -54,16 +54,9 @@ variable {Φ : Type} [Fintype Φ] {κ : Φ → ℕ → ℕ} {N : Φ → ℕ} {L 
 
 /-- The hook number, the Fock pairing of `New.highestPoly ℤ κ N` with itself, is positive. -/
 @[simp]
-lemma hookNumber_pos : 0 < hookNumber κ N := by
-  -- `highestPoly ℤ κ N` is nonzero, since its value at the identity array is `1`.
-  have h_eval : eval (permArray fun τ (i : Fin (N τ)) ↦ (i : ℕ)) (highestPoly ℤ κ N) = 1 := by
-    simp [highestPoly, tableauPoly, minor, map_det, Matrix.map, permArray, Fin.val_inj,
-      ← diagonal.eq_1]
-  have h_ne : highestPoly ℤ κ N ≠ 0 := fun h_zero ↦ by simp [h_zero] at h_eval
-  -- Over `ℤ` conjugation is trivial, so `fockPairing_star_self_pos` is the claim.
-  have h_star : MvPolynomial.map (starRingEnd ℤ) (highestPoly ℤ κ N) = highestPoly ℤ κ N :=
-    MvPolynomial.ext _ _ fun d ↦ by simp
-  simpa only [hookNumber, h_star] using fockPairing_star_self_pos h_ne
+lemma hookNumber_pos : 0 < hookNumber κ N := (fockPairing_star_self_pos
+  (ne_of_apply_ne (eval (permArray fun _ ↦ (↑))) (by simp [highestPoly, tableauPoly, minor, map_det,
+  Matrix.map, permArray, Fin.val_inj, ← diagonal.eq_1]))).trans_eq (congr (by simp) rfl)
 
 @[simp]
 lemma hookNumber_ne_zero : hookNumber κ N ≠ 0 := hookNumber_pos.ne'

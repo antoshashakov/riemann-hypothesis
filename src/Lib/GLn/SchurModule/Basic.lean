@@ -305,12 +305,7 @@ private lemma prod_factorial_add_single (d : σ →₀ ℕ) (i : σ) :
 `f` by `X i` is adjoint to the derivative of `F` in `X i`. -/
 @[local simp↓]
 lemma jet_mul_X : jet R (f * X i) F = jet R f (F.pderiv i) := by
-  -- The monomials of `f * X i` are those of `f` shifted by `X i`; compare term by term.
-  rw [jet_eq_sum, jet_eq_sum, support_mul_X, sum_map]
-  refine sum_congr rfl fun x _ ↦ ?_
-  -- At the exponent `x + single i 1`: `(x i + 1)! = (x i + 1) * (x i)!` matches the derivative.
-  rw [addRightEmbedding_apply, coeff_mul_X, prod_factorial_add_single, F.coeff_pderiv]
-  ring
+  simp +singlePass [← mul_prod_erase' _ i, F.coeff_pderiv]; simp!; grind
 
 /-- The Fock pairing `⟨a * X ^ α, g⟩` is `α! * a * g.coeff α`, where `α!` is the product of the
 factorials of the exponents. -/
@@ -663,10 +658,7 @@ lemma fockPairing_eq_sum : fockPairing R p q =
 
 /-- The Fock pairing is symmetric. -/
 lemma fockPairing_comm : fockPairing R p q = fockPairing R q p := by
-  -- Both sides are sums of `p.coeff d * d! * q.coeff d`; the terms outside the common support
-  -- vanish.
-  rw [fockPairing_eq_sum, fockPairing_eq_sum]
-  exact sum_congr_of_eq_on_inter (by simp +contextual) (by simp +contextual) fun d _ _ ↦ by ring
+  simp [fockPairing, jet_eq_sum]; grind [sum_congr_of_eq_on_inter]
 
 lemma map_jet (F : MvPowerSeries σ R) :
     φ (jet R p F) = jet S (MvPolynomial.map φ p) (MvPowerSeries.map φ F) := by

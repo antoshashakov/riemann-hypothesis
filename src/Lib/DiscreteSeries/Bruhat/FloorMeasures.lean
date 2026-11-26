@@ -539,12 +539,7 @@ abbrev Place.weylLaw (l : ℕ) : Measure T.G :=
 
 /-- Reindexing the coordinates along a bijection preserves the volume. -/
 lemma measurePreserving_inclMatrix (g : n ≃ k) : MeasurePreserving (inclMatrix A g *ᵥ ·) := by
-  have h_eq : (inclMatrix A g *ᵥ ·) =
-      (MeasurableEquiv.piCongrLeft (fun _ : n ↦ A) g.symm).symm := by
-    ext v i
-    simp [inclMatrix, submatrix_mulVec_equiv, MeasurableEquiv.piCongrLeft]
-  rw [h_eq]
-  exact (measurePreserving_piCongrLeft _ g.symm).symm
+  simpa [inclMatrix, submatrix_mulVec_equiv] using! (measurePreserving_piCongrLeft _ g.symm).symm
 
 omit [TopologicalSpace A] [MeasureSpace A] [Place A] in
 /-- The Gram matrix of the standard basis vectors `e_(g j)` for `J` is the submatrix of `J` on the
@@ -996,8 +991,7 @@ lemma ascConv_heisenbergMeasure_dirac_comm :
 lemma ascConv_heisenbergMeasure_succ :
     (ascConv heisenbergMeasure (j + 1) : Measure T.G) =
       heisenbergMeasure j ∗ₘ ascConv heisenbergMeasure j :=
-  (mconv_comm_of_ae
-    (ae_mem_floorUnipotent.mono fun x hx ↦ ascConv_heisenbergMeasure_dirac_comm x hx.1)).symm
+  (mconv_comm_of_ae (ae_mem_floorUnipotent.mono (ascConv_heisenbergMeasure_dirac_comm · ·.1))).symm
 
 /-- Let `A` be a place and `T` a middle Gram matrix whose split Gram matrix `T.splitGram` is
 hermitian and invertible. In the unitary group of `T.splitGram`, let η_{<j} = η₀ ∗ ⋯ ∗ η_{j−1} be

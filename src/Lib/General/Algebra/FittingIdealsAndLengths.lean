@@ -119,12 +119,8 @@ lemma relLength_iInf_le (T : m → Submodule A M) :
 
 /-- The length of `S` is the sum of its length modulo `T` and the length of `S ⊓ T`. -/
 lemma relLength_add_length_inf : relLength S T + length A ↥(S ⊓ T) = length A S := by
-  -- Additivity of length in `0 → S ⊓ T → S → S ⧸ T → 0`.
-  have h_exact : Function.Exact (inclusion (inf_le_left : S ⊓ T ≤ S)) (T.submoduleOf S).mkQ := by
-    rw [exact_iff, ker_mkQ, range_inclusion]
-    simp [submoduleOf]
-  rw [length_eq_add_of_exact _ _ (inclusion_injective _) (mkQ_surjective _) h_exact, add_comm,
-    relLength]
+  erw [add_comm, ← length_eq_add_of_exact _ _ (inclusion_injective inf_le_left) (mkQ_surjective _)]
+  simp! [exact_iff, range_inclusion, submoduleOf]
 @[simp]
 lemma relLength_bot : relLength S ⊥ = length A S := by rw [← ker_id, relLength_ker, S.map_id]
 
@@ -250,30 +246,14 @@ lemma addVal_prod (f : m → O) : addVal O (∏ i : m, f i) = ∑ i : m, addVal 
 uniformiser has valuation 1. It is a consequence of the theorem on elementary divisors. -/
 lemma length_ker_le_addVal_det (M : Matrix n n O) (p : O) :
     length O (ker (M • 1 : End O (n → QuotSpan p))) ≤ addVal O M.det := by
-  -- In Smith normal form `M = Q * diagonal a * P`, with `P` and `Q` invertible, the kernel lies in
-  -- the image under `P⁻¹` of the product of the `a i`-torsion submodules of `O ⧸ p`, each of which
-  -- is cyclic, so a quotient of `O ⧸ a i`.
-  obtain ⟨Q, -, P, -, a, rfl⟩ := isValuationPair_top.smith_normal_form M
-  have h_cyclic : ∀ i : n, ∃ g : QuotSpan p, torsionBy O (QuotSpan p) (a i) = O ∙ g := fun i ↦
-    (IsPrincipal.of_comap _ (span {p}).mkQ_surjective _).1
-  choose g hg using h_cyclic
-  let ψ : (∀ i : n, QuotSpan (a i)) →ₗ[O] n → QuotSpan p :=
-    P⁻¹ • piMap fun i ↦ liftQSpanSingleton _ (toSpanSingleton O _ (g i))
-      (show g i ∈ torsionBy O (QuotSpan p) (a i) by simp [hg i])
-  have h_ker : ker ((Q.1 * diagonal a * P.1) • 1 : End O (n → QuotSpan p)) ≤ .map ψ ⊤ :=
-    fun w hw ↦ by
-      -- Cancelling `Q` shows that `a i` kills the coordinate `i` of `P • w`.
-      have h_coord : ∀ i : n, ∃ t : O, t • g i = (P.1 • w) i := by
-        simpa [mul_smul, funext_iff, diagonal, ← mem_torsionBy_iff, Submodule.mem_span_singleton,
-          hg] using hw
-      choose t ht using h_coord
-      exact ⟨fun i ↦ mkQ _ (t i), mem_top, ((smul_eq_iff_eq_inv_smul P).1 (funext ht).symm).symm⟩
-  calc length O (ker ((Q.1 * diagonal a * P.1) • 1 : End O (n → QuotSpan p)))
-    _ ≤ length O (⊤ : Submodule O (∀ i : n, QuotSpan (a i))) := length_le_of_le_map _ ⊤ h_ker
-    _ = addVal O (∏ i : n, a i) := by simp [addVal_prod]
-    -- `det M = det Q * (∏ i, a i) * det P`, so its valuation is no smaller than that of the
-    -- product.
-    _ ≤ addVal O (Q.1 * diagonal a * P.1).det := by simp [le_add_right]
+  obtain ⟨⟨Q, -, P, -, a, rfl⟩, h⟩ := isValuationPair_top.smith_normal_form M,
+    IsPrincipal.of_comap _ (span {p}).mkQ_surjective
+  grw [length_le_of_le_map (P⁻¹ • piMap fun i ↦ liftQSpanSingleton _ (toSpanSingleton O ..)
+    (h (torsionBy O _ (a i))).generator_mem) ⊤ fun w m ↦ ?_]
+  simp [addVal_prod, le_add_right]
+  choose t ht using by simpa [mul_smul, funext_iff, diagonal, ← mem_torsionBy_iff,
+    IsPrincipal.mem_iff_eq_smul_generator] using m
+  use (t ·), ⟨⟩, .symm ((smul_eq_iff_eq_inv_smul P).1 (funext ht))
 
 /-- Let `O` be a discrete valuation ring, `B ≅ O/p` a cyclic `O`-module and `Z` an `O`-module of
 functions from `Γ` to `B`. If `n i • z (q i) = 0` for all `z ∈ Z`, and only `0` vanishes at all

@@ -119,24 +119,11 @@ lemma of_top_le (h : ⊤ ≤ U) : IsCohomDense F U := by
 
 /-- Let U, V be subfunctors of Y. If V is dense in Y for F (`h`) and U ∩ V, the preimage of U in V,
 is dense in V (`k`), then U is dense in Y. -/
-lemma trans (h : IsCohomDense F V) (k : IsCohomDense F (U.preimage V.ι)) : IsCohomDense F U := by
-  -- Over a point `y`, compare the preimages `U_y` and `V_y` in h_A through `U_y ⊓ V_y`.
-  intro A y
-  let U_y : Subfunctor (reprBy A) := U.preimage (pointMap y)
-  let V_y : Subfunctor (reprBy A) := V.preimage (pointMap y)
-  -- `U_y ⊓ V_y ⊆ V_y` is an equivalence by `k`, and `V_y ⊆ h_A` is one by `h`.
-  have h_inf : IsCohomEquiv F (freeAb.map (U_y ⊓ V_y).ι) := by
-    have h_comp : IsCohomEquiv F
-        (freeAb.map ((U.preimage V.ι).preimage (V.fromPreimage (pointMap y))).ι ≫
-          freeAb.map V_y.ι) :=
-      (k.preimage (fromPreimage V (pointMap y))).isCohomEquiv.comp_iff.mpr (h A y)
-    -- the composite of the two inclusions is injective with image `U_y ⊓ V_y`
-    rwa [← freeAb.map_comp, isCohomEquiv_iff_range (U := U_y ⊓ V_y) (by aesop (add simp toFunctor))]
-      at h_comp
-  -- `U_y ⊓ V_y ⊆ U_y` is an equivalence by `h`, so `U_y ⊆ h_A` is one by cancellation.
-  refine (h.preimage (U_y.ι ≫ pointMap y)).isCohomEquiv.comp_iff.mp ?_
-  -- again the composite of the two inclusions has image `U_y ⊓ V_y`
-  rwa [← freeAb.map_comp, isCohomEquiv_iff_range (U := U_y ⊓ V_y) (by aesop (add simp toFunctor))]
+lemma trans (h : IsCohomDense F V) (k : IsCohomDense F (U.preimage V.ι)) : IsCohomDense F U :=
+  fun _ y ↦ by
+  have := (k.preimage (fromPreimage ..)).isCohomEquiv.comp_iff.2 (h _ y)
+  rwa [← (h.preimage (ι _ ≫ pointMap y)).isCohomEquiv.comp_iff, ← freeAb.map_comp,
+    isCohomEquiv_iff_range] at * <;> aesop
 
 /-- A subfunctor that contains a dense subfunctor is dense. -/
 lemma mono (h : IsCohomDense F U) (hU : U ≤ V) : IsCohomDense F V := by

@@ -120,14 +120,9 @@ lemma toAlgAut_surjective : Surjective (toAlgAut Γ K Ω) := by
   exact σ.commutes y
 
 /-- The units of `K` are exactly the `Γ`-invariant units of `Ω`. -/
-lemma DiscreteUnits.ofBase_bijective : Bijective (ofBase Γ Ω (K := K)) := by
-  refine ⟨coind_injective _ (map_injective (algebraMap K Ω).injective), fun x ↦ ?_⟩
-  -- An invariant unit of `Ω` comes from a nonzero element of `K`.
-  have h_fixed (g : Γ) : g • ((x.val.toMul : Ωˣ) : Ω) = (x.val.toMul : Ωˣ) :=
-    congrArg (fun v : DiscreteUnits Ω ↦ (v.toMul : Ω)) (x.property g)
-  obtain ⟨y, hy⟩ : ∃ y : K, algebraMap K Ω y = (x.val.toMul : Ωˣ) :=
-    G.isInvariant.isInvariant _ h_fixed
-  exact ⟨mk0 y (by grind [ne_zero]), val_injective (ext hy)⟩
+lemma DiscreteUnits.ofBase_bijective : Bijective (ofBase Γ Ω (K := K)) :=
+  ⟨coind_injective _ (map_injective (by aesop_cat)), fun x ↦ (G.1.3.1 _ (congr($(x.2 ·).1))).rec
+  (⟨mk0 · (by grind [ne_zero]), val_injective <| ext ·⟩)⟩
 
 /-- Two ring homomorphisms `j, j' : Ω → Ω'` that agree on `K` differ by an element of `Γ`:
 `j (g • x) = j' x` for some `g` and all `x`. -/

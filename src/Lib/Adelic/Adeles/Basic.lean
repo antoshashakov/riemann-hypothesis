@@ -606,10 +606,7 @@ lemma isCompact_Ô : IsCompact (Ô E : Set (𝔸f E)) := by
   rw [h_range]
   exact isCompact_range (X := ∀ w : FinPlace E, LocInt w) isEmbedding_structureMap.continuous
 
-lemma isOpen_Ô : IsOpen (Ô E : Set (𝔸f E)) := by
-  have h_set : ↑(Ô E) = {x : 𝔸f E | ∀ w : FinPlace E, x w ∈ LocInt w} := ext fun _ ↦ mem_Ô
-  rw [h_set]
-  exact isOpen_forall_mem out
+lemma isOpen_Ô : IsOpen (Ô E : Set (𝔸f E)) := (Set.ext fun _ ↦ mem_Ô).substr (isOpen_forall_mem out)
 
 @[fun_prop]
 lemma continuous_evalAt : Continuous (evalAt w) := continuous_eval w
@@ -629,11 +626,8 @@ lemma continuous_singleAdele : Continuous (singleAdele w) := by
 /-- An element of `E` that lies in `Ô E`, the finite adeles integral at every finite place, is an
 algebraic integer, and conversely. -/
 @[simp]
-lemma algebraMap_mem_Ô {x : E} : ↑x ∈ Ô E ↔ IsIntegral ℤ x := by
-  have key : (∀ w : FinPlace E, w.valuation E x ≤ 1) ↔ IsIntegral ℤ x :=
-    ⟨fun h ↦ isIntegral_iff.2 (mem_integers_of_valuation_le_one E x h),
-      fun hx w ↦ w.valuation_le_one ⟨x, hx⟩⟩
-  simpa [mem_Ô] using key
+lemma algebraMap_mem_Ô {x : E} : ↑x ∈ Ô E ↔ IsIntegral ℤ x := by simpa [mem_Ô] using
+  ⟨isIntegral_iff.2 ∘ mem_integers_of_valuation_le_one E x, fun h w ↦ w.valuation_le_one ⟨x, h⟩⟩
 
 /-- The image of an algebraic integer in the finite adeles is integral at every finite place. -/
 lemma coe_mem_Ô (a : 𝓞 E) : ↑a ∈ Ô E := algebraMap_mem_Ô.2 a.isIntegral_coe
@@ -928,9 +922,7 @@ lemma idem_of_notMem (hw : w ∉ S) : idem S w = 0 := ite_eq_right hw
 
 /-- The product `idem S * x` is an integral finite adele if and only if `x` is integral at every
 place in `S`. -/
-lemma idem_mul_mem_Ô : idem S * x ∈ Ô E ↔ ∀ w ∈ S, v (x w) ≤ 1 := by
-  refine mem_Ô.trans (forall_congr' fun w ↦ ?_)
-  by_cases hw : w ∈ S <;> simp [hw]
+lemma idem_mul_mem_Ô : idem S * x ∈ Ô E ↔ ∀ w ∈ S, v (x w) ≤ 1 := by simp [Ô, ite_mem]; rfl
 
 /-- The reduction at `w` of an integral finite adele vanishes if and only if its component at `w`
 has valuation less than 1. -/

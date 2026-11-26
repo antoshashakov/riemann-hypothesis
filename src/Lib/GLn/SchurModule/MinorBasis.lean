@@ -187,11 +187,8 @@ omit [DecidableEq m] in
 /-- For an assignment I of h_j rows of colour τ_j to each column j, the product of minors
 `New.GL.minorProduct` of I is a Borel semi-invariant: it lies in `New.nabla` for the weight
 `New.GL.columnWeight` of τ, h. -/
-lemma minorProduct_mem_nabla : minorProduct R I ∈ nabla R c (columnWeight τ h) := by
-  -- each minor is a semi-invariant, and semi-invariants form a graded monoid
-  rw [minorProduct, columnWeight]
-  apply SetLike.prod_mem_graded
-  exact fun j _ ↦ minor_mem_nabla fun s ↦ (I j s).prop
+lemma minorProduct_mem_nabla : minorProduct R I ∈ nabla R c (columnWeight τ h) :=
+  SetLike.prod_mem_graded _ _ _ fun _ _ ↦ minor_mem_nabla (by grind)
 
 /-- Bordering one minor: take a tuple `I` of `k` rows other than `x` and append the row `x` if
 `e = 1`. After `New.GL.rowExpansion x`, the new minor has leading term `X k ^ e` times the old

@@ -90,24 +90,13 @@ omit [Fintype n]
 
 /-- `skewCoords` reads the real coordinates y back from the skew-hermitian matrix `skewOfReal y`. -/
 @[simp]
-theorem skewCoords_skewOfReal : skewCoords (skewOfReal y) = y := by
-  ext a b
-  obtain rfl | hab := eq_or_ne a b
-  · simp [skewCoords, skewOfReal]
-  · suffices ((y a b - y b a) / √2 + (y a b + y b a) / √2) / √2 = y a b by
-      simpa [skewCoords, skewOfReal, hab]
-    rw [← add_div, div_div, Real.mul_self_sqrt zero_le_two]
-    ring
+theorem skewCoords_skewOfReal : skewCoords (skewOfReal y) = y :=
+  ext (by simp [skewCoords, skewOfReal]; grind)
 
 /-- The matrix `skewOfReal y` with real coordinates y is skew-hermitian. -/
 @[simp]
-theorem conjTranspose_skewOfReal : (skewOfReal y)ᴴ = -skewOfReal y := by
-  ext a b
-  obtain rfl | hab := eq_or_ne a b
-  · simp [skewOfReal]
-    ring
-  · simp [skewOfReal, hab, hab.symm]
-    ring
+theorem conjTranspose_skewOfReal : (skewOfReal y)ᴴ = -skewOfReal y :=
+  ext (by simp [skewOfReal]; grind)
 
 /-- A skew-hermitian matrix x is recovered by `skewOfReal` from its real coordinates
 `skewCoords x`. -/

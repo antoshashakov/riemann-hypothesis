@@ -130,23 +130,11 @@ lemma p_mul_X : p * Amax.xiDivP = xi :=
   congr(.of _ _ $(sub_eq_zero.mp mk_self))
 
 /-- The prime p is not a zero divisor in the period ring A, so A is p-torsion free. -/
-lemma Amax.p_mem_nonZeroDivisors : ↑p ∈ Amax⁰ := by
-  -- The ring obtained by adjoining a root of `p X - ξ` has no `p`-torsion, and this passes to its
-  -- `p`-adic completion.
-  have h_reg : IsSMulRegular (AdjoinRoot (C (p : Ainf) * .X - C xi)) p := by
-    refine .of_right_eq_zero_of_smul fun y hy ↦ ?_
-    obtain ⟨f, rfl⟩ := mk_surjective y
-    have h_dvd : C (p : Ainf) * .X - C xi ∣ C (p : Ainf) * f :=
-      mk_eq_zero.mp ((nsmul_eq_mul p _).symm.trans hy)
-    -- `p` is prime in the polynomial ring: it divides `p X - ξ`, or `p X - ξ` divides `f`
-    rcases (prime_C_iff.mpr Ainf.prime_p).left_dvd_or_dvd_right_of_dvd_mul h_dvd with
-      hp_dvd | h_dvd_f
-    · -- impossible: on constant coefficients, `p` would divide `ξ`
-      have h_const : (p : Ainf) ∣ xi := by simpa using map_dvd constantCoeff hp_dvd
-      exact absurd h_const not_p_dvd_xi
-    · exact mk_eq_zero.mpr h_dvd_f
-  refine mem_nonZeroDivisors_iff_left.mpr fun x hx ↦ ?_
-  exact (isSMulRegular_completion h_reg).right_eq_zero_of_smul ((nsmul_eq_mul p x).trans hx)
+lemma Amax.p_mem_nonZeroDivisors : ↑p ∈ Amax⁰ := mem_nonZeroDivisors_iff_left.2 fun _ ↦
+  IsSMulRegular.right_eq_zero_of_smul
+  (isSMulRegular_completion (.of_right_eq_zero_of_smul (Quot.ind fun _ h ↦
+  ((prime_C_iff.2 Ainf.prime_p).left_dvd_or_dvd_right_of_dvd_mul (by simpa using mk_eq_zero.1 h)
+  ).rec (by simpa using map_dvd constantCoeff ·) mk_eq_zero.2))) ∘ by simp
 
 /-- The universal property of `A`: a ring map `f` from `A_inf` to a `p`-adically complete ring, with
 an `x` such that `p x = f ξ`, extends to `A` with `X ↦ x`. -/
@@ -330,18 +318,9 @@ lemma thetaBPlus_ainf : thetaBPlus a = (theta a).val :=
 
 /-- The map `thetaBPlus` : B⁺ → ℂ_p is onto. It is Fontaine's θ on the period ring B⁺ = A[1/p],
 where A is `Amax`, and it extends θ on `Amax`. -/
-lemma thetaBPlus_surjective : Surjective thetaBPlus := by
-  -- Write `x = a / p ^ n` with `a` in `OC` and lift `a` to `b` along `theta`; then `b / p ^ n` maps
-  -- to `x`.
-  refine (lift_surjective_iff _).2 fun x ↦ ?_
-  obtain ⟨n, a, ha⟩ : ∃ (n : ℕ) (a : OC),
-      x * algebraMap OC ℂ_[p] (p : OC) ^ n = algebraMap OC ℂ_[p] a :=
-    surj (p : OC) x
-  obtain ⟨b, rfl⟩ : ∃ b : Ainf, theta b = a := theta_surjective a
-  let d : Submonoid.powers (p : Amax) := ⟨p ^ n, n, rfl⟩
-  have h_frac : x * OC.toPadicIntAlgHom thetaAmax d = OC.toPadicIntAlgHom thetaAmax b := by
-    simpa [d] using ha
-  exact ⟨((b : Amax), d), h_frac⟩
+lemma thetaBPlus_surjective : Surjective thetaBPlus := (IsLocalization.lift_surjective_iff _).2
+  (surj ↑p · |>.elim fun n ⟨a, _⟩ ↦ (theta_surjective a).rec fun b _ ↦
+  ⟨⟨b, _, n, rfl⟩, by simp_all⟩)
 
 end New.Period
 
@@ -903,20 +882,9 @@ lemma thetaBdR_eq_zero_iff : thetaBdR x = 0 ↔ ↑xi ∣ x := by
 
 /-- An element `x` of `B_dR⁺` is a unit if and only if `θ x ≠ 0`. -/
 @[simp]
-lemma BdRPlus.isUnit_iff : IsUnit x ↔ thetaBdR x ≠ 0 := by
-  constructor
-  · intro hx_unit
-    exact (hx_unit.map thetaBdR).ne_zero
-  · intro hx
-    -- if `θ b = (θ x)⁻¹`, then `x * b ≡ 1` modulo `ξ`; by `ξ`-adic completeness `x * b` is a unit
-    obtain ⟨b, hb⟩ : ∃ b : BPlus, thetaBPlus b = (thetaBdR x)⁻¹ := thetaBPlus_surjective _
-    have h_theta : thetaBdR (x * b - 1) = 0 := by
-      rw [map_sub, map_mul, map_one, thetaBdR_algebraMap_BPlus, hb, mul_inv_cancel₀ hx, sub_self]
-    have h_dvd : (xi : BdRPlus) ∣ x * b - 1 := thetaBdR_eq_zero_iff.mp h_theta
-    -- The `ξ`-adic completeness of `B_dR⁺` is given explicitly.
-    have h_unit : IsUnit (x * b) :=
-      @isUnit_of_dvd_sub _ _ _ _ _ isAdicComplete isUnit_one h_dvd
-    exact isUnit_of_mul_isUnit_left h_unit
+lemma BdRPlus.isUnit_iff : IsUnit x ↔ thetaBdR x ≠ 0 := ⟨(·.map _ |>.ne_zero),
+  isUnit_of_dvd_unit ⟨↑(surjInv thetaBPlus_surjective (thetaBdR x)⁻¹), rfl⟩ ∘ @isUnit_of_dvd_sub
+    _ _ _ _ _ isAdicComplete isUnit_one ∘ thetaBdR_eq_zero_iff.1 ∘ by simp_all [surjInv_eq]⟩
 
 /-- Every nonzero element of `B_dR⁺` is a power of `ξ` times a unit. -/
 lemma BdRPlus.exists_associated_xi_pow (hx : x ≠ 0) : ∃ n : ℕ, Associated (xi ^ n : BdRPlus) x := by

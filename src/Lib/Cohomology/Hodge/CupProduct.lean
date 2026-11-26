@@ -251,11 +251,7 @@ lemma of_comp_homClass (x : H M N n) :
   simp [push]
 
 @[simp]
-lemma comp_id : comp x (homClass (𝟙 N)) = x := by
-  induction x using DirectSum.induction_on with
-  | zero => simp
-  | add x x' hx hx' => simp_all
-  | of a x => simp
+lemma comp_id : comp x (homClass (𝟙 N)) = x := by apply x.induction_on .. <;> simp_all
 
 /-- Pulling back along `f` is `New.Variety.H.map` in every degree. -/
 lemma pullbackAlong_eq_map : pullbackAlong f = DirectSum.map (H.map G f) := by
@@ -284,10 +280,7 @@ lemma naturality (η : Φ ⟶ Ψ) (x : TotalH N F) :
 /-- The action of a scalar `r` of `R` on the coefficients `F` (`CoeffAction R F` gives each `r` an
 endomorphism `CoeffAction.act r` of `F`) is the product with the class of its action map. -/
 lemma smul_eq_comp : r • y = comp y (homClass (End.asHom (CoeffAction.act r))) := by
-  induction y using DirectSum.induction_on with
-  | zero => simp
-  | add y y' hy hy' => simp_all
-  | of a y => simp [← of_smul, smul_eq_push, push]
+  apply y.induction_on .. <;> simp_all [← of_smul]; tauto
 
 /-- The Yoneda product is linear in the second factor over the scalars acting on `F`. -/
 lemma comp_smul : comp x (r • y) = r • comp x y := by simp [smul_eq_comp, comp_assoc]

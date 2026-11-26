@@ -456,17 +456,9 @@ lemma phi_pow_smul_letterTeich :
   simp
 
 /-- The projector to the letter i takes values in the part at the letter i. -/
-lemma letterProj_mem_letterPart : L.letterProj i x ∈ letterPart i := by
-  -- Let `q` be the order of `k.Letter`. The geometric sum gives
-  -- `(letterOp i - 1) * ∑ n < q, letterOp i ^ n = letterOp i ^ q - 1`, and `letterOp i ^ q = 1`
-  -- because `ζ ^ q = 1` and `i⁻¹ ^ q = 1`.
-  have hζ : O.ζ.val ^ Fintype.card k.Letter = 1 := by simpa using O.ζ.property
-  have h_order (y : L.Ambient) : (L.letterOp i ^ Fintype.card k.Letter) y = y := by
-    induction y using DiagTensor.induction with
-    | h_mk a t => simp [← map_pow, hζ, map_one]
-    | h_add y z hy hz => rw [map_add, hy, hz]
-  change ((L.letterOp i - 1) * L.letterProj i) x = 0
-  simp [letterProj, mul_geom_sum, h_order]
+lemma letterProj_mem_letterPart : L.letterProj i x ∈ letterPart i :=
+  (diagTensor_induction (by simp [letterProj, mul_geom_sum, ← map_pow, by
+  simpa using O.ζ.2, map_one]) : ∀ x, ((_ - 1) * L.letterProj i) x = 0) x
 
 /-- x lies in the part at the letter i exactly when the projector to i fixes it. -/
 lemma mem_letterPart_iff_letterProj : x ∈ letterPart i ↔ L.letterProj i x = x := by

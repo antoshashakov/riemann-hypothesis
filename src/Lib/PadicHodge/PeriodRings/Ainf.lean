@@ -322,11 +322,7 @@ lemma FrobGal.smul_def (x : A) : (Multiplicative.ofAdd n, g) • x = frobEnd^[n]
 
 /-- The action of `g` in `G_p` commutes with the Frobenius φ. -/
 @[simp]
-lemma smul_frobEnd (x : A) : g • frobEnd x = frobEnd (g • x) := by
-  -- `g` acts as `(1, g)` and `φ` as `(ofAdd 1, 1)`, and these two elements of `FrobGal` commute
-  change ((1, g) : FrobGal) • ((Multiplicative.ofAdd 1, 1) : FrobGal) • x =
-    ((Multiplicative.ofAdd 1, 1) : FrobGal) • ((1, g) : FrobGal) • x
-  simp only [smul_smul, Prod.mk_mul_mk, one_mul, mul_one]
+lemma smul_frobEnd (x : A) : g • frobEnd x = frobEnd (g • x) := by erw [smul_smul]; simp
 
 /-- For n ∈ ℕ and x in O^♭, the untilt (x^{1/p^n})^♯ in O_C of the p^n-th root of x. -/
 def OFlat.untiltRoot : OC := untilt ((frobeniusEquiv (PreTilt OC p) p).symm^[n] x)
@@ -359,10 +355,7 @@ instance [MulSemiringAction M Ainf] [MulSemiringAction M S] [Algebra ℤ_[p] S] 
 instance [CharP S p] [Algebra R S] : IsScalarTower ℤ_[p] (WittVector p R) (WittVector p S) :=
   .of_algHom ⟨_, wittVector_map_algebraMap _⟩
 
-lemma OFlat.frobEnd_apply : frobEnd x = x ^ p := by
-  -- `φ = (ofAdd 1, 1)` acts by the identity of `G_p` on the tilt followed by `x ↦ x ^ p`
-  have h_frob : frobEnd x = tiltMap (toRingHom (Gp p) OC 1) x ^ p ^ 1 := rfl
-  simp [h_frob, show toRingHom (Gp p) OC 1 = RingHom.id OC by aesop, tiltMap_id]
+lemma OFlat.frobEnd_apply : frobEnd x = x ^ p := (pow_mul ..).trans congr($(one_smul FrobGal x) ^ p)
 
 variable {G : Type*} [Group G] [MulSemiringAction G OFlat] [MulSemiringAction FrobGal S]
 
@@ -523,10 +516,8 @@ lemma untilt_frobGal_smul : (m • t).untilt = (m.2 • t.untilt) ^ p ^ m.1.toAd
   simpa using untilt_ofAdd_smul m.1.toAdd m.2 t
 
 @[simp]
-lemma theta_smul : theta (g • a) = g • theta a := by
-  -- `g` acts on Witt coordinates by `tiltMap`, raised to the power `p ^ 0 = 1`.
-  have h_act : g • a = a.map (tiltMap (toRingHom _ _ g)) := WittVector.ext fun n ↦ pow_one _
-  rw [h_act, fontaineTheta_map_tiltMap, toRingHom_apply]
+lemma theta_smul : theta (g • a) = g • theta a :=
+  (fontaineTheta_map_tiltMap (toRingHom ..) a).subst (by congr with; apply pow_one)
 
 lemma constantCoeff_frobEnd : constantCoeff (frobEnd a) = constantCoeff a ^ p := by
   rw [frobEnd_eq_frobenius, constantCoeff_apply, constantCoeff_apply, coeff_frobenius_charP]
@@ -543,11 +534,8 @@ open Ainf Multiplicative
 
 /-- Let `a ∈ A_inf` divide each of its conjugates `g' • a` under the Galois group `G_p`. Then
 for every `g ∈ G_p` the conjugate `g • a` is associated to `a`. -/
-lemma associated_smul_of_dvd (h : ∀ g : Gp p, a ∣ g • a) : Associated (g • a) a := by
-  -- apply `g` to `a ∣ g⁻¹ • a`
-  have h_inv : g • a ∣ g • (g⁻¹ • a) := map_dvd (toRingHom (Gp p) Ainf g) (h g⁻¹)
-  rw [smul_inv_smul] at h_inv
-  exact associated_of_dvd_dvd h_inv (h g)
+lemma associated_smul_of_dvd (h : ∀ g : Gp p, a ∣ g • a) : Associated (g • a) a :=
+  associated_of_dvd_dvd (by simpa using map_dvd (toRingHom _ _ g) (h g⁻¹)) (h g)
 
 /-- `ℤ_p = W(𝔽_p)` acts faithfully on `W(k)`, for every perfect ring `k` of characteristic `p`. -/
 instance : FaithfulSMul ℤ_[p] (WittVector p k) := by
@@ -694,12 +682,8 @@ lemma associated_p_xi_sub_teichmuller : Associated ↑p (xi - teichmuller p (con
 
 /-- The untilt of the constant coefficient of `ξ` divides `p`. This follows by applying `θ` to
 `associated_p_xi_sub_teichmuller` and using `θ ξ = 0`. -/
-lemma untilt_constantCoeff_xi_dvd_p : xi.constantCoeff.untilt ∣ p := by
-  have h_dvd : theta (xi - teichmuller p (constantCoeff xi)) ∣ theta p :=
-    (associated_p_xi_sub_teichmuller.map theta).dvd'
-  -- `θ (ξ - [ξ₀]) = -ξ₀^♯`, since `θ ξ = 0`
-
-  simpa using h_dvd
+lemma untilt_constantCoeff_xi_dvd_p : xi.constantCoeff.untilt ∣ p := by simpa using
+  (associated_p_xi_sub_teichmuller.map theta).dvd'
 
 variable {t g}
 
@@ -956,24 +940,11 @@ lemma dvd_of_forall_exists_sub_mem_span_pow (ha : ¬IsUnit a) (hc : ¬IsUnit c) 
     exact (Submodule.sub_mem_iff_left _ h_δx).mp (hN hx)
 
 /-- For a non-unit `a`, the map `(x j) ↦ (x j - a * x (j + 1))` on sequences in `A_inf` is onto. -/
-lemma Ainf.shiftDiff_surjective (h : ¬IsUnit a) : Surjective (shiftDiff Ainf a) := by
-  -- View sequences in `Ainf` as Witt vectors over `ℕ → OFlat` and apply
-  -- `Witt.exists_map_sub_mul_map_eq` with the identity and the shift: modulo `p` the equation is
-  -- the one solved in `OFlat.shiftDiff_surjective_of_not_isUnit`.
-  intro b
-  have h_perfect : PerfectRing (ℕ → OFlat) p := ⟨(bijective_frobenius _ p).comp_left⟩
-  let shift : (ℕ → OFlat) →+* (ℕ → OFlat) := .pi fun n ↦ evalRingHom _ (n + 1)
-  have h_mod_p : Surjective (shiftDiff OFlat (constantCoeff a)) :=
-    OFlat.shiftDiff_surjective_of_not_isUnit (mt isUnit_iff_isUnit_constantCoeff.mpr h)
-  -- the Witt vector over `ℕ → O^♭` whose `i`-th coordinate is `n ↦ (b n).coeff i`
-  let B : WittVector p (ℕ → OFlat) := ⟨fun i n ↦ (b n).coeff i⟩
-  obtain ⟨y, hy⟩ := exists_map_sub_mul_map_eq (a := B) 1 shift
-    (algebraMap Ainf (WittVector p (ℕ → OFlat)) a) h_mod_p
-  -- the components of the solution `y` form the required sequence
-  refine ⟨fun n ↦ y.map (evalRingHom _ n), funext fun n ↦ ?_⟩
-  -- the `n`-th component of `hy` is the `n`-th equation `y n - a * y (n + 1) = b n`; the two sides
-  -- agree only after unfolding `WittVector.map` coordinatewise, hence `using!`
-  simpa [B] using! congrArg (WittVector.map (evalRingHom _ n)) hy
+lemma Ainf.shiftDiff_surjective (h : ¬IsUnit a) : Surjective (shiftDiff Ainf a) := fun b ↦
+  (@exists_map_sub_mul_map_eq p _ _ _ _ ⟨(bijective_frobenius ..).comp_left⟩ ⟨swap (b · |>.1)⟩ 1
+  (.pi (evalRingHom _ ·.succ)) (algebraMap _ _ a)
+  (isHausdorff_and_shiftDiff_surjective (h ∘ isUnit_iff_isUnit_constantCoeff.2)).2).imp' _
+  fun _ e ↦ funext (by simpa using! congr(($e).map <| evalRingHom _ ·))
 
 /-- `ξ` is a prime element of `A_inf`: it generates the kernel of `θ`, whose target `O_C` is a
 domain. -/

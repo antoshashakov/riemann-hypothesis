@@ -559,11 +559,7 @@ variable [IsCMField E]
 omit [CharZero F] in
 /-- For a CM field `E`, the prime induced by `σ` composed with complex conjugation is the complex
 conjugate of the prime induced by `σ`. -/
-lemma placeOfEmb_comp_star : placeOfEmb (σ.comp conj) = star (placeOfEmb σ) := by
-  -- An integer `x` lies in either prime exactly when `‖σ (star x)‖ < 1`.
-  ext x
-  rw [mem_placeOfEmb, mem_star_place, mem_placeOfEmb, coe_star_ringOfIntegers]
-  rfl
+lemma placeOfEmb_comp_star : placeOfEmb (σ.comp conj) = star (placeOfEmb σ) := by aesop
 
 /-- For a CM field `E`, applying the extension of `σ` to the complex conjugate of a finite adele
 gives the extension of `σ` composed with complex conjugation. -/

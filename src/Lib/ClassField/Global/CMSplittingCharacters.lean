@@ -757,9 +757,7 @@ private lemma idOrConjInv_true : idOrConjInv true g = g := rfl
 private lemma idOrConjInv_false : idOrConjInv false g = (conjGal g)⁻¹ := rfl
 
 @[simp]
-lemma conjGal_conjGal : conjGal (conjGal g) = g := by
-  ext
-  simp [conjGal]
+lemma conjGal_conjGal : conjGal (conjGal g) = g := by ext; simp [conjGal]
 
 /-- The chosen complex conjugation `c` intertwines `g^c = c g c` with `g`: `c (g^c x) = g (c x)`. -/
 lemma cmConj_conjGal_smul (x : Ω) : cmConj.toRingHom (conjGal g • x) = g • cmConj.toRingHom x :=
@@ -799,9 +797,7 @@ noncomputable def conjPlace (A : ClosurePlace) : ValuationSubring Ω := A.comap 
 variable {g}
 
 @[simp]
-lemma conjPlace_conjPlace : conjPlace (conjPlace A) = A := by
-  ext
-  simp [conjPlace]
+lemma conjPlace_conjPlace : conjPlace (conjPlace A) = A := by ext; simp [conjPlace]
 
 /-- Let E be a CM field. If the valuation subring A of Ω lies over the finite place v of E, then
 the conjugate place of A under the chosen complex conjugation lies over the conjugate prime

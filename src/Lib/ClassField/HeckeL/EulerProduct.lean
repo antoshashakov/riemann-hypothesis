@@ -98,33 +98,20 @@ lemma ncard_primesOver_le_finrank (p : Ideal ℤ) [p.IsMaximal] :
 prime factor of the norm `v.q`, is at most the degree `[K : ℚ]`. -/
 lemma sum_inv_minFac_sq_le_finrank (u : Finset (FinPlace K)) :
     ∑ v ∈ u, (v.q.minFac ^ 2 : ℝ)⁻¹ ≤ finrank ℚ K := by
-  -- Group the primes by the least factor `p` of their norm. The primes of one group lie over the
-  -- same rational prime, so there are at most `[K : ℚ]` of them, and `∑ 1 / p ^ 2 ≤ 1`.
-  have h_minFac (v : FinPlace K) : v.q.minFac = absNorm (v.asIdeal.under ℤ) := by
-    -- The norm of `v` is a positive power of the rational prime below `v`.
-    simp [← (v.asIdeal.under ℤ).absNorm_pow_inertiaDeg v.asIdeal,
-      (Nat.absNorm_under_prime _).pow_minFac (inertiaDeg_pos ..).ne']
-  have h_group (v : FinPlace K) : #{w ∈ u | w.q.minFac = v.q.minFac} ≤ finrank ℚ K := by
-    grw [← ncard_primesOver_le_finrank (v.asIdeal.under ℤ), ← Set.ncard_coe_finset]
-    refine Set.ncard_le_ncard_of_injOn _ (fun w hw ↦ ⟨w.isPrime, ⟨ext ?_⟩⟩) asIdeal_injective.injOn
-      (IsDedekindDomain.primesOver_finite ..)
-    -- `w` lies over the prime below `v`: two ideals of `ℤ` with the same norm are equal.
-    simp_all [Int.cast_mem_ideal_iff]
-  -- The least prime factors lie in `(1, N)` for `N` one more than their maximum.
-  set N : ℕ := u.sup fun v : FinPlace K ↦ v.q.minFac + 1
-  have h_range : u.image (fun v : FinPlace K ↦ v.q.minFac) ⊆ Ioo 1 N :=
-    image_subset_iff.mpr fun v hv ↦ mem_Ioo.mpr ⟨(Nat.minFac_prime v.one_lt_q.ne').one_lt,
-      le_sup (f := fun w : FinPlace K ↦ w.q.minFac + 1) hv⟩
-  calc
-    _ = ∑ p ∈ u.image (fun v : FinPlace K ↦ v.q.minFac),
-          #{w ∈ u | w.q.minFac = p} • (p ^ 2 : ℝ)⁻¹ :=
-      sum_comp (fun p : ℕ ↦ (p ^ 2 : ℝ)⁻¹) _
-    _ ≤ ∑ p ∈ u.image (fun v : FinPlace K ↦ v.q.minFac), finrank ℚ K • (p ^ 2 : ℝ)⁻¹ :=
-      sum_le_sum (forall_mem_image.mpr fun v _ ↦ nsmul_le_nsmul_left (by positivity) (h_group v))
-    _ ≤ finrank ℚ K • (2 / ((1 : ℕ) + 1) : ℝ) := by
-      -- `∑ 1 / p ^ 2 ≤ 2 / (1 + 1)` over `1 < p < N`.
-      grw [← smul_sum, h_range, sum_Ioo_inv_sq_le]
-    _ = finrank ℚ K := by norm_num
+  have c {p : Ideal ℤ} [p.IsMaximal] (h : p ≠ ⊥) :
+      #(IsDedekindDomain.primesOverFinset p (𝓞 K)) ≤ finrank ℚ K := by
+    rw [← RingOfIntegers.rank, ← sum_ramification_inertia_eq_finrank p, ← Set.ncard_coe_finset,
+      IsDedekindDomain.coe_primesOverFinset h, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card,
+      Fintype.card_eq_sum_ones]
+    exact sum_le_sum fun q _ ↦ mul_pos (ramificationIdx_pos ..) (inertiaDeg_pos ..)
+  grw [sum_comp fun n ↦ (_ ^ 2)⁻¹, sum_le_sum fun n h ↦ nsmul_le_nsmul_left _ ((mem_image.1 h).rec
+    fun v e ↦ by grw [card_le_card_of_injOn _ (fun w _ ↦ (IsDedekindDomain.coe_primesOverFinset
+    (v.under ℤ).3 _).ge ⟨w.2, ⟨Ideal.ext (by
+    simp_all [Int.cast_mem_ideal_iff, ← fun v : FinPlace K ↦ (v.1.under
+    ℤ).absNorm_pow_inertiaDeg v.1, (Nat.absNorm_under_prime _).pow_minFac (inertiaDeg_pos ..).ne'])
+    ⟩⟩) asIdeal_injective.injOn, c (ne_bot _)]), ← smul_sum,
+    image_subset_iff.2 fun v h ↦ mem_Ioo.2 ⟨(Nat.minFac_prime v.one_lt_q.ne').one_lt,
+    le_sup (f := (·.q.minFac + 1)) h⟩, sum_Ioo_inv_sq_le] <;> bound
 
 variable {a b} {l l' : ℂ}
 

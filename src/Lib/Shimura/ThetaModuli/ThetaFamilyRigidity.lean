@@ -239,20 +239,10 @@ lemma comp_toFamily : h.schemeMap.left ≫ x.toFamily.left = x'.toFamily.left :=
 /-- For x' the pull-back of x along b, the map `New.ThetaObject.IsPullbackAlong.schemeMap` is a base
 change along b that respects the group law and the `𝓞 E`-action. -/
 lemma isGroupBaseChange : IsGroupBaseChange b h.schemeMap := by
-  -- The square of `h.schemeMap` followed by that of `x.toFamily` is the pull-back square of
-  -- `x'.toFamily`.
-  have h_square :
-      IsPullback (h.schemeMap.left ≫ x.toFamily.left) x'.groupScheme.hom X.total.hom x' := by
-    simpa only [h.comp_toFamily] using x'.isGroupBaseChange.isPullback
-  have hx'_baseChange : IsGroupBaseChange x' x'.toFamily := x'.isGroupBaseChange
-  have h_eq : b ≫ x = x' := h
-  subst h_eq
-  refine ⟨.of_right h_square h.schemeMap.w x.isGroupBaseChange.isPullback, fun {T} ↦ ?_⟩
-  -- On points, `h.schemeMap` is the composite of two linear bijections through the points of
-  -- `X.total`. (`convert`: the composite is `(· ≫ h.schemeMap)` only by the equation proved next.)
-  convert
-    (hx'_baseChange.pointEquiv ≪≫ₗ (x.isGroupBaseChange.pointEquiv (T := map b T)).symm).isLinear
-  exact x.isGroupBaseChange.pointEquiv.eq_symm_apply.mpr (ext (_ ≫= h.comp_toFamily))
+  obtain ⟨P, rfl⟩ := x'.isGroupBaseChange, id h
+  use .of_right (h.comp_toFamily ▸ P.1) h.schemeMap.w x.isGroupBaseChange.1, fun {T} ↦ ?_
+  convert (P.pointEquiv ≪≫ₗ x.isGroupBaseChange.pointEquiv (T := T.map b).symm).isLinear
+  apply x.isGroupBaseChange.pointEquiv.eq_symm_apply.2 (ext (_ ≫= h.comp_toFamily))
 
 lemma lineBundle_eq_pull : x'.lineBundle = x.lineBundle.pull h.schemeMap.left :=
   congrArg _ h.comp_toFamily.symm

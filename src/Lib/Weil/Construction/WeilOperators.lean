@@ -184,10 +184,7 @@ omit [μ.IsAddHaarMeasure] in
 /-- For a representation R on the model space and a vector v, the operator sending w in the model
 space to ∫ w(y) R.ρ(y) v dμ(y) has norm at most ‖v‖. -/
 lemma norm_integrated_flip_le (R : H.Rep (Model H)) : ‖R.integrated.flip v‖ ≤ ‖v‖ := by
-  -- `integrated` is built by `LinearMap.mkContinuous₂` with the bound `1`; unfold it to use that.
-  grw [le_opNorm, opNorm_flip, integrated, kernelIntegral, LinearMap.mkContinuous₂_norm_le]
-  · rw [one_mul]
-  · exact zero_le_one
+  grw [le_opNorm, opNorm_flip, integrated, kernelIntegral, LinearMap.mkContinuous₂_norm_le] <;> simp
 
 lemma weilOp_one : weilOp B 1 = 1 := by
   refine hom_ext fun y ↦ ?_
