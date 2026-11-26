@@ -117,19 +117,11 @@ lemma dvd_of_untilt_dvd {x y : c.TiltRing} (h : x.untilt ∣ y.untilt) : x ∣ y
 
 /-- The tilt of a p-adic test c is a perfect O^♭-algebra without `pFlat`-torsion, in the sense of
 `New.Variety.IsPerfectTorsionFree`. -/
-lemma isPerfectTorsionFree_tilt : IsPerfectTorsionFree (tilt c) := by
-  -- If `pFlat • y = 0` then `p * y.untilt = p * (0 : c.TiltRing).untilt`, as the untilt of `pFlat`
-  -- divides `p`; cancel `p`.
-  change IsPerfectTorsionFree (.of _ c.TiltRing)
-  refine ⟨inferInstance, .of_right_eq_zero_of_smul fun y hy ↦ ?_⟩
-  obtain ⟨e, he⟩ : ∃ e : OC, (p : OC) = e * xi.constantCoeff.untilt :=
-    exists_eq_mul_left_of_dvd untilt_constantCoeff_xi_dvd_p
-  have h_mul (z : c.TiltRing) :
-      (p : c.ProdRing) * z.untilt = c.structureMap e * PreTilt.untilt (pFlat • z) := by
-    rw [← map_natCast c.structureMap, he, map_mul, ← untilt_tiltMap, mul_assoc, ← map_mul]
-    rfl
-  have h_untilt : (0 : c.TiltRing).untilt = y.untilt := c.isLeftRegular_p (by simp [h_mul, hy])
-  exact zero_dvd_iff.mp (c.dvd_of_untilt_dvd h_untilt.dvd)
+lemma isPerfectTorsionFree_tilt : IsPerfectTorsionFree (tilt c) := (⟨inferInstance,
+  .of_right_eq_zero_of_smul fun _ _ ↦ zero_dvd_iff.1 (c.dvd_of_untilt_dvd (c.isLeftRegular_p
+  (Dvd.elim_left (map_dvd c.structureMap untilt_constantCoeff_xi_dvd_p) (by simp_all [pFlat, ←
+  untilt_tiltMap, mul_assoc, ← map_mul, Algebra.smul_def, algebraMap]))).dvd)⟩ :
+  IsPerfectTorsionFree (.of _ c.TiltRing))
 
 /-- Let S be the ring of a p-adic test, that is, the product of its family of valuation rings, with
 its ring map from O_C. Then the kernel of Fontaine's map θ: W(S^♭) → S is the principal ideal

@@ -102,29 +102,12 @@ lemma padic_mem_topologicalClosure {F : Type*} [NormedField F] [PadicField F p] 
   map_mem_closure (by fun_prop) (Padic.denseRange_ratCast p x) (by simp)
 
 /-- A ring homomorphism `ι` from the algebraic closure `Ω` of `ℚ` to `ℚ̄_p` has dense image. -/
-lemma denseRange_emb_padicAlgCl : DenseRange ι := by
-  -- The closure `L` of the image of `ι` in the completion `ℂ_p` is a complete field in which the
-  -- algebraically closed field `Ω` is dense, so it is algebraically closed. It contains `ℚ_p`,
-  -- hence every element that is algebraic over `ℚ_p`.
-  let L : IntermediateField ℚ_[p] ℂ_[p] :=
+lemma denseRange_emb_padicAlgCl : DenseRange ι := isDenseInducing_coe.dense_iff.2
+  (let L :=
     Subfield.toIntermediateField _ (padic_mem_topologicalClosure (coeRingHom.comp ι).fieldRange)
-  let ιL : Ω →+* L := (coeRingHom.comp ι).codRestrict L fun x ↦ subset_closure ⟨x, rfl⟩
-  have h_dense : DenseRange ιL := by
-    rw [DenseRange, dense_iff, ← range_comp]
-    exact le_rfl
-  have h_closed : IsAlgClosed L := by
-    have hL_complete : CompleteSpace L := isClosed_closure.completeSpace_coe
-    let alg : Algebra Ω L := ιL.toAlgebra
-    exact IsAlgClosed.of_denseRange (K := Ω) h_dense
-  -- Density in `ℚ̄_p` may be tested in the completion.
-  refine isDenseInducing_coe.dense_iff.mpr fun x ↦ ?_
-  -- `x` is algebraic over `ℚ_p` and its minimal polynomial splits in `L`, so `x` lies in `L`.
-  have h_mem : algebraMap (PadicAlgCl p) ℂ_[p] x ∈ L :=
-    (IsGalois.integral ℚ_[p] x).algebraMap.mem_intermediateField_of_minpoly_splits
-      (IsAlgClosed.splits _)
-  -- `L` is by definition the closure of the image of `ι` in `ℂ_p`.
-  rw [← range_comp]
-  exact h_mem
+  range_comp .. ▸ (IsGalois.integral _ · |>.algebraMap.mem_intermediateField_of_minpoly_splits
+  ((@IsAlgClosed.of_denseRange Ω L _ _ isClosed_closure.completeSpace_coe _ _ (RingHom.codRestrict _
+  L (subset_closure ⟨·, rfl⟩)).toAlgebra (dense_iff.2 (range_comp .. ▸ .rfl)) _).1 _)))
 
 /-! ### Open subgroups of the Galois group of `ℚ_p` -/
 

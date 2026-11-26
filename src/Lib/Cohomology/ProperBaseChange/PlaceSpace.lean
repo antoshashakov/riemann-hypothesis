@@ -127,15 +127,8 @@ def numerator : j.valuationSubring :=
 
 /-- For `f : prodValuationRing α ⟶ C` and `t ∈ P`, `f (denominator t)` and `f (numerator t)` are
 coprime. -/
-lemma isCoprime_denominator_numerator : IsCoprime (f (denominator t)) (f (numerator t)) := by
-  -- At each place `denominator t = 1` or `numerator t = 1`, so
-  -- `(1 - numerator t) * denominator t + numerator t = 1`.
-  refine IsCoprime.map ⟨1 - numerator t, 1, ?_⟩ f.hom
-  ext j
-  by_cases h_mem : ↑t ∈ j.valuationSubring
-  · simp [numerator, denominator, h_mem]
-  · simp [numerator, denominator, h_mem, mul_inv_cancel₀
-    (ne_zero_of_notMem_valuationSubring t j h_mem)]
+lemma isCoprime_denominator_numerator : IsCoprime (f (denominator t)) (f (numerator t)) :=
+  .map ⟨1 - numerator t, 1, by ext; simp [numerator, denominator, apply_dite]; grind [zero_mem]⟩ _
 
 /-- For `f : ∏ O → C`, the subring of pairs `(t, c)` in `P × C` with the following property: there
 are `r`, `r'` in the product of the valuation rings such that `f r` is a unit, `r · t = r'` in

@@ -289,14 +289,9 @@ variable [IsFullRankLattice L]
 /-- For (L, B, χ) of ample type (`New.ThetaTori.IsAmpleType`) and `u` in the dual lattice, the
 translate `New.RealComplexForm.thetaShift B u f` has the same theta norm as `f`. -/
 lemma IsAmpleType.thetaNorm_thetaShift (G : IsAmpleType B χ) (hu : u ∈ B.dualLattice) :
-    B.thetaNorm v (B.thetaShift u f) = B.thetaNorm v f := by
-  -- u is a torsion point, and shifting by it permutes the torsion points.
-  have h_pos : IsPosRiemann B := G.isPosRiemann
-  obtain ⟨N, hN, h_kills⟩ := G.exists_nsmul_mem_of_mem_dualLattice
-  let u' : torsionPoints L := ⟨u, N, hN, h_kills u hu⟩
-  calc
-    _ = ⨆ x, B.sizeAt v f (x + u') := iSup_congr (G.sizeAt_thetaShift u')
-    _ = B.thetaNorm v f := (Equiv.addRight _).iSup_comp
+    B.thetaNorm v (B.thetaShift u f) = B.thetaNorm v f := have := G.2
+  .trans (iSup_congr (G.sizeAt_thetaShift ⟨_,
+    G.exists_nsmul_mem_of_mem_dualLattice.imp (by tauto)⟩)) (Equiv.addRight _).iSup_comp
 
 namespace HasGoodReduction
 

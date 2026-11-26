@@ -41,15 +41,9 @@ variable {N : ℕ} (χ : DirichletCharacter ℂ N) (d : ℕ) [Fact d.Prime]
 /-! ### The quadratic twist of a character -/
 
 /-- The twist of `χ` by the Legendre symbol takes the value `χ(n) (n/d)` at an integer `n`. -/
-lemma quadTwist_apply (n : ℤ) : quadTwist χ d n = χ n * legendreSym d n := by
-  -- Both sides vanish unless `n` is prime to `N` and to `d`; then the change of level keeps values.
-  rw [show (legendreSym d n : ℂ) = (chiK d).ringHomComp (algebraMap ℤ ℂ) n from rfl]
-  by_cases h_cop : IsCoprime n (N * d : ℕ)
-  · rw [quadTwist, MulChar.mul_apply, changeLevel_eq_cast_of_dvd' _ _ h_cop,
-      changeLevel_eq_cast_of_dvd' _ _ h_cop]
-  · rw [(apply_eq_zero_iff (quadTwist χ d) n).2 h_cop, zero_eq_mul, apply_eq_zero_iff,
-      apply_eq_zero_iff]
-    rwa [Nat.cast_mul, IsCoprime.mul_right_iff, not_and_or] at h_cop
+lemma quadTwist_apply (n : ℤ) : quadTwist χ d n = χ n * legendreSym d n :=
+  show _ = _ * (chiK d).ringHomComp (algebraMap ..) n by  grind [quadTwist, MulChar.mul_apply,
+  changeLevel_eq_cast_of_dvd', apply_eq_zero_iff, IsCoprime.mul_right]
 
 /-- For a Dirichlet character `χ` mod `N` and an odd prime `d` coprime to `N`, the twist of `χ` by
 the Legendre symbol `(·/d)`, a character mod `N * d`, is not principal. -/
@@ -129,13 +123,7 @@ lemma analyticAt_entireL (s : ℂ) : AnalyticAt ℂ (entireL χ) s := by
 
 /-- `entireL χ` has no zero in `re s ≥ 1`. -/
 lemma entireL_ne_zero (hs : 1 ≤ s.re) : entireL χ s ≠ 0 := by
-  rw [entireL]
-  split_ifs with hχ
-  · obtain rfl | hs_ne := eq_or_ne s 1
-    · exact LFunctionTrivChar₁_apply_one_ne_zero N
-    · rw [LFunctionTrivChar₁, Function.update_of_ne hs_ne]
-      exact mul_ne_zero (sub_ne_zero.2 hs_ne) (LFunction_ne_zero_of_one_le_re 1 (.inr hs_ne) hs)
-  · exact LFunction_ne_zero_of_one_le_re χ (.inl hχ) hs
+  rw [entireL]; grind [LFunction_ne_zero_of_one_le_re, LFunctionTrivChar₁_apply_one_ne_zero]
 
 /-- For `re s > 1`, the series `∑ χ(n) Λ(n) n^{-s}` has the sum `-L'/L(s, χ)`, written through
 `entireL χ`, which is `L(s, χ)`, or `(s - 1) L(s, χ)` for principal `χ`. The term `1 / (s - 1)` is
