@@ -541,12 +541,8 @@ multiplication by `t` in the basis `b` and left multiplication by `t` on `A` hav
 similarity class. -/
 lemma simClassOf_leftMulMatrix {A : Type*} [Ring A] [Algebra k A] [Finite A] (b : Basis (Fin m) k A)
     (t : A) :
-    simClassOf (leftMulMatrix b t).toLin' = simClassOf (mulLeft k t) := by
-  -- The coordinates in `b` turn multiplication by `t` into its matrix.
-  have h_coords (x : A) :
-      b.equivFun (mulLeft k t x) = Matrix.toLin' (leftMulMatrix b t) (b.equivFun x) := by
-    simp [leftMulMatrix_mulVec_repr]
-  exact (simClassOf_eq_of_equiv b.equivFun h_coords).symm
+    simClassOf (leftMulMatrix b t).toLin' = simClassOf (mulLeft k t) :=
+  (simClassOf_eq_of_equiv b.equivFun (by simp [leftMulMatrix_mulVec_repr])).symm
 
 omit [Finite k'] [Finite L] in
 /-- Let `b` be a basis of `L` over `k`, and `σ ∈ Gal(k'/k)`. Applying `σ` to the factor `k'` of

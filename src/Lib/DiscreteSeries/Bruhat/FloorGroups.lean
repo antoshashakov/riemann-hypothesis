@@ -346,10 +346,8 @@ lemma floorGroup_anti : Antitone T.floorGroup := by grind [IsConcreteLE.le_iff, 
 lemma floorGroup_zero : T.floorGroup 0 = ⊤ := by grind [IsConcreteLE.le_iff]
 
 /-- The fixer `H_l` is trivial for `l ≥ ϱ + 2`, as every floor is at most `ϱ + 1`. -/
-lemma floorGroup_eq_bot (hl : 𝔰.ϱ + 2 ≤ l) : T.floorGroup l = ⊥ := by
-  refine bot_unique fun g hg ↦ ?_
-  ext i j
-  exact mem_floorGroup.1 hg i j (by grind [floorOf_level_cases j])
+lemma floorGroup_eq_bot (hl : 𝔰.ϱ + 2 ≤ l) : T.floorGroup l = ⊥ :=
+  bot_unique fun _ _ ↦ by ext; push_cast; grind
 
 /-- The group `Q_{ϱ+2}` is the unitriangular group `𝖴`. -/
 @[simp]

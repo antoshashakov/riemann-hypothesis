@@ -369,17 +369,9 @@ abbrev pPowMultiples (m : ℕ) : AddSubgroup T := (lsmul ℤ_[p] T (p ^ m)).rang
 /-- If T is free of rank d over ℤ_p, the subgroup p^m T has index p^(md). -/
 @[simp]
 lemma index_pPowMultiples (m : ℕ) : (pPowMultiples T m).index = (p ^ m) ^ finrank ℤ_[p] T := by
-  -- `T / p ^ m T` is the base change of `T` to `ℤ_[p] / p ^ m`, a ring with `p ^ m` elements.
-  have h_card_quot : Nat.card (ℤ_[p] ⧸ Ideal.span {(p : ℤ_[p]) ^ m}) = p ^ m := by
-    rw [← ker_toZModPow,
-      card_congr (RingHom.quotientKerEquivOfSurjective (ZMod.ringHom_surjective _)).toEquiv]
-    simp
-  rw [index_eq_card]
-  -- `erw` is needed because the quotient by `pPowMultiples T m` is `QuotSMulTop` only after
-  -- unfolding.
-  erw [pPowMultiples, range_eq_map, card_congr (QuotSMulTop.equivQuotTensor ..).toEquiv,
-    card_congr ((finBasis ..).baseChange _).equivFun.toEquiv, card_pi]
-  simp [h_card_quot]
+  erw [index_eq_card, pPowMultiples, range_eq_map, card_congr (QuotSMulTop.equivQuotTensor
+    ..).toEquiv, card_congr ((finBasis ..).baseChange _).equivFun.toEquiv, ← ker_toZModPow, card_pi,
+    card_congr (RingHom.quotientKerEquivOfSurjective (ZMod.ringHom_surjective _)).1]; simp
 
 /-- The additive homomorphism from ℤ_p/p^m to the multiplicative group of Q̄_p, written additively,
 that sends the class of a to ζ^a, where ζ is the primitive p^m-th root of unity chosen in
@@ -413,13 +405,9 @@ additive map q from T to an additive group with any topology, with values killed
 `crysCocycles ρ`, the map q∘x is continuous. -/
 lemma crysCocycles.continuous_comp [TopologicalSpace μ] (q : T →+ μ) (hq : ∀ y : T, p ^ m • q y = 0)
     {x : Γ → T} (hx : x ∈ crysCocycles ρ) :
-    Continuous (q ∘ x) := by
-  -- For `u` near `1`, `p ^ m` divides `x u` (`eventually_eq_pow_smul`), so `q` kills
-  -- `x (g * u) - x g = ρ g (x u)`: the function `q ∘ x` is locally constant.
-  refine (isLocallyConstant_of_eventually_mul ?_).continuous
-  rw [← nearOne_eq_nhds_one hj]
-  filter_upwards [eventually_eq_pow_smul h hx m] with u ⟨y, hy⟩ g
-  simp [apply_mul hx, hy, hq]
+    Continuous (q ∘ x) := (isLocallyConstant_of_eventually_mul
+  (nearOne_eq_nhds_one hj ▸ (eventually_eq_pow_smul h hx m).mono
+  (by grind [apply_mul hx]))).continuous
 
 variable (e : ∀ (g : Γ) (x : T), q (ρ g x) = V.ρ g (q x))
   (k : q.ker = pPowMultiples T m)

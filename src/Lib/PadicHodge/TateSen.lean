@@ -417,14 +417,8 @@ variable {p : ℕ} [ThePrime p] (Γ : Type*) [Group Γ] [𝒥 : OverGp Γ p] {m 
 and only if it lies in the subfield `K` of `ℚ̄_p` fixed by that image. -/
 lemma forall_smul_eq_iff_mem_localFieldOf {x : ℂ_[p]} :
     (∀ g : Γ, 𝒥.toGp g • x = x) ↔ ∃ a ∈ localFieldOf Γ, x = a := by
-  constructor
-  · intro hx
-    -- by Ax's theorem `x` is algebraic
-    have h_near : ∀ᶠ g : Gp p in Filter.map toGp (nearOne Γ), g • x = x := by simp [hx]
-    obtain ⟨a, rfl⟩ := exists_algebraic_of_fixed_near_one (nhds_one_le_map_nearOne Γ h_near)
-    exact ⟨a, by simpa [smul_coe_Cp] using hx, rfl⟩
-  · rintro ⟨a, ha, rfl⟩
-    simpa [smul_coe_Cp] using ha
+  have := @exists_algebraic_of_fixed_near_one _ _ x ∘ (nhds_one_le_map_nearOne Γ ·)
+  aesop
 
 open BdRPlus Algebra IsDiscreteValuationRing IsFractionRing Submodule algebraMap
 

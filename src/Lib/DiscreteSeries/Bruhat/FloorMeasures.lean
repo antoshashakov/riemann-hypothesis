@@ -654,24 +654,11 @@ lemma HyperbolicBasis.measurePreserving_mulVec : MeasurePreserving (F.basisMatri
 `V_b`. -/
 lemma HyperbolicBasis.map_floorBasis_volume :
     volume.map (F.floorBasis b *ᵥ ·) = FloorGroups.floorVolume b := by
-  let S : Type := {i : Fin 𝔰.ϱ // b.val ≤ i}
-  let incl : 𝔰.MiddleIndex ⊕ S ⊕ S → 𝔰.BesselIndex := inr ∘ inl ⊕ᵥ Sum.map (↑) (inr ∘ (↑))
-  let order : Fin 2 ⊕ FloorPairs b m ⊕ ι ⊕ FloorPairs b m → (Fin 2 ⊕ SplitIndex m ι) ⊕ S ⊕ S :=
-    inl ∘ inl ⊕ᵥ
-      (Sum.map (inr ∘ inl) inl ⊕ᵥ (inl ∘ inr ∘ inr ∘ inl ⊕ᵥ Sum.map (inr ∘ inr ∘ inr) inr))
-  have h_incl : volume.map (inclMatrix A incl *ᵥ ·) = FloorGroups.floorVolume b :=
-    map_inclMatrix_eq_floorVolume incl (by simp [incl, S, Injective]) (by simp [incl, S, b.is_le])
-  have h_order : Bijective order := by simp [order, S, Bijective, Injective, Surjective]
-  simp only [floorBasis, diagonal_one', ← mulVec_mulVec, fromBlocks_mulVec, zero_mulVec, add_zero,
-    one_mulVec, zero_add]
-  -- The map permutes the coordinates, splits off those of the pairs `e_a`, `e*_a` with `b ≤ a`,
-  -- applies `F.basisMatrix` to the others, and includes the result as `V_b`. Each step preserves
-  -- volume.
-  exact (MeasurePreserving.comp ⟨by fun_prop, h_incl⟩
-    (measurePreserving_sumElim.comp
-      ((F.measurePreserving_mulVec.prod (.id _)).comp
-        ((measurePreserving_sumPiEquivProdPi _).comp
-          (measurePreserving_inclMatrix (.ofBijective order h_order)))))).map_eq
+  simp [floorBasis, ← mulVec_mulVec, fromBlocks_mulVec]
+  apply (MeasurePreserving.comp ⟨by fun_prop, map_inclMatrix_eq_floorVolume _ _ _⟩
+    (measurePreserving_sumElim.comp ((F.measurePreserving_mulVec.prod (.id _)).comp
+    ((measurePreserving_sumPiEquivProdPi _).comp (measurePreserving_inclMatrix
+    (.ofBijective ..)))))).2 <;> simp [Bijective, Injective, Surjective, b.is_le]
 
 variable {μ ν : Measure T.G} [SFinite μ] [SFinite ν]
   (σ : ℕ → Measure T.G) [∀ l, SFinite (σ l)]
@@ -874,22 +861,15 @@ lemma ae_mem_mconv (hμ : ∀ᵐ x : T.G ∂μ, x ∈ S) (hν : ∀ᵐ x : T.G �
 
 /-- If `dirac s` commutes with `ν` for `μ`-almost every `s`, then `μ` commutes with `ν` under
 convolution. -/
-lemma mconv_comm_of_ae (h : ∀ᵐ s : T.G ∂μ, dirac s ∗ₘ ν = ν ∗ₘ dirac s) : μ ∗ₘ ν = ν ∗ₘ μ := by
-  refine ext_of_lintegral _ fun f hf ↦ ?_
-  calc lintegral (μ ∗ₘ ν) f = ∫⁻ s, ∫⁻ y, f (s * y) ∂ν ∂μ := lintegral_mconv hf
-    _ = ∫⁻ s, ∫⁻ y, f (y * s) ∂ν ∂μ :=
-      lintegral_congr_of_ae_imp h fun s hs ↦ by
-        rw [← lintegral_dirac_mconv, hs, lintegral_mconv_dirac]
-    _ = lintegral (ν ∗ₘ μ) f := (lintegral_mconv_symm hf).symm
+lemma mconv_comm_of_ae (h : ∀ᵐ s : T.G ∂μ, dirac s ∗ₘ ν = ν ∗ₘ dirac s) : μ ∗ₘ ν = ν ∗ₘ μ :=
+  ext_of_lintegral _
+  fun f a ↦ by rw [lintegral_mconv a, lintegral_mconv_symm a, lintegral_congr_of_ae_imp h]
+               simp +contextual [← lintegral_dirac_mconv, ← lintegral_mconv_dirac]
 
 /-- A descending convolution of `i + j` terms splits after the first `i` indices. -/
 lemma descConv_add (i j a : ℕ) :
     descConv σ a (i + j) = descConv σ (a + i) j ∗ₘ descConv σ a i := by
-  fun_induction descConv σ a i with
-  | case1 a => simp
-  | case2 a i ih =>
-    rw [show i + 1 + j = i + j + 1 by ring, descConv, ih, mconv_assoc,
-      show a + 1 + i = a + (i + 1) by ring]
+  fun_induction descConv <;> simp_all +arith [descConv, mconv_assoc]
 
 /-- A descending convolution starting at `0` gains its next term `σ i` on the left. -/
 lemma descConv_succ (i : ℕ) : descConv σ 0 (i + 1) = σ i ∗ₘ descConv σ 0 i := by
@@ -964,10 +944,7 @@ lemma exists_factor_orbitPoint [StandardBorelSpace Z] [Nonempty Z] {Φ : T.G →
 /-- If every `σ l` is carried by `G_l`, then so is the descending convolution starting at `l`. -/
 lemma ae_descConv_mem (h : ∀ {l : ℕ}, ∀ᵐ x : T.G ∂σ l, x ∈ floorGroup l) :
     ∀ᵐ x : T.G ∂descConv σ l i, x ∈ floorGroup l := by
-  fun_induction descConv with
-  | case1 => simp
-  | case2 a i ih =>
-    exact ae_mem_mconv (ih.mono (floorGroup_anti a.le_succ)) h measurableSet_floorGroup
+  fun_induction descConv; simp; exact ae_mem_mconv (.mono ‹_› (by grind)) h
 
 variable [H : IsHermitianUnit T.splitGram]
 
@@ -1022,12 +999,9 @@ lemma ascConv_heisenbergMeasure_invariant (hs : s ∈ unipotentBelow j) :
 
 /-- The measure η_{<j} = η₀ ∗ ⋯ ∗ η_{j−1} is carried by `N_(<j)`. -/
 lemma ae_ascConv_mem_unipotentBelow :
-    ∀ᵐ x : T.G ∂ascConv heisenbergMeasure j, x ∈ T.unipotentBelow j := by
-  induction j with
-  | zero => simp [ascConv]
-  | succ j ih =>
-    exact ae_mem_mconv (ih.mono (by grind)) (ae_mem_floorUnipotent.mono fun _ hx ↦ hx.2)
-      (isClosed_of_entries_eq_one mem_unipotentBelow).measurableSet
+    ∀ᵐ x : T.G ∂ascConv heisenbergMeasure j, x ∈ T.unipotentBelow j :=
+  j.rec (by simp [ascConv]) fun _ h ↦ ae_mem_mconv (h.mono (by grind)) (ae_mem_floorUnipotent.mono
+  fun _ ↦ (·.2)) (isClosed_of_entries_eq_one mem_unipotentBelow).measurableSet
 
 /-- Plancherel's inequality with a damping factor `∏ i, G (v i)`, for `G ≥ 0` continuous and
 integrable and the additive character `ψ` of the place `A`: the constant is the `L¹` norm of the

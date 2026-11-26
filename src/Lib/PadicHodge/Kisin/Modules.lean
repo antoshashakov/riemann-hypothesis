@@ -112,13 +112,8 @@ and passes from f(a)·x to x holds on all of the saturation. -/
 lemma saturateBy_induction {ι : Sort*} {x : X} {f : ι → R} {C : X → Prop}
     (hx : x ∈ saturateBy (Submonoid.closure (range f)) Q) (h₀ : ∀ x ∈ Q, C x)
     (h₁ : ∀ (a : ι) (x : X), C (f a • x) → C x) : C x := by
-  obtain ⟨r, hr, hrx⟩ : ∃ r ∈ Submonoid.closure (range f), r • x ∈ Q := hx
-  -- Induction on the number of factors `f a` in `r`, where `r • x ∈ Q`.
-  induction hr using Submonoid.closure_induction_right generalizing x with
-  | one => exact h₀ x (by simpa using hrx)
-  | mul_right r _ s hs ih =>
-    obtain ⟨a, rfl⟩ := hs
-    exact h₁ a x (ih (by simpa [mul_smul] using hrx))
+  obtain ⟨_, hr, _⟩ := hx
+  induction hr using Submonoid.closure_induction_right generalizing x <;> grind [mul_smul, one_smul]
 
 namespace KummerChart
 
@@ -370,10 +365,7 @@ lemma wittMap_mem_ainfLattice (F : L.Carrier →ₗ[O.O] L'.Carrier) :
 /-- Composing an invariant functional on `L'` with the map induced by `F` gives an invariant
 functional on `L`. -/
 lemma Hom.comp_wittMap_mem_forms {μ : L'.Functional} :
-    μ ∈ L'.forms → μ ∘ₗ F.wittMap ∈ L.forms := by
-  intro hμ t g
-  -- `F.wittMap (1 ⊗ t) = 1 ⊗ F t`, and `F` commutes with `ρ g`.
-  simpa [F.isIntertwining] using hμ (F t) g
+    μ ∈ L'.forms → μ ∘ₗ F.wittMap ∈ L.forms := by simp_all [forms, F.isIntertwining]
 
 /-- Let `F : L → L'` be an equivariant map of lattices with jump sets, and let
 `F.wittMap : W(C^♭) ⊗ L → W(C^♭) ⊗ L'` be its extension of scalars. Then `F.wittMap` sends
@@ -530,14 +522,9 @@ lemma ainfLattice_eq_span_basis :
 /-- Two functionals that agree on `1 ⊗ L` agree on `L.fracSpan`, since `B_dR` is torsion-free over
 `A_inf`. -/
 lemma apply_eq_of_mem_fracSpan (f f' : L.Functional) (h_values : basisValues f = basisValues f') :
-    x ∈ L.fracSpan → f x = f' x := by
-  rintro ⟨r, hr, hrx⟩
-  -- `f` and `f'` agree on the span of the `1 ⊗ e_l`, which contains `r • x`.
-  have h_eqOn : Set.EqOn f f'
-      (Set.range (DiagTensor.mk 1 ∘ finBasis ℤ_[p] (Rep.of (overZp L.ρ)))) := by
-    simpa [basisValues, funext_iff] using h_values
-  have h_smul : f (r • x) = f' (r • x) := f.eqOn_span h_eqOn (ainfLattice_eq_span_basis.le hrx)
-  simpa [smul_right_inj, show r ≠ 0 by simpa using hr] using h_smul
+    x ∈ L.fracSpan → f x = f' x := fun ⟨_, a, e⟩ ↦ by
+  simpa [smul_right_inj, by simpa using a] using
+    f.eqOn_span (by simpa) (ainfLattice_eq_span_basis.le e)
 
 /-- An element g of Γ, embedded in ℤ × Γ, acts on A_inf through `toGp g`. -/
 @[simp]
@@ -712,17 +699,8 @@ lemma exists_span_formsOfType_mod_pred (i : Letter) (u : ℤ) :
 
 /-- If n is not in `L.jumpSet i`, every functional of type n at the letter i is of type n - 1. -/
 lemma formsOfType_subset_pred_of_notMem (h : n ∉ L.jumpSet i) :
-    L.formsOfType i n ⊆ L.formsOfType i (n - 1) := by
-  obtain ⟨r, hr, ν, span_ν⟩ := L.exists_span_formsOfType_mod_pred i n
-  -- `n` is no jump at any embedding over the letter `i`, so the family `ν` is empty.
-  have no_jump : L.jumpMultiplicity i n = 0 := by
-    refine sum_eq_zero fun γ hγ ↦ ?_
-    by_contra h_jump
-    have h_over : γ O.ζ = (theta (letterTeich i) : ℂ_[p]) := by simpa using hγ
-    exact h (L.embJumps_subset h_over (L.inClass.mem_of_jump_ne_zero h_jump))
-  obtain rfl : r = 0 := Nat.le_zero.1 (hr.trans_eq no_jump)
-  intro μ hμ
-  simpa using span_ν μ hμ
+    L.formsOfType i n ⊆ L.formsOfType i (n - 1) := (L.exists_span_formsOfType_mod_pred i n).elim
+  (by rw [jumpMultiplicity, sum_eq_zero (by grind [InClass, JumpLattice])]; aesop)
 
 end New.Lift.KummerChart.JumpLattice
 

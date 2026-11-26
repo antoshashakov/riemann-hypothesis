@@ -133,13 +133,8 @@ non-zero-divisor, and let ϖ ∣ T(a) imply π ∣ a for all a. Then ϖ^n ∣ T(
 lemma pow_dvd_of_map {ϖ : S} {T : R → S} (hT : ∀ a : R, T (π * a) = ϖ * T a)
     (hϖ : ϖ ∈ nonZeroDivisors S) (h_one : ∀ a : R, ϖ ∣ T a → π ∣ a) (h_pow : ϖ ^ n ∣ T x) :
     π ^ n ∣ x := by
-  induction n generalizing x with
-  | zero => simp
-  | succ n ih =>
-    -- `x = π * b`, and `ϖ` cancels in `ϖ ^ (n + 1) ∣ T x = ϖ * T b`
-    obtain ⟨b, rfl⟩ : π ∣ x := h_one x ((dvd_pow_self ϖ n.succ_ne_zero).trans h_pow)
-    rw [hT, pow_succ', dvd_cancel_left_mem_nonZeroDivisors hϖ] at h_pow
-    simpa [pow_succ'] using mul_dvd_mul_left π (ih h_pow)
+  induction n generalizing x <;> simp_all [pow_succ', dvd_def, mul_assoc]
+  grind [mul_cancel_left_mem_nonZeroDivisors]
 
 /-- In a commutative ring, x and y are congruent modulo the submodule (π)^n of the ring if and only
 if π^n divides x − y. -/
@@ -676,10 +671,8 @@ lemma eventually_sub_sum_mem (y : A) (n : ℕ) :
 `c.coord i y • c.b i`. -/
 lemma mem_of_coord {P : Submodule S A} {n : ℕ} {y : A} (hP : I ^ n • ⊤ ≤ P)
     (h : ∀ i : c.Index, c.coord i y • c.b i ∈ P) :
-    y ∈ P := by
-  -- `y` differs from a finite sum of the `c.coord i y • c.b i` by an element of `I ^ n • ⊤ ≤ P`
-  obtain ⟨F, hF⟩ := (c.eventually_sub_sum_mem y n).exists
-  exact (sub_mem_iff_left P (sum_mem fun i _ ↦ h i)).1 (hP hF)
+    y ∈ P := by grind [sum_mem, sub_mem_iff_left,
+  hP (c.eventually_sub_sum_mem y n).exists.choose_spec]
 
 /-- If `A` is `I`-adically separated, an element whose coordinates in a topological basis `c` are
 all zero is zero. -/
@@ -743,19 +736,9 @@ lemma mem_range_of_approx [s : Fact (shiftDiff N π).Surjective]
     [i : Fact (shiftDiff M π').Injective] (f : N →+ M) (hf : ∀ n : N, f (π • n) = π' • f n)
     {X : Type*} (g : X → M) (h : ∀ x : X, ∃ (n : N) (y : X), g x = f n + π' • g y) (x : X) :
     ∃ n : N, f n = g x := by
-  -- Iterating `h` along `x, y x, y (y x), …` gives terms `n (y^[j] x)`; surjectivity of
-  -- `shiftDiff N π` sums them to a sequence `u`, and injectivity of `shiftDiff M π'` identifies
-  -- `f (u j)` with `g (y^[j] x)`.
-  choose n y hstep using h
-  obtain ⟨u, hu⟩ : ∃ u : ℕ → N, shiftDiff N π u = fun j ↦ n (y^[j] x) := s.out _
-  have key : shiftDiff M π' (f ∘ u) = shiftDiff M π' fun j ↦ g (y^[j] x) := by
-    ext j
-    calc
-      shiftDiff M π' (f ∘ u) j = f (u j - π • u (j + 1)) := by simp [shiftDiff, hf]
-      _ = f (n (y^[j] x)) := congrArg f (congrFun hu j)
-      _ = g (y^[j] x) - π' • g (y^[j + 1] x) := by
-        simp [Function.iterate_succ_apply', hstep (y^[j] x)]
-  exact ⟨u 0, by simpa using congrFun (i.out key) 0⟩
+  choose n y e using h
+  exact (s.1 (n <| y^[·] x)).rec fun u h ↦ ⟨_, congrFun (@i.1 (f ∘ u) (g <| y^[·] x) (by
+    grind [shiftDiff, =_ congrFun h, y.iterate_succ_apply'])) 0⟩
 
 /-- An element that is not divisible by every power of `π` is `π ^ n * c` for some `n` and some
 `c` not divisible by `π`. -/

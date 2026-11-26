@@ -615,14 +615,10 @@ instance isAppellHumbert_latticeOver_lagrangian :
 /-- Every vector of the dual of the lattice over `S`, for the Riemann form of `x.automorphyForm`, is
 rational: it lies in the lattice over `⊤`. -/
 lemma dualLattice_le_latticeOver_top :
-    x.automorphyForm.dualLattice (L := x.latticeOver S) ≤ x.latticeOver ⊤ := by
-  -- Some `N ≠ 0` multiplies the dual of `x.periodLattice` into `x.periodLattice`, so dual vectors
-  -- are rational.
-  obtain ⟨N, hN, h_mul⟩ := x.isAppellHumbert_periodLattice.exists_nsmul_mem_of_mem_dualLattice
-  intro u hu
-  have h_dual : u ∈ x.automorphyForm.dualLattice (L := x.periodLattice) :=
-    fun l hl ↦ hu l (x.latticeOver_mono bot_le hl)
-  exact x.latticeOver_mono le_top ((x.nsmul_mem_latticeOver hN).1 (h_mul u h_dual))
+    x.automorphyForm.dualLattice (L := x.latticeOver S) ≤ x.latticeOver ⊤ :=
+  x.isAppellHumbert_periodLattice.exists_nsmul_mem_of_mem_dualLattice.rec fun _ ⟨a, b⟩ _ h ↦
+  x.latticeOver_mono le_top
+  ((x.nsmul_mem_latticeOver a).1 (b _ (h · <| x.latticeOver_mono bot_le ·)))
 
 /-- The dual of the period lattice for the Riemann form of `x.automorphyForm` is the lattice over
 `T = D.dualTorsion`. -/

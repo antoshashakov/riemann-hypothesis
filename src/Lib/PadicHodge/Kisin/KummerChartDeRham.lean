@@ -174,11 +174,8 @@ lemma not_frobE_dvd_frobE_of_ne (h_ne : a ≠ b) : ¬(k.frobE a).val ∣ k.frobE
 /-- For any action of ℤ × Γ on a type X, an element g of the Galois monoid of the chart commutes
 with φ^a. -/
 lemma smul_phi_pow_comm {X : Type*} [MulAction (FrobGroup Γ) X] (x : X) :
-    g • φ ^ a • x = φ ^ a • g • x := by
-  -- the second component of `φ` is `1`, and the first factor `ℤ` is commutative
-  have h_comm : Commute (g : FrobGroup Γ) (φ ^ a) :=
-    (Commute.prod (.all _ _) (.one_right _)).pow_right a
-  simp only [Submonoid.smul_def, smul_smul, h_comm.eq]
+    g • φ ^ a • x = φ ^ a • g • x :=
+  by erw [smul_smul, smul_smul, Commute.pow_right (.prod (.all ..) (.one_right _))]
 
 /-- The coordinate z is a Teichmüller lift, so φ^a z = z^(p^a). -/
 lemma phi_pow_smul_z : φ ^ a • k.z.val = k.z ^ p ^ a := by simp [phi_pow_smul, k.z_eq_teichmuller]
@@ -291,16 +288,9 @@ lemma phiInvToBdR_mem_hodgeFil_one_iff :
 /-- Let `r` in A_inf be prime to `φ^a E`. Then for every integer `m` and every `y` in B_dR, the
 product of `(φ^{-a} r)^m` and `y` lies in Fil^n = t^n B_dR^+ exactly when `y` does. -/
 lemma mul_mem_hodgeFil_iff_of_not_frobE_dvd (hr : ¬(k.frobE a : Ainf) ∣ r) (m : ℤ) :
-    phiInvToBdR a r ^ m * y ∈ hodgeFil n ↔ y ∈ hodgeFil n := by
-  -- `phiInvToBdR a r` comes from a unit of `BdRPlus`: a non-unit lies in `hodgeFil 1`, which
-  -- forces `k.frobE a ∣ r`.
-  have hu : IsUnit (algebraMap Ainf BdRPlus ((φ ^ a)⁻¹ • r)) :=
-    isUnit_iff.mpr fun h_fil ↦
-      hr (phiInvToBdR_mem_hodgeFil_one_iff.mp (algebraMap_mem_hodgeFil_one_iff.mpr h_fil))
-  have h_unit : phiInvToBdR a r = algebraMap BdRPlus BdR hu.unit := rfl
-  have h_smul : phiInvToBdR a r ^ m * y = hu.unit ^ m • y := by
-    cases m <;> simp [h_unit, Units.smul_def, smul_def']
-  rw [h_smul, smul_mem_iff']
+    phiInvToBdR a r ^ m * y ∈ hodgeFil n ↔ y ∈ hodgeFil n := .trans
+  (by cases m <;> simp [Units.smul_def, smul_def'] <;> rfl) (smul_mem_iff' _ ((BdRPlus.isUnit_iff.2
+  (hr ∘ phiInvToBdR_mem_hodgeFil_one_iff.1 ∘ algebraMap_mem_hodgeFil_one_iff.2)).unit ^ m))
 
 /-- For every integer m, let u be the image in B_dR of φ^{−a}(φ^a E), that is, of E. Then u^m lies
 in Fil^m = t^m B_dR^+. -/

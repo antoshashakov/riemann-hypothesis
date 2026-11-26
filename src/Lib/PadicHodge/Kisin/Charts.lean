@@ -131,15 +131,10 @@ variable (c : Chart) {Γ : Type} [Group Γ]
 that is `I`-adically complete: some map of `Λ`-algebras `Λ⟦X⟧ → R` sends `X` to `z`. -/
 lemma exists_algHom_X_eq (Λ : Type*) {R : Type*} [CommRing Λ] [CommRing R] [Algebra Λ R]
     {I : Ideal R} [h : IsAdicComplete I R] {z : R} (hz : z ∈ I) :
-    ∃ e : Λ⟦X⟧ →ₐ[Λ] R, e X = z := by
-  -- With the `I`-adic topology on `R` and the discrete one on `Λ`, the element `z` is
-  -- topologically nilpotent in a complete separated ring, so power series can be evaluated at it.
-  let withIdeal_R : WithIdeal R := ⟨I⟩
-  let uniformSpace_Λ : UniformSpace Λ := ⊥
-  obtain ⟨h_complete, h_t2⟩ : CompleteSpace R ∧ T2Space R :=
-    (IsAdic.isAdicComplete_iff (by rfl)).mp h
-  have h_smul : ContinuousSMul Λ R := DiscreteTopology.instContinuousSMul Λ R
-  exact ⟨aeval (isTopologicallyNilpotent_of_mem hz), by simp [coe_aeval]⟩
+    ∃ e : Λ⟦X⟧ →ₐ[Λ] R, e X = z := let := mk I
+  let : UniformSpace Λ := ⊥
+  by obtain ⟨⟨⟩⟩ := (IsAdic.isAdicComplete_iff (by rfl)).1 h, DiscreteTopology.instContinuousSMul
+     use aeval (isTopologicallyNilpotent_of_mem hz), by simp [coe_aeval]
 
 /-- Existence of charts. A chart consists of `f`, a `Λ`-algebra map `ev : Λ⟦X⟧ → Ainf` with
 `Λ = WittFq f`, an exponent `e`, a unit series `A` and `ϖ^♭ ∈ O^♭` (the field `varpiFlat`), such
@@ -471,11 +466,8 @@ lemma coord₀_coe : ∀ s : c.S, c.coord₀ s.val = s :=
   c.exists_adicBasis_coord_eq_self.choose_spec.choose_spec
 
 /-- Divisibility in S can be tested in A_inf, as S is a direct summand of A_inf. -/
-lemma dvd_iff_coe_dvd {a b : c.S} : a ∣ b ↔ a.val ∣ b := by
-  refine ⟨map_dvd c.S.val, fun ⟨x, hx⟩ ↦ ⟨c.coord₀ x, ?_⟩⟩
-  -- Apply to `b = a * x` the `S`-linear coordinate that restricts to the identity on `S`.
-  rw [← c.coord₀_coe b, hx]
-  exact map_smul _ a x
+lemma dvd_iff_coe_dvd {a b : c.S} : a ∣ b ↔ a.val ∣ b :=
+  ⟨map_dvd c.S.val, (c.coord₀_coe b ▸ ·.choose_spec ▸ ⟨_, map_smul _ a _⟩)⟩
 
 /-! ### Frobenius, the Galois action and Weierstrass division -/
 
@@ -656,14 +648,8 @@ lemma mk_thetaPhiInv_eq_coeff (a : Ainf) :
 
 /-- The map θ ∘ φ^{-n} commutes with the action of G_p. -/
 @[simp]
-lemma thetaPhiInv_smul (g : Gp p) : ∀ a : Ainf, thetaPhiInv n (g • a) = g • thetaPhiInv n a := by
-  induction n with
-  | zero => exact theta_smul g
-  | succ n ih =>
-    -- Write `a = φ b`; the action commutes with `φ`.
-    intro a
-    obtain ⟨b, rfl⟩ : ∃ b : Ainf, frobEnd b = a := frobEnd_bijective.surjective a
-    rw [smul_frobEnd, thetaPhiInv_succ, thetaPhiInv_succ, ih b]
+lemma thetaPhiInv_smul (g : Gp p) : ∀ a : Ainf, thetaPhiInv n (g • a) = g • thetaPhiInv n a :=
+  n.rec (theta_smul g) fun _ ↦ frobEnd_bijective.2.forall.2 ∘ by simp
 
 /-- An element a of `Ainf` is divisible by φ^n E if and only if it lies in the kernel of θ ∘
 φ^{-n}. -/

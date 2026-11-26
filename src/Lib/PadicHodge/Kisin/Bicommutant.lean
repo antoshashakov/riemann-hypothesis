@@ -47,15 +47,9 @@ variable {p : ℕ} [ThePrime p] (c : Chart)
 /-- An element `y` of B^+ that is `p ^ n` times an element of `amaxImage` (the image of A_max)
 for every `n` is zero. -/
 lemma eq_zero_of_p_pow_amaxImage {y : BPlus} (h : ∀ n : ℕ, ∃ w ∈ amaxImage, y = p ^ n * w) :
-    y = 0 := by
-  -- By the case `n = 0`, `y` comes from some `b` in `Amax`, which is `p`-adically separated.
-  obtain ⟨_, ⟨b, rfl⟩, hy⟩ := h 0
-  rw [pow_zero, one_mul] at hy
-  have h_dvd (n : ℕ) : (p : Amax) ^ n ∣ b - 0 := by
-    obtain ⟨_, ⟨b', rfl⟩, hy'⟩ := h n
-    have h_eq : b = (p : Amax) ^ n * b' := injective_Amax_BPlus (by simpa [hy] using hy')
-    simp [h_eq]
-  rw [hy, eq_of_forall_pow_dvd_sub (p : Amax) h_dvd, map_zero]
+    y = 0 := let ⟨_, ⟨b, _⟩, _⟩ := h 0
+  by grind [@eq_of_forall_pow_dvd_sub _ _ b 0 p _ (by simp_all [← injective_Amax_BPlus.eq_iff,
+    amaxImage, dvd_def])]
 
 /-- An additive map `G` of B^+ commutes with multiplication by `p ^ n`. -/
 lemma map_p_pow_mul {F : Type*} [FunLike F BPlus BPlus] [AddMonoidHomClass F BPlus BPlus] (G : F)

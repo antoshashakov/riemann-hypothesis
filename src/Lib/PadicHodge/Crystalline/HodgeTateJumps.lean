@@ -495,29 +495,12 @@ Hodge–Tate weights under extension of coefficients. -/
 lemma jump_baseChange {φ : R →ₐ[ℤ_[p]] R'} (f : T →ₛₗ[toRingHom φ] T') (b : Basis ι R T)
     (b' : Basis ι R' T') (hb : ∀ i : ι, f (b i) = b' i)
     (hf : ∀ᶠ g : Γ in nearOne Γ, ∀ x : T, f (ρ g x) = σ g (f x)) [Algebra.IsAlgebraic ℤ_[p] R'] :
-    jump σ γ' u = jump ρ (γ'.comp φ) u := by
-  -- Composition with `f` identifies the semilinear maps on `T'` and on `T`, as both are determined
-  -- freely by their values on the bases; it respects the weight in both directions.
-  have : RingHomCompTriple (toRingHom φ) (toRingHom γ') (toRingHom (γ'.comp φ)) :=
-    ⟨(γ'.comp_toRingHom φ).symm⟩
-  -- The values of `F.comp f` on `b` are the values of `F` on `b'`.
-  have h_eval_comp : (fun F : T' →ₛₗ[toRingHom γ'] ℂ_[p] ↦
-      evalOnBasis b (F.comp f : T →ₛₗ[toRingHom (γ'.comp φ)] ℂ_[p])) = evalOnBasis b' :=
-    funext fun F ↦ funext fun i ↦ congrArg F (hb i)
-  have h_bij : Function.Bijective fun F : T' →ₛₗ[toRingHom γ'] ℂ_[p] ↦
-      (F.comp f : T →ₛₗ[toRingHom (γ'.comp φ)] ℂ_[p]) :=
-    .of_comp_left (by rw [Function.comp_def, h_eval_comp]; exact (evalOnBasis b').bijective)
-      (evalOnBasis b).injective
-  have h_iff (F : T' →ₛₗ[toRingHom γ'] ℂ_[p]) :
-      F ∈ hodgeTateMaps σ γ' u ↔ F.comp f ∈ hodgeTateMaps ρ (γ'.comp φ) u := by
-    refine ⟨fun hF ↦ (pull f hf ⟨F, hF⟩).property, fun hF ↦ ?_⟩
-    -- The condition at `b' i = f (b i)` is the condition for `F.comp f` at `b i`.
-    refine mem_hodgeTateMaps_of_span b'.span_eq fun i ↦ ?_
-    filter_upwards [hf, hF (b i)] with g h_equiv hg
-    simpa [h_equiv, hb] using hg
-  let e_forms : hodgeTateMaps σ γ' u ≃ₗ[PadicAlgCl p] hodgeTateMaps ρ (γ'.comp φ) u :=
-    { pull f hf, (Equiv.ofBijective _ h_bij).subtypeEquiv h_iff with }
-  exact finrank_eq e_forms
+    jump σ γ' u = jump ρ (γ'.comp φ) u :=
+  have := RingHomCompTriple.mk (γ'.comp_toRingHom φ).symm
+  finrank_eq {pull f hf,
+    (Equiv.ofBijective (comp · f) (.of_comp_left (by simpa only [evalOnBasis, ← hb] using!
+    (evalOnBasis b').bijective) (evalOnBasis b).injective)).subtypeEquiv fun F ↦ ⟨(pull f hf ⟨F, ·⟩
+  |>.2), (mem_hodgeTateMaps_of_span b'.span_eq fun i ↦ · (b i) |>.mp (hf.mp (by aesop)))⟩ with}
 
 /-- If ρ'(g) = a(g)ρ(g) with scalars a(g) in R, and some nonzero y in C_p has γ(a(g))y = χ(g)^(−v)·g
 y near 1, then the multiplicity of the jump u+v of ρ' at γ equals that of u for ρ. -/

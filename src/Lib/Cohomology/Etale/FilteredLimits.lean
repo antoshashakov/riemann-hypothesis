@@ -107,18 +107,9 @@ attribute [local instance] preservesSmallestFilteredColimits_of_preservesFiltere
 vertex of `c` is bijective. -/
 lemma isFilteredColimit_iff_bijective {X : J ⥤ Ab.{2}} {c : Cocone X} :
     IsFilteredColimit c ↔ Bijective (desc X c) := by
-  -- Every element of a filtered colimit comes from some stage, and an element of a stage dies in
-  -- the colimit exactly when it dies at a later stage.
-  have h_surj : Surjective fun a : Σ j : J, X j ↦ ι X a.fst a.snd :=
-    Concrete.from_union_surjective_of_isColimit _ (isColimit X)
-  have h_zero (j : J) (x : X j) : ι X j x = 0 ↔ ∃ (i : J) (f : j ⟶ i), X.map f x = 0 := by
-    simpa using (isColimit X).eq_iff' x 0
-  simp only [IsFilteredColimit, Bijective, injective_iff_map_eq_zero]
-  refine and_congr ?_ ?_
-  · -- injectivity, tested on the representatives `ι X j x`
-    simp [h_surj.forall, Sigma.forall, h_zero]
-  · -- surjectivity: both sides say that every element of `c.pt` comes from some stage
-    simp [Surjective, h_surj.exists, Sigma.exists]
+  have z := by simpa using Concrete.from_union_surjective_of_isColimit X (isColimit _)
+  simp [IsFilteredColimit, Bijective, injective_iff_map_eq_zero, Surjective, z.forall, z.exists,
+    Sigma.forall, by simpa using ((isColimit X).eq_iff' (i := ·) · 0)]
 
 /-- Cover lemma for continuity. Let `a` be a cone over a cofiltered system `A` of maps `E j ⟶ Y j`
 of set-valued functors, each a cover for the coefficients `F` (`hp`), whose vertex `E ⟶ Y` is a
@@ -503,14 +494,9 @@ lemma exists_isSolutionClosed (φ : B →+* V) :
 
 /-- If g : W → V is solution-closed (`New.Variety.Envelope.IsSolutionClosed`), then g x divides
 g y in V exactly when x divides y in W. -/
-lemma IsSolutionClosed.map_dvd_iff (h : IsSolutionClosed g) {x y : W} : g x ∣ g y ↔ x ∣ y := by
-  obtain ⟨hg_inj, hg_closed⟩ := h
-  refine ⟨fun ⟨c, hc⟩ ↦ ?_, map_dvd g⟩
-  -- equation `4` for the coefficients `-y, x` is the linear equation `-y + x * z = 0` in `z`
-  obtain ⟨z, hz⟩ := hg_closed 4 (fun k ↦ [-y].getD k x)
-    ⟨c, by simp [IsSolution, Finset.sum_range_succ, hc]⟩
-  have h_eq : g (-y + x * z) = g 0 := by simpa [IsSolution, Finset.sum_range_succ] using hz
-  exact ⟨z, neg_add_eq_zero.mp (hg_inj h_eq)⟩
+lemma IsSolutionClosed.map_dvd_iff (h : IsSolutionClosed g) {x y : W} : g x ∣ g y ↔ x ∣ y :=
+  ⟨by simpa [← h.1.eq_iff, dvd_def, IsSolution,
+  Finset.sum_range, neg_add_eq_zero] using (h.2 4 ([-y].getD · x)), map_dvd g⟩
 
 /-- If `g : W →+* V` is solution-closed (`IsSolutionClosed`: `g` is injective, and every equation of
 the kind `IsSolution` with coefficients in `g(W)` that has a solution in `V` already has one in

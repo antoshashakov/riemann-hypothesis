@@ -694,10 +694,8 @@ lemma BPlus.exists_Ainf_approx (y : BPlus) (k n : ℕ) :
 of `a` in the period ring `B⁺ = Amax[1/p]` gives the image of `φ^j a`. Here `Amax` is Colmez's
 `A_max`, the p-adic completion of `A_inf[X]/(pX − ξ)`, and `A_inf` maps to `B⁺` through `Amax`. -/
 @[simp]
-lemma BPlus.iterate_frobEnd_algebraMap (j : ℕ) : frobEnd^[j] (a : BPlus) = frobEnd^[j] a := by
-  induction j generalizing a with
-  | zero => simp
-  | succ j ih => rw [iterate_succ_apply, iterate_succ_apply, frobEnd_algebraMap, ih]
+lemma BPlus.iterate_frobEnd_algebraMap (j : ℕ) : frobEnd^[j] (a : BPlus) = frobEnd^[j] a :=
+  j.rec (by simp) (by aesop) a
 
 /-- Let `ν` be in `A_inf` and `s : ℕ → ℕ`, and suppose `ν` divides every `a` in `A_inf` with
 `θ (φ^[s j] a) = 0` for all `j`, where `φ` is the Frobenius. Then `ν` divides in `B⁺` every `y`

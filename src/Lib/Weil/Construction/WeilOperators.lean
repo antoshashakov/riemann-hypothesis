@@ -255,10 +255,7 @@ lemma weilRep_heisenbergOp :
 /-- The Weil operator of `g` sends `v` to Δ(g) ∫ v(g⁻¹ • y) ρ(y) vac dμ(y). -/
 lemma weilRep_eq_integral :
     weilRep A g v = A.Δ g • ∫ y : W, v (g⁻¹ • y) • heisenbergOp y vacElem ∂μ := by
-  -- Substitute `y ↦ g • y`, which preserves `μ`.
-  rw [← (A.measurePreserving g).integral_comp' (f := .smul g)]
-  simp only [MeasurableEquiv.smul_apply, inv_smul_smul]
-  simp [weilRep, Rep.integrated_apply, Rep.moveBy]
+  rw [← (A.2 g).integral_comp' (f := .smul g)]; aesop
 
 /-- The value at `x` of the Weil operator of `g` on `v` is Δ(g) ∫ v(y) β(g • y, x) e(x − g • y)
 dμ(y). -/
