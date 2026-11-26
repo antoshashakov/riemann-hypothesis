@@ -59,27 +59,15 @@ lemma cokerKerIndex_comp :
      cokerKerIndex (g ∘ₗ f) = cokerKerIndex f * cokerKerIndex g) := by
   -- Write `I = f.range`, `N = g.ker` and `t = [N : I ⊓ N] = [I ⊔ N : I]`. All four groups are
   -- counted by index towers; `t` occurs in `coker f` and in `ker g` and cancels if nonzero.
-  set t : ℕ := f.range.toAddSubgroup.relIndex g.ker.toAddSubgroup with ht
-  have ker_g : Nat.card g.ker = Nat.card (f.range ⊓ g.ker :) * t := by
-    simpa [bot_inf_eq] using (relIndex_inf_mul_relIndex ⊥ f.range.toAddSubgroup
-      g.ker.toAddSubgroup).symm
-  have ker_comp : Nat.card (g ∘ₗ f).ker = Nat.card f.ker * Nat.card (f.range ⊓ g.ker :) := by
-    simpa [relIndex_ker, AddSubgroup.map_comap_eq] using
-      (relIndex_mul_relIndex ⊥ _ _ bot_le (f.toAddMonoidHom.ker_le_comap g.ker.toAddSubgroup)).symm
-  have coker_f : f.range.cardQuot = t * (f.range ⊔ g.ker).cardQuot := by
-    simp [ht, cardQuot, sup_toAddSubgroup,
-      ← relIndex_mul_index (toAddSubgroup_mono (le_sup_left (b := g.ker)))]
-  have coker_comp : (g ∘ₗ f).range.cardQuot = (f.range ⊔ g.ker).cardQuot * g.range.cardQuot := by
-    simp [cardQuot, range_comp, sup_toAddSubgroup, index_map, map_toAddSubgroup]
-    -- `↑g` and `g.toAddMonoidHom` are the same additive map only by unfolding the coercion.
-    rfl
-  simp only [cokerKerIndex, ← cardQuot_apply, ker_g, ker_comp, coker_f, coker_comp, Nat.cast_mul]
-  constructor
-  · ring
-  · intro h_ne
-    -- If `t = 0`, the formulas for `coker f` and `ker g` make both indices vanish.
-    have t_ne : (t : ℚ) ≠ 0 := fun ht0 ↦ by simp [ht0] at h_ne
-    field_simp
+  rcases (relIndex_inf_mul_relIndex ⊥ f.range.toAddSubgroup g.ker.toAddSubgroup).symm,
+    (relIndex_mul_relIndex ⊥ _ _ bot_le ((f : A →+ B).ker_le_comap (g : B →+ C).ker)).symm
+  -- `↑g` and `g.toAddMonoidHom` are the same additive map only by unfolding the coercion.
+  simp_all [cokerKerIndex, ← cardQuot_apply, cardQuot, bot_inf_eq, range_comp,
+    sup_toAddSubgroup, relIndex_ker, index_map, map_toAddSubgroup, AddSubgroup.map_comap_eq,
+    ← relIndex_mul_index (toAddSubgroup_mono (@le_sup_left _ _ _ g.ker))]
+  ring!
+  -- If `t = 0`, the formulas for `coker f` and `ker g` make both indices vanish.
+  aesop
 
 /-- For a short exact sequence `0 → A → B → C → 0` of abelian groups given by `f` and `g`, let
 q_X = #(X/lX) / #X[l] be the rational cokernel-over-kernel index of multiplication by `l` on X,
