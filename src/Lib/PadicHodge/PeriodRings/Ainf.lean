@@ -113,23 +113,13 @@ lifts to the tilt: some homomorphism χ: ℚ → O^♭ has χ(s)^♯ = a(s) for 
 lemma exists_tilt_lift_of_character (a : Multiplicative ℚ →* ℂ_[p])
     (ha : a (Multiplicative.ofAdd 1) = 1) :
     ∃ χ : Multiplicative ℚ →* OFlat, ∀ s : Multiplicative ℚ, (χ s).untilt = a s := by
-  -- The values of `a` are roots of unity, so they lie in `OC`.
-  have h_mem (s : Multiplicative ℚ) : a s ∈ valRingCp p := by
-    have h_den : s ^ s.toAdd.den = .ofAdd 1 ^ s.toAdd.num := by aesop
-    have h_fin : IsOfFinOrder (a s ^ s.toAdd.den) := by simp [← map_pow, h_den, ha]
-    exact mem_valRingCp.mpr (h_fin.of_pow s.toAdd.den_nz).norm_eq_one.le
-  -- Send `s` to the compatible sequence `a (s / p ^ n)` of `p`-power roots of `a s` in `OC`,
-  -- then reduce the sequence modulo `p`.
-  let roots : Multiplicative ℚ →* Perfection OC p :=
-    liftMonoidHom p (Multiplicative ℚ) OC (a.codRestrict _ h_mem)
-  refine ⟨(mapMonoidHom p (Ideal.Quotient.mk (Ideal.span {(p : OC)})).toMonoidHom).comp roots,
-    fun s ↦ ?_⟩
-  -- Untilting the reduction of a compatible sequence returns its zeroth term.
-  show ((PreTilt.untilt (O := OC) (p := p)
-    (mapMonoidHom p (Ideal.Quotient.mk (Ideal.span {(p : OC)})).toMonoidHom (roots s)) : OC) :
-      ℂ_[p]) = a s
-  rw [untilt_mapMonoidHom_idealQuotientMk]
-  simp [roots]
+  -- Roots of unity are integral. Lift their compatible p-power roots and untilt the reduction.
+  exact ⟨.comp (mapMonoidHom ..)
+    (liftMonoidHom _ _ _ (a.codRestrict _ fun s ↦
+      mem_valRingCp.mpr (IsOfFinOrder.of_pow
+        (by simp [← map_pow, show s ^ s.toAdd.den = .ofAdd 1 ^ s.toAdd.num by aesop, ha])
+        s.toAdd.den_nz).norm_eq_one.le)),
+    fun _ ↦ by erw [teichmuller₀_mapMonoidHom_idealQuotientMk]; simp⟩
 
 /-- The map s ↦ ε^s: a chosen homomorphism from ℚ to the multiplicative monoid of O^♭ with
 (ε^s)^♯ a primitive root of unity of order the denominator of s. -/
@@ -311,14 +301,9 @@ lemma FrobGal.smulCommClass_gal [SMulCommClass FrobGal N A] : SMulCommClass (Gp 
 φ. -/
 @[local simp]
 lemma FrobGal.smul_def (x : A) : (Multiplicative.ofAdd n, g) • x = frobEnd^[n] (g • x) := by
-  -- `φ` is the action of `(ofAdd 1, 1)` and `g` that of `(1, g)`; the pair `(ofAdd n, g)` is
-  -- their product `(ofAdd 1, 1) ^ n * (1, g)`
-  have h_frob : ⇑(frobEnd : A →+* A) = fun y : A ↦ ((Multiplicative.ofAdd 1, 1) : FrobGal) • y :=
-    rfl
-  have h_gal : g • x = ((1, g) : FrobGal) • x := rfl
-  have h_pair : ((Multiplicative.ofAdd n, g) : FrobGal) =
-      (Multiplicative.ofAdd 1, 1) ^ n * (1, g) := by simp [← ofAdd_nsmul]
-  rw [h_frob, h_gal, smul_iterate_apply, smul_smul, h_pair]
+  -- φ and g act through the two factors of ℕ × G_p.
+  erw [smul_iterate_apply, smul_smul]
+  congr <;> simp
 
 /-- The action of `g` in `G_p` commutes with the Frobenius φ. -/
 @[simp]
@@ -419,18 +404,12 @@ reduction of `s ∈ W(k)` modulo `p`. If `x ↦ F x - s₀ * G x` is onto `k`, t
 lemma Witt.exists_map_sub_mul_map_eq (F G : k →+* k) (s : WittVector p k)
     (h_surj : Function.Surjective fun x : k ↦ F x - constantCoeff s * G x) :
     ∃ b : WittVector p k, map F b - s * map G b = a := by
-  -- Successive approximation modulo powers of `p` for the additive map
-  -- `Φ b = map F b - s * map G b`, which commutes with multiplication by `p`: by
-  -- `mem_range_of_approx` it is enough to write each `x` as `Φ b + p * y`.
-  let Φ : WittVector p k →+ WittVector p k :=
-    (map F).toAddMonoidHom - (AddMonoidHom.mulLeft s).comp (map G).toAddMonoidHom
-  refine mem_range_of_approx (π := (p : WittVector p k)) (π' := (p : WittVector p k)) Φ
-    (map_natCast_smul Φ _ _ p) id (fun x ↦ ?_) a
-  -- modulo `p` the equation is solved by `h_surj`; lift the solution by Teichmüller
-  obtain ⟨t, ht⟩ := h_surj (constantCoeff x)
-  obtain ⟨y, hy⟩ : ↑p ∣ x - Φ (teichmuller p t) := by
-    simpa [Φ, p_dvd_iff, map_sub, map_mul, sub_eq_zero] using ht.symm
-  exact ⟨teichmuller p t, y, sub_eq_iff_eq_add'.1 hy⟩
+  -- Solve modulo p and lift by successive approximation for the additive difference map.
+  exact mem_range_of_approx ((map F).toAddMonoidHom -
+    .comp (.mulLeft s) (map G).toAddMonoidHom)
+    (map_natCast_smul _ (type_of% s) (type_of% s) p) id
+    (·.1 0 |> h_surj |>.imp' (teichmuller p)
+      (by simp_all [← sub_eq_iff_eq_add', ← dvd_def, p_dvd_iff, map_sub, map_mul])) a
 
 open Ideal Period.Witt Function RingHom PadicComplex Pi OFlat NeZero Fact SModEq IsUltrametricDist
 
@@ -463,21 +442,11 @@ lemma Witt.dvd_of_mem_of_constantCoeff_dvd {I : Ideal (WittVector p k)} (hc : c 
     (h_sat : ∀ x : WittVector p k, (p : WittVector p k) * x ∈ I → x ∈ I)
     (h_mod_p : ∀ a ∈ I, constantCoeff c ∣ constantCoeff a) :
     ∀ a ∈ I, c ∣ a := by
-  -- Successive approximation: each `x ∈ I` is `c * b + p * y` with `y` again in `I`.
-  have step (x : I) :
-      ∃ (b : WittVector p k) (y : I), (x : WittVector p k) = c * b + p * (y : WittVector p k) := by
-    obtain ⟨x, hx⟩ := x
-    -- modulo `p` the element `c` divides `x`
-    obtain ⟨y, b, hx_eq⟩ : ∃ y b : WittVector p k, y * p + b * c = x :=
-      mem_span_pair.mp (mem_span_pair_iff.mpr (h_mod_p x hx))
-    -- `p * y = x - b * c` lies in `I`, so `y` does
-    have h_py : (p : WittVector p k) * y = x - b * c := by linear_combination hx_eq
-    have hy : y ∈ I := h_sat y (by simpa [h_py] using I.sub_mem hx (I.mul_mem_left b hc))
-    exact ⟨b, ⟨y, hy⟩, by linear_combination -hx_eq⟩
-  intro a ha
-  obtain ⟨b, hb⟩ := mem_range_of_approx (AddMonoidHom.mulLeft c)
-    (mul_smul_comm (p : WittVector p k) c) I.subtype step ⟨a, ha⟩
-  exact ⟨b, hb.symm⟩
+  -- Each element of I is cb + py with y again in I; successive approximation sums the lifts.
+  simpa [eq_comm] using!
+    (mem_range_of_approx (.mulLeft c) (mul_smul_comm (p : type_of% c) c) I.subtype fun ⟨x, hx⟩ ↦
+      have ⟨a, b, _⟩ := mem_span_pair.1 (mem_span_pair_iff.2 (h_mod_p x hx))
+      ⟨b, ⟨a, by grind [mul_mem_left, add_mem_cancel_right]⟩, by simp; grind⟩)
 
 variable (g : Gp p) (m : FrobGal) (t : OFlat) (a : Ainf)
 
@@ -636,45 +605,32 @@ lemma theta_xi : theta xi = 0 := by simpa [-tau, ↓← xi_mul_tau] using theta_
 
 /-- `τ` reduces to zero in the Witt vectors of the residue field of `O^♭`. -/
 lemma toWittResidue_tau : toWittResidue tau = 0 := by
-  -- `τ` is not a unit: otherwise `μ = φ τ` and `θ μ` are units, but `θ μ = 0`.
-  have h_tau : ¬IsUnit tau := by
-    intro h_unit
-    have h_mu : IsUnit mu := by simpa using h_unit.map frobEnd
-    exact (h_mu.map theta).ne_zero theta_mu
-  -- so the constant coefficient `ε^{1/p} - 1` of `τ` is not a unit, and `ε^{1/p}` has residue `1`
-  have h_coeff : ¬IsUnit (constantCoeff tau) := mt isUnit_iff_isUnit_constantCoeff.mpr h_tau
-  rw [tau, map_sub, map_one, constantCoeff_apply, teichmuller_coeff_zero] at h_coeff
-  have h_res : residue OFlat epsRoot = 1 := by
-    have h_zero : residue OFlat (epsRoot - 1) = 0 := by
-      rwa [← residue_ne_zero_iff_isUnit, not_not] at h_coeff
-    rwa [map_sub, map_one, sub_eq_zero] at h_zero
-  have h_teich : toWittResidue (teichmuller p epsRoot) = teichmuller p (residue OFlat epsRoot) :=
-    map_teichmuller p (residue OFlat) epsRoot
-  simp [tau, h_teich, h_res]
+  -- A unit τ would map to the unit θ(φτ) = θμ = 0.
+  have hτ : ¬IsUnit tau := fun h ↦ (h.map (theta.comp frobEnd)).ne_zero (by simp [theta_mu])
+  -- Its non-unit constant coefficient has residue zero.
+  have hres : residue OFlat epsRoot = 1 := by
+    have h := mt isUnit_iff_isUnit_constantCoeff.mpr hτ
+    rw [tau, map_sub, map_one, constantCoeff_apply, teichmuller_coeff_zero] at h
+    simpa [← residue_ne_zero_iff_isUnit, sub_eq_zero] using h
+  simp [tau, toWittResidue, hres]
 
 /-- `ξ - [ξ₀]` is `p` times a unit, where `ξ₀` is the constant coefficient of `ξ`. -/
 lemma associated_p_xi_sub_teichmuller : Associated ↑p (xi - teichmuller p (constantCoeff xi)) := by
-  -- The difference vanishes modulo `p`, so it is `p * u`; we show that `toWittResidue u = 1`.
-  obtain ⟨u, hu⟩ : ↑p ∣ xi - teichmuller p (constantCoeff xi) := by
+  -- The difference is p times a quotient whose reduction is 1, hence a unit.
+  obtain ⟨u, e⟩ : (p : Ainf) ∣ xi - teichmuller p (constantCoeff xi) := by
     rw [p_dvd_iff, map_sub]
     simp
-  -- `toWittResidue` kills `τ`, so it sends `[ε^{1/p}]`, and each of the `p` terms of the sum `ξ`,
-  -- to `1`
-  have h_teich : toWittResidue (teichmuller p epsRoot) = 1 := by
+  have ht : toWittResidue (teichmuller p epsRoot) = 1 := by
     simpa [tau, sub_eq_zero] using toWittResidue_tau
-  have h_xi : toWittResidue xi = p := by simp [xi, h_teich]
-  -- hence the reduction of `ξ` modulo `p` lies in the maximal ideal of `O^♭`
-  have h_res : residue OFlat (xi.coeff 0) = 0 := by
-    simpa [CharP.cast_eq_zero, toWittResidue] using congrArg constantCoeff h_xi
-  -- so the reduction of `hu` reads `p = p * toWittResidue u`
-  have h_red : (p : WittVector p (ResidueField OFlat)) = p * toWittResidue u := by
-    simpa [h_res, ← h_xi, toWittResidue] using congrArg toWittResidue hu
-  have h_one : toWittResidue u = 1 := (left_eq_mul₀ (p_nonzero p _)).mp h_red
-  -- so `u` has a unit as reduction, and is a unit
-  have h_unit : IsUnit (toWittResidue u) := by simp [h_one]
-  have h_u : IsUnit u := isUnit_iff_isUnit_constantCoeff.mpr
-    ((isUnit_map_iff (residue OFlat) (constantCoeff u)).mp (h_unit.map constantCoeff))
-  exact ⟨h_u.unit, hu.symm⟩
+  have hξ : toWittResidue xi = p := by simp [xi, ht]
+  have hξ0 : residue OFlat (xi.coeff 0) = 0 := by
+    simpa [CharP.cast_eq_zero, toWittResidue] using congrArg constantCoeff hξ
+  have hu : toWittResidue u = 1 := (left_eq_mul₀ (p_nonzero p _)).mp (by
+    simpa [hξ0, ← hξ, toWittResidue] using congrArg toWittResidue e)
+  have hunit : IsUnit u := isUnit_iff_isUnit_constantCoeff.mpr
+    ((isUnit_map_iff (residue OFlat) (constantCoeff u)).mp
+      ((hu.symm ▸ isUnit_one).map constantCoeff))
+  exact ⟨hunit.unit, e.symm⟩
 
 /-- The untilt of the constant coefficient of `ξ` divides `p`. This follows by applying `θ` to
 `associated_p_xi_sub_teichmuller` and using `θ ξ = 0`. -/
@@ -877,21 +833,15 @@ lemma tau_dvd_of_theta_frobEnd (h_theta : ∀ j : ℕ, theta (frobEnd^[j + 1] a)
 
 /-- `p` is a prime element of `A_inf`, because `A_inf / p = O^♭` is a domain. -/
 lemma Ainf.prime_p : Prime (p : Ainf) := by
-  -- `p ∣ x` means that the constant coefficient of `x` in the domain `O^♭` is zero
-  refine ⟨p_nonzero p OFlat, fun h_unit ↦ ?_,
-    fun x y h_dvd ↦ by simpa [p_dvd_iff, -constantCoeff_apply] using h_dvd⟩
-  -- `p` does not divide `1`, whose constant coefficient is not zero
-  simpa [p_dvd_iff] using isUnit_iff_dvd_one.mp h_unit
+  -- Divisibility by p is vanishing of the constant coefficient in the domain O^♭.
+  simp [Prime, p_nonzero, isUnit_iff_dvd_one, p_dvd_iff, -constantCoeff_apply]
 
 /-- If `p` does not divide `δ`, every non-unit of `A_inf` lies in the radical of `(p, δ)`. -/
 lemma Ainf.mem_radical_of_not_isUnit (h : ¬IsUnit a) (hδ : ¬↑p ∣ δ) :
     a ∈ radical (span {↑p, δ}) := by
-  -- The constant coefficient `a₀` of `a` is a non-unit of `O^♭` and that of `δ` is not zero, so
-  -- `δ₀ ∣ a₀ ^ n` for some `n`, which says `a ^ n ∈ (p, δ)`.
-  have h_a0 : ¬IsUnit (constantCoeff a) := mt isUnit_iff_isUnit_constantCoeff.mpr h
-  have h_δ0 : constantCoeff δ ≠ 0 := mt p_dvd_iff.mpr hδ
-  obtain ⟨n, hn⟩ : ∃ n : ℕ, constantCoeff δ ∣ constantCoeff a ^ n := OFlat.exists_dvd_pow h_a0 h_δ0
-  exact ⟨n, by rwa [mem_span_pair_iff, map_pow]⟩
+  -- Modulo p this is divisibility by a power in the valuation ring O^♭.
+  simp_all [radical, OFlat.exists_dvd_pow, ↓isUnit_iff_isUnit_constantCoeff,
+    p_dvd_iff, mem_span_pair_iff, map_pow, -constantCoeff_apply]
 
 /-- For every `n : ℕ` and `x ∈ A_inf` the equation `φ c - ξ ^ n * c = x` has a solution `c ∈ A_inf`,
 by the Artin–Schreier–Witt equations over the absolutely integrally closed ring `O^♭`. -/
@@ -959,35 +909,27 @@ lemma associated_smul_tau : Associated (g • tau) tau := by
 
 /-- Every `m = (n, g)` in `FrobGal = ℕ × G_p`, acting as φⁿ g, maps `ξ` into the ideal `(p, ξ)`. -/
 lemma smul_xi_mem_span : m • xi ∈ span {↑p, xi} := by
-  -- For `m = (n, g)`: `ξ` divides `g • ξ` as `θ` commutes with `G_p`, and `m • ξ = φ ^ n (g • ξ)`,
-  -- whose constant coefficient is a power of that of `g • ξ`.
-  obtain ⟨n, g⟩ := m
-  have h_xi_dvd : xi ∣ g • xi := by rw [← theta_eq_zero_iff_xi_dvd, theta_smul, theta_xi, smul_zero]
-  have h_act : (n, g) • xi = frobEnd^[n.toAdd] (g • xi) := FrobGal.smul_def n.toAdd g xi
-  rw [mem_span_pair_iff, h_act, constantCoeff_iterate_frobEnd]
-  exact dvd_pow (map_dvd constantCoeff h_xi_dvd) (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)
+  -- The Galois conjugate is divisible by ξ; Frobenius raises its reduction to a p-power.
+  have hm : m • xi = frobEnd^[m.1.toAdd] (m.2 • xi) :=
+    FrobGal.smul_def m.1.toAdd m.2 xi
+  rw [mem_span_pair_iff, hm, constantCoeff_iterate_frobEnd]
+  exact dvd_pow (map_dvd constantCoeff (by simp [← theta_eq_zero_iff_xi_dvd]))
+    (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)
 
 /-- If a and c are non-units of A_inf, then A_inf is complete and separated for the adic
 topology of the ideal (a, c). -/
 lemma Ainf.isAdicComplete_span_pair (ha : ¬IsUnit a) (hc : ¬IsUnit c) :
     IsAdicComplete (span {a, c}) Ainf := by
-  -- Limits exist because `shiftDiff` is onto for both generators.
+  -- Onto shiftDiff gives limits. For separation, factor off the p-adic valuation of x.
   refine { isPrecomplete_of_shiftDiff_surjective
-    (shiftDiff_surjective ha) (shiftDiff_surjective hc) with haus' := fun x hx ↦ ?_ }
-  -- Separation: write a nonzero `x` in all powers of `(a, c)` as `p ^ n * y` with `p ∤ y`.
-  by_contra hx₀
-  obtain ⟨n, y, hy, rfl⟩ : ∃ (n : ℕ) (y : Ainf), y.coeff 0 ≠ 0 ∧ x = ↑p ^ n * y :=
-    exists_eq_pow_p_mul x hx₀
-  have hy_p : ¬↑p ∣ y := by rwa [p_dvd_iff]
-  have hδ : ¬↑p ∣ xi * y := prime_p.not_dvd_mul not_p_dvd_xi hy_p
-  -- `0` approximates `x` to every order, so any `δ` with `p ∤ δ` divides `x`; take `δ = ξ * y`
-  have h_mem (m : ℕ) : ↑p ^ n * y - xi * y * 0 ∈ span {a, c} ^ m := by simpa [zero] using hx m
-  have h_dvd : xi * y ∣ ↑p ^ n * y := dvd_of_forall_exists_sub_mem_span_pow ha hc hδ fun m ↦
-    ⟨0, h_mem m⟩
-  -- cancelling `y` gives `ξ ∣ p ^ n`, that is `θ (p ^ n) = 0`, which is false
-  have h_xi : xi ∣ ↑p ^ n := (mul_dvd_mul_iff_right (right_ne_zero_of_mul hx₀)).mp h_dvd
-  have h_theta : theta (↑p ^ n) = 0 := theta_eq_zero_iff_xi_dvd.mpr h_xi
-  exact pow_ne_zero n (NeZero.ne (p : OC)) (by simpa using h_theta)
+    (shiftDiff_surjective ha) (shiftDiff_surjective hc) with haus' := fun x e ↦ ?_ }
+  by_contra hx
+  choose n y hy e' using exists_eq_pow_p_mul x hx
+  -- Approximation by zero makes ξy divide x; cancelling y would make θ(p^n) zero.
+  have := dvd_of_forall_exists_sub_mem_span_pow ha hc
+    (prime_p.not_dvd_mul not_p_dvd_xi (by simpa [p_dvd_iff]))
+    (⟨0, by simpa [zero] using e ·⟩)
+  simp_all [mul_dvd_mul_iff_right, ← theta_eq_zero_iff_xi_dvd]
 
 lemma Ainf.isAdicComplete_span_singleton (h : ¬IsUnit a) : IsAdicComplete (span {a}) Ainf := by
   simpa using isAdicComplete_span_pair h h
