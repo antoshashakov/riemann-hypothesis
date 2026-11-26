@@ -343,15 +343,8 @@ private lemma algebraMap_ainf_eq_algebraMap_bicommutant (s : k.S) :
   rfl
 
 /-- The field `𝒦_0` is contained in `𝒦_a`. -/
-lemma valueField_zero_le : valueField 0 ≤ valueField a := by
-  rw [valueField_eq_adjoin_union (a := 0)]
-  refine IntermediateField.adjoin_le_iff.mpr (Set.union_subset
-    (Set.forall_mem_range.mpr algebraMap_bicommutant_mem_valueField)
-    (Set.forall_mem_range.mpr fun s ↦ ?_))
-  -- At level `0` the image of `S` lies in the image of `S_B`.
-  rw [show phiInvToBdR 0 (s : Ainf) = algebraMap Ainf BdR s by simp [phiInvToBdR],
-    algebraMap_ainf_eq_algebraMap_bicommutant]
-  exact algebraMap_bicommutant_mem_valueField _
+lemma valueField_zero_le : valueField 0 ≤ valueField a := IntermediateField.gc.monotone_l fun _ ⟨s,
+  e⟩ ↦ ⟨(_ * ⟨_, k.ainfToBPlus_mem_bicommutant _⟩, 1), by simpa [phiInvToBdR] using! e⟩
 
 /-- An element of `B_dR` fixed by `Γ'` lies in `Fil⁰` and in `𝒦₀`. -/
 lemma mem_hodgeFil_zero_and_mem_valueField_zero_of_fixed

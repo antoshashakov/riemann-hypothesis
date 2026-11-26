@@ -83,16 +83,8 @@ lemma action_comm (r s : R) (x : V) : F r (F s x) = F s (F r x) := by
 
 omit [StarRing R] in
 /-- A nonzero element of the domain `R`, finite over `ℤ`, acts injectively on `V`. -/
-lemma action_injective : (⇑(F a)).Injective := by
-  -- `a` divides a nonzero integer `r`, and `F r` is multiplication by `r` on a complex space.
-  obtain ⟨b, r, hr, hab⟩ := exists_smul_eq_mul ℤ 1 (NeZero.ne a)
-  intro x y hxy
-  have h_key : F (r • 1) (x - y) = F (a * b) (x - y) := by rw [hab]
-  -- the left side is `r • (x - y)` and the right side is `F b (F a x - F a y) = 0`
-  have h_smul : (r : ℂ) • (x - y) = 0 := by
-    simpa [hxy, action_comm a, ← Int.cast_smul_eq_zsmul ℂ] using h_key
-
-  exact sub_eq_zero.mp ((smul_eq_zero.mp h_smul).resolve_left (Int.cast_ne_zero.mpr hr))
+lemma action_injective : (⇑(F a)).Injective := (exists_smul_eq_mul ℤ 1 (ne a)).elim fun b ⟨_, r,
+  e⟩ x y k ↦ by simpa [k, r, action_comm a, ← Int.cast_smul_eq_zsmul ℂ] using congr(F $e x = F $e y)
 
 omit [StarRing R] in
 /-- A nonzero element of `R` acts invertibly on the finite-dimensional space `V`. -/

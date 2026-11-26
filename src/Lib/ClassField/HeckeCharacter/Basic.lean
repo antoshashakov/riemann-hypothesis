@@ -192,14 +192,9 @@ private lemma reduceAt_eq_one_iff {w : FinPlace E} {x : Ô E} :
 
 /-- The subgroup `integralU1 S` of U(1)(𝔸) is open. -/
 lemma isOpen_integralU1 : (integralU1 S).IsOpen := by
-  -- An integral `x` reduces to `1` modulo `w` exactly if `v (x_w - 1) < 1`, an open condition.
-  have h_eq : SetLike.coe (integralU1 S) = (fun u : unitary (𝔸 E) ↦ (u : 𝔸 E).snd) ⁻¹'
-      (Ô E ∩ ⋂ w ∈ S, {x : 𝔸f E | Valued.v (x w - 1) < 1}) := by
-    ext u
-    simp [mem_integralU1_iff, reduceAt_eq_one_iff]
-  rw [Subgroup.IsOpen, h_eq]
-  exact (isOpen_Ô.inter (isOpen_biInter_finset fun w _ ↦
-    (isOpen_v_lt w 1).preimage ((continuous_evalAt w).sub continuous_one))).preimage (by fun_prop)
+  simp [integralU1, ← (reduceAt _).map_one, ← RingHom.sub_mem_ker_iff, ↓reduceAt_eq_zero, -map_one]
+  exact (isOpen_Ô.inter ((isOpen_set_pi (by simp) fun _ _ ↦ isOpen_v_lt ..).preimage
+    (.sub (by fun_prop) continuous_one))).preimage_of_continuous
 
 /-- A point of U(1)(𝔸) with finite part `1` lies in `integralU1 S`. -/
 lemma mem_integralU1_of_snd_eq_one {S : Finset (FinPlace E)} (hu : (u : 𝔸 E).snd = 1) :
@@ -542,12 +537,7 @@ instance HasWeight.inv [h : μ.HasWeight e ψ] : μ⁻¹.HasWeight (-e) ψ⁻¹ 
 /-- The `n`-th power of a character has `n` times the weight and the `n`-th power of the tame
 part. -/
 lemma HasWeight.zpow (h : μ.HasWeight e ψ) (n : ℤ) : (μ ^ n).HasWeight (n • e) (ψ ^ n) := by
-  induction n with
-  | zero => simpa using HasWeight.one
-  | succ k ih => simpa [zpow_add_one, add_smul] using ih.mul h
-  | pred k ih =>
-    rw [zpow_sub_one, zpow_sub_one, sub_smul, one_smul, sub_eq_add_neg]
-    exact ih.mul (HasWeight.inv (h := h))
+  induction n <;> simp_all [zpow_add, add_mul, sub_eq_add_neg, one, mul]
 
 /-! ### Existence and finiteness -/
 

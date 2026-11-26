@@ -564,13 +564,8 @@ lemma hasPrimeDensity_const (c : ℂ) : HasPrimeDensity (fun _ : FinPlace K ↦ 
 
 /-- A number field `K` has infinitely many primes of degree one, that is, finite places `w` whose
 absolute norm `w.q` is a prime number. -/
-lemma frequently_prime_q : ∃ᶠ w : FinPlace K in cofinite, w.q.Prime := by
-  -- Otherwise the hypothesis of `HasPrimeDensity.re_le_re` for the constants `1` and `0` holds
-  -- vacuously outside a finite set, and it gives `1 ≤ 0`.
-  by_contra h_few
-  have h_le := (hasPrimeDensity_const (K := K) 1).re_le_re (hasPrimeDensity_const 0)
-    ((not_frequently.mp h_few).mono fun _ h_not h_prime ↦ (h_not h_prime).elim)
-  norm_num at h_le
+lemma frequently_prime_q : ∃ᶠ w : FinPlace K in cofinite, w.q.Prime :=
+  ((hasPrimeDensity_const 1).re_le_re (hasPrimeDensity_const 0) <| ·.mp (by simp)).mt (by simp)
 
 /-- Let `L/K` be an extension of number fields and `c ∈ ℂ`. Consider the family that sends `v` to
 `c` times the number of places `w` of `L` above `v` whose residue field has the same cardinality
