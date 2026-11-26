@@ -204,38 +204,21 @@ two points agree is cut out by an ideal. There are a ring `T` and a point `a ∈
 point of `X` in an algebraically closed field `K` that maps `R` into a valuation ring `O` of `K` is
 the image of `a` under some `T → O ⊆ K`. -/
 lemma New.Variety.isProperOver_pointsToBase [IsProper s] : IsProperOver (pointsToBase s) := by
-  have : X.IsSeparated := by
-    rw [X.isSeparated_iff, ← comp_from s]
-    infer_instance
+  have : X.IsSeparated := X.isSeparated_iff.2 (comp_from s ▸ inferInstance)
   refine ⟨fun C ⟨x⟩ ⟨y⟩ ↦ ?_, ?_⟩
-  · -- Two points agree exactly where the pair factors through the closed diagonal, and
-    -- `exists_ideal_le_ker_iff_factors` cuts that locus out by an ideal `I`.
-    obtain ⟨I, -, hI⟩ := exists_ideal_le_ker_iff_factors (diag X) (lift x y)
-    refine ⟨I, fun B f ↦ ULift.up_inj.trans ?_⟩
-    simp [hI, prod.hom_ext_iff]
-  · -- A geometric point `z` whose ring map on `R` lands in the valuation ring `O` extends to
-    -- an `O`-point by the valuative criterion, and `O`-points factor through the atlas `a`,
-    -- as a valuation ring is a comparable ring.
-    obtain ⟨T, a, -, ha⟩ := exists_locallyOfFiniteType_forall_factors s
-    refine ⟨T, ⟨a⟩, fun {K} _ _ O z hz ↦ ?_⟩
-    -- A proper morphism is universally closed, so valuative squares have liftings.
+  · -- The closed diagonal cuts out the locus where the two points agree.
+    exact (exists_ideal_le_ker_iff_factors (diag X) (lift x y)).imp (by
+      intros; simp_all [prod.hom_ext_iff, lift_fst, lift_snd]; exact ULift.up_inj)
+  · -- A valuative extension factors through the affine atlas, since its ring is comparable.
+    refine (exists_locallyOfFiniteType_forall_factors s).imp fun T ⟨a, _, ha⟩ ↦ ?_
+    refine ⟨⟨a⟩, fun {K} _ _ O z hz ↦ ?_⟩
     have h_val : ValuativeCriterion.Existence s :=
       (UniversallyClosed.eq_valuativeCriterion.le X (Spec R) s inferInstance).left
-    -- The ring map `ρ : R ⟶ K` under `z` factors through `ρ₀ : R → O`, which gives a square.
-    let ρ₀ : R →+* O := (baseRingMap (pointsToBase s) z).hom.codRestrict O hz
-    have hρ : Spec.map (baseRingMap (pointsToBase s) z) = z.down ≫ s := map_preimage _
-    have h_comm : z.down ≫ s = Spec.map (ofHom (algebraMap O K)) ≫ Spec.map (ofHom ρ₀) := by
-      rw [← hρ, ← Spec.map_comp]
-      rfl
-    let sq : ValuativeCommSq s :=
-      { R := O, K := K, i₁ := z.down, i₂ := Spec.map (ofHom ρ₀), commSq := ⟨h_comm⟩ }
-    obtain ⟨l, hl⟩ : ∃ l : Spec (of O) ⟶ X, Spec.map (ofHom O.subtype) ≫ l = z.down := by
-      obtain ⟨⟨lifting⟩⟩ := h_val sq
-      exact ⟨lifting.l, lifting.fac_left⟩
-    obtain ⟨u, hu⟩ := ha (of O) isTest_of_preValuationRing.isComparableRing l
-    refine ⟨u, congrArg ULift.up ?_⟩
-    change Spec.map (u ≫ ofHom O.subtype) ≫ a = z.down
-    rw [Spec.map_comp, Category.assoc, hu, hl]
+    obtain ⟨⟨lifting⟩⟩ := h_val ⟨O, _, z.down,
+      Spec.map (ofHom ((baseRingMap (pointsToBase s) z).hom.codRestrict O hz)),
+      ⟨homEquiv.injective (by aesop)⟩⟩
+    exact (ha _ isTest_of_preValuationRing.isComparableRing lifting.l).imp (by
+      intros; simp_all; congrm ⟨$(lifting.fac_left)⟩)
 
 end ProperSchemes
 
