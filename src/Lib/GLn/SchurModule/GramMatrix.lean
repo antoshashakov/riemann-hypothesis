@@ -635,23 +635,17 @@ lemma comulMatrix_isometry_and_equivariant (g : ∀ τ : Φ, Matrix (n τ) (n τ
 /-- The integer matrix whose row (p, q) lists the coordinates of the product of the basis minor
 products b_p for κ and b_q for κ', in the basis for κ + κ', has an integer left inverse. -/
 lemma hasLeftInv_comulMatrix : HasLeftInv (comulMatrix ℤ n κ κ') := by
-  -- A basis tableau for `κ + κ'` splits into its first `κ` and last `κ'` columns of each height.
-  -- `f k` and `g k` are the minor products of these columns; `f k * g k` is the basis element.
-  let f (k : WeylIndexFamily n (κ + κ')) : MatrixPoly ((τ : Φ) × n τ) ℤ :=
-    ∏ τ : Φ, tableauPoly ℤ (Sigma.mk τ)
-      (fun h j ↦ (k τ).val h (Fin.castAdd _ j) : Tableau (n τ) (rankAt n τ) (κ τ))
-  let g (k : WeylIndexFamily n (κ + κ')) : MatrixPoly ((τ : Φ) × n τ) ℤ :=
-    ∏ τ : Φ, tableauPoly ℤ (Sigma.mk τ)
-      (fun h j ↦ (k τ).val h (Fin.natAdd _ j) : Tableau (n τ) (rankAt n τ) (κ' τ))
-  have hf (k : WeylIndexFamily n (κ + κ')) : f k ∈ nablaFamily ℤ n κ := prod_tableauPoly_mem_nabla
-  have hg (k : WeylIndexFamily n (κ + κ')) : g k ∈ nablaFamily ℤ n κ' := prod_tableauPoly_mem_nabla
-  have hfg (k : WeylIndexFamily n (κ + κ')) : f k * g k = nablaBasis ℤ n (κ + κ') k := by
-    simp [f, g, nablaBasis, Fin.prod_univ_add, tableauPoly, Finset.prod_mul_distrib]
-  -- Row `k` of the left inverse is the tensor product of the coordinates of the two factors.
-  refine ⟨fun k ↦ (vecMulVec (Function.invFun (nablaCombination κ') (g k))
-      (Function.invFun (nablaCombination κ) (f k))).vec,
+  -- Split a basis tableau into its κ and κ' columns; coordinates of the two factors give a row.
+  refine ⟨fun k ↦ (vecMulVec
+    (Function.invFun (nablaCombination κ') (∏ τ : Φ, tableauPoly ℤ (Sigma.mk τ)
+      (fun h j ↦ (k τ).val h (Fin.natAdd _ j) : Tableau (n τ) (rankAt n τ) (κ' τ))))
+    (Function.invFun (nablaCombination κ) (∏ τ : Φ, tableauPoly ℤ (Sigma.mk τ)
+      (fun h j ↦ (k τ).val h (Fin.castAdd _ j) : Tableau (n τ) (rankAt n τ) (κ τ))))).vec,
     ext_row fun k ↦ vecMul_comulMatrix_eq_iff.mpr ?_⟩
-  simp [Fintype.linearCombination_apply, ↓sum_coords_nablaBasis, hf, hg, hfg, one_apply]
+  simp only [Fintype.linearCombination_apply]
+  rw [sum_coords_nablaBasis prod_tableauPoly_mem_nabla,
+    sum_coords_nablaBasis prod_tableauPoly_mem_nabla]
+  simp [nablaBasis, Fin.prod_univ_add, tableauPoly, Finset.prod_mul_distrib, one_apply]
 
 /-- Let ξ, η, ζ be complex vectors of the Weyl modules of weights κ, κ' and κ+κ'. Assume the
 polynomial of ζ is the product of those of ξ and η, where the polynomial `toPoly` of a vector ξ is

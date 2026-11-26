@@ -321,29 +321,16 @@ end «GL»
 f(yᵀx), f the highest weight product of leading minors. -/
 @[simp]
 lemma toPoly_weylEval : toPoly n κ (weylEval n κ y) = weylKernel n κ y := by
-  -- Expand the generic kernel `K` in the basis, with coefficients `c i` in `A = ℤ[Y]`; expand the
-  -- `c i` in the basis again, which gives the Gram matrix; then specialise `Y` to `y`.
-  let A : Type := MatrixPoly (Σ τ : Φ, n τ) ℤ
-  let K : MatrixPoly (Σ τ : Φ, n τ) A := weylKernel n κ (X : (Σ τ : Φ, n τ) × ℕ → A)
-  let c : WeylIndexFamily n κ → A := invFun (nablaCombination κ) K
-  have hK : ∑ i, c i • nablaBasis A n κ i = K :=
-    sum_coords_nablaBasis (weylKernel_mem_nablaFamily X)
-  -- The monomial coefficients of `K` are semi-invariant in `Y` (`weylKernel_borelMul`), hence so is
-  -- `c i`: the coordinates lie in any subgroup that holds all coefficients.
-  have h_coeff (d : (Σ τ : Φ, n τ) × ℕ →₀ ℕ) : K.coeff d ∈ (nablaFamily ℤ n κ).toAddSubgroup := by
-    simp [A, K, mem_nabla, aeval_eq_eval₂Hom, ← coeff_map, map_weylKernel, weylKernel_borelMul,
-      comp_def]
-  have hc (i : WeylIndexFamily n κ) : c i ∈ nablaFamily ℤ n κ :=
-    coord_mem_of_coeff_mem _ 0 (by simpa [detPow_zero] using hK) h_coeff i
-  have h_gram (i : WeylIndexFamily n κ) : ∑ j, weylGram n κ i j • nablaBasis ℤ n κ j = c i :=
-    sum_coords_nablaBasis (hc i)
-  -- Put `y` in for the variables `Y` of the coefficients.
-  have hK_at_y : ∑ i, aeval y (c i) • nablaBasis R n κ i = weylKernel n κ y := by
-    simpa [A, K, map_weylKernel, ← C_mul', comp_def] using congrArg (mapAlgHom (aeval y)) hK
-  have hc_at_y (i : WeylIndexFamily n κ) :
-      aeval y (c i) = (weylGramOver *ᵥ weylEval n κ y) i := by
-    simp [← h_gram, ← eval_map, aeval_def, mulVec, dotProduct, weylEval]
-  simp [← hK_at_y, hc_at_y, toPoly, linearCombination_apply]
+  -- Expand the generic kernel in the basis twice to obtain the Gram rows, then evaluate at y.
+  -- Borel semi-invariance puts the coefficients, and hence their coordinates, in the same module.
+  simpa [map_weylKernel, toPoly, weylGram, ← eval_map, aeval_def, ← C_mul',
+    nablaCombination, Fintype.linearCombination_apply, mulVec, dotProduct, weylEval, comp_def] using
+    (congr(mapAlgHom (aeval y) $(congr(∑ i, $(sum_coords_nablaBasis (coord_mem_of_coeff_mem
+      (nablaFamily ℤ n κ).toAddSubgroup 0 rfl (by
+        simp [mem_nabla, aeval_eq_eval₂Hom, ← coeff_map,
+          sum_coords_nablaBasis (weylKernel_mem_nablaFamily (κ := κ) X), map_weylKernel,
+          weylKernel_borelMul, comp_def]) i)) • _).trans
+      (sum_coords_nablaBasis (weylKernel_mem_nablaFamily (κ := κ) X)))))
 
 /-- The Gram matrix `New.weylGram` does not depend on the labelling of the places: for a bijection
 `p` from `Φ` to `Ψ`, the Gram matrix of `(n, κ)` is that of the data transported to `Ψ`, with rows
