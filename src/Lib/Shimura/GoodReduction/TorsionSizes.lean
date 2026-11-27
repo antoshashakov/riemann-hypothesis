@@ -115,9 +115,7 @@ lemma sizeAt_mul : (B + B').sizeAt v (f * g) = B.sizeAt v f * B'.sizeAt v g := b
   ext
   simp [sizeAt]
 
-lemma sizeAt_pow : (n • B).sizeAt v (f ^ n) = B.sizeAt v f ^ n := by
-  ext
-  simp [sizeAt]
+lemma sizeAt_pow : (n • B).sizeAt v (f ^ n) = B.sizeAt v f ^ n := by ext; simp [LatticeForm.sizeAt]
 
 lemma valuation_eq_one_of_pow_eq_one {ζ : ℂ} (hn : n ≠ 0) (hζ : ζ ^ n = 1) : v ζ = 1 := by
   simpa [hn] using congrArg v hζ
