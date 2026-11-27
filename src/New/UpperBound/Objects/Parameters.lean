@@ -189,12 +189,8 @@ lemma negCount_gridSigns (z : Bool) (i j : ℕ) :
 
 /-- With offset `0`, the signs of grid `Ỹ` at the node `(0, 0)` are those of `D.Y 0` (`D.signsY 0`),
 with the sign `+1` at the extra point. -/
-lemma gridSigns_true_zero : D.gridSigns true 0 0 0 = Sum.elim (D.signsY 0) 1 := by
-  ext1 (x | x)
-  · rfl
-  · -- the extra point has the number `r`, and `r + 1 - k = m` is even
-    change entrySign 0 0 (D.r + (finOneEquiv.symm x : ℕ) + 1 - D.k) = 1
-    simp [entrySign_eq_ite, show (D.r + 1 - D.k) % 2 = 0 by grind]
+lemma gridSigns_true_zero : D.gridSigns true 0 0 0 = Sum.elim (D.signsY 0) 1 :=
+  funext <| Sum.rec (by tauto) fun _ ↦ Even.neg_one_pow (by erw [Fin.val_natAdd]; grind)
 
 /-- On the diagonal, with offset `0`, the signs of `Ỹ` are, up to a bijection of the index types,
 the signs of `Y` together with one more sign `(-1) ^ min j m`. -/
