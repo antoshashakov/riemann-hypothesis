@@ -134,12 +134,6 @@ abbrev FinPlace.q : ℕ := w.asIdeal.absNorm
 
 lemma FinPlace.q_sub_one_pos : 0 < w.q - 1 := Nat.sub_pos_of_lt w.one_lt_q
 
-lemma FinPlace.one_le_q : 1 ≤ w.q := w.one_lt_q.le
-
-lemma FinPlace.q_pos : 0 < w.q := zero_lt_one.trans w.one_lt_q
-
-lemma FinPlace.q_ne_zero : w.q ≠ 0 := w.q_pos.ne'
-
 /-- The four consequences of `1 < w.q` for the order `w.q` of the residue field at `w`, collected
 for `simp`. -/
 @[simp] lemma FinPlace.q_bounds : 0 < w.q - 1 ∧ w.q ≠ 0 ∧ 1 ≤ w.q ∧ 0 < w.q := by grind [one_lt_q]
