@@ -153,10 +153,7 @@ lemma sqrt_weylNormSq_le_of_dual {v : WeylIndex n κ → ℂ} {C : ℝ}
 an automorphism `σ` of `ℂ`: the Gram norm of `σ` applied to a finite sum of vectors is at most the
 sum of their Gram norms after `σ`. -/
 lemma sqrt_weylNormSq_sum_le {α : Type*} (s : Finset α) (f : α → WeylIndex n κ → ℂ) :
-    √(weylNormSq (σ ∘ ∑ a ∈ s, f a)) ≤ ∑ a ∈ s, √(weylNormSq (σ ∘ f a)) := by
-  -- By duality it suffices to bound a functional `c` of norm at most one on the sum.
-  refine sqrt_weylNormSq_le_of_dual σ fun c hc ↦ ?_
-  calc ‖σ (c ⬝ᵥ ∑ a ∈ s, f a)‖ = ‖∑ a ∈ s, σ (c ⬝ᵥ f a)‖ := by rw [dotProduct_sum, map_sum]
-    _ ≤ ∑ a ∈ s, √(weylNormSq (σ ∘ f a)) := norm_sum_le_of_le s fun a _ ↦ hc (f a)
+    √(weylNormSq (σ ∘ ∑ a ∈ s, f a)) ≤ ∑ a ∈ s, √(weylNormSq (σ ∘ f a)) :=
+  sqrt_weylNormSq_le_of_dual σ (by simp_all [dotProduct_sum, norm_sum_le_of_le])
 
 end New
