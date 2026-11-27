@@ -145,9 +145,8 @@ lemma equivariant_iff_basisValues {μ : L.Functional} {g : GroupOverGp.G}
 
 /-- The module `L.kisinAinf` lies in `L.fracSpan`: a power of `τ` is a non-zero divisor of
 `Ainf`. -/
-lemma kisinAinf_le_fracSpan : L.kisinAinf ≤ L.fracSpan := by
-  rintro x ⟨⟨_, ⟨N, rfl⟩, hτx⟩, -⟩
-  exact ⟨tau ^ N, by simp, hτx⟩
+lemma kisinAinf_le_fracSpan : L.kisinAinf ≤ L.fracSpan := fun _ ⟨⟨_, ⟨_, rfl⟩, h⟩, _⟩ ↦
+  ⟨_, by simp, h⟩
 
 /-- The module `W(C♭) ⊗ L` has no `Ainf`-torsion. -/
 instance : IsTorsionFree Ainf L.Ambient := .trans_faithfulSMul _ WittCFlat (_ ⊗ _)
