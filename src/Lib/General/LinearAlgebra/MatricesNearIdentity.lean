@@ -65,8 +65,7 @@ variable {n : Type*} [Fintype n] [DecidableEq n] {P X Y : Matrix n n ℂ} {ρ : 
 @[simp] abbrev intDiagonal (w : n → ℤ) : Matrix n n ℂ := diagonal fun i ↦ (w i : ℂ)
 
 lemma frobenius_norm_sq_eq_sum : ‖X‖ ^ 2 = ∑ i : n, ∑ j : n, ‖X i j‖ ^ 2 := by
-  simp only [frobenius_norm_def, Real.rpow_two]
-  rw [← Real.sqrt_eq_rpow, Real.sq_sqrt (by positivity)]
+  simp (disch := positivity) [frobenius_norm_def, ↓← Real.sqrt_eq_rpow]
 
 /-- The Cauchy–Schwarz inequality for the trace form: `‖tr (X * Y)‖` is at most the product of the
 Hilbert–Schmidt norms of `X` and `Y`. -/
