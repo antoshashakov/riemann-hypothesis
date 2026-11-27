@@ -597,10 +597,8 @@ lemma IsComparableRing.id (h : IsComparableRing f) : IsComparableRing (id : B �
 /-- Every element of the localisation of `A` at `M` is associated to the image of an element
 of `A`. -/
 lemma exists_associated_localization (y : Localization M) :
-    ∃ x : A, Associated (algebraMap A (Localization M) x) y := by
-  -- `y = x / s`, so `y` times the unit `s` is `x`
-  obtain ⟨⟨x, s⟩, h_eq⟩ := IsLocalization.surj M y
-  exact ⟨x, .symm ⟨(map_units (Localization M) s).unit, h_eq⟩⟩
+    ∃ x : A, Associated (algebraMap A (Localization M) x) y :=
+  ⟨_, .symm ⟨(map_units ..).unit, sec_spec M y⟩⟩
 
 /-- The localisation of a test ring `A` at a submonoid `M` is a test ring. -/
 lemma IsTest.localization (h : IsTest A) : IsTest (Localization M) :=
@@ -1196,10 +1194,7 @@ def abCoker.desc (f : N ⟶ F) (h : α ≫ f = 0) : abCoker α ⟶ F where
 generator [x]. -/
 lemma relFreeAb.hom_ext {f g : relFreeAb U ⟶ F}
     (h : ∀ (A : C) (x : Y.obj A), f A (mk U x) = g A (mk U x) := by tauto) :
-    f = g := by
-  -- the quotient map ℤ[Y] → ℤ[Y]/ℤ[U] is an epimorphism, so it suffices to compare both maps after
-  -- it, on generators
-  exact (cancel_epi (abCoker.π (freeAb.map U.ι))).mp (freeAb.hom_ext h)
+    f = g := (cancel_epi (abCoker.π _)).1 freeAb.hom_ext
 
 end New.Variety
 
