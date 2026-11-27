@@ -108,11 +108,10 @@ lemma continuous_ideleModule : Continuous (ideleModule (K := K)) := by
   exact h_inf.fst'.mul h_fin.snd'
 
 @[fun_prop]
-lemma continuous_adelicTent : Continuous (adelicTent r d) := by
+lemma continuous_adelicTent : Continuous (adelicTent r d) :=
   -- The condition on the finite part cuts out a clopen set, on which the tent is continuous.
-  have h_clopen : IsClopen {x : mixedSpace K × 𝔸f K | d.val * (x.snd - 1) ∈ Ô K} :=
-    IsClopen.preimage ⟨isCompact_Ô.isClosed, isOpen_Ô⟩ (by fun_prop)
-  exact h_clopen.continuous_indicator (by fun_prop)
+  (IsClopen.preimage ⟨isCompact_Ô.isClosed, isOpen_Ô⟩ (by fun_prop)).continuous_indicator
+    (by fun_prop)
 
 open scoped Classical in
 /-- Multiplication by an idele `a` on `mixedSpace K × 𝔸f K` takes the Haar measure `volume` to

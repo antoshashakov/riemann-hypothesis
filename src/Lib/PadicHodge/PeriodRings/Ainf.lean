@@ -567,11 +567,8 @@ open Ainf Multiplicative
 
 /-- Let `a ∈ A_inf` divide each of its conjugates `g' • a` under the Galois group `G_p`. Then
 for every `g ∈ G_p` the conjugate `g • a` is associated to `a`. -/
-lemma associated_smul_of_dvd (h : ∀ g : Gp p, a ∣ g • a) : Associated (g • a) a := by
-  -- apply `g` to `a ∣ g⁻¹ • a`
-  have h_inv : g • a ∣ g • (g⁻¹ • a) := map_dvd (toRingHom (Gp p) Ainf g) (h g⁻¹)
-  rw [smul_inv_smul] at h_inv
-  exact associated_of_dvd_dvd h_inv (h g)
+lemma associated_smul_of_dvd (h : ∀ g : Gp p, a ∣ g • a) : Associated (g • a) a :=
+  associated_of_dvd_dvd (by simpa using map_dvd (toRingHom _ _ g) (h g⁻¹)) (h g)
 
 /-- `ℤ_p = W(𝔽_p)` acts faithfully on `W(k)`, for every perfect ring `k` of characteristic `p`. -/
 instance : FaithfulSMul ℤ_[p] (WittVector p k) := by
@@ -664,21 +661,14 @@ lemma theta_xi : theta xi = 0 := by
 
 /-- `τ` reduces to zero in the Witt vectors of the residue field of `O^♭`. -/
 lemma toWittResidue_tau : toWittResidue tau = 0 := by
-  -- `τ` is not a unit: otherwise `μ = φ τ` and `θ μ` are units, but `θ μ = 0`.
-  have h_tau : ¬IsUnit tau := by
-    intro h_unit
-    have h_mu : IsUnit mu := by simpa using h_unit.map frobEnd
-    exact (h_mu.map theta).ne_zero theta_mu
-  -- so the constant coefficient `ε^{1/p} - 1` of `τ` is not a unit, and `ε^{1/p}` has residue `1`
-  have h_coeff : ¬IsUnit (constantCoeff tau) := mt isUnit_iff_isUnit_constantCoeff.mpr h_tau
-  rw [tau, map_sub, map_one, constantCoeff_apply, teichmuller_coeff_zero] at h_coeff
-  have h_res : residue OFlat epsRoot = 1 := by
-    have h_zero : residue OFlat (epsRoot - 1) = 0 := by
-      rwa [← residue_ne_zero_iff_isUnit, not_not] at h_coeff
-    rwa [map_sub, map_one, sub_eq_zero] at h_zero
-  have h_teich : toWittResidue (teichmuller p epsRoot) = teichmuller p (residue OFlat epsRoot) :=
-    map_teichmuller p (residue OFlat) epsRoot
-  simp [tau, h_teich, h_res]
+  -- A unit τ would map to the unit θ(φτ) = θμ = 0.
+  have hτ : ¬IsUnit tau := fun h ↦ (h.map (theta.comp frobEnd)).ne_zero (by simp [theta_mu])
+  -- Its non-unit constant coefficient has residue zero.
+  have hres : residue OFlat epsRoot = 1 := by
+    have h := mt isUnit_iff_isUnit_constantCoeff.mpr hτ
+    rw [tau, map_sub, map_one, constantCoeff_apply, teichmuller_coeff_zero] at h
+    simpa [← residue_ne_zero_iff_isUnit, sub_eq_zero] using h
+  simp [tau, toWittResidue, hres]
 
 variable {t g}
 

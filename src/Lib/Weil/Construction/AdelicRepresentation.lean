@@ -387,11 +387,8 @@ lemma eq_zero_of_dataInner_self {f : 𝒮 V} : V.dataInner f f = 0 → f = 0 :=
   eq_zero_of_modelInner_self
 
 /-- The vacuum has inner square one. -/
-lemma dataInner_vacElem_vacElem : V.dataInner V.vacElem V.vacElem = 1 := by
-  -- Pairing with the vacuum evaluates the vacuum function at `0`, where it is `1`.
-  have h_eval : V.dataInner V.vacElem V.vacElem =
-      (Heisenberg.IsVacuum.vacElem : Model (adelicHeisenberg E s)) 0 := modelInner_vacElem ..
-  simp [h_eval, vacuumFn]
+lemma dataInner_vacElem_vacElem : V.dataInner V.vacElem V.vacElem = 1 :=
+  (modelInner_vacElem ..).trans (by simp [vacElem, vacuumFn])
 
 /-- The Heisenberg matrix coefficient of `vacElem` at `y` is the vacuum function `New.vacuumFn` at
 `y`. -/
@@ -947,9 +944,7 @@ since `ϱ 0` is the identity. The factor `ϱ 0` makes `V.θ f = f 0` hold by def
 `f x = V.rawTheta (ϱ x f)` is the theta function of `f`. -/
 def θ : 𝒮 V →L[ℂ] ℂ := V.rawTheta ∘L V.ϱ 0
 
-lemma theta_eq_rawTheta : V.θ = V.rawTheta := by
-  ext
-  simp [θ]
+lemma theta_eq_rawTheta : V.θ = V.rawTheta := by ext; simp [θ]
 
 /-- The functional `V.rawTheta` is a theta functional of `V`: it is invariant under the rational
 points, and |θ(ϱ(x)vac)|² has mean 1 over adelic vectors x modulo these. -/

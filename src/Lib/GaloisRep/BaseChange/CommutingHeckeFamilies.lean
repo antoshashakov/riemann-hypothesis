@@ -216,10 +216,9 @@ lemma adeleMap_idem_placesAbove :
 lemma IsStep.isClopen_kerCompNorm (hμ : IsStep E' μ) : IsClopen (kerCompNorm E' μ).carrier :=
   OpenSubgroup.isClopen ⟨kerCompNorm E' μ, hμ.isOpen_ker.preimage_of_continuous⟩
 
-lemma IsStep.exists_gal_ne_one (hμ : IsStep E' μ) : ∃ σ : Gal(E'/E), σ ≠ 1 := by
+lemma IsStep.exists_gal_ne_one (hμ : IsStep E' μ) : ∃ σ : Gal(E'/E), σ ≠ 1 :=
   -- The order of the Galois group is the degree, which is prime.
-  refine Fintype.exists_ne_of_one_lt_card ?_ 1
-  simpa [← card_aut_eq_finrank] using hμ.out.one_lt
+  Fintype.exists_ne_of_one_lt_card (by simpa [← card_aut_eq_finrank] using hμ.out.one_lt) 1
 
 lemma adeleMap_pow_finrank_eq_one [IsGalois E E'] :
     adeleMap (σ : E' →+* E') ^ finrank E E' = 1 := by
