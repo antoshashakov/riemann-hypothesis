@@ -238,18 +238,9 @@ lemma dvd_iff_valuationVia_le {x y : valRingBelow k A} :
 lies in A ∩ k and is irreducible there. -/
 lemma isUniformiser_iff_irreducible [IsDiscreteValuationRing (valRingBelow k A)] {π : k} :
     IsUniformiser A π ↔ ∃ h : π ∈ valRingBelow k A, Irreducible (⟨π, h⟩ : valRingBelow k A) := by
-  -- Unfold both sides to inequalities of the valuation `v` of `A` read on `k`: the maximal ideal of
-  -- `A ∩ k` is `(π)` when `v a < 1 ↔ v a ≤ v π` for all `a` with `v a ≤ 1`.
-  -- `↓`: the plain `mem_maximalIdeal_iff` is too late, simp first turns membership into `¬IsUnit`
   simp [irreducible_iff_uniformizer, Ideal.ext_iff, ↓mem_maximalIdeal_iff, mem_span_singleton,
     dvd_iff_valuationVia_le, ← comap_apply, IsUniformiser]
-  set v : Valuation k A.ValueGroup := A.valuation.comap (algebraMap k Ω)
-  show (∀ x : k, v x < 1 ↔ v x ≤ v π) ↔ v π ≤ 1 ∧ ∀ a : k, v a ≤ 1 → (v a < 1 ↔ v a ≤ v π)
-  refine ⟨fun h_unif ↦ ⟨((h_unif π).mpr le_rfl).le, fun a _ ↦ h_unif a⟩,
-    fun ⟨hπ_le, h_unif⟩ x ↦ ?_⟩
-  -- for `v x > 1 ≥ v π` both sides are false
-  exact if hx : v x ≤ 1 then h_unif x hx
-    else iff_of_false (fun h_lt ↦ hx h_lt.le) (fun h_le ↦ hx (h_le.trans hπ_le))
+  grind
 
 /-- If all of Γ = Gal(Ω / k) maps the valuation subring A to itself, then for x ∈ Ω the power
 x ^ m, with m the number of conjugates of x (the index of its stabiliser), has the valuation of an
