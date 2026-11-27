@@ -724,20 +724,11 @@ lemma HodgeTatePair.existsUnique_hom (A D : HodgeTatePair) (f : A.test ⟶ D.tes
 
 /-- For a pair `A = (S, M)`, the map `toGeneric : B_{S,M} → T = S[1/p]` is a square-zero extension:
 it is surjective and its kernel has square zero. -/
-lemma HodgeTatePair.isSquareZero_toGeneric (A : HodgeTatePair) : IsSquareZero (toGeneric A) := by
-  obtain ⟨h_proj_surj, -, -⟩ := exact_mulMu_proj A.test
-  refine ⟨fun t ↦ ?_, ?_⟩
-  · -- lift `t` along `thickeningOver.proj` to `b`; the pair `(b, (t, 0))` lies in the fibre product
-    obtain ⟨b, hb⟩ := h_proj_surj t
-    exact ⟨⟨(b, t, 0), hb⟩, rfl⟩
-  · -- elements of the kernel are pairs `(a, (0, m))` with `a` in the kernel of
-    -- `thickeningOver.proj`, whose square is zero
-    rw [pow_two, eq_bot_iff, mul_le]
-    rintro ⟨⟨a, _, m⟩, ha⟩ ⟨⟩ ⟨⟨b, _, m'⟩, hb⟩ ⟨⟩
-    -- `a * b` lies in the square of the kernel of `thickeningProj`, which is zero
-    have h_fst : a * b = 0 :=
-      (pow_two _).ge.trans A.test.ker_thickeningProj_sq.le (mul_mem_mul ha hb)
-    exact Subtype.ext (Prod.ext h_fst (inr_mul_inr _ m m'))
+lemma HodgeTatePair.isSquareZero_toGeneric (A : HodgeTatePair) : IsSquareZero (toGeneric A) :=
+  ⟨((exact_mulMu_proj ..).1 · |>.elim (⟨⟨⟨·, _, 0⟩, ·⟩, rfl⟩)), by
+  rw [pow_two, eq_bot_iff, mul_le]; rintro ⟨⟨_, ⟨⟩⟩, h⟩ ⟨⟩ ⟨⟨_, ⟨⟩⟩, g⟩ ⟨⟩
+  exact Subtype.ext
+    (ext ((pow_two _).ge.trans A.test.ker_thickeningProj_sq.le (mul_mem_mul h g)) (inr_mul_inr ..))⟩
 
 /-- The coefficients `genericCoeff` (`S ↦ T = S[1/p]`) are additive on `p`-adic tests
 (`HasPartitions`): a decomposition of the ring of a test by idempotents gives one of the group. -/
