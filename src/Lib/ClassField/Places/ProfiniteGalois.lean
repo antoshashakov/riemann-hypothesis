@@ -87,8 +87,7 @@ lemma isLocallyConstant_smul (x : Ω) : IsLocallyConstant fun g : Γ ↦ g • x
 /-- The elements `g` of the profinite Galois group `Γ` such that `g • x` satisfies a given predicate
 form a closed set. -/
 lemma isClosed_setOf_smul (x : Ω) (P : Ω → Prop) : IsClosed {g : Γ | P (g • x)} :=
-  -- Its complement is the preimage of `{y | ¬ P y}` under the locally constant orbit map.
-  isOpen_compl_iff.mp (isLocallyConstant_smul x {y : Ω | ¬P y})
+  ⟨isLocallyConstant_smul x Pᶜ⟩
 
 /-- Let `Γ` act as the Galois group of `Ω / K`, `Γ'` as that of `Ω' / L`, and let `j : Ω → Ω'` be a
 ring homomorphism. A map `φ : Γ' → Γ` with `j (φ g • x) = g • j x` for all `g` and `x` is
