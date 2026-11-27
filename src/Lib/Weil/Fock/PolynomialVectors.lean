@@ -140,17 +140,6 @@ lemma fockMatrixCoeff_lowerOp (u : USign ε) (P Q : MvPolynomial ι ℂ) (j : ι
     sum_add_distrib]
   grind [I_sq, h_deriv 1, conj_I]
 
-/-- Both relations of `New.Fock.fockMatrixCoeff_raiseOp` and `New.Fock.fockMatrixCoeff_lowerOp`:
-for u in U(ε), polynomials P, Q and an index j, with A_a = `New.Fock.raiseOp` ε a and
-B_a = `New.Fock.lowerOp` ε a, ⟨v_Q, ω₀(u) v_{A_j P}⟩ = Σ_i u_ij ε_i ⟨v_{B_i Q}, ω₀(u) v_P⟩ and ε_j
-⟨v_Q, ω₀(u) v_{B_j P}⟩ = Σ_i conj(u_ij) ⟨v_{A_i Q}, ω₀(u) v_P⟩. -/
-lemma fockMatrixCoeff_raiseOp_lowerOp (u : USign ε) (P Q : MvPolynomial ι ℂ) (j : ι) :
-    fockMatrixCoeff u Q (raiseOp ε j P) =
-      ∑ i : ι, u.val i j * ε i * fockMatrixCoeff u (lowerOp ε i Q) P ∧
-    ε j * fockMatrixCoeff u Q (lowerOp ε j P) =
-      ∑ i : ι, conj (u.val i j) * fockMatrixCoeff u (raiseOp ε i Q) P :=
-  ⟨fockMatrixCoeff_raiseOp u P Q j, fockMatrixCoeff_lowerOp u P Q j⟩
-
 /-- Multiplication by X_i is adjoint to the derivative ∂_i for the inner product
 `New.Fock.fockInner` of polynomial vectors: ⟨v_{X_i P}, v_Q⟩ = ⟨v_P, v_{∂_i Q}⟩. -/
 lemma fockInner_X_mul (P Q : MvPolynomial ι ℂ) (i : ι) :

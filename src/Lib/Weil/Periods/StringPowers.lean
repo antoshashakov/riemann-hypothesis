@@ -164,27 +164,6 @@ lemma form_stringPower (i l : Fin s) :
 of grade `0`. -/
 def middlePower : ι → E := Y.stringPower (s / 2)
 
-/-- For a string of odd length `s = 2 * n + 1`, the vector `z_N` is the string vector with number
-`n`. -/
-lemma middlePower_eq_single (n : Fin s) (hn : 2 * n.val + 1 = s) :
-    Y.middlePower = Pi.single (Y.indexEquiv (.inr n)) 1 := by
-  have h_coeff : Y.powerCoeff n = Y.genericConst.val ^ (0 : ℤ) :=
-    Y.powerCoeff_of_lt (by omega) (by omega)
-  rw [middlePower, show s / 2 = n by omega, stringPower_eq_single, h_coeff, zpow_zero]
-
-/-- For a grading `Y` of `V` as `X ⊕ J_s` whose string has odd length `s = 2 * n + 1`, consider the
-vector `z_N = 𝔢 ^ n` (`Y.middlePower`, a multiple of the middle string vector). It has grade `0`:
-its entry vanishes at every basis index `k` of nonzero grade `Y.gradeOf k`. The grade is `0` on `X`
-and `s − 1 − 2i` on the `i`-th string vector. -/
-lemma middlePower_apply_eq_zero (hs : Odd s) {k : ι} (hk : Y.gradeOf k ≠ 0) :
-    Y.middlePower k = 0 := by
-  obtain ⟨n, hn⟩ := hs
-  -- The only nonzero entry is at the string index `n`, of grade `s - 1 - 2 * n = 0`.
-  have h_grade : Y.gradeOf (Y.indexEquiv (.inr ⟨n, by omega⟩)) = 0 := by simp [gradeOf, hn]
-  rw [Y.middlePower_eq_single ⟨n, by omega⟩ hn.symm, Pi.single_eq_of_ne]
-  rintro rfl
-  exact hk h_grade
-
 /-- For a grading `Y` of `V` as `X ⊕ J_s` whose string has odd length `s = 2 * n + 1`, the vector
 `z_N = 𝔢 ^ n` (`Y.middlePower`, the multiple of the middle string vector of grade `0`) has norm `-N`
 under the hermitian form `V.J`. -/
