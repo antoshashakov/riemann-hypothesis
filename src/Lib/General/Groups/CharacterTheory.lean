@@ -178,8 +178,7 @@ lemma IsChar.mul (hχ : IsChar χ) (hψ : IsChar ψ) : IsChar (χ * ψ) := by
   exact ⟨CategoryTheory.MonoidalCategory.tensorObj V W, FDRep.char_tensor V W⟩
 
 lemma isChar_monoidHom (l : G →* ℂ) : IsChar l :=
-  -- the one-dimensional representation in which `g` acts as multiplication by `l g`
-  ⟨.of (.comp MonoidHom.smulOneHom l), funext fun g ↦ Algebra.trace_self_apply (l g)⟩
+  ⟨.of (.comp .smulOneHom l), funext (Algebra.trace_self_apply <| l ·)⟩
 
 variable (S G) in
 /-- For a group G and a commutative semiring S with ℂ an S-algebra, the S-subalgebra of functions
@@ -352,11 +351,8 @@ variable {ι : Type _} [Fintype ι] [DecidableEq ι]
   {x : ∀ i : ι, ℂ[G i]} {V : Type*} [AddCommGroup V] [Module ℂ V]
   (σ : Representation ℂ H V) {e : ℂ[H]} {ρ : Representation ℂ (∀ i : ι, G i) V}
 
-lemma IsClassFunction.commute (he : IsClassFunction e.coeff) (x : ℂ[H]) : Commute x e := by
-  have h_swap (t g : H) : e.coeff (g * t⁻¹) = e.coeff (t⁻¹ * g) := by
-    simpa [mul_assoc] using he (t⁻¹ * g) t
-  ext g
-  simp only [coeff_mul_apply_left x e, coeff_mul_apply_right e x, h_swap, mul_comm]
+lemma IsClassFunction.commute (he : IsClassFunction e.coeff) (x : ℂ[H]) : Commute x e :=
+  ext (by grind [coeff_mul_apply_left, coeff_mul_apply_right, mul_inv_cancel_left])
 
 /-- An element `e` of the group algebra of a finite group `H` acts in the representation `σ` as
 the sum of the operators `σ s` weighted by the coefficients of `e`. -/
@@ -408,19 +404,13 @@ lemma asAlgebraHom_piTensorElem_mulSingle (i : ι) (x : ℂ[G i]) :
 product of the `x j` kills `v` in `ρ`. -/
 lemma piTensorElem_apply_eq_zero {v : V} (i : ι)
     (hv : asAlgebraHom (ρ.comp (MonoidHom.mulSingle G i)) (x i) v = 0) :
-    ρ.asAlgebraHom (piTensorElem x) v = 0 := by
-  -- split off the i-th component of x, which acts first and kills v
-  have h_split : x = update x i 1 * Pi.mulSingle i (x i) := by
-    rw [Pi.mulSingle, ← update_mul, one_mul, mul_one, update_eq_self]
-  rw [h_split]
-  simp [asAlgebraHom_piTensorElem_mulSingle, hv]
+    ρ.asAlgebraHom (piTensorElem x) v = 0 := (by simpa [-one_def] using! update_mul x 1 i 1 (x i) :
+  x = _ * Pi.mulSingle i _) ▸ by simp_all [asAlgebraHom_piTensorElem_mulSingle]
 
 /-- Two tensor products multiply to zero as soon as their factors in one place `i` do. -/
 lemma piTensorElem_mul_eq_zero {y : (i : ι) → ℂ[G i]} (i : ι) (h_mul : x i * y i = 0) :
     piTensorElem x * piTensorElem y = 0 := by
-  ext s
-  simpa [← map_mul] using
-    prod_eq_zero (f := fun j ↦ (x j * y j).coeff (s j)) (mem_univ i) (by simp [h_mul])
+  ext; simp [← map_mul, ↓Finset.prod_eq_zero (Finset.mem_univ i), *]
 
 namespace IsCentralProj
 
