@@ -48,10 +48,8 @@ lemma l2_opNorm_le_of_apply {M : ℝ} (h_apply : ∀ (i : m) (j : n), ‖A i j�
   grw [A.matrix_eq_sum_single, norm_sum_le, norm_sum_le, l2_opNorm_single.le, h_apply]
   simp [field]
 
-lemma norm_apply_le_l2_opNorm (i : m) (j : n) : ‖A i j‖ ≤ ‖A‖ :=
-  calc ‖A i j‖ = ‖WithLp.toLp 2 (A *ᵥ Pi.single j 1) i‖ := by simp
-    _ ≤ ‖WithLp.toLp 2 (A *ᵥ Pi.single j 1)‖ := PiLp.norm_apply_le _ i
-    _ ≤ ‖A‖ := by simpa using A.l2_opNorm_mulVec (EuclideanSpace.single j 1)
+lemma norm_apply_le_l2_opNorm (i : m) (j : n) : ‖A i j‖ ≤ ‖A‖ := by
+  simpa using (PiLp.norm_apply_le ..).trans (A.l2_opNorm_mulVec (.single j 1))
 
 /-- If `H` is positive definite and `Θ + Θᴴ - H` is positive semidefinite, then every eigenvalue
 `l` of `H⁻¹ (Θ + Θ)` has real part at least `1`. -/
