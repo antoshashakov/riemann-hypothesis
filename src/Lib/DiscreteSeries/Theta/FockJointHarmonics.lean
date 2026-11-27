@@ -120,24 +120,9 @@ theorem IsMatch.sum_cols_le_sum_rows (hm : IsMatch T l l') (F : R → ℤ) (G : 
     (h_rows : ∀ r : R, |T.centredParam l r| < card R - card C → 0 ≤ F r)
     (h_cols : ∀ c : C, |T.swap.centredParam l' c| < card C - card R → G c ≤ 0) :
     ∑ c : C, G c ≤ ∑ r : R, F r := by
-  -- The matching is a partial bijection. Compare both sides with the sum of `F r` over the matched
-  -- pairs `(r, c)`.
-  calc ∑ c : C, G c ≤ ∑ c : C, ∑ r : R, if T.IsMatchedPair l l' r c then F r else 0 := by
-        gcongr with c
-        obtain ⟨r, hr⟩ | h_free := hm.right c
-        · rw [sum_eq_single_of_mem r (mem_univ r) fun a _ ha ↦
-            ite_eq_right fun hac ↦ ha (hm.row_eq_of_isMatchedPair hac hr), ite_eq_left hr]
-          exact h_matched r c hr
-        · rw [sum_eq_zero fun r _ ↦ ite_eq_right (show ¬T.IsMatchedPair l l' r c by grind)]
-          exact h_cols c h_free
-    _ = ∑ r : R, ∑ c : C, if T.IsMatchedPair l l' r c then F r else 0 := sum_comm
-    _ ≤ ∑ r : R, F r := by
-        gcongr with r
-        obtain ⟨c, hc⟩ | h_free := hm.left r
-        · rw [sum_eq_single_of_mem c (mem_univ c) fun d _ hd ↦
-            ite_eq_right fun hrd ↦ hd (hm.col_eq_of_isMatchedPair hrd hc), ite_eq_left hc]
-        · rw [sum_eq_zero fun c _ ↦ ite_eq_right (show ¬T.IsMatchedPair l l' r c by grind)]
-          exact h_rows r h_free
+  trans ∑ r, ∑ c, ite (T.IsMatchedPair l l' r c) (F r) 0; rw [sum_comm]
+  all_goals gcongr; obtain ⟨⟨⟩⟩ := (by first | apply hm.3 ‹_› | apply hm.4 ‹_›) <;>
+    (try rw [sum_eq_single ‹_›]) <;> grind [IsMatch, HasGap, sum_eq_zero]
 
 /-- Let `l`, `l'` match. If row `r` is matched with column `c`, then Λ_r − v_r = −(Λ'_c − v'_c),
 where Λ, Λ' are the lowest `K`-types of `l`, `l'` and v, v' the weights of the vacuum `1` for the
