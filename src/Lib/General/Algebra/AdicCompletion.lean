@@ -610,9 +610,7 @@ variable {X Y S : Type*} [AddCommGroup X] [AddCommGroup Y] [CommRing S] [Module 
 
 /-- A linear map carries the subgroup `n X` of multiples into `n Y`. -/
 lemma nsmulRange.map_mem (f : X →ₗ[S] Y) {n : ℕ} {x : X} :
-    x ∈ nsmulRange n X → f x ∈ nsmulRange n Y := by
-  rintro ⟨a, rfl⟩
-  exact ⟨f a, (map_nsmul f n a).symm⟩
+    x ∈ nsmulRange n X → f x ∈ nsmulRange n Y := by aesop
 
 /-- For a module X over a commutative ring S and natural numbers p and k, the submodule (p)^k · X is
 the subgroup p^k X of multiples. -/
@@ -649,23 +647,11 @@ lemma coord_sub_mem_pow {n : ℕ} {y : A} {f : c.Index →₀ S}
 set `F` of indices, `y - ∑_{i ∈ F} c.coord i y • c.b i` lies in `I ^ n A`. -/
 lemma eventually_sub_sum_mem (y : A) (n : ℕ) :
     ∀ᶠ F : Finset c.Index in Filter.atTop,
-      y - ∑ i ∈ F, c.coord i y • c.b i ∈ I ^ n • (⊤ : Submodule S A) := by
-  -- Finite combinations of the `c.b i` span `A / I A`, so they are dense in the `I`-adic topology.
-  obtain ⟨a, ha⟩ : ∃ a : AdicCauchySequence I (c.Index →₀ S),
-      AdicCompletion.map I (linearCombination S c.b) (AdicCompletion.mk I _ a) = of I A y :=
-    (map_surjective_of_mkQ_comp_surjective c.dense).comp (mk_surjective I _) (of I A y)
-  -- the `n`-th term `a n` of such a sequence approximates `y`
-  have hf : y - linearCombination S c.b (a n) ∈ I ^ n • (⊤ : Submodule S A) :=
-    (Submodule.Quotient.eq _).1 (congrArg (fun z : AdicCompletion I A ↦ z.1 n) ha).symm
-  set f : c.Index →₀ S := a n
-  -- every `F` that contains the support of the approximation `f` will do
-  refine Filter.mem_atTop_sets.2 ⟨f.support, fun F hF ↦ (sub_mem_iff_right _ hf).1 ?_⟩
-  -- the two approximations differ by `∑ (c.coord i y - f i) • c.b i`, with coefficients in `I ^ n`
-  have h_diff : (y - linearCombination S c.b f) - (y - ∑ i ∈ F, c.coord i y • c.b i) =
-      ∑ i ∈ F, (c.coord i y - f i) • c.b i := by
-    simp [linearCombination_apply_of_mem_supported _ hF, sub_smul]
-  rw [h_diff]
-  exact sum_mem fun i _ ↦ smul_mem_smul (c.coord_sub_mem_pow hf i) mem_top
+      y - ∑ i ∈ F, c.coord i y • c.b i ∈ I ^ n • (⊤ : Submodule S A) :=
+  Filter.mem_atTop_sets.2 (((map_surjective_of_mkQ_comp_surjective c.dense).comp (mk_surjective I _)
+  (of I A y)).imp' (· n |>.1) fun f e F hF ↦ have hf := SModEq.sub_mem.1 congr($e.1 n).symm
+  (sub_mem_iff_right _ hf).1 (by simp [linearCombination_apply_of_mem_supported _ hF, sum_mem,
+      ← F.sum_sub_distrib, ← sub_smul, smul_mem_smul, c.coord_sub_mem_pow hf]))
 
 /-- For a topological basis `c` of `A`, a submodule `P ⊇ I ^ n A` contains `y` if it contains every
 `c.coord i y • c.b i`. -/
@@ -677,8 +663,7 @@ lemma mem_of_coord {P : Submodule S A} {n : ℕ} {y : A} (hP : I ^ n • ⊤ ≤
 /-- If `A` is `I`-adically separated, an element whose coordinates in a topological basis `c` are
 all zero is zero. -/
 lemma eq_zero_of_coord [H : IsHausdorff I A] {y : A} (h : ∀ i : c.Index, c.coord i y = 0) :
-    y = 0 :=
-  H.haus y fun n ↦ SModEq.zero.2 (c.mem_of_coord le_rfl fun i ↦ by simp [h])
+    y = 0 := H.1 _ (by simp_all [SModEq, c.mem_of_coord le_rfl])
 
 end New.Lift.AdicBasis
 
