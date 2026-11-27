@@ -666,10 +666,8 @@ lemma monomialSection_mem (e : ℕ × ℕ × ℕ) : C.monomialSection e ∈ C.se
 
 /-- Every section of degree 0, that is, every entire Λ-periodic function, is constant. The right
 side 1 is the unit of the semiring of subspaces of the algebra ℂ → ℂ: the constant functions. -/
-lemma sections_zero_le_const : C.sections 0 ≤ 1 := by
-  -- `apply_smul_of_nonpos` gives `f (t • u) = exp (t² B u u / 2) * f 0`; take `B = 0` and `u = 1`.
-  intro f hf
-  exact ⟨f 0, funext fun t ↦ by simpa using (apply_smul_of_nonpos hf 1 (by simp) t).symm⟩
+lemma sections_zero_le_const : C.sections 0 ≤ 1 := fun f k ↦
+  ⟨_, .symm (funext (by simpa using apply_smul_of_nonpos k 1))⟩
 
 /-- For a ≠ 0, the zeros of z ↦ (T_uθ)(az) are simple, where T_u = `C.twistedTranslate 1 u` is the
 twisted translation by u. -/
