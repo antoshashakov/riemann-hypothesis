@@ -94,16 +94,8 @@ lemma mem_localCongruence {m : ℕ} :
   Iff.rfl
 
 /-- The congruence subgroups `New.localCongruence` n w m are open in GL_n(E_w). -/
-lemma isOpen_localCongruence {m : ℕ} : (localCongruence n w m).IsOpen := by
-  refine isOpen_congruenceGL (isOpen_integer _) ?_
-  -- The level is the closed ball of radius `v (ϖ ^ (m + 1))`, which is open.
-  have h_ball : ((v (R := LocField w)).leSubmodule (exp (-(m.succ : ℤ))) : Set (LocField w)) =
-      {x | v.restrict x ≤ v.restrict ((uniformizer w ^ m.succ : (LocField w)ˣ) : LocField w)} := by
-    ext x
-    rw [Set.mem_ofPred_eq, v.restrict_le_iff]
-    simp [v_uniformizer]
-  rw [h_ball]
-  exact isOpen_closedBall _ ((uniformizer w ^ m.succ).isUnit.map v.restrict).ne_zero
+lemma isOpen_localCongruence {m : ℕ} : (localCongruence n w m).IsOpen := isOpen_congruenceGL
+  (isOpen_integer _) ((ext fun _ ↦ lt_mul_exp_iff_le (by simp)).subst (isOpen_v_lt ..))
 
 /-- The first congruence subgroup is the kernel of the reduction of GL_n(O_w). -/
 lemma mem_localCongruence_zero :
