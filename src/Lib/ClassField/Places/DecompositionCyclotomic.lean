@@ -354,9 +354,8 @@ def rootPowHom :
     -- the powers of a primitive root are all the `N`-th roots of unity
     by simpa [intCast_surjective.exists, SetLike.ext_iff] using! hζ.zpowers_eq⟩
 
-lemma isPrimitiveRoot_rootPowHom_one : IsPrimitiveRoot ((rootPowHom Ω N).val 1).toMul N := by
-  obtain ⟨h_inj, -⟩ := (rootPowHom Ω N).property
-  exact IsPrimitiveRoot.iff_orderOf.mpr ((addOrderOf_injective _ h_inj 1).trans (by simp))
+lemma isPrimitiveRoot_rootPowHom_one : IsPrimitiveRoot ((rootPowHom Ω N).val 1).toMul N :=
+  .iff_orderOf.2 ((addOrderOf_injective _ (rootPowHom ..).2.1 1).trans (by simp))
 
 /-- The subgroup of Gal(ℚ̄/ℚ) = `Gal(New.Ω/ℚ)` fixing all N-th roots of unity, for a natural number
 `N ≠ 0`: the absolute Galois group of ℚ(ζ_N). -/
