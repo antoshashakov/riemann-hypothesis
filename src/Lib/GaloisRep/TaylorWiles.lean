@@ -208,12 +208,7 @@ abbrev integralEnd [ThePrime ℓ] [PadicIso ℓ] : Subalgebra EllAdicIntegers (D
 
 /-- The forms of the base level, with no auxiliary places, are forms of every level `L`. -/
 lemma formsOfLevel_base_le : D.formsOfLevel ![] ≤ D.formsOfLevel L := by
-  -- The principal level at the places `L` lies in the level of the empty family of places.
-  have h_le : (levelOf L ⊥ : Subgroup (Gf E n)) ≤ levelOf (![] : Fin 0 → FinPlace E) ⊥ :=
-    -- The product of the groups over the empty family is trivial.
-    fun g hg ↦ mem_levelOf.mpr
-      ⟨levelOf_le_stdLevel hg, Subgroup.mem_bot.mpr (Subsingleton.elim _ _)⟩
-  exact inf_le_inf_left D.forms (levelSpace_anti h_le)
+  aesop_cat (add simp mem_levelOf)
 
 end BaseLevel
 
