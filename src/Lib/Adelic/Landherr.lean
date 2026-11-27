@@ -488,23 +488,6 @@ namespace New
 variable {E E' n : Type} [Field E] [NumberField E] [Field E'] [NumberField E']
   [Algebra E E'] [IsGalois E E'] [Fintype n] [DecidableEq n] {σ : Gal(E'/E)}
 
-open scoped Classical in
-/-- A normal matrix over a CM field (one commuting with its conjugate transpose) is killed by
-the radical of its characteristic polynomial. -/
-@[simp]
-lemma aeval_radical_charpoly [IsCMField E] {M : Matrix n n E} [IsStarNormal M] :
-    aeval M (radical M.charpoly) = 0 := by
-  -- The value `N` of the radical at `M` is nilpotent (Cayley–Hamilton) and commutes with `Nᴴ`, so
-  -- the trace of `Nᴴ * N` is nilpotent, hence zero; under a complex embedding it is the sum of the
-  -- squared norms of the entries of `N`.
-  set N : Matrix n n E := aeval M (radical M.charpoly)
-  obtain ⟨k, hk⟩ := exists_dvd_radical_self_pow M.charpoly_monic.ne_zero
-  have h_nil : IsNilpotent N := ⟨k, by simpa [aeval_self_charpoly] using map_dvd (aeval M) hk⟩
-  have h_trace : (Nᴴ * N).trace = 0 := (isNilpotent_trace_of_isNilpotent
-    ((commute_conjTranspose_aeval M).isNilpotent_mul_left h_nil)).eq_zero
-  simpa [AddMonoidHom.map_trace, conjTranspose_map _ (map_star_complex _), ← ext_iff,
-    trace_conjTranspose_mul_self_eq_zero_iff] using congrArg (Φ Classical.ofNonempty) h_trace
-
 /-- For E'/E a Galois extension of number fields of prime degree and σ ≠ 1 in its Galois group,
 every element of E' fixed by σ lies in E. -/
 lemma mem_range_algebraMap_of_fixed_of_prime (hσ : σ ≠ 1) [Fact (finrank E E').Prime] ⦃x : E'⦄
