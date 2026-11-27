@@ -112,11 +112,7 @@ lemma two_nsmul_hermitianForm_apply (l z : ℂ) :
 /-- The Riemann form of the hermitian form (π/A)·l̄z of a period lattice of area A takes (u, v)
 to Im(ūv)/A. -/
 lemma riemannForm_hermitianForm (u v : ℂ) :
-    L.hermitianForm.riemannForm u v = (conj u * v).im / L.area := by
-  have im_sub : (L.hermitianForm u v - L.hermitianForm v u).im =
-      2 * Real.pi * ((conj u * v).im / L.area) := by simp; ring
-  simp only [riemannForm, AddMonoidHom.mk'_apply, LinearMap.mk₂_apply, im_sub]
-  field
+    L.hermitianForm.riemannForm u v = (conj u * v).im / L.area := by simp [riemannForm]; field
 
 /-- For some `k = ±1` the Riemann form of `L.hermitianForm` takes the value `k` at the two
 periods. -/
