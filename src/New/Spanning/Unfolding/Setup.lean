@@ -299,8 +299,7 @@ lemma frameScaleSq_pos (v : InfinitePlace E) (a : ℕ) : 0 < S.frameScaleSq v a 
   div_pos ((even_two_mul _).pow_pos (S.realM_ne_zero v)) (mod_cast S.N_prime.pos)
 
 /-- The product Λ of the powers of the squared frame scales, `frameScaleProd`, is positive. -/
-lemma frameScaleProd_pos : 0 < S.frameScaleProd :=
-  prod_pos fun v _ ↦ prod_pos fun a _ ↦ pow_pos (S.frameScaleSq_pos v a) _
+lemma frameScaleProd_pos : 0 < S.frameScaleProd := prod_pos (by simp [prod_pos])
 
 /-- All the scales of the normalised basis at v are nonzero. -/
 @[simp]
