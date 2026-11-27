@@ -190,19 +190,9 @@ lemma boxProd_integrated (v₁ : IsVacuum.Model (realHeisenberg (realSigns E s�
     (v₂ : IsVacuum.Model (realHeisenberg (realSigns E s₂))) (f₁ : 𝒮 V₁) (f₂ : 𝒮 V₂) :
     boxProd hs (V₁.integrated v₁ f₁) (V₂.integrated v₂ f₂) =
       V.integrated (realBoxProd (realSigns_comp_split hs) v₁ v₂) (boxProd hs f₁ f₂) := by
-  -- `integrated_tmul` writes the right side as an integral against `v₁` of an integral against
-  -- `v₂`. By `map_integrated` an intertwining map commutes with such an integral, so each one
-  -- passes out of its factor. The two goals left are the intertwining properties: a real vector of
-  -- one summand acts on the product through that factor only. (`erw`: `integrated` matches the
-  -- integral of `map_integrated` only after unfolding the Heisenberg representation.)
-  erw [map_integrated _ ((boxProd hs).flip _), map_integrated _ (boxProd hs _), eq_comm,
-      integrated_tmul]
-  · -- a real vector of the second summand acts on `f₁ ⊠ f` through `f`
-    simp [left, right, rho_boxProd, realVec, realCoordSum, comp_def, ← Pi.zero_def,
-      ← Prod.zero_eq_mk]
-  · -- a real vector of the first summand acts on `f ⊠ (v₂ ⊗ f₂)` through `f`
-    simp [left, rho_boxProd, realVec, realCoordSum, comp_def, ← Pi.zero_def,
-      ← Prod.zero_eq_mk]
+  erw [map_integrated _ ((boxProd hs).flip _),
+  map_integrated _ (boxProd hs _), eq_comm, integrated_tmul] <;>
+  simp [left, right, rho_boxProd, realVec, realCoordSum, comp_def, ← Pi.zero_def, ← Prod.zero_eq_mk]
 
 variable {g : G E s} {g₁ : G E s₁} {g₂ : G E s₂}
 
@@ -335,16 +325,9 @@ lemma vacuumFn_apply : ∀ x : n → 𝔸 E, vacuumFn (D.φ x) = vacuumFn x := b
   simp [reindex_equiv (adelicSum E s).equiv, OrthogonalSum.vac_equiv, apply_adelicSum,
     vac_realEquiv, h_fin]
 
-/-- In the coordinates `adelicSum`, the vector with real part `0` and finite part `z` is
-`finVec z`. -/
-private lemma adelicSum_equiv_zero_fst {m : Type*} [Fintype m] [DecidableEq m] (r : m → ℤˣ)
-    (z : m → 𝔸f E) : (adelicSum E r).equiv (0, z) = finVec z := by
-  aesop (add simp adelicSum)
-
 omit [RingHomIsometric σ] in
 lemma apply_finVec (x : n → 𝔸f E) : D.φ (finVec x) = finVec (D.finEquiv x) := by
-  -- `apply_adelicSum` at a vector with zero real part; `realEquiv` keeps `0`.
-  rw [← adelicSum_equiv_zero_fst s x, D.apply_adelicSum, map_zero, adelicSum_equiv_zero_fst]
+  convert D.apply_adelicSum (0, x) <;> aesop (add simp adelicSum)
 
 /-! ### Transport of data -/
 
