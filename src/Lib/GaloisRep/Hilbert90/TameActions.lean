@@ -116,8 +116,7 @@ lemma isTameAtLevel_gal {K L : Type*} [Field K] [Field L] [Algebra K L] (σ : Ga
       simpa [eq_bot_of_prime P, sub_eq_zero, ← AlgEquiv.coe_pow] using h_triv y
     exact absurd h_id (pow_ne_one_of_lt_orderOf hi_pos.ne' hi_lt)
 
-lemma isTameAtLevel_one : IsTameAtLevel 1 1 m :=
-  ⟨rfl, ⟨1, by simp⟩, one_pow 1, one_pos, fun i ⟨_, _⟩ ↦ by omega⟩
+lemma isTameAtLevel_one : IsTameAtLevel 1 1 m := ⟨rfl, ⟨1, by simp⟩, by aesop⟩
 
 /-- If a ring endomorphism `σ` of a commutative ring `R` has `σ ^ 2 = 1`, some `x - σ x` is a unit,
 and `σ m = m`, then `σ` acts tamely (`New.IsTameAtLevel`) at level `m` with exponent `2`. -/
