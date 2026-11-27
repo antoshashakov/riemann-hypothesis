@@ -55,8 +55,7 @@ lemma isRoot_numberedRoots (h_sep : y.val.charpoly.Separable) (t : E →+* ℂ) 
 variable [CMType E]
 
 lemma eval_interpolate_univ_node (r : n ↪ ℂ) (f : n → ℂ) (i : n) :
-    (interpolate univ r f).eval (r i) = f i :=
-  eval_interpolate_at_node _ r.injective.injOn (mem_univ i)
+    (interpolate univ r f).eval (r i) = f i := eval_interpolate_at_node _ r.2.injOn (by simp)
 
 /-- The element y is an elliptic similitude of β with multiplier ν: its characteristic polynomial is
 irreducible, ν ≠ 0, yᴴβy = νβ, and under each embedding of the CM type every complex root r of the
