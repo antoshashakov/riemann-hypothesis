@@ -161,30 +161,11 @@ variable {f t s} {ξ : Z P} (z : ValuativeLift s ξ)
 
 /-- A pair `(t, c)` lies in the graph of `f` iff `f (numerator t) = f (denominator t) * c`. -/
 lemma mem_fractionGraph {c : C} :
-    (t, c) ∈ fractionGraph f ↔ f (numerator t) = f (denominator t) * c := by
-  constructor
-  · -- a witness: `r`, `r'` with `f r` a unit, `r' = r t` in the residue fields, `f r' = f r * c`
-    rintro ⟨_, ⟨⟨r, rfl⟩, h_unit : IsUnit (f r)⟩, r', h⟩
-    have h_snd : f r' = f r * c := congrArg Prod.snd h
-    have h_fst (j : ResiduePlace α) : (r' j : PlaceField j) = r j * algebraMap P _ t :=
-      congrFun (congrArg Prod.fst h) j
-    -- at each place `numerator t = t * denominator t` and `r' = r * t`
-    have h_key : r * numerator t = denominator t * r' := by
-      ext j
-      change (r j : j.PlaceField) * (algebraMap P _ t * denominator t j) = denominator t j * r' j
-      rw [h_fst, ← mul_assoc, mul_comm]
-    refine h_unit.mul_left_cancel ?_
-    calc f r * f (numerator t) = f (denominator t) * f r' := by rw [← map_mul, h_key, map_mul]
-      _ = f r * (f (denominator t) * c) := by rw [h_snd, mul_left_comm]
-  · -- `f (denominator t)` divides `f (numerator t)` and is coprime to it, so it is a unit: the
-    -- witness is `denominator t`, `numerator t`
-    intro h
-    have h_unit : IsUnit (f (denominator t)) :=
-      (isCoprime_denominator_numerator f t).isUnit_of_dvd ⟨c, h⟩
-    refine ⟨_, ⟨⟨denominator t, rfl⟩, h_unit⟩, numerator t, Prod.ext ?_ h⟩
-    -- at each place `numerator t = t * denominator t`
-    ext j
-    exact mul_comm (algebraMap P j.PlaceField t) (denominator t j)
+    (t, c) ∈ fractionGraph f ↔ f (numerator t) = f (denominator t) * c :=
+  ⟨fun ⟨_, ⟨⟨_, rfl⟩, u⟩, _, h⟩ ↦ by
+  erw [← u.mul_right_inj, mul_left_comm, ← congr(_ * $h.2), ← map_mul, ← map_mul f.hom]
+  congr 1 with; exact (congr(_ * $h.1 _).trans (mul_rotate' ..)).symm, fun h ↦ ⟨_, ⟨⟨_, rfl⟩,
+  (isCoprime_denominator_numerator ..).isUnit_of_dvd ⟨c, h⟩⟩, _, Prod.ext (.symm (mul_comm ..)) h⟩⟩
 
 /-! ### The space of places and its loci -/
 
