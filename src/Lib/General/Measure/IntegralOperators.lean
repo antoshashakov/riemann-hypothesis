@@ -263,9 +263,7 @@ lemma lintegral_pi_prod {ι : Type*} [Fintype ι] {X : ι → Type*} [∀ i : ι
 
 /-- The bound `‖x.toReal • v‖ₑ ≤ x * ‖v‖ₑ`; for `x = ∞` the left side is `0`. -/
 lemma enorm_toReal_smul_le (x : ENNReal) (v : V) : ‖x.toReal • v‖ₑ ≤ x * ‖v‖ₑ := by
-  cases x with
-  | top => simp
-  | coe r => simp [enorm_smul]
+  cases x <;> simp [enorm_smul]
 
 /-- Let `φ` be measurable with values in `[0, ∞]` and `F` almost everywhere strongly measurable.
 If `∫⁻ φ ‖F‖` is finite, then `φ • F` is integrable (`φ = ∞` is read as `0`). -/
