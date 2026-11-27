@@ -249,7 +249,6 @@ lemma lineBundle_eq_pull : x'.lineBundle = x.lineBundle.pull h.schemeMap.left :=
 
 lemma lineBundle_pow_eq_pull (m : ℕ) :
     x'.lineBundle.pow m = (x.lineBundle.pow m).pull h.schemeMap.left :=
-  -- `pull_pi` for the bundle of `x`, rewritten by `h.lineBundle_eq_pull`
   h.lineBundle_eq_pull ▸ (pull_pi _).symm
 
 /-- The level points of the pull-back `x'` are the pull-backs of those of `x`. -/
