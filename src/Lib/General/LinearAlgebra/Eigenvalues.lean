@@ -711,17 +711,11 @@ lemma amitsur_charpoly_mem_of_span
 characteristic polynomial by `a ^ (card n - k)`. -/
 lemma charpoly_smul_coeff (a : A) (M : Matrix n n A) (k : ℕ) :
     (a • M).charpoly.coeff k = a ^ (Fintype.card n - k) * M.charpoly.coeff k := by
-  nontriviality A
   by_cases! h : card n < k
-  · simp [coeff_eq_zero_of_natDegree_lt, h]
-  -- The coefficient is a signed sum of principal minors of size `card n - k`.
-  obtain ⟨m, hm, rfl⟩ : ∃ m ≤ card n, k = card n - m := ⟨card n - k, by omega, by omega⟩
-  have h_minor (s : Finset n) (hs : s ∈ univ.powersetCard m) :
-      ((a • M).submatrix (Subtype.val : s → n) Subtype.val).det =
-        a ^ m * (M.submatrix (Subtype.val : s → n) Subtype.val).det := by
-    simp [submatrix_smul, (mem_powersetCard.1 hs).2]
-  rw [charpoly_coeff_eq_sum_minors _ _ hm, charpoly_coeff_eq_sum_minors _ _ hm,
-    sum_congr rfl h_minor, ← mul_sum, Nat.sub_sub_self hm, mul_left_comm]
+  nontriviality; simp [*, coeff_eq_zero_of_natDegree_lt]
+  rw [← Nat.sub_sub_self h]
+  simp [charpoly_coeff_eq_sum_minors, Finset.mul_sum, submatrix_smul]
+  grind [Finset.sum_congr]
 
 end New
 
@@ -744,18 +738,10 @@ numbers x_i, one for each row index i, then g is conjugate by an invertible matr
 diagonal matrix with entries x_i. -/
 lemma isConj_diagonal_of_isRoot_charpoly {x : n ↪ ℂ} (hg : ∀ i : n, g.charpoly.IsRoot (x i)) :
     IsConj (diagonal x) g := by
-  -- Each root is an eigenvalue. Eigenvectors for the distinct roots are independent; they are the
-  -- columns of the conjugating matrix.
-  have h_eig (i : n) : HasEigenvalue (toLin' g) (x i) := by
-    simpa [hasEigenvalue_iff_isRoot_charpoly] using hg i
-  choose v hv using fun i : n ↦ (h_eig i).exists_hasEigenvector
-  have h_unit : IsUnit (of v)ᵀ :=
-    linearIndependent_col_iff_isUnit.1 (eigenvectors_linearIndependent' _ x x.injective v hv)
-  have h_conj : (of v)ᵀ * diagonal x = g * (of v)ᵀ := by
-    ext i j
-    have h_col : (g *ᵥ v j) i = (x j • v j) i := congrFun (hv j).apply_eq_smul i
-    simpa [Matrix.mul_apply, mulVec, dotProduct, mul_comm, diagonal_apply] using h_col.symm
-  exact ⟨h_unit.unit, by rwa [SemiconjBy, h_unit.unit_spec]⟩
+  choose v hv using (g.charpoly_toLin' ▸ hg · |> (hasEigenvalue_iff_isRoot_charpoly ..).2
+    |>.exists_hasEigenvector)
+  use (linearIndependent_col_iff_isUnit.1 (eigenvectors_linearIndependent' _ _ x.2 v hv)).unit
+  ext; simpa [mul_comm] using! congrFun (hv _).apply_eq_smul.symm _
 
 /-- Sylvester's law of inertia: if hᴴ diag(s) h = diag(t) for families of signs s, t and a complex
 square matrix h, then some permutation τ has s_{τ(j)} = t_j for all j. Here `signMatrix s` is the
