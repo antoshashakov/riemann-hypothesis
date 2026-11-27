@@ -593,9 +593,8 @@ lemma IsScalarFrame.eq_one_of_mem_levelGU (hx : x ∈ levelGU n 𝔑) (hframe : 
   (c := w⁻¹) (mem_GUPlus_of_mem_levelGU hx)]
 
 /-- The inverse of an element of the principal level is a frame for the identity form. -/
-lemma levelGU.isScalarFrame_inv_one (h : x ∈ levelGU n 𝔑) : IsScalarFrame x⁻¹ 1 := by
-  obtain ⟨⟨c, hc⟩, -⟩ := Subgroup.mem_inf.1 (inv_mem h)
-  rwa [hc.eq_one_of_mem_levelGU h] at hc
+lemma levelGU.isScalarFrame_inv_one (h : x ∈ levelGU n 𝔑) : IsScalarFrame x⁻¹ 1 :=
+  (inv_mem h).1.rec fun _ e ↦ e.eq_one_of_mem_levelGU h ▸ e
 
 /-! ### Uniqueness of the form, and automorphisms -/
 
