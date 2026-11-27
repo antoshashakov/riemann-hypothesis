@@ -323,8 +323,7 @@ lemma IsAppellHumbert.thetaShift_comm (u v : V) :
     ring_nf
   rw [h_phase]
 
-lemma IsAppellHumbert.ne_zero (hl : l ∈ L) : χ l ≠ 0 :=
-  norm_ne_zero_iff.1 (by simp [hB.norm_eq_one l hl])
+lemma IsAppellHumbert.ne_zero (hl : l ∈ L) : χ l ≠ 0 := by grind [IsAppellHumbert, norm_zero]
 
 /-- For Appell–Humbert data, L lies in its dual lattice: the Riemann form is integral on L. -/
 lemma IsAppellHumbert.le_dualLattice : L ≤ B.dualLattice := by
