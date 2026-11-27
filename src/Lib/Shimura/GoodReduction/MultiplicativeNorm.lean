@@ -114,10 +114,8 @@ end
 variable [Module.Finite ℤ R]
 
 /-- A point `a` of `c⁻¹ L` (the vectors that `F c` maps into `L`) has finite order modulo `L`. -/
-lemma mem_torsionPoints (a : h.divLattice c) : (a : V) ∈ torsionPoints L := by
-  -- the index of `L` in `c⁻¹ L` is the order of the finite group `c⁻¹ L / L`
-  exact ⟨L.toAddSubgroup.relIndex (h.divLattice c), (Nat.card_pos (α := h.MulKernel c)).ne',
-    L.toAddSubgroup.nsmul_relIndex_mem a.prop⟩
+lemma mem_torsionPoints (a : h.divLattice c) : (a : V) ∈ torsionPoints L :=
+  ⟨_, Nat.card_pos.ne', L.toAddSubgroup.nsmul_relIndex_mem a.2⟩
 
 /-- For `c ≠ 0`, multiplication by `c` maps the points of finite order modulo `L` onto
 themselves. -/
