@@ -259,8 +259,7 @@ lemma map_heckeFun (L : W →ₗ[A] W') (h : HasFiniteCosets K f)
     {π' : Representation A G W'} (hL : ∀ g : G, L (π g v) = π' g (L v)) :
     L (heckeFun π K f v) = heckeFun π' K f (L v) := by simp [heckeFun_eq_sum_toFinset h, hL]
 
-lemma levelSpace_anti (hK : K ≤ K') : levelSpace π K' ≤ levelSpace π K :=
-  fun v hv k ↦ by simpa using hv ⟨k, hK k.2⟩
+lemma levelSpace_anti (hK : K ≤ K') : levelSpace π K' ≤ levelSpace π K := by aesop_cat
 
 /-- For a compact open subgroup K of a topological group G and g in G, the indicator function of KgK
 is K-invariant on both sides and supported on finitely many left cosets of K. -/
