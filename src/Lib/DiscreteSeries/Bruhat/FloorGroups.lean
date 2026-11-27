@@ -451,13 +451,6 @@ lemma splitGram_mulVec_apply (i : 𝔰.BesselIndex) (hi : floorOf i < 𝔰.ϱ) :
   revert i
   simp [splitGram, fromBlocks_mulVec]
 
-/-- At an index of a hyperbolic pair, the coordinate of `e J`, where `J = T.splitGram`, is the
-coordinate of `e` at the other index of the pair. -/
-lemma vecMul_splitGram_apply (i : 𝔰.BesselIndex) (hi : floorOf i < 𝔰.ϱ) :
-    (e ᵥ* T.splitGram) i = e (oppositeIndex i) := by
-  revert i
-  simp [splitGram, vecMul_fromBlocks]
-
 /-- The inclusion matrix of the indices of floor at least `l` extends a vector on these indices by
 zero. -/
 lemma inclMatrix_val_mulVec (u : {i : 𝔰.BesselIndex // l ≤ floorOf i} → A) (i : 𝔰.BesselIndex) :
