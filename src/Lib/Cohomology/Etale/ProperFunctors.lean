@@ -70,11 +70,9 @@ variable {Λ : Ab.{0}} {R : Type} [CommRing R] {X Y : PointFunctor} {U V W : Sub
 /-- If the inclusion of the subfunctor `U` into `Y` is relatively affine (`New.Variety.IsRelAffine`:
 its pull-back along every point is representable), so is the inclusion of its preimage under any
 `f : X ⟶ Y`. -/
-lemma IsRelAffine.preimage (h : IsRelAffine U.ι) (f : X ⟶ Y) : IsRelAffine (U.preimage f).ι := by
-  -- the preimage of `U` is its pull-back along `f`
-  refine h.baseChange (?_ : IsPullback (fromPreimage U f) (U.preimage f).ι U.ι f)
-  rw [isPullback_iff]
-  aesop (add simp [ExistsUnique, toFunctor])
+lemma IsRelAffine.preimage (h : IsRelAffine U.ι) (f : X ⟶ Y) : IsRelAffine (U.preimage f).ι :=
+  h.baseChange (v :=
+  fromPreimage ..) (isPullback_iff.2 (by aesop (add simp [ExistsUnique, toFunctor])))
 
 /-- Pull-back along `(f, -g) : M ⟶ N ⊞ N'` sends the class with components `x`, `y` to
 `f^* x - g^* y`. -/
