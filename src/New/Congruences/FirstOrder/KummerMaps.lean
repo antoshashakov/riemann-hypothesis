@@ -87,8 +87,6 @@ lemma index_range_toGalPlus : (toGalPlus E).range.index = 2 := by
 
 lemma isComplexConj_conjPlus : IsComplexConj (conjPlus E) := isComplexConj_cmConj
 
-lemma conjPlus_mul_self : conjPlus E * conjPlus E = 1 := isComplexConj_conjPlus.mul_self
-
 lemma isFrob_toGalPlus_iff {A : ClosurePlace} {q : ℕ} {g : Gal(Ω/E)} :
     IsFrob A q (toGalPlus E g) ↔ IsFrob A q g := Iff.rfl
 
@@ -168,14 +166,14 @@ lemma ofGalPlus_mul_eq_or (g h : Gal(Ω/maximalRealSubfield E)) :
       (g ∈ (toGalPlus E).range ↔ h ∈ (toGalPlus E).range) :=
     mul_mem_iff_of_index_two index_range_toGalPlus
   have h_cancel (σ : Gal(Ω/maximalRealSubfield E)) : conjPlus E * (conjPlus E * σ) = σ := by
-    simp [← mul_assoc, conjPlus_mul_self]
+    simp [← mul_assoc, isComplexConj_conjPlus.mul_self]
   -- The first equation holds for `g ∈ G`, the second one for `g ∈ G c`; we compare in `G_F`.
   by_cases hg : g ∈ (toGalPlus E).range
   · refine .inl (isOpenEmbedding_toGalPlus.injective ?_)
     simp [-MonoidHom.mem_range, toGalPlus_ofGalPlus, h_mem, hg, mul_assoc]
   · refine .inr (isOpenEmbedding_toGalPlus.injective ?_)
     simp [-MonoidHom.mem_range, toGalPlus_conjGal, toGalPlus_ofGalPlus, h_mem, hg, mul_assoc,
-      h_cancel, conjPlus_mul_self]
+      h_cancel, isComplexConj_conjPlus.mul_self]
 
 /-- Let `E` be a CM field in the algebraic closure `Ω` of `ℚ` that contains a primitive `5040`-th
 root of unity, and let `F` be its maximal real subfield. Then `E / F` is unramified at the finite
@@ -481,7 +479,7 @@ theorem IsKummerMap.hasKummerType {ν e : ℕ} {I : Type} [Finite I] {x : I → 
     have h_cyc : cyclotomicPlusMod ℓ E ν (conjPlus E) = 1 :=
       cyclotomicPlusMod_eq_one ν (cyclotomicPlus_eq_one_of_isComplexConj isComplexConj_conjPlus)
     have h_conj_c : y (toGalPlus E (conjGal a)) 1 = ofZMod (ℓ ^ ν) (-ψ a) := by
-      simpa [toGalPlus_conjGal, inv_eq_of_mul_eq_one_right conjPlus_mul_self, h_cyc,
+      simpa [toGalPlus_conjGal, inv_eq_of_mul_eq_one_right isComplexConj_conjPlus.mul_self, h_cyc,
         isComplexConj_conjPlus.cyclotomicCharMod_eq_neg_one] using h_conj (conjPlus E) ha
     exact ofZMod_injective ((h_val _).trans h_conj_c)
   · -- On `G` the factor is `cyc(g) ^ (e + 1)`.
