@@ -142,9 +142,8 @@ lemma mem_openCell_iff {Z : 𝔰.FrameMatrix} : Z ∈ 𝔰.openCell ↔ 0 < gram
 lemma continuous_gramDiscReal : Continuous (gramDiscReal : 𝔰.FrameMatrix → ℝ) := by
   fun_prop [gramDiscReal, frameDisc, leadingMinor]
 
-lemma isOpen_openCell : IsOpen 𝔰.openCell := by
-  rw [show 𝔰.openCell = gramDiscReal ⁻¹' Set.Ioi 0 from Set.ext fun _ ↦ mem_openCell_iff]
-  exact isOpen_Ioi.preimage continuous_gramDiscReal
+lemma isOpen_openCell : IsOpen 𝔰.openCell :=
+  Set.ext (@mem_openCell_iff 𝔰) ▸ isOpen_Ioi.preimage continuous_gramDiscReal
 
 lemma oneSubNormSqInvCorner_pos {Z : 𝔰.FrameMatrix} (hZ : Z ∈ 𝔰.openCell) :
     0 < oneSubNormSqInvCorner Z := by
