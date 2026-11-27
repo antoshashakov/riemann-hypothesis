@@ -165,24 +165,11 @@ variable {k V V' : Type*} [Field k] [AddCommGroup V] [Module k V] [Module.Finite
 isomorphism intertwines them. -/
 lemma simClassOf_eq_iff :
     simClassOf g = simClassOf g' ↔ ∃ e : V ≃ₗ[k] V', ∀ x : V, e (g x) = g' (e x) := by
-  unfold simClassOf
-  generalize (finBasis k V).equivFun = b, (finBasis k V').equivFun = c
-  -- Similarity is an equivalence relation, so equality of classes is similarity of the matrices.
-  have h_equiv : Equivalence fun A B : Σ n, End k (Fin n → k) ↦
-      ∃ e : (Fin A.fst → k) ≃ₗ[k] Fin B.fst → k, e.conj A.snd = B.snd := by
-    refine ⟨fun A ↦ ⟨LinearEquiv.refl k _, rfl⟩, ?_, ?_⟩
-    · rintro A B ⟨e, he⟩
-      exact ⟨e.symm, by simp [← he]⟩
-    · rintro A B C ⟨e, he⟩ ⟨e', he'⟩
-      exact ⟨e.trans e', by simp [← he', ← he, DFunLike.ext_iff]⟩
-  refine (h_equiv.quot_mk_eq_iff _ _).trans ?_
-  -- Transport an intertwiner along the coordinate maps `b` and `c`, in either direction.
-  constructor
-  · rintro ⟨e, he⟩
-    refine ⟨b ≪≫ₗ e ≪≫ₗ c.symm, fun x ↦ ?_⟩
-    simpa [symm_apply_eq] using LinearMap.congr_fun he (e (b x))
-  · rintro ⟨e, he⟩
-    exact ⟨b.symm ≪≫ₗ e ≪≫ₗ c, by simp [DFunLike.ext_iff, he]⟩
+  delta simClassOf
+  generalize (finBasis k V).equivFun = a, (finBasis k V').equivFun = b
+  refine (Equivalence.quot_mk_eq_iff ⟨fun _ ↦ ⟨1, rfl⟩, .imp' .symm ?_, fun ⟨e, _⟩ ↦ .imp' e.trans
+    ?_⟩ ..).trans ⟨.imp' (a ≪≫ₗ · ≪≫ₗ b.symm) ?_, .imp' (a.symm ≪≫ₗ · ≪≫ₗ b) ?_⟩ <;>
+  simp_all [DFunLike.ext_iff] <;> grind [symm_apply_eq]
 
 lemma simClassOf_eq_of_equiv (e : V ≃ₗ[k] V') (he : ∀ x : V, e (g x) = g' (e x)) :
     simClassOf g = simClassOf g' :=
