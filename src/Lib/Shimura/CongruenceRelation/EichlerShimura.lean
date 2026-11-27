@@ -200,13 +200,7 @@ ring that contains the image of R (`hR`), with a prime p in its maximal ideal (`
 (`hℓ`). For Y proper over R and as in `New.Variety.IsCharted`, the inertia group of A acts
 trivially on Vⁿ(Y). -/
 lemma galoisAction_eq_one_of_inertia {g : Γ} (hg : g ∈ inertiaGroup Γ A) :
-    galoisAction R Ω Γ Y n g = 1 := by
-  ext x
-  -- apply `congruence_relation` to `g⁻¹`, a Frobenius for `p ^ 0`: the relation on points reads
-  -- `-[y] + [y] = 0`
-  have h_cong : CongruenceRelation ![-1, 1] (algebraMap R Ω ⁻¹' A.nonunits) p
-      (fun i : Fin 2 ↦ i * 0) ![𝟙 Y, 𝟙 Y] := by simp [CongruenceRelation, Cancels]
-  simpa [neg_add_eq_iff_eq_add] using
-    congruence_relation hR hℓ hp (f := 0) (inv_mem hg) ![𝟙 Y, 𝟙 Y] Fin.val ![-1, 1] h_cong x
+    galoisAction R Ω Γ Y n g = 1 := by ext; simpa [neg_add_eq_iff_eq_add] using (congruence_relation
+  hR hℓ hp (f := 0) (inv_mem hg) ![𝟙 _, 𝟙 _] (↑) ![-1, 1] (by simp [CongruenceRelation, Cancels]) _)
 
 end New.Variety.ellAdicCohom
