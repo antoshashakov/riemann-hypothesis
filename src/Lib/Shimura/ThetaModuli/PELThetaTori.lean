@@ -452,8 +452,7 @@ lemma mem_latticeOver : x.periodPoint y ∈ x.latticeOver S ↔ frameTorsionClas
     (by simp [toRealVectors_injective])
 
 /-- The lattice over a group of torsion classes grows with the group. -/
-lemma latticeOver_mono (h_le : S ≤ S') : x.latticeOver S ≤ x.latticeOver S' :=
-  AddSubgroup.toIntSubmodule.monotone (AddSubgroup.map_mono (AddSubgroup.comap_mono h_le))
+lemma latticeOver_mono (h_le : S ≤ S') : x.latticeOver S ≤ x.latticeOver S' := image_mono (by tauto)
 
 /-- For a subgroup `S` of the torsion module `(𝔸f E / Ô E)ⁿ`, `x.latticeOver S` is the image in `V`,
 under the period map, of the vectors of `Eⁿ` whose class with respect to `g` lies in `S`. If `S'` is
