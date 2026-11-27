@@ -122,9 +122,8 @@ lemma map_divLattice_mem (z : h.divLattice a) : F a z ∈ L := z.prop
 
 omit [IsDomain R] [Module.Finite ℤ R] [NeZero a] in
 /-- The chosen representative of a class in a⁻¹L / L lies in L only for the zero class. -/
-lemma out_mem_iff_eq_zero (z : h.MulKernel a) : z.out.val ∈ L ↔ z = 0 := by
-  conv_rhs => rw [← out_eq' z, eq_zero_iff]
-  rfl
+lemma out_mem_iff_eq_zero (z : h.MulKernel a) : z.out.val ∈ L ↔ z = 0 :=
+  (out_eq' z ▸ eq_zero_iff _).symm
 
 section
 
@@ -308,18 +307,10 @@ translation of its first argument by a lattice vector `l`:
 `K(x + l, y) = χ(l)⁻¹ exp (-(B l x + B l l / 2)) K(x, y)`, with `χ = h.multiplier`. -/
 lemma poincareSeries_add (l : V) (hl : l ∈ L) :
     h.isAppellHumbert.poincareSeries (x + l) y =
-      (h.multiplier l)⁻¹ * exp (-(B l x + B l l / 2)) * h.isAppellHumbert.poincareSeries x y := by
-  -- Shift the summation index by `l`; each term then changes by the same factor.
-  calc
-    _ = ∑' m : L, h.isAppellHumbert.poincareTerm (x + l) y (m + ⟨l, hl⟩) :=
-      ((Equiv.addRight (⟨l, hl⟩ : L)).tsum_eq _).symm
-    _ = ∑' m : L,
-        (h.multiplier l)⁻¹ * exp (-(B l x + B l l / 2)) * h.isAppellHumbert.poincareTerm x y m := by
-      refine tsum_congr fun m ↦ ?_
-      simp [IsAppellHumbert.poincareTerm, h.isAppellHumbert.semicharacter, hl, ← exp_add, field]
-      -- what remains is an identity of exponents, with `B u v - B v u` written by the Riemann form
-      grind [h.isAppellHumbert.sub_eq_riemannForm]
-    _ = _ := tsum_mul_left
+      (h.multiplier l)⁻¹ * exp (-(B l x + B l l / 2)) * h.isAppellHumbert.poincareSeries x y :=
+  ((Equiv.addRight ⟨l, hl⟩).tsum_eq _).symm.trans ((tsum_congr (by
+  simp [IsAppellHumbert.poincareTerm, h.isAppellHumbert.3, *, ← exp_add,
+    field]; grind [h.isAppellHumbert.sub_eq_riemannForm])).trans tsum_mul_left)
 
 /-- For hermitian data `h`, the function `x ↦ K(ā (x + w), a (x + w))` is continuous and
 `L`-periodic, where `K` is the Poincaré kernel and `ā = star a`. -/
