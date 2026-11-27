@@ -94,10 +94,8 @@ namespace New.DiscreteModule
 /-- An element `u` of `U` fixes the coset `U`, so acting by `u` on a function `F : Γ ⧸ U → M`
 and evaluating at the coset `U` gives `u` acting on the value `F U`. -/
 lemma funModule_apply_one (u : U.toSubgroup) (F : (M.funModule U).V) :
-    (M.funModule U).ρ u F ⟦1⟧ = (M.restrictTo U).ρ u (F ⟦1⟧) := by
-  -- Both sides are `u` applied to a value of `F`; the arguments agree as `u⁻¹` fixes the coset `U`.
-  refine congrArg (_ ∘ F) ?_
-  simp [QuotientGroup.eq]
+    (M.funModule U).ρ u F ⟦1⟧ = (M.restrictTo U).ρ u (F ⟦1⟧) :=
+  congrArg (_ ∘ F) (by simp [QuotientGroup.eq])
 
 /-- The Shapiro map on continuous 1-cocycles, Z¹(Γ, Fun(Γ/U, M)) → Z¹(U, M): restrict to U and
 evaluate at the trivial coset. -/
@@ -253,9 +251,8 @@ lemma cyclicClass_corestrictH0 (χ : ↥(QZChar Γ))
 
 /-- For Γ compact and U an open subgroup, a class in H²(Γ, M) whose restriction to U vanishes is
 killed by the index [Γ : U]. -/
-lemma index_smul_eq_zero_of_resH2 {x : M.H2} : M.resH2 U x = 0 → U.index • x = 0 := by
-  intro h_res
-  rw [← mapH2_sum_eq_index_smul U 0 x (by rw [h_res, map_zero]), map_zero]
+lemma index_smul_eq_zero_of_resH2 {x : M.H2} : M.resH2 U x = 0 → U.index • x = 0 :=
+  (mapH2_sum_eq_index_smul U 0 _ · ▸ by simp)
 
 omit [IsTopologicalGroup Γ] [CompactSpace Γ] in
 /-- Let `w = k • r` be a `Γ`-invariant element of `M`, and `U` a subgroup of `Γ` that fixes `r`
