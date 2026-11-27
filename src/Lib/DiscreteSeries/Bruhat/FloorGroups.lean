@@ -458,13 +458,6 @@ lemma vecMul_splitGram_apply (i : 𝔰.BesselIndex) (hi : floorOf i < 𝔰.ϱ) :
   revert i
   simp [splitGram, vecMul_fromBlocks]
 
-/-- Multiplication by `T.splitGram` on either side exchanges the two coordinates of a hyperbolic
-pair. -/
-@[simp] lemma splitGram_mulVec_and_vecMul_apply (i : 𝔰.BesselIndex) (hi : floorOf i < 𝔰.ϱ) :
-    (T.splitGram *ᵥ e) i = e (oppositeIndex i) ∧
-    (e ᵥ* T.splitGram) i = e (oppositeIndex i) :=
-  ⟨splitGram_mulVec_apply i hi, vecMul_splitGram_apply i hi⟩
-
 /-- The inclusion matrix of the indices of floor at least `l` extends a vector on these indices by
 zero. -/
 lemma inclMatrix_val_mulVec (u : {i : 𝔰.BesselIndex // l ≤ floorOf i} → A) (i : 𝔰.BesselIndex) :
@@ -563,11 +556,6 @@ lemma commute_weylOn {p : ℕ → A} (hP : ∀ a : ℕ, P a → a < l) (hs : s �
   -- On an exchanged floor, which is below `l`, the rows and columns of `s` are those of `1`.
   grind (splits := 20) only [oppositeIndex_involutive_and_floorOf_level]
 
-@[simp]
-lemma weylElem_zero : (weylElem 0 p : T.G) = 1 := by
-  ext i k
-  exact weylOn_apply_of_not_swapped i (by simp)
-
 /-- The Weyl element of length `l + 1` is the Weyl element of floor `l` with parameter `p l` times
 the Weyl element of length `l`. -/
 lemma weylElem_succ : (weylElem (l + 1) p : T.G) = floorWeyl l (p l).val * weylElem l p := by
@@ -583,14 +571,6 @@ lemma weylElem_succ : (weylElem (l + 1) p : T.G) = floorWeyl l (p l).val * weylE
     by_cases hl : floorOf k = l ∧ floorOf k < 𝔰.ϱ
     · simp [weylElem, weylOn, floorWeyl, Matrix.mul_apply, ← hl.left, hl.right]
     · simp [weylElem, weylOn, floorWeyl, Matrix.mul_apply, hk, h_iff, hl]
-
-/-- The Weyl element of length `l` does not depend on the parameter `p l`. -/
-@[simp]
-lemma weylElem_update (c : Aˣ) : (weylElem l (Function.update p l c) : T.G) = weylElem l p := by
-  ext i k
-  by_cases hk : floorOf k < l ∧ floorOf k < 𝔰.ϱ
-  · simp [weylElem, weylOn, Function.update_of_ne hk.left.ne]
-  · simp [weylElem, weylOn, hk]
 
 /-- The Weyl element of length `l` commutes with the fixer of the floors below `l`. -/
 lemma commute_weylElem (hs : s ∈ floorGroup l) : Commute (weylElem l p) s :=
