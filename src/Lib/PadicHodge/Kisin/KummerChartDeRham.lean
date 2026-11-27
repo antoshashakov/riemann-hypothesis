@@ -321,13 +321,6 @@ lemma valueField_eq_adjoin_union :
       (Set.forall_mem_range.mpr algebraMap_bicommutant_mem_valueField)
       (Set.forall_mem_range.mpr phiInvToBdR_mem_valueField))
 
-/-- The image in B_dR of an element `s` of S is the image of `s` under S_B → B_dR: both maps
-factor through B^+. -/
-private lemma algebraMap_ainf_eq_algebraMap_bicommutant (s : k.S) :
-    algebraMap Ainf BdR s =
-      algebraMap k.bicommutant BdR ⟨Chart.ainfToBPlus s, k.ainfToBPlus_mem_bicommutant s⟩ :=
-  rfl
-
 /-- The field `𝒦_0` is contained in `𝒦_a`. -/
 lemma valueField_zero_le : valueField 0 ≤ valueField a := IntermediateField.gc.monotone_l fun _ ⟨s,
   e⟩ ↦ ⟨(_ * ⟨_, k.ainfToBPlus_mem_bicommutant _⟩, 1), by simpa [phiInvToBdR] using! e⟩
