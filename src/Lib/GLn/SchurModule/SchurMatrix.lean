@@ -993,21 +993,3 @@ lemma exists_equiv_schur_one_row_eq_symPowMatrix {a : ℕ} {m σ : Type} [Fintyp
 end New
 
 /-! ## Continuity of Schur matrices -/
-
-/-- Over a topological ring R, the Schur matrix S_κ(g) = `New.schur κ g` of a family g of square
-matrices g_τ of size n_τ is continuous in g: by base change (`New.schur_map`) each of its entries is
-a polynomial in the entries of g. -/
-@[fun_prop]
-lemma New.continuous_schur {Φ : Type} {n : Φ → Type} {κ : Φ → ℕ → ℕ} {R : Type} [Fintype Φ]
-    [DecidableEq Φ] [∀ τ : Φ, Fintype (n τ)] [∀ τ : Φ, DecidableEq (n τ)] [CommRing R]
-    [TopologicalSpace R] [IsTopologicalRing R] :
-    Continuous (schur κ : (∀ τ : Φ, Matrix (n τ) (n τ) R) →
-      Matrix (WeylIndexFamily n κ) (WeylIndexFamily n κ) R) := by
-  -- By base change (`schur_map`), the entries of `schur κ g` are the polynomial entries of the
-  -- Schur matrix of the generic matrices `GL.genericMatrixAt R n`, evaluated at the entries of `g`.
-  have h_eval (g : ∀ τ : Φ, Matrix (n τ) (n τ) R) :
-      (schur κ (GL.genericMatrixAt R n)).map (GL.evalMatrix g) = schur κ g := by
-    simp [← schur_map .refl]
-  refine .congr (continuous_matrix fun i j ↦ ?_) h_eval
-  simp only [Matrix.map_apply, MvPolynomial.eval_eq]
-  fun_prop
