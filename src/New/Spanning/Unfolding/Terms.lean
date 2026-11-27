@@ -492,9 +492,7 @@ lemma pow_le_tailScale [S.IsAdmissible] {e : ℕ} (he : e ≤ 10 ^ 5 * 𝔰.n ^ 
 `k = 𝔰.k` and `f = numInfPlaces E` is the number of infinite places of `E`. -/
 lemma tailScale_pow_four [S.IsAdmissible] :
     S.tailScale ^ 4 = S.b ^ (𝔰.k * numInfPlaces E) := by
-  rw [tailScale, ← rpow_mul_natCast (by linarith [S.thousand_le_b]), ← rpow_natCast]
-  push_cast
-  ring_nf
+  erw [← rpow_mul_natCast, ← rpow_natCast] <;> grind [thousand_le_b]
 
 /-- The ratio of `mainSecondMoment` to `identitySecondMoment` is at least `τ ^ 44 = b ^ (11 k f)`,
 where `τ = tailScale`. -/
