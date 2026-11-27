@@ -432,11 +432,8 @@ lemma IsAutomorphic.petersson_comp_mul_right (hF : V.IsAutomorphic F) (hF' : V.I
 
 /-- The finite points act on forms of type `e` by isometries of the Petersson product. -/
 theorem inner_formRep (k : Gf E n) (y y' : V.Form e) :
-    ⟪V.formRep e k y, V.formRep e k y'⟫_ℂ = ⟪y, y'⟫_ℂ := by
-  -- Move the translation by `(1, k)` from the left factor to the right one, where it cancels.
-  change V.petersson (fun g ↦ y (g * (1, k))) (fun g ↦ y' (g * (1, k))) = V.petersson y y'
-  simpa [-Prod.inv_mk] using
-    y.prop.petersson_comp_mul_right (y'.prop.comp_mul_right k).toIsAutomorphic (1, k)
+    ⟪V.formRep e k y, V.formRep e k y'⟫_ℂ = ⟪y, y'⟫_ℂ :=
+  by simpa [-Prod.inv_mk] using! y.2.petersson_comp_mul_right (y'.2.comp_mul_right k).1 k
 
 @[simp]
 theorem conj_petersson : conj (V.petersson F F') = V.petersson F' F := by
