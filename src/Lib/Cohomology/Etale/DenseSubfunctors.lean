@@ -63,19 +63,8 @@ lemma mayer_vietoris_shortExact :
             (-freeAb.map (homOfLe inf_le_right)),
           biprod.desc (freeAb.map (homOfLe le_sup_left)) (freeAb.map (homOfLe le_sup_right)),
           w⟩ := by
-  -- The square of `U ⊓ V`, `U`, `V`, `U ⊔ V` is a pushout at each object, and stays one after
-  -- passing to free abelian groups.
-  have h_push :
-      IsPushout (freeAb.map ((U ⊓ V).homOfLe inf_le_left)) (freeAb.map (homOfLe inf_le_right))
-        (freeAb.map (homOfLe le_sup_left)) (freeAb.map (homOfLe le_sup_right)) :=
-    of_forall_isPushout_app fun _ ↦ (isPushout_of_bicartSq ⟨rfl, rfl⟩).map AddCommGrpCat.free
-  refine ⟨h_push.shortComplex.zero, .mk' h_push.exact_shortComplex ?_ (epi_shortComplex_g h_push)⟩
-  -- the first map is a monomorphism, because its first component is
-  have h_mono : Mono (freeAb.map ((U ⊓ V).homOfLe inf_le_left)) := by
-    -- free abelian groups preserve injections; the instance is found once `freeAb` is unfolded
-    delta freeAb
-    infer_instance
-  exact mono_of_mono_fac (biprod.lift_fst _ _)
+  delta freeAb; apply (⟨_, .mk' ·.exact_shortComplex inferInstance (epi_shortComplex_g ‹_›)⟩)
+    ((of_forall_isPushout_app fun _ ↦ isPushout_of_bicartSq ⟨rfl, rfl⟩).map _)
 
 /-- A monomorphism g : E → Y with image U is an equivalence for F exactly when the inclusion
 U → Y is one. -/
@@ -197,12 +186,8 @@ lemma IsClosedClass.freeAb_iSup (hP : IsClosedClass P) (S : Set (Subfunctor Y))
 /-- If P is a closed class of functors C → Ab and Φ is an exact functor from functors D → Ab to
 functors C → Ab, then the class of all N with Φ(N) in P is closed. -/
 lemma IsClosedClass.comap (h : IsClosedClass P) (Φ : AbFunctor D ⥤ AbFunctor C) [IsExactFunctor Φ] :
-    IsClosedClass fun N : D ⥤ Ab ↦ P (Φ N) := by
-  -- `Φ` sends zero functors to zero functors and short exact sequences to short exact sequences
-  obtain ⟨h_zero, h_ses⟩ : (∀ N : AbFunctor C, 𝟙 N = 0 → P N) ∧
-      ∀ S : ShortComplex (AbFunctor C), ShortExact S → P S.X₁ → (P S.X₂ ↔ P S.X₃) := h
-  refine ⟨fun N hN ↦ h_zero (Φ N) ?_, fun S hS ↦ h_ses (S.map Φ) (hS.map_of_exact Φ)⟩
-  rw [← Φ.map_id, hN, Φ.map_zero]
+    IsClosedClass fun N : D ⥤ Ab ↦ P (Φ N) :=
+  ⟨by simp_all [← Φ.3, IsClosedClass], fun _ e ↦ h.2 _ (e.map_of_exact Φ)⟩
 
 end New.Variety
 
@@ -380,72 +365,22 @@ lemma bijective_map_prod_map_of_idempotent {B E : C} {π : A ⟶ B} {ρ : A ⟶ 
 maps out of A that kill e or kill 1 − e form a dense subfunctor of `reprBy A` for F. -/
 lemma HasPartitions.isCohomDense_partition (hF : HasPartitions ι F) (e : ι A)
     (he : IsIdempotentElem e) :
-    IsCohomDense F (elemKillingMaps e ⊔ elemKillingMaps (1 - e)) := by
-  -- The preimage under a point `k` is the same subfunctor for the idempotent `ι.map k e`.
-  suffices h_isCohomEquiv_of_idempotent : ∀ (A : C) (e : ι.obj A), IsIdempotentElem e →
-      IsCohomEquiv F (freeAb.map (elemKillingMaps e ⊔ elemKillingMaps (1 - e)).ι) by
-    rintro B ⟨k⟩
-    rw [preimage_pointMap_elemKillingMaps_sup e k]
-    exact h_isCohomEquiv_of_idempotent B _ (he.map (ι.map k).hom)
-  intro A e he
-  by_cases h_trivial : e = 1 ∨ e = 0
-  · -- for `e = 1` or `e = 0` every map kills `e` or `1 - e`
-    exact isCohomEquiv (of_top_le (by aesop))
-  obtain ⟨he_ne_one, he_ne_zero⟩ := not_or.mp h_trivial
-  -- The two pieces are represented by the cuts `π` and `ρ`: they give projective functors, and a
-  -- section on a piece is determined by its value at the cut. Here `π` kills `e` (`π_kill`),
-  -- every map that kills `e` factors uniquely through `π` (`π_univ`), `ι π` is onto (`π_surj`)
-  -- and its kernel lies in `(e)` (`π_ker`); likewise `ρ` for `1 - e`.
-  obtain ⟨B, π, π_kill, π_univ, π_surj, π_ker⟩ := hF.exists_quotient _ _ he he_ne_one
-  obtain ⟨E, ρ, ρ_kill, ρ_univ, ρ_surj, ρ_ker⟩ :=
-    hF.exists_quotient _ _ he.one_sub fun h_eq ↦ he_ne_zero (sub_eq_self.mp h_eq)
-  obtain ⟨hπ_proj, hπ_rep⟩ : Projective (freeAb (elemKillingMaps e).toFunctor) ∧
-      Bijective fun s : freeAb (elemKillingMaps e).toFunctor ⟶ F ↦
-        s B (FreeAbelianGroup.of ⟨⟨π⟩, π_kill⟩) :=
-    projective_and_eval_bijective F _
-      (pointMap_bijective_of_existsUnique (elemKillingMaps e) ⟨_, π_kill⟩ π_univ)
-  obtain ⟨hρ_proj, hρ_rep⟩ : Projective (freeAb (elemKillingMaps (1 - e)).toFunctor) ∧
-      Bijective fun s : freeAb (elemKillingMaps (1 - e)).toFunctor ⟶ F ↦
-        s E (FreeAbelianGroup.of ⟨⟨ρ⟩, ρ_kill⟩) :=
-    projective_and_eval_bijective F _
-      (pointMap_bijective_of_existsUnique (elemKillingMaps (1 - e)) ⟨_, ρ_kill⟩ ρ_univ)
-  -- The ring of `A` is the product of the rings of `B` and `E`.
-  have h_ring : Bijective fun x : ι.obj A ↦ (ι.map π x, ι.map ρ x) :=
-    bijective_map_prod_map_of_idempotent e he π_kill π_surj π_ker ρ_kill ρ_surj ρ_ker
-  -- Mayer–Vietoris: `0 → freeAb[U ∩ V] → freeAb[U] ⊕ freeAb[V] → freeAb[U ∪ V] → 0` for the two
-  -- pieces `U`, `V`.
-  obtain ⟨h_mv_comp, h_mv⟩ :=
-    mayer_vietoris_shortExact (U := elemKillingMaps e) (V := elemKillingMaps (1 - e))
-  -- Degree zero: test a section on the union by its values at `π` and `ρ`.
-  let ev (w : freeAb.obj (elemKillingMaps e ⊔ elemKillingMaps (1 - e)).toFunctor ⟶ F) :
-      F.obj B × F.obj E :=
-    (w.app B (.of ⟨_, .inl π_kill⟩), w.app E (.of ⟨_, .inr ρ_kill⟩))
-  have ev_inj : Injective ev := by
-    intro w w' h_eq
-    obtain ⟨h_π, h_ρ⟩ := Prod.ext_iff.mp h_eq
-    -- the sum of the two pieces maps onto the union, and a section on a piece is read at its cut
-    refine h_mv.epi_g.left_cancellation _ _
-      (Limits.biprod.hom_ext' _ _ (hπ_rep.injective ?_) (hρ_rep.injective ?_))
-    -- `aesop` reads `freeAb.map` of the inclusion on a generator and uses `h_π`, `h_ρ`
-    · aesop
-    · aesop
-  -- `isBijective_reprBy_iff`: it suffices that `F A` be the sections on the union, and that the
-  -- union have no cohomology in positive degrees.
-  refine IsBijective.eqv
-    (isBijective_reprBy_iff.mpr ⟨.of_comp_left (f := ev) ?_ ev_inj, fun n ↦ ?_⟩)
-  · -- a section read at `π` and at `ρ` gives the two components of `F.map π` and `F.map ρ`
-    have h_ev : ev ∘ (Comparison.id F).homOfValue (elemKillingMaps e ⊔ elemKillingMaps (1 - e)).ι =
-        fun x ↦ (F.map π x, F.map ρ x) :=
-      funext fun x ↦ Prod.ext (homOfValue_app ..) (homOfValue_app ..)
-    rw [h_ev]
-    exact hF.bijective_prod π ρ h_ring
-  · -- Higher degrees: on the intersection `1 = e + (1 - e)` is killed, so it has no cohomology, and
-    -- the union has the cohomology of the projective sum of the two pieces.
-    have h_inter_zero : ∀ D : C,
-        (elemKillingMaps e ⊓ elemKillingMaps (1 - e)).toFunctor.obj D → (0 : ι D) = 1 := by
-      simp +contextual
-    exact (isCohomEquiv_quotient_of_acyclic h_mv (hF.eq_zero_of_zero_ring h_inter_zero)
-      _).injective.subsingleton
+    IsCohomDense F (elemKillingMaps e ⊔ elemKillingMaps (1 - e)) := fun A ⟨k⟩ ↦ by
+  convert (fun e (he : IsIdempotentElem e) ↦
+    (?_ : IsCohomEquiv F (freeAb.map (elemKillingMaps e ⊔ elemKillingMaps (1 - e)).ι))) _
+    (he.map (ι.map k).hom); any_goals ext; simp; erw [ι.map_comp_apply]
+  by_cases e = 1 ∨ e = 0; use (of_top_le (by aesop)).isCohomEquiv
+  obtain ⟨⟨_, π, a, c, s, i⟩, _, ρ, b, d, t, j⟩ := hF.1 _ _ he (by tauto), hF.1 _ _ he.one_sub (by
+    grind); cases projective_and_eval_bijective F _
+    (pointMap_bijective_of_existsUnique (elemKillingMaps _) ⟨_, a⟩ c)
+  cases projective_and_eval_bijective F _ (pointMap_bijective_of_existsUnique (elemKillingMaps _)
+    ⟨_, b⟩ d); exact (isBijective_reprBy_iff.2 ⟨.of_comp_left (f := fun w ↦
+    (w _ (.of ⟨_, .inl a⟩), w _ (.of ⟨_, .inr b⟩))) (by convert hF.2 π ρ ⟨fun x y
+    _ ↦ by rcases @i (x - y), @j (x - y); grind [he.eq, mem_span_singleton', mem_ker], (s.prodMap
+    t).forall.2 fun (x, y) ↦ ⟨x + e * (y - x), by grind⟩⟩ <;> apply homOfValue_app) fun _ _ _ ↦
+    mayer_vietoris_shortExact.2.3.1 _ _ (by apply biprod.hom_ext' <;> apply Bijective.injective ‹_›
+    <;> simp <;> injections), fun _ ↦ (isCohomEquiv_quotient_of_acyclic mayer_vietoris_shortExact.2
+    (hF.eq_zero_of_zero_ring (by simp_all)) _).1.subsingleton⟩).eqv
 
 /-- Zariski descent. Let `F` satisfy `New.Variety.HasPartitions` for the rings `ι`: idempotents of
 ι(A) cut A into two pieces, and F of A is the product of F over the pieces. Let `η : ι ⟶ κ` be a map
