@@ -219,7 +219,6 @@ continuous and integrable for `volume`, `e g⁻¹` is the conjugate of `e g`, `e
 `∫ e z * e ((z * x)⁻¹ * y) dz = e x⁻¹ * e y / e 1` for all `x`, `y`. Then for every `y`,
 `∫ e z * e (z⁻¹ * y) dz = e y`, that is `e * e = e`; this is the defining identity at `x = 1`. -/
 lemma IsIdempotentKernel.convolution_self (h : IsIdempotentKernel e) (y : G) :
-    ∫ z : G, e z * e (z⁻¹ * y) = e y := by
-  simpa [h.apply_one_ne_zero] using h.convolution_eq 1 y
+    ∫ z : G, e z * e (z⁻¹ * y) = e y := by simpa [h.4] using h.5 1 y
 
 end New
