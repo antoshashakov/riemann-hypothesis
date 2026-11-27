@@ -183,13 +183,9 @@ vector `x` there is a rational `γ` whose finite image is congruent to `x` modul
 the Heisenberg translations `ϱ` along `finVec (finiteImage γ)` and `finVec x` agree on `F`. -/
 lemma exists_finiteImage_approx {V : Space E n ε} {F : 𝒮 V} (hF : F ∈ V.finitePart) (x : n → 𝔸f E) :
     ∃ γ : n → E,
-      finiteImage γ - x ∈ stdLattice E n ∧ V.ϱ (finVec (finiteImage γ)) F = V.ϱ (finVec x) F := by
-  -- Both conditions are open in `finiteImage γ` and hold at `x`; rational vectors are dense.
-  have h_open : IsOpen {y : n → 𝔸f E |
-      y - x ∈ stdLattice E n ∧ V.ϱ (finVec y) F = V.ϱ (finVec x) F} :=
-    (isOpen_stdLattice.preimage (continuous_sub_right x)).inter
-      ((isLocallyConstant_rho_finVec hF).isOpen_fiber _)
-  exact denseRange_finiteImage.exists_mem_open h_open ⟨x, by simp⟩
+      finiteImage γ - x ∈ stdLattice E n ∧ V.ϱ (finVec (finiteImage γ)) F = V.ϱ (finVec x) F :=
+  denseRange_finiteImage.exists_mem_open ((isOpen_stdLattice.preimage_of_continuous (f :=
+  (· - _))).and (isLocallyConstant_rho_finVec hF {_})) ⟨x, by simp⟩
 
 /-- For a standard space (signs `+1`, point `1`), the adelic vector `x⁻¹γ` attached to `γ` at the
 point `x` corresponds under `adelicSum`, the splitting of adelic vectors into real and finite
