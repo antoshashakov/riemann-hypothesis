@@ -71,8 +71,7 @@ def cmConj : Gal(Ω/ℚ) := (exists_isComplexConj Gal(Ω/ℚ) Rat.isReal_infinit
 /-- Here `Ω` is the fixed algebraic closure of ℚ into which `E` is embedded, and `cmConj` is the
 chosen element of Gal(Ω/ℚ). The lemma says `cmConj` is a complex conjugation: for some embedding
 `j : Ω → ℂ`, `j (cmConj x)` is the complex conjugate of `j x` for all `x`. -/
-lemma isComplexConj_cmConj : IsComplexConj cmConj :=
-  (exists_isComplexConj Gal(Ω/ℚ) Rat.isReal_infinitePlace).choose_spec
+lemma isComplexConj_cmConj : IsComplexConj cmConj := .choose_spec _
 
 /-- For a natural number N, the set of finite places of E whose prime ideal contains N. -/
 def placesDividing (N : ℕ) : Set (FinPlace E) := {v : FinPlace E | ↑N ∈ v.asIdeal}
