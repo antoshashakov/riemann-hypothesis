@@ -66,10 +66,8 @@ abbrev gridLevelGen : NumberField.RingOfIntegers D.E := D.piM ^ D.natB
 `D.natB`, times the product of the places of `ϑ`. -/
 abbrev gridModulus : Modulus D.E := D.twistModulus ϑ D.natB
 
-lemma gridModulus_one_ideal : (D.gridModulus 1).ideal = span {D.gridLevelGen} := by
-  -- the trivial twist has no places, so its modulus is the untwisted one
-  rw [show (D.gridModulus 1).ideal = (D.untwistedModulus D.natB).ideal by rfl',
-    D.ideal_untwistedModulus_eq_span]
+lemma gridModulus_one_ideal : (D.gridModulus 1).ideal = span {D.gridLevelGen} :=
+  D.ideal_untwistedModulus_eq_span ▸ by rfl'
 
 /-- The twist whose places divide `New.Data.triangleModulus`: `ϑ` in the grid `false`, the trivial
 twist in the grid `true`. -/
