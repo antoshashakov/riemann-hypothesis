@@ -385,16 +385,6 @@ lemma mem_stdOrdersPart_iff :
   · have h_std := mem_withOrders_stdOrders_iff.2 ⟨h_frob, h_letter⟩
     exact ⟨⟨withOrders_le_kisinLocAinf h_std, h_value⟩, h_std⟩
 
-/-- Multiply `x` by the product of the powers `k.frobEUnit b ^ r b` over `b ∈ s`. The result lies in
-`L.withOrders i` with orders `stdOrders l a u`, raised by `r a` at each level `a ∈ s`, if and only
-if `x` lies in `L.letterPart i` and in `L.frobKisinAinf l`, the image of `L.kisinAinf` under
-`φ ^ l`. -/
-lemma prod_frobEUnit_zpow_smul_mem_withOrders_stdOrders_add_iff (s : Finset ℕ) (r : ℕ → ℤ) :
-    (∏ b ∈ s, k.frobEUnit b ^ r b) • x ∈
-        L.withOrders i (fun (a : ℕ) (u : ℤ) ↦ stdOrders l a u + if a ∈ s then r a else 0) ↔
-      x ∈ L.frobKisinAinf l ∧ x ∈ L.letterPart i := by
-  rw [prod_frobEUnit_zpow_smul_mem_withOrders_add_iff, mem_withOrders_stdOrders_iff]
-
 /-- Let `F = ∏_{b ∈ s} p_b ^ r b` be a product of integer powers of the units `p_b = φ^b E`
 (`k.frobEUnit b`), and put `r a = 0` for `a ∉ s`. Then `F • x` lies in `L.kisinLoc`, the Kisin
 module with all `p_a` inverted, and has at the letter `i` the exponents `r a` at the levels `a < l`
@@ -436,25 +426,6 @@ lemma letterProj_mem_stdOrdersPart (hx : x ∈ L.valueFieldPoints (L.frobKisinAi
     letterProj_mem_withOrders hx_mem
   exact ⟨⟨withOrders_le_kisinLocAinf h_std,
     fun μ hμ ↦ hx_value _ (comp_letterProj_mem_forms hμ)⟩, h_std⟩
-
-/-- If all members of the finite sets `L.jumpSet i`, which contain the Hodge–Tate jumps of `L` at
-the letters `i`, are at most `n`, then `E ^ n` carries `L.kisinAinf` into `L.frobKisinAinf 1`. -/
-lemma frobEUnit_pow_smul_mem_frobKisinAinf_one {n : ℕ}
-    (h_bound : ∀ (i : Letter) (u : ℤ), u ∈ L.jumpSet i → u ≤ n) (hx : x ∈ L.kisinAinf) :
-    k.frobEUnit 0 ^ (n : ℤ) • x ∈ L.frobKisinAinf 1 := by
-  -- Split `x` into its letter parts. On each, multiplication by `E ^ n` raises the exponent at
-  -- `E = k.frobE 0` on the lines of jump `u` from `-u` to `n - u`, which is at least `0`, the
-  -- value of `stdOrders 1` there; at the other `k.frobE a` the exponents stay as they are.
-  rw [← L.sum_letterProj x, Finset.smul_sum]
-  refine sum_mem fun i _ ↦ ?_
-  have h_raised : k.frobEUnit 0 ^ (n : ℤ) • L.letterProj i x ∈ withOrders i (stdOrders 1) := by
-    have h_std : L.letterProj i x ∈ withOrders i (stdOrders 0) :=
-      letterProj_mem_withOrders (by rwa [frobKisinAinf_zero])
-    refine frobEUnit_zpow_smul_mem_withOrders 0 (n : ℤ) h_std fun a u hu ↦ ?_
-    rcases a with _ | a
-    · simpa [stdOrders] using h_bound _ u hu
-    · simp [stdOrders]
-  exact (mem_withOrders_stdOrders_iff.1 h_raised).1
 
 end StandardExponents
 
