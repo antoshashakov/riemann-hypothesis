@@ -84,7 +84,6 @@ lemma IsDerivedComplete.exists_apply_eq_of_approx (hX : IsDerivedComplete π X)
 
 lemma IsDerivedComplete.pi {ι : Type*} (h : IsDerivedComplete π X) :
     IsDerivedComplete π (ι → X) :=
-  -- `shiftDiff` acts on sequences in `ι → X` coordinate by coordinate
   (swap_bijective.comp h.comp_left).comp swap_bijective
 
 /-- A retract, up to a power of `π`, of a derived π-complete module is derived π-complete. -/
