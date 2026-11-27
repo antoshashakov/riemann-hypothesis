@@ -731,11 +731,7 @@ in `Kˣ` vanishes exactly when `x` is the norm of a unit of `L`. -/
 lemma cyclicClass_eq_zero_iff_norm {χ : QZChar Γ} [J : IsProGalois (ker χ) L Ω] (x : Kˣ) :
     cyclicClass unitsRep χ (DiscreteUnits.ofBase Γ Ω (Additive.ofMul x)) = 0 ↔
       ∃ z : Lˣ, z.map (Algebra.norm K) = x := by
-  -- By `cyclicClass_spec` the symbol vanishes exactly on norms from the kernel of `χ`, whose
-  -- invariants are the units of `L`; `corestrictH0_ofBase_eq_norm` identifies this norm with the
-  -- field norm.
-  rw [(cyclicClass_spec χ).right]
-  refine (ofBase_bijective (K := L) _).surjective.exists.trans ?_
+  erw [(QZChar.cyclicClass_spec χ).2, (ofBase_bijective _).2.exists]
   simp [corestrictH0_ofBase_eq_norm, DiscreteUnits.ext_iff, Units.ext_iff]
 
 end New
