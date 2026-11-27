@@ -803,38 +803,15 @@ volume at most `|Dⁿ / n!|`. -/
 lemma volume_sum_mem_Icc_le {n : ℕ} {d D : ℝ} (hd : d ≤ D) :
     volume {y : Fin n.succ → ℝ | (∀ b : Fin n.succ, 0 ≤ y b) ∧ univ.sum y ∈ Set.Icc (d - 1) d} ≤
       ‖D ^ n / n !‖ₑ := by
-  -- Slice along the first coordinate `x`. A nonempty slice has `0 ≤ x ≤ D` and lies in the slab
-  -- for `d - x ≤ D - x`; integrating `(D - x) ^ n / n !` gives `D ^ (n + 1) / (n + 1)!`.
-  induction n generalizing d D with
-  | zero =>
-    refine (measure_mono (t := Set.univ.pi fun _ : Fin 1 ↦ Set.Icc (d - 1) d) fun y hy ↦ by
-      simpa [Set.pi] using hy.right).trans ?_
-    simp [volume_pi_pi, -Set.pi_univ_Icc]
-  | succ n ih =>
-    set S : Set (Fin (n + 1).succ → ℝ) :=
-      {y | (∀ b, 0 ≤ y b) ∧ univ.sum y ∈ Icc (d - 1) d}
-    let slice (x : ℝ) : Set (Fin n.succ → ℝ) := {y : Fin n.succ → ℝ | Fin.cons x y ∈ S}
-    have mem_slice (x : ℝ) (y : Fin n.succ → ℝ) :
-        y ∈ slice x ↔ 0 ≤ x ∧ (∀ b, 0 ≤ y b) ∧ univ.sum y ∈ Icc (d - x - 1) (d - x) := by
-      simp [slice, S, Fin.sum_cons, Fin.forall_fin_succ (n := n.succ)]
-      grind
-    have h_support : (fun x ↦ volume (slice x)).support ⊆ .uIcc D 0 := fun x hx ↦ by
-      obtain ⟨y, hy⟩ := nonempty_of_measure_ne_zero hx
-      obtain ⟨hx_nonneg, hy_nonneg, -, h_sum_le⟩ := (mem_slice x y).1 hy
-      exact Set.mem_uIcc.2 (.inr ⟨hx_nonneg, by linarith [univ.sum_nonneg fun b _ ↦ hy_nonneg b]⟩)
-    calc
-      volume S = ∫⁻ x, volume (slice x) := by
-        rw [← (volume_preserving_piFinSuccAbove _ 0).symm.measure_preimage_equiv, volume_eq_prod,
-          volume.prod_apply (by measurability)]
-        simp [slice, Set.preimage, Fin.consEquiv]
-      _ = ∫⁻ x in .uIoc D 0, volume (slice x) := by
-        rw [setLIntegral_congr uIoc_ae_eq_interval, setLIntegral_eq_of_support_subset h_support]
-      _ ≤ ∫⁻ x in .uIoc D 0, ‖(D - x) ^ n / n !‖ₑ := lintegral_mono fun x ↦
-        (measure_mono fun y hy ↦ ((mem_slice x y).1 hy).right).trans (ih (sub_le_sub_right hd x))
-      _ = ‖D ^ (n + 1) / (n + 1)!‖ₑ := by
-        rw [← ofReal_integral_norm_eq_lintegral_enorm (Continuous.integrableOn_uIoc (by fun_prop))]
-        simp [← ofReal_norm, integral_div, abs_sub_comm D, integral_pow_abs_sub_uIoc, factorial,
-          abs_of_nonneg (show (0 : ℝ) ≤ n + 1 by positivity), div_div]
+  cases n
+  grw [measure_mono, volume_pi_pi ![Set.Icc (d - 1) d]] <;> simp [Set.pi]
+  grw [← (volume_preserving_piFinSuccAbove _ 0).symm.measure_preimage_equiv, volume_eq_prod,
+    prod_apply_le (by measurability), ← setLIntegral_eq_of_support_subset (s := .uIcc D 0) fun x
+    h ↦ (nonempty_of_measure_ne_zero h).elim _, ← setLIntegral_congr uIoc_ae_eq_interval,
+    lintegral_mono ((measure_mono _).trans <| volume_sum_mem_Icc_le <| sub_le_sub_right hd ·),
+    ← ofReal_integral_norm_eq_lintegral_enorm (Continuous.integrableOn_uIoc (by fun_prop))] <;> simp
+    [← ofReal_norm, integral_div, abs_sub_comm D, integral_pow_abs_sub_uIoc,
+    @Fin.forall_fin_succ (succ _), factorial] <;> grind [Finset.sum_nonneg, Set.mem_uIcc]
 
 /-- If `D s ≤ B` for all `N` letters `s`, then the slab of nonnegative vectors with `k + 1` entries
 in each letter and degree in `[D s - 1, D s]` has volume at most `|B ^ k / k !| ^ N`. -/
