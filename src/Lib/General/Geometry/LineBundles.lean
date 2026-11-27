@@ -372,12 +372,8 @@ lemma ofSection_appLE {x : Spec A ⟶ Y} (p : Y ⟶ X) {W : Y.Opens} (h_le : W �
     (appLE_comp_appLE_assoc x p U W ⊤ h_le h (ΓSpecIso A).hom).symm
   simp [ofSection_eq h, ofSection_eq h_comp, h_eval]
 
-lemma isRegularOn_ofSection : (ofSection s).IsRegularOn U := by
-  intro A B φ t ht
-  have h_eval : evalSection (Spec.map φ ≫ t) (ht.comp _) = evalSection t ht ≫ φ := by
-    rw [evalSection, evalSection, assoc, ← ΓSpecIso_naturality, appTop, app_eq_appLE]
-    exact (appLE_comp_appLE_assoc (Spec.map φ) t U ⊤ ⊤ ht le_rfl (ΓSpecIso B).hom).symm
-  simp [ofSection_eq (ht.comp _), ofSection_eq ht, h_eval]
+lemma isRegularOn_ofSection : (ofSection s).IsRegularOn U := by (repeat intro); erw
+  [← ofSection_appLE, ofSection_eq, evalSection, ΓSpecIso_naturality, ofSection_eq] <;> tauto
 
 /-- At a point that lands in `V`, a section over `U` and its restriction to `V` have the same
 value. -/
@@ -432,15 +428,8 @@ lemma ofSection_fromSpecStalk {x : X} (hx : x ∈ U) (s : Γ(X, U)) :
 is a unit. -/
 lemma landsIn_basicOpen (h : LandsIn t U) (s : Γ(X, U)) :
     LandsIn t (X.basicOpen s) ↔ IsUnit (ofSection s A t) := by
-  -- The preimage of the basic open of `s` is the basic open of its value `a` in `A`, and the
-  -- latter is all of `Spec A` exactly when `a` generates the unit ideal.
-  have h_preimage : t ⁻¹ᵁ X.basicOpen s = PrimeSpectrum.basicOpen (evalSection t h s) := by
-    rw [← top_inf_eq (t ⁻¹ᵁ X.basicOpen s), ← basicOpen_appLE t ⊤ U h s]
-    exact basicOpen_eq_of_affine' (t.appLE U ⊤ h s)
-  have h_unit (a : A) : PrimeSpectrum.basicOpen a = ⊤ ↔ IsUnit a := by
-    simpa using PrimeSpectrum.iSup_basicOpen_eq_top_iff (f := ![a])
-  rw [LandsIn, top_le_iff, h_preimage, ofSection_eq h]
-  exact h_unit _
+  rw [LandsIn, ← inf_eq_left, ← basicOpen_appLE, ofSection_eq h]
+  simpa using! PrimeSpectrum.iSup_basicOpen_eq_top_iff (f := ![_])
 
 /-- The value at `t` of the pull-back of a global section `c` along `p : Y ⟶ X` is the value of `c`
 at `t ≫ p`. -/
