@@ -454,13 +454,6 @@ lemma rescale_thetaQuotient_of_conj_isogeny [PrimeSevenModEight d'] {C' D' : CML
   rw [hθ, map_mul] at h_series
   exact mul_right_cancel₀ (ne_of_apply_ne (coeff 0) (by simp)) h_series
 
-/-- For a prime `d ≡ 7 (mod 8)` the number `ω = (1 + i√d) / 2` has modulus greater than 1. -/
-lemma one_lt_norm_quadGen : 1 < ‖quadGen d‖ := by
-  have hd : (3 : ℝ) < d := mod_cast (by grind [PrimeSevenModEight] : 3 < d)
-  have h_sq : ‖quadGen d‖ ^ 2 = (1 + d) / 4 := by
-    norm_num [quadGen, div_pow, Complex.sq_norm, Complex.normSq_apply]
-  nlinarith [norm_nonneg (quadGen d)]
-
 namespace CMLattice
 
 /-- Let `d` be a prime `≡ 7 (mod 8)` and `σ` an automorphism of `ℂ` over `ℚ(√-d)`. Let `C`, `D` be
