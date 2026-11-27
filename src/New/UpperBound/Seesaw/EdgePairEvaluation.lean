@@ -537,15 +537,6 @@ lemma relIndex_map_stdLattice_ne_zero (g : Gf E n) :
     rfl
   simp [h_zero, finMultiplier_ne_zero] at h_norm
 
-/-- For a splitting `D` of `V` over `V₀`, the quotient `L' / (L' ∩ L°)` is finite, where
-`L' = zeroTermLattice D` and `L°` is the standard lattice of `V₀`. So finite families of
-representatives as in `exists_zeroTermFin_vacElem_eq_sum` exist. This is a corollary of
-`exists_zeroTermLattice_eq_map`. -/
-lemma relIndex_zeroTermLattice_ne_zero (D : V.Splitting V₀ p) :
-    (stdLattice E n₀).relIndex (zeroTermLattice D) ≠ 0 := by
-  obtain ⟨g, hg⟩ := exists_zeroTermLattice_eq_map D
-  simpa [hg] using relIndex_map_stdLattice_ne_zero g
-
 /-- Let `D` be a splitting of `V` over `V₀`, with embedding `i = D.iFin` and isotropic frame
 `k = D.isotropicBasisFin`. Let `L' = zeroTermLattice D` be the lattice of the `w` with
 `i w + k b ∈ Ô ^ n` for some `b`, and let the `r a` be representatives of `L'` modulo `L' ∩ Ô ^ n₀`.
