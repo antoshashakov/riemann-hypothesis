@@ -252,13 +252,9 @@ theorem lintegral_gaussian_eq_one : ∫⁻ x : V, ‖rexp (-π * q x)‖ₑ = 1 
 `t > 0` (`HasGaussianIntegral`). A linear isomorphism `e` with `q' ∘ e = q` preserves the volume. -/
 theorem HasGaussianIntegral.measurePreserving (e : V ≃ₗ[ℝ] W)
     [h_gauss' : HasGaussianIntegral b q'] (he : ∀ x : V, q' (e x) = q x) :
-    MeasurePreserving e := by
-  -- The image of the volume under `e` is invariant and gives the Gaussian of `q'` the integral `1`,
-  -- so it is the volume of `W` by the uniqueness of Haar measure.
-  have h_emb : Topology.IsClosedEmbedding e.toLinearMap := isClosedEmbedding_of_injective e.ker
-  refine ⟨h_emb.measurable, addHaar_eq_of_integral_eq_one (f := fun y ↦ rexp (-π * q' y)) ?_ ?_⟩
-  · simpa using h_gauss'.integral_exp_eq pi_pos
-  · exact (h_emb.integral_map _).trans (by simpa [he] using h_gauss.integral_exp_eq pi_pos)
+    MeasurePreserving e := have m := isClosedEmbedding_of_injective e.ker
+  ⟨m.measurable, addHaar_eq_of_integral_eq_one (by simpa using integral_exp_eq pi_pos)
+    ((m.integral_map _).trans (by simpa [he] using integral_exp_eq pi_pos))⟩
 
 /-- Suppose `∫ exp (-t q) = (π / t) ^ a` on `V` for all `t > 0` (`HasGaussianIntegral a q`), and
 `V` has the dimension of the real `n × n` matrices. A linear map `f` from these matrices to `V`
