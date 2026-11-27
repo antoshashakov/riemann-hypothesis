@@ -279,10 +279,8 @@ lemma IsLatticeIn.exists_algHom (h : IsLatticeIn R u) :
   simp [trace, det_apply]
 
 /-- A lattice in a continuous representation is continuous. -/
-lemma IsLatticeIn.continuous (h : IsLatticeIn R u) (hR : Continuous R) : Continuous u := by
-  -- After the embedding of the entries, `u` is a fixed conjugate of `R`.
-  obtain ⟨Q, hQ⟩ := h
-  exact IsInducing.subtypeVal.matrix_map.continuous_iff.2 (.congr (by fun_prop) hQ)
+lemma IsLatticeIn.continuous (h : IsLatticeIn R u) (hR : Continuous R) : Continuous u :=
+    Topology.IsInducing.subtypeVal.matrix_map.continuous_iff.2 (.congr (by fun_prop) h.choose_spec)
 
 /-- A lattice in `R` is trivial wherever `R` is trivial. -/
 lemma IsLatticeIn.eq_one (h : IsLatticeIn R u) {g : AbsGal D} (hg : R g = 1) : u g = 1 := by
