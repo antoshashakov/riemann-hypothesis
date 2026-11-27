@@ -187,13 +187,7 @@ def finiteEquiv : Gf E 𝔰.BesselIndex ≃* S.GFin :=
 conjugated by the inverse of `S.inclHFin η`. -/
 theorem finiteEquiv_eq_conj_adelicToFin :
     X.finiteEquiv g.2 = (S.inclHFin η)⁻¹ * S.adelicToFin (X.adelicEquiv g) * S.inclHFin η := by
-  simp only [finiteEquiv, adelicToFin, MulEquiv.trans_apply, MulAut.conj_apply, inv_inv,
-    MonoidHom.comp_apply, MonoidHom.coe_ofClass]
-  congr 3
-  ext : 2
-  -- It remains to compare the matrices of the finite part in rational coordinates.
-  show V.ratCoordMatrixFin g.2 = (V.ratCoordMatrix g).map Prod.snd
-  exact V.ratCoordMatrixFin_snd g
+  simp [finiteEquiv, adelicToFin]; ext : 2; use V.ratCoordMatrixFin_snd _
 
 /-- The isomorphism `New.Filling.Fits.finiteEquiv` is conjugation by an integral matrix x that
 reduces to 1 at the chosen places. -/
