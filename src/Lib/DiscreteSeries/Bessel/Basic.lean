@@ -493,16 +493,6 @@ lemma mul_embedH_mem_besselFixer {u : 𝔰.G₁} (hu : u ∈ besselU0)
     (h : U (1 : Matrix 𝔰.κ 𝔰.κ ℂ)) : u * embedH h ∈ besselFixer :=
   mul_mem (mem_besselFixer_of_mem_besselU0 hu) (mem_besselFixer_of_mem_besselH (toBesselH_mem h))
 
-/-- The block of `liftUnitriangular x` on the rows and columns of the frame (e_0, …, e_{ϱ-1}, z) is
-`unitriangularMatrix x`, the upper unitriangular matrix with entries x above the diagonal. -/
-@[simp]
-theorem frameMatrix_liftUnitriangular (x : UpperEntries 𝔰.n) :
-    frameMatrix (liftUnitriangular x) = unitriangularMatrix x := by
-  -- No index comes after the last one, so the last row has no entry right of the diagonal.
-  have h_last (i : Fin 𝔰.ϱ) : ¬ last 𝔰.ϱ < i.castSucc := (le_last _).not_gt
-  simp [h_last, frameMatrix, inclMatrix, unitriangularMatrix, ← ext_iff, Matrix.mul_apply,
-    Matrix.one_apply, forall_fin_succ', Fin.ne_of_gt]
-
 /-- For a family x of entries above the diagonal of a matrix of size `𝔰.n` = ϱ+1, the isometry
 `liftUnitriangular x`, which acts on the frame by the unitriangular matrix with entries x, lies in
 𝖴 = `besselU`: it is block upper unitriangular for the levels `New.BesselIndex.level`. -/
