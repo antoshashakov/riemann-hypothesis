@@ -274,12 +274,6 @@ lemma star_ratio (p : D.CriticalPair) (ϑ : D.TameChar) (s : ℤˣ) :
     star (p.ratio ϑ s) = p.ratio ϑ s := by
   simp [ratio]
 
-/-- For a pair `p = (ν, z)`, a tame character `ϑ` and a sign `s = ±1`, the ratio `p.ratio ϑ s` of
-the absolute values of the `L`-values at `z` of `(ν ϑ ^ s)⁻¹` and of `ν⁻¹` is nonzero and real. -/
-lemma ratio_ne_zero_and_real (p : D.CriticalPair) (ϑ : D.TameChar) (s : ℤˣ) :
-    p.ratio ϑ s ≠ 0 ∧ star (p.ratio ϑ s) = p.ratio ϑ s :=
-  ⟨p.ratio_ne_zero ϑ s, p.star_ratio ϑ s⟩
-
 end New.Data.CriticalPair
 
 namespace New
