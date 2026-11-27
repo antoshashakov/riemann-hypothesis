@@ -90,12 +90,9 @@ lemma frameVector_mul_of_mem_besselFixer (hs : s ∈ besselFixer) :
 `s * y` times the matrix `frameMatrix s` of the action of `s` on the frame. -/
 lemma frameVector_eq_sum (hs : s ∈ besselU) :
     frameVector y a = ∑ b : Fin (𝔰.ϱ + 1), frameMatrix s b a • frameVector (s * y) b := by
-  -- `y⁻¹ = (s * y)⁻¹ * s`, and `s` maps the span of the frame to itself by `frameMatrix s`.
-  have h_cols : y⁻¹.val.val.submatrix id 𝔰.besselFrame =
-      (s * y)⁻¹.val.val.submatrix id 𝔰.besselFrame * frameMatrix s := by
-    simpa using submatrix_mul_besselFrame hs (y⁻¹ * s⁻¹).val.val id
   ext i
-  simpa [frameVector, mul_apply, mul_comm] using congrFun₂ h_cols i a
+  simpa [mul_comm (frameMatrix ..), frameVector, mul_apply] using!
+    congrFun₂ (submatrix_mul_besselFrame hs (y⁻¹ * s⁻¹) id) i a
 
 /-- The vector `frameVector y a` = y⁻¹ f_a, where f_a is the `a`-th vector of the frame (e₁, …, e_ϱ,
 z), is not longer than the operator norm of `y`. -/
