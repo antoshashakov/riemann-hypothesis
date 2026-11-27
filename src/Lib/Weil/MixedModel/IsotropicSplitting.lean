@@ -560,16 +560,8 @@ lemma coord_mul_frame_mul {m : Type*} :
 is the sum of its components along `kAdelic`, `iAdelic` and `lAdelic`. -/
 lemma sum_frame_mul_coord_eq_one :
     D.kAdelic * D.kCoord + D.iAdelic * D.iCoord + D.lAdelic * D.lCoord = 1 := by
-  -- The block matrices `(kAdelic iAdelic lAdelic)` and `(kCoord; iCoord; lCoord)` have product `1`
-  -- in the order coordinates times frames, by `coord_mul_frame`. They are square by `D.card_eq`,
-  -- so their product in the other order is `1` too, and that product is the sum in the claim.
-  have h_card : card ((p ⊕ n₀) ⊕ p) = card n := by simp +arith [D.card_eq]
-  have h_coord_frame : (D.kCoord.fromRows D.iCoord).fromRows D.lCoord *
-      (D.kAdelic.fromCols D.iAdelic).fromCols D.lAdelic = 1 := by
-    rw [fromRows_mul_fromCols, fromRows_mul_fromCols, fromRows_mul, mul_fromCols]
-    simp [coord_mul_frame]
-  rwa [mul_eq_one_comm_of_card_eq _ _ _ h_card, fromCols_mul_fromRows,
-    fromCols_mul_fromRows] at h_coord_frame
+  simp +arith [D.card_eq,
+  ← fromCols_mul_fromRows, ↓fromRows_mul_fromCols, mul_eq_one_comm_of_card_eq]
 
 /-- `g` acts on the isotropic frame `k` of the splitting by the matrix `c`: `g k = k c` in adelic
 coordinates. -/
