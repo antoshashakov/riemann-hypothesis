@@ -128,17 +128,11 @@ lemma weylGauge_embFin (γ : U (stdSpace E n).J) :
 /-- The gauge of a vector is unchanged when the point is multiplied on the right by an element
 that is integral at the primes above `p`. -/
 lemma weylGauge_mul_of_mem_integralAbove (hk : k ∈ integralAbove n p) :
-    weylGauge κ e (g * k) ξ = weylGauge κ e g ξ := by
-  -- An element integral above `p` acts by a matrix with integral entries, so it does not increase
-  -- the sup norm; this is applied to `k` and to `k⁻¹`.
-  have h_le {a : Gf E n} (ha : a ∈ integralAbove n p) (b : Gf E n) :
-      weylGauge κ e (b * a⁻¹) ξ ≤ weylGauge κ e b ξ := by
-    have h_entry (i j : WeylIndex n κ) :
-        ‖weylRep κ e (fun τ : InfinitePlace E ↦
-          GeneralLinearGroup.map (adeleExtension (weightEmbedding ιₚ τ)) a.val) i j‖ ≤ 1 :=
-      weylRep_entry_mem _ (fun _ ↦ adeleExtension_mem_intGL _ ha) i j
-    simpa [weylGauge, ← Pi.mul_def] using norm_mulVec_le_of_nonneg zero_le_one h_entry (_ *ᵥ _)
-  exact le_antisymm (by simpa using h_le (inv_mem hk) g) (by simpa using h_le hk (g * k))
+    weylGauge κ e (g * k) ξ = weylGauge κ e g ξ :=
+  have {k} a g : weylGauge κ e (g * k⁻¹) ξ ≤ weylGauge .. := by simpa [weylGauge, ← Pi.mul_def]
+                  using
+    (norm_mulVec_le (weylRep_entry_mem _ fun _ ↦ adeleExtension_mem_intGL (k := k) _ a) (_ *ᵥ _))
+  by grind [inv_mem, mul_inv_cancel_right]
 
 /-- The gauge is homogeneous for the absolute value of scalars under `ι`. -/
 lemma weylGauge_smul (c : ℂ) : weylGauge κ e g (c • ξ) = ‖ιₚ c‖ * weylGauge κ e g ξ := by
