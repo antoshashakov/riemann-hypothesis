@@ -132,11 +132,9 @@ lemma IsHomogeneousSolution.refl : IsHomogeneousSolution k v v := by tauto
 integral over that image. -/
 lemma isIntegralElem_of_valuationSubring {f : A →+* L} {x : L}
     (h : ∀ V : ValuationSubring L, (∀ a : A, f a ∈ V) → x ∈ V) :
-    f.IsIntegralElem x := by
-  -- The integral closure of `A` in `L` is the intersection of the valuation rings that contain it.
-  let algebraL : Algebra A L := f.toAlgebra
-  refine (integralClosure A L).toSubring.eq_iInf_of_isIntegrallyClosedIn.ge ?_
-  simpa using fun V hV ↦ h V fun a ↦ hV isIntegral_algebraMap
+    f.IsIntegralElem x := let := f.toAlgebra
+  (integralClosure ..).toSubring.eq_iInf_of_isIntegrallyClosedIn.ge
+    (by simpa using (h · fun _ ↦ · isIntegral_algebraMap))
 
 /-! ### Noether normalisation -/
 
