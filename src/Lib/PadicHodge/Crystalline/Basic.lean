@@ -679,13 +679,9 @@ map `b ⊗ x ↦ j(g) b ⊗ ρ(g) x` on `B ⊗ T` becomes, in the coordinates gi
 lemma equivFun_tensorAction (g : Γ) (y : TensorProduct ℤ_[p] B T) :
     (e.baseChange B).equivFun (tensorAction B (toGp g) (ρ g) y) =
       coordAction ρ e g ((e.baseChange B).equivFun y) := by
-  ext i
-  -- Expand `y` on the left in the basis `e.baseChange B` and use semilinearity of `tensorAction`.
-  nth_rw 1 [← (e.baseChange B).sum_repr y, map_sum]
-  simp_rw [tensorAction_smul]
-  -- Coordinate `i` of both sides is `∑ c, (e.repr (ρ g (e c))) i • toGp g (y_c)`, with `y_c` the
-  -- coordinates of `y`: unfold `tensorAction`, `coordAction` and the matrix.
-  simp [tensorAction, coordAction, repMatrix, toMatrixAlgEquiv_apply, mulVec_eq_sum, ← smul_def]
+  ext; nth_rw 1 [← (e.baseChange _).sum_repr y, map_sum]
+  simp [↓tensorAction_smul, tensorAction, coordAction, repMatrix, LinearMap.toMatrixAlgEquiv_apply,
+    Matrix.mulVec_eq_sum, ← Algebra.smul_def]
 
 end PeriodCoordinates
 
