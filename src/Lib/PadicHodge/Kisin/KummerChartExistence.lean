@@ -115,12 +115,9 @@ lemma phi_smul_oFlat (x : OFlat) : FrobGroup.φ • x = frobEnd x :=
 lemma phi_smul_ainf (x : Ainf) : FrobGroup.φ • x = frobEnd x :=
   ext fun (n : ℕ) ↦ phi_smul_oFlat (x.coeff n)
 
-lemma phi_smul_wittCFlat (x : WittCFlat) : FrobGroup.φ • x = WittVector.frobenius x := by
-  -- both sides act on coefficients, by two ring maps of the fraction field that agree on `OFlat`
-  have h_coeff : toRingHom (FrobGroup Γ) CFlat FrobGroup.φ = _root_.frobenius CFlat p :=
-    IsFractionRing.ringHom_ext (A := OFlat) (by simp [frobenius_def, phi_smul_oFlat, frobEnd_apply])
-  rw [frobenius_eq_map_frobenius, ← h_coeff]
-  rfl
+lemma phi_smul_wittCFlat (x : WittCFlat) : FrobGroup.φ • x = WittVector.frobenius x :=
+  frobenius_eq_map_frobenius p (R := CFlat) ▸ congr(x.map $(IsFractionRing.ringHom_ext (A :=
+  OFlat) (by simp [frobenius_def, phi_smul_oFlat, frobEnd_apply])))
 
 lemma FrobGroup.phi_pow_smul (n : ℕ) (x : Ainf) : φ ^ n • x = frobEnd^[n] x := by
   simp [← funext phi_smul_ainf]
