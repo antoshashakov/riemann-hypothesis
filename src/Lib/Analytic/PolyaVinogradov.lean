@@ -94,13 +94,6 @@ lemma apply_eq_sum_moebius_smul_of_changeLevel_eq {M r : ℕ} {ψ : DirichletCha
   split <;> grind [Int.cast_natCast, apply_eq_zero_iff, changeLevel_eq_cast_of_dvd',
     coprime_mul_iff_right, isCoprime_iff_coprime]
 
-/-- The multiples of `d > 0` in `[1, X]` are the numbers `d * e` with `1 ≤ e ≤ X / d`. -/
-lemma filter_dvd_Ioc_eq_image_mul {d : ℕ} (hd : 0 < d) (X : ℕ) :
-    {v ∈ Ioc 0 X | d ∣ v} = (Ioc 0 (X / d)).image fun e : ℕ ↦ d * e := by
-  ext v
-  simp only [mem_filter, mem_image, mem_Ioc, le_div_iff_mul_le hd, mul_comm _ d, dvd_def]
-  aesop
-
 /-- If `χ` mod `q = M * r` is induced by `ψ` mod `M`, then a partial sum of `χ` is a combination of
 partial sums of `ψ`, indexed by the divisors `d` of `r`, with coefficients `μ d * ψ d`. -/
 lemma sum_eq_sum_divisors_of_changeLevel_eq {M r : ℕ} {ψ : DirichletCharacter ℂ M}
