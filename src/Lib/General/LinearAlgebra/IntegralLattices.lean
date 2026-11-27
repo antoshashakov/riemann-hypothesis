@@ -780,8 +780,7 @@ omit [Fintype n] in
 lemma single_mem_intVectors (j : n) : Pi.single j 1 ∈ intVectors R n :=
   fun i ↦ by by_cases hij : i = j <;> simp [hij]
 
-lemma col_mem_colLattice (j : n) : M.col j ∈ colLattice R M :=
-  ⟨Pi.single j 1, single_mem_intVectors j, by simp⟩
+lemma col_mem_colLattice (j : n) : M.col j ∈ colLattice R M := ⟨_, single_mem_intVectors j, by simp⟩
 
 end ColumnLattices
 
