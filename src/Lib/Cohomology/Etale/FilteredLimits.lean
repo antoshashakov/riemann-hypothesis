@@ -608,10 +608,8 @@ lemma IsRelAffine.comp {v : W ⟶ X} (hv : IsRelAffine (X := W) (Y := X) v) (hp 
 the image of `reprBy L`. -/
 lemma unitPoints_le_range_reprMap (L : Type) [CommRing L] [Algebra R L] (M : Submonoid R)
     [IsLocalization (R := R) M L] :
-    unitPoints (𝟙 (reprBy (of R))) M ≤ .range (reprMap (ofHom (algebraMap R L))) := by
-  intro B f hf
-  have h_unit (a : M) : IsUnit (f.down.hom a) := hf a a.prop
-  exact ⟨⟨ofHom (IsLocalization.lift h_unit)⟩, congrArg ULift.up (hom_ext (lift_comp h_unit))⟩
+    unitPoints (𝟙 (reprBy (of R))) M ≤ .range (reprMap (ofHom (algebraMap R L))) := fun _ _ _ ↦
+  ⟨⟨_⟩, congr(⟨ofHom $(lift_comp (by simpa))⟩)⟩
 
 /-- Let `U` be a subfunctor of `Y`. Suppose that for each point `y ∈ Y(R)` there are subsets `A`,
 `N` of `R` such that `f : R ⟶ B` carries `y` into `U` exactly when it kills `A` and inverts
@@ -735,10 +733,7 @@ turns filtered limits of functors affine over Y into colimits (`New.Variety.IsCo
 then it is continuous over X. -/
 lemma IsCohomContinuous.of_isRelAffine {q : X ⟶ Y} (h : IsRelAffine q)
     (hY : IsCohomContinuous Λ Y) :
-    IsCohomContinuous Λ X := by
-  intro J hJ_cat hJ_filtered D c hc hD
-  -- the same system, seen over `Y` through `q`, is affine over `Y`
-  exact hY (c := (map q).mapCone c) hc fun j ↦ (hD j).comp h
+    IsCohomContinuous Λ X := fun _ _ _ _ c ↦ (hY (c := (map q).mapCone c) · ∘ (· · |>.comp h))
 
 /-- For a decreasing family V of subfunctors of Y, the direct system a ↦ H^n(V_a, Λ) with
 restriction maps, computed on test rings with locally constant Λ-valued coefficients. -/
