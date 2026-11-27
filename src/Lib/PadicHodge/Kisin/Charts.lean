@@ -316,8 +316,7 @@ lemma coe_seriesEquiv_apply (F : (WittFq c.f)⟦X⟧) : (c.seriesEquiv F : Ainf)
 @[irreducible, local simp]
 def E : c.S := c.z ^ c.e * c.seriesEquiv c.unitSeries + p
 
-lemma associated_E_xi : Associated c.E.val xi := by
-  simpa [z, coe_seriesEquiv_apply] using c.associated_xi
+lemma associated_E_xi : Associated c.E.val xi := by simpa using! c.7
 
 lemma theta_E : theta c.E = 0 := theta_eq_zero_iff_xi_dvd.mpr c.associated_E_xi.dvd'
 
