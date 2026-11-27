@@ -225,10 +225,8 @@ omit [WeilData E] in
 `w i` on matrices integral there, `0` elsewhere) is Schwartz–Bruhat at the places `w i`: it depends
 only on the components there and, as a function of these, is locally constant of compact support. -/
 lemma isSchwartzBruhat_residueDatum (hw : ∀ i j : ι, star (w i) ≠ w j) :
-    IsSchwartzBruhat (range w) (residueDatum w f) := by
-  obtain ⟨𝔪, h𝔪, -⟩ := exists_modulus_places_eq hw
-  rw [← h𝔪, ← liftFn_eq_residueDatum h𝔪 f]
-  exact isSchwartzBruhat_liftFn 𝔪 _
+    IsSchwartzBruhat (range w) (residueDatum w f) := (exists_modulus_places_eq hw).rec fun _ ⟨h,
+  _⟩ ↦ h ▸ liftFn_eq_residueDatum h f ▸ isSchwartzBruhat_liftFn ..
 
 /-- The datum `New.modDatum` of a function `Ψ` on matrices modulo `𝔪` with the Gaussian
 `Fock.vacVector` as real part is what the operator `schrodingerOp` of the lift of `Ψ` (`vecToMatrix`
