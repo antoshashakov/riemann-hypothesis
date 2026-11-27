@@ -184,25 +184,9 @@ lemma le_of_fixed_mem_of_saturated {W W' : Submodule Bmax (ι →₀ Bmax)}
     (h_sat : ∀ b ≠ (0 : Bmax), ∀ w : ι →₀ Bmax, b • w ∈ W → w ∈ W)
     (h_stable : ∀ v ∈ W, ∀ᶠ g : Γ in F, toGp g • v ∈ W)
     (h_fixed : ∀ w ∈ W, (∀ᶠ g : Γ in F, toGp g • w = w) → w ∈ W') :
-    W ≤ W' := by
-  -- By elimination (`le_of_echelon`) it suffices, for `v ≠ 0` in `W` to which all vectors of `W`
-  -- supported within `v` are proportional, to find a vector of `W ⊓ W'` supported within `v`
-  -- that has a coordinate `1`.
-  refine le_of_echelon (LinearEquiv.refl Bmax (ι →₀ Bmax)) fun v hv v_ne h_prop ↦ ?_
-  obtain ⟨k, hk⟩ : ∃ k : ι, v k ≠ 0 := ne_iff.mp v_ne
-  -- `toGp g • v` lies in `W` and vanishes where `v` does, so it is proportional to `v`.
-  have h_smul : ∀ᶠ g : Γ in F, v k • toGp g • v = (toGp g • v k) • v := by
-    filter_upwards [h_stable v hv] with g hg
-    have h_supp : ∀ i : ι, v i = 0 → (toGp g • v) i = 0 := fun i hi ↦ by simp [hi]
-    exact h_prop (toGp g • v) hg h_supp k
-  -- Regularity gives `v = v k • u` with `u` fixed; `u ∈ W` by saturation and `u k = 1`.
-  obtain ⟨u, hv_eq, h_fix⟩ := fontaine_regularity hF v hk h_smul
-  have u_mem : u ∈ W := h_sat (v k) hk u (by rwa [← hv_eq])
-  have hv_coord (i : ι) : v i = v k * u i := DFunLike.congr_fun hv_eq i
-  have hu_k : u k = 1 := (left_eq_mul₀ hk).mp (hv_coord k)
-  have hu_supp (i : ι) (hi : v i = 0) : u i = 0 :=
-    (mul_eq_zero_iff_left hk).mp ((hv_coord i).symm.trans hi)
-  exact ⟨u, ⟨u_mem, h_fixed u u_mem h_fix⟩, ⟨k, hu_k⟩, hu_supp⟩
+    W ≤ W' := le_of_echelon 1 fun v hv n h ↦ (ne_iff.1 n).rec fun k n ↦
+  (fontaine_regularity hF v n ((h_stable v hv).mono fun _ ↦ (h _ · (by aesop) k))).imp
+  (by simp; grind [Finsupp.smul_apply, smul_eq_mul, left_eq_mul₀, mul_eq_zero])
 
 /-- Let `nearOne Γ ≤ F` (`nearOne Γ`: the filter of `g` with `toGp g` near `1`). If `ρ` is
 admissible along `F`, that is, the elements of `Bmax ⊗ T` fixed by `F`-almost all `g` span it over
