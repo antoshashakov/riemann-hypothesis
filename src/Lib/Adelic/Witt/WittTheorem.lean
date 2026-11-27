@@ -141,9 +141,8 @@ lemma HasLeftInv.of_ker_le_bot (h_ker : X.mulVecLin.ker ≤ ⊥) : HasLeftInv X 
   rw [toLin'_mul, toLin'_toMatrix', hg, toLin'_one]
 
 /-- A nonzero vector over a field, read as a matrix with one column, has a left inverse. -/
-lemma HasLeftInv.of_ne_zero {x : n → R} (h_ne : x ≠ 0) : HasLeftInv (replicateCol Unit x) := by
-  obtain ⟨i, hi⟩ : ∃ i : n, x i ≠ 0 := Function.ne_iff.1 h_ne
-  exact ⟨single () i (x i)⁻¹, by aesop⟩
+lemma HasLeftInv.of_ne_zero {x : n → R} (h_ne : x ≠ 0) : HasLeftInv (replicateCol Unit x) :=
+  .of_ker_le_bot (by simp_all [LE.le, mulVec, funext_iff]; grind)
 
 omit [Fintype k] in
 /-- If `A` is invertible and `X` has a left inverse, then for each column index `j` some linear form
