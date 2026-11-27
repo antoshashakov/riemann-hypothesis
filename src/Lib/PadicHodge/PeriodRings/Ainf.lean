@@ -50,13 +50,10 @@ open MulSemiringAction Variety Polynomial PreTilt IsOfFinOrder nonZeroDivisors W
   NeZero Ideal.Quotient Fact ZMod ValuationRing Cardinal Complex IsPrimitiveRoot
 
 /-- The complex numbers and the algebraic closure of ℚ_p have the same cardinality. -/
-lemma _root_.New.mk_complex_eq_mk_padicAlgCl {p : ℕ} [Fact p.Prime] : #ℂ = #(PadicAlgCl p) := by
-  -- `PadicAlgCl p` is algebraic over `ℚ_[p]`, a quotient of a set of rational sequences, so it has
-  -- at most continuum many elements
-  have h_padic : #ℚ_[p] ≤ continuum := mk_quotient_le.trans ((mk_set_le _).trans (by simp))
-  refine mk_complex.trans ((continuum_le_cardinal_of_module ℚ_[p] _).antisymm ?_)
-  exact (Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[p] (PadicAlgCl p)).trans
-    (max_le h_padic aleph0_le_continuum)
+lemma _root_.New.mk_complex_eq_mk_padicAlgCl {p : ℕ} [Fact p.Prime] : #ℂ = #(PadicAlgCl p) :=
+  mk_complex ▸
+  (continuum_le_cardinal_of_module ℚ_[p] _).antisymm ((Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[p]
+  _).trans (by simpa using! mk_quotient_le.trans (@mk_set_le (ℕ → ℚ) _)))
 
 variable {p : ℕ} [ThePrime p]
 
@@ -138,10 +135,8 @@ def epsPow : Multiplicative ℚ →* OFlat :=
 
 lemma isPrimitiveRoot_untilt_epsPow (s : Multiplicative ℚ) :
     IsPrimitiveRoot (epsPow s).untilt s.toAdd.den := by
-  -- the untilt is the image of `exp (2 π i s)` under injective ring maps
-  rw [← coe_submonoidClass_iff, epsPow, (exists_tilt_lift_of_character _ _).choose_spec s]
-  · simp [map_of_injective, RingHom.injective, EquivLike.injective, isPrimitiveRoot_exp_rat]
-  · simp
+  erw [← coe_submonoidClass_iff, (exists_tilt_lift_of_character ..).choose_spec] <;>
+    simp [map_of_injective, RingHom.injective, EquivLike.injective, isPrimitiveRoot_exp_rat]
 
 /-- The element ε^{1/p} of O^♭, for the compatible system ε = (1, ζ_p, ζ_{p²}, …) of
 `New.Period.epsPow`. -/
@@ -472,15 +467,8 @@ lemma iterate_frobEnd_teichmuller (j : ℕ) (x : OFlat) :
   | zero => simp
   | succ j ih => simp [iterate_succ_apply', ih, ← map_pow, ← pow_mul, ← pow_succ]
 
-/-- The untilt of `φ ^ n g t` is `(g t^♯) ^ p ^ n`. -/
-lemma untilt_ofAdd_smul (n : ℕ) (g : Gp p) (t : OFlat) :
-    ((Multiplicative.ofAdd n, g) • t).untilt = (g • t.untilt) ^ p ^ n := by
-  -- `(n, g)` acts on `O^♭` by the map that `g` induces on the tilt, then by `x ↦ x ^ p ^ n`
-  show (tiltMap (toRingHom (Gp p) OC g) t ^ p ^ n).untilt = _
-  rw [map_pow, untilt_tiltMap, toRingHom_apply]
-
 lemma untilt_frobGal_smul : (m • t).untilt = (m.2 • t.untilt) ^ p ^ m.1.toAdd := by
-  simpa using untilt_ofAdd_smul m.1.toAdd m.2 t
+  erw [map_pow]; simp
 
 @[simp]
 lemma theta_smul : theta (g • a) = g • theta a :=
