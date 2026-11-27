@@ -893,8 +893,7 @@ abbrev GraphClosure (γ : J → (𝓞 E)⁰ × GUPlus E D.Index) (ν : ℕ) : Ty
 
 
 /-- The chosen point `datumPoint 𝔪 a` is the point of a with its 𝔪-torsion. -/
-lemma isPointOf_datumPoint : U.family.IsPointOf 𝔪 a (datumPoint 𝔪 a).left :=
-  (U.exists_isPointOf 𝔪 a).choose_spec
+lemma isPointOf_datumPoint : U.family.IsPointOf 𝔪 a (datumPoint 𝔪 a).left := by grind [datumPoint]
 
 /-- The point of a with its 𝔪-torsion is unique: every such point u is
 `New.Variety.UniversalFamily.datumPoint 𝔪 a`, as the identity is an isomorphism from a to itself
