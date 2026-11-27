@@ -587,9 +587,8 @@ lemma prod_frobEUnit_zpow_smul_mem_kisinLoc_iff (s : Finset ℕ) (r : ℕ → �
 
 /-- Every element of `L.kisinLocAinf` has a multiple by a non-zero element of A_inf in the
 A_inf-span of 1 ⊗ L, that is, lies in `L.fracSpan`. -/
-lemma kisinLocAinf_le_fracSpan : L.kisinLocAinf ≤ L.fracSpan :=
-  fun _ hx ↦ saturateBy_induction hx kisinAinf_le_fracSpan
-    fun _ _ hy ↦ mem_saturateBy_of_smul dvd_rfl (by simp) hy
+lemma kisinLocAinf_le_fracSpan : L.kisinLocAinf ≤ L.fracSpan := fun _ ↦
+  (saturateBy_induction · kisinAinf_le_fracSpan fun _ _ ↦ mem_saturateBy_of_smul dvd_rfl (by simp))
 
 /-- For x in `L.kisinLocAinf`, a form μ (Γ'-equivariant on 1 ⊗ L) and g in Γ', the map
 `L.valueAt a μ` = μ ∘ φ^{−a} sends gx − x to gv − v, where v is its value on x. -/
@@ -934,10 +933,7 @@ def invariantsMod : Submodule ℤ_[p] L.Ambient :=
 number `d = k.differentBound` is `0`. Then the cost `k.cost a n = v_p(n) + d + 3a` is at most `3a`
 if `n = 0` or `p` does not divide `n`. -/
 lemma cost_le_of_isUnramified (hk : k.IsUnramified) (hn : (p : ℤ) ∣ n → n = 0) :
-    k.cost a n ≤ 3 * a := by
-  obtain ⟨-, -, h_different⟩ := hk
-  have h_val : padicValInt p n = 0 := by grind [padicValInt.eq_zero_iff]
-  simp [cost, h_val, h_different]
+    k.cost a n ≤ 3 * a := by simp [cost, hk.2]; lia
 
 /-- The order `hi a u` where `0 < lo a u` and `min (hi a u) 0` elsewhere. An element with
 orders `lo` that is invariant modulo the elements with orders `hi` has these orders
