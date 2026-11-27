@@ -51,7 +51,7 @@ open CategoryTheory AlgebraicGeometry CommRingCat LineBundle Spec
 /-- If `Spec B` maps to the spectrum of a field `k` of characteristic `l`, then `l = 0` in `B`. -/
 lemma natCast_eq_zero_of_over_charP {k : Type} [Field k] {l : ℕ} {B : CommRingCat} [CharP k l]
     (s : Spec B ⟶ Spec ⟨k⟩) : (l : B) = 0 := by
-  rw [← map_natCast (preimage s).hom, CharP.cast_eq_zero, map_zero]
+  simp [CharP.cast_eq_zero, ← map_natCast (preimage s).1]
 
 variable {k : Type} {l : ℕ} [Field k] [CharP k l] [Fact l.Prime] (f : ℕ) (X Y : Over (Spec ⟨k⟩))
 
@@ -96,11 +96,8 @@ lemma absFrobenius_comm (g : X.left ⟶ Y.left) : absFrobenius f X ≫ g = g ≫
   hom_ext_of_points (by simp [← Category.assoc, comp_absFrobenius])
 
 lemma absFrobenius_apply (x : X.left) : absFrobenius f X x = x := by
-  -- Test on the spectrum of the residue field at `x`, which has a single point.
-  let t := X.left.fromSpecResidueField x
-  have ht (s : Spec (X.left.residueField x)) : t s = x := X.left.fromSpecResidueField_apply x s
-  calc absFrobenius f X x = (t ≫ absFrobenius f X) default := by rw [Scheme.Hom.comp_apply, ht]
-    _ = x := by rw [comp_absFrobenius, Scheme.Hom.comp_apply, ht]
+  simpa [X.1.fromSpecResidueField_apply]
+  using (congr($(comp_absFrobenius f X (X.1.fromSpecResidueField x)) default))
 
 /-- Let `L` be a linear system (the data of a map to projective space) on a scheme `X` over a field
 of characteristic `l`. The pull-back of `L` along the absolute `l ^ f`-Frobenius has class `l ^ f`
