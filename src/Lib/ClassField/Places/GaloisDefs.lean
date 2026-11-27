@@ -141,12 +141,10 @@ lemma smul_eq_comap : g • A = A.comap (toRingHom Γ Ω g⁻¹) :=
   ext' (Set.preimage_smul_inv g _).symm
 
 lemma conj_mem_decompGroup_smul (hσ : σ ∈ decompGroup Γ A) :
-    g * σ * g⁻¹ ∈ decompGroup Γ (g • A) := by
-  simp [mem_stabilizer_iff, mul_smul, mem_stabilizer_iff.mp hσ]
+    g * σ * g⁻¹ ∈ decompGroup Γ (g • A) := by simp_all [mul_smul]
 
 lemma isEquiv_comap : (comap A' j).valuation.IsEquiv (A'.valuation.comap j) :=
-  Valuation.isEquiv_of_val_le_one fun {x} ↦ by
-    rw [valuation_le_one_iff, mem_comap, Valuation.comap_apply, valuation_le_one_iff]
+    Valuation.isEquiv_of_val_le_one (by simp)
 
 lemma comap_apply_lt_one_iff {x : Ω} : (comap A' j) x < 1 ↔ A' (j x) < 1 :=
   isEquiv_comap.lt_one_iff_lt_one
