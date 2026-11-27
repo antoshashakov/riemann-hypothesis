@@ -512,8 +512,7 @@ lemma jetSeries_eq_prod (hf : f ∈ V.finitePart) {I : Type*} [Fintype I] {G : I
   have := (taylor_line_eq_subst_jetSeries hf c v).symm
   simp_all [← coe_substAlgHom, PowerSeries.subst, substAlgHom_comp_substAlgHom_apply,
     mul_comm _ (_ ⬝ᵥ v), linearSeries, -substAlgHom_apply, substAlgHom_X, rename_eq_subst,
-    rescale_eq_subst, subst_comp_subst_apply, subst_smul, subst_X, hasSubst_of_constantCoeff_zero,
-    PowerSeries.X]
+    rescale_eq_subst, hasSubst_of_constantCoeff_zero]
   congr
   induction @univ I _ using cons_induction <;>
     simp (disch := fun_prop) [*, ↓prod_cons, smul_smul, ← sum_smul, PowerSeries.rescale_eq_subst]
