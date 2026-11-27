@@ -119,9 +119,8 @@ lemma tau_pow_dvd_of_frobEnd_tau_pow_dvd {b : BPlus} {n : ℕ}
   exact pow_dvd_of_map (map_mul frobEnd _) h_nzd h_one h_dvd
 
 /-- `E τ` and `μ` are associated in `A_inf`, as `E` is `ξ` up to a unit and `ξ τ = μ`. -/
-lemma associated_E_mul_tau_mu : Associated (c.E * tau) mu := by
-  rw [← xi_mul_tau]
-  exact c.associated_E_xi.mul_right tau
+lemma associated_E_mul_tau_mu : Associated (c.E * tau) mu :=
+  xi_mul_tau ▸ c.associated_E_xi.mul_right _
 
 /-- `E` is associated in `A_inf` to its translate `g E` by any `g` in `Gal(ℚ̄_p/ℚ_p)`. -/
 lemma associated_smul_E (g : Gp p) : Associated c.E.val (g • c.E.val) := by
