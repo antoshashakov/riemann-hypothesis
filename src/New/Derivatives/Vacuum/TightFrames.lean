@@ -430,41 +430,6 @@ variable {E n : Type} [Field E] [CMType E] [WeilData E] [Fintype n] [DecidableEq
 
 open NumberField (InfinitePlace)
 
-/-- Differentiation under the integral: for `f` in the Schwartz space `𝒮 V` of the hermitian space
-`V : Space E n 1` over the CM field `E` and a continuous conjugate-linear form `L`, the `k`-th
-derivative at `0` of `t ↦ ∫ exp (t * L w) * g w` is `∫ L w ^ k * g w`. Here `g w` is the Gaussian
-`realVac w = exp (-|w|² / 2)` times the value of `f` at `realVec w`. The vector `realVec w` is the
-adelic vector with finite part zero whose real part is `w` with its coordinates at `τ` multiplied by
-`(2π Im τ(ȷ))^(-1/2)`, where `ȷ` is the element `j` of the Weil data. `normalizedVolume` is Lebesgue
-measure divided by `π` to the number of coordinates. -/
-lemma iteratedDeriv_integral_exp_mul_realVac (f : 𝒮 V) (L : (InfinitePlace E × n → ℂ) →L⋆[ℂ] ℂ)
-    (k : ℕ) :
-    iteratedDeriv k (fun t : ℂ ↦ ∫ w : InfinitePlace E × n → ℂ,
-        exp (t * L w) * (realVac w * f (realVec w)) ∂normalizedVolume (InfinitePlace E × n)) 0 =
-      ∫ w : InfinitePlace E × n → ℂ,
-        L w ^ k * (realVac w * f (realVec w)) ∂normalizedVolume (InfinitePlace E × n) := by
-  -- Expand the exponential under the integral to get a power series in `t`.
-  let g (w : InfinitePlace E × n → ℂ) : ℂ := realVac w * f (realVec w)
-  let I (t : ℂ) : ℂ := ∫ w, exp (t * L w) * g w ∂normalizedVolume (InfinitePlace E × n)
-  have h_sum (t : ℂ) : HasSum (fun j : ℕ ↦
-      ∫ w, (t * L w) ^ j / j.factorial * g w ∂normalizedVolume (InfinitePlace E × n)) (I t) := by
-    -- Dominated convergence: the bounds sum to a multiple of `exp (‖t‖ * ‖L‖ * ‖w‖) * ‖realVac w‖`.
-    refine hasSum_integral_of_dominated_convergence
-      (fun j w ↦ (‖t‖ * (‖L‖ * ‖w‖)) ^ j / j.factorial * (‖realVac w‖ * (‖V.θ‖ * ‖f‖)))
-      (by fun_prop [realVac]) (fun j ↦ .of_forall fun w ↦ ?_) ?_ ?_
-      (.of_forall fun w ↦ (expSeries_div_hasSum_exp (t * L w)).mul_right (g w))
-    · simp only [g, norm_mul, norm_div, norm_pow, Complex.norm_natCast]
-      grw [L.le_opNorm w, norm_apply_le]
-    · simp [Summable.mul_right, expSeries_div_summable]
-    · simpa [tsum_mul_right, exp_eq_tsum_div, Real.exp_eq_exp_ℝ, mul_assoc] using
-        (integrable_exp_mul_realVac (‖t‖ * ‖L‖)).mul_const (‖V.θ‖ * ‖f‖)
-  obtain ⟨r, hr⟩ : HasFPowerSeriesAt I (.ofScalars ℂ fun j : ℕ ↦
-      (∫ w, L w ^ j * g w ∂normalizedVolume (InfinitePlace E × n)) / j.factorial) 0 :=
-    hasFPowerSeriesAt_iff.2 <| .of_forall fun t ↦ by
-      simpa [integral_const_mul, mul_pow, mul_assoc, div_eq_inv_mul, mul_left_comm] using h_sum t
-  change iteratedDeriv k I 0 = ∫ w, L w ^ k * g w ∂normalizedVolume (InfinitePlace E × n)
-  simpa [iteratedDeriv, mul_div_cancel₀, k.factorial_ne_zero] using (hr.factorial_smul 1 k).symm
-
 variable {f : 𝒮 V}
 
 /-- Let `V` be a hermitian space with all signs `1` and let `f` lie in `V.finitePart`, the span of
@@ -480,125 +445,49 @@ lemma taylor_line_eq_subst_jetSeries (hf : f ∈ V.finitePart) (a : ℂ)
     (v : InfinitePlace E × n → ℂ) :
     taylorAtZero (fun t : ℂ ↦ entireTheta f (a • t • v)) =
       (V.jetSeries a f).subst fun p : InfinitePlace E × n ↦ linearSeries fun _ : Unit ↦ v p := by
-  -- On the line, `entireTheta f` is `t ↦ ∫ exp (t * L w) * g w` for a conjugate-linear form `L`.
-  -- Its derivatives at `0` are `∫ L w ^ k * g w`, and these are jets of `V.jetSeries a f`.
   ext k
+  -- On the line, `entireTheta f` is `I t = ∫ exp (t * L w) * g w` for a conjugate-linear form `L`.
+  -- Expanding the exponential under the integral (dominated convergence), the derivatives of `I`
+  -- at `0` are `∫ L w ^ k * g w`, the jets of `V.jetSeries a f` along `(∑ p, v p • X p) ^ k`.
   let L : (InfinitePlace E × n → ℂ) →L⋆[ℂ] ℂ := a • ∑ p, innerSLFlip ℂ (v p) ∘SL .proj p
-  have hL (w : InfinitePlace E × n → ℂ) : L w = a * ∑ p, v p * star (w p) := by simp [L]
   let g (w : InfinitePlace E × n → ℂ) : ℂ := realVac w * f (realVec w)
-  have h_line (t : ℂ) : entireTheta f (a • t • v) =
-      ∫ w, exp (t * L w) * g w ∂normalizedVolume (InfinitePlace E × n) := by
-    rw [entireTheta_eq_integral rfl (projReal_eq_self_of_mem_finitePart hf)]
-    simp [hL, g, mul_sum, mul_assoc, mul_left_comm, Complex.exp_eq_exp_ℂ]
-  let T : PowerSeries ℂ := (V.jetSeries a f).subst fun p ↦ linearSeries fun _ ↦ v p
-  have h_jet : k.factorial * PowerSeries.coeff k T =
-      ∫ w, L w ^ k * g w ∂normalizedVolume (InfinitePlace E × n) := calc
-    _ = jet ℂ (.X () ^ k) T := by
-      simp [MvPolynomial.X_pow_eq_monomial, jet_monomial, PowerSeries.coeff]
-    _ = jet ℂ ((∑ p, v p • .X p) ^ k) (V.jetSeries a f) :=
-      (jet_subst_linearSeries (.replicateCol Unit v) _ _).trans (by simp [linSubst])
-    _ = ∫ w, L w ^ k * g w ∂normalizedVolume (InfinitePlace E × n) := by
-      -- The jet along a polynomial `Q` is `∫ Q (a • conj w) * g w`.
-      rw [jet_jetSeries_eq_theta, theta_integrated]
-      simp [hL, g, holomorphicCoord_eq, mul_sum, mul_assoc, mul_left_comm]
-  rw [taylorAtZero, PowerSeries.coeff_mk, funext h_line, iteratedDeriv_integral_exp_mul_realVac,
-    ← h_jet, mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 k.factorial_ne_zero)]
+  let I (t : ℂ) : ℂ := ∫ w, exp (t * L w) * g w ∂normalizedVolume (InfinitePlace E × n)
+  have h_sum (t : ℂ) : HasSum (fun j : ℕ ↦
+      ∫ w, (t * L w) ^ j / j.factorial * g w ∂normalizedVolume (InfinitePlace E × n)) (I t) := by
+    refine hasSum_integral_of_dominated_convergence
+      (fun j w ↦ (‖t‖ * (‖L‖ * ‖w‖)) ^ j / j.factorial * (‖realVac w‖ * (‖V.θ‖ * ‖f‖)))
+      (by fun_prop [realVac]) (fun j ↦ .of_forall fun w ↦ ?_) ?_ ?_
+      (.of_forall fun w ↦ (expSeries_div_hasSum_exp (t * L w)).mul_right (g w))
+    · simp only [g, norm_mul, norm_div, norm_pow, Complex.norm_natCast]
+      grw [L.le_opNorm w, norm_apply_le]
+    · simp [Summable.mul_right, expSeries_div_summable]
+    · simpa [tsum_mul_right, exp_eq_tsum_div, Real.exp_eq_exp_ℝ, mul_assoc] using
+        (integrable_exp_mul_realVac (‖t‖ * ‖L‖)).mul_const (‖V.θ‖ * ‖f‖)
+  obtain ⟨r, hr⟩ : HasFPowerSeriesAt I (.ofScalars ℂ fun j : ℕ ↦
+      (∫ w, L w ^ j * g w ∂normalizedVolume (InfinitePlace E × n)) / j.factorial) 0 :=
+    hasFPowerSeriesAt_iff.2 <| .of_forall fun t ↦ by
+      simpa [integral_const_mul, mul_pow, mul_assoc, div_eq_inv_mul, mul_left_comm] using h_sum t
+  have h_jet :=
+    (jet_subst_linearSeries (.replicateCol Unit v) (.X () ^ k) (V.jetSeries a f)).symm
+  have h_deriv := (hr.factorial_smul 1 k).symm
+  simp_all [I, g, entireTheta_eq_integral rfl (projReal_eq_self_of_mem_finitePart hf), L, mul_sum,
+    linSubst, MvPolynomial.X_pow_eq_monomial, ↓map_pow, mul_assoc, ↓theta_integrated,
+    jet_jetSeries_eq_theta, holomorphicCoord_eq, iteratedDeriv, mul_left_comm,
+    Complex.exp_eq_exp_ℂ, linearSeries, taylorAtZero, jet_monomial, Nat.factorial_ne_zero]
 
 /-- For `V : Space E n 1` (all signs `1`), `f` in `V.finitePart` and `a ≠ 0`: if `V.jetSeries a f`,
 the Taylor series at `0` of `z ↦ V.entireTheta f (a • z)`, vanishes, then `f = 0`. -/
 lemma eq_zero_of_jetSeries_eq_zero (hf : f ∈ V.finitePart) {a : ℂ} (ha : a ≠ 0)
-    (h_jet : V.jetSeries a f = 0) : f = 0 := by
+    (h_jet : V.jetSeries a f = 0) : f = 0 :=
   -- On each line through `0` the entire function `entireTheta f` has Taylor series `0`, so it
   -- vanishes; and `f` is determined by its values at the vectors `realVec y`.
-  refine eq_zero_of_apply_realVec_eq_zero fun y ↦ ?_
-  have h_taylor : taylorAtZero (fun t : ℂ ↦ entireTheta f (a • t • y)) = taylorAtZero 0 := by
-    rw [taylor_line_eq_subst_jetSeries hf a y, h_jet,
-      ← coe_substAlgHom (hasSubst_of_constantCoeff_zero (by simp [linearSeries])), map_zero]
-    exact PowerSeries.ext fun k ↦ by simp [taylorAtZero]
-  have h_line : (fun t : ℂ ↦ entireTheta f (a • t • y)) = 0 :=
-    eq_of_taylorAtZero_eq (by fun_prop (disch := simp [hf])) differentiable_zero h_taylor
-  -- The point `a⁻¹` of the line is `y`.
-  simpa [ha, entireTheta, realVac] using congrFun h_line a⁻¹
-
-/-- The Taylor series at `0` of a finite product of entire functions `x ↦ G i (c i * x)` is the
-product of the Taylor series of the `G i`, with `c i • X` substituted for the variable. -/
-lemma _root_.New.taylorAtZero_prod_comp_mul {I : Type*} {G : I → ℂ → ℂ}
-    (hG : ∀ i : I, Differentiable ℂ (G i)) (c : I → ℂ) (t : Finset I) :
-    taylorAtZero (fun x : ℂ ↦ ∏ i ∈ t, G i (c i * x)) =
-      ∏ i ∈ t, (taylorAtZero (G i)).subst (c i • (PowerSeries.X : PowerSeries ℂ)) := by
-  induction t using cons_induction with
-  | empty => simp
-  | cons j t hj ih =>
-    simp (disch := fun_prop) [ih, taylorAtZero_comp_mul, PowerSeries.rescale_eq_subst]
-
-/-- Two power series over `ℂ` in finitely many variables are equal if their restrictions
-`rename (fun _ ↦ ()) (rescale v S)` to the line spanned by `v` agree for every vector `v`. -/
-lemma _root_.New.mvPowerSeries_eq_of_forall_line {σ : Type*} [Fintype σ] {S T : MvPowerSeries σ ℂ}
-    (h_line : ∀ v : σ → ℂ, rename (fun _ : σ ↦ ()) (rescale v S) =
-      rename (fun _ : σ ↦ ()) (rescale v T)) : S = T := by
-  -- The homogeneous component of degree `|α|`, evaluated at `v`, is a coefficient of the
-  -- restriction to the line; a polynomial over `ℂ` is determined by its values.
-  classical
-  ext α
-  let deg : (σ →₀ ℕ) → Unit →₀ ℕ := Finsupp.mapDomain fun _ ↦ ()
-  -- The exponents of the same total degree as `α`.
-  let A : Finset (σ →₀ ℕ) :=
-    (Filter.TendstoCofinite.finite_preimage_singleton deg (deg α)).toFinset
-  have hα : α ∈ A := by simp [A]
-  have h_eval (v : σ → ℂ) (U : MvPowerSeries σ ℂ) : (U.truncFinset ℂ A).eval v =
-      (rename (fun _ : σ ↦ ()) (rescale v U)).coeff (deg α) := by
-    simp [A, deg, truncFinset, coeff_rename, MvPolynomial.eval_monomial, mul_comm]
-  have h_trunc : S.truncFinset ℂ A = T.truncFinset ℂ A :=
-    MvPolynomial.funext fun v ↦ by rw [h_eval, h_eval, h_line]
-  rw [← coeff_truncFinset_of_mem S hα, ← coeff_truncFinset_of_mem T hα, h_trunc]
+  eq_zero_of_apply_realVec_eq_zero fun y ↦ by
+    simpa [entireTheta, realVac, *] using congr($(eq_of_taylorAtZero_eq (g := 0)
+      (by fun_prop (disch := aesop)) (by simp) ((taylor_line_eq_subst_jetSeries hf a y).trans
+      (h_jet ▸ (subst_coe 0).trans (by aesop)))) a⁻¹)
 
 lemma entireTheta_zero {ε : n → ℤˣ} {V : Space E n ε} (f : 𝒮 V) : entireTheta f 0 = V.θ f := by
   simp [entireTheta, realVac]
-
-/-- If `entireTheta f (c • z) = ∏ i, G i (μ i ⬝ᵥ z)` for all `z`, then the theta functional of `f`
-is `∏ i, G i 0`. -/
-lemma theta_eq_prod_of_entireTheta_smul {ε : n → ℤˣ} {V : Space E n ε} {f : 𝒮 V} {I : Type*}
-    [Fintype I] {G : I → ℂ → ℂ} {c : ℂ} {μ : I → InfinitePlace E × n → ℂ}
-    (h_prod : ∀ z : InfinitePlace E × n → ℂ, entireTheta f (c • z) = ∏ i : I, G i (μ i ⬝ᵥ z)) :
-    V.θ f = ∏ i : I, G i 0 := by
-  simpa only [smul_zero, entireTheta_zero, dotProduct_zero] using h_prod 0
-
-/-- Let `V` have all signs `1`, so that `xᴴJx` is the identity at the infinite places. Let `f` lie
-in `V.finitePart`, the span of the translates of the vacuum under the finite Heisenberg operators.
-Suppose that `entireTheta f (c • z) = ∏ i, G i (μ i ⬝ᵥ z)` for all `z`, with every `G i` entire.
-Then `V.jetSeries c f` is the product of the Taylor series of the `G i`, evaluated at the linear
-forms `linearSeries (μ i) = ∑ p, μ i p * X p`. -/
-lemma jetSeries_eq_prod_of_entireTheta_smul (hf : f ∈ V.finitePart) {I : Type*} [Fintype I]
-    {G : I → ℂ → ℂ} {c : ℂ} {μ : I → InfinitePlace E × n → ℂ}
-    (hG : ∀ i : I, Differentiable ℂ (G i))
-    (h_prod : ∀ z : InfinitePlace E × n → ℂ, entireTheta f (c • z) = ∏ i : I, G i (μ i ⬝ᵥ z)) :
-    V.jetSeries c f = ∏ i : I, (taylorAtZero (G i)).subst (linearSeries (μ i)) := by
-  -- Two series agree if their restrictions to all lines through `0` agree. On the line spanned
-  -- by `v` both sides are the Taylor series of `x ↦ ∏ i, G i (μ i ⬝ᵥ v * x)`.
-  refine mvPowerSeries_eq_of_forall_line fun v ↦ ?_
-  let line : MvPowerSeries (InfinitePlace E × n) ℂ →+* PowerSeries ℂ :=
-    (rename fun _ ↦ ()).toRingHom.comp (rescale v)
-  have h_line (U : MvPowerSeries (InfinitePlace E × n) ℂ) :
-      line U = U.subst fun p ↦ v p • (PowerSeries.X : PowerSeries ℂ) := by
-    simp [line, PowerSeries.X, subst_comp_subst_apply, rename_eq_subst, rescale_eq_subst,
-      subst_smul, subst_X, hasSubst_of_constantCoeff_zero]
-  -- Restricting to the line turns the linear form `μ i` into `(μ i ⬝ᵥ v) • X`.
-  have h_factor (i : I) : line ((taylorAtZero (G i)).subst (linearSeries (μ i))) =
-      (taylorAtZero (G i)).subst ((μ i ⬝ᵥ v) • (PowerSeries.X : PowerSeries ℂ)) := by
-    have h_form : line (linearSeries (μ i)) = (μ i ⬝ᵥ v) • PowerSeries.X := by
-      simp [line, linearSeries, rescale_eq_subst, ← coe_substAlgHom,
-        hasSubst_of_constantCoeff_zero, smul_smul, ← sum_smul, dotProduct, PowerSeries.X]
-    rw [← h_form, h_line, h_line]
-    exact subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (by simp [linearSeries]))
-      (hasSubst_of_constantCoeff_zero (by simp [PowerSeries.X])) _
-  calc line (V.jetSeries c f)
-    _ = taylorAtZero fun t : ℂ ↦ entireTheta f (c • t • v) := by
-      simp [taylor_line_eq_subst_jetSeries hf, h_line, linearSeries, PowerSeries.X]
-    _ = taylorAtZero fun x : ℂ ↦ ∏ i, G i (μ i ⬝ᵥ v * x) := by
-      simp only [h_prod, dotProduct_smul, smul_eq_mul, mul_comm]
-    _ = line (∏ i, (taylorAtZero (G i)).subst (linearSeries (μ i))) := by
-      rw [taylorAtZero_prod_comp_mul hG, map_prod]
-      simp only [h_factor]
 
 /-- Let `V` have all signs `1`, let `f` lie in its finite part, and suppose that
 `entireTheta f (c • z) = ∏ i, G i (μ c i ⬝ᵥ z)` for all `c` and `z`, with every `G i` entire. Then
@@ -610,9 +499,25 @@ lemma jetSeries_eq_prod (hf : f ∈ V.finitePart) {I : Type*} [Fintype I] {G : I
     (h_prod : ∀ (c : ℂ) (z : InfinitePlace E × n → ℂ),
       entireTheta f (c • z) = ∏ i : I, G i (μ c i ⬝ᵥ z)) :
     V.θ f = ∏ i : I, G i 0 ∧
-    ∀ c : ℂ, V.jetSeries c f = ∏ i : I, (taylorAtZero (G i)).subst (linearSeries (μ c i)) :=
-  ⟨theta_eq_prod_of_entireTheta_smul (h_prod 0),
-    fun c ↦ jetSeries_eq_prod_of_entireTheta_smul hf hG (h_prod c)⟩
+    ∀ c : ℂ, V.jetSeries c f = ∏ i : I, (taylorAtZero (G i)).subst (linearSeries (μ c i)) := by
+  -- Two series agree if their restrictions to all lines through `0` agree; on the line spanned by
+  -- `v` both sides are the Taylor series of `x ↦ ∏ i, G i (μ c i ⬝ᵥ v * x)`.
+  refine ⟨by simpa [entireTheta, realVac] using h_prod 0 0, fun c ↦ ?_⟩
+  ext α
+  have H {v S} (f := fun _ : InfinitePlace E × n ↦ ()) :
+      (truncFinset ℂ _ S).eval v = (rename f (rescale v S)).coeff (α.mapDomain f)
+  simp [truncFinset, coeff_rename, MvPolynomial.eval_monomial]; ac_rfl
+  rw [← coeff_truncFinset_of_mem, MvPolynomial.funext fun v ↦ (H.trans ?_).trans H.symm,
+    coeff_truncFinset_of_mem] <;> simp
+  have := (taylor_line_eq_subst_jetSeries hf c v).symm
+  simp_all [← coe_substAlgHom, PowerSeries.subst, substAlgHom_comp_substAlgHom_apply,
+    mul_comm _ (_ ⬝ᵥ v), linearSeries, -substAlgHom_apply, substAlgHom_X, rename_eq_subst,
+    rescale_eq_subst, subst_comp_subst_apply, subst_smul, subst_X, hasSubst_of_constantCoeff_zero,
+    PowerSeries.X]
+  congr
+  induction @univ I _ using cons_induction <;>
+    simp (disch := fun_prop) [*, ↓prod_cons, smul_smul, ← sum_smul, PowerSeries.rescale_eq_subst]
+  tauto
 
 end New.Space
 
@@ -730,15 +635,12 @@ lemma IsResolutionProduct.jetSeries_translate {C : CMLattice P.d} {b : ℂ} {w :
       ∏ i : I × n, (taylorAtZero (C.twistedTranslate (m i.1) (resolutionShift b w γ i) (f i))).subst
         (linearSeries (resolutionFormCoeff (b / P.areaScale * c) w i)) := by
   obtain rfl : ε = 1 := hV.signs_eq_one
-  have h_prod (z : InfinitePlace (P.E s) × n → ℂ) :
-      entireTheta (V.ϱ (finVec (finiteImage γ)) F) (c • z) =
-        ∏ i : I × n, C.twistedTranslate (m i.1) (resolutionShift b w γ i) (f i)
-          (resolutionFormCoeff (b / P.areaScale * c) w i ⬝ᵥ z) := by
-    simp [hF.entireTheta_translate, resolutionLinearForm_apply_eq_dotProduct, resolutionFormCoeff,
-      dotProduct, mul_sum, mul_assoc, mul_left_comm]
   have hf : ∀ i : I × n, Differentiable ℂ (f i) := hF.differentiable
-  exact jetSeries_eq_prod_of_entireTheta_smul (rho_finVec_mem_finitePart _ hF.mem_finitePart)
-    (fun i ↦ by fun_prop) h_prod
+  refine (jetSeries_eq_prod (rho_finVec_mem_finitePart _ hF.mem_finitePart)
+    (μ := fun c i ↦ resolutionFormCoeff (b / P.areaScale * c) w i) (fun i ↦ by fun_prop)
+    fun c z ↦ ?_).2 c
+  simp [hF.entireTheta_translate, resolutionLinearForm_apply_eq_dotProduct, resolutionFormCoeff,
+    dotProduct, mul_sum, mul_assoc, mul_left_comm]
 
 /-- Let `δ δ̄ = N ≠ 0` for an integer `δ` of `K`, and let `b δ̄` lie in the lattice `C.Λ`. Let each
 finite adele `finiteImage w j = α⁻¹ w j`, with `α = P.α s`, lie in the ring `Ô E` of integral adeles
