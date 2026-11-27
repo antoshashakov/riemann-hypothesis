@@ -365,9 +365,7 @@ def IsClosedClass (P : (D ⥤ Ab.{1}) → Prop) : Prop :=
 /-- A closed class P is invariant under isomorphism: for an isomorphism g : M → N, P holds for M
 exactly when it holds for N. Proof: apply (b) to 0 → ker g → M → N → 0, whose kernel is zero. -/
 lemma IsClosedClass.iff_of_isIso (hP : IsClosedClass P) {M N : D ⥤ Ab} (g : M ⟶ N) [IsIso g] :
-    P M ↔ P N := by
-  obtain ⟨h_zero, h_short⟩ := hP
-  exact h_short _ ⟨exact_kernel g⟩ (h_zero _ ((isZero_kernel_of_mono g).eq_of_src (𝟙 _) 0))
+    P M ↔ P N := hP.2 _ ⟨exact_kernel g⟩ (hP.1 _ ((isZero_kernel_of_mono g).eq_of_src ..))
 
 /-- If N is a zero object (its identity is zero), then every group Extⁿ(N, F) has at most one
 element. -/
@@ -496,10 +494,8 @@ Ext^n(Z[−],F) for all n. -/
 def IsCover : Prop := IsCohomEquiv F (freeAb.map (Subfunctor.range p).ι)
 
 lemma IsPointwiseSurjective.isCover {F : AbFunctor D} (hp : IsPointwiseSurjective p) :
-    IsCover F p := by
-  -- `range p` is all of `Y`, so its inclusion is an isomorphism
-  have : IsIso (range p).ι := (range p).eq_top_iff_isIso.1 (by aesop : range p = ⊤)
-  exact .of_isIso _
+    IsCover F p := have := (range p).eq_top_iff_isIso.1 (by aesop)
+  .of_isIso _
 
 end CechDescent
 
