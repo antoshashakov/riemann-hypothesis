@@ -152,20 +152,6 @@ lemma besselLength_le_norm_inv_mul_mul_besselLength (x y : 𝔰.G₁) :
     simp [mul_assoc]
   simpa [besselLength.eq_1 x, Real.mul_iInf_of_nonneg] using le_ciInf h_bound
 
-/-- The length `besselLength y`, the infimum of `‖s * y‖ + 1` (operator norm) over `s` in the Bessel
-subgroup `besselS`, is a continuous function of `y` in the unitary group `𝔰.G₁`. -/
-@[fun_prop]
-lemma continuous_besselLength : Continuous (besselLength : 𝔰.G₁ → ℝ) := by
-  -- Squeeze: both bounds below tend to `besselLength y` as `x → y`.
-  refine continuous_iff_continuousAt.2 fun y ↦ ?_
-  have h_div_le (x : 𝔰.G₁) : besselLength y / ‖(x⁻¹ * y).val.val‖ ≤ besselLength x :=
-    (div_le_iff₀' (Units.norm_pos _)).2 (besselLength_le_norm_inv_mul_mul_besselLength x y)
-  have h_lower : ContinuousAt (fun x : 𝔰.G₁ ↦ besselLength y / ‖(x⁻¹ * y).val.val‖) y := by
-    fun_prop (disch := simp)
-  have h_upper : ContinuousAt (fun x : 𝔰.G₁ ↦ ‖(y⁻¹ * x).val.val‖ * besselLength y) y := by fun_prop
-  exact Filter.Tendsto.squeeze (by simpa using h_lower.tendsto) (by simpa using h_upper.tendsto)
-    h_div_le (besselLength_le_norm_inv_mul_mul_besselLength y)
-
 end New
 
 end SizeFunction
