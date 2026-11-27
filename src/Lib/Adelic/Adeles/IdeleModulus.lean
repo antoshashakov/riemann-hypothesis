@@ -234,28 +234,6 @@ lemma finIdeleAbs_locIdele (x : (LocField w)ˣ) : finIdeleAbs (locIdele w x) = �
 
 /-! ### The generalised index as the inverse of the module -/
 
-/-- Reduction modulo `w` maps the integral finite adeles onto the residue field at `w`. -/
-lemma reduceAt_surjective (w : FinPlace E) : Function.Surjective (reduceAt w) := fun y ↦ by
-  obtain ⟨a, rfl⟩ := algebraMap_ResField_surjective w y
-  exact ⟨algebraMap (𝓞 E) (Ô E) a, reduceAt_algebraMap w a⟩
-
-/-- For a uniformiser `x` at `w`, let `a` be the finite idele with component `x` at `w` and `1`
-elsewhere. Its generalised index `[Ô : a Ô]` is the order `w.q` of the residue field. -/
-lemma genIndex_locIdele_of_v_eq_exp_neg_one {x : (LocField w)ˣ} (hx : v x.val = exp (-1)) :
-    genIndex (locIdele w x).val = w.q := by
-  -- The idele generates the kernel of reduction modulo `w`, which maps `Ô` onto the residue field.
-  have h_mem : (locIdele w x).val ∈ Ô E := by
-    simp +contextual +decide [mem_Ô, ← and_forall_ne w, hx]
-  have h_ker : Ideal.span {(⟨(locIdele w x).val, h_mem⟩ : Ô E)} = RingHom.ker (reduceAt w) := by
-    ext y
-    -- divisibility is tested place by place, and away from `w` the condition is integrality of `y`
-    have h_dvd : (∃ z ∈ Ô E, y.val = (locIdele w x).val * z) ↔ v (y.val w) < 1 := by
-      simp +contextual [exists_eq_mul_iff_v_le, ← and_forall_ne w, mem_Ô.1, hx, ← lt_mul_exp_iff_le,
-        ← WithZero.exp_add]
-    simpa [Ideal.mem_span_singleton, Subtype.ext_iff, dvd_def] using h_dvd
-  rw [genIndex_eq_card isOpen_Ô isCompact_Ô h_mem (Units.isUnit _), h_ker,
-    Nat.card_congr (quotientKerEquivOfSurjective (reduceAt_surjective w)).toEquiv, card_ResField]
-
 /-- The generalised index `genIndex` of a finite idele, the inverse of the factor by which it scales
 Haar measure, is the inverse of its module. -/
 lemma genIndex_eq_inv_finIdeleAbs (a : (𝔸f E)ˣ) : genIndex a.val = (finIdeleAbs a)⁻¹ :=
