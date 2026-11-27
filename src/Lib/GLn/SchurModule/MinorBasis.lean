@@ -129,17 +129,6 @@ lemma HasLeadingTerm.sum (h_lead : ∀ i : ι, HasLeadingTerm (F i) (δ i) (G i)
   refine ⟨degree_sum_le.trans (Finset.sup_le h_le), ?_⟩
   rw [coeff_sum, h_single, h_coeff]
 
-/-- If each `u j` has leading term `b j` times the variable `x j` (exponent `single j 1`),
-then the product of the powers `u j ^ n j` has leading term `∏ b j ^ n j` times the monomial of
-exponent `n`. -/
-lemma HasLeadingTerm.finsuppProd_pow {u : ℕ → MvPolynomial ℕ R} {b : ℕ → R}
-    (hu_lead : ∀ j : ℕ, HasLeadingTerm (u j) (Finsupp.single j 1) (b j)) (n : ℕ →₀ ℕ) :
-    HasLeadingTerm (n.prod fun j e : ℕ ↦ u j ^ e) n (n.prod fun j e : ℕ ↦ b j ^ e) := by
-  have h_pow (j : ℕ) : HasLeadingTerm (u j ^ n j) (Finsupp.single j (n j)) (b j ^ n j) := by
-    simpa using HasLeadingTerm.prod (t := range (n j)) fun _ ↦ hu_lead j
-  have h_sum_single : ∑ j ∈ n.support, Finsupp.single j (n j) = n := n.sum_single
-  simpa only [Finsupp.prod, h_sum_single] using HasLeadingTerm.prod (t := n.support) h_pow
-
 variable [Fintype J] {c : m → Φ} {τ : J → Φ} {h : J → ℕ} {x : m} (l : ℕ →₀ ℕ)
 
 /-! ### Columns, fillings and products of minors -/
