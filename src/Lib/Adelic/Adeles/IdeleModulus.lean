@@ -258,26 +258,18 @@ lemma genIndex_locIdele_of_v_eq_exp_neg_one {x : (LocField w)ˣ} (hx : v x.val =
 
 /-- The generalised index `genIndex` of a finite idele, the inverse of the factor by which it scales
 Haar measure, is the inverse of its module. -/
-lemma genIndex_eq_inv_finIdeleAbs (a : (𝔸f E)ˣ) : genIndex a.val = (finIdeleAbs a)⁻¹ := by
-  -- The two sides agree on a subgroup `H`. It contains the unit ideles, so it is open and closed,
-  -- and it suffices to treat ideles with one component (`mem_of_locIdele_mem`), and then local
-  -- uniformisers.
-  let χ : (𝔸f E)ˣ →* ℝ := genIndex.toMonoidHom.comp (coeHom (𝔸f E))
-  let H : Subgroup (𝔸f E)ˣ := χ.eqLocus (invMonoidHom.comp finIdeleAbs)
-  have mem_H {b : (𝔸f E)ˣ} : b ∈ H ↔ genIndex b.val = (finIdeleAbs b)⁻¹ := Iff.rfl
-  -- a unit of `Ô` has index `1` and module `1`
-  have h_units : idelesUnitOff ∅ ≤ H := fun u hu ↦ by
-    have hu_val : ∀ w : FinPlace E, v (u.val w) = 1 := by simpa using hu
-    have h_index : genIndex u.val = 1 := by
-      simp [genIndex_eq_card isOpen_Ô isCompact_Ô, mem_Ô, hu_val, Nat.card_unique]
-    simp [mem_H, h_index, finIdeleAbs, ideleAbs_finIdeleIncl_eq_one hu]
-  have h_loc (w : FinPlace E) (x : (LocField w)ˣ) : locIdele w x ∈ H := by
-    have h_char : (χ.comp (locIdele w)) x = ‖x.val‖⁻¹ :=
-      eq_norm_inv_of_uniformizer (χ.comp (locIdele w)) genIndex_locIdele_of_v_eq_exp_neg_one
-    simpa [mem_H, χ] using h_char
-  have h_closed : IsClosed (H : Set (𝔸f E)ˣ) :=
-    isClosed_of_isOpen H (isOpen_mono h_units (isOpen_idelesUnitOff ∅))
-  exact mem_H.1 (mem_of_locIdele_mem h_closed fun w ↦ h_loc w _)
+lemma genIndex_eq_inv_finIdeleAbs (a : (𝔸f E)ˣ) : genIndex a.val = (finIdeleAbs a)⁻¹ :=
+  mem_of_locIdele_mem (H := (genIndex.1.comp (coeHom
+  _)).eqLocus (invMonoidHom.comp _)) (isClosed_of_isOpen _ (isOpen_mono (fun _ _ ↦ .symm (by
+  simp_all [Nat.card_unique, genIndex_eq_card isOpen_Ô isCompact_Ô, mem_Ô, finIdeleAbs,
+  ideleAbs_eq_prod_of_v_eq_one])) (isOpen_idelesUnitOff ∅))) fun w ↦
+  .trans (eq_norm_inv_of_uniformizer ((genIndex.1.comp _).comp _) (fun _ ↦ by
+  erw [← card_ResField,
+    ← Nat.card_congr (quotientKerEquivOfSurjective (funext (reduceAt_algebraMap w) ▸
+    algebraMap_ResField_surjective w).of_comp).1, genIndex_eq_card isOpen_Ô isCompact_Ô (mem_Ô.2 _)]
+  congr with
+  all_goals simp_all +decide [Ideal.mem_span_singleton, Subtype.ext_iff, dvd_def, ← and_forall_ne w,
+    exists_eq_mul_iff_v_le, mem_Ô.1, ← lt_mul_exp_iff_le, ← WithZero.exp_add])) (by simp)
 
 /-- The generalised index `genIndex` of an element of `E_wˣ`, the inverse of the factor by which it
 scales Haar measure on `E_w`, is the inverse of its absolute value. -/
