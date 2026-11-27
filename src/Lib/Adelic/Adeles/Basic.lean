@@ -558,11 +558,8 @@ lemma algebraMap_ResField_surjective : Function.Surjective (algebraMap (𝓞 E) 
   exact (exists_int_approx w x 0).imp fun a ha ↦ residue_eq_iff_valuation_sub_lt_one.2 ha
 
 /-- The residue field at w has `w.q` elements, the absolute norm of w. -/
-lemma card_ResField : Nat.card (ResField w) = w.q := by
-  have h_ker : w.asIdeal = RingHom.ker (algebraMap (𝓞 E) (ResField w)) := Ideal.ext (by simp)
-  rw [FinPlace.q, h_ker]
-  exact (card_congr
-    (RingHom.quotientKerEquivOfSurjective (algebraMap_ResField_surjective w)).toEquiv).symm
+lemma card_ResField : Nat.card (ResField w) = w.q := card_congr
+    (RingHom.quotientKerEquivOfSurjective (algebraMap_ResField_surjective w)).1 ▸ by rcongr; simp
 
 /-- The residue field at a finite place is finite. -/
 instance instFiniteResField : Finite (ResField w) :=
@@ -692,17 +689,10 @@ lemma finAdele_mul_apply (x y : 𝔸f E) (w : HeightOneSpectrum (𝓞 E)) : (x *
 /-- A finite adele x equals c y for some y in `Ô E`, that is, integral at every finite place, if and
 only if v (x w) ≤ v (c w) at every finite place w. -/
 lemma exists_eq_mul_iff_v_le {x c : 𝔸f E} :
-    (∃ y ∈ Ô E, x = c * y) ↔ ∀ w : HeightOneSpectrum (𝓞 E), v (x w) ≤ v (c w) := by
-  refine ⟨?_, fun h_le ↦ ?_⟩
-  · rintro ⟨y, hy, rfl⟩ w
-    simpa using mul_le_of_le_one_right' (a := v (c w)) (mem_Ô.1 hy w)
-  -- At each place the inequality gives a local integer `a w` with `a w * c w = x w`.
-  have h_local (w : FinPlace E) : ∃ a : LocInt w, (a : LocField w) * c w = x w :=
-    (v.isEquiv_valuation_valuationSubring (x w) (c w)).1 (h_le w)
-  choose a ha using h_local
-  refine ⟨structureMap LocField (fun w ↦ LocInt w) .cofinite a,
-    mem_Ô.2 fun w ↦ (a w).property, ext _ _ fun w ↦ ?_⟩
-  exact ((mul_comm _ _).trans (ha w)).symm
+    (∃ y ∈ Ô E, x = c * y) ↔ ∀ w : HeightOneSpectrum (𝓞 E), v (x w) ≤ v (c w) :=
+    ⟨by simp_all [mul_le_of_le_one_right, mem_Ô], fun h ↦ by
+    choose a e using (v.isEquiv_valuation_valuationSubring .. |>.1 <| h ·)
+    use structureMap _ _ _ a, mem_Ô.2 (a · |>.2), RestrictedProduct.ext _ _ (e · ▸ mul_comm ..)⟩
 
 instance : Algebra (𝓞 E) (Ô E) := ((algebraMap ..).codRestrict _ coe_mem_Ô).toAlgebra
 
