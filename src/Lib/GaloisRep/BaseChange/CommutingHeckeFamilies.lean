@@ -133,9 +133,7 @@ omit [CMType E] in
 component of `g` at `v` under `locMap σ h`, the map of completions given by `σ`, where
 `h : u.comap σ = v`. -/
 lemma atPlace_galoisGf (g : Gf E' n) {v : FinPlace E'} h :
-    (galoisGf σ g).atPlace u = .map (locMap σ h) (g.atPlace v) := by
-  subst h
-  rfl
+    (galoisGf σ g).atPlace u = .map (locMap σ h) (g.atPlace v) := h ▸ rfl
 
 /-- The condition `New.IsMatchingPair` for `σ` on the finite adeles of `E'`, the degree `[E' : E]`,
 the idempotent of the places above `S ∪ S̄`, the ideles killed by `μ ∘ Nm`, and the base change map
