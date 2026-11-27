@@ -50,9 +50,8 @@ theorem DiscreteSeries.neg_sum_abs_le_and_le_sum_abs (w : n → ℤ) (i : n) :
 
 theorem weightMinors_transpose : weightMinors w xᵀ = weightMinors w x := by simp [weightMinors]
 
-lemma conj_weightMinors : conj (weightMinors w x) = weightMinors w xᴴ := by
-  have h_map (F : ℤ → ℂ) : conj (∏ᶠ t, F t) = ∏ᶠ t, conj (F t) := conjAe.toMulEquiv.map_finprod F
-  simp [weightMinors, h_map, apply_ite conj]
+lemma conj_weightMinors : conj (weightMinors w x) = weightMinors w xᴴ :=
+  conjAe.map_finprod _ ▸ by simp [weightMinors, apply_ite]
 
 /-- For invertible `x`, the product of principal minors `weightMinors` for the weight `-w` at `x` is
 the one for `w` at `x⁻¹`. -/
@@ -75,32 +74,11 @@ principal minors `m_w(x) = weightMinors w x` is `x.det ^ a` times the product ov
 `a < t ≤ b` of the principal minor of `x` on `{i | t ≤ w i}`. -/
 theorem weightMinors_eq_det_zpow_mul_prod (hx : x.det ≠ 0) (a b : ℤ)
     (hw : ∀ i : n, a ≤ w i ∧ w i ≤ b) :
-    weightMinors w x = x.det ^ a * ∏ t ∈ Ioc a b, principalMinor x (t ≤ w ·) := by
-  obtain ⟨h_sub_pos, h_sub_nonpos, h_sub⟩ : Ioc 0 a ⊆ Icc (-|a|) (|a| ⊔ b) ∧
-      Ioc a 0 ⊆ Icc (-|a|) (|a| ⊔ b) ∧ Ioc a b ⊆ Icc (-|a|) (|a| ⊔ b) := by grind
-  -- For `t ≤ a` the minor is `x.det` and for `b < t` it is `1`. So the factors of `weightMinors`
-  -- are `1` outside the interval `[-|a|, max |a| b]`.
-  have h_low (t : ℤ) (ht : t ≤ a) : principalMinor x (t ≤ w ·) = x.det := by
-    grind [principalMinor_of_forall]
-  have h_high (t : ℤ) (ht : b < t) : principalMinor x (t ≤ w ·) = 1 := by
-    grind [principalMinor_of_forall_not]
-  have h_supp : (fun t : ℤ ↦ principalMinor x (t ≤ w ·) / ite (t ≤ 0) x.det 1).mulSupport ⊆
-      Icc (-|a|) (|a| ⊔ b) := by
-    refine Function.mulSupport_subset_iff'.2 fun t ht ↦ ?_
-    grind
-  -- The factor at `t` is `x.det` if `0 < t ≤ a`; otherwise it is the minor if `a < t ≤ b`
-  -- (else `1`), divided by `x.det` if `a < t ≤ 0`.
-  have h_factor (t : ℤ) : principalMinor x (t ≤ w ·) / ite (t ≤ 0) x.det 1 =
-      ite (t ∈ Ioc 0 a) x.det 1 / ite (t ∈ Ioc a 0) x.det 1 *
-        ite (t ∈ Ioc a b) (principalMinor x (t ≤ w ·)) 1 := by
-    grind
-  -- The powers of `x.det` from `Ioc 0 a` and `Ioc a 0` (one is empty) combine to `x.det ^ a`.
-  have h_pow : x.det ^ #(Ioc 0 a) / x.det ^ #(Ioc a 0) = x.det ^ a := by
-    simp [← zpow_natCast, ← zpow_sub₀ hx]
-  rw [weightMinors, finprod_eq_prod_of_mulSupport_subset _ h_supp,
-    prod_congr rfl fun t _ ↦ h_factor t]
-  simp only [prod_mul_distrib, prod_div_distrib, prod_ite_mem, inter_eq_right.2 h_sub_pos,
-    inter_eq_right.2 h_sub_nonpos, inter_eq_right.2 h_sub, prod_const, h_pow]
+    weightMinors w x = x.det ^ a * ∏ t ∈ Ioc a b, principalMinor x (t ≤ w ·) := by rw [weightMinors,
+  finprod_eq_prod_of_mulSupport_subset (s := Ioc (-|a|) (|a| ⊔ b)), prod_div_distrib,
+  ← (Ioc a b).prod_sdiff, ← (Ioc (-|a|) a).prod_subset, prod_eq_pow_card, mul_div_right_comm,
+  ← (Ioc (-|a|) 0).prod_subset, prod_eq_pow_card, ← zpow_natCast_sub_natCast₀ hx] <;>
+  norm_num <;> grind [principalMinor_of_forall, principalMinor_of_forall_not]
 
 /-- The product of principal minors `m_w` is complex analytic at every invertible matrix. -/
 lemma analyticAt_weightMinors (hx : x.det ≠ 0) : AnalyticAt ℂ (weightMinors w) x := by
