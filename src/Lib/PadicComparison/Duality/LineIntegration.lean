@@ -370,8 +370,7 @@ variable {C : Type 1}
 
 lemma map_restrictAlong_restrictAlong :
     TotalH.map (restrictAlong ψ) (TotalH.map (restrictAlong φ) x) =
-      TotalH.map (restrictAlong (ψ ⋙ φ)) x :=
-  TotalH.map_map (restrictAlong φ) (restrictAlong ψ) x
+      TotalH.map (restrictAlong (ψ ⋙ φ)) x := TotalH.map_map ..
 
 /-- Restriction to the points of `X` passes through a product of classes `M.etaAt (b j)` factor by
 factor. -/
@@ -586,10 +585,8 @@ def NaturalOp.integrate (r : NaturalOp (d + 1) N N') : NaturalOp d N N' where
 then `I` is finite. -/
 lemma finite_of_exact {K I P : Type*} [AddGroup I] [AddGroup P] {f : K → I} {g : I →+ P}
     (h : Exact f g) [Finite K] [Finite P] :
-    Finite I := by
-  -- The kernel of `g` lies in the finite image of `f`, and its range lies in `P`.
-  refine g.finite_iff_finite_ker_range.mpr ⟨?_, inferInstance⟩
-  exact (Set.finite_range f).subset fun x hx ↦ (h x).mp hx
+    Finite I :=
+  g.finite_iff_finite_ker_range.2 ⟨(Set.toFinite _).subset (h · |>.1), inferInstance⟩
 
 namespace ComparedTheory
 
