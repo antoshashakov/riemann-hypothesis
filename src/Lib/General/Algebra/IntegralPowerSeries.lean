@@ -75,9 +75,8 @@ lemma mem_range_seriesToCp {f : ℂ_[p]⟦X⟧} :
     exact ⟨fun d ↦ ⟨f d, h_mem d⟩, rfl⟩
 
 lemma map_pderiv (Ψ : R →+* S) (i : σ) (f : MvPowerSeries σ R) :
-    MvPowerSeries.map Ψ (pderiv i f) = pderiv i (MvPowerSeries.map Ψ f) := by
-  ext
-  simp [coeff_pderiv]
+    MvPowerSeries.map Ψ (pderiv i f) = pderiv i (MvPowerSeries.map Ψ f) :=
+  MvPowerSeries.ext (by simp [coeff_pderiv])
 
 @[simp]
 lemma isUnit_integer_iff_norm_eq_one {c : valRingCp p} : IsUnit c ↔ ‖(c : ℂ_[p])‖ = 1 :=
@@ -97,7 +96,6 @@ end IntegralSeries
 section JetChainRule
 
 open MvPowerSeries Finset WithPiTopology
-
 
 /-- Partial derivatives of power series are continuous for the coefficientwise topology. -/
 lemma New.continuous_pderiv_of_continuousMul {σ R : Type*} [CommRing R] [TopologicalSpace R]
