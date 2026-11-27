@@ -144,9 +144,7 @@ abbrev swap : FockDualPair ε' ε ι where
   varEquiv := (Equiv.prodComm C R).trans T.varEquiv
 
 omit [Fintype R] [DecidableEq R] [Fintype C] [DecidableEq C] [Fintype ι] in
-theorem swap_swap : T.swap.swap = T := by
-  simp only [swap, neg_neg]
-  rfl
+theorem swap_swap : T.swap.swap = T := by simp [swap]; rfl
 
 /-- The sign `σ * ε r * ε' c` of the variable in row `r` and column `c`. -/
 abbrev varSign : R × C → ℤˣ := pairSign T.globalSign ε ε'
