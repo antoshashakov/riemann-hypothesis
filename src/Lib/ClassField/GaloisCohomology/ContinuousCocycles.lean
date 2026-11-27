@@ -187,8 +187,7 @@ def QZ.carry (a b : QZ) : ℤ := ⌊fracRep a + fracRep b⌋
 lemma QZ.mk_fracRep (a : QZ) : mk a.fracRep = a := a.coe_equivIco
 
 /-- The representative in `[0, 1)` of the class of a rational `r` is its fractional part. -/
-lemma QZ.fracRep_mk (r : ℚ) : fracRep (mk r) = fract r :=
-  show toIcoMod (zero_lt_one' ℚ) 0 r = fract r from toIcoMod_zero_one r
+lemma QZ.fracRep_mk (r : ℚ) : fracRep (mk r) = fract r := toIcoMod_zero_one r
 
 lemma QZ.fracRep_add (a b : QZ) : fracRep (a + b) = fract (fracRep a + fracRep b) := by
   rw [← fracRep_mk, map_add, mk_fracRep, mk_fracRep]
