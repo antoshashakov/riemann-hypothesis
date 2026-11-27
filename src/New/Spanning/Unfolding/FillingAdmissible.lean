@@ -101,25 +101,6 @@ lemma filling_fits :
       exists_point_eq := ⟨γ, fun i w ↦ hγ_red ⟨i, w⟩, toUnits (D.latticeScale 0), ext hγ⟩
       central a := (Seesaw.commute_scalarFin a).inv_left }
 
-/-- A finite adelic point of U(X₀) preserves the lattice of Y₀ if and only if it is integral and
-its last row is that of 1 modulo π. In the coordinates of the filling data this is
-`New.Filling.inclHFin_mem_latticeStabilizer_iff`. -/
-lemma inclXFin_zero_mem_stdLevel_iff {a : Gf D.E (D.X 0)} :
-    (D.gradingY 0).inclXFin a ∈ stdLevel D.E (D.Y 0) ↔
-      a.val ∈ congruenceGL (Ô D.E ∙ D.piNIdele.val) Sum.inr :=
-  -- Both sides say that `D.filling.inclHFin a` lies in `D.filling.latticeStabilizer`.
-  (D.filling_fits.inclXFin_mem_stdLevel_iff a).trans D.filling.inclHFin_mem_latticeStabilizer_iff
-
-/-- The finite adelic points of U(X₀) that lie in the principal level of Y₀ at the chosen places
-form the level `New.Data.levelX` of X₀. In the coordinates of the filling data this is
-`New.Data.levelX_zero_eq_comap`. -/
-lemma comap_inclXFin_zero_chosenLevel :
-    (D.chosenLevel (n := D.Y 0)).comap (D.gradingY 0).inclXFin = D.levelX 0 := by
-  ext a
-  rw [levelX_zero_eq_comap]
-  -- `D.chosenLevel` is the standard principal level of the filling data.
-  exact D.filling_fits.inclXFin_mem_stdPrincipalLevel_iff a
-
 /-- The isomorphism that applies the central translation by `D.latticeScale 0` to a source form on
 X₀ and takes its values at the class representatives, in the coordinates of the Bessel systems. -/
 def sourceFormCoords :

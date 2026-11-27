@@ -1162,24 +1162,6 @@ def RealPlaceSizes.gauge (hρ : ρ ≤ L := by rfl) : Gauge hF.complexData := by
     ring_nf
     bound
 
-/-- A number has size `j` in the gauge of scale `L` if and only if its modulus is at most
-`L ^ j`. -/
-lemma RealPlaceSizes.mem_gauge_ofSize_iff (hF : RealPlaceSizes 𝔰 ρ s b) (hρ : ρ ≤ L) {j : ℕ}
-    {x : ℂ} : x ∈ (hF.gauge hρ).ofSize j ↔ ‖x‖ ≤ L ^ j :=
-  Iff.rfl
-
-/-- At the place `ℂ`, let each of the points `y` and `γ⁻¹ y` be near at `l`: some element of the
-partly unitriangular group `partialUnitriangularGroup l` moves it into the box of operator norm at
-most `ρ`. Then the leading minors of order `j ≤ l` of `realFrameGram γ`, the matrix of the products
-`h(f_a, γ f_b)` of the `n` frame vectors `f = (e_0, …, e_(ϱ-1), z)`, have modulus at most
-`ρ ^ (9 n)`. -/
-theorem RealPlaceSizes.norm_leadingMinor_le_of_isNear (hF : RealPlaceSizes 𝔰 ρ s b) {l : ℕ}
-    {γ y : 𝔰.G₁} (hy : hF.complexData.IsNear l y) (hγy : hF.complexData.IsNear l (γ⁻¹ * y))
-    {j : Fin (𝔰.n + 1)} (hj : j.val ≤ l) :
-    ‖leadingMinor (realFrameGram γ) j‖ ≤ ρ ^ (9 * 𝔰.n) :=
-  (hF.mem_gauge_ofSize_iff le_rfl).1
-    ((hF.gauge le_rfl).leadingMinor_mem_ofSize_of_isNear hy hγy hj)
-
 /-! ### Lengths and the depth at the complex place -/
 
 /-- The length of the vector y at the point g: the Euclidean length of g⁻¹ y. -/
@@ -1303,27 +1285,6 @@ lemma RealPlaceSizes.depth_eq (hF : RealPlaceSizes 𝔰 ρ s b) (a : Fin 𝔰.ϱ
     rw [← addHaar_closedBall_eq_addHaar_ball, volume_closedBall_eq_ofReal_pi_mul_sq (sqrt_nonneg _),
       sq_sqrt (by positivity), mul_one_div]
   rw [h_ball, h_area, ← ofReal_inv_of_pos (by positivity), inv_div]
-
-/-- If y has length at most L^i at g, then y has size i at g in the gauge of scale L: the entries of
-g⁻¹ y have modulus at most L^i. -/
-lemma RealPlaceSizes.lengthLeAt_of_lengthAt_le (hF : RealPlaceSizes 𝔰 ρ s b) {g : 𝔰.G₁} {i : ℕ}
-    {y : 𝔰.BesselIndex → ℂ} (hρ : ρ ≤ L) (h : lengthAt g y ≤ L ^ i) :
-    (hF.gauge hρ).LengthLeAt g i y := by
-  intro k
-  rw [hF.mem_gauge_ofSize_iff hρ]
-  exact (PiLp.norm_apply_le (toLp 2 (g⁻¹.val.val *ᵥ y)) k).trans h
-
-/-- Let y have size i at g in the gauge of scale L: the entries of g⁻¹ y have modulus at most L^i.
-Then y has length at most √r L^i at g, where r is the rank. -/
-lemma RealPlaceSizes.lengthAt_le_of_lengthLeAt (hF : RealPlaceSizes 𝔰 ρ s b) {g : 𝔰.G₁} {i : ℕ}
-    {y : 𝔰.BesselIndex → ℂ} (hρ : ρ ≤ L) (h : (hF.gauge hρ).LengthLeAt g i y) :
-    lengthAt g y ≤ √𝔰.r * L ^ i := by
-  have hL : 0 ≤ L ^ i := pow_nonneg (by linarith [hF.four_le]) i
-  have h_entry (k : 𝔰.BesselIndex) : ‖(g⁻¹.val.val *ᵥ y) k‖ ≤ L ^ i :=
-    (hF.mem_gauge_ofSize_iff hρ).1 (h k)
-  calc lengthAt g y = ‖toLp 2 (g⁻¹.val.val *ᵥ y)‖ := rfl
-    _ ≤ √(𝔰.r * (L ^ i) ^ 2) := le_sqrt_of_sq_le (norm_toLp_sq_le h_entry)
-    _ = √𝔰.r * L ^ i := by rw [sqrt_mul (by positivity), sqrt_sq hL]
 
 end Depth
 
