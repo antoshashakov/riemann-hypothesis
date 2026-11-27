@@ -761,7 +761,6 @@ lemma conjGal_conjGal : conjGal (conjGal g) = g := by ext; simp [conjGal]
 
 /-- The chosen complex conjugation `c` intertwines `g^c = c g c` with `g`: `c (g^c x) = g (c x)`. -/
 lemma cmConj_conjGal_smul (x : Ω) : cmConj.toRingHom (conjGal g • x) = g • cmConj.toRingHom x :=
-  -- by definition `conjGal g • x = c (g (c x))`, and `c (c z) = z`
   cmConj_cmConj _
 
 @[fun_prop]
