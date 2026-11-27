@@ -272,11 +272,7 @@ abbrev Y : Type := BlockIndex D.RowIndex (Fin D.t) j
 /-- The index set `New.Data.RowIndex` of the basis of the hermitian space Y₀ over E has `r = D.r`
 elements. For the admissible data `D`, Y₀ is the first space of the chain of `m = D.m` theta lifts
 from U(Y₀) to U(Y_m). -/
-lemma card_rowIndex : card D.RowIndex = D.r := by
-  -- The basis of Y₀ consists of two times ϱ vectors, the n₀ basis vectors of X₀, and z.
-  have h_card : card D.RowIndex = D.ϱ + (D.n 0 - 1 + 1 + 1 + D.ϱ) := by simp
-  -- Here ϱ = m/2 - 1 for an even m ≥ 2, and n₀ = k > 0.
-  grind [ϱ, n, D.m_even, D.k_pos]
+lemma card_rowIndex : card D.RowIndex = D.r := by simp; grind [ϱ, n]
 
 /-- A logarithmic bound on the rank `r` (`New.Data.HasLogBound`: `r ≤ exp l` if `u` is `true`,
 `exp l ≤ r` if `u` is `false`) also holds for the number of basis indices of Y₀, which is `r`. -/
