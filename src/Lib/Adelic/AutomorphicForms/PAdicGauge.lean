@@ -142,8 +142,7 @@ lemma weylGauge_mul_of_mem_integralAbove (hk : k ∈ integralAbove n p) :
 
 /-- The gauge is homogeneous for the absolute value of scalars under `ι`. -/
 lemma weylGauge_smul (c : ℂ) : weylGauge κ e g (c • ξ) = ‖ιₚ c‖ * weylGauge κ e g ξ := by
-  have h_comp : ιₚ ∘ (c • ξ) = ιₚ c • (ιₚ ∘ ξ) := funext fun i ↦ map_mul ιₚ c (ξ i)
-  simp [weylGauge, h_comp, mulVec_smul, norm_smul]
+  simp [weylGauge, ← norm_smul, ← mulVec_smul, comp_def]; rfl
 
 /-- At a point `k` that is integral above `p`, a vector has gauge at most one if and only if all
 its coordinates have absolute value at most one under `ι`. -/
