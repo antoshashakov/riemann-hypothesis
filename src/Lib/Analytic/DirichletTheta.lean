@@ -150,14 +150,6 @@ lemma mellin_thetaSeries_sub_half (s : ℂ) :
     mellin (thetaSeries j c) (s - 2⁻¹) = mellin (gaussianTheta j c) s :=
   setIntegral_congr_fun measurableSet_Ioi fun _ ht ↦ cpow_smul_thetaSeries s ht
 
-/-- By the substitution `u = t²`, the Mellin transform of `t ^ k F(t²)` at `s` is half that of
-`F` at `(s + k) / 2`. -/
-lemma mellin_pow_mul_comp_sq (F : ℝ → ℂ) (k : ℕ) (s : ℂ) :
-    mellin (fun t : ℝ ↦ t ^ k * F (t ^ 2)) s = mellin F ((s + k) / 2) / 2 := by
-  trans mellin (fun t : ℝ ↦ F (t ^ 2)) (s + k)
-  · simpa using mellin_cpow_smul (fun t : ℝ ↦ F (t ^ 2)) s k
-  · simpa [field] using mellin_comp_rpow F (s + k) 2
-
 /-- For `re s > 0` the Mellin transform `Γ_j` of `w(z) = z ^ j e^(-π z²)` is
 `Γ_j(s) = π ^ (-(s + j) / 2) Γ((s + j) / 2) / 2`. -/
 lemma gaussianMellin_eq (hs : 0 < s.re) : gaussianMellin j s = Gammaℝ (s + j.val) / 2 := by
