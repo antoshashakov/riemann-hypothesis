@@ -603,12 +603,8 @@ endomorphism of the theta functions of type (B, χ) that commutes with the twist
 translations `New.RealComplexForm.thetaShift` by the dual lattice is a scalar. -/
 lemma IsAppellHumbert.schur_lemma {Q : End ℂ (B.thetaSpace χ)}
     (h_comm : ∀ a : B.dualLattice, Commute (hB.thetaShiftEnd a) Q) :
-    ∃ c : ℂ, Q = c • 1 := by
-  -- `Q` commutes with the span of the translations, which is everything, so it is central.
-  have central (A : End ℂ (B.thetaSpace χ)) : Commute A Q :=
-    Commute.span_left (Set.forall_mem_range.mpr h_comm) A
-      (hB.span_range_thetaShiftEnd_eq_top.ge mem_top)
-  exact (Algebra.IsCentral.mem_center_iff ℂ).mp (Subring.mem_center_iff.mpr central)
+    ∃ c : ℂ, Q = c • 1 := (Algebra.IsCentral.mem_center_iff ℂ).1
+  (Subring.mem_center_iff.2 (Commute.span_left (by aesop) · (finrank_sq_eq_relIndex.1.ge ⟨⟩)))
 
 /-- For Appell–Humbert data with positive Riemann form, some positive integer `N` multiplies every
 vector of the dual lattice into `L`. -/
