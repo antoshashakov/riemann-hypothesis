@@ -130,26 +130,11 @@ variable {x b : Matrix n n ℂ} {p : n → Prop} [DecidablePred p] {ε : n → �
 satisfying `p` is at most `‖x‖ ^ k`, where `‖x‖` is the operator norm and `k` is the number of
 these indices. -/
 theorem norm_principalMinor_le_pow : ‖principalMinor x p‖ ≤ ‖x‖ ^ card {i // p i} := by
-  -- With `A` the block of `x` on `p`: `Aᴴ * A ≤ ‖x‖ ^ 2` in the Loewner order,
-  -- and taking determinants gives the square of the claim.
-  set A : Matrix {i // p i} {i // p i} ℂ := x.toBlock p p with hA
-  set c : Matrix n n ℂ := algebraMap ℝ (Matrix n n ℂ) (‖x‖ ^ 2) with hc
-  have h_le : Aᴴ * A ≤ c.toBlock p p :=
-    calc
-      _ ≤ Aᴴ * A + (x.toBlock (¬p ·) p)ᴴ * x.toBlock (¬p ·) p :=
-        le_add_of_nonneg_right (posSemidef_conjTranspose_mul_self _).nonneg
-      _ = (star x * x).toBlock p p := (toBlock_mul_eq_add p p p (star x) x).symm
-      -- restrict `star x * x ≤ ‖x‖ ^ 2` to the block
-      _ ≤ c.toBlock p p := (star_mul_le_algebraMap_norm_sq (a := x)).submatrix _
-  refine le_of_sq_le_sq ?_ (by positivity)
-  calc
-    ‖principalMinor x p‖ ^ 2 = ‖(Aᴴ * A).det‖ := by simp [sq, principalMinor, toSquareBlockProp, hA]
-    _ ≤ ‖(c.toBlock p p).det‖ :=
-      norm_det_le_norm_det_of_posSemidef A.posSemidef_conjTranspose_mul_self h_le
-    _ = (‖x‖ ^ card {i // p i}) ^ 2 := by
-      simp [hc, algebraMap_eq_diagonal, toBlock_diagonal_self, pow_right_comm]
-
--- lets `aesop` reduce an equality of two determinants to an equality of the two matrices
+  simpa [← sq, pow_right_comm, sq_le_sq, toBlock_diagonal_self] using!
+    norm_det_le_norm_det_of_posSemidef
+    (x.toBlock p p).posSemidef_conjTranspose_mul_self (le_of_add_le_of_nonneg_left
+    ((toBlock_mul_eq_add p p p _ x).ge.trans (star_mul_le_algebraMap_norm_sq (a := x).submatrix
+    _)) (posSemidef_conjTranspose_mul_self _).nonneg) (Q := toBlock _ p p)
 attribute [local aesop 1%] congr
 
 /-! ### Principal minors as determinants -/
