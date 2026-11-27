@@ -100,10 +100,8 @@ def reduceGL : intGL n (Valued.v (R := LocField w)).integer →* GL n (ResField 
   intGL.map (n := n) (O := v.integer) (S := ResField w) (residue (LocInt w))
 
 /-- Reduction GL_n(O_w) → GL_n(k_w) to the residue field k_w at the place w is surjective. -/
-lemma reduceGL_surjective : Surjective (reduceGL (n := n) (w := w)) := fun s ↦ by
-  obtain ⟨g, rfl⟩ := GL_map_surjective (residue (LocInt w)) residue_surjective s
-  -- The matrix `g`, read in GL_n(E_w), is integral, and its reduction is by definition that of `g`.
-  exact ⟨⟨GeneralLinearGroup.map (LocInt w).subtype g, g, rfl⟩, rfl⟩
+lemma reduceGL_surjective : Surjective (reduceGL (n := n) (w := w)) :=
+  (GL_map_surjective (residue (LocInt _)) residue_surjective).comp (⟨⟨_, ·, rfl⟩, rfl⟩)
 
 lemma isUnit_algebraMap_finAdele (ha_ne : a ≠ 0) : IsUnit (a : 𝔸f E) :=
   (RingOfIntegers.coe_ne_zero_iff.2 ha_ne).isUnit.map (algebraMap E (𝔸f E))
@@ -387,8 +385,7 @@ lemma char_eventually_eq_one {G : Type*} [Group G] [TopologicalSpace G] [Nonarch
 /-- For a finite commutative ring R, the group GL_n(R) has at most |R|^(n²) elements. -/
 lemma card_GL_le (R : Type*) [CommRing R] [Finite R] :
     Nat.card (GL n R) ≤ Nat.card R ^ Fintype.card n ^ 2 :=
-  (card_le_card_of_injective (β := Matrix n n R) _ Units.val_injective).trans_eq
-    (by simp [Matrix, card_pi, sq, pow_mul])
+  (card_le_card_of_injective _ Units.val_injective).trans (by simp [Matrix, card_pi, sq, pow_mul])
 
 /-- Let `a` vanish to order one at each place that contains it. Then `a` divides `y ∈ Ô` if and only
 if the reduction `reduceAt w y` of `y` modulo w is `0` for every place w that contains `a`. -/
