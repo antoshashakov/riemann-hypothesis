@@ -93,11 +93,8 @@ include hs hn hy
 (the section hypotheses `hn`, `hy`). An element `s` of inertia (`hs`) multiplies all `n`-th roots
 of `π` by the same `s • y / y`. -/
 lemma smul_root_eq_ratio_mul {b : Ω} (hb : b ^ n = algebraMap k Ω π) : s • b = s • y / y * b := by
-  -- `y / b` is an `n`-th root of unity, so inertia fixes it.
-  have root : (y / b) ^ n = 1 := by simp [div_pow, hy, hb]
-  have fixed : s • y / s • b = y / b := by
-    simpa [smul_div₀'] using inertia_fixes_root_of_unit hs hn root (by simp) (by simp)
-  grind [smul_ne_zero_iff_ne, ne_zero_of_tame_root hn hy, ne_zero_of_tame_root hn hb]
+  grind [inertia_fixes_root_of_unit hs hn (div_pow y b n), smul_mul', → ne_zero_of_tame_root,
+    smul_one, pow_ne_zero]
 
 /-- Let `s` lie in the inertia group of `A` (`hs`), `n` be a unit of `A` (`hn`) and `y ^ n = π`
 with `π` in `kˣ` (`hy`). Then `s ^ i • y / y = (s • y / y) ^ i` for every natural number `i`. -/
@@ -396,16 +393,10 @@ lemma apply_eq_pow_of_isFrob (hφ : IsFrob (intQpBar ℓ) q φ) (hM : ¬ℓ ∣ 
 /-- Every element `g` of `G_ℓ` raises an `M`-th root of unity `z`, with `M` prime to `ℓ`, to some
 power `ℓ ^ n`. -/
 lemma exists_apply_eq_pow (hM : ¬ℓ ∣ M) (hz : z ^ M = 1) (g : Gp ℓ) :
-    ∃ n : ℕ, g z = z ^ ℓ ^ n := by
-  -- The condition on `g` is closed, so it is enough to check it on the products `φ ^ n * i` with
-  -- `φ` a Frobenius and `i` in inertia, which are dense; these are Frobenii for `ℓ ^ n`.
-  obtain ⟨⟨φ, hφ⟩, h_dense, -⟩ := (isLocalGalois_padic (p := ℓ)).frobenius_spec
-  refine (h_dense hφ).induction_on g
-    (isClosed_setOf_smul z fun w : PadicAlgCl ℓ ↦ ∃ n : ℕ, w = z ^ ℓ ^ n) ?_
-  rintro ⟨n, i, hi⟩
-  have h_frob : IsFrob (intQpBar ℓ) (ℓ ^ n) (φ ^ n * i) := by
-    simpa [residueCard_padic] using (hφ.pow n).mul_iff.mpr hi
-  exact ⟨n, apply_eq_pow_of_isFrob h_frob hM hz⟩
+    ∃ n : ℕ, g z = z ^ ℓ ^ n :=
+  isLocalGalois_padic.frobenius_spec.rec fun ⟨_, h⟩ H ↦
+  (H.1 h).induction_on g (isClosed_setOf_smul z (∃ n, · = z ^ ℓ ^ n))
+  fun ⟨n, i⟩ ↦ ⟨n, by grind [apply_eq_pow_of_isFrob ((h.pow n).mul_iff.2 i.2), residueCard_padic]⟩
 
 end FrobeniusOnRoots
 
