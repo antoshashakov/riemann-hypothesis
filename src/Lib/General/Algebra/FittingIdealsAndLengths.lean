@@ -94,9 +94,8 @@ def relationsOn : Set (Γ →₀ Matrix n n O) := {f : Γ →₀ Matrix n n O | 
 /-- The length of S/(S ∩ T) as an A-module, for submodules S, T of M. -/
 def relLength : ℕ∞ := length A (S ⧸ T.submoduleOf S)
 
-lemma relLength_ker : relLength S f.ker = length A (S.map f) := by
-  rw [← f.range_domRestrict S]
-  exact (f.domRestrict S).quotKerEquivRange.length_eq
+lemma relLength_ker : relLength S f.ker = length A (S.map f) :=
+  f.range_domRestrict S ▸ (f.domRestrict S).quotKerEquivRange.length_eq
 
 lemma relLength_eq_length_map_mkQ : relLength S T = length A (S.map T.mkQ) := by
   simp [← relLength_ker]
@@ -237,9 +236,7 @@ lemma length_obeying_relationsOn_le [Nonempty n] [Module.Finite O Z] :
 lemma length_quot_span_eq_addVal : length O (QuotSpan a) = addVal O a := Ring.ord_eq_addVal a
 
 lemma addVal_prod (f : m → O) : addVal O (∏ i : m, f i) = ∑ i : m, addVal O (f i) := by
-  induction (Finset.univ : Finset m) using Finset.cons_induction with
-  | empty => simp
-  | cons i s hi ih => simp [ih]
+  erw [map_prod (addVal O).1]; rfl'
 
 /-- For a square matrix M over a discrete valuation ring O and p in O, the kernel of M acting on
 (O/p)^n (the endomorphism `M • 1`) has O-length at most the valuation of det M, normalised so that a
@@ -459,15 +456,11 @@ ideal `I`, the Fitting ideal of `N ⊔ I • ⊤` is contained in `fittingIdeal 
 This is one inclusion of the base change property of Fitting ideals along `R → R ⧸ I`, stated
 inside `R`. -/
 lemma fittingIdeal.sup_smul_top_le {I : Ideal R} :
-    fittingIdeal (N ⊔ I • ⊤) ≤ fittingIdeal N ⊔ I := by
-  -- Write each row of `B` as `n i + m i` with `n i ∈ N` and `m i ≡ 0` modulo `I`; then
-  -- `det B ≡ det n` modulo `I`.
-  refine span_le.2 (Set.forall_mem_image.2 fun B hB ↦ ?_)
-  choose n hn m hm h_row using fun (i : ι) ↦ mem_sup.1 (hB i)
-  have h_zero (i j : ι) : Ideal.Quotient.mk I (m i j) = 0 :=
-    Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using smul_top_le_comap_smul_top I (.proj j) (hm i))
-  have h_det : det B - det (of n) ∈ I := Ideal.Quotient.eq.1 (by simp [det_apply', ← h_row, h_zero])
-  exact mem_sup.2 ⟨det (of n), subset_span ⟨of n, hn, rfl⟩, _, h_det, add_sub_cancel _ _⟩
+    fittingIdeal (N ⊔ I • ⊤) ≤ fittingIdeal N ⊔ I :=
+  span_le.2 fun _ ⟨B, h, e⟩ ↦ e ▸ by
+  choose n h m k E using mem_sup.1 ∘' h
+  exact I.mem_quotient_iff_mem_sup.1 (subset_span ⟨_, subset_span ⟨of n, h, rfl⟩, by simp [← E,
+    det_apply, by simpa using fun i j ↦ I.smul_top_le_comap_smul_top (I.mkQ ∘ₗ .proj j) (k i)]⟩)
 
 /-- If `r • v ∈ N` and each row of the square matrix `s` lies in `N` or is equal to `v`, then
 `r * det s` lies in the Fitting ideal of `N`. -/
