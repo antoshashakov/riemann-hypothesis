@@ -69,11 +69,7 @@ lemma coeff_tiltMap {x : PreTilt R p} {n : ℕ} {y : R}
   rw [← hy, quotientMap_mk]
 
 /-- The identity of `R` induces the identity of its tilt. -/
-lemma tiltMap_id : tiltMap (RingHom.id R) x = x := by
-  -- a lift `y ∈ R` of the `n`-th component of `x` also lifts the `n`-th component of the left side
-  refine ext fun n ↦ ?_
-  obtain ⟨y, hy⟩ := Ideal.Quotient.mk_surjective (Perfection.coeff (ModP R p) p n x)
-  exact (coeff_tiltMap (RingHom.id R) hy).symm.trans hy
+lemma tiltMap_id : tiltMap (RingHom.id R) x = x := congrArg (x.map p ·) Quotient.factor_eq
 
 /-- The map of tilts induced by a composite is the composite of the induced maps. -/
 lemma tiltMap_comp : tiltMap (g.comp f) x = tiltMap g (tiltMap f x) := by
@@ -358,14 +354,8 @@ lemma pow_le_norm_aeval {K L : Type*} [Field K] [IsAlgClosed K] [NormedField L] 
     (f : K[X]) (x : L) {r : ℝ} (hr_nonneg : 0 ≤ r)
     (h_roots_far : ∀ w ∈ f.roots, r ≤ ‖x - algebraMap K L w‖) :
     ‖algebraMap K L f.leadingCoeff‖ * r ^ f.natDegree ≤ ‖aeval x f‖ := by
-  -- Factor `f` into linear factors and bound each of the `deg f` factors `x - w` below by `r`.
-  have h_norm_aeval : ‖aeval x f‖ = ‖algebraMap K L f.leadingCoeff‖ *
-      (f.roots.map fun w : K ↦ ‖x - algebraMap K L w‖).prod := by
-    nth_rw 1 [(splits f).eq_prod_roots]
-    simp [← normHom_apply, map_multiset_prod]
-  have h_prod : r ^ f.roots.card ≤ (f.roots.map fun w : K ↦ ‖x - algebraMap K L w‖).prod := by
-    simpa using prod_map_le_prod_map₀ (fun _ ↦ r) _ (fun _ _ ↦ hr_nonneg) h_roots_far
-  grw [h_norm_aeval, ← card_roots_eq_natDegree, h_prod]
+  nth_rw 3 [(splits f).eq_prod_roots]; simp [← normHom_apply, map_multiset_prod]
+  grw [← prod_map_le_prod_map₀ fun _ ↦ r] <;> simp_all [card_roots_eq_natDegree]
 
 /-- The radii in the proof of Ax's theorem: `axRadius ε k = ε / 16 * 2 ^ ((2 * k + 4) / 2 ^ k)`.
 Let `x ∈ ℂ_p` be fixed by a subgroup `J` of `G_p`, and let every point of `ℚ̄_p` fixed by `J` be
