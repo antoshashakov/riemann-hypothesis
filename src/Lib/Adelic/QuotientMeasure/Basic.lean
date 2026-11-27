@@ -311,10 +311,8 @@ variable {I H X G : Type*} [MeasurableSpace I] [MeasurableSpace H] [Countable I]
 
 /-! ### Counting measure and sums of weights -/
 
-lemma measurePreserving_count (e : I ≃ H) : MeasurePreserving e count count := by
-  -- Push the sum of Dirac measures forward term by term and reindex it along `e`.
-  refine ⟨.of_discrete, (Measure.map_sum .of_discrete).trans ?_⟩
-  simp [count, ← Function.comp_def]
+lemma measurePreserving_count (e : I ≃ H) : MeasurePreserving e count count :=
+    ⟨.of_discrete, .trans (map_sum .of_discrete) (by simp [count, ← Function.comp_def])⟩
 
 /-- The integral of a complex function against the counting measure of a countable set is its sum
 (both are zero when the function is not summable). -/
@@ -325,10 +323,7 @@ lemma integral_count_eq_tsum (f : I → ℂ) : ∫ x : I, f x ∂count = ∑' x 
 number `z` is `z`. -/
 lemma tsum_toReal_smul_of_tsum_eq_one {I : Type*} {f : I → ℝ≥0∞} (h : ∑' x : I, f x = 1) (z : ℂ) :
     ∑' x : I, (f x).toReal • z = z := by
-  -- Each `f x` is finite, so `toReal` and the cast to `ℂ` commute with the sum.
-  have h_fin (x : I) : f x ≠ ∞ := ENNReal.ne_top_of_tsum_ne_top (by simp [h]) x
-  have h_real : ∑' x : I, (f x).toReal = 1 := by rw [← tsum_toReal_eq h_fin, h, toReal_one]
-  simp [tsum_mul_right, ← Complex.ofReal_tsum, h_real]
+  simp_all [tsum_mul_right, ← Complex.ofReal_tsum, ← tsum_toReal_eq, ENNReal.ne_top_of_tsum_ne_top]
 
 variable (Γ N : Subgroup G) [DiscreteTopology Γ] [Group H] [MulAction H X] [MeasurableMul H]
   [MeasurableSMul₂ H X]
@@ -755,32 +750,11 @@ lemma quotMean_quotMean (h : IsContPeriodic B₀ F) [SecondCountableTopology A] 
     [CompactSpace (A' ⧸ A₁)] (φ : A × A' →+ B) (hφ : Continuous φ)
     (h₀ : ∀ a ∈ A₀, ∀ b ∈ A₁, φ (a, b) ∈ B₀) (hs : Surjective φ) :
     quotMean A₀ (fun a : A ↦ quotMean A₁ fun b : A' ↦ F (φ (a, b))) = quotMean B₀ F := by
-  -- `φ` induces a continuous surjective homomorphism `ψ` of the compact quotients, so `ψ`
-  -- preserves the Haar probability measures; then Fubini.
-  have h_le : A₀.prod A₁ ≤ B₀.comap φ := by
-    rintro ⟨a, b⟩ ⟨ha, hb⟩
-    exact h₀ a ha b hb
-  let ψ : (A ⧸ A₀) × (A' ⧸ A₁) →+ B ⧸ B₀ :=
-    (map (A₀.prod A₁) B₀ φ h_le).comp (prodAddEquiv A₀ A₁).symm.toAddMonoidHom
-  have hψ_mk (x : A × A') : (φ x : B ⧸ B₀) = ψ (x.1, x.2) := rfl
-  -- continuity of a map on a quotient is tested after composing with the projection
-  have hψ_cont : Continuous ψ :=
-    (isOpenQuotientMap_mk.prodMap isOpenQuotientMap_mk).continuous_comp_iff.1
-      (continuous_mk.comp hφ)
-  have hψ_surj : Surjective ψ := fun q ↦ by
-    obtain ⟨x, hx⟩ := (mk_surjective.comp hs) q
-    exact ⟨(x.1, x.2), (hψ_mk x).symm.trans hx⟩
-  have hψ_preserving : MeasurePreserving ψ
-      ((Measure.addHaarMeasure ⊤).prod (.addHaarMeasure ⊤)) (.addHaarMeasure ⊤) :=
-    ψ.measurePreserving hψ_cont hψ_surj (by simp)
-  -- periodicity lets `F` be read at any representative
-  have h_read (p : (A ⧸ A₀) × (A' ⧸ A₁)) : F (φ (p.1.out, p.2.out)) = F (ψ p).out := by
-    rw [← h.apply_out_mk, hψ_mk]
-    simp
-  calc quotMean A₀ (fun a : A ↦ quotMean A₁ fun b : A' ↦ F (φ (a, b)))
-      = ∫ p : A ⧸ A₀, ∫ q : A' ⧸ A₁, F (ψ (p, q)).out ∂.addHaarMeasure ⊤ ∂.addHaarMeasure ⊤ := by
-        simp only [quotMean, ← h_read]
-    _ = quotMean B₀ F := (hψ_preserving.fubini h.integrable_out).2
+  let T := (map (.prod ..) _ φ fun _ k ↦ h₀ _ k.1 _ k.2).comp (prodAddEquiv ..).symm.toAddMonoidHom
+  simpa [quotMean, ← h.apply_out_mk, show ∀ x, φ x = T (x.1, x.2) by tauto] using!
+    ((T.measurePreserving
+  ((isOpenQuotientMap_mk.prodMap isOpenQuotientMap_mk).continuous_comp_iff.1 (continuous_mk.comp
+  hφ)) ((mk_surjective.comp hs).of_comp (g := .map mk mk)) (by simp)).fubini h.integrable_out).2
 
 /-- The mean of a continuous `B₀`-periodic function may be computed after pull-back along a
 continuous surjective homomorphism `φ : A → B` that sends `A₀` into `B₀`. -/
