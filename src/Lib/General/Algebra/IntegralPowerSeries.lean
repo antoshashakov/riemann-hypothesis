@@ -64,15 +64,8 @@ variable {σ : Type*} {R S : Type*} [CommRing R] [CommRing S] {p : ℕ} [Fact p.
 /-- A power series `f` in one variable over `ℂ_[p]` comes from a series over the ring of integers
 `valRingCp p` if and only if all its coefficients have norm at most one. -/
 lemma mem_range_seriesToCp {f : ℂ_[p]⟦X⟧} :
-    f ∈ seriesToCp.range ↔ ∀ n : ℕ, ‖f.coeff n‖ ≤ 1 := by
-  constructor
-  · rintro ⟨g, rfl⟩ n
-    exact (g.coeff (Finsupp.single () n)).property
-  · intro hf
-    have h_mem (d : Unit →₀ ℕ) : f d ∈ valRingCp p := by
-      rw [d.unique_single]
-      exact hf (d ())
-    exact ⟨fun d ↦ ⟨f d, h_mem d⟩, rfl⟩
+    f ∈ seriesToCp.range ↔ ∀ n : ℕ, ‖f.coeff n‖ ≤ 1 :=
+    ⟨fun ⟨g, e⟩ _ ↦ e ▸ (g _).2, (⟨fun d ↦ ⟨_, d.unique_single ▸ · _⟩, rfl⟩)⟩
 
 lemma map_pderiv (Ψ : R →+* S) (i : σ) (f : MvPowerSeries σ R) :
     MvPowerSeries.map Ψ (pderiv i f) = pderiv i (MvPowerSeries.map Ψ f) :=
