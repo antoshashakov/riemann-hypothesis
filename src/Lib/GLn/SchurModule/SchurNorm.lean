@@ -320,10 +320,8 @@ lemma stdSpace_ratEmbed_apply (w : NumberField.InfinitePlace E) :
 lemma stdSpace_weightRep_apply :
     (stdSpace E n).weightRep κ e γ v =
       weylRep κ e (fun τ : NumberField.InfinitePlace E ↦
-        GeneralLinearGroup.map ((Φ τ).comp conj) γ) *ᵥ v := by
-  refine congrArg (fun g ↦ weylRep κ e g *ᵥ v) ?_
-  ext
-  simp [stdSpace_ratEmbed_apply, starRingEnd_apply (R := E)]
+        GeneralLinearGroup.map ((Φ τ).comp conj) γ) *ᵥ v :=
+  congr(weylRep κ e $(by ext; simp [stdSpace_ratEmbed_apply, @starRingEnd_apply E]) *ᵥ v)
 
 /-- The Gram pairing on coordinate vectors of weight κ is invariant under the product of the
 compact groups U(n), acting in weight (κ, e). -/
