@@ -577,16 +577,9 @@ lemma IsTest.pi {ι : Type*} {R : ι → Type*} [∀ i : ι, CommRing (R i)]
 associated to (a unit times) the image of an element of `A`. Then any `y`, `z` in `B` have an
 idempotent `e` of `A` with `y ∣ f e * z` and `z ∣ (1 - f e) * y` (`IsComparableRing f`). -/
 lemma IsTest.isComparableRing_of_associated (h : IsTest A)
-    (hf : ∀ y : B, ∃ x : A, Associated (f x) y) : IsComparableRing f := by
-  -- Up to units, two elements of `B` are images of elements of `A`, and these are comparable.
-  intro y z
-  obtain ⟨a, u, rfl⟩ : ∃ a : A, Associated (f a) y := hf y
-  obtain ⟨b, v, rfl⟩ : ∃ b : A, Associated (f b) z := hf z
-  obtain ⟨e, he_idem, h_dvd_ab, h_dvd_ba⟩ :
-      ∃ e : A, IsIdempotentElem e ∧ a ∣ e * b ∧ b ∣ (1 - e) * a := h.isComparableRing a b
-  have h_dvd_yz : f a * u ∣ f e * (f b * v) := by simpa [← mul_assoc] using f.map_dvd h_dvd_ab
-  have h_dvd_zy : f b * v ∣ (1 - f e) * (f a * u) := by simpa [← mul_assoc] using f.map_dvd h_dvd_ba
-  exact ⟨e, he_idem, h_dvd_yz, h_dvd_zy⟩
+    (hf : ∀ y : B, ∃ x : A, Associated (f x) y) : IsComparableRing f := fun y z ↦ by
+  obtain ⟨⟨x, _, ⟨⟩⟩, z, _, ⟨⟩⟩ := hf y, hf z
+  peel h.2 x z; simpa [← mul_assoc] using this.imp f.map_dvd f.map_dvd
 
 /-- If any two elements of `B` are comparable by an idempotent `e` of `A` through `f`, then they are
 comparable by the idempotent `f e` of `B` itself. -/
@@ -1161,16 +1154,9 @@ variable {U α} {g : N ⟶ F}
 `M(A) → N(A) → F(A)` at every object `A`, then `α ≫ g = 0` (the witness `w`) and the short complex
 `M ⟶ N ⟶ F` is exact. -/
 lemma exact_of_app (h : ∀ A : C, Function.Exact (α A) (g A)) :
-    ∃ w : α ≫ g = 0, ShortComplex.Exact ⟨α, g, w⟩ := by
-  have h_zero : α ≫ g = 0 := by
-    ext A x
-    simpa using (h A).apply_apply_eq_zero x
-  refine ⟨h_zero, ?_⟩
-  -- The evaluation functors jointly reflect isomorphisms, so exactness is checked objectwise.
-  -- (The reflection stays inside the call: its target `Ab` has a universe that cannot be named.)
-  apply (JointlyReflectIsomorphisms.exact_iff (F := (evaluation C _).obj)
-    ⟨NatIso.isIso_of_isIso_app⟩ _).mpr
-  exact fun A ↦ (ab_exact_iff_function_exact _).mpr (h A)
+    ∃ w : α ≫ g = 0, ShortComplex.Exact ⟨α, g, w⟩ :=
+  ⟨by ext; simp [h ..], by simpa [(⟨NatIso.isIso_of_isIso_app⟩ :
+  JointlyReflectIsomorphisms (evaluation ..)).exact_iff, ab_exact_iff_function_exact]⟩
 
 /-- If at every object `A` the map `α A` is injective, the sequence `M(A) → N(A) → F(A)` is exact
 in the middle and `g A` is surjective, then `α ≫ g = 0` (the witness `w`) and the short complex
