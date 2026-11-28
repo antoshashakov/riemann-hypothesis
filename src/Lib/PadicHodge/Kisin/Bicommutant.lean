@@ -253,10 +253,8 @@ topological basis of A_inf over `c.S`, and extend it `c.S`-linearly to
 S_B = `c.bicommutant`, the set of elements of B^+ whose multiplication commutes with every
 `c.S`-linear endomorphism of B^+ that preserves the image of A_max. -/
 lemma extendedCoord_mem_bicommutant (i : c.adicBasis.Index) (y : BPlus) :
-    c.extendedCoord i y ∈ c.bicommutant := by
-  rw [← one_smul FrobGal (c.extendedCoord i y)]
-  -- The coordinate takes its values in `c.S`.
-  exact c.smul_extendToBPlus_mem_bicommutant fun a ↦ by simp
+    c.extendedCoord i y ∈ c.bicommutant :=
+  (one_smul ..).subst (c.smul_extendToBPlus_mem_bicommutant (by simp))
 
 /-- If `v ≠ 0` and `v * u` lie in S_B = `c.bicommutant`, so does `u`. -/
 lemma mem_bicommutant_of_mul {u v : BPlus} (hv : v ∈ c.bicommutant) (hv_ne : v ≠ 0)
