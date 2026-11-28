@@ -310,9 +310,7 @@ lemma map_comp_assoc {K : AbFunctor C'} (u : TotalH (Φ.obj F) K) :
 equation `h`. -/
 lemma mapThenComp_comp {K : AbFunctor C'} {z : TotalH (Φ.obj M) (Φ.obj N)} {u : TotalH (Φ.obj F) K}
     (h : map Φ x = z) :
-    mapThenComp Φ u (comp x y) = comp z (mapThenComp Φ u y) := by
-  subst h
-  exact map_comp_assoc Φ u
+    mapThenComp Φ u (comp x y) = comp z (mapThenComp Φ u y) := h ▸ map_comp_assoc ..
 
 /-- If `comp x y = comp z w`, then the same holds after a product with any `u` on the right. -/
 lemma comp_assoc_of_sq {z : TotalH M N'} {w : TotalH N' F} (h : comp x y = comp (N := N') z w)
