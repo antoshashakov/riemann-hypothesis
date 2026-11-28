@@ -398,16 +398,11 @@ variable {A : Type*} [CommRing A] {R : Subring A} {n : Type*} [Fintype n] [Decid
 
 /-! ### Integral matrices -/
 
-lemma IsIntMatrix.det_mem {M : Matrix n n A} (hM : IsIntMatrix R M) : M.det ∈ R := by
-  let N : Matrix n n R := fun i j ↦ ⟨M i j, hM i j⟩
-  have h_det : N.det = M.det := R.subtype.map_det N
-  simp [← h_det]
+lemma IsIntMatrix.det_mem {M : Matrix n n A} (hM : IsIntMatrix R M) : M.det ∈ R :=
+  R.subtype.map_det (⟨_, hM · ·⟩) ▸ by simp
 
 lemma IsIntMatrix.adjugate {M : Matrix n n A} (hM : IsIntMatrix R M) :
-    IsIntMatrix R M.adjugate := by
-  let N : Matrix n n R := fun i j ↦ ⟨M i j, hM i j⟩
-  have h_adj : N.adjugate.map R.subtype = M.adjugate := R.subtype.map_adjugate N
-  simp [← h_adj, IsIntMatrix]
+    IsIntMatrix R M.adjugate := R.subtype.map_adjugate (⟨_, hM · ·⟩) ▸ by aesop_cat
 
 /-! ### The generalised index for an adelic pair -/
 
@@ -481,10 +476,8 @@ lattice `intVectors R n` of vectors with entries in `R`. -/
 lemma submoduleIndex_colLattice_intVectors [hR : IsAdelic R] {M : GL n A}
     (hM : IsIntMatrix R M.val) :
     submoduleIndex (colLattice R M.val) (intVectors R n) = genIndex M.val.det := by
-  -- the columns are integral, so `colLattice R M ≤ intVectors R n` and the denominator is `1`
-  have h_one : submoduleIndex (intVectors R n) (colLattice R M.val) = 1 :=
-    relIndex_eq_one.mpr (colLattice_le fun j i ↦ hM i j)
-  rw [← submoduleIndex_colLattice_div, h_one, Nat.cast_one, div_one]
+  rw [← submoduleIndex_colLattice_div, submoduleIndex.eq_1 (intVectors ..),
+    AddSubgroup.relIndex_eq_one.2 (colLattice_le (by tauto))]; simp
 
 end New
 
