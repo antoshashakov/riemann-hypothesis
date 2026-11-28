@@ -354,21 +354,10 @@ u. -/
 lemma localChar_apply_of_isUnit (k : ℤ) (u : O (F := LocProd 𝔠.ramifiedPlaces)) (hu : IsUnit u) :
     localChar 𝔠.ramifiedPlaces 𝔠.character.baseChange k u.val = ∏ i : 𝔠.ramifiedPlaces,
       𝔠.tamePart i (residueAt i u) := by
-  have h_val : ∀ i : 𝔠.ramifiedPlaces, Valued.v (u.val i) = 1 :=
-    isIntegralUnit_iff_v_eq_one.mp (isIntegralUnit_iff_isUnit.mpr hu)
-  -- `erw`: `u.val` is the value of the unit `(hu.map O.subtype).unit` only up to unfolding.
-  erw [ofUnitHom_coe _ (hu.map O.subtype).unit]
-  -- The components of `u` have absolute value one, so the factors `√‖u i‖ ^ k` drop out; it
-  -- remains to compare the factors at each `i ∈ S`.
-  simp [FinitePlace.norm_def, h_val]
-  refine Finset.prod_congr rfl fun i _ ↦ ?_
-  -- At `i`, `ν (x / x̄)` for the unit `x = u i` is `ψ i` at the residue of `u`
-  -- (`baseChange_finPart_locIdele`, which applies since `star i ∉ S`, so `ψ` is trivial there).
-  have h_conj : star (i : FinPlace E) ∉ 𝔠.ramifiedPlaces := 𝔠.star_notMem i i.prop
-  have hψ_conj : 𝔠.tamePart (star (i : FinPlace E)) = 1 := (𝔠.ne_one_iff _).not_right.mpr h_conj
-  have h_split : (i : FinPlace E).IsSplit := fun h_eq ↦ h_conj (by simp [h_eq])
-  -- `baseChange_finPart_locIdele` applies with these facts and `h_val`.
-  apply_rules [𝔠.hasWeight.baseChange_finPart_locIdele]
+  erw [ofUnitHom_coe _ (hu.map O.subtype).unit, ← isIntegralUnit_iff_isUnit,
+    isIntegralUnit_iff_v_eq_one] at *
+  simp [FinitePlace.norm_def, *]; congr!
+  apply_rules [𝔠.hasWeight.baseChange_finPart_locIdele] <;> grind [SplitTameChar]
 
 /-- On a norm-one adele u with integral finite part, ν(u) is the weight factor ∏_v u_v^{μ(v)} times
 the character `New.Exchange.SplitTameChar.semilocalChar` at the components of u at S. -/
