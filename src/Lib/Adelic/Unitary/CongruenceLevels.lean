@@ -111,14 +111,8 @@ integral finite adeles and |y|_u ≤ |a|_u at every finite place u dividing a. -
 lemma mem_span_iff_valuation_le {y : 𝔸f E} :
     y ∈ Ô E ∙ (a : 𝔸f E) ↔ y ∈ Ô E ∧ ∀ u : IsDedekindDomain.HeightOneSpectrum (𝓞 E),
       a ∈ u.asIdeal → v (y u) ≤ u.intValuation a := by
-  have h_a (u : FinPlace E) : v ((a : 𝔸f E) u) = u.intValuation a := v_algebraMap_eq_intValuation a
-  -- Where `u` does not divide `a`, its valuation of `a` is `1` and the bound is integrality.
-  have h_local (u : FinPlace E) : v (y u) ≤ u.intValuation a ↔
-      v (y u) ≤ 1 ∧ (a ∈ u.asIdeal → v (y u) ≤ u.intValuation a) := by
-    grind [u.intValuation_le_one a, u.intValuation_eq_one_iff]
-  -- Membership in `aÔ` means `v (y u) ≤ v (a u)` at every place `u`. The arrow applies that
-  -- rewriting before `simp` unfolds `Ô`.
-  simpa [↓exists_eq_mul_iff_v_le, mem_Ô, ← forall_and, h_a] using forall_congr' h_local
+  simp [↓exists_eq_mul_iff_v_le, mem_Ô, ← forall_and]; peel with u
+  erw [v_algebraMap_eq_intValuation a]; grind [u.intValuation_le_one a, u.intValuation_eq_one_iff]
 
 variable [IsCMField E] (n a) {f : Ô E →+* S}
 
@@ -274,9 +268,7 @@ def levelOf.reduction (w : ι → FinPlace E) (H : Subgroup (∀ i : ι, GL n (R
     (mem_levelOf.1 g.2).2
 
 lemma inf_trivialOn_le_levelOf : stdLevel E n ⊓ trivialOn n (Set.range w) ≤ levelOf w H :=
-  -- An element of the left side has component `1` at each `w i`, so it reduces to `1 ∈ H`.
-  fun _ ⟨hg, h_trivial⟩ ↦ mem_levelOf.2 ⟨hg, H.ker_le_comap _ <| funext fun i ↦
-    reduceAt_eq_one_of_atPlace (by simp_all [trivialOn])⟩
+  fun _ k ↦ ⟨⟨_, k.1⟩, H.ker_le_comap _ (funext fun _ ↦ reduceAt_eq_one_of_atPlace (by aesop)), rfl⟩
 
 /-- If the integer a lies in every w_i, the principal level of a is contained in
 `levelOf w H`. -/
@@ -287,14 +279,9 @@ lemma principalLevel_le_levelOf (ha_mem : ∀ i : ι, a ∈ (w i).asIdeal) :
     map_eq_one_of_mem_principalLevel hg (algebraMap_ResField_eq_zero.2 (ha_mem i))⟩
 
 /-- For a finite family of places, the level `levelOf w H` is open in G_f. -/
-lemma isOpen_levelOf [Finite ι] : (levelOf w H).IsOpen := by
-  -- The level contains `principalLevel n a` for `a` the norm of `⨅ i, w i`, a nonzero element of
-  -- each `w i`.
-  set I : Ideal (𝓞 E) := ⨅ i : ι, (w i).asIdeal
-  have h_fin : Finite (𝓞 E ⧸ I) := .of_injective _ (quotientInfToPiQuotient_inj _)
-  have h_ne : (I.absNorm : 𝓞 E) ≠ 0 := mod_cast (absNorm_ne_zero_iff I).2 h_fin
-  exact isOpen_mono (principalLevel_le_levelOf (mem_iInf.1 (absNorm_mem I)))
-    (isOpen_principalLevel h_ne)
+lemma isOpen_levelOf [Finite ι] : (levelOf w H).IsOpen :=
+  isOpen_mono (principalLevel_le_levelOf (mem_iInf.1 (absNorm_mem _))) (isOpen_principalLevel
+  (mod_cast (Finite.of_injective _ (quotientInfToPiQuotient_inj _)).card_pos.ne'))
 
 /-- For finite `ι`, `levelOf w H` is a level (an instance of `IsLevel`): it is open and contained in
 the standard level. -/
@@ -408,9 +395,7 @@ lemma dvd_iff_reduceAt_eq_zero
 each w_i. -/
 lemma mem_prod_finPlace_iff (hw : w.Injective) {x : 𝓞 E} :
     x ∈ ∏ i : ι, (w i).asIdeal ↔ ∀ i : ι, x ∈ (w i).asIdeal := by
-  -- Distinct places are coprime, so their product is their intersection.
-  rw [prod_eq_iInf_of_pairwise_isCoprime fun i _ j _ hij ↦ (w i).isCoprime_of_ne _ (hw.ne hij)]
-  simp
+  rw [prod_eq_iInf_of_pairwise_isCoprime] <;> simp_all [Set.Pairwise, (w _).isCoprime_of_ne, hw.ne]
 
 /-- For integers a ≠ 0 and b of E, a divides b in Ô if and only if it does so in 𝓞_E. -/
 lemma dvd_iff_Ô (ha_ne : a ≠ 0) : (a : Ô E) ∣ b ↔ a ∣ b := by
@@ -494,10 +479,7 @@ variable {n ι A W E : Type*} [Fintype n] [DecidableEq n] [Field E] [NumberField
 lemma levelSpace_levelOf_apply {v : W}
     (hv : v ∈ levelSpace π (levelOf w H) (χ.comp (levelOf.reduction w H))) (k : stdLevel E n)
     (x : H) (hk : stdLevel.reduceFamily w k = x.val) :
-    π k v = χ x • v := by
-  obtain ⟨x, hx⟩ := x
-  subst hk
-  exact mem_levelSpace.1 hv ⟨k, mem_levelOf.2 ⟨k.2, hx⟩⟩
+    π k v = χ x • v := by cases x; aesop (add simp mem_levelOf)
 
 variable [Finite ι] [IsConjApart w] (s : ∀ i : ι, GL n (ResField (w i)))
 
