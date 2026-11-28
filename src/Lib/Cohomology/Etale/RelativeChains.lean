@@ -54,10 +54,7 @@ variable {C : Type 1} [Category C]
 quotient map `π U`) is short exact. -/
 lemma relFreeAb.shortExact (U : Subfunctor V) :
     ∃ w : freeAb.map U.ι ≫ π U = 0, ShortExact ⟨freeAb.map U.ι, π U, w⟩ := by
-  -- `delta` exposes `abCoker.π` and `free.map`, whose `Epi` and `Mono` instances the short exact
-  -- structure needs; on each value the kernel of the quotient map is the image (`eq_zero_iff`).
-  delta π relFreeAb freeAb
-  exact ⟨_, ⟨(exact_of_app fun _ x ↦ eq_zero_iff x).2⟩⟩
+  delta π relFreeAb freeAb; exact ⟨_, ⟨(exact_of_app fun _ ↦ (eq_zero_iff ·)).2⟩⟩
 
 /-- The inclusion `ℤ[U] → ℤ[V]` is an equivalence for `F` (bijective on all `Ext^n(·, F)`) exactly
 when all the relative groups `H^n(V, U) = Ext^n(ℤ[V]/ℤ[U], F)` vanish. -/
@@ -115,27 +112,10 @@ lemma relFreeAb.mem_of_map_eq_zero (φ : freeAb V' ⟶ N) {A : C} (S : AddSubgro
       u A x = u A y → φ A (FreeAbelianGroup.of x) - φ A (FreeAbelianGroup.of y) ∈ S)
     (h_over : ∀ x : V'.obj A, u A x ∈ U A → φ A (FreeAbelianGroup.of x) ∈ S)
     (t : (freeAb.obj V').obj A) (ht : (freeAb.map u ≫ π U) A t = 0) :
-    φ A t ∈ S := by
-  classical
-  -- The map `x ↦ φ[x] mod S` is constant on the fibres of `u`, so it extends (by zero) to `V(A)`.
-  -- The additive map `l` on `ℤ[V(A)]` so defined kills `ℤ[U(A)]`, where the image of `t` lies.
-  let g : V' A → N A ⧸ S := fun x ↦ mk' S (φ A (of x))
-  have hg : FactorsThrough g (u A) := fun x y hxy ↦ eq_iff_sub_mem.2 (h_fib x y hxy)
-  let l : freeAb V A →+ N A ⧸ S := FreeAbelianGroup.lift (extend (u A) g 0)
-  have h_fac : l.comp (freeAb.map u A).hom = (mk' S).comp (φ A).hom :=
-    lift_ext _ _ fun x ↦ (lift_apply_of ..).trans (hg.extend_apply _ x)
-  have h_kill : l.comp (freeAb.map U.ι A).hom = 0 := by
-    refine lift_ext _ _ fun y ↦ (lift_apply_of _ y.val).trans ?_
-    -- for `y` in `U(A)`, `l [y] = 0`: a preimage `x` of `y` under `u` has `u x ∈ U(A)`, and with no
-    -- preimage `l [y] = 0` by definition
-    refine dite_eq_right_iff.2 fun hx ↦ (eq_zero_iff _).2 (h_over _ ?_)
-    rw [hx.choose_spec]
-    exact y.property
-  obtain ⟨s, hs⟩ : freeAb.map u A t ∈ (freeAb.map U.ι A).hom.range := (eq_zero_iff _).1 ht
-  refine (eq_zero_iff _).1 ?_
-  calc mk' S (φ A t) = l (freeAb.map u A t) := (DFunLike.congr_fun h_fac t).symm
-    _ = l (freeAb.map U.ι A s) := congrArg l hs.symm
-    _ = 0 := DFunLike.congr_fun h_kill s
+    φ A t ∈ S :=
+  (eq_zero_iff _).1 ((lift_unique _ ((mk' S).comp _) (congrFun (FactorsThrough.extend_comp (const
+  _ 0) (eq_iff_sub_mem.2 ∘ h_fib · ·)).symm)).trans ((lift_comp ..).trans ((range_le_ker_iff ..).2
+  (lift_ext _ _ (lift_apply_of _ ·.1 |>.trans (by simp [extend]; grind))) ((eq_zero_iff _).1 ht))))
 
 /-! ### Locally zero functors, locally bijective maps and the transfer -/
 
