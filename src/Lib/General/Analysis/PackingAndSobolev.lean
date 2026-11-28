@@ -41,21 +41,12 @@ at most `(1 + 2R/m) ^ finrank ℝ V` elements. -/
 lemma encard_le_of_separated (hm : 0 < m) (hR : 0 ≤ R) {S : Set I}
     (hf : S.Pairwise fun i j : I ↦ m ≤ ‖f i - f j‖) (hf_le : ∀ i ∈ S, ‖f i‖ ≤ R) :
     S.encard ≤ ENNReal.ofReal ((1 + 2 * R / m) ^ finrank ℝ V) := by
-  -- Volume count: the balls of radius `m / 2` around the points are disjoint and lie in the ball of
-  -- radius `R + m / 2 = (1 + 2 * R / m) * (m / 2)` around `0`.
   borelize V
-  have h_disj : Pairwise (Function.onFun Disjoint fun i : S ↦ ball (f i) (m / 2)) :=
-    hf.subtype.mono fun i j hij ↦ ball_disjoint_ball (by simpa [dist_eq_norm] using hij)
-  rw [← ENNReal.mul_le_mul_iff_left (measure_ball_pos addHaar (0 : V) (half_pos hm)).ne'
-    measure_ball_ne_top]
-  calc
-    S.encard * addHaar (ball (0 : V) (m / 2)) = ∑' i : S, addHaar (ball (f i) (m / 2)) := by
-      simp [addHaar_ball_center]
-    _ ≤ addHaar (⋃ i : S, ball (f i) (m / 2)) :=
-      tsum_meas_le_meas_iUnion_of_disjoint _ (by measurability) h_disj
-    _ ≤ addHaar (ball (0 : V) ((1 + 2 * R / m) * (m / 2))) := measure_mono <|
-      Set.iUnion_subset fun i : S ↦ ball_subset (by simpa [field] using hf_le i i.prop)
-    _ = _ := addHaar.addHaar_ball_mul_of_pos 0 (by positivity) (m / 2)
+  grw [← ENNReal.mul_le_mul_iff_left, ← addHaar.addHaar_ball_mul_of_pos 0 _ (m / 2),
+    ← Set.iUnion_subset fun i ↦ ball_subset (ε₁ := m / 2) _,
+    ← tsum_meas_le_meas_iUnion_of_disjoint _ (by measurability) (hf.subtype.mono _)]
+  any_goals simp [addHaar_ball_center, field]
+  repeat grind [measure_ball_pos, measure_ball_ne_top, ball_disjoint_ball, dist_eq_norm]
 
 /-- Let points `f i` of a real normed space of finite dimension `d` have mutual distances at least
 `m > 0`, with `‖f i‖ ≤ R * u i`, `u i ≥ 1` and `R ≥ 0`. If `A > d` and `A ≤ c (A - d)`, then
