@@ -826,11 +826,8 @@ y = ∑ a_i v_i in the A_inf-span `L.kisinLocAinf`. Then the retraction `coordRe
 ∑ λ₀(a_i) v_i, where λ₀ = `k.coord₀`: A_inf → S is the coordinate that is the identity on S. -/
 lemma coordRetract_sum {ι : Type*} [Fintype ι] {a : ι → Ainf} {v : ι → L.Ambient}
     (hv : ∀ i : ι, v i ∈ L.kisinLoc) {y : L.kisinLocAinf} (hy : ∑ i : ι, a i • v i = y.val) :
-    (coordRetract y).val = ∑ i : ι, k.coord₀ (a i) • v i := by
-  have h_mem (i : ι) : a i • v i ∈ L.kisinLocAinf :=
-    smul_mem _ (a i) (mem_kisinLocAinf_of_mem_kisinLoc (hv i))
-  obtain rfl : y = ∑ i : ι, ⟨a i • v i, h_mem i⟩ := Subtype.ext (by simp [← hy])
-  simp [coordRetract_smul _ (hv _)]
+    (coordRetract y).val = ∑ i : ι, k.coord₀ (a i) • v i := by simp [(by aesop : y = ∑ i,
+  a i • ⟨_, (hv i).1⟩), coordRetract, exists_coordRetract.choose_spec, hv]
 
 /-- The retraction `coordRetract` from the A_inf-span `L.kisinLocAinf` to `L.kisinLoc` is the
 identity on `L.kisinLoc`. -/
