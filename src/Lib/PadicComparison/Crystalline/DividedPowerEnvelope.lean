@@ -83,12 +83,9 @@ lemma IsCompleteTorsionFree.p_mem_pdIdeal (h : IsCompleteTorsionFree S) : ↑p �
 /-- If `S` is `p`-torsion-free and `p`-complete, the quotient map `S → S ⧸ pdIdeal S` is a local
 homomorphism: an element whose class is a unit is a unit. -/
 lemma IsCompleteTorsionFree.isLocalHom_pdQuotientMk (h : IsCompleteTorsionFree S) :
-    IsLocalHom (pdQuotientMk S) := by
-  -- If `x ∈ pdIdeal S` then `p ∣ p ! ∣ x ^ p`, so `x ^ p` lies in the Jacobson radical, which is a
-  -- radical ideal.
-  refine isLocalHom_of_le_jacobson_bot _ fun x hx ↦
-    isRadical_jacobson _ ⟨p, h.complete.le_jacobson_bot _ ?_⟩
-  grw [mem_span_singleton, ← hx p, ← dvd_factorial Fin.pos' le_rfl]
+    IsLocalHom (pdQuotientMk S) :=
+  isLocalHom_of_le_jacobson_bot _ fun _ y ↦ isRadical_jacobson _ ⟨p, h.2.le_jacobson_bot _
+  (mem_span_singleton.2 ((dvd_factorial Fin.pos' .refl).natCast.trans (y p)))⟩
 
 /-- Let `S` be `p`-torsion-free and `p`-complete, and `M` a commutative monoid on which `x ↦ x ^ p`
 is bijective. Composition with the quotient map `S → S ⧸ pdIdeal S` is a bijection from `M →* S`
@@ -265,12 +262,9 @@ lemma Envelope.existsUnique_lift {B : CrysTest S} (h : T →ₐ[S] B.obj)
 /-- For a subset J of the S-algebra T and x in J, the image of x in the envelope E of T along J
 lies in the ideal 𝔡(E) = `New.Variety.pdIdeal` E: n! divides its n-th power for every n. -/
 lemma Envelope.algebraMap_mem_pdIdeal (hx : x ∈ J) :
-    algebraMap T (Envelope S J) x ∈ pdIdeal (Envelope S J) := by
-  -- Already in `preEnvelope J` the factorial `n!` divides `x ^ n`: the quotient is a generator.
-  refine pdIdeal_le_comap (algebraMap (preEnvelope J) _) fun n ↦ ?_
-  refine ⟨⟨(x ^ n) ⊗ₜ (n ! : ℚ)⁻¹, subset_adjoin ⟨x, hx, n, rfl⟩⟩, ?_⟩
-  ext
-  simp [natCast_def', factorial_ne_zero]
+    algebraMap T (Envelope S J) x ∈ pdIdeal (Envelope S J) :=
+  pdIdeal_le_comap (algebraMap (preEnvelope J) _)
+  (⟨⟨_, subset_adjoin ⟨x, hx, ·, rfl⟩⟩, by ext; simp [natCast_def']⟩)
 
 end New.Variety
 
