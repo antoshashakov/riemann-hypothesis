@@ -104,10 +104,8 @@ def Model.cosetSum (ψ : G ⧸ K → W) (a : k[G]) : W := (cosetFn K a).linearCo
 /-- The basis vector of the trivial coset in k[G / K] is fixed by K. -/
 lemma single_one_mem_levelSpace :
     MonoidAlgebra.single (QuotientGroup.mk 1 : G ⧸ K) (1 : k) ∈
-      levelSpace (ofMulAction k G (G ⧸ K)) K := by
-  intro κ
-  -- `κ • (1 K) = κ K = 1 K` as `κ ∈ K`
-  simp [← mk_mul_of_mem 1 κ.property]
+      levelSpace (ofMulAction k G (G ⧸ K)) K :=
+  (by simp [← mk_mul_of_mem 1 ·.2])
 
 /-- If `a` is supported on `D`, its image in `k[G / K]` is supported on the cosets of elements of
 `D`. -/
@@ -858,27 +856,11 @@ lemma IsNeat.eq_one_of_mem_levelGU (h_neat : IsNeat n 𝔑) {x : GL n (𝔸f E)}
 For all but finitely many finite places `w` of `E`, every nonzero `𝔑 : 𝓞 E` that lies in `w` is a
 neat level (`IsNeat n 𝔑`). -/
 lemma eventually_isNeat :
-    ∀ᶠ w : FinPlace E in Filter.cofinite, ∀ 𝔑 ≠ (0 : 𝓞 E), 𝔑 ∈ w.asIdeal → IsNeat n 𝔑 := by
-  -- All but finitely many places have norm above `(2 * n) ^ [E : ℚ]`; there
-  -- `IsSignedFrameFor.eq_one_of_congr_large_norm` applies.
-  filter_upwards [(Northcott.finite_le (h := FinPlace.q)
-    ((2 * Fintype.card n) ^ Module.finrank ℚ E)).compl_mem_cofinite] with w hw 𝔑 h𝔑 h𝔑w
-  have hw_large : (2 * card n) ^ finrank ℚ E < w.q := not_le.1 hw
-  refine ⟨h𝔑, fun {x ℓ y} h_signed h_level hℓ ↦ ?_⟩
-  obtain ⟨β, hx⟩ := h_signed
-  -- The level `𝔑` as an ideal of `Ô E`.
-  let J : Ideal (Ô E) := span {algebraMap (𝓞 E) (Ô E) 𝔑}
-  obtain ⟨-, h_cong_𝔑⟩ := Subgroup.mem_inf.1 h_level
-  have h_algebraMap :
-      algebraMap (Ô E) (𝔸f E) (algebraMap (𝓞 E) (Ô E) 𝔑) = algebraMap (𝓞 E) (𝔸f E) 𝔑 := rfl
-  have h_cong : x⁻¹ * toFinGL y * x ∈
-      congruenceGL (Submodule.map (Algebra.linearMap (Ô E) (𝔸f E)) J) id := by
-    simpa [J, Submodule.map_span, h_algebraMap] using h_cong_𝔑
-  -- An integer divisible by `𝔑` in `Ô E` is divisible by `𝔑` in `𝓞 E`, so lies in `w`.
-  have hJI : under (𝓞 E) J ≤ w.asIdeal := fun a ha ↦
-    mem_of_dvd _ ((dvd_iff_Ô h𝔑).1 (mem_span_singleton.1 ha)) h𝔑w
-  exact hx.eq_one_of_congr_large_norm J (levelGU.isScalarFrame_inv_one h_level) h_cong hℓ hw_large
-    hJI
+    ∀ᶠ w : FinPlace E in Filter.cofinite, ∀ 𝔑 ≠ (0 : 𝓞 E), 𝔑 ∈ w.asIdeal → IsNeat n 𝔑 := .mono
+  (Northcott.finite_le (h := FinPlace.q) _).compl_mem_cofinite fun w b _ h₀ a ↦
+  ⟨h₀, fun ⟨_, h⟩ k l ↦ h.eq_one_of_congr_large_norm (span _) (levelGU.isScalarFrame_inv_one k)
+  (by simpa [Submodule.map_span] using! k.2) l
+  (by aesop) fun _ c ↦ mem_of_dvd _ ((dvd_iff_Ô h₀).1 (mem_span_singleton.1 c)) a⟩
 
 omit [Nonempty n] Ψ
 
