@@ -140,39 +140,20 @@ lemma Amax.p_mem_nonZeroDivisors : ↑p ∈ Amax⁰ := mem_nonZeroDivisors_iff_l
 an `x` such that `p x = f ξ`, extends to `A` with `X ↦ x`. -/
 lemma Amax.exists_lift [IsAdicComplete (span {(p : R)}) R] (f : Ainf →+* R) (x : R)
     (h_xi : f xi = p * x) :
-    ∃ F : Amax →+* R, (∀ a : Ainf, F ↑a = f a) ∧ F xiDivP = x := by
-  -- Send the root of `p X - ξ` to `x`, pass to the `p`-adic completions, and use that `R` is
-  -- complete.
-  have h_root : (C (p : Ainf) * .X - C xi).eval₂ f x = 0 := by simp [h_xi]
-  let F₀ : AdjoinRoot (C (p : Ainf) * .X - C xi) →+* R := AdjoinRoot.lift f x h_root
-  let e : R ≃ₐ[R] AdicCompletion (span {(p : R)}) R := AdicCompletion.ofAlgEquiv (span {(p : R)})
-  refine ⟨e.symm.toRingHom.comp (adicMap F₀ (by simp)), fun a ↦ ?_, ?_⟩
-  -- `erw`: the composite is typed through `Amax`, which is the completion only by definition, so a
-  -- plain `rw` finds no type-correct motive.
-  all_goals
-    erw [RingHom.comp_apply, adicMap_algebraMap]
-    simp [F₀, e]
+    ∃ F : Amax →+* R, (∀ a : Ainf, F ↑a = f a) ∧ F xiDivP = x := ⟨(AdicCompletion.ofAlgEquiv
+  (span {↑p})).symm.toRingHom.comp (adicMap (AdjoinRoot.lift f x (by aesop)) (by simp)), by
+  and_intros <;> intros <;> erw [RingHom.comp_apply, adicMap_algebraMap] <;> simp⟩
 
 /-- The image in `A` of an element of `(p, ξ) ^ n` is divisible by `p ^ n`. -/
 lemma Amax.p_pow_dvd_of_mem_pow {n : ℕ} {a : Ainf} (h_mem : a ∈ span {↑p, xi} ^ n) :
-    (p : Amax) ^ n ∣ a := by
-  -- In `Amax` both `p` and `ξ = p X` are multiples of `p`.
-  have h_le : span {(p : Ainf), xi} ≤ (span {(p : Amax)}).comap (algebraMap _ Amax) := by
-    simp [span_insert, mul_mem_right, ← p_mul_X]
-  simpa [span_singleton_pow, mem_span_singleton] using
-    le_comap_pow _ n (pow_right_mono h_le n h_mem)
+    (p : Amax) ^ n ∣ a := mem_span_singleton.1 ((span_singleton_pow ..).le (le_comap_pow _ _
+  (pow_right_mono (by simp [span_insert, mul_mem_right]) n h_mem)))
 
 /-- Every element of `A` is congruent modulo `p ^ n` to a polynomial in `X = ξ / p` with
 coefficients in `A_inf`. -/
 lemma Amax.exists_p_pow_dvd_sub_aeval (a : Amax) (n : ℕ) :
-    ∃ P : Ainf[X], (p : Amax) ^ n ∣ a - aeval xiDivP P := by
-  -- `a` is congruent modulo `p ^ n` to an element `P(X)` of `A_inf[X] / (p X - ξ)`
-  obtain ⟨y, hy⟩ := Adic.exists_approx a n
-  obtain ⟨P, rfl⟩ := AdjoinRoot.mk_surjective y
-  refine ⟨P, ?_⟩
-  -- `A` is that completion, and `X` the image of the root, by definition
-  simp only [← AdjoinRoot.aeval_eq, ← aeval_algebraMap_apply] at hy
-  exact hy
+    ∃ P : Ainf[X], (p : Amax) ^ n ∣ a - aeval xiDivP P := by simpa [← aeval_eq,
+  AdjoinRoot.mk_surjective.exists, ← aeval_algebraMap_apply] using! exists_approx a n
 
 /-- For every `y` in the period ring A and every `n`, some `p ^ d (y - p ^ n w)`, with `w` in A, is
 the image of an element of `A_inf`. -/
