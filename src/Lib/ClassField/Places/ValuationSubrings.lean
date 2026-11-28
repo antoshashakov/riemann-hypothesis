@@ -136,26 +136,10 @@ lemma centrePrime_liesOver (h : IsPlaceOver A v) : (centrePrime Ω A).LiesOver v
 /-- If `A` lies over `v`, its valuation restricted to `K` is equivalent to the `v`-adic one. -/
 lemma isEquiv [NumberField K] (h : IsPlaceOver A v) :
     (A.valuation.comap (algebraMap K Ω)).IsEquiv (v.valuation K) := by
-  -- The pullback of `A` to `K` is proper and contains the local ring of `v`, which is a maximal
-  -- proper valuation subring of `K`; so the two are equal.
-  -- An integer of `K` lies in `v` exactly when it is `0` in `Ω` or its inverse is not in `A`.
-  have h_mem_iff (y : 𝓞 K) :
-      y ∈ v.asIdeal ↔ algebraMap K Ω y = 0 ∨ (algebraMap K Ω y)⁻¹ ∉ A :=
-    (h y).symm.trans A.mem_nonunits_iff_or
-  have h_le : v.valuationSubringAtPrime K ≤ A.comap (algebraMap K Ω) := by
-    -- A denominator `s ∉ v` has its inverse in `A`, so the fraction `a / s` lies in `A`.
-    rintro _ ⟨a, s, hs, rfl⟩
-    have hs_inv : (algebraMap K Ω s)⁻¹ ∈ A := by simp_all [Ideal.primeCompl]
-    simp_all [mul_mem, algebraMap_ringOfIntegers_mem]
-  -- If the pullback were all of `K`, no nonzero integer would be a nonunit of `A`, so `v = 0`.
-  have h_ne : A.comap (algebraMap K Ω) ≠ ⊤ := fun h_top ↦ by
-    refine v.ne_bot ((Submodule.eq_bot_iff _).mpr fun y hy ↦ ?_)
-    have h_in : (algebraMap K Ω y)⁻¹ ∈ A := by simpa using SetLike.ext_iff.mp h_top (y : K)⁻¹
-    simpa [h_in] using (h_mem_iff y).mp hy
-  have h_eq : v.valuationSubringAtPrime K = A.comap (algebraMap K Ω) :=
-    ValuationSubring.eq_of_le_of_ne_top _ h_le h_ne
-  simp [isEquiv_iff_valuationSubring, ← v.valuationSubringAtPrime_eq_valuationSubring,
-    SetLike.ext_iff, h_eq]
+  rw [isEquiv_iff_valuationSubring, ← valuationSubringAtPrime_eq_valuationSubring,
+    (v.valuationSubringAtPrime K).eq_of_le_of_ne_top (fun _ ⟨_, _⟩ ↦ _) (v.3 ∘ _)] <;>
+  simp_all [mul_mem, algebraMap_ringOfIntegers_mem, SetLike.ext_iff, ← map_inv₀,
+    (h _).symm.trans A.mem_nonunits_iff_or]
 
 lemma valuationVia_eq_one_iff [NumberField K] (h : IsPlaceOver A v) {x : K} :
     valuationVia K A x = 1 ↔ v.valuation K x = 1 :=
@@ -267,17 +251,9 @@ instance : IsGaloisGroup Γ (𝓞 K) (𝓞 Ω) := by
 /-- For `Ω / K` algebraic, a valuation subring `A` whose valuation is not `1` at some nonzero `x`
 lies over a prime of `K`. -/
 lemma exists_isPlaceOver_of_val_ne_one {x : Ω} (hx : x ≠ 0) (hx_val : A x ≠ 1) :
-    ∃ v : FinPlace K, IsPlaceOver A v := by
-  -- The place is the centre of `A`, once that prime is known to be nonzero.
-  refine ⟨{ asIdeal := centrePrime K A, isPrime := inferInstance, ne_bot := fun h_cen ↦ ?_ },
-    .of_le_centrePrime le_rfl⟩
-  -- If the centre is zero, every nonzero integer is a unit of `A`; a valuation trivial on `𝓞 K`
-  -- is `1` on nonzero algebraic elements.
-  have h_trivial : A.valuation.IsTrivialOn (𝓞 K) := ⟨fun y hy ↦ by
-    have hy_unit : IsUnit (⟨algebraMap K Ω y, algebraMap_ringOfIntegers_mem A y⟩ : A) :=
-      by_contra fun hy_cen ↦ hy (h_cen.le hy_cen)
-    exact (A.valuation_eq_one_iff _).mp hy_unit⟩
-  exact transcendental_of_ne_one (𝓞 K) x hx hx_val (IsAlgebraic.isAlgebraic x)
+    ∃ v : FinPlace K, IsPlaceOver A v := ⟨⟨centrePrime ..,
+  .comap _, fun e ↦ transcendental_of_ne_one _ (hv := ⟨fun _ n ↦ (A.valuation_eq_one_iff _).1
+  (by_contra (n <| e.le ·))⟩) x hx hx_val (IsAlgebraic.isAlgebraic x)⟩, .of_le_centrePrime le_rfl⟩
 
 variable {K}
 
@@ -461,45 +437,17 @@ lemma exists_placeOfEmb_extension :
       Continuous φ ∧
       (∀ x : E, φ (algebraMap E (LocField (placeOfEmb σ)) x) = σ x) ∧
       (∀ x : LocField (placeOfEmb σ), φ x ∈ adjoin ℚ_[p] (Set.range σ)) ∧
-      (valuation.comap φ).IsEquiv Valued.v := by
-  -- The field `L = ℚ_p(σ E)` is finite over `ℚ_p`, hence complete. The map `σ : E → L` is uniformly
-  -- continuous for the norm of the place `placeOfEmb σ`, so it extends from `E` to the completion.
-  set L : IntermediateField ℚ_[p] F := adjoin ℚ_[p] (Set.range σ)
-  have h_complete : CompleteSpace L := FiniteDimensional.complete ℚ_[p] L
-  let σL : E →+* L := σ.codRestrict L fun x ↦ subset_adjoin _ _ ⟨x, rfl⟩
-  -- The norm of the completion and `‖σ ·‖` order the elements of `E` alike.
-  have h_place_equiv : (place (algebraMap E (LocField (placeOfEmb σ)))).IsEquiv (place σ) := by
-    intro x y
-    simpa [Valued.toNormedField.norm_le_iff, v_algebraMap_eq_valuation, ← coe_le_coe]
-      using (isEquiv_placeOfEmb σ).symm x y
-  -- Equivalent absolute values are powers of each other.
-  obtain ⟨c, hc_pos, h_pow⟩ : ∃ c : ℝ, 0 < c ∧
-      (fun x : E ↦ ‖algebraMap E (LocField (placeOfEmb σ)) x‖ ^ c) = fun x : E ↦ ‖σ x‖ :=
-    AbsoluteValue.isEquiv_iff_exists_rpow_eq.mp h_place_equiv
-  -- Give `E` the norm of the completion. As `‖σ x‖ = ‖x‖ ^ c`, the map `σL` is uniformly
-  -- continuous.
-  let seminormed_E : SeminormedRing E :=
-    SeminormedRing.induced E (LocField (placeOfEmb σ)) (FinitePlace.embedding (placeOfEmb σ))
-  have h_unif : UniformContinuous σL := uniformContinuous_of_tendsto_zero
-    (squeeze_zero_norm (fun x ↦ (congrFun h_pow x).ge)
-      (tendsto_norm_zero.rpow_const_nhds_zero hc_pos))
-  -- The uniform structure of `E` is induced from the completion.
-  have h_inducing : IsUniformInducing (algebraMap E (LocField (placeOfEmb σ))) := ⟨rfl⟩
-  have h_dense : DenseRange (algebraMap E (LocField (placeOfEmb σ))) :=
-    (placeOfEmb σ).denseRange_algebraMap E
-  let φ : LocField (placeOfEmb σ) →+* L := extendRingHom h_inducing h_dense h_unif
-  have hφ_cont : Continuous φ :=
-    (uniformContinuous_uniformly_extend h_inducing h_dense h_unif).continuous
-  have hφ_ext (x : E) : (φ (algebraMap E (LocField (placeOfEmb σ)) x) : F) = σ x := by
-    simp [φ, σL, extendRingHom, extend_eq, h_unif.continuous]
-  -- The relation `‖σ x‖ = ‖x‖ ^ c` passes to the completion by density.
-  have hφ_norm : ∀ y : LocField (placeOfEmb σ), ‖(φ y : F)‖ = ‖y‖ ^ c :=
-    h_dense.eq (fun x ↦ (congrArg norm (hφ_ext x)).trans (congrFun h_pow x).symm) hφ_cont.norm
-      (continuous_norm.rpow_const fun _ ↦ .inr hc_pos.le)
-  refine ⟨(algebraMap L F).comp φ, continuous_subtype_val.comp hφ_cont, hφ_ext,
-    fun x ↦ (φ x).prop, fun x y ↦ ?_⟩
-  -- `‖φ x‖ ≤ ‖φ y‖` holds iff `‖x‖ ^ c ≤ ‖y‖ ^ c`, iff `‖x‖ ≤ ‖y‖`, iff `v x ≤ v y`.
-  simp [← coe_le_coe, hφ_norm, Real.rpow_le_rpow_iff, hc_pos, Valued.toNormedField.norm_le_iff]
+      (valuation.comap φ).IsEquiv Valued.v := let := FiniteDimensional.complete ℚ_[p]
+  have ⟨c, hc, h⟩ := (place (algebraMap E (LocField (placeOfEmb σ)))).isEquiv_iff_exists_rpow_eq
+    (w := place σ).1 (by simpa [v_algebraMap_eq_valuation] using! (isEquiv_placeOfEmb σ).symm ·)
+  let := SeminormedRing.induced E _ (FinitePlace.embedding (placeOfEmb σ))
+  have u := uniformContinuous_of_tendsto_zero (f := σ.codRestrict (adjoin ℚ_[p] (.range σ))
+    (by aesop)) (squeeze_zero_norm h.ge (tendsto_norm_zero.rpow_const_nhds_zero hc))
+  have D := (placeOfEmb σ).denseRange_algebraMap E
+  have := (uniformContinuous_uniformly_extend ⟨rfl⟩ D u).continuous
+  ⟨(algebraMap ..).comp (extendRingHom ⟨rfl⟩ D u), by have := D.eq ?_ this.norm (.rpow_const
+    (p := c) continuous_norm (by grind)) <;> simp_all [extendRingHom, extend_eq, u.continuous,
+    funext_iff, Valuation.IsEquiv, ← coe_le_coe, Real.rpow_le_rpow_iff]; fun_prop⟩
 
 /-- The extension of `σ` to the completion of `E` at the prime `New.placeOfEmb σ`, chosen by
 `New.exists_placeOfEmb_extension`: continuous, extending `σ`, with values in `ℚ_p(σ E)`. -/
