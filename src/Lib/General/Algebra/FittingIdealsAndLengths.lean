@@ -106,15 +106,9 @@ lemma relLength_comap : relLength S (Submodule.comap f T') = relLength (S.map f)
 /-- The length of `S` modulo an intersection is at most the sum of its lengths modulo each of the
 finitely many submodules intersected. -/
 lemma relLength_iInf_le (T : m → Submodule A M) :
-    relLength S (⨅ i : m, T i) ≤ ∑ i : m, relLength S (T i) := by
-  -- `S ⧸ ⨅ i, T i` embeds in the product of the `S ⧸ T i`.
-  let π : S →ₗ[A] ∀ i : m, S ⧸ (T i).submoduleOf S := pi fun i ↦ mkQ _
-  have h_ker : (⨅ i : m, T i).submoduleOf S = ker π := by
-    rw [ker_pi, submoduleOf, Submodule.comap_iInf]
-    exact iInf_congr fun i ↦ (ker_mkQ _).symm
-  calc relLength S (⨅ i : m, T i) ≤ length A (∀ i : m, S ⧸ (T i).submoduleOf S) :=
-      length_le_of_injective _ (ker_eq_bot.1 (ker_liftQ_eq_bot' _ π h_ker))
-    _ = ∑ i : m, relLength S (T i) := by simp [relLength, length_pi_of_fintype]
+    relLength S (⨅ i : m, T i) ≤ ∑ i : m, relLength S (T i) :=
+  (length_le_of_injective _ (ker_eq_bot.1 (ker_liftQ_eq_bot' _ (pi fun _ ↦ mkQ _) (by
+    simp! [ker_pi, submoduleOf])))).trans_eq (length_pi_of_fintype ..)
 
 /-- The length of `S` is the sum of its length modulo `T` and the length of `S ⊓ T`. -/
 lemma relLength_add_length_inf : relLength S T + length A ↥(S ⊓ T) = length A S := by
