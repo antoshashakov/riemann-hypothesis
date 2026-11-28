@@ -60,21 +60,11 @@ cutoff for this subgroup; its total mass is the covolume `1`. -/
 lemma lintegral_encard_rat_points {S : Set (n → 𝔸 E)} (hS : MeasurableSet S) :
     ENNReal.ofReal (ideleAbs y.det) * volume S =
       ∫⁻ x : n → 𝔸 E, {ξ : n → E |
-        y⁻¹.val *ᵥ (toAdele ∘ ξ + x) ∈ S}.encard ∂(ratVectors E n).quotMeasure := by
-  -- Unfolding: `(x, ξ) ↦ y⁻¹ (ξ + x)` carries `quotMeasure ⊗ count` to `|det y| • volume`. The
-  -- measure of the preimage of `S` is the left side, and by Fubini it is also the right side.
-  have h_scale : MeasurePreserving (y⁻¹.1 *ᵥ ·) volume (ENNReal.ofReal (ideleAbs y.det) • volume) :=
-    ⟨by fun_prop, (volume_map_mulVec_adele y⁻¹).trans (by simp)⟩
-  have h_unfold : MeasurePreserving (fun p : (n → 𝔸 E) × ratVectors E n ↦ y⁻¹.1 *ᵥ (p.2 +ᵥ p.1))
-      ((ratVectors E n).quotMeasure.prod count) (ENNReal.ofReal (ideleAbs y.det) • volume) :=
-    h_scale.comp measurePreserving_addOrbitMeasure
-  rw [← smul_eq_mul, ← Measure.smul_apply, ← h_unfold.measure_preimage hS.nullMeasurableSet,
-    Measure.prod_apply (h_unfold.measurable hS)]
-  refine lintegral_congr fun x ↦ ?_
-  -- the fibre over `x` is counted in `ratVectors E n`, the image of `n → E` under `toAdele ∘ ·`
-  rw [count_apply .of_discrete]
-  let e : (n → E) ≃ ratVectors E n := .ofInjective _ (toAdele (E := E)).injective.comp_left
-  exact_mod_cast encard_congr e.subtypeEquivOfSubtype.symm
+        y⁻¹.val *ᵥ (toAdele ∘ ξ + x) ∈ S}.encard ∂(ratVectors E n).quotMeasure := .trans (by simp)
+  (((MeasurePreserving.comp ⟨by fun_prop, volume_map_mulVec_adele _⟩
+  measurePreserving_addOrbitMeasure).measure_preimage (by aesop)).symm.trans (.trans (prod_apply (by
+  measurability)) (lintegral_congr fun _ ↦ (count_apply .of_discrete).trans (mod_cast encard_congr
+  (Equiv.ofInjective _ (@toAdele E ..).injective.comp_left).subtypeEquivOfSubtype.symm))))
 
 omit [DecidableEq n] in
 /-- The box of radius `r`, the adelic vectors with all entries of absolute value below `r` at the
