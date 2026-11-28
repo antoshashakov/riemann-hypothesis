@@ -370,27 +370,15 @@ lemma locallyOfFinitePresentation_left [hB : LocallyOfFiniteType B.hom]
 lemma exists_isPullback_SpecMap {X Y : Scheme} (f : X ⟶ Y) [IsAffineHom.{0} f] {C : CommRingCat}
     (i : Spec C ⟶ Y) :
     ∃ (P : CommRingCat) (φ : C ⟶ P) (j : Spec P ⟶ X),
-      IsPullback j (Spec.map (R := C) (S := P) φ) f i := by
-  -- The pull-back is affine over `Spec C`, so it is `Spec` of its ring of global sections.
-  let e : Spec Γ(Limits.pullback f i, ⊤) ≅ Limits.pullback f i := (Scheme.isoSpec _).symm
-  refine ⟨Γ(Limits.pullback f i, ⊤), Spec.preimage (e.hom ≫ Limits.pullback.snd f i),
-    e.hom ≫ Limits.pullback.fst f i, ?_⟩
-  exact .of_iso_pullback ⟨by simp [Limits.pullback.condition]⟩ e rfl (Spec.map_preimage _).symm
+      IsPullback j (Spec.map (R := C) (S := P) φ) f i := ⟨_, _, _, .of_iso_pullback
+  ⟨by simp [Limits.pullback.condition]⟩ (Scheme.isoSpec _).symm rfl (Spec.map_preimage _).symm⟩
 
 open MonoidalCategory in
 /-- A morphism `f : A ⟶ B` over `Spec R` is zero exactly when, as a morphism of schemes, it factors
 through the zero section `ζ[B]` of `B`. -/
 lemma eq_zero_iff_factors_zero_section :
-    f = 0 ↔ ∃ l : A.left ⟶ (𝟙_ (Over (Spec (CommRingCat.of R)))).left, l ≫ ζ[B].left = f.left := by
-  constructor
-  · -- `0 : A ⟶ B` is the structure morphism of `A` followed by the zero section
-    intro hf
-    refine ⟨A.hom, ?_⟩
-    simp [hf, Hom.zero_def]
-  · -- `l` is the structure morphism of `A`, since `ζ[B]` is a section of `B`
-    rintro ⟨l, hl⟩
-    apply OverMorphism.ext
-    simp [Hom.zero_def, ← f.w, ← hl]
+    f = 0 ↔ ∃ l : A.left ⟶ (𝟙_ (Over (Spec (CommRingCat.of R)))).left, l ≫ ζ[B].left = f.left :=
+  ⟨by aesop, fun ⟨l, e⟩ ↦ by ext; simp [CategoryTheory.Hom.zero_def, ← f.w, ← e]⟩
 
 /-- `ι : Spec S ⟶ A` is the kernel of `f : A ⟶ B` over `Spec R`, and `S` is finite over `R`: `ι` is
 a closed immersion killed by `f`, through which every point of `A` killed by `f` factors; `S` is
