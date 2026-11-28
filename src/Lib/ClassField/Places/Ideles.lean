@@ -145,13 +145,10 @@ that is a unit everywhere and lies outside `U` has a component `≠ 1` at some p
 Equivalently, the ideles that are units everywhere and `1` on `T` lie in `U`. -/
 lemma exists_finset_cover_mulSupport_ideleAt {U : Set (𝔸f K)ˣ} (hU : IsOpen U) (h_one : 1 ∈ U) :
     ∃ T : Finset (FinPlace K),
-      (idelesUnitOff ∅).carrier \ U ⊆ ⋃ v ∈ T, (ideleAt v).ker.carrierᶜ := by
-  -- the complement of `U` in the units is compact and avoids `1`, so finitely many of the open
-  -- sets `{a | ideleAt v a ≠ 1}` cover it
-  refine (isCompact_idelesUnitOff_empty.diff hU).elim_finite_subcover _
-    (fun v ↦ (continuous_ideleAt v).isOpen_mulSupport) fun a ⟨_, ha_notMem⟩ ↦ ?_
-  have ha_ne : a ≠ 1 := (ne_of_mem_of_not_mem h_one ha_notMem).symm
-  simpa [ideleAt, ← val_inj, DFunLike.ext_iff] using ha_ne
+      (idelesUnitOff ∅).carrier \ U ⊆ ⋃ v ∈ T, (ideleAt v).ker.carrierᶜ :=
+  (isCompact_idelesUnitOff_empty.diff hU).elim_finite_subcover _
+  (continuous_ideleAt · |>.isOpen_mulSupport) fun a b ↦ by
+  simpa [ideleAt, ← val_inj, DFunLike.ext_iff] using (by grind : a ≠ 1)
 
 /-- A closed subgroup H of the finite ideles contains a as soon as it contains, for every place
 v, the idele with component a_v at v and 1 elsewhere. -/
@@ -191,15 +188,9 @@ lemma locIdele_mem_idelesUnitOff {x : (LocField v)ˣ} (hx_unit : Valued.v x.val 
 trivial on the local units at all but finitely many finite places. -/
 lemma eventually_unramified {C : Type*} [CommGroup C] (ψ : (𝔸f K)ˣ →* C) (h_open : ψ.ker.IsOpen) :
     ∀ᶠ v : FinPlace K in Filter.cofinite,
-      ∀ x : (LocField v)ˣ, Valued.v x.val = 1 → ψ (locIdele v x) = 1 := by
-  -- a unit idele outside the kernel has a component `≠ 1` in the finite set `T`; for `v ∉ T` the
-  -- idele `locIdele v x` has none
-  obtain ⟨T, hT⟩ := exists_finset_cover_mulSupport_ideleAt h_open ψ.map_one
-  filter_upwards [T.eventually_cofinite_notMem] with v hv x hx
-  by_contra h_ne
-  obtain ⟨w, hw, hw_ne⟩ : ∃ w ∈ T, ideleAt w (locIdele v x) ≠ 1 := by
-    simpa using hT ⟨locIdele_mem_idelesUnitOff hx, h_ne⟩
-  exact hw_ne (ideleAt_locIdele_of_ne (ne_of_mem_of_not_mem hw hv) x)
+      ∀ x : (LocField v)ˣ, Valued.v x.val = 1 → ψ (locIdele v x) = 1 :=
+  (exists_finset_cover_mulSupport_ideleAt h_open ψ.map_one).rec (·.finite_toSet.subset ∘ by
+  simp [subset_def, -mem_idelesUnitOff]; grind [locIdele_mem_idelesUnitOff, ideleAt_locIdele_of_ne])
 
 /-! ### Totally positive elements -/
 
@@ -381,36 +372,13 @@ lemma exists_superset_sup_idelesUnitOff_eq_top (hR : R.Finite) :
 /-- An open subgroup `H` of the finite ideles that contains the principal ideles of the totally
 positive elements of `Kˣ` has finite index. -/
 lemma finiteIndex_idele_subgroup_of_isOpen (H : Subgroup (𝔸f K)ˣ) (h_open : H.IsOpen)
-    (h_pos : ∀ x : Kˣ, IsTotallyPositive x.val → principalIdele x ∈ H) : H.FiniteIndex := by
-  -- Climb from `H` to `H ⊔ P` to `H ⊔ P ⊔ idelesUnitOff ∅` to `⊤`, `P` the principal ideles: each
-  -- step has finite (that is, nonzero) index.
-  set P : Subgroup (𝔸f K)ˣ := principalIdele.range
-  -- The preimage of `H` in `Kˣ` contains the kernel of the signs at the real embeddings,
-  -- a map to a finite group.
-  have h_index_comap_ne : (H.comap principalIdele).index ≠ 0 := by
-    let sgn : Kˣ →* ((K →+* ℝ) → SignType)ˣ :=
-      Units.map (.pi fun φ : K →+* ℝ ↦ signHom.toMonoidHom.comp φ.toMonoidHom)
-    -- an element with sign `1` at every real embedding is totally positive
-    have h_ker_le : sgn.ker ≤ H.comap principalIdele := by
-      intro x hx
-      have h_sign (φ : K →+* ℝ) : SignType.sign (φ x.val) = 1 :=
-        congrFun (congrArg Units.val hx) φ
-      exact h_pos x fun φ ↦ sign_eq_one_iff.mp (h_sign φ)
-    exact (sgn.ker.finiteIndex_of_le h_ker_le).index_ne_zero
-  -- An open subgroup meets the compact group `idelesUnitOff ∅` in a subgroup of finite index.
-  have h_relIndex_ne : (H ⊔ P).relIndex (idelesUnitOff ∅) ≠ 0 :=
-    isCompact_idelesUnitOff_empty.relIndex_ne_zero (isOpen_mono le_sup_left h_open)
-  -- The class group is finite, and `P ⊔ idelesUnitOff ∅` is the kernel of a homomorphism `c` to it.
-  obtain ⟨c, hc⟩ : ∃ c : (𝔸f K)ˣ →* ClassGroup (𝓞 K), c.ker = P ⊔ idelesUnitOff ∅ :=
-    exists_idele_classGroup_hom
-  have h_fin : (H ⊔ P ⊔ idelesUnitOff ∅).FiniteIndex :=
-    finiteIndex_of_le (hc.trans_le (sup_le_sup_right le_sup_right _))
-  rw [finiteIndex_iff, ← relIndex_mul_index (le_sup_left (b := P)),
-    ← relIndex_mul_index (le_sup_left (a := H ⊔ P) (b := idelesUnitOff ∅))]
-  -- The first two steps are `[P : H ⊓ P]` and `[idelesUnitOff ∅ : (H ⊔ P) ⊓ idelesUnitOff ∅]`.
-  refine mul_ne_zero ?_ (mul_ne_zero ?_ h_fin.index_ne_zero)
-  · simpa [P, ← index_comap] using h_index_comap_ne
-  · simpa using h_relIndex_ne
+    (h_pos : ∀ x : Kˣ, IsTotallyPositive x.val → principalIdele x ∈ H) : H.FiniteIndex := ⟨by
+  rw [← relIndex_mul_index (le_sup_left (b := principalIdele.range)),
+    ← relIndex_mul_index le_sup_left]
+  simpa [← index_comap] using ⟨((Units.map (.pi fun φ ↦ signHom.toMonoidHom.comp
+    _)).ker.finiteIndex_of_le (h_pos · ∘ (sign_eq_one_iff.1 congr($(·).1 ·)))).1,
+    isCompact_idelesUnitOff_empty.relIndex_ne_zero (isOpen_mono le_sup_left h_open),
+    (finiteIndex_of_le (exists_idele_classGroup_hom.choose_spec.trans_le (by order))).1⟩⟩
 
 /-- The finite ideles form a nonarchimedean group: they have the compact open subgroup
 `idelesUnitOff ∅`. -/
