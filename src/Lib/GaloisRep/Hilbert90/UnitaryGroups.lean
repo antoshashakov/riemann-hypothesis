@@ -465,36 +465,17 @@ adele `c`. -/
 lemma hilbert90_finite_idele [NumberField K]
     (hu : ∏ i ∈ Finset.range (orderOf σ), adeleMap (↑(σ ^ i) : L →+* L) u = 1) :
     ∃ c : 𝔸f L, IsUnit c ∧ u * adeleMap (σ : L →+* L) c = c := by
-  -- By Galois descent `1` lies in the `L`-span of the solutions of `u * σ c = c`. Any two solutions
-  -- have a common divisor that is a solution, so a single solution divides `1`.
-  let τ : 𝔸f L →ₛₗ[(σ : L →+* L)] 𝔸f L :=
-    { toFun x := u * adeleMap σ x
-      map_add' x y := by rw [map_add, mul_add]
-      map_smul' r x := by simp [Algebra.smul_def, mul_left_comm] }
-  -- `τ^[n] x = (∏ i < n, σ ^ i u) * σ ^ n x`; for `n = orderOf σ` this is `x`, by `hu`.
-  have τ_order (x : 𝔸f L) : τ^[orderOf σ] x = x := by
-    simp [τ, iterate_mul_apply, adeleMap_gal_pow, aut_one, hu]
-  -- Descent (`σ` is tame at level `1`) at the prime `⊥` of the field `L`.
-  obtain ⟨r, hr, h_span⟩ :=
-    (isTameAtLevel_gal σ).exists_smul_mem_span_fixedPoints τ τ_order ⊥ one_ne_zero
-  -- Every element of the span of the solutions is divisible by a solution.
-  have divisible (x : 𝔸f L) (hx : x ∈ Submodule.span L (Function.fixedPoints τ)) :
-      ∃ c : 𝔸f L, c ∣ x ∧ u * adeleMap σ c = c := by
-    induction hx using Submodule.span_induction with
-    | mem c hc => exact ⟨c, dvd_rfl, hc⟩
-    | zero => exact ⟨0, dvd_refl 0, by simp⟩
-    | add x y _ _ hx hy =>
-      obtain ⟨a, ha_dvd, ha⟩ := hx
-      obtain ⟨b, hb_dvd, hb⟩ := hy
-      obtain ⟨c, hca, hcb, hc⟩ := exists_dvd_dvd_mul_adeleMap_eq ha hb
-      exact ⟨c, dvd_add (hca.trans ha_dvd) (hcb.trans hb_dvd), hc⟩
-    | smul r x _ hx =>
-      obtain ⟨c, hc_dvd, hc⟩ := hx
-      exact ⟨c, dvd_smul_of_dvd r hc_dvd, hc⟩
-  have one_mem : (1 : 𝔸f L) ∈ Submodule.span L (Function.fixedPoints τ) := by
-    simpa [smul_smul, Ideal.mem_bot.not.mp hr] using h_span (r⁻¹ • 1)
-  obtain ⟨c, hc_dvd, hc⟩ := divisible 1 one_mem
-  exact ⟨c, isUnit_of_dvd_one hc_dvd, hc⟩
+  choose r _ k using (isTameAtLevel_gal σ).exists_smul_mem_span_fixedPoints
+    ⟨⟨(u * adeleMap σ ·), by grind⟩, by simp [Algebra.smul_def, mul_left_comm]⟩
+    (by simp_all [iterate_mul_apply, adeleMap_gal_pow, AlgEquiv.aut_one]) ⊥ one_ne_zero
+  refine (Submodule.mem_span.1 (k (r⁻¹ • 1)) ⟨⟨⟨{x | ∃ c, c ∣ x ∧ _ = c}, fun ⟨a, h, A⟩ ⟨b, g, B⟩ ↦
+    ⟨b + idem {w | Valued.v (b w) ≤ Valued.v (a w)} * (a - b), .add (.trans ?_ h) (.trans ?_ g),
+    DFunLike.ext _ _ ?_⟩⟩, 0, by simp⟩, fun r _ ⟨c, h, A⟩ ↦ ⟨c, dvd_smul_of_dvd r h, A⟩⟩
+    (⟨·, dvd_rfl, ·⟩)).imp (by simp_all [isUnit_of_dvd_one])
+  any_goals apply (exists_eq_mul_iff_v_le.2 _).imp (by tauto)
+  all_goals intro w; simp [idem_apply, apply_ite, adeleMap_apply, ← congr($A w), ← congr($B w),
+    v_locMap_eq_of_surjective (σ : L →+* L) _ σ.surjective] <;> grind [mul_le_mul_iff_right₀,
+    Valuation.pos_iff]
 
 end New
 
