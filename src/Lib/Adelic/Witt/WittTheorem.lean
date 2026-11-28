@@ -426,14 +426,9 @@ lemma IsPrimitiveMatrix.exists_map_subtype_eq {R : Type*} [CommRing R] {O : Subr
 /-- A square matrix is primitive over the subring `O` (it and some left inverse have entries in `O`)
 iff it is invertible and both it and its inverse have entries in `O`. -/
 lemma isPrimitiveMatrix_iff {R : Type*} [CommRing R] {O : Subring R} {g : Matrix n n R} :
-    IsPrimitiveMatrix O g ↔ ∃ x ∈ intGL n O, x.val = g := by
-  constructor
-  · -- a left inverse `L` of a square matrix is its inverse: `g` is the inverse of the unit `L`
-    rintro ⟨hg, L, hL, hLg⟩
-    exact ⟨(Units.mkOfMulEqOne L g hLg)⁻¹, mem_intGL.2 ⟨hg, hL⟩, rfl⟩
-  · rintro ⟨x, hx, rfl⟩
-    obtain ⟨hx_int, hx_inv_int⟩ := mem_intGL.1 hx
-    exact ⟨hx_int, ↑x⁻¹, hx_inv_int, x.inv_mul⟩
+    IsPrimitiveMatrix O g ↔ ∃ x ∈ intGL n O, x.val = g :=
+  ⟨fun ⟨a, _, b, e⟩ ↦ ⟨(.mkOfMulEqOne _ _
+  e)⁻¹, mem_intGL.2 ⟨a, b⟩, rfl⟩, fun ⟨x, h, e⟩ ↦ e ▸ (mem_intGL.1 h).imp_right (⟨_, ·, x.4⟩)⟩
 
 omit [IsCMField E] in
 /-- A square matrix over the ring `Ô E` of integral finite adeles is invertible if its reduction
