@@ -160,10 +160,8 @@ lemma BijectiveUpTo.congr {g : ∀ n : ℕ, A' n → B' n} {a : (i : ℕ) → A 
     {b : (i : ℕ) → B i → B' i} (ha : AllBijective a) (hb : AllBijective b)
     (h_sq : ∀ (n : ℕ) (x : A n), b n (f n x) = g n (a n x)) :
     BijectiveUpTo f r ↔ BijectiveUpTo g r := by
-  refine forall_congr' fun n ↦ ?_
-  have h_comm : b n ∘ f n = g n ∘ a n := funext (h_sq n)
-  rw [← (hb n).injective.of_comp_iff, ← Surjective.of_comp_iff' (hb n), h_comm,
-    Injective.of_comp_iff' _ (ha n), Surjective.of_comp_iff _ (ha n).surjective]
+  simpa [BijectiveUpTo, (hb _).1,
+    (ha _).2, *, ↓← comp_def] using congr(BijectiveUpTo $(funext₂ h_sq) r)
 
 /-- In a commutative square with two opposite sides bijective, one of the other two sides is
 bijective iff the other is. -/
@@ -511,25 +509,10 @@ Ext^n(K,F) → Ext^{n+1}(M,F) of the Ext sequence `contravariant` is surjective 
 lemma exists_acyclic_cover (M : C ⥤ Ab) :
     ∃ (ι : Type 1) (c : ι → C) (g : freeAb (sigma fun i : ι ↦ reprBy (c i)) ⟶ M)
       (h_ses : (kerComplex g).ShortExact),
-      ∀ (F : AbFunctor C) (n : ℕ), Surjective ((contravariant h_ses F).δ n) := by
-  -- Take one copy of h_A for each object A and each element x of M(A), mapped to M by Yoneda.
-  let c : (Σ A : C, M.obj A) → C := fun x ↦ x.1
-  let g : freeAb.obj (sigma fun x ↦ reprBy (c x)) ⟶ M :=
-    (freeAb.homEquiv ..).symm (sigma.desc fun x ↦ pointMap x.2)
-  have hg (A : C) : Surjective (g.app A) := by
-    intro x
-    -- `x` is the image of the identity of A in the copy indexed by (A, x)
-    refine ⟨FreeAbelianGroup.of ⟨⟨A, x⟩, ULift.up (𝟙 A)⟩, ?_⟩
-    calc g.app A (FreeAbelianGroup.of ⟨⟨A, x⟩, ULift.up (𝟙 A)⟩)
-      _ = (pointMap (Y := M ⋙ forget Ab) x).app A (ULift.up (𝟙 A)) :=
-        FreeAbelianGroup.lift_apply_of _ _
-      _ = x := (uliftCoyonedaEquiv (F := M ⋙ forget Ab)).apply_symm_apply x
-  refine ⟨Σ A : C, M.obj A, c, g, kerComplex_shortExact hg, fun F n x ↦ ?_⟩
-  -- on each summand ℤ[h_A] the pull-back of `x` vanishes, as this summand is projective
-  have h_pullback : (mk₀ g).comp x (zero_add _) = 0 := (H.sigma_bijective _ F (n + 1)).injective <|
-    funext fun _ ↦ (eq_zero_of_projective _).trans (eq_zero_of_projective _).symm
-  -- so, by exactness, `x` is in the image of the connecting map
-  exact contravariant_sequence_exact₃ _ F x h_pullback (add_comm 1 n)
+      ∀ (F : AbFunctor C) (n : ℕ), Surjective ((contravariant h_ses F).δ n) :=
+  ⟨Σ _, _, _, (freeAb.homEquiv ..).2 (sigma.desc (pointMap ·.2)),
+  kerComplex_shortExact (⟨.of ⟨⟨·, _⟩, _⟩, (homReprEquiv ..).right_inv ·⟩),
+  fun _ _ _ ↦ (exact_delta_f ..).1 ((H.sigma_bijective ..).1 (by simp [eq_zero_of_projective]))⟩
 
 /-- Given natural transformations N→F_i for each index i, the natural transformation from N to
 the pointwise product of the functors F_i having these as components. -/
@@ -544,26 +527,10 @@ sending a class to the family of its push-forwards (`push`) along the projection
 objectwise product `piAbFunctor F` is bijective. -/
 lemma H.pi_bijective (n : ℕ) :
     Bijective fun (x : H N (piAbFunctor F) n) (i : I) ↦ push N (π F i) n x := by
-  -- Dimension shifting. The push-forwards are written as comparison maps along the identity
-  -- functor, so that `pull_hom_contravariant` makes them morphisms of long exact Ext sequences.
-  simp only [← pull_id_eq_push]
-  induction n generalizing N with
-  | zero =>
-    -- Ext⁰ is Hom, and a map to the product is a family of maps
-    have h_hom : Bijective fun (x : N ⟶ piAbFunctor F) (i : I) ↦ x ≫ π F i :=
-      (Equiv.mk (fun x (i : I) ↦ x ≫ π F i) lift (fun x ↦ rfl) fun f ↦ rfl).bijective
-    refine (bijective_iff_of_comm_sq (fun x ↦ funext fun i ↦ ?_)
-      (mk₀_bijective N (piAbFunctor F)) (.piMap fun i ↦ mk₀_bijective N (F i))).1 h_hom
-    -- pushing forward a class of degree 0 is composition with the projection
-    show pull (⟨𝟭 C, π F i⟩ : Comparison (piAbFunctor F) (F i)) (𝟙 N) 0 (mk₀ x) = mk₀ (x ≫ π F i)
-    simp [pull_apply, mapExactFunctor_mk₀, show (𝟭 C).whiskerLeft x = x from rfl]
-  | succ n ih =>
-    -- for 0 → K → ℤ[⊔ h_c] → N → 0 with onto connecting maps, degree n + 1 for N follows from
-    -- degree n for the two other terms (`bijective_succ_family`, a five lemma for families)
-    obtain ⟨ι, c, g, h_ses, hδ⟩ := exists_acyclic_cover N
-    -- the components are push-forwards along the π F i (found by unification) followed by
-    -- pull-backs along identities
-    exact Hom.bijective_succ_family (fun _ ↦ pull_hom_contravariant h_ses h_ses ⟨𝟭 C, _⟩ (𝟙 _))
-      ih ih (hδ _ n) fun i ↦ hδ (F i) n
+  induction n generalizing N; exact (bijective_iff_of_comm_sq (funext <| mk₀_comp_mk₀ · ∘' _)
+    (mk₀_bijective ..) (.piMap (mk₀_bijective _ ∘' F))).1 (Equiv.mk _ lift).bijective
+  choose _ _ _ h s using exists_acyclic_cover N
+  simp_all [← pull_id_eq_push]; apply Hom.bijective_succ_family fun _ ↦
+    pull_hom_contravariant h h ⟨𝟭 C, _⟩ (𝟙 _) <;> tauto
 
 end New.Variety
