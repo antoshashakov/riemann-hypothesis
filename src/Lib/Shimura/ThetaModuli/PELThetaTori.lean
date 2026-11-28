@@ -548,15 +548,9 @@ lemma card_nsmul_mem_periodLattice (h : u ∈ x.latticeOver D.dualTorsion) :
 the lattice over `S` into itself. -/
 lemma intAction_rescaledBeta_mem_latticeOver (h_le : S ≤ D.dualTorsion) (hu : u ∈ x.latticeOver S) :
     x.intAction D.rescaledBeta u ∈ x.latticeOver S := by
-  -- `rescaledBeta u = β (#T • u) - ⌊#T / 2⌋ • u`, and `#T • u` lies in `x.periodLattice`.
-  have h_β : x.intAction D.β (Nat.card D.dualTorsion • u) ∈ x.periodLattice :=
-    x.intAction_mem_periodLattice D.β _
-      (x.card_nsmul_mem_periodLattice (x.latticeOver_mono h_le hu))
-  have h_eq : x.intAction D.rescaledBeta u =
-      x.intAction D.β (Nat.card D.dualTorsion • u) - (Nat.card D.dualTorsion / 2) • u := by
-        simp [rescaledBeta]
-  rw [h_eq]
-  exact _root_.sub_mem (x.latticeOver_mono bot_le h_β) (nsmul_mem hu _)
+  simpa [rescaledBeta] using
+    _root_.sub_mem (x.latticeOver_mono bot_le (x.intAction_mem_periodLattice _ _
+    (x.card_nsmul_mem_periodLattice (x.latticeOver_mono h_le hu)))) (by aesop)
 
 /-- e(β₁u, w) + e(u, β₁w) = e(u, w) for the Riemann form e of B, where β₁ is `D.rescaledBeta`. -/
 lemma riemannForm_intAction_rescaledBeta (u w : V) :
