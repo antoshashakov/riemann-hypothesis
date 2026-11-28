@@ -155,21 +155,11 @@ lemma IsLabel.exists_eq_prod_charName_of_root_pow_card_eq (hc : IsLabel r c)
 
 /-- For a label `c` of degree `r`, the character `New.labelChar T c` lives in dimension `r`: its
 part of rank `r` is the whole of it. -/
-lemma rankPart_labelChar (hc : IsLabel r c) : (labelChar T c).rankPart r = labelChar T c := by
-  refine hc.induction_irreducible_mul K (Hall.ext (by simp))
-    fun P r c _ξ hP_monic hP_irred _hP_coeff _hP_root ih ↦ Hall.ext fun m g ↦ ?_
-  rw [map_mul, labelChar_eq_greenTau T hP_irred hP_monic, rankPart, ite_eq_left_iff,
-    mul_simClassOf]
-  intro h_dim_ne
-  -- In a term of the product at `g`, the dimensions of the subspace `U` and of the quotient add up
-  -- to that of `g`; so one differs from `P.natDegree` or the other from `r`, and a factor vanishes.
-  refine (finsum_eq_zero_of_forall_eq_zero fun U ↦ ?_).symm
-  have h_dim_add :
-      (simClassOf U.endOnQuot).dim + (simClassOf U.endOnSub).dim = (simClassOf g).dim := by
-    simpa only [dim_simClassOf] using U.val.finrank_quotient_add_finrank
-  by_cases h_sub : (simClassOf U.endOnSub).dim = P.natDegree
-  · rw [← ih, rankPart, ite_eq_right (by omega), mul_zero]
-  · rw [greenTau_eq_zero_of_dim_ne _ h_sub, zero_mul]
+lemma rankPart_labelChar (hc : IsLabel r c) : (labelChar T c).rankPart r = labelChar T c := funext
+  (hc.induction_irreducible_mul K (by simp) (by
+  intro _ _ _ _ _ _ _ _ _ x; simp_all; exact fun _ ↦ .symm (finsum_eq_zero_of_forall_eq_zero
+  fun U ↦ by grind [U.1.finrank_quotient_add_finrank, dim_simClassOf, greenTau_eq_zero_of_dim_ne,
+  simClassOf_out x])))
 
 /-- Let K be an algebraically closed field over the finite field k, with an injective multiplicative
 character T : K → ℂ. A label of degree d is a monic squarefree polynomial of degree d with nonzero
