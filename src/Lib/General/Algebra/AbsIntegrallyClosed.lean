@@ -72,12 +72,8 @@ lemma of_isIntegrallyClosedIn [hA : IsAbsIntegrallyClosed A] [Algebra B A]
 `B` of positive degree whose coefficients lie in the image of `f` has a root in `B`. -/
 lemma exists_root_of_coeffs_subset_range [hA : IsAbsIntegrallyClosed A] {f : A →+* B} {P : B[X]}
     (h_coeffs : (P.coeffs : Set B) ⊆ Set.range f) (hP : P.Monic) (h_deg : 0 < P.natDegree) :
-    ∃ x : B, P.IsRoot x := by
-  -- `P` is the image of a monic `Q` of the same degree, and `f` maps a root of `Q` to one of `P`.
-  obtain ⟨Q, rfl, hQ_deg, hQ⟩ :=
-    lifts_and_natDegree_eq_and_monic ((lifts_iff_coeffs_subset_range P).2 h_coeffs) hP
-  obtain ⟨x, hx⟩ := hA.exists_root Q hQ (by lia)
-  exact ⟨f x, hx.map⟩
+    ∃ x : B, P.IsRoot x := by grind [=_ lifts_iff_coeffs_subset_range, →
+  lifts_and_natDegree_eq_and_monic, → exists_root, → IsRoot.map (f := f)]
 
 /-- In an absolutely integrally closed ring, every element has an `n`-th root for `n ≠ 0`. -/
 lemma exists_pow_eq [hA : IsAbsIntegrallyClosed A] (n : ℕ) [hn : NeZero n] (a : A) :
