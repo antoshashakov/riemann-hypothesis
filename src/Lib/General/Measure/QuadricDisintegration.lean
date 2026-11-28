@@ -292,15 +292,9 @@ lemma modulus_ne_top (u : Aˣ) : P.modulus u ≠ ∞ := (modulus_ne_zero_and_ne_
 
 /-- Multiplication by a unit u maps the volume of A to (`modulus` u)⁻¹ times itself. -/
 lemma map_mul_volume (u : Aˣ) : volume.map (u.val * ·) = (P.modulus u)⁻¹ • volume := by
-  -- The case of a `1 × 1` matrix in `map_mulVec_volume`, carried along `(Fin 1 → A) ≃ A`.
-  let e : (Fin 1 → A) ≃ᵐ A := MeasurableEquiv.funUnique (Fin 1) A
-  have h_eval : MeasurePreserving e := volume_preserving_funUnique (Fin 1) A
-  have h_det : MeasurePreserving (!![u.val] *ᵥ ·) volume ((P.modulus u)⁻¹ • volume) :=
-    ⟨by fun_prop, by simpa using P.map_mulVec_volume (Fin 1) !![u.val] (by simp)⟩
-  have h_conj : (u.val * ·) = e ∘ (!![u.val] *ᵥ ·) ∘ e.symm :=
-    funext fun x ↦ by simp [e, dotProduct]
-  rw [h_conj]
-  exact ((h_eval.smul_measure _).comp (h_det.comp (h_eval.symm e))).map_eq
+  have e := volume_preserving_funUnique (Fin 1) A
+  simpa using!
+    ((e.smul_measure _).comp (.comp ⟨by fun_prop, map_mulVec_volume _ !![↑u] (by simp)⟩ e.symm)).2
 
 @[simp]
 lemma star_skewUnit_inv : star P.skewUnit⁻¹.val = -P.skewUnit⁻¹.val := by
@@ -405,15 +399,9 @@ lemma skewMeasure_le_of_sub_mem {S : Set (skewAdjoint A)} {C : Set A} {x : ℝ�
     (h_sub : ∀ p ∈ S ×ˢ S, ∀ q ∈ S ×ˢ S,
       u * (P.element * skewUnit⁻¹.val * ((p - q).1 : A) + ((p - q).2 : A)) ∈ C)
     (h_vol : (P.modulus u)⁻¹ * volume C ≤ x ^ 2) : skewMeasure S ≤ x := by
-  -- A translate of `S ×ˢ S` lies in the preimage of `C` under `F`, the chart of
-  -- `measurePreserving_split` followed by multiplication by `u`.
-  let F (p : skewAdjoint A × skewAdjoint A) : A := u.val * (P.element * skewUnit⁻¹.val * p.1 + p.2)
-  have hF : MeasurePreserving F (skewMeasure.prod skewMeasure) ((P.modulus u)⁻¹ • volume) :=
-    .comp ⟨by fun_prop, map_mul_volume u⟩ measurePreserving_split
-  rw [← ENNReal.pow_le_pow_left_iff two_ne_zero, sq, ← prod_prod]
-  calc skewMeasure.prod skewMeasure (S ×ˢ S) ≤ skewMeasure.prod skewMeasure (F ⁻¹' C) :=
-        measure_le_of_sub_mem fun p hp ↦ ⟨p, fun q hq ↦ h_sub q hq p hp⟩
-    _ ≤ x ^ 2 := (hF.measure_preimage_le C).trans h_vol
+  grw [← ENNReal.pow_le_pow_left_iff, ← ((MeasurePreserving.comp ⟨by fun_prop, map_mul_volume u⟩
+    measurePreserving_split).measure_preimage_le C).trans h_vol, sq, ← prod_prod,
+    measure_le_of_sub_mem] <;> tauto
 
 /-- The measures of a disintegration along the form with matrix T are finite on compact sets. -/
 lemma IsDisintegration.isFiniteMeasureOnCompacts {l : skewAdjoint A → Measure (ι → A)}
