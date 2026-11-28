@@ -555,12 +555,8 @@ variable [TopologicalSpace G] [IsTopologicalGroup G]
 /-- Let `ρ` be a smooth representation and `K` a compact subgroup. If `x` lies in the span of the
 orbit of `y`, then so does the mean over `K` of `ρ(g) x`, for every `g`. -/
 lemma compactMean_mem_cyclicSpan [IsSmoothRep ρ] [CompactSpace K] (g : G) {x : V}
-    (hx : x ∈ cyclicSpan ρ y) : compactMean ρ K (ρ g x) ∈ cyclicSpan ρ y := by
-  -- The quotient map by the subrepresentation kills every `ρ k (ρ g x)`, hence also their mean.
-  have h_zero : (cyclicSpan ρ y).mkQ (compactMean ρ K (ρ g x)) = 0 :=
-    map_compactMean_of_const _ fun k _ ↦ by
-      simpa using apply_mem_cyclicSpan k _ (apply_mem_cyclicSpan g x hx)
-  simpa using h_zero
+    (hx : x ∈ cyclicSpan ρ y) : compactMean ρ K (ρ g x) ∈ cyclicSpan ρ y :=
+  (Submodule.ker_mkQ _).le (map_compactMean_of_const _ (by simp_all [apply_mem_cyclicSpan]))
 
 end New
 
