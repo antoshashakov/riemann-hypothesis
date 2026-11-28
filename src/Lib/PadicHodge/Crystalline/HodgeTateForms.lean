@@ -75,20 +75,10 @@ lemma mem_hodgeTateMaps_of_span [Algebra.IsAlgebraic ℤ_[p] R] {ι : Sort*} {s 
     (hs : span R (Set.range s) = ⊤) {f : T →ₛₗ[toRingHom γ] ℂ_[p]} {u : ℤ}
     (h_gen : ∀ i : ι,
       ∀ᶠ g : Γ in nearOne Γ, f (ρ g (s i)) = (χ g ^ (-u)).val • toGp g • f (s i)) :
-    f ∈ hodgeTateMaps ρ γ u := by
-  show ∀ x : T, ∀ᶠ g : Γ in nearOne Γ, f (ρ g x) = (χ g ^ (-u)).val • toGp g • f x
-  intro x
-  obtain ⟨δ, hδ⟩ := exists_algHom_lift γ
-  induction eq_top_iff'.mp hs x using span_induction with
-  | mem y hy =>
-    obtain ⟨i, rfl⟩ := hy
-    exact h_gen i
-  | zero => simp
-  | add y z _ _ hy hz => filter_upwards [hy, hz] with g hgy hgz using by simp [hgy, hgz]
-  | smul r y _ hy =>
-    -- the scalar `γ r = δ r` is algebraic, so it is fixed by `toGp g` for `g` near 1
-    filter_upwards [hy, eventually_nearOne_apply_eq Γ (δ r)] with g hgy h_fix
-    simp [hgy, hδ, smul_coe_Cp, h_fix]
+    f ∈ hodgeTateMaps ρ γ u :=
+  (exists_algHom_lift
+  γ).rec fun δ _ x ↦ by refine span_induction ?_ ?_ (fun _ _ _ _ ↦ (·.mp <| ·.mp ?_)) (fun r _ _ ↦
+  (·.mp ((eventually_nearOne_apply_eq Γ (δ r)).mp ?_))) (hs.ge ⟨⟩ : x ∈ _) <;> simp_all
 
 variable [F : Module.Finite R T]
 
@@ -163,18 +153,9 @@ a ℂ_p-basis b of the γ-semilinear maps has each `b i` in `New.Period.hodgeTat
 the `u i` are the jumps (`New.Period.HasJumps`). -/
 lemma hasJumps_of_basis [Fintype ι] {u : ι → ℤ} {b : Basis ι ℂ_[p] (T →ₛₗ[toRingHom γ] ℂ_[p])}
     (hb_mem : ∀ i : ι, b i ∈ hodgeTateMaps ρ γ (u i)) :
-    HasJumps ρ γ (univ.val.map u) := by
-  intro v
-  -- The space of weight `v` is spanned over `PadicAlgCl p` by the basis vectors with `u i = v`.
-  have h_span : hodgeTateMaps ρ γ v = span (PadicAlgCl p) (b '' {i : ι | u i = v}) := by
-    refine le_antisymm (fun φ hφ ↦ hodgeTateMaps.mem_span_same_weight hb_mem hφ (b.mem_span φ))
-      (span_le.mpr ?_)
-    rintro _ ⟨i, rfl, rfl⟩
-    exact hb_mem i
-  -- These vectors are independent, so the dimension is their number.
-  have h_indep : LinearIndependent (PadicAlgCl p) fun i : {i : ι | u i = v} ↦ b i :=
-    (b.linearIndependent.restrict_scalars' _).comp _ Subtype.val_injective
-  rw [jump, h_span, image_eq_range, finrank_span_eq_card h_indep, Multiset.count_map]
-  simp [eq_comm, Fintype.card_subtype, card_def]
+    HasJumps ρ γ (univ.val.map u) := fun v ↦ by erw [jump, ← span_eq_of_le _
+  (by grind [SetLike.mem_coe]) fun _ ↦ (hodgeTateMaps.mem_span_same_weight hb_mem · (by simp)),
+  image_eq_range, univ.1.count_map, finrank_span_eq_card
+  ((b.linearIndependent.restrict_scalars' _).comp _ (by simp))]; simp [eq_comm, card_def]
 
 end New.Period
