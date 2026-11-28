@@ -226,13 +226,8 @@ lemma filling_besselDegree_eq_exp_sum :
     exp_sub, weylDimensionPoly, ↓paramW_lt_iff, paramW]
   congr! with v
   -- Index the pairs by their numbers under `basisNumber`.
-  suffices h_ranges : ∏ l ∈ range D.r, (∏ i ∈ range (min D.r l),
-        (2 * (D.targetParameter v i : ℝ) - 2 * D.targetParameter v l) / 2) / l ! =
-      ∏ l ∈ Ico (D.k - 1) D.r,
-        (∏ i ∈ range l, exp (log (D.targetParameter v i - D.targetParameter v l : ℝ))) /
-          exp (log (l ! : ℝ)) by
-    simpa [prod_comm, prod_filter, reindex_equiv D.basisNumber.symm, prod_fin_eq_prod_range,
-      ← mem_range, ← prod_div_distrib] using h_ranges
+  simp [prod_comm, prod_filter, reindex_equiv D.basisNumber.symm, prod_fin_eq_prod_range,
+    ← mem_range, ← prod_div_distrib]
   apply prod_congr_of_eq_on_inter
   · -- `l < k - 1`: the differences are `l - i`, with product `l!`.
     intro l hl hl'
@@ -243,7 +238,7 @@ lemma filling_besselDegree_eq_exp_sum :
           grind [targetParameter_eq]
     simp [min_eq_right (mem_range.1 hl).le, prod_congr rfl h_diff,
       prod_range_reflect (fun i : ℕ ↦ (i : ℤ) + 1), ← prod_range_add_one_eq_factorial]
-  · exact fun l hl hl' ↦ absurd (mem_range.2 (mem_Ico.1 hl).2) hl' -- the left range is larger
+  · exact fun l hl hl' ↦ absurd (mem_range.2 (mem_Ico.1 hl).2) hl'
   · -- `k - 1 ≤ l < r`: the numbers under `log` are positive by `targetParameter_sub_mem_Icc`.
     intro l hl _
     rw [min_eq_right (mem_range.1 hl).le, exp_log (mod_cast l.factorial_pos)]
@@ -264,9 +259,8 @@ lemma log_filling_besselDegree_mem_Icc :
       (∑ v : D.Φ, D.m * ((D.k - 1) * Real.log (D.weight v)))
       (∑ v : D.Φ, D.m * (D.r * (Real.log (D.weight v) + D.x⁻¹))) := by
   rw [D.filling_besselDegree_eq_exp_sum]
-  have weight_pos (v : D.Φ) : (0 : ℝ) < D.weight v := HasLogBound.pos D
-  have weight_ne (v : D.Φ) : D.weight v ≠ 0 := by
-    exact_mod_cast (weight_pos v).ne'
+  have weight_ne (v : D.Φ) : D.weight v ≠ 0 :=
+    Nat.ne_of_gt (D.nat_le_of_hasLogBound : 1 ≤ D.weight v)
   simp
   constructor <;> gcongr with v
   grw [← @range_mono (D.k - 1),
