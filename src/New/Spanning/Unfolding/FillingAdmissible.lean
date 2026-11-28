@@ -568,24 +568,15 @@ lemma abs_log_mainSecondMoment_div_identitySecondMoment_sub_le :
     rw [unipotentOrder, Shape.k, card_X₀, Nat.cast_pow]
     rfl
   -- The range of `N`, and `N ^ k - 1` against `N ^ k`.
-  have log_N : (D.f * D.k) • log D.N ∈
-      Set.Icc ((D.f * D.k) • D.logLevelTarget) ((D.f * D.k) • (D.logLevelTarget + √D.logB)) :=
-    (nsmul_right_mono _).mapsTo_Icc D.log_N_mem_Icc_logLevelTarget
-  have log_pred_le : D.f • log (D.N ^ D.k - 1) ≤ D.f • log (D.N ^ D.k) :=
-    nsmul_le_nsmul_right (log_le_log pred_pos (sub_one_lt _).le) _
-  have log_ratio : D.f • log (D.N ^ D.k / (D.N ^ D.k - 1)) ≤ D.f • (2 / D.N : ℝ) :=
-    nsmul_le_nsmul_right D.log_pow_div_pow_sub_one_le _
+  have log_N := (nsmul_right_mono (D.f * D.k)).mapsTo_Icc D.log_N_mem_Icc_logLevelTarget
+  have log_pred_le := nsmul_le_nsmul_right (log_le_log pred_pos (sub_one_lt _).le) D.f
+  have log_ratio := nsmul_le_nsmul_right D.log_pow_div_pow_sub_one_le D.f
   have mul_mean_log_weight_eq :
       D.k * D.m * (D.f * ((∑ v : D.Φ, log (D.weight v)) / D.f)) =
       D.k * D.m * ∑ v : D.Φ, log (D.weight v) := by rw [mul_div_cancel₀ _ (ne _)]
   -- The degree and the ratio of the masses, with their factorials.
-  have log_deg : log D.filling.besselDegree + D.f * ∑ l ∈ Ico (D.k - 1) D.r, log l.factorial ∈
-      Set.Icc (∑ v : D.Φ, D.m * ((D.k - 1) * log (D.weight v)))
-        (∑ v : D.Φ, D.m * (D.r * (log (D.weight v) + D.x⁻¹))) :=
-    D.log_filling_besselDegree_mem_Icc
-  have mass_ratio : |∑ i ∈ Ico D.k D.r, (log (mass D.E (i + 1)) - log (mass D.E i) -
-      D.f * ((i + 1 / 2) * log D.rootDisc + log i.factorial - (i + 1) * log (2 * π)))| ≤
-        log (1 + D.b⁻¹ ^ 9) - 2 * (D.f * (2 / D.N)) := D.abs_sum_log_mass_ratio_sub_le
+  have log_deg := D.log_filling_besselDegree_mem_Icc
+  have mass_ratio := D.abs_sum_log_mass_ratio_sub_le
   have first_factorial : D.f * ∑ i ∈ Ico (D.k - 1) D.k, log i.factorial =
       D.f * ∑ i ∈ {D.k - 1}, log i.factorial := by rw [D.k.Ico_pred_singleton k_pos]
   -- The remaining terms are small against `f k log b`.
