@@ -206,10 +206,8 @@ lemma expSubst_add (a : MvPowerSeries σ ℂ_[p]) {b : MvPowerSeries σ ℂ_[p]}
 exponentials. -/
 lemma expSubst_sum {I : Type*} {t : Finset I} {a : I → MvPowerSeries σ ℂ_[p]}
     (h_const : ∀ i : I, (a i).constantCoeff = 0) :
-    expSubst (t.sum a) = ∏ i ∈ t, expSubst (a i) := by
-  induction t using Finset.cons_induction with
-  | empty => simp [subst_zero_eq_C_constantCoeff]
-  | cons i t hi ih => simp [expSubst_add _ (h_const i), h_const, ih]
+    expSubst (t.sum a) = ∏ i ∈ t, expSubst (a i) :=
+  t.cons_induction (by simp [subst_zero_eq_C_constantCoeff]) (by simp_all [expSubst_add])
 
 /-- The norm of a nonzero natural number `n` in `ℂ_[p]` is `p ^ (-v_p(n))`. -/
 lemma norm_natCast_eq_inv_pow_padicValNat {n : ℕ} (hn : n ≠ 0) :
