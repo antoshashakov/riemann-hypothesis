@@ -811,57 +811,22 @@ theorem HCParam.IsKHighest.coeffMap_eq_zero [InnerProductSpace ℂ H] {ρ : GlMo
     (h_bdd : ∀ (g : USign ε) (v : H), ‖c g v‖ ≤ D * ‖v‖)
     (h_one : ∀ s : ℕ, ∀ v ∈ ρ.filtration ε x s, c 1 v = 0) (g : USign ε) :
     c g x = 0 := by
-  -- Every `g` is a product of two exponentials, so it suffices to show: if `c g` kills all steps
-  -- of the filtration, then so does `c (g * expU Y)`.
-  obtain ⟨R, hR⟩ : ∃ R : ℕ, ∀ i, |ν i|.toNat ≤ R := Finite.exists_le _
-  obtain ⟨Y₁, Y₂, rfl⟩ := exists_eq_expU_mul_expU g
-  suffices h_step : ∀ Y g, (∀ s, ∀ v ∈ ρ.filtration ε x s, c g v = 0) →
-      ∀ s, ∀ v ∈ ρ.filtration ε x s, c (g * expU Y) v = 0 by
-    simpa using h_step Y₂ _ (h_step Y₁ 1 h_one) 0 x ρ.self_mem_filtration
-  intro Y g hg
-  let growth : ℝ := (card n + 1) ^ 4 * ‖Y.1‖
-  let decay (t : ℝ) : ℝ := exp (-exp 1 * (growth + 1) * t)
-  -- `f_v t = c (g * expU (t • Y)) v` has `f_v 0 = 0` and `f_v' = f_{Y v}`. For every `m` it stays
-  -- below this barrier, by downward induction on `s`.
-  have h_bound (m s : ℕ) : ∀ v ∈ ρ.filtration ε x s, ∀ t ∈ Set.Icc (0 : ℝ) 1,
-      ‖c (g * expU (t • Y)) v‖ ≤ exp (m * -decay t) * (exp (R + 1 + s) * (|D| * ‖v‖ + 1)) := by
-    induction hk : m - s using Nat.strong_induction_on generalizing s with | _ k ih => ?_
-    intro v hv
-    have hYv_le : ‖ρ Y v‖ ≤ (card n + 1) ^ 4 * (R + 1 + s) * ‖Y.1‖ * ‖v‖ :=
-      hx.norm_apply_le_mul_norm h_inv (fun i ↦ toNat_le.1 (hR i)) hv Y
-    refine image_norm_le_of_norm_deriv_right_lt_deriv_boundary
-      (HasDerivAt.continuousOn fun t _ ↦ h_coef g Y v t)
-      (fun t _ ↦ (h_coef g Y v t).hasDerivWithinAt)
-      (by simp [hg s v hv]; positivity) (fun _ ↦ hasDerivAt_deriv_iff.2 (by fun_prop))
-      fun t ⟨ht_nonneg, ht_lt⟩ h_touch ↦ ?_
-    -- where `f_v` touches the barrier, `‖f_v t‖ ≤ D * ‖v‖` forces `R + 1 + s < m * decay t ≤ m`
-    have h_lt : R + 1 + s < m * decay t := by
-      have h_le := h_touch.ge
-      grw [h_bdd, le_abs_self D, lt_add_one (_ * _)] at h_le
-      simpa [← exp_add, field] using h_le
-    have hs : s < m := by
-      rify
-      nlinarith [show decay t ≤ 1 by simp [decay]; positivity]
-    -- `‖Y v‖ ≤ growth * (R + 1 + s) * ‖v‖`, and `R + 1 + s` is below `m * decay t`
-    have h_deriv_lt : |D| * ‖ρ Y v‖ + 1 < (growth + 1) * (m * decay t) * (|D| * ‖v‖ + 1) := by
-      grw [hYv_le, ← h_lt, ← sub_nonneg]
-      simp only [growth]
-      ring_nf
-      positivity
-    -- as `s < m` the induction hypothesis bounds `f_v' = f_{Y v}` below the barrier's derivative
-    calc _ ≤ exp (m * -decay t) * (exp (R + 1 + (s + 1 : ℕ)) * (|D| * ‖ρ Y v‖ + 1)) :=
-          ih _ (by omega) (s + 1) rfl _ (GlModule.apply_mem_filtration_succ hv Y) t
-            ⟨ht_nonneg, ht_lt.le⟩
-      _ < exp (m * -decay t) * (exp (R + 1 + (s + 1 : ℕ)) *
-          ((growth + 1) * (m * decay t) * (|D| * ‖v‖ + 1))) := by gcongr
-      _ = deriv (fun t ↦ exp (m * -decay t) * (exp (R + 1 + s) * (|D| * ‖v‖ + 1))) t := by
-          simp (disch := fun_prop) [decay, exp_add]
-          ring
-  -- at `t = 1` the barriers are summable in `m`, so the constant that they bound is `0`
-  intro s v hv
-  simpa using (summable_const_iff _).1 <|
-    (Summable.mul_right _ (summable_exp_nat_mul_iff.2 (neg_lt_zero.2 (exp_pos _)))).of_norm_bounded
-      fun m ↦ h_bound m s v hv 1 (by simp)
+  obtain ⟨⟨R, r⟩, X, Y, rfl⟩ := Finite.exists_le (|ν ·|.toNat), exists_eq_expU_mul_expU g
+  have k (Y : unitaryLie _) g (h_one : ∀ s, ∀ v ∈ ρ.filtration ε x s, c g v = 0) :=
+    let rec f (m s : ℕ) v (hv : v ∈ ρ.filtration ε x s) : ∀ t ∈ unitInterval, ‖c (g * expU (t • Y))
+      v‖ ≤ exp (m * -exp (-exp 1 * ((card n + 1) ^ 4 * ‖Y.1‖ + 1) * t)) * (exp (R + 1 + s) * (|D| *
+      ‖v‖ + 1)) := have ⟨p, q⟩ := hx.norm_apply_le_of_mem_filtration h_inv (toNat_le.1 <| r ·) hv Y
+      image_norm_le_of_norm_deriv_right_lt_deriv_boundary (HasDerivAt.continuousOn (by tauto))
+      (fun t _ ↦ (h_coef ..).hasDerivWithinAt) (by simp [h_one s v hv]; bound)
+      (fun _ ↦ hasDerivAt_deriv_iff.2 (by fun_prop)) fun t ⟨a, b⟩ ↦ (fun u ↦ by
+      grw [h_bdd, le_abs_self D, lt_add_one (_ * _)] at u; simp [← exp_add, field] at u
+      have : s < m := by rify; grw [neg_nonpos.2, exp_zero] at u <;> bound
+      grw [IsKHighest.coeffMap_eq_zero.f m _ _ p t ⟨a, b.le⟩, q]
+      simp (disch := fun_prop) [exp_add, field]; grw [← u, ← sub_nonneg]; ring; bound) ∘ Eq.ge
+    fun s v hv ↦ (summable_const_iff _).1 (.of_norm_bounded (.mul_right _
+    (summable_exp_nat_mul_iff.2 (by simp; bound)))
+      (IsKHighest.coeffMap_eq_zero.f · s v hv 1 (by simp)))
+  simpa using k Y _ (k X 1 h_one) 0 _ ρ.self_mem_filtration
 
 /-- If `ρ` is the derivative of `ϖ` along `ι` (at `1`), then `v ↦ φ (ϖ g (ι v))` is a coefficient
 map for `ρ` (at every point of the group), for each continuous linear map `φ`. -/
