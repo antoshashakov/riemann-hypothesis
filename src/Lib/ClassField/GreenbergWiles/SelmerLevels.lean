@@ -301,17 +301,11 @@ when it is an `S`-unit of `K` (`Set.unit`) for `S` the set of primes that divide
 unit at every prime of `K` that does not divide `N`. -/
 lemma ofBase_mem_sUnits {N : ℕ} {x : Kˣ} :
     (DiscreteUnits.ofBase G Ω (Additive.ofMul x)).val ∈ sUnits N ↔
-      x ∈ unit {w : FinPlace K | ↑N ∈ w.asIdeal} K := by
-  -- For `B` over `w`, the condition on `x` at `B` is the condition on `x` at `w`.
-  have h_same {B : ClosurePlace} {w : FinPlace K} (hB : IsPlaceOver B w) :
-      (B N = 1 → valuationVia K B x = 1) ↔ (↑N ∉ w.asIdeal → w.valuation K x = 1) :=
-    hB.valuation_natCast_eq_one_iff.imp hB.valuationVia_eq_one_iff
-  change (∀ B : ClosurePlace, B N = 1 → valuationVia K B x = 1) ↔ _
-  refine ⟨fun h (w : FinPlace K) ↦ (h_same w.isPlaceOver_placeOver).1 (h _),
-    fun h B hN ↦ by_contra fun hx ↦ ?_⟩
-  -- If `x` is not a unit at `B`, then `B` is not trivial on `K`, so it lies over some prime `w`.
-  obtain ⟨w, hB⟩ := exists_isPlaceOver_of_val_ne_one K (A := B) (by simp) hx
-  exact hx ((h_same hB).2 (h w) hN)
+      x ∈ unit {w : FinPlace K | ↑N ∈ w.asIdeal} K :=
+  ⟨fun h (w : FinPlace K) ↦ w.isPlaceOver_placeOver.valuationVia_eq_one_iff.1 ∘ h _ ∘
+  w.isPlaceOver_placeOver.valuation_natCast_eq_one_iff.2, fun h B b ↦ by_cases id
+  (exists_isPlaceOver_of_val_ne_one K (by simp) · |>.elim fun _ o ↦
+  o.valuationVia_eq_one_iff.2 (h _ (o.valuation_natCast_eq_one_iff.1 b)))⟩
 
 /-- The property that the Frobenius elements `s.φ i` detect `m`-th roots: every `y` in `Ωˣ` whose
 `m`-th power is an `N`-unit of the fixed field of `U`, and which every `s.φ i` fixes, is fixed by
@@ -330,12 +324,9 @@ lemma mem_sUnits_of_nsmul_mem {r : DiscreteUnits Ω} {y : fixedSUnits N U} (hr :
 primes `s.v i` indexed by a type `ι`. If the valuation subring `B` lies over a chosen prime `s.v i`,
 then its decomposition group lies in `U`. -/
 lemma SplitPlaces.decompGroup_le (s : SplitPlaces m N I U ι) {i : ι}
-    (h : IsPlaceOver B (s.v i)) : decompGroup G B ≤ U := by
-  -- `U` is open and normal, and contains inertia and a conjugate of `s.φ i`, a Frobenius at `B`
-  obtain ⟨g, rfl⟩ : ∃ g : G, g • s.valuationSubring i = B := (s.isPlaceOver i).exists_smul G h
-  obtain ⟨h_frob, hφ_mem⟩ := s.isFrob i
-  exact h.decompGroup_le (h_frob.conj g) U.isOpen (s.inertiaGroup_le (s.level_notMem i) h)
-    (U.isNormal'.conj_mem _ hφ_mem g)
+    (h : IsPlaceOver B (s.v i)) : decompGroup G B ≤ U :=
+  h.decompGroup_le (((s.isPlaceOver i).exists_smul G h).choose_spec ▸ (s.isFrob i).1.conj _) U.1.2
+  (s.inertiaGroup_le (s.level_notMem i) h) (U.2.1 _ (s.isFrob i).2 _)
 
 /-- Given split places `s : SplitPlaces m N I U ι`, with chosen primes indexed by a type `ι`, pass
 to an open subgroup `B` that contains `U`. Let `Q` be an open normal subgroup of `B` that contains
