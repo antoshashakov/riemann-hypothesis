@@ -67,15 +67,7 @@ lemma finsum_countTerm_eq_sum {ε : Prop} (w : E[X] → n → ℂ)
     (h_fin : (countTerm ε f 1).support.Finite) :
     ∑ᶠ c : orbitRel.Quotient (GL n E) (MarkedTriple (levelGU n 𝔑) n), countTerm ε f w c =
       ∑ c ∈ h_fin.toFinset, countTerm ε f 1 c * w c.out.2.1.val.charpoly c.out.2.2 := by
-  -- The weight `w` factors out of each term, so the terms vanish off the support of
-  -- `countTerm ε f 1`.
-  have h_term (c : orbitRel.Quotient (GL n E) (MarkedTriple (levelGU n 𝔑) n)) :
-      countTerm ε f w c = countTerm ε f 1 c * w c.out.2.1.val.charpoly c.out.2.2 := by
-    rcases h_out : c.out with ⟨q, z, μ⟩
-    simp [countTerm, h_out, ite_mul]
-  rw [funext h_term, finsum_eq_sum_of_support_subset]
-  -- The remaining goal: the support of the weighted term lies in that of `countTerm ε f 1`.
-  simp
+  convert finsum_eq_sum_of_support_subset .. <;> simp [countTerm] <;> grind
 
 /-- For `y` with separable characteristic polynomial, some `k` conjugates the diagonal matrix of
 the listed roots `numberedRoots (Φ v₀) _` of that polynomial to Φ_{v₀}(y), and the diagonal matrix
