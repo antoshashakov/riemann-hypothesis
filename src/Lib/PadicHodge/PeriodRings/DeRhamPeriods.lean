@@ -154,54 +154,17 @@ The element `t` plays the role of Fontaine's period `t`, up to the factor `p`. -
 lemma exists_tPeriod : ∃ t : Amax,
     Associated (mu * p : Amax) t ∧
     frobEnd t = p * t ∧
-    ∀ g : Gp p, g • t = (cyclotomicGp g : ℤ_[p]) • t := by
-  -- Write `φ ξ = p u` with `u` a unit and `φ ξ - p = μ w`. Then `φ μ = p u μ`, and
-  -- `t = μ (p + μ c)` works, where `c` solves `c - p u² φ c = w`.
-  set μ : Amax := ↑mu with hμ
-  obtain ⟨u, hu⟩ : ∃ u : Amaxˣ, p * (u : Amax) = frobEnd xi := associated_p_frobEnd_xi
-  -- apply `φ` to `τ ∣ ξ - p`, with `φ τ = μ`
-  obtain ⟨w, hw⟩ : μ ∣ p * u - p := by
-    simpa [hu, hμ, -isUnit_map_iff] using
-      map_dvd (algebraMap Ainf Amax) (map_dvd frobEnd tau_dvd_xi_sub_p)
-  obtain ⟨c, hc⟩ : ∃ c : Amax, c - p * u ^ 2 * frobEnd c = w :=
-    exists_sub_mul_frobEnd_eq (dvd_mul_right _ _) w
-  have phi_μ : frobEnd μ = p * u * μ := by
-    rw [hu, hμ, frobEnd_algebraMap, ← map_mul, ← frobEnd_tau, ← map_mul, xi_mul_tau, frobEnd_tau]
-  let t : Amax := μ * (p + μ * c)
-  -- expand `t` with `μ w = p u - p` and `c = w + p u² φ c`
-  have t_eq : μ * p * (u + μ * u ^ 2 * frobEnd c) = t := by linear_combination μ * hw - μ ^ 2 * hc
-  -- `φ t = p u μ (p + p u μ φ c)` is `p` times the left side of `t_eq`
-  have phi_t : frobEnd t = p * t := by
-    rw [map_mul, map_add, map_mul, map_natCast, phi_μ, ← t_eq]
-    ring
-  -- `p ∣ ξ ∣ μ` in `Amax`, so the last factor in `t_eq` is the unit `u` modulo `p`
-  have h_p_dvd : (p : Amax) ∣ u + μ * u ^ 2 * frobEnd c - u := by simp [μ, ← xi_mul_tau, mul_assoc]
-  have h_unit : IsUnit (u + μ * u ^ 2 * frobEnd c) := isUnit_of_dvd_sub u.isUnit h_p_dvd
-  refine ⟨t, ⟨h_unit.unit, t_eq⟩, phi_t, fun g ↦ ?_⟩
-  -- `δ = g t - χ(g) t` is divisible by every `p ^ n μ²`, so it vanishes
-  set χ : ℤ_[p] := ↑(cyclotomicGp g)
-  set δ : Amax := g • t - χ • t with hδ
-  have phi_δ : frobEnd δ = p * δ := by
-    have phi_smul : frobEnd (χ • t) = χ • frobEnd t := by simp only [frobEnd_eq_smul, smul_comm]
-    simp [hδ, ← smul_frobEnd, phi_smul, phi_t, mul_sub]
-  have h_dvd (n : ℕ) : p ^ n * μ ^ 2 ∣ δ := by
-    induction n with
-    | zero =>
-      -- `g μ = μ² d + χ(g) μ` and `t = μ (p + μ c)`; expand `g t - χ(g) t`
-      obtain ⟨d, hd⟩ : mu ^ 2 ∣ g • mu - χ • mu := Lift.mu_sq_dvd_smul_mu_sub g
-      have h_gμ : g • μ = μ ^ 2 * d + algebraMap ℤ_[p] Amax χ * μ := by
-        simp [μ, χ, eq_add_of_sub_eq hd, Algebra.smul_def, ← IsScalarTower.algebraMap_apply]
-      have h_gt : g • t = g • μ * (p + g • μ * g • c) := by simp [t, smul_mul', smul_add]
-      refine ⟨p * d + (algebraMap ℤ_[p] Amax χ + μ * d) ^ 2 * g • c - χ • c, ?_⟩
-      rw [hδ, h_gt, h_gμ, Algebra.smul_def χ c, Algebra.smul_def χ t]
-      ring
-    | succ n ih =>
-      -- applying `φ` to `δ = p ^ n μ² z` gives `p δ = p ^ n (p u μ)² φ z`; cancel `p`
-      obtain ⟨z, hz⟩ := ih
-      refine ⟨u ^ 2 * frobEnd z, mul_left_cancel₀ (ne (p : Amax)) ?_⟩
-      rw [← phi_δ, hz, map_mul, map_mul, map_pow, map_pow, map_natCast, phi_μ]
-      ring
-  exact eq_of_forall_pow_dvd_sub p fun n ↦ dvd_of_mul_right_dvd (h_dvd n)
+    ∀ g : Gp p, g • t = (cyclotomicGp g : ℤ_[p]) • t := associated_p_frobEnd_xi.rec fun u a ↦
+  tau_dvd_xi_sub_p.rec fun w k ↦ let ⟨c, _⟩ :=
+    Amax.exists_sub_mul_frobEnd_eq ⟨u.1 ^ 2, rfl⟩ (frobEnd w); let t := mu * (p + mu * c)
+    let ⟨e, h⟩ : mu * p * (u.1 + mu * u ^ 2 * frobEnd c) = t ∧ frobEnd t = p * t := by
+      grind [map_natCast, frobEnd_algebraMap, frobEnd_tau, xi_mul_tau, congr(frobEnd ($k : Amax))]
+    ⟨t, ⟨(isUnit_of_dvd_sub u.isUnit (π := ↑p) (by simp [← xi_mul_tau, mul_assoc])).unit, e⟩, h,
+    fun g ↦ (Lift.mu_sq_dvd_smul_mu_sub g).rec fun d k ↦ eq_of_forall_pow_dvd_sub p (.trans ⟨mu ^ 2,
+      rfl⟩ <| ·.rec ⟨p * d + ((cyclotomicGp g).1 + mu * d) ^ 2 * g • c - (cyclotomicGp g).1 •
+      c, by simp [t, eq_add_of_sub_eq k, smul_def]; ring!⟩ fun n ⟨z, H⟩ ↦ ⟨u ^ 2 * frobEnd z,
+      mul_left_cancel₀ (ne ↑p) (by convert congr(frobEnd $H) <;> simp [← smul_frobEnd, h,
+      ← congr(frobEnd $xi_mul_tau), ← a, smul_def] <;> simp [frobEnd] <;> ring)⟩)⟩
 
 /-- A chosen element `t` of `Amax` with the three properties of `exists_tPeriod`. These properties
 are unchanged when `t` is multiplied by a unit of `ℤ_[p]`, so they do not fix a normalisation. -/
