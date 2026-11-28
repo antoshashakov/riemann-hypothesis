@@ -188,11 +188,8 @@ def IsOffLevel [ThePrime ℓ] (w : FinPlace E) : Prop :=
 /-- An element `k` with component `1` at the places of `D.places` acts through `D.repOff`, the
 action through the components off `D.places` and its conjugates, as the plain translation by `k`. -/
 lemma repOff_eq_of_mem_trivialOn (k : Gf E n) (hk : k ∈ trivialOn n D.places) :
-    D.repOff k = V.formTranslation κ k := by
-  -- Cutting off the components at `D.places` and its conjugates leaves `k` unchanged.
-  have h_cut : componentOn n (.conjClosure D.places)ᶜ k = k :=
-    Gf.ext fun w ↦ by simp_all [← supportedOn_compl]
-  rw [repOff, MonoidHom.comp_apply, h_cut]
+    D.repOff k = V.formTranslation κ k :=
+  .symm (congrArg _ (k.ext (by simp_all [← supportedOn_compl])))
 
 /-- The `New.Patching.EllAdicIntegers`-algebra of ℂ-linear endomorphisms of the space of forms
 `New.Patching.BaseLevel.formsOfLevel` attached to the base data D and the family of finite places
@@ -323,19 +320,8 @@ places of `L` and of `D.places` are `1`. -/
 lemma formsOfLevel_le_levelSpace :
     D.formsOfLevel L ≤
       levelSpace (V.formTranslation κ)
-        (stdLevel E n ⊓ trivialOn n ↑((Set.finite_range L).toFinset ∪ D.places)) := by
-  -- An integral element trivial at `L` and `D.places` lies in the level, where `D.repOff` is the
-  -- plain translation.
-  refine fun f ⟨_, hf_lev⟩ ↦ mem_levelSpace.mpr fun ⟨k, hk⟩ ↦ ?_
-  -- Both facts follow from `hk`.
-  have hk_off : k ∈ trivialOn n D.places := by simp_all [trivialOn]
-  have hk_lev : k ∈ levelOf L ⊥ := inf_trivialOn_le_levelOf (by simp_all [trivialOn])
-  have h_fix : D.repOff k f = f := by simpa using mem_levelSpace.mp hf_lev ⟨k, hk_lev⟩
-  -- The level acts through the trivial character: the right side is `1 • f`.
-  calc
-    V.formTranslation κ k f = D.repOff k f := by rw [D.repOff_eq_of_mem_trivialOn k hk_off]
-    _ = f := h_fix
-    _ = _ := by simp
+        (stdLevel E n ⊓ trivialOn n ↑((Set.finite_range L).toFinset ∪ D.places)) := fun _ h ⟨k, _⟩ ↦
+  D.repOff_eq_of_mem_trivialOn k (by aesop) ▸ h.2 ⟨k, inf_trivialOn_le_levelOf (by aesop)⟩
 
 /-! ### Functions on systems as operators -/
 
@@ -413,15 +399,8 @@ on every form that lies in an isotypic space of a system of level L. -/
 lemma formEnd_ext {a b : D.FormEnd L}
     (h_agree :
       ∀ (x : D.Eigensystem L) (y : D.formsOfLevel L), ↑y ∈ (x : Isotypic V κ).val → a y = b y) :
-    a = b := by
-  -- The forms on which `a` and `b` agree contain the isotypic parts, hence everything.
-  have h_le : D.formsOfLevel L ≤ (eqLocus a b).map (formsOfLevel L).subtype :=
-    formsOfLevel_le_of_eigensystem fun x y ⟨hy_iso, hy_lev⟩ ↦
-      ⟨⟨y, hy_lev⟩, h_agree x ⟨y, hy_lev⟩ hy_iso, rfl⟩
-  refine LinearMap.ext fun y ↦ ?_
-  obtain ⟨z, hz, hz_y⟩ := Submodule.mem_map.mp (h_le y.prop)
-  obtain rfl : z = y := Subtype.ext hz_y
-  exact hz
+    a = b := a.ext fun y ↦ by simpa using formsOfLevel_le_of_eigensystem (N :=
+  (eqLocus ..).map (formsOfLevel L).subtype) (fun x _ ⟨p, q⟩ ↦ ⟨_, h_agree x ⟨_, q⟩ p, rfl⟩) y.2
 
 /-- The `EllAdicIntegers`-algebra map that sends a function t from the systems of eigenvalues of
 level L (`New.Patching.BaseLevel.Eigensystem`) to `PadicAlgCl ℓ` to the operator (in `D.FormEnd L`,
