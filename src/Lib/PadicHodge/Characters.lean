@@ -960,17 +960,9 @@ the embeddings τ that induce w. -/
 lemma JumpsRelAt.congr {r : GalRep ℓ E m} {R : ℕ → ℕ → Prop} {J J' : (E →+* ℂ) → Multiset ℤ}
     (hA : IsPlaceOver A w) (h : JumpsRelAt r A R J)
     (hJ : ∀ τ : E →+* ℂ, inducedPrime τ = w → J τ = J' τ) : JumpsRelAt r A R J' := by
-  intro L γ g hg
-  -- The chart `L.e` induces `A` and `g⁻¹` keeps norms, so `g⁻¹ ∘ L.e` induces `w` on `E`.
-  have hw : w = placeOfEmb (L.e.comp (algebraMap E Ω)) :=
-    hA.unique (by simpa [L.inducesPlace.1.1] using isPlaceOver_placeOfEmb L.e)
-  let τ : E →+* ℂ := .comp ιℓ.symm (.comp ↑g⁻¹ (L.e.comp (algebraMap E Ω)) : E →+* PadicAlgCl ℓ)
-  have hτ : inducedPrime τ = w := by
-    ext x
-    simpa [τ, hw] using congrArg (· < 1)
-      (norm_smul_Cp g⁻¹ (L.e (algebraMap E Ω (algebraMap (𝓞 E) E x)) : ℂ_[ℓ]))
-  rw [← hJ τ hτ]
-  exact h hg
+  refine fun a _ g k ↦ hJ _ ?_ ▸ h k; ext
+  simpa [hA.unique (a.inducesPlace.1.1 ▸ isPlaceOver_placeOfEmb _)]
+    using congr($(norm_smul_Cp g⁻¹ (a.e _)) < 1)
 
 /-- If a continuous ℓ-adic character μ has finite image on the inertia group of A, then the
 representation of rank one that it defines has the single Hodge–Tate jump 0 along every chart
