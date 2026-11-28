@@ -443,13 +443,7 @@ instance hasCutoff_count : HasCutoff (count (α := Γ)) G := inferInstance
 
 /-- For the trivial subgroup of `G` and a left Haar measure `μ`, the quotient measure is `μ`. -/
 lemma quotMeasure_bot : Subgroup.quotMeasure ⊥ μ = μ := by
-  -- The constant `1` is a cutoff for the trivial group, and the quotient measure does not depend
-  -- on the cutoff.
-  have h_cut : IsCutoff (count : Measure (⊥ : Subgroup G)) (1 : G → ℝ≥0∞) :=
-    ⟨measurable_one, by simp⟩
-  have h_map : (Subgroup.quotMeasure ⊥ μ).map id = (μ.withDensity 1).map id :=
-    (identDistrib_orbitMeasure h_cut measurable_id (by simp)).map_eq
-  simpa using h_map
+    simpa using (identDistrib_orbitMeasure ⟨measurable_one, by simp⟩ measurable_id (by simp)).3
 
 /-- For a discrete subgroup `Γ` of `G`, a left Haar measure `μ` and an integrable `f`, the sum
 `g ↦ ∑' γ, f (γ * g)` is integrable for the quotient measure on `Γ \ G`. -/
@@ -715,9 +709,7 @@ omit [IsTopologicalAddGroup B] [CompactSpace (B ⧸ B₀)] in
 /-- A continuous `B₀`-periodic function takes at the chosen representative of the coset of `x`
 the same value as at `x`. -/
 lemma IsContPeriodic.apply_out_mk (h : IsContPeriodic B₀ F) (x : B) :
-    F (mk x : B ⧸ B₀).out = F x := by
-  obtain ⟨γ, hγ⟩ : ∃ γ : B₀, (mk x : B ⧸ B₀).out = x + γ := mk_out_eq_add B₀ x
-  rw [hγ, add_comm, h.2 γ γ.2 x]
+    F (mk x : B ⧸ B₀).out = F x := by grind [mk_out_eq_add B₀ x, add_comm, IsContPeriodic]
 
 omit [IsTopologicalAddGroup B] [CompactSpace (B ⧸ B₀)] in
 /-- A continuous `B₀`-periodic function, read at coset representatives, is continuous on
@@ -762,15 +754,8 @@ lemma quotMean_comp (h : IsContPeriodic B₀ F) (h₀ : ∀ a ∈ A₀, φ a ∈
     (hφ : Continuous φ := by
       simp
       fun_prop) :
-    quotMean A₀ (fun a : A ↦ F (φ a)) = quotMean B₀ F := by
-  -- `quotMean_quotMean` with the trivial group as first factor
-  have h_surj : Surjective (φ.comp (AddMonoidHom.snd Unit A)) := hs.comp Prod.snd_surjective
-  have h_two : quotMean (⊤ : AddSubgroup Unit) (fun _ : Unit ↦ quotMean A₀ fun a : A ↦ F (φ a)) =
-      quotMean B₀ F :=
-    quotMean_quotMean (A := Unit) ⊤ h A₀ (φ.comp (AddMonoidHom.snd Unit A)) hφ.snd'
-      (fun _ _ ↦ h₀) h_surj
-  -- the mean over the trivial quotient is evaluation of the constant
-  rwa [quotMean_const] at h_two
+    quotMean A₀ (fun a : A ↦ F (φ a)) = quotMean B₀ F := by simp [← quotMean_quotMean (A :=
+  Unit) ⊤ h _ (φ.comp (.snd ..)) hφ.snd' (fun _ _ ↦ h₀) (by aesop_cat)]
 
 end PeriodicMean
 
@@ -801,31 +786,13 @@ finite, and F continuous and B₀-periodic, the average of F against `B₀.quotM
 `quotMean B₀ F`. -/
 lemma average_quotMeasure_eq_quotMean {F : B → ℂ} (hF : IsContPeriodic B₀ F) :
     ⨍ x : B, F x ∂B₀.quotMeasure μ = quotMean B₀ F := by
-  have h_mk : Measurable (mk : B → B ⧸ B₀) := continuous_mk.measurable
-  -- The image `m` of `B₀.quotMeasure μ` in the quotient is translation invariant, because `μ` is:
-  -- `identDistrib_addOrbitMeasure_comp` transports the distribution of an invariant function, here
-  -- `mk`, along an equivariant measure preserving map, here the translation by `a`.
-  set m : Measure (B ⧸ B₀) := (B₀.quotMeasure μ).map mk with hm
-  have h_translate (a : B) :
-      (B₀.quotMeasure μ).map (fun x : B ↦ (mk (a + x) : B ⧸ B₀)) = m := by
-    have h_equiv (γ : B₀) (x : B) : a + (γ +ᵥ x) = γ +ᵥ (a + x) := add_left_comm a (γ : B) x
-    exact (identDistrib_addOrbitMeasure_comp (.id (count : Measure B₀))
-      (measurePreserving_add_left μ a) h_equiv (by simp) h_mk).map_eq
-  have h_inv : m.IsAddLeftInvariant :=
-    ⟨forall_mk.2 fun a ↦ (Measure.map_map (measurable_const_add _) h_mk).trans (h_translate a)⟩
-  -- So it is the Haar probability measure times the total mass of `B₀.quotMeasure μ`.
-  have h_haar : m = (B₀.quotMeasure μ) Set.univ • addHaarMeasure ⊤ := by
-    simpa [hm, h_mk, -withDensity_apply] using addHaarMeasure_unique m ⊤
-  have h_integral : ∫ x : B, F x ∂B₀.quotMeasure μ =
-      (B₀.quotMeasure μ).real Set.univ • quotMean B₀ F :=
-    calc ∫ x : B, F x ∂B₀.quotMeasure μ = ∫ x : B, F (mk x : B ⧸ B₀).out ∂B₀.quotMeasure μ := by
-          simp only [hF.apply_out_mk]
-      _ = ∫ q : B ⧸ B₀, F q.out ∂m := (integral_map h_mk.aemeasurable
-          hF.continuous_out.aestronglyMeasurable).symm
-      _ = (B₀.quotMeasure μ).real Set.univ • quotMean B₀ F := by
-          rw [h_haar, integral_smul_measure, ← real_def, quotMean]
-  -- The mass is finite and not zero, and the average divides by it.
-  rw [average_eq, h_integral, inv_smul_smul₀ measureReal_univ_ne_zero]
+  have m := continuous_mk (N := B₀).measurable
+  have := IsAddLeftInvariant.mk (forall_mk.2 fun a ↦ .trans (map_map (by fun_prop) m)
+    (identDistrib_addOrbitMeasure_comp (.id (@count B₀ _)) (measurePreserving_add_left μ a)
+    (add_left_comm a ·) (by simp) m).map_eq)
+  rw [average_eq, ← funext hF.apply_out_mk, ← integral_map (by fun_prop)
+    hF.continuous_out.aestronglyMeasurable, addHaarMeasure_unique (Measure.map ..) ⊤]
+  simp [quotMean, ← real_def, m, measureReal_univ_ne_zero, -withDensity_apply]
 
 /-- Unfolding: if `F` is integrable on `B` and `G x = ∑_{γ ∈ B₀} F (γ + x)` converges everywhere
 and is continuous and `B₀`-periodic, then the mean of `G` over `B ⧸ B₀` is `∫ F dμ` divided by the
