@@ -367,10 +367,7 @@ sign `σ`. -/
 lemma det_eq_prod_principalMinor {u : USign s}
     (hu : (u : Matrix n n ℂ) ∈ blockDiagAlg s) :
     (u : Matrix n n ℂ).det = ∏ σ : ℤˣ, principalMinor u (s · = σ) := by
-  -- `u` is block diagonal, hence block triangular, for the partition of the indices by sign.
-  have h_tri : BlockTriangular (u : Matrix n n ℂ) s :=
-    fun i j h_lt ↦ mem_blockDiagAlg.mp hu i j h_lt.ne'
-  simp only [h_tri.det_fintype, principalMinor_eq_det_toSquareBlock]
+  simpa using! BlockTriangular.det_fintype (mem_blockDiagAlg.1 hu · · ·.ne')
 
 /-- For a block diagonal isometry `u = diag(γ, z)` of the form with signs `ε` (`z` is the block on
 the negative coordinates), the multiplier of the real Weil representation is `det z⁻¹`. -/
@@ -605,9 +602,7 @@ lemma pairWeil_integrated_all {S : Space E n s} {T : Space E n' s'}
     (v : Model (realHeisenberg (realSigns E (homSigns s s')))) (f : 𝒮 (S.hom T)) :
     pairWeil S T a b ((x, k), y, k') (integrated (S.hom T) v f) =
       integrated (S.hom T) (realPairWeil γ γ' (x, y) v) (pairWeil S T a b (k, k') f) := by
-  -- Split the point into its real and its finite part.
-  rw [← pairWeil_integrated_fin, ← pairWeil_integrated S T a b, rep_apply_apply]
-  simp
+  rw [← pairWeil_integrated_fin, ← pairWeil_integrated S T a b, rep_apply_apply]; simp
 
 end PairReal
 
@@ -625,38 +620,11 @@ lemma exists_level_pairWeil {E : Type*} {n n' : Type} {s : n → ℤˣ} {s' : n'
     (hf : f ∈ (S.hom T).finitePart) :
     ∃ (K : OpenSubgroup (Gf E n)) (K' : OpenSubgroup (Gf E n')), ∀ k ∈ K, ∀ k' ∈ K',
       pairWeil S T a b ((1, k), 1, k') f = f := by
-  -- Near `1` the character `pairChar a b` is trivial and the Weil representation fixes `f`; such a
-  -- neighbourhood contains a product of open subgroups.
-  -- `embed` sends the two finite groups to the points with trivial real parts.
-  let embed : Gf E n × Gf E n' →ₜ* G E s × G E s' :=
-    (ContinuousMonoidHom.inr (GInf E s) (Gf E n)).prodMap
-      (ContinuousMonoidHom.inr (GInf E s') (Gf E n'))
-  -- No small subgroups: a continuous character to the circle is trivial near `1`. Here `χ` is
-  -- `pairChar a b ∘ embed` with values in the circle.
-  let χ : Gf E n × Gf E n' →* Circle :=
-    (((b⁻¹).val.toMonoidHom.comp G.det).coprod (a.val.toMonoidHom.comp G.det)).comp
-      embed.toMonoidHom
-  have h_χ_cont : Continuous χ := by
-    simp [χ, Function.comp_def]
-    fun_prop
-  have h_char : ∀ᶠ k in nhds 1, pairChar a b (embed k) = 1 :=
-    (char_eventually_eq_one χ h_χ_cont).mono fun k hk ↦
-      show ((χ k : Circle) : ℂ) = 1 by rw [hk, Circle.coe_one]
-  have h_fix : ∀ᶠ k in nhds 1, (S.hom T).ω (1, (G.onHom (embed k)).2) f = f :=
-    ((G.continuous_onHom.comp embed.continuous).snd.tendsto' 1 1 (by simp)).eventually
-      (Space.eventually_omega_eq_self hf)
-  obtain ⟨K, K', hK_subset⟩ : ∃ (K : OpenSubgroup (Gf E n)) (K' : OpenSubgroup (Gf E n')),
-      (K : Set (Gf E n)) ×ˢ (K' : Set (Gf E n')) ⊆
-        {k | pairChar a b (embed k) = 1 ∧ (S.hom T).ω (1, (G.onHom (embed k)).2) f = f} :=
-    NonarchimedeanGroup.prod_subset (h_char.and h_fix)
-  refine ⟨K, K', fun k hk k' hk' ↦ ?_⟩
-  obtain ⟨h_char_k, h_fix_k⟩ :
-      pairChar a b (embed (k, k')) = 1 ∧ (S.hom T).ω (1, (G.onHom (embed (k, k'))).2) f = f :=
-    hK_subset (Set.mk_mem_prod hk hk')
-  have h_embed : embed (k, k') = ((1, k), 1, k') := rfl
-  rw [h_embed] at h_char_k h_fix_k
-  -- `G.onHom` of a finite point has trivial archimedean part.
-  rw [pairWeil_apply, G.onHom_fin k k', h_char_k, h_fix_k, one_smul]
+  let j : _ →ₜ* G E s × G E s' := .prodMap (.inr ..) (.inr ..)
+  peel NonarchimedeanGroup.prod_subset ((char_eventually_eq_one (.comp (.coprod (b⁻¹.1.1.comp G.det)
+    (a.1.1.comp G.det)) j.1) (by simp [Function.comp_def]; fun_prop)).and
+    ((G.continuous_onHom.comp j.2).snd.tendsto' _ _ (by simp) (Space.eventually_omega_eq_self hf)))
+  simp_all [pairWeil_apply, pairChar, j, ← G.onHom_fin, Set.subset_def]
 
 end New
 
