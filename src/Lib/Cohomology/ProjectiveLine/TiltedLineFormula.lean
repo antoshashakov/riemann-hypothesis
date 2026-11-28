@@ -593,31 +593,8 @@ composed with `cupClass`, the product with η at the tautological point x. -/
 lemma TorsionCoeff.sliceEquiv_mulClass (v : TotalH S M.functor) :
     sliceEquiv (M.mulClass (etaClass g).toTotalH v) =
       comp (TotalH.map (restrictAlong (elementsProj (projLineAlong g))) v) M.cupClass.toTotalH := by
-  let π : (projLineAlong g).Elements ⥤ C := elementsProj (projLineAlong g)
-  let η : TotalH (freeAb (projLineAlong (π ⋙ g))) (tateModule (π ⋙ g)) :=
-    (etaClass (π ⋙ g)).toTotalH
-  -- Restricting along `π` and composing with the identity class is restricting along `π`.
-  have h_id {N : AbFunctor C} (x : TotalH N M.functor) :
-      mapThenComp (restrictAlong π) (homClass (𝟙 (π ⋙ M.functor))) x = TotalH.map (restrictAlong π)
-        x :=
-    comp_id
-  -- Restriction to the points of the line commutes with the product by η, and η restricts to η.
-  have h_res : TotalH.map (restrictAlong π) (M.mulClass (etaClass g).toTotalH v) =
-      M.onElements.mulClass (S := π ⋙ S) η (TotalH.map (restrictAlong π) v) :=
-    calc TotalH.map (restrictAlong π) (M.mulClass (etaClass g).toTotalH v)
-      _ = M.onElements.mulClass (S := π ⋙ S) (TotalH.map (restrictAlong π) (etaClass g).toTotalH)
-          (mapThenComp (restrictAlong π) (homClass (𝟙 (π ⋙ M.functor))) v) :=
-        (h_id _).symm.trans (M.mulClass_naturality π M.onElements _ _ v)
-      _ = M.onElements.mulClass (S := π ⋙ S) η (TotalH.map (restrictAlong π) v) :=
-        congrArg₂ (fun ξ y ↦ M.onElements.mulClass (S := π ⋙ S) ξ y)
-          (map_restrictAlong_etaClass ..) (h_id v)
-  -- Restricting and then evaluating at the tautological point is the definition of `sliceEquiv`.
-  calc sliceEquiv (M.mulClass (etaClass g).toTotalH v)
-    _ = pullbackAlong (tensorPoint (freeAb.map tautologicalSection) (π ⋙ S))
-        (M.onElements.mulClass (S := π ⋙ S) η (TotalH.map (restrictAlong π) v)) :=
-      congrArg _ h_res
-    _ = comp (TotalH.map (restrictAlong π) v) M.cupClass.toTotalH :=
-      M.onElements.mulClass_eq_comp_etaAt (S := π ⋙ S) η _ rfl _
+  erw [← M.onElements.mulClass_eq_comp_etaAt (S := _ ⋙ S) _ _ rfl, ← comp_id (x := TotalH.map _ v),
+    ← map_restrictAlong_etaClass (elementsProj _), ← M.mulClass_naturality, comp_id]; rfl
 
 /-- Let `Θ` be a theory along `g` with coefficient `F` (an `ℓ`-torsion coefficient with Zariski
 descent that behaves well on closed loci), `S` a functor with flat ℤ-module values, and `x` a class
