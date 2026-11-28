@@ -62,14 +62,9 @@ lemma det_aeval_neg_eq_prod_roots (q : k[X]) :
 roots of the characteristic polynomial of A, counted with multiplicity. -/
 lemma trace_pow_eq_sum_roots (m : ℕ) :
     (A ^ m).trace = (A.charpoly.roots.map fun a : k ↦ a ^ m).sum := by
-  -- The roots of the characteristic polynomial of `A ^ m` are the `m`-th powers of those of `A`.
-  have h_charpoly :
-      (A ^ m).charpoly = ((A.charpoly.roots.map (· ^ m)).map fun a ↦ X - C a).prod := by
-    refine Polynomial.funext fun x ↦ ?_
-    -- At `-A` the polynomial `C x - (-X) ^ m` is `x - A ^ m`; at `-a` it is `x - a ^ m`.
-    have h_det := det_aeval_neg_eq_prod_roots A (C x - (-X) ^ m)
-    simpa [eval_charpoly, eval_multiset_prod, algebraMap_eq_diagonal, Pi.algebraMap_def] using h_det
-  rw [trace_eq_sum_roots_charpoly, h_charpoly, roots_multiset_prod_X_sub_C]
+  rw [trace_eq_sum_roots_charpoly, (charpoly _).funext, roots_multiset_prod_X_sub_C]
+  simpa [eval_charpoly, eval_multiset_prod] using!
+    (det_aeval_neg_eq_prod_roots A <| C · - (-X) ^ m :)
 
 /-- Over an algebraically closed field of characteristic 0, if tr A^m = tr B^m + ∑_{e∈S} α_e^m
 for all m ≥ 0, with S finite, then the characteristic polynomial of A is that of B times
@@ -649,63 +644,22 @@ B-algebra A. If Λ is spanned over B by the elements s for which the characteris
 lemma amitsur_charpoly_mem_of_span
     (hρ : span B {s : Λ | ∀ k : ℕ, (ρ s).charpoly.coeff k ∈ (algebraMap B A).range} = ⊤) (w : Λ)
     (k : ℕ) : (ρ w).charpoly.coeff k ∈ (algebraMap B A).range := by
-  -- Work modulo `t ^ e = 0` over `R = B[t]`, the image of `B[X]` in `A[X] / X ^ e`. By descending
-  -- induction on `j`, adding `t ^ j • γ` to `β` keeps `det (1 - t • f β)` in `R`. So
-  -- `det (1 - t • ρ w)`, the reversed characteristic polynomial at `t`, lies in `R`.
-  -- The `k`-th coefficient sits in degree `e - 1` of the reversed polynomial.
-  let e : ℕ := revAt (ρ w).charpoly.natDegree k + 1
-  let R : Subalgebra B (AdjoinRoot (X ^ e : A[X])) := (aeval (root (X ^ e : A[X]))).range
-  let t : R := ⟨aeval (root (X ^ e : A[X])) (X : B[X]), X, rfl⟩
-  -- `f` is the extension of `ρ` to `R ⊗ Λ`.
-  let f : TensorProduct B R Λ →ₐ[R] Matrix n n (AdjoinRoot (X ^ e : A[X])) :=
-    ((ofAlgHom B (X ^ e : A[X])).mapMatrix.comp ρ).liftEquiv B R _ _
-  have det_eq (s : Λ) (c : R) :
-      det (1 - c • f (1 ⊗ₜ s)) = (ρ s).charpoly.reverse.aeval (c : AdjoinRoot (X ^ e : A[X])) := by
-    simp [f, reverse_charpoly, charpolyRev, AlgHom.map_det, R.smul_def, map_sub, Matrix.map_smul',
-      comp_def]
-  let S : Set Λ := {s | ∀ k : ℕ, (ρ s).charpoly.coeff k ∈ (algebraMap B A).range}
-  have det_mem (s : Λ) (hs : s ∈ S) (c : R) : det (1 - c • f (1 ⊗ₜ s)) ∈ R := by
-    obtain ⟨y, hy⟩ : ∃ y : B[X], y.map (algebraMap B A) = (ρ s).charpoly :=
-      (lifts_iff_coeff_lifts _).2 hs
-    simp [det_eq, reverse, ← hy, reflect_map]
-  -- The tensors `1 ⊗ₜ s`, `s ∈ S`, span `R ⊗ Λ` over `R`.
-  have mem_span (γ : TensorProduct B R Λ) : γ ∈ span R (TensorProduct.mk B R Λ 1 '' S) := by
-    simp [← baseChange_span, show span B S = ⊤ from hρ]
-  have stable (j : ℕ) (hj : j ≤ e) (γ β : TensorProduct B R Λ) :
-      det (1 - t • f β) ∈ R → det (1 - t • f (β + t ^ j • γ)) ∈ R := by
-    induction hj using Nat.decreasingInduction generalizing γ β with
-    | self =>
-      have t_pow : t ^ e = 0 := Subtype.ext (by simp [t, ← mk_X, ← map_pow])
-      simp [t_pow]
-    | of_succ j _ ih =>
-      induction mem_span γ using closure_induction generalizing β with
-      | zero => simp
-      | add γ γ' _ _ ih_γ ih_γ' =>
-        intro hβ
-        simpa [smul_add, ← add_assoc] using ih_γ' _ (ih_γ β hβ)
-      | smul_mem c x hx =>
-        obtain ⟨s, hs, rfl⟩ := hx
-        intro hβ
-        -- Multiplying by `1 - t ^ (j + 1) • c • s` adds `t ^ j • c • s` to `β`, up to the error
-        -- `t ^ (j + 1) • δ`, which the induction hypothesis removes.
-        let δ : TensorProduct B R Λ := c • β * 1 ⊗ₜ s
-        let β' : TensorProduct B R Λ := β + t ^ j • c • (1 : R) ⊗ₜ[B] s - t ^ (j + 1) • δ
-        have factor : 1 - t • f β' = (1 - t • f β) * (1 - (t ^ (j + 1) * c) • f (1 ⊗ₜ s)) := by
-          simp only [β', δ, map_sub, map_add, map_smul, map_mul, sub_mul, mul_sub, mul_one, one_mul,
-            smul_mul_assoc, mul_smul_comm]
-          module
-        have h_mem : det (1 - t • f β') ∈ R := by
-          rw [factor, det_mul]
-          exact mul_mem hβ (det_mem s hs _)
-        simpa [β'] using ih δ β' h_mem
-  -- The case `j = 0`, `β = 0`: `det (1 - t • ρ w)` is the value at `t` of some `q : B[X]`.
-  obtain ⟨q, hq⟩ : det (1 - t • f (0 + t ^ 0 • (1 : R) ⊗ₜ[B] w)) ∈ R :=
-    stable 0 e.zero_le (1 ⊗ₜ w) 0 (by simp)
-  -- `q` agrees with the reversed characteristic polynomial in all degrees below `e`.
-  have h_agree : ∀ d < e,
-      algebraMap B A (q.coeff d) = (ρ w).charpoly.coeff (revAt (ρ w).charpoly.natDegree d) := by
-    simpa [aeval_eq_of_algebra, det_eq, t, X_pow_dvd_iff, sub_eq_zero, coeff_reverse] using hq
-  exact ⟨q.coeff (e - 1), by simpa [e] using h_agree (e - 1) (Nat.lt_succ_self _)⟩
+  let e := revAt (ρ w).charpoly.natDegree k + 1
+  let R := (aeval (R := B) (root (@X A _ ^ e))).range
+  let t : R := ⟨_, X, rfl⟩
+  let f := ((ofAlgHom B (X ^ e)).mapMatrix.comp ρ).liftEquiv B R _ _
+  have H s (c : R) : (1 - c • f (1 ⊗ₜ s)).det = (ρ s).charpoly.reverse.aeval c.1 := by simp [f,
+    reverse_charpoly, charpolyRev, AlgHom.map_det, R.smul_def, map_sub, Matrix.map_smul', comp_def]
+  cases (Nat.decreasingInduction (fun j _ Q γ ↦ closure_induction (x := γ) (by simp) (by simp_all
+    [← add_assoc, -map_add]) (fun c x ⟨s, hs, e⟩ β h ↦ let ⟨_, b⟩ := (lifts_iff_coeff_lifts _).2 hs
+    sub_add_cancel (β + _) _ ▸ Q (β * c • x) _ (by
+    convert (det_mul ..).symm.subst (mul_mem h ((H s (t ^ j.succ * c)).substr
+      (by simp [reverse, ← b, reflect_map, -MulMemClass.coe_mul])))
+    simp [← e, mul_sub, sub_mul]; module)) ((hρ ▸ baseChange_span R _ :).le
+    (by simp))) (by simp [R.smul_def, t, ← mk_X, ← map_pow]) e.zero_le : ∀ γ β,
+    (1 - t • f β).det ∈ R → (1 - t • f (β + t ^ 0 • γ)).det ∈ R) (1 ⊗ₜ w) 0 (by simp)
+  simp_all [aeval_eq_of_algebra, t, X_pow_dvd_iff, coeff_reverse]
+  grind [revAt_invol]
 
 /-- Scaling a square matrix of size `card n` by `a` multiplies the `k`-th coefficient of its
 characteristic polynomial by `a ^ (card n - k)`. -/
