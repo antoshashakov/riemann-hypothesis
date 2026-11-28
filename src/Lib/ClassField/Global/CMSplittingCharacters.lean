@@ -845,15 +845,9 @@ variable {C : Type*} [CommMonoid C] {S I : Set (FinPlace E)} {χ : Gal(Ω/E) →
 components at the places of `S` and their conjugates. Then `χ(idOrConjInv b g) = χ(g)` for both
 values of the boolean `b`, and in particular `χ((c g c)⁻¹) = χ(g)`. -/
 lemma IsFromU1.apply_idOrConjInv (h : IsFromU1 S I χ) (g : Gal(Ω/E)) :
-    χ (idOrConjInv b g) = χ g := by
-  cases b
-  · -- If `g = Art x` then `idOrConjInv false g = Art x̄⁻¹`, and both ideles have the same `x / x̄`.
-    obtain ⟨η, -, -, hη⟩ := h.exists_ideleChar
-    obtain ⟨x, hx⟩ := artinMap_surjective Gal(Ω/E) g
-    have hx_conj : artinMap Gal(Ω/E) (star x)⁻¹ = idOrConjInv false g := by
-      simp [idOrConjInv_false, artinMap_star g hx]
-    simp [hη x g hx, hη _ _ hx_conj, inv_mul_eq_div]
-  · rw [idOrConjInv_true]
+    χ (idOrConjInv b g) = χ g := h.2.elim fun _ ⟨_, _, e⟩ ↦
+  (artinMap_surjective ..).elim fun x k ↦ b.rec (by rw [e x g k,
+  e (star x⁻¹)] <;> simp [idOrConjInv, inv_mul_eq_div, artinMap_star _ k]) rfl
 
 /-- Let `S` and `I` be sets of finite places of the CM field `E`, and let `χ` be a character of
 `Gal(Ω/E)` with `IsFromU1 S I χ`. This means `χ(Art x) = η(x / x̄)` for an idele class character `η`
