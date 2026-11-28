@@ -178,9 +178,7 @@ omit [AddCommGroup W] [Module ℚ W] in
 /-- A left `Γ`-invariant and right `K`-invariant `f` takes the same value at `g` and at the chosen
 representative of the double coset `Γ g K`. -/
 lemma apply_doubleCoset_out (hl : Γ.FixesLeft f) (hK : K ≤ rightStabilizer f) (g : G) :
-    f (mk Γ K g).out = f g := by
-  obtain ⟨γ, hγ, k, hk, h_out⟩ := mk_out_eq_mul Γ K g
-  rw [h_out, hK hk, hl γ hγ]
+    f (mk Γ K g).out = f g := by grind [mk_out_eq_mul Γ K g, hK _ _]
 
 /-! ### Finite sums over the classes -/
 
@@ -731,16 +729,9 @@ lemma compactMean_mem_levelSpace (x : V) : compactMean ρ H x ∈ levelSpace ρ 
 /-- For `ρ` smooth with invariant scalar product `B`, the mean of `ρ` over a compact subgroup `H`
 is self-adjoint for `B`. -/
 lemma IsUnitary.compactMean_adjoint {B : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ} (hB : IsUnitary ρ B) (x y : V) :
-    B (compactMean ρ H x) y = B x (compactMean ρ H y) := by
-  -- Both sides equal `B` of the two means: in each variable, `B` against an `H`-fixed vector is
-  -- constant on `H`-orbits.
-  have h_right : ∀ h ∈ H, B (compactMean ρ H x) (ρ h y) = B (compactMean ρ H x) y := fun h hh ↦ by
-    rw [← hB.map_map_eq h _ y, apply_compactMean hh]
-  have h_left : ∀ h ∈ H, B (ρ h x) (compactMean ρ H y) = B x (compactMean ρ H y) := fun h hh ↦ by
-    rw [← hB.map_map_eq h x, apply_compactMean hh]
-  calc B (compactMean ρ H x) y = B (compactMean ρ H x) (compactMean ρ H y) :=
-        (map_compactMean_of_const (B (compactMean ρ H x)) h_right).symm
-    _ = B x (compactMean ρ H y) := map_compactMean_of_const (B.flip (compactMean ρ H y)) h_left
+    B (compactMean ρ H x) y = B x (compactMean ρ H y) :=
+  (map_compactMean_of_const _ fun _ m ↦ congr(B $(apply_compactMean m x) _).symm.trans
+  (hB.2 ..)).symm.trans (map_compactMean_of_const (B.flip _) (by simp_all [adjoint_eq_inv]))
 
 end New
 
