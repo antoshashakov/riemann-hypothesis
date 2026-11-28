@@ -215,12 +215,7 @@ def HasDegreeGe {R ι ι' : Type*} [Zero R] (w' : ι' → ℤ) (w : ι → ℤ) 
 lemma HasDegreeGe.mul {R ι κ : Type*} [CommRing R] {w'' : κ → ℤ} {w' : ι' → ℤ} {w : ι → ℤ}
     {d d' : ℤ} {y : Matrix ι' ι R} {x : Matrix κ ι' R} (hx : HasDegreeGe w'' w' d x)
     (hy : HasDegreeGe w' w d' y) {e : ℤ} (he : e ≤ d + d') :
-    HasDegreeGe w'' w e (x * y) := by
-  refine fun c a hca ↦ Finset.sum_eq_zero fun b _ ↦ ?_
-  -- In each term `x c b * y b a` of the entry, one of the two factors vanishes.
-  obtain hcb | hcb := lt_or_ge (w'' c) (w' b + d)
-  · simp [hx c b hcb]
-  · simp [hy b a (by lia)]
+    HasDegreeGe w'' w e (x * y) := by grind [HasDegreeGe, Matrix.mul_apply, Finset.sum_eq_zero]
 
 @[fun_prop]
 lemma Space.isEmbedding_ratCoordMatrix : Topology.IsEmbedding V.ratCoordMatrix := by
