@@ -462,13 +462,8 @@ lemma frameGram_translateByClassReps :
 and u' in the group besselU0 of Bessel unipotent elements that fix the frame. -/
 lemma IsNear.mul_of_mem_besselU0 {u' : (S.ratMiddle E).G} (h_near : S.IsNear γ)
     (hu : u ∈ besselU0) (hu' : u' ∈ besselU0) :
-    S.IsNear (u * γ * u') := by
-  -- if y witnesses that γ is near, then the image of u times y does so for u γ u'
-  obtain ⟨y, hy, hy'⟩ := h_near
-  refine ⟨S.ratToInf u * y,
-    (mul_mem_boxedPoints_iff fun v ↦ ratToInf_mem_besselU0 hu v).2 hy, ?_⟩
-  show (S.ratToInf (u * γ * u'))⁻¹ * (S.ratToInf u * y) ∈ S.boxedPoints
-  simpa [mul_assoc, mul_mem_boxedPoints_iff, ratToInf_mem_besselU0, hu'] using hy'
+    S.IsNear (u * γ * u') := h_near.imp' (S.ratToInf u * ·) (by simp_all [mul_assoc,
+  mul_mem_boxedPoints_iff, ratToInf_mem_besselU0])
 
 /-- An isometry that fixes every vector of the frame (e₁, …, e_ϱ, z) lies in `besselS`. -/
 lemma mem_besselS_of_frameImage_eq_one (h_fix : frameImage s.val.val = frameImage 1) :
@@ -480,13 +475,8 @@ most `τ = S.tailScale = b ^ (k f / 4)`. Here `n = ϱ + 1` is the number of fram
 rank of `X₀` and `f` is the number of infinite places. -/
 lemma pow_le_tailScale [S.IsAdmissible] {e : ℕ} (he : e ≤ 10 ^ 5 * 𝔰.n ^ 9 * numInfPlaces E) :
     S.b ^ e ≤ S.tailScale := by
-  -- compare the exponents
-  have h_exponent : (e : ℝ) ≤ 𝔰.k * numInfPlaces E / 4 := by
-    have hk : 1000 * (2 * 𝔰.ϱ + 2) ^ 9 ≤ 𝔰.k := S.pow_le_k
-    rify at he hk
-    grw [he, ← hk]
-    grind
-  simpa [tailScale] using rpow_le_rpow_of_exponent_le S.one_le_b h_exponent
+  rify at he; grw [tailScale, ← rpow_natCast, ← S.pow_le_k,
+    rpow_le_rpow_left_iff] <;> grind [thousand_le_b]
 
 /-- For admissible data, the fourth power of `tailScale` `τ = b ^ (k f / 4)` is `b ^ (k f)`, where
 `k = 𝔰.k` and `f = numInfPlaces E` is the number of infinite places of `E`. -/
