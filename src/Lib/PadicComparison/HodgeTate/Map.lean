@@ -639,20 +639,8 @@ lemma hodgeTateMap_cup {n a b : ℕ} [HasFlatValues N] (x : HodgeH N a) (y : Hod
     hodgeTateMap l (N := abTensor N N') (cup exteriorAlg.mulPairing x y e) =
       ∑ h ∈ range (l + 1),
         (l.choose h • (-1 : k) ^ ((a + h) * (l - h)) • cross (hodgeTateMap (l - h) y))
-          (hodgeTateMap h x) := by
-  -- The restriction to `HodgeTatePair` respects products (`Comparison.pull_cup`), so this is
-  -- `contractionPow_cup`.
-  -- `erw`: the product is a Hodge class of `abTensor N N'` only after unfolding `HodgeH`
-  erw [← contractionPow_cup, comp_assoc_of_eq (cup_of _ _ _ e)]
-  have h_pull :
-      (Comparison.restrict toHodgeTest hodgeCoeff).pull
-          (Functor.whiskerRight toSqZero (abTensor N N')) n (cup exteriorAlg.mulPairing x y e) =
-        cup wedgePairing
-          ((Comparison.restrict toHodgeTest hodgeCoeff).pull (Functor.whiskerRight toSqZero N) a x)
-          ((Comparison.restrict toHodgeTest hodgeCoeff).pull (Functor.whiskerRight toSqZero N') b y)
-          e :=
-    Comparison.pull_cup (by simp) x y e
-  exact congrArg (fun z ↦ comp (Ext.toTotalH z) (contractionPow l)) h_pull
+          (hodgeTateMap h x) := (comp_assoc_of_eq ((cup_of ..).trans
+  (congrArg _ (Comparison.pull_cup (by simp) ..).symm)) _).symm.trans (contractionPow_cup ..)
 
 end HodgeTateMap
 
@@ -702,13 +690,9 @@ restriction (`New.Variety.restrictToPairs`) of a class of degree q + h on p-adic
 lemma PairRestrictBijective.exists_hodgeTateMap_eq {N : CommAlg k ⥤ AddCommGrpCat} {q : ℕ}
     (hN : PairRestrictBijective N) (h : ℕ) (x : HodgeH N q) :
     ∃ ξ : H (genericOver ⋙ N) genericCoeff (q + h),
-      hodgeTateMap h x = restrictToPairs (n := q + h) ξ := by
-  -- `contractionPow h` is homogeneous of degree `h`, so `hodgeTateMap h x` lies in degree `q + h`,
-  -- where restriction is onto.
-  obtain ⟨y, hy⟩ := HodgeTatePair.exists_contractionPow_eq_directSum_of (p := p) (k := k) h
-  obtain ⟨ξ, hξ⟩ := (hN (q + h)).surjective
-    (((Comparison.restrict toHodgeTest _).pull (Functor.whiskerRight toSqZero N) q x).comp y rfl)
-  exact ⟨ξ, by simp [hodgeTateMap, restrictToPairs, comp_of, hy, hξ]⟩
+      hodgeTateMap h x = restrictToPairs (n := q + h) ξ := (h.rec ⟨_, rfl⟩ fun _ ⟨_,
+  e⟩ ↦ ⟨_, by erw [contractionPow, e, comp_of]; omega⟩ : ∃ y, contractionPow h = .of _ h y).elim
+  fun _ _ ↦ ((hN _).2 _).imp (by aesop (add simp [hodgeTateMap, restrictToPairs, comp_of]))
 
 /-- Let `A = (S, T ^ r)` and `D = (S', M')` be pairs, `f : S ⟶ S'` a map of tests and
 `v i ∈ T' × M'` for `i < r`. Exactly one map of pairs `g : A ⟶ D` has map of tests `testMap g = f`
