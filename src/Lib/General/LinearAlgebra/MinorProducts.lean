@@ -56,18 +56,8 @@ lemma conj_weightMinors : conj (weightMinors w x) = weightMinors w xᴴ :=
 /-- For invertible `x`, the product of principal minors `weightMinors` for the weight `-w` at `x` is
 the one for `w` at `x⁻¹`. -/
 theorem weightMinors_neg (hx : x.det ≠ 0) (w : n → ℤ) :
-    weightMinors (-w) x = weightMinors w x⁻¹ := by
-  -- Reindex the levels of `weightMinors (-w) x` by `t ↦ 1 - t`. The set `{i | 1 - t ≤ -w i}` is
-  -- the complement of `{i | t ≤ w i}`, so the factors agree level by level by Jacobi's identity:
-  -- the minor of `x⁻¹` on a set is the minor of `x` on the complement, divided by `x.det`.
-  rw [weightMinors, weightMinors, ← finprod_comp_equiv (.subLeft (1 : ℤ))]
-  refine finprod_congr fun t ↦ ?_
-  have h_compl : principalMinor x (1 - t ≤ (-w) ·) = principalMinor x (¬t ≤ w ·) := by
-    congr
-    grind [Pi.neg_apply]
-  rw [Equiv.subLeft_apply, h_compl, jacobi_complementary_minor hx, det_nonsing_inv,
-    Ring.inverse_eq_inv']
-  grind
+    weightMinors (-w) x = weightMinors w x⁻¹ := .trans
+  (by simp_all [weightMinors, jacobi_complementary_minor]; grind) (finprod_comp_equiv (.subLeft 1))
 
 /-- For invertible `x` and integers `a`, `b` with `a ≤ w i ≤ b` for all `i`: the product of
 principal minors `m_w(x) = weightMinors w x` is `x.det ^ a` times the product over the levels
@@ -108,35 +98,12 @@ theorem weightMinors_add_ite (hx : x.det ≠ 0) (hc : 0 ≤ c)
     (h_top : ∀ i j : n, p i → ¬p j → w j ≤ w i) :
     weightMinors (fun i : n ↦ w i + (if p i then c else 0)) x =
       weightMinors w x * principalMinor x p ^ c := by
-  -- Let `w m` be the least weight on `p`. The level sets `{i | t ≤ w i + c·[p i]}` of the new
-  -- weight are those of `w` for `t ≤ w m`, equal `p` for the `c` levels `w m < t ≤ w m + c`, and
-  -- are those of `w` at level `t - c` above.
-  by_cases! hp : ∀ i, ¬p i
-  · simp [hp, principalMinor_of_forall_not]
-  obtain ⟨m, hm, h_min⟩ : ∃ m ∈ ({i | p i} : Finset n), ∀ i ∈ ({i | p i} : Finset n), w m ≤ w i :=
-    exists_min_image {i | p i} w (hp.imp (by simp))
-  obtain ⟨B, hB⟩ : ∃ B : ℤ, ∀ i, |w i| ≤ B := Finite.exists_le (|w ·|)
-  set w' : n → ℤ := fun i ↦ w i + if p i then c else 0
-  have h_middle :
-      ∏ t ∈ Ioc (w m) (w m + c), principalMinor x (t ≤ w' ·) = principalMinor x p ^ c := by
-    have h_eq (t : ℤ) (ht : t ∈ Ioc (w m) (w m + c)) :
-        principalMinor x (t ≤ w' ·) = principalMinor x p := by
-      congr
-      grind
-    simp [prod_eq_pow_card h_eq, ← zpow_natCast, hc]
-  have h_rest : ∏ t ∈ Ioc (-B) (B + c) \ Ioc (w m) (w m + c), principalMinor x (t ≤ w' ·) =
-      ∏ t ∈ Ioc (-B) B, principalMinor x (t ≤ w ·) := by
-    -- Close the gap: shift the levels above `w m + c` down by `c`.
-    let down : ℤ → ℤ := fun t ↦ if t ≤ w m then t else t - c
-    let up : ℤ → ℤ := fun t ↦ if t ≤ w m then t else t + c
-    have h_level (t : ℤ) (ht : t ∈ Ioc (-B) (B + c) \ Ioc (w m) (w m + c)) :
-        principalMinor x (t ≤ w' ·) = principalMinor x (down t ≤ w ·) := by
-      congr
-      grind
-    exact prod_nbij' down up (by grind) (by grind) (by grind) (by grind) h_level
-  rw [weightMinors_eq_det_zpow_mul_prod hx (-B) (B + c) (by grind),
-    weightMinors_eq_det_zpow_mul_prod hx (-B) B (by grind),
-    ← prod_sdiff (by grind : Ioc (w m) (w m + c) ⊆ Ioc (-B) (B + c)), h_rest, h_middle, mul_assoc]
+  obtain ⟨B⟩ := Finite.exists_le |w|
+  obtain ⟨m, ⟨⟩⟩ := exists_minimal (insert_nonempty B (image w {i | p i}))
+  rw [weightMinors_eq_det_zpow_mul_prod hx (-|B|) (B + c), weightMinors_eq_det_zpow_mul_prod hx _ B,
+    mul_assoc, ← (Ioc m (m + c)).prod_sdiff, (Ioc
+   ..).prod_eq_pow_card, prod_nbij' ((· ⊓ m) ⊔ (· - c)) fun t ↦ t + ite (m < t) c 0, ← zpow_natCast]
+  all_goals intros; congr; simp at *; grind
 
 /-- For invertible `x` and `c ≥ 0`, the weight that is `c` on `p` and `0` elsewhere gives the
 `c`-th power of the principal minor on `p`. -/
@@ -204,10 +171,7 @@ theorem IsBorelMatrix.mul_apply_diag (ho : o.Injective) (hb : IsBorelMatrix o b)
   Fintype.sum_eq_single i (by grind [IsBorelMatrix, BlockTriangular])
 
 theorem IsBorelMatrix.inv_apply_diag (ho : o.Injective) (hb : IsBorelMatrix o b) (i : n) :
-    b⁻¹ i i = (b i i)⁻¹ := by
-  -- Compare diagonal entries in `b⁻¹ * b = 1`.
-  refine eq_inv_of_mul_eq_one_left ?_
-  rw [← mul_apply_diag ho hb.inv hb, nonsing_inv_mul _ hb.2.isUnit, one_apply_eq]
+    b⁻¹ i i = (b i i)⁻¹ := eq_inv_of_mul_eq_one_left (by simp [← hb.inv.mul_apply_diag, *, hb.2])
 
 end New
 
