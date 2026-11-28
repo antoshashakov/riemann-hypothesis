@@ -104,14 +104,7 @@ lemma H0_ext {r s : L.H0 R}
     (h_agree : ∀ {i : ι}, (r.val i).IsRegularOn (L.opens i) → (s.val i).IsRegularOn (L.opens i) →
       ∀ (B : CommRingCat) (t : Spec B ⟶ X.left), LandsIn t (L.opens i) →
         r.val i B t = s.val i B t) :
-    r = s := by
-  obtain ⟨⟨hr_reg, -⟩, hr_zero⟩ := r.prop
-  obtain ⟨⟨hs_reg, -⟩, hs_zero⟩ := s.prop
-  ext i B t
-  -- on `L.opens i` this is `h_agree`; off it the `i`-th components of both sections vanish
-  by_cases ht : LandsIn t (L.opens i)
-  · exact h_agree (hr_reg i) (hs_reg i) B t ht
-  · rw [hr_zero i B t ht, hs_zero i B t ht]
+    r = s := by ext; grind [r.2.symm, s.2.symm, IsSection]
 
 @[local simp]
 lemma H0_smul (a : R) (s : L.H0 R) (i : ι) (B : CommRingCat) (t : Spec B ⟶ X.left) :
@@ -148,16 +141,9 @@ pull-back along `F` followed by `u`. -/
 lemma exists_isPullbackVia (u : κ × ι → PointFn Y.left)
     (hu : (N.mul (L.pull F.left).inv).IsFrame u) :
     ∃ Φ : ↥(L.H0 R) →ₗ[R] ↥(N.H0 R), IsPullbackVia N L F.left Φ u := by
-  obtain ⟨hu_sec, hu_unit⟩ := hu
-  -- for each `s`: a section `r s` of `N` (`hr`) with `r s = u * F^* s` locally (`h_eq`)
-  choose r hr h_eq _ using fun s : L.H0 R ↦
-    exists_section_mul (𝟙 Y.left) hu_sec ((isSection_val s).pull F.left) (h_fibre := by simp)
-  simp only [Category.comp_id] at h_eq
-  -- it is additive and `R`-linear in `s`, as the local formula `h_eq` is
-  refine ⟨⟨⟨fun s ↦ ⟨r s, hr s⟩, fun s s' ↦ ?_⟩, fun c s ↦ ?_⟩, ⟨hu_sec, hu_unit⟩, h_eq⟩
-  all_goals
-    refine H0_ext fun h₁ h₂ ↦ h₁.ext_of_dominant (𝟙 _) h₂ (L.pull F.left) fun a ↦ ?_
-    simp +contextual [h_eq _ _ a, mul_add, mul_left_comm]
+  choose r hr e _ using fun s : L.H0 R ↦ by simpa using exists_section_mul (𝟙 _) hu.1 (s.2.1.pull _)
+  use! (⟨_, hr ·⟩), ?_, ?_, hu, e <;> exact fun _ _ ↦ H0_ext (·.ext_of_dominant (𝟙 _) · (L.pull F.1)
+    fun a ↦ by simp +contextual [e _ _ a, mul_add, mul_left_comm])
 
 /-- If `[N] = F^* [L]` in the Picard group, there is an `R`-linear lift `Φ` of `F` from sections
 of `L` to sections of `N`. -/
