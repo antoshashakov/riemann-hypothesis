@@ -437,17 +437,9 @@ lemma norm_unitary_fst (u : unitary (𝔸 E)) (v : InfinitePlace E) : ‖(u : �
 /-- Kronecker's theorem in a CM field `E`: an algebraic integer `γ` of `E` with `γ γ̄ = 1` satisfies
 `γ ^ n = 1`, where `n = torsionOrder E` is the number of roots of unity in `E`. -/
 lemma pow_torsionOrder_eq_one (γ : unitary E) (h : IsIntegral ℤ (γ : E)) :
-    (γ : E) ^ torsionOrder E = 1 := by
-  -- Read γ as a unit of the ring of integers; it has absolute value 1 at every infinite place,
-  -- so it is a torsion unit.
-  let γ_int : 𝓞 E := ⟨γ, h⟩
-  have h_unitary : γ_int ∈ unitary (𝓞 E) :=
-    mem_iff_star_mul_self.mpr (Subtype.ext (star_mul_self_of_mem γ.property))
-  let ε : (𝓞 E)ˣ := toUnits ⟨γ_int, h_unitary⟩
-  have h_tors : ε ∈ torsion E :=
-    (mem_torsion E).mpr fun w ↦ (w.norm_embedding_eq _).symm.trans (norm_map_unitary _ γ)
-  have h_pow : (⟨ε, h_tors⟩ : torsion E) ^ torsionOrder E = 1 := pow_card_eq_one'
-  exact congrArg (fun x : torsion E ↦ ((x.val : 𝓞 E) : E)) h_pow
+    (γ : E) ^ torsionOrder E = 1 :=
+  congr($(@pow_card_eq_one' (torsion E) _ ⟨toUnits ⟨⟨γ, h⟩, γ.2.imp Subtype.ext Subtype.ext⟩,
+    (mem_torsion E).2 fun ⟨_, _, rfl⟩ ↦ norm_map_unitary ..⟩).1.1.1)
 
 /-- If `ψ` is trivial outside `S`, the product of the `ψ_w(u mod w)` over all finite places is the
 finite product over `S`, with `u mod w` written as the unit `New.reduceU1 w u`. -/
@@ -489,14 +481,7 @@ lemma eq_of_mem_integralU1 {f g : unitary (𝔸 E) → ℂ} (hS : ∀ w : FinPla
     (h_eq : ∀ (u : unitary (𝔸 E)) (hu : (u : 𝔸 E).snd ∈ Ô E),
       f u = g u * ∏ᶠ w : FinPlace E, ψ w (reduceAt w ⟨(u : 𝔸 E).snd, hu⟩))
     (u : unitary (𝔸 E)) (hu : u ∈ integralU1 S) :
-    f u = g u := by
-  have h_int : (u : 𝔸 E).snd ∈ Ô E := snd_mem_Ô_of_mem_integralU1 hu
-  -- Each factor `ψ_w(u mod w)` is 1: outside `S` as `ψ_w = 1`, on `S` as `u ≡ 1` modulo `w`.
-  have h_tame : ∏ᶠ w : FinPlace E, ψ w (reduceAt w ⟨(u : 𝔸 E).snd, h_int⟩) = 1 := by
-    rw [finprod_tame_eq_prod_reduceU1 u hS h_int]
-    refine Finset.prod_eq_one fun w hw ↦ ?_
-    rw [val_reduceU1, reduceAt_eq_one_of_mem_integralU1 hu hw, map_one]
-  rw [h_eq u h_int, h_tame, mul_one]
+    f u = g u := by simp_all [hu.1, finprod_tame_eq_prod_reduceU1 _ hS, reduceU1, hu.2]
 
 /-- The trivial character has weight 0 and trivial tame part. -/
 instance HasWeight.one : HasWeight (1 : AutChar E) 0 1 where
@@ -731,30 +716,12 @@ lemma HasWeight.exists_pow_eq_prod (h : μ.HasWeight e ψ) (hu : (u : 𝔸 E).fs
       (∀ w : IsDedekindDomain.HeightOneSpectrum (𝓞 E),
         Valued.v (((u : 𝔸 E).snd ^ n * ((γ : E) : 𝔸f E)) w) = 1) ∧
       -- (b)
-      (μ.val u : ℂ) ^ n = ∏ v : InfinitePlace E, Φ v (γ : E) ^ e v := by
-  -- Let n be the order of the class group of the level `T` of ψ; then uⁿ = g z with g rational
-  -- and z integral and 1 modulo `T`. Take γ = g⁻¹, so that z = uⁿγ.
-  set T : Finset (FinPlace E) := h.finite_ramification.toFinset
-  let H : Subgroup (unitary (𝔸 E)) := rationalU1 ⊔ integralU1 T
-  obtain ⟨g, hg, z, hz, hgz⟩ : ∃ g ∈ rationalU1, ∃ z ∈ integralU1 T, g * z = u ^ H.index :=
-    mem_sup.mp (pow_index_mem H u)
-  obtain ⟨γ, hγ⟩ := exists_unitary_of_mem_rationalU1 (inv_mem hg)
-  have hz_eq : z = g⁻¹ * u ^ H.index := eq_inv_mul_of_mul_eq hgz
-  refine ⟨H.index, Nat.pos_of_ne_zero index_ne_zero_of_finite, γ, fun w ↦ ?_, ?_⟩
-  · -- z is integral with nonzero reduction at w.
-    have hz_int : (z : 𝔸 E).snd ∈ Ô E := snd_mem_Ô_of_mem_integralU1 hz
-    have h_val : Valued.v ((z : 𝔸 E).snd w) = 1 := (mem_Ô.mp hz_int w).eq_of_not_lt fun h_lt ↦
-      (isUnit_reduceAt_unitary z hz_int w).ne_zero (reduceAt_eq_zero.mpr h_lt)
-    have hz_snd : (z : 𝔸 E).snd = (u : 𝔸 E).snd ^ H.index * ((γ : E) : 𝔸f E) := by
-      simp [hz_eq, ← hγ, mul_comm]
-    rwa [hz_snd] at h_val
-  · -- μ(z) is the archimedean monomial, μ(g) = 1, and z and γ have the same archimedean part.
-    have h_arch : (μ.val z : ℂ) = ∏ v, (z : 𝔸 E).fst v ^ e v :=
-      eq_of_mem_integralU1 (fun w hw ↦ by simpa [T] using hw) h.apply_eq z hz
-    have hμ_g : μ.val g = 1 := μ.property _ hg
-    have hμ_z : (μ.val z : ℂ) = (μ.val u : ℂ) ^ H.index := by simp [hz_eq, hμ_g]
-    have hz_fst (v : InfinitePlace E) : (z : 𝔸 E).fst v = Φ v (γ : E) := by simp [hz_eq, ← hγ, hu]
-    simp only [← hμ_z, h_arch, hz_fst]
+      (μ.val u : ℂ) ^ n = ∏ v : InfinitePlace E, Φ v (γ : E) ^ e v :=
+  (mem_sup.1 (pow_index_mem (_ ⊔ integralU1 h.1.toFinset) u)).elim fun _ ⟨a, _, b, e⟩ ↦
+  ⟨_, Nat.card_pos, (exists_unitary_of_mem_rationalU1 (inv_mem a)).imp fun _ ↦
+  (by simpa [← ·, hu, μ.2 _ a, mul_comm, eq_inv_mul_of_mul_eq e] using! And.intro (fun w ↦ (mem_Ô.1
+  b.1 w).antisymm (by simpa using
+  (isUnit_reduceAt_unitary _ b.1 w).ne_zero)) (eq_of_mem_integralU1 (by simp) h.2 _ b))⟩
 
 end AutChar
 
