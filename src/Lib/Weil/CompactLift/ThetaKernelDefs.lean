@@ -223,13 +223,8 @@ lemma Kernel.lift_equivariant (a : Gf E n) (b : Gf E n') (Φ : S) (φ : AlgForm 
   exact classIntegral_map_mul_right (.id _) a (k.integrand_mem_smoothInvariants Φ φ (h * b)) h_shift
 
 lemma coe_map_conj_inv_eq_transpose (u : USign (1 : n → ℤˣ)) :
-    (u.val⁻¹.map (starRingEnd ℂ)).val = uᵀ := by
-  -- For the identity form the inverse of `u` is its conjugate transpose.
-  have h_inv : ((u.val⁻¹ : GL n ℂ) : Matrix n n ℂ) = ((u.val : GL n ℂ) : Matrix n n ℂ)ᴴ := by
-    simpa [signMatrix_one] using U.coe_inv (signMatrix_mul_self (ε := (1 : n → ℤˣ))) u
-  change ((u.val⁻¹ : GL n ℂ) : Matrix n n ℂ).map (starRingEnd ℂ) = uᵀ
-  ext i j
-  simp [h_inv]
+    (u.val⁻¹.map (starRingEnd ℂ)).val = uᵀ :=
+  by erw [val_map_apply, U.coe_inv] <;> aesop
 
 /-- For a covector A, a vector ξ and a power series F, A paired with the Schur jet matrix of F
 applied to ξ is the jet of F along the polynomial Aᵀ S_κ(z) ξ. -/
