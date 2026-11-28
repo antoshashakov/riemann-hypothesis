@@ -110,20 +110,7 @@ variable [ι : PadicPlace p] {ξ : WeylIndex n κ → ℂ}
 lemma weylGauge_embFin (γ : U (stdSpace E n).J) :
     weylGauge κ e ((stdSpace E n).embFin γ * g) ((stdSpace E n).weightRep κ e γ ξ) =
       weylGauge κ e g ξ := by
-  -- At each infinite place `adeleExtension` restricts on `E` to the embedding that it extends, so
-  -- the factor `γ⁻¹` of `(γ g)⁻¹` cancels the action of `γ` on `ξ`.
-  have h_rat (τ : InfinitePlace E) :
-      GeneralLinearGroup.map (adeleExtension (weightEmbedding ιₚ τ)) ((stdSpace E n).embFin γ).val =
-        GeneralLinearGroup.map (weightEmbedding ιₚ τ) γ.val :=
-    GeneralLinearGroup.ext fun _ _ ↦ by simp [stdSpace_embFin, adeleExtension_algebraMap]
-  have h_cancel (τ : InfinitePlace E) :
-      GeneralLinearGroup.map (adeleExtension (weightEmbedding ιₚ τ))
-          ((stdSpace E n).embFin γ * g)⁻¹.val *
-          GeneralLinearGroup.map (weightEmbedding ιₚ τ) γ.val =
-        GeneralLinearGroup.map (adeleExtension (weightEmbedding ιₚ τ)) g⁻¹.val := by
-    rw [← h_rat, ← map_mul]
-    simp [mul_assoc]
-  simp only [weylGauge, map_weightRep, mulVec_mulVec, ← map_mul, Pi.mul_def, h_cancel]
+  simp [weylGauge, map_weightRep, ← map_mul]; congr!; aesop (add simp [mul_assoc, inv_mul_eq_one])
 
 /-- The gauge of a vector is unchanged when the point is multiplied on the right by an element
 that is integral at the primes above `p`. -/
@@ -184,13 +171,9 @@ lemma stdLevel_le_localLevel {S : Set (FinPlace E)} : stdLevel E n ≤ localLeve
 coordinates, then `φ g` has gauge at most `1` at `g` for every `g`. -/
 lemma weylGauge_le_one_of_integralAbove (φ : AlgForm (E := E) n κ e)
     (h_coord : ∀ g ∈ integralAbove n p, ∀ i : WeylIndex n κ, ‖ιₚ (φ.val g i)‖ ≤ 1) (g : Gf E n) :
-    weylGauge κ e g (φ.val g) ≤ 1 := by
-  -- Move `g` by a rational `γ` to an element integral above `p`; the gauge does not change.
-  obtain ⟨γ, hγ, -⟩ := exists_mul_mem_integralAbove p g 1
-  have h_equivariant : φ.val ((stdSpace E n).embFin γ * g) =
-      (stdSpace E n).weightRep κ e γ (φ.val g) := φ.property.2 γ g
-  rw [← weylGauge_embFin g γ, ← h_equivariant]
-  exact (weylGauge_le_one_iff _ hγ).2 (h_coord _ hγ)
+    weylGauge κ e g (φ.val g) ≤ 1 :=
+  by cases exists_mul_mem_integralAbove p g 1; rw [← weylGauge_embFin, ← φ.2.2,
+  weylGauge_le_one_iff] <;> tauto
 
 end New
 
@@ -225,15 +208,8 @@ at the primes above `p`. -/
 lemma exists_reps_integralAbove (p : ℕ) [Fact p.Prime] :
     ∃ r : StdClasses K → Gf E n,
       (∀ c : StdClasses K, DoubleCoset.mk (stdSpace E n).Γf K (r c) = c) ∧
-      ∀ c : StdClasses K, r c ∈ integralAbove n p := by
-  -- Move the representative `c.out` by a rational element to make it integral above `p`.
-  have h_exists (c : StdClasses K) :
-      ∃ γ : U (stdSpace E n).J, (stdSpace E n).embFin γ * c.out ∈ integralAbove n p :=
-    (exists_mul_mem_integralAbove p c.out 1).imp fun _ ↦ And.left
-  choose γ hγ using h_exists
-  refine ⟨fun c ↦ (stdSpace E n).embFin (γ c) * c.out, fun c ↦ ?_, hγ⟩
-  -- `γ c * c.out` lies in the double coset of `c.out`.
-  exact (c.eq_mk_iff_out.2 (rel_iff.2 ⟨_, ⟨γ c, rfl⟩, 1, K.one_mem, by simp⟩)).symm
+      ∀ c : StdClasses K, r c ∈ integralAbove n p := ⟨_, (·.eq_mk_iff_out.2 (DoubleCoset.rel_iff.2
+  ⟨_, ⟨_, rfl⟩, 1, by aesop⟩) |>.symm), (exists_mul_mem_integralAbove p ·.out 1 |>.choose_spec.1)⟩
 
 variable [HasFiniteType stdRatPoints K] [Fact (χ =ᶠ[nhds 1] 1)]
 
@@ -358,11 +334,7 @@ form an element of `H`. -/
 lemma maxCompactAt_le_levelOf {ι : Type*} {u : ι → FinPlace E} {w : FinPlace E}
     {H : Subgroup ((i : ι) → GL n (ResField (u i)))} (hw : w ∉ (Set.range u).conjClosure) :
     maxCompactAt n w ≤ levelOf u H :=
-  le_trans (b := stdLevel E n ⊓ Gf.trivialOn n (.range u)) (fun k hk ↦ by
-    -- no `u i` is `w` or its conjugate, so `k` is trivial at every `u i`
-    have h_ne (i : ι) : u i ≠ w ∧ star (u i) ≠ w :=
-      ⟨fun h_eq ↦ hw (.inl ⟨i, h_eq⟩), fun h_eq ↦ hw (.inr ⟨i, by simp [← h_eq]⟩)⟩
-    simp_all [Subgroup.mem_inf]) inf_trivialOn_le_levelOf
+  .trans (by simp_all [LE.le]; grind [star_star]) inf_trivialOn_le_levelOf
 
 /-- The algebra map sending the variable (τ, i, h) to the sum of the variables (τ, i, a) over
 the indices a with sign s(a) = c and ord(a) = h. -/
