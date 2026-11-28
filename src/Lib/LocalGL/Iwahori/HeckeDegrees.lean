@@ -244,21 +244,10 @@ Then (a) `t` is dominant; (b) on `K0`-fixed vectors the Hecke operator of `K0 t 
 `q ^ (N - 1)` times the mean over `K0` of `ρ t`, where `q` is the order of the residue field. -/
 lemma heckeCoset_mulSingle_zero_eq (hϖ : v ϖ.val = exp (-1)) {x : V} [IsSmoothRep ρ] [NeZero N]
     (hx : x ∈ levelSpace ρ proIwahori) :
-    let t : Fin N → (LocField w)ˣ := mulSingle 0 ϖ
-    t ∈ dominantTorus ∧
-    heckeCoset ρ proIwahori (diagGL t) x =
-      (w.q : ℂ) ^ (N - 1) • compactMean ρ proIwahori (ρ (diagGL t) x) := by
-  intro t
-  obtain ⟨n, rfl⟩ := Nat.exists_eq_add_one_of_ne_zero (NeZero.ne N)
-  have h_dom : t ∈ dominantTorus := by
-    simp +decide [t, dominantTorus, Monotone, hϖ, Fin.forall_fin_succ]
-  -- Only the pairs `(0, j)` with `0 < j` contribute to the degree, each the factor `‖ϖ⁻¹‖ = q`.
-  have h_deg : iwahoriDegree t = (w.q : ℂ) ^ n := by
-    simp +decide [t, hϖ, norm_locField_eq_q_zpow, prod_filter, Fintype.prod_prod_type,
-      Fin.prod_univ_succ]
-  refine ⟨h_dom, ?_⟩
-  rw [heckeCoset, heckeFun_iwahoriDoubleCoset_eq_iwahoriDegree_smul h_dom hx, h_deg,
-    Nat.add_sub_cancel]
+    let t : Fin N → (LocField w)ˣ := mulSingle 0 ϖ; t ∈ dominantTorus ∧ heckeCoset ρ proIwahori
+    (diagGL t) x = (w.q : ℂ) ^ (N - 1) • compactMean ρ proIwahori (ρ (diagGL t) x) := by
+  cases N <;> simp_all +decide [heckeCoset, dominantTorus, Monotone, norm_locField_eq_q_zpow,
+    prod_filter, forall_fin_succ, Fintype.prod_prod_type, prod_univ_succ, univ_eq_empty]
 
 /-! ### Lattices that contain the first basis vectors -/
 
