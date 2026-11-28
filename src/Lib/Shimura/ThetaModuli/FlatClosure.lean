@@ -87,34 +87,14 @@ def thetaRanks {G : Type*} [AddGroup G] (T : AddSubgroup G) (r j : ℕ) : ℕ :=
 /-- Every large enough `d` is a degree bound (`IsCutDegree`) for monomial ideals in finitely many
 variables `J` with counts `σ`. -/
 lemma eventually_isCutDegree (J : Type) [Finite J] (r : ℕ) (σ : ℕ → ℕ) :
-    ∀ᶠ d : ℕ in Filter.atTop, IsCutDegree J d r σ := by
-  -- Noetherian induction on a subideal `N` of `M`: either `N` already leaves few monomials in
-  -- every degree `r ^ i`, or it leaves too many in one such degree, and then `M` contains one of
-  -- these finitely many monomials, so a larger subideal.
-  let Few (M : AddSemigroupIdeal (J →₀ ℕ)) (i : ℕ) : Prop :=
-    (degree ⁻¹' {r ^ i} \ M.carrier).ncard ≤ σ i
-  suffices h_above : ∀ N : AddSemigroupIdeal (J →₀ ℕ), ∀ᶠ d : ℕ in Filter.atTop,
-      ∀ M ≥ N, (∀ i ≤ d, Few M i) → ∀ i : ℕ, Few M i from
-    (h_above ⊥).mono fun d h_bot M ↦ h_bot M bot_le
-  intro N
-  induction N using WellFoundedGT.induction with | ind N ih => ?_
-  by_cases h_few : ∀ i : ℕ, Few N i
-  · exact .of_forall fun d M hNM _ i ↦ (ncard_le_ncard (sdiff_le_sdiff_left hNM)).trans (h_few i)
-  obtain ⟨i, h_many⟩ := not_forall.mp h_few
-  -- Adding a monomial of degree `r ^ i` outside `N` gives a larger ideal.
-  have h_lt (m : J →₀ ℕ) (hm : m ∈ degree ⁻¹' {r ^ i} \ N.carrier) : N < N ⊔ closure {m} :=
-    left_lt_sup.mpr fun h_le ↦ hm.2 (closure_le.mp h_le (mem_singleton m))
-  -- One `d` serves for all the finitely many ideals `N ⊔ closure {m}`.
-  have h_larger : ∀ᶠ d : ℕ in Filter.atTop, ∀ m ∈ degree ⁻¹' {r ^ i} \ N.carrier,
-      ∀ M ≥ N ⊔ closure {m}, (∀ i ≤ d, Few M i) → ∀ i : ℕ, Few M i :=
-    (finite_of_degree_eq _).sdiff.eventually_all.mpr fun m hm ↦ ih _ (h_lt m hm)
-  filter_upwards [h_larger, Filter.mem_atTop i] with d h_cut hd M hNM hM
-  -- `M` leaves out fewer monomials of degree `r ^ i` than `N`, so contains one outside `N`.
-  obtain ⟨m, hm, hmM⟩ :
-      ∃ m ∈ degree ⁻¹' {r ^ i} \ N.carrier, m ∉ degree ⁻¹' {r ^ i} \ M.carrier :=
-    not_subset.mp fun h_sub ↦ h_many ((ncard_le_ncard h_sub).trans (hM i hd))
-  have hm_mem : m ∈ M := not_not.mp fun hm_not ↦ hmM ⟨hm.1, hm_not⟩
-  exact h_cut m hm M (sup_le hNM (closure_le.mpr (singleton_subset_iff.mpr hm_mem))) hM
+    ∀ᶠ d : ℕ in Filter.atTop, IsCutDegree J d r σ := .mono (by
+  induction' (⊥ : AddSemigroupIdeal (J →₀ ℕ)) using WellFoundedGT.fix with _ ih
+  obtain h | ⟨i, h⟩ := forall_or_exists_not _
+  · exact .of_forall fun _ _ l _ k ↦ (ncard_le_ncard (sdiff_le_sdiff_left l)).trans (h k)
+  filter_upwards [(finite_of_degree_eq _).sdiff.eventually_all.2 fun m a ↦ ih _ (left_lt_sup.2
+    (a.2 <| closure_le.1 · (mem_singleton m))), Filter.mem_atTop i] with d H l M _ a using
+    (not_subset.1 (h <| ncard_le_ncard · |>.trans (a i l))).elim
+    (H · ·.1 M (by simp_all [closure_le]) a)) fun _ (h : ∀ M ≥ ⊥, _) ↦ (h · bot_le)
 
 open MvPolynomial Module Submodule Ideal.Quotient Matrix LinearMap Finite
 
