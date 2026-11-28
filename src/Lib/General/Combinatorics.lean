@@ -217,28 +217,11 @@ Vandermonde determinant `det (r i ^ l j)`. -/
 lemma rootCoeffEval_genericSchur_mul_det [IsDomain R] :
     rootCoeffEval (univ.val.map r) (genericSchur l) * (vandermonde r).det =
       (of fun i j : Fin a ↦ r i ^ l j).det := by
-  -- `φ` specialises the generic monic polynomial `freeMonic ℤ a` to `∏ (X - r k)`, which
-  -- vanishes at `r i`; so the remainder of `X ^ l j` takes the value `r i ^ l j` there.
-  let p : MonicDegreeEq R a := .mk (nodal univ r) nodal_monic (by simp)
-  let φ : MvPolynomial (Fin a) ℤ →ₐ[ℤ] R := (MvPolynomial.mapEquivMonic ℤ R a).symm p
-  have hφ : (freeMonic ℤ a).map φ = nodal univ r :=
-    congrArg Subtype.val ((MvPolynomial.mapEquivMonic ℤ R a).apply_symm_apply p)
-  have hφ_eq : rootCoeffEval (univ.val.map r) = φ := MvPolynomial.algHom_ext fun k ↦ by
-    simp [rootCoeffEval, φ, p, MvPolynomial.mapEquivMonic, nodal, ← Fin.prod_ofFn,
-      Function.comp_def]
-  have h_rem (i j : Fin a) : (X ^ l j %ₘ freeMonic ℤ a).eval₂ φ (r i) = r i ^ l j := by
-    rw [eval₂_modByMonic_eq_self_of_root (by simp [eval₂_eq_eval_map, hφ, eval_nodal_at_node]),
-      eval₂_X_pow]
-  -- Expanding this value in powers of `r i`: the Vandermonde matrix times the matrix of
-  -- coefficients of the remainders has entries `r i ^ l j`.
-  have h_mul : vandermonde r *
-      φ.mapMatrix (of fun k j : Fin a ↦ (X ^ l j %ₘ freeMonic ℤ a).coeff k.val) =
-        of fun i j : Fin a ↦ r i ^ l j := by
-    ext i j
-    rw [of_apply, ← h_rem i j]
-    conv_rhs => rw [← sum_modByMonic_coeff (monic_freeMonic ℤ a) (degree_freeMonic ℤ a).le]
-    simp [mul_apply, mul_comm, eval₂_finsetSum]
-  rw [hφ_eq, genericSchur, mul_comm, AlgHom.map_det, ← det_mul, h_mul]
+  erw [mul_comm, rootCoeffEval, AlgHom.map_det, ← det_mul]; rcongr i
+  simpa [mul_comm, -univ_val_map, eval₂_finsetSum] using! (sum_modByMonic_coeff
+    (monic_freeMonic ..) (degree_freeMonic ℤ a).le ▸ eval₂_modByMonic_eq_self_of_root
+    ((eval₂_eq_eval_map _).trans (congr($((MvPolynomial.mapEquivMonic ..).4 (.mk _ nodal_monic
+    (by simp))).1.eval (r i)).trans (eval_nodal_at_node (mem_univ i)))) (p := X ^ _) :)
 
 end New.Variety
 
