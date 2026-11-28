@@ -85,10 +85,8 @@ factor i and zero elsewhere; a, b default to 0. -/
 abbrev piMatrixUnit (i : Fin m) (a b : Fin (d i) := 0) : PiMatrix k d :=
   Pi.single i (Matrix.single a b 1)
 
-lemma sum_piMatrixUnit : ∑ i : Fin m, ∑ a : Fin (d i), (piMatrixUnit i a a : PiMatrix k d) = 1 := by
-  -- in the block `i` only the terms of index `i` are left, and they add up to the identity matrix
-  funext i
-  simp_all [sum_eq_single i, sum_single_one]
+lemma sum_piMatrixUnit : ∑ i : Fin m, ∑ a : Fin (d i), (piMatrixUnit i a a : PiMatrix k d) = 1 :=
+  funext (by simp_all [sum_eq_single ·, sum_single_one])
 
 /-- If `A'` has rank at most that of `A`, then `A' = U' * A * U` for some matrices `U`, `U'`. -/
 lemma exists_mul_mul_eq_of_rank_le {A : Matrix N N k} {A' : Matrix n n k} (h : A'.rank ≤ A.rank) :
@@ -330,13 +328,8 @@ lemma exists_wedderburn [CharZero k] (f : H →* G) (h_semiprime : HasSemiprimeS
 is semiprime: any `x` in it with `x * r g * x = 0` for all `g` is zero. This is the hypothesis of
 `New.exists_wedderburn`. -/
 lemma IsTraceNondeg.hasSemiprimeSpan (h : IsTraceNondeg r) :
-    HasSemiprimeSpan k ((coeHom (Matrix n n k)).comp r) := by
-  -- If `x * r g * x = 0`, then `x * r g` has square zero, so its trace is zero.
-  refine fun x hx h_zero ↦ h x hx fun g ↦ ?_
-  have h_sandwich : x * (r g).val * x = 0 := h_zero g
-  have h_nilpotent : IsNilpotent (x * (r g).val) :=
-    ⟨2, by rw [sq, ← mul_assoc, h_sandwich, zero_mul]⟩
-  exact (Matrix.isNilpotent_trace_of_isNilpotent h_nilpotent).eq_zero
+    HasSemiprimeSpan k ((coeHom (Matrix n n k)).comp r) := (h · · ∘ fun H g ↦
+  (Matrix.isNilpotent_trace_of_isNilpotent ⟨2, by erw [sq, ← mul_assoc, H, zero_mul]⟩).eq_zero)
 
 /-- Clifford's theorem for the trace form. Let `k` be algebraically closed of characteristic zero.
 If the trace form of `r : G →* GL n k` is non-degenerate and `f : H →* G` has normal range, then
