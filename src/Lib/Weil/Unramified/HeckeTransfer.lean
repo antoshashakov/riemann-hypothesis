@@ -505,40 +505,11 @@ lemma hecke_transfer_of_pairing (hk : card m = card n + k)
       heckePolyOp ρ hw X (B ⟨f, hfM⟩ v) =
         qPochhammer w.q k (a.frobValue n w * X) •
           B ⟨f, hfM⟩ (heckePolyOp π hw (w.q ^ k * a.frobValue n w / b.frobValue m w * X) v) := by
-  -- The Hecke operators of `T` on `B f v`, and those of `S` on `v`, move to the datum `f`, the
-  -- latter from `w` to `w̄`; there the identity for the vacuum applies. As `hB` is known only at
-  -- `f`, extend `B` to all data and view it as a map into `W →ₗ[ℂ] Z`, on which `π` acts through
-  -- the source and `ρ` through the target. By `hB` this map is equivariant at `f`.
-  obtain ⟨B, rfl⟩ : ∃ B' : 𝒮 (S.hom T) →ₗ[ℂ] W →ₗ[ℂ] Z, B'.comp M.subtype = B := B.exists_extend
-  have h_equiv (g : Gf E n) (h : Gf E m) :
-      B (pairWeil S T a b ((1, g), 1, h) f) = π.linHom 1 g (Representation.linHom 1 ρ h (B f)) := by
-    -- `hB` at `g`, `h`, with the datum `Ψ` replaced by its value.
-    have h_pair (u : W) : ρ h (B f u) = B (pairWeil S T a b ((1, g), 1, h) f) (π g u) := by
-      obtain ⟨Ψ, hΨ_val, hΨ_eq⟩ := hB g h u
-      simpa [← hΨ_val] using hΨ_eq
-    ext u
-    simp [h_pair]
-  obtain ⟨π_sph, ρ_sph, h_hecke⟩ :
-      B f ∈ sphericalAt (π.linHom 1) w ∧ B f ∈ sphericalAt (Representation.linHom 1 ρ) w ∧
-        ∀ X : ℂ, heckePolyOp (Representation.linHom 1 ρ) hw X (B f) =
-          qPochhammer w.q k (a.frobValue n w * X) •
-            heckePolyOp (π.linHom 1) hw.star (w.q ^ k * a.frobValue n w / b.frobValue m w * X)
-              (B f) :=
-    hecke_transfer_of_equivariant hk ha hb hw hf B (π.linHom 1) (Representation.linHom 1 ρ) h_equiv
-  refine ⟨fun g ↦ LinearMap.congr_fun (ρ_sph g) v, fun X ↦ ?_⟩
-  -- The adjoint of the Hecke polynomial of `π` at `w̄` is the one at `w`.
-  have h_adjoint (Y : ℂ) :
-      heckePolyOp (π.linHom 1) hw.star Y (B f) v = B f (heckePolyOp π hw Y v) :=
-    (heckePolyOp_adjoint hw .applyₗ hv π_sph (by simp) Y).symm
-  -- Evaluation at `v` commutes with the Hecke polynomial of `ρ`, which acts on the values only.
-  calc heckePolyOp ρ hw X (B f v)
-      = heckePolyOp (Representation.linHom 1 ρ) hw X (B f) v :=
-        (map_heckePolyOp (LinearMap.applyₗ v) X (by simp)).symm
-    _ = qPochhammer w.q k (a.frobValue n w * X) •
-          B f (heckePolyOp π hw (w.q ^ k * a.frobValue n w / b.frobValue m w * X) v) := by
-      rw [h_hecke, LinearMap.smul_apply, h_adjoint]
-
--- Keeps definitional checks from unfolding the finite sums.
+  obtain ⟨B, ⟨⟩⟩ := B.exists_extend
+  have ⟨h, K, H⟩ := hecke_transfer_of_equivariant hk ha hb hw hf B (π.linHom 1) (.linHom 1 ρ)
+    (by simp [DFunLike.ext_iff, by simpa using hB ·])
+  use (congr($(K ·) v)), (by erw [← map_heckePolyOp (.applyₗ v) _ ?_, H ·,
+    heckePolyOp_adjoint _ .applyₗ hv h] <;> simp)
 seal Finset.sum in
 /-- Hecke transfer through the transposed theta lift, which sends functions on the group of T to
 functions on the group of S. Let w be split of norm q, S of rank n, T of rank m = n + k, and a, b
