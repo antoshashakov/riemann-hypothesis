@@ -551,14 +551,8 @@ lemma smul_mem_ainfLattice : x ∈ L.ainfLattice → m • x ∈ L.ainfLattice :
   mapsTo_span (f := semilinearAct m) (by simp) hx
 
 /-- `L.fracSpan` is stable under ℤ × Γ: if r x lies in the lattice, so does (m r)(m x). -/
-lemma smul_mem_fracSpan : x ∈ L.fracSpan → m • x ∈ L.fracSpan := by
-  rintro ⟨r, hr, hrx⟩
-  refine ⟨m • r, ?_, ?_⟩
-  · -- `m` acts on A_inf by a ring automorphism, so it keeps non-zero divisors.
-    simpa [smul_eq_zero_iff_eq] using hr
-  · -- `(m • r) • (m • x) = m • (r • x)`, and `r • x` lies in the lattice.
-    rw [← frobGroup_smul_smul]
-    exact smul_mem_ainfLattice m hrx
+lemma smul_mem_fracSpan : x ∈ L.fracSpan → m • x ∈ L.fracSpan :=
+  .imp' (m • ·) (by simp_all [smul_eq_zero_iff_eq, ← frobGroup_smul_smul, smul_mem_ainfLattice])
 
 /-- `valueAt a μ`, which is μ ∘ φ^{-a}, turns the action of the n-th power of the unit φ^b E into
 multiplication by the n-th power (n ∈ ℤ) of its image `phiInvToBdR a (frobE b)` in B_dR under
