@@ -120,15 +120,8 @@ noncomputable def lowerLiePart (c : ℂ) : Matrix n n ℂ →L[ℝ] Matrix n n �
 
 /-- The values of `lowerLiePart` lie in the Lie algebra of `U(diag ε)`. -/
 lemma lowerLiePart_mem_unitaryLie (c : ℂ) (Z : Matrix n n ℂ) :
-    lowerLiePart ε ε' o c Z ∈ unitaryLie (signMatrix ε) := by
-  let N : Matrix n n ℂ := lowerMask ε' o Z + c • entryMask Eq Z
-  let J : Matrix n n ℂ := signMatrix ε
-  have J_sq : J * J = 1 := IsHermitianInvolution.mul_self
-  have J_herm : Jᴴ = J := IsHermitianInvolution.isHermitian.eq
-  have h_left : (N - J * Nᴴ * J)ᴴ * J = Nᴴ * J - J * N := by simp [sub_mul, mul_assoc, J_sq, J_herm]
-  have h_right : J * (N - J * Nᴴ * J) = J * N - Nᴴ * J := by simp [mul_sub, ← mul_assoc, J_sq]
-  change (N - J * Nᴴ * J)ᴴ * J + J * (N - J * Nᴴ * J) = 0
-  rw [h_left, h_right, sub_add_sub_cancel, sub_self]
+    lowerLiePart ε ε' o c Z ∈ unitaryLie (signMatrix ε) :=
+  ext (by simp [lowerLiePart, signMatrix]; ring; norm_cast; simp)
 
 /-- A chart at `1` adapted to the triangular matrices. Let `E` send `0` to `1` with strict
 derivative the identity. Let `L` be real linear, with every `E (L Z)` block diagonal for `ε`, and
@@ -231,20 +224,11 @@ theorem exists_analytic_path (hε : ε' = 1 ∨ ε' = ε) (g : USign ε)
       c 0 = 1 ∧
       c 1 = g ∧
       (∀ t : ℝ, AnalyticAt ℝ (fun s : ℝ ↦ (c s : Matrix n n ℂ)) t) ∧
-      ∀ t : ℝ, (c t : Matrix n n ℂ) ∈ blockDiagAlg ε' := by
-  have analytic (X : unitaryLie (signMatrix ε)) (t : ℝ) :
-      AnalyticAt ℝ (fun s : ℝ ↦ (expU (s • X) : Matrix n n ℂ)) t :=
-    (NormedSpace.exp_analytic _).comp (f := fun s : ℝ ↦ s • (X : Matrix n n ℂ)) (by fun_prop)
-  obtain rfl | rfl := hε
-  · -- No condition on the path: write `g` as a product of two exponentials.
-    obtain ⟨X, Y, rfl⟩ := exists_eq_expU_mul_expU g
-    exact ⟨fun t ↦ expU (t • X) * expU (t • Y), by simp, by simp,
-      fun t ↦ (analytic X t).mul (analytic Y t), by simp⟩
-  · -- Here `g` lies in the compact subgroup, so it is the exponential of a block diagonal `X`.
-    obtain ⟨X, exp_X, X_mem⟩ := exists_expU_eq_maxCompactU ⟨g, mem_maxCompactU.2 hg⟩
-    refine ⟨fun t ↦ expU (t • X), by simp, by simp [exp_X], analytic X, fun t ↦ ?_⟩
-    rw [mem_blockDiagAlg_iff_commute] at X_mem ⊢
-    exact (X_mem.smul_right t).exp_right
+      ∀ t : ℝ, (c t : Matrix n n ℂ) ∈ blockDiagAlg ε' := have := @NormedSpace.exp_analytic
+  by obtain ⟨rfl | rfl, X, Y, _⟩ := hε,
+    exists_eq_expU_mul_expU g <;> [use fun t ↦ expU (t • X) * expU (t •
+    Y); (cases exists_expU_eq_maxCompactU ⟨g, mem_maxCompactU.2 hg⟩; use (expU <| · • ‹_›))] <;>
+    simp_all [mem_blockDiagAlg_iff_commute, Commute.exp_right, Commute.smul_right] <;> fun_prop
 
 /-- A function on a product of copies of `U(diag ε)` that is holomorphic of weight `u` (with no
 block condition) is continuous. -/
