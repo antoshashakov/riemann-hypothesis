@@ -158,37 +158,16 @@ e(1) = 1. -/
 lemma exists_integral_multiple_eval_one {A A' B C : (PadicAlgCl ℓ)[X]} (hB : B.Monic)
     (hC : ∀ i : ℕ, ‖C.coeff i‖ ≤ 1) (hAB : ∀ i : ℕ, ‖(A * B - C).coeff i‖ < 1)
     (hA'B : ∀ i : ℕ, ‖C.coeff i - (A' * B).coeff i‖ < 1) (hA'_one : 1 ≤ ‖eval 1 A'‖) :
-    ∃ e : (intQpBar ℓ)[X], A ∣ e.map (intQpBar ℓ).subtype ∧ e.eval 1 = 1 := by
-  -- Monic factors cancel in bounds on coefficients: `A` is integral and `A ≡ A'`, so `A(1)` has
-  -- norm at least one, and `e = A / A(1)` is integral.
-  have hAB_int (i : ℕ) : ‖(A * B).coeff i‖ ≤ 1 :=
-    calc ‖(A * B).coeff i‖ = ‖(A * B - C).coeff i + C.coeff i‖ := by simp
-      _ ≤ max ‖(A * B - C).coeff i‖ ‖C.coeff i‖ := norm_add_le_max _ _
-      _ ≤ 1 := max_le (hAB i).le (hC i)
-  have hA_int (i : ℕ) : ‖A.coeff i‖ ≤ 1 := norm_coeff_le_of_mul_monic hB hAB_int i
-  have h_prod (i : ℕ) : ‖((A - A') * B).coeff i‖ < 1 :=
-    calc ‖((A - A') * B).coeff i‖
-        = ‖(A * B - C).coeff i + (C.coeff i - (A' * B).coeff i)‖ := by simp [sub_mul]
-      _ ≤ max ‖(A * B - C).coeff i‖ ‖C.coeff i - (A' * B).coeff i‖ := norm_add_le_max _ _
-      _ < 1 := max_lt (hAB i) (hA'B i)
-  have h_diff_one : ‖(A' - A).eval 1‖ < 1 := by
-    simpa [norm_sub_rev] using norm_eval_one_lt_one (norm_coeff_lt_one_of_mul_monic hB h_prod)
-  have hA_one : 1 ≤ ‖A.eval 1‖ := by
-    contrapose! hA'_one
-    calc ‖A'.eval 1‖ = ‖(A' - A).eval 1 + A.eval 1‖ := by simp
-      _ ≤ max ‖(A' - A).eval 1‖ ‖A.eval 1‖ := norm_add_le_max _ _
-      _ < 1 := max_lt h_diff_one hA'_one
-  have hA_ne : A.eval 1 ≠ 0 := norm_pos_iff.1 (one_pos.trans_le hA_one)
-  obtain ⟨e, he⟩ : ∃ e : (intQpBar ℓ)[X],
-      e.map (intQpBar ℓ).subtype = A * Polynomial.C (A.eval 1)⁻¹ := by
-    rw [← mem_lifts, lifts_iff_coeff_lifts]
-    intro i
-    have h_int : ‖A.coeff i * (A.eval 1)⁻¹‖ ≤ 1 := by
-      simpa [mul_inv_le_iff₀ (norm_pos_iff.2 hA_ne)] using (hA_int i).trans hA_one
-    exact ⟨⟨_, h_int⟩, (coeff_mul_C ..).symm⟩
-  have he_one : (intQpBar ℓ).subtype (e.eval 1) = 1 := by
-    rw [← eval_one_map, he, eval_mul, eval_C, mul_inv_cancel₀ hA_ne]
-  exact ⟨e, ⟨_, he⟩, Subtype.ext he_one⟩
+    ∃ e : (intQpBar ℓ)[X], A ∣ e.map (intQpBar ℓ).subtype ∧ e.eval 1 = 1 :=
+  have v : 1 ≤ ‖A.eval 1‖ := by
+    grw [← sub_add_cancel A' A, eval_add, norm_add_le_max, eval_eq_sum_range,
+      (exists_norm_finsetSum_le ..).choose_spec.2, norm_mul, norm_coeff_le_of_mul_monic hB
+      (le_supNorm _), (exists_eq_supNorm _).choose_spec, sub_mul, ← sub_add_sub_cancel _ C,
+      coeff_add, norm_add_le_max] at hA'_one; simp_all [norm_sub_rev (C.coeff _), not_le_of_gt]
+  ((A * .C (A.eval 1)⁻¹).lifts_iff_coeff_lifts.2 (by simp [← NNReal.coe_le_coe,
+    field, norm_coeff_le_of_mul_monic
+    hB (by grw [← sub_add_cancel (A * B), coeff_add _ _ ·, norm_add_le_max, hAB, hC, max_self,
+    v])])).imp fun e he ↦ ⟨⟨_, he⟩, by simpa [norm_pos_iff.1 (by bound)] using congr(eval 1 $he)⟩
 
 /-- Let p be a nonzero polynomial over ℚ̄_ℓ, and let y^j − 1 have norm one for 1 ≤ j ≤ deg p. Then
 for some i every root μ of p has ‖1 − y^i μ‖ ≥ 1, that is, y^i μ is not congruent to one modulo the
