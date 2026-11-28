@@ -140,11 +140,8 @@ lemma isPrimitiveMatrix_firstCols [DecidableEq b] {k : GL n R} (hk : k ∈ intGL
 consists of the columns `a` of some `k ∈ GL n O`. -/
 lemma exists_invLastRows_iff_transpose {x : Matrix a n R} :
     (∃ k ∈ intGL n O, x = invLastRows e k) ↔
-      ∃ k ∈ intGL n O, xᵀ = firstCols (Equiv.trans (Equiv.sumComm a b) e) k := by
-  -- Reparametrise by the involution `invTransposeGL`, which preserves `GL n O`.
-  refine invTransposeGL.exists_congr' fun k ↦ ?_
-  change invTransposeGL k ∈ intGL n O ∧ x = invLastRows e (invTransposeGL k) ↔ _
-  rw [invLastRows_invTransposeGL, invTransposeGL_mem_intGL, ← transpose_inj, transpose_transpose]
+      ∃ k ∈ intGL n O, xᵀ = firstCols (Equiv.trans (Equiv.sumComm a b) e) k :=
+  invTransposeGL.exists_congr' (invTransposeGL_mem_intGL · |>.and transpose_inj)
 
 /-- The rows `a` of `k⁻¹` kill the columns `b` of `k`. -/
 lemma invLastRows_mul_firstCols : invLastRows e k * firstCols e k = 0 := by
