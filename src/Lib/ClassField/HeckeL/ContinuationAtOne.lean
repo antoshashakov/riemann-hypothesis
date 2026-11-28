@@ -920,31 +920,12 @@ A special case of the non-vanishing of Hecke L-functions. Only real s is covered
 assumed even for s > 1. -/
 lemma eulerProd_ne_zero (h : IsHeckeOfType ψ n) (hS : S.Finite) (hψ_sq : ψ ^ 2 ≠ 1) {s : ℝ}
     (hs : 1 ≤ s) : eulerProd (heckeCoeff ψ S) s ≠ 0 := by
-  -- Let `-m₁` and `-m₂` be the means of `ψ` and `ψ ^ 2` over the primes of degree one. The
-  -- inequality `3 + 4 cos θ + cos 2θ ≥ 0` gives `4 * m₁ + m₂ ≤ 3`, so `m₁ = 0`.
-  have hψ_ne : ψ ≠ 1 := fun h_one ↦ hψ_sq (by rw [h_one, one_pow])
-  obtain ⟨m₁, h_nonvanishing, h_dens₁⟩ := h.exists_hasPrimeDensity_neg_natCast hS hψ_ne
-  obtain ⟨m₂, -, h_dens₂⟩ := (h.pow 2).exists_hasPrimeDensity_neg_natCast hS hψ_sq
-  -- The two densities, as a family indexed by `Fin 2` for `HasPrimeDensity.sum`.
-  let a : Fin 2 → FinPlace K → ℂ := ![heckeCoeff ψ S, heckeCoeff (ψ ^ 2) S]
-  have h_dens : ∀ i : Fin 2, HasPrimeDensity (a i) (![-(m₁ : ℂ), -(m₂ : ℂ)] i) := by
-    simpa [a, Fin.forall_fin_two] using ⟨h_dens₁, h_dens₂⟩
-  have h_re_sum_ge (v : FinPlace K) (hv : v ∉ S) :
-      (-3 : ℂ).re ≤ (∑ i : Fin 2, ![4, 1] i * a i v).re := by
-    -- With `z = x + i y` of norm one, `3 + 4 x + (x ^ 2 - y ^ 2) = 2 * (x + 1) ^ 2`.
-    let z : ℂ := ψ (locIdele v (uniformizer v))
-    have h_unit : 1 ^ 2 - z.re ^ 2 = z.im ^ 2 := by rw [← sq_norm_sub_sq_re, h.norm_eq_one]
-    have h_sum_re : (∑ i : Fin 2, ![4, 1] i * a i v).re = 4 * z.re + (z.re ^ 2 - z.im ^ 2) := by
-      simp [a, sq, heckeCoeff, hv, z]
-    rw [h_sum_re, show (-3 : ℂ).re = -3 by norm_num]
-    nlinarith [sq_nonneg (z.re + 1)]
-  -- An inequality at almost all primes passes to the means.
-  have h_mean_re : (-3 : ℂ).re ≤ (∑ i : Fin 2, ![4, 1] i * ![-(m₁ : ℂ), -(m₂ : ℂ)] i).re :=
-    (hasPrimeDensity_const (-3)).re_le_re (.sum ![4, 1] h_dens)
-      (.mono hS.compl_mem_cofinite fun v hv _ ↦ h_re_sum_ge v hv)
-  have h_mean : (m₂ + 4 * m₁ : ℝ) ≤ 3 := by simpa using h_mean_re
-  norm_cast at h_mean
-  exact h_nonvanishing (by lia) s hs
+  choose _ m k H using fun i ↦
+    (h.pow (![1, 2] i)).exists_hasPrimeDensity hS (by fin_cases i <;> aesop)
+  have := (hasPrimeDensity_const (-3)).re_le_re (.sum ![4, 1] H) (.mono hS.compl_mem_cofinite fun v
+    _ _ ↦ by simp [sq,
+    heckeCoeff, *]; nlinarith [h.norm_eq_one (locIdele v (uniformizer _)) ▸ sq_norm_sub_sq_re _])
+  simp_all; norm_cast at *; grind
 
 end IsHeckeOfType
 
