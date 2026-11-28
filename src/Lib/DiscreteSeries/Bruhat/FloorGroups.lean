@@ -407,11 +407,8 @@ lemma conj_mem_unipotentBelow (hσ : σ ∈ floorGroup l) (hg : g ∈ unipotentB
 
 /-- The fixer `H_{l+1}` of the floors up to `l` normalises the step `𝒩_l = H_l ∩ 𝒩_{<l+1}`. -/
 lemma conj_mem_floorUnipotent (hg : g ∈ floorUnipotent l) (σ : T.G)
-    (hσ : σ ∈ floorGroup (l + 1)) : σ * g * σ⁻¹ ∈ floorUnipotent l := by
-  obtain ⟨hg_floor, hg_unipotent⟩ := mem_inf.1 hg
-  have hσ_floor : σ ∈ floorGroup l := floorGroup_anti l.le_succ hσ
-  exact mem_inf.2 ⟨mul_mem (mul_mem hσ_floor hg_floor) (inv_mem hσ_floor),
-    conj_mem_unipotentBelow hσ hg_unipotent⟩
+    (hσ : σ ∈ floorGroup (l + 1)) : σ * g * σ⁻¹ ∈ floorUnipotent l :=
+  by simp_all [floorUnipotent, conj_mem_unipotentBelow, mul_mem, floorGroup_anti l.le_succ hσ]
 
 /-- Conjugation by the fixer `H_{l+1}` of the floors up to `l` keeps the entry at the frame vectors
 `(f_a, f_{a+1})` of an element of the unitriangular group `𝒩_{<l}` of the floors below `l`. -/
