@@ -536,30 +536,11 @@ degree is the reciprocal of the mean of the squared modulus of `New.HCParam.dsCo
 This is a case of the Schur orthogonality relations, for one matrix coefficient of the
 representation of weight (κ, e) of a product of compact groups U(n). -/
 lemma IsHCParam.prod_formalDegree (h : IsHCParam κ e l) :
-    ∏ w : Φ, (l w).formalDegree = Fintype.card (WeylIndex n κ) := by
-  -- Schur orthogonality at the highest vector, a unit vector: the mean of the squared modulus of
-  -- its matrix coefficient is the reciprocal of the dimension. The coefficient is the conjugate of
-  -- `∏ w, (l w).dsCoeff`, and `dsCoeff` at `x⁻¹` is the conjugate of `dsCoeff` at `x`.
-  have h_coeff_inv (x : Φ → USign 1) :
-      gramForm (highestVector κ l) (conjWeylRep κ e (s := 1) x⁻¹ (highestVector κ l)) =
-        ∏ w : Φ, (l w).dsCoeff (x w) := by
-    simp only [h.gramForm_conjWeylRep_eq_dsCoeff, Pi.inv_apply, dsCoeff_inv (h.hasGap _ 0),
-      conj_conj]
-  have h_mean : ∫ x : Φ → USign (1 : n → ℤˣ), ∏ w : Φ, (‖(l w).dsCoeff (x w).val‖ : ℂ) ^ 2 =
-      (card (WeylIndex n κ) : ℂ)⁻¹ := by
-    have h_schur : ∫ x : Φ → USign (1 : n → ℤˣ),
-        gramForm (highestVector κ l) (conjWeylRep κ e x (highestVector κ l)) *
-          gramForm (highestVector κ l) (conjWeylRep κ e x⁻¹ (highestVector κ l)) =
-          (card (WeylIndex n κ) : ℂ)⁻¹ := by
-      simp [schur_orthogonality, gramForm_highestVector_self h.injective]
-    simpa [h_coeff_inv, h.gramForm_conjWeylRep_eq_dsCoeff, ← prod_mul_distrib, conj_mul'] using
-      h_schur
-  -- The integral splits over the places, and each factor is the reciprocal of `formalDegree`.
-  have h_split : ((∏ w : Φ, (l w).formalDegree⁻¹ : ℝ) : ℂ) =
-      ∫ x : Φ → USign (1 : n → ℤˣ), ∏ w : Φ, (‖(l w).dsCoeff (x w).val‖ : ℂ) ^ 2 := by
-    simp [formalDegree, ← integral_fintype_prod_eq_prod, ← integral_complex_ofReal, volume_pi]
-  refine inv_injective (ofReal_injective ?_)
-  simpa [← prod_inv_distrib] using h_split.trans h_mean
+    ∏ w : Φ, (l w).formalDegree = Fintype.card (WeylIndex n κ) := inv_injective
+  (ofReal_injective (by simpa [h.gramForm_conjWeylRep_eq_dsCoeff, h _, ↓dsCoeff_inv (h.hasGap _ 0),
+  formalDegree, Pi.inv_def, ← prod_mul_distrib, conj_mul',
+  ← integral_fintype_prod_eq_prod, ← integral_complex_ofReal, gramForm_highestVector_self] using!
+  (fun v ↦ schur_orthogonality e (gramForm v) v v v) (highestVector κ l)))
 
 end New
 
