@@ -136,10 +136,8 @@ def IsWeilPair (s : Gp p) (m : ℕ) : Prop := IsFrob (intQpBar p) (p ^ m) s⁻¹
 /-- For `s` in `Gp p` = Gal(ℚ̄_p/ℚ_p), `(s, 0)` is a Weil pair (that is, `s` acts trivially on the
 residue field of the valuation ring of ℚ̄_p) if and only if `s` lies in the inertia group of that
 valuation ring. -/
-lemma isWeilPair_zero_iff {s : Gp p} : IsWeilPair s 0 ↔ s ∈ inertiaGroup (Gp p) (intQpBar p) := by
-  rw [IsWeilPair, pow_zero]
-  -- The inertia group is by definition the set of Frobenius elements for `q = 1`.
-  exact inv_mem_iff (H := inertiaGroup (Gp p) (intQpBar p))
+lemma isWeilPair_zero_iff {s : Gp p} : IsWeilPair s 0 ↔ s ∈ inertiaGroup (Gp p) (intQpBar p) :=
+  (inertiaGroup ..).inv_mem_iff
 
 /-- The p-adic cyclotomic character of `Γ`: the cyclotomic character of `Gp p` composed with `j`. -/
 abbrev χ : Γ →* ℤ_[p]ˣ := cyclotomicGp.comp 𝒥.toGp
@@ -307,13 +305,8 @@ lemma mem_localFieldOf {x : PadicAlgCl p} : x ∈ localFieldOf Γ ↔ ∀ g : Γ
 /-- Every `ℤ_p`-algebra map from `Q̄_p` to `ℂ_p` is an element of the Galois group `Gp p` followed
 by the inclusion. -/
 lemma exists_gp_eq_algHom (γ : PadicAlgCl p →ₐ[ℤ_[p]] ℂ_[p]) :
-    ∃ s : Gp p, ∀ x : PadicAlgCl p, γ x = s x := by
-  -- `γ` is `ℚ_[p]`-linear, so it restricts to an automorphism of the normal extension
-  -- `PadicAlgCl p` of `ℚ_[p]`.
-  let γ' : PadicAlgCl p →ₐ[ℚ_[p]] ℂ_[p] := γ.extendScalarsOfIsLocalization ℚ_[p] ℤ_[p]⁰
-  refine ⟨γ'.restrictNormal' (PadicAlgCl p), fun x ↦ ?_⟩
-  -- The restriction followed by the inclusion into `ℂ_[p]` is `γ'`, which agrees with `γ`.
-  simp [γ', restrictNormal', PadicComplex.coe_eq, AlgHom.restrictNormal_commutes]
+    ∃ s : Gp p, ∀ x : PadicAlgCl p, γ x = s x := ⟨restrictNormal'
+  (γ.extendScalarsOfIsLocalization _ _⁰) _, by simp [restrictNormal', PadicComplex.coe_eq]⟩
 
 variable (Γ) in
 /-- The filter of neighbourhoods of `1` in `Gp p` is finer than the image under `j` of the filter
@@ -465,11 +458,8 @@ lemma mem_fixedPeriods_iff [MulSemiringAction (Gp p) B] [SMulCommClass (Gp p) �
 `ρ` is admissible along `F`. -/
 lemma isAdmissible_of_one_tmul_mem_span
     (h_mem : ∀ x : T, (1 : Bmax) ⊗ₜ[ℤ_[p]] x ∈ span Bmax (fixedPeriods ρ Bmax F)) :
-    IsAdmissible ρ F := by
-  -- The elements `1 ⊗ x` span `Bmax ⊗ T` over `Bmax`.
-  rw [IsAdmissible, eq_top_iff, ← baseChange_top, baseChange_eq_span, span_le]
-  rintro _ ⟨x, -, rfl⟩
-  exact h_mem x
+    IsAdmissible ρ F :=
+  top_unique (by simpa [← baseChange_top, baseChange_eq_span, span_le, Set.subset_def])
 
 /-- If `f` intertwines `ρ g` and `ρ' g` for all `g` in a set of `F` (hypothesis `hf`), then
 `b ⊗ x ↦ b ⊗ f x` sends periods of `ρ` in `B` fixed along `F` to periods of `ρ'` in `Bmax` fixed
@@ -572,10 +562,8 @@ lemma IsAdmissible.tate_twist (h_adm : IsAdmissible ρ F) (c : ℤ)
 open image given by `OverGp Γ p`. If `ρ` is admissible along `F`, it is admissible along every finer
 filter `F' ≤ F`, because an element fixed for `F`-almost all `g` is fixed for `F'`-almost all
 `g`. -/
-lemma IsAdmissible.mono (h_adm : IsAdmissible ρ F) (h_le : F' ≤ F) : IsAdmissible ρ F' := by
-  have h_subset : fixedPeriods ρ Bmax F ⊆ fixedPeriods ρ Bmax F' :=
-    fun y hy ↦ mem_fixedPeriods_iff.mpr ((mem_fixedPeriods_iff.mp hy).filter_mono h_le)
-  exact eq_top_mono (span_mono h_subset) h_adm
+lemma IsAdmissible.mono (h_adm : IsAdmissible ρ F) (h_le : F' ≤ F) : IsAdmissible ρ F' :=
+  eq_top_mono (by gcongr; tauto) h_adm
 
 /-- Let `ρ` be admissible along `F` and let `f` intertwine `ρ g` and `ρ' g` for all `g` in a set of
 `F` (hypothesis `hf`). Then the map `1 ⊗ f` sends `Bmax ⊗ T` into the span of the periods of `ρ'`
