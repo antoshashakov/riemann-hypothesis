@@ -53,15 +53,10 @@ lemma inclMatrix_mulVecLin_injective (k : Type*) [Field k] :
 column ι(j) of u is column j of b. -/
 lemma exists_GL_mul_inclMatrix {k : Type*} [Field k] {b : Matrix n r k}
     (h : Function.Injective b.mulVecLin) :
-    ∃ u : GL n k, u.val * inclMatrix k ι = b := by
-  -- Both matrices are injective as linear maps, so their ranges are isomorphic. Extend this
-  -- isomorphism to an automorphism `g` of `n → k` and take its matrix.
-  let e : (r → k) ≃ₗ[k] LinearMap.range (inclMatrix k ι).mulVecLin :=
-    ofInjective _ (inclMatrix_mulVecLin_injective ι k)
-  obtain ⟨g, hg⟩ := exists_linearEquiv_restrict_eq (e.symm ≪≫ₗ ofInjective b.mulVecLin h)
-  have h_apply (v : r → k) : g (inclMatrix k ι *ᵥ v) = b *ᵥ v := by simpa [e] using (hg (e v)).symm
-  refine ⟨.mk'' g.toMatrix' (by simp [← coe_det]), ?_⟩
-  simp [ext_iff_mulVec, ← mulVec_mulVec, h_apply]
+    ∃ u : GL n k, u.val * inclMatrix k ι = b := (Submodule.exists_linearEquiv_restrict_eq
+  ((ofInjective _ (inclMatrix_mulVecLin_injective ι k)).symm ≪≫ₗ
+  ofInjective _ h)).imp' (.mk'' ·.toMatrix' (by simp [← coe_det])) (by simp_all [ext_iff_mulVec,
+  ← mulVec_mulVec, ↓reindex_equiv (ofInjective ..), inclMatrix_mulVecLin_injective])
 
 end New
 
@@ -165,10 +160,7 @@ lemma extendGL_injective [DecidableEq r]
 /-- An invertible matrix x fixes every column of T, seen as the family `T.col`, if and only if
 xT = T. -/
 lemma mem_stabilizer_col_iff {x : GL n R} :
-    x ∈ MulAction.stabilizer (GL n R) T.col ↔ x.val * T = T := by
-  -- the columns of `x * T` are the images of those of `T` under `x`
-  change (x.val * T)ᵀ = Tᵀ ↔ _
-  exact transpose_inj
+    x ∈ MulAction.stabilizer (GL n R) T.col ↔ x.val * T = T := transpose_inj
 
 omit [Fintype n] in
 /-- A matrix T is the extension by zero of its rows indexed by u exactly when its other rows
