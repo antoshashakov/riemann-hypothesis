@@ -135,14 +135,9 @@ lemma exists_coset_section :
 `x.out` is the chosen representative of the coset `x`. This is the function summed in the norm
 `New.DiscreteModule.corestrictH0`, so the sum of `F` is the norm of `y`. -/
 lemma shapiro_H0 (F : (M.funModule U).H0) :
-    ∃ y : (M.restrictTo U).H0, (fun x : Γ ⧸ U.toSubgroup ↦ M.ρ x.out y) = F.val := by
-  -- Take for `y` the value of `F` at the coset `U`.
-  have h_inv (g : Γ) : (M.funModule U).ρ g F.val = F.val := F.prop g
-  refine ⟨⟨F.val ⟦1⟧, fun u ↦ ?_⟩, funext fun x ↦ ?_⟩
-  · rw [← funModule_apply_one, h_inv]
-  · -- `F x = F (x.out • U) = x.out • F U`, by the invariance of `F` under `x.out`.
-    have h_at : M.ρ x.out (F.val (x.out⁻¹ • x)) = F.val x := congrFun (h_inv x.out) x
-    simpa [← Quotient.mk_smul_out] using h_at
+    ∃ y : (M.restrictTo U).H0, (fun x : Γ ⧸ U.toSubgroup ↦ M.ρ x.out y) = F.val :=
+  ⟨⟨_, (by rw [← funModule_apply_one,
+  F.2 ·])⟩, by ext x; simpa [← Quotient.mk_smul_out] using congrFun (F.2 x.out) x⟩
 
 /-- Shapiro's lemma in degree one, injectivity. If the restriction to `U` of a 1-cocycle `F` with
 values in the functions `Γ ⧸ U → M`, evaluated at the coset `U`, is the coboundary of `m`, then
@@ -225,29 +220,10 @@ composed with the inclusion `U → Γ`, and `H0` denotes invariants. Then `(χ, 
 lemma cyclicClass_corestrictH0 (χ : ↥(QZChar Γ))
     (w : ↥(M.restrictTo U).H0) {v : M.H0} (h_norm : M.corestrictH0 U w = v) (α : M.H2)
     (h_res : M.resH2 U α = cyclicClass (M.restrictTo U).ρ (QZChar.comap (subgroupIncl U) χ) w) :
-    cyclicClass M.ρ χ v = U.index • α := by
-  -- Since `w` is `U`-invariant, `g w` depends only on the coset `gU`.
-  have h_out (g : Γ) : M.ρ (g : Γ ⧸ U.toSubgroup).out w = M.ρ g w := by
-    obtain ⟨u, hu⟩ := mk_out_eq_mul U.toSubgroup g
-    simp [hu, show M.ρ u w = w from w.prop u]
-  -- Apply `mapH2_sum_eq_index_smul` to the symbol of `χ` and the invariant function `F : gU ↦ g w`.
-  let F : (M.funModule U.toSubgroup).H0 := ⟨fun x : Γ ⧸ U.toSubgroup ↦ M.ρ x.out w,
-    by simp [funext_iff, forall_mk, h_out]⟩
-  -- The value of `F` at the coset `U` is `w`.
-  have h_value : cyclicClass (M.restrictTo U).ρ (QZChar.comap (subgroupIncl U) χ) w =
-      M.shapiroH2 U (cyclicClass (M.funModule U).ρ χ F) := by
-    have h_F_one : F.val ⟦1⟧ = (w : M.V) := by simpa using h_out 1
-    refine congrArg (Quotient.mk _) (Subtype.ext (funext fun p ↦ ?_))
-    -- Both sides are `carry (χ u, χ u') •` a value: `w` on the left, `F` at the coset `U` on the
-    -- right (the Shapiro image evaluates there).
-    show (χ.val p.fst).carry (χ.val p.snd) • (w : M.V) =
-      (χ.val p.fst).carry (χ.val p.snd) • F.val ⟦1⟧
-    rw [h_F_one]
-  -- The sum of the values of `F` is the norm of `w`, which is `v`.
-  have h_sum : cyclicClass M.ρ χ v = (M.sum U).mapH2 (cyclicClass (M.funModule U).ρ χ F) := by
-    refine congrArg (Quotient.mk _) (Subtype.ext (funext fun p ↦ ?_))
-    simp [F, show M.sum U.toSubgroup (fun x ↦ M.ρ x.out w) = v from h_norm]
-  rw [h_sum, mapH2_sum_eq_index_smul U _ α (h_res.trans h_value)]
+    cyclicClass M.ρ χ v = U.index • α := have h g : M.ρ (@QuotientGroup.mk _ _ U g).out w = M.ρ g
+                                               w := by cases mk_out_eq_mul U g; simp [*]; erw [w.2]
+  mapH2_sum_eq_index_smul U (cyclicClass _ χ ⟨(M.ρ ·.out w), by simp [funext_iff, forall_mk, h]⟩) _
+    (h_res.trans congr(⟦$(by ext; simpa using! congrArg _ (h 1).symm)⟧)) ▸ congr(⟦$(by aesop)⟧)
 
 /-- For Γ compact and U an open subgroup, a class in H²(Γ, M) whose restriction to U vanishes is
 killed by the index [Γ : U]. -/
