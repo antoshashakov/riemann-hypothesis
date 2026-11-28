@@ -583,33 +583,13 @@ nonzero when pushed along a → a/I. Here h_b = Hom(b, –) and im h_d is the se
 factor through φ. -/
 lemma tensorPush_quotient_ne_zero (hN : ∀ x : N, pFlat • x = 0) (hz : z ≠ 0) (I : Ideal a.obj)
     (hI : (∀ y ∈ I, algebraMap OFlat a.obj pFlat ∣ y) ∨ IsRadical (algebraMap OFlat a.obj pFlat)) :
-    tensorPush (mkₐ S I).toLinearMap z ≠ 0 := by
-  -- It is enough that `I ⊗ D ⊗ N ⊗ 𝔪 → a ⊗ D ⊗ N ⊗ 𝔪` is zero: then the coefficients for `a` and
-  -- for `a ⧸ I` are isomorphic.
-  have h_zero (D : PerfectAlg S) :
-      (I.restrictScalars S).subtype.rTensor (D.obj ⊗[OFlat] (N ⊗[OFlat] MaxIdealFlat)) = 0 := by
-    ext y w x m
-    -- Write `m = s • c` with `pFlat ∣ s ^ j`; then `pFlat` divides `s * y` in both cases of `hI`.
-    obtain ⟨s, c, rfl, j, hj : pFlat ∣ s ^ j⟩ := m.exists_smul_eq pFlat_ne_zero
-    obtain ⟨y', hy'⟩ : algebraMap OFlat a.obj pFlat ∣ algebraMap OFlat a.obj s * y := by
-      rcases hI with h_dvd | h_rad
-      · exact (h_dvd y y.property).mul_left _
-      · refine (h_rad j _ ?_).mul_right _
-        simpa only [map_pow] using map_dvd (algebraMap OFlat a.obj) hj
-    -- Move `s` from `m` to `y`, and `pFlat` back to `x`, which it kills by `hN`.
-    calc (y : a.obj) ⊗ₜ[S] (w ⊗ₜ[OFlat] (x ⊗ₜ[OFlat] (s • c)))
-      _ = (algebraMap OFlat a.obj s * y) ⊗ₜ[S] (w ⊗ₜ[OFlat] (x ⊗ₜ[OFlat] c)) := by
-        rw [tmul_smul, tmul_smul, ← smul_tmul, Algebra.smul_def]
-      _ = y' ⊗ₜ[S] (w ⊗ₜ[OFlat] ((pFlat • x) ⊗ₜ[OFlat] c)) := by
-        rw [hy', ← Algebra.smul_def, smul_tmul, ← tmul_smul, smul_tmul']
-      _ = 0 := by simp [hN]
-  have h_bij (D : PerfectAlg S) :
-      Bijective ((I.restrictScalars S).mkQ.rTensor (D.obj ⊗[OFlat] (N ⊗[OFlat] MaxIdealFlat))) :=
-    ⟨ker_eq_bot.mp (by rw [rTensor_mkQ, h_zero, range_zero]),
-      rTensor_surjective _ (Submodule.mkQ_surjective _)⟩
-  refine (map_ne_zero_iff _ (Bijective.injective ?_)).mpr hz
-  exact push_bijective_of_isIso
-    (isoOfAppBijective _ fun D ↦ map_bijective.mpr (h_bij D)).isIso_hom n
+    tensorPush (mkₐ S I).toLinearMap z ≠ 0 :=
+  (map_ne_zero_iff _ (push_bijective_of_isIso (isoOfAppBijective _ fun D ↦ map_bijective.2
+  ⟨ker_eq_bot.1 ((rTensor_mkQ (D.1 ⊗[OFlat] _) (I.restrictScalars S)).trans (range_eq_bot.2 (by
+    ext y w n m; obtain ⟨s, c, rfl, k, e⟩ := m.exists_smul_eq pFlat_ne_zero
+    obtain ⟨z, hz⟩ := hI.elim (· _ y.2 |>.mul_left _) (· k _ (by grw [e, map_pow]) |>.mul_right _)
+    simpa [smul_tmul, ← tmul_smul, ↓smul_tmul', hN, ← Algebra.smul_def] using! congr($hz ⊗ₜ[S]
+      (w ⊗ₜ[OFlat] (n ⊗ₜ[OFlat] c)))))), rTensor_surjective _ exists_rep⟩).isIso_hom n).1).2 hz
 
 /-- Let S be a perfect O^♭-algebra, i: S → d and k: d → a maps of perfect S-algebras, ρ: V → a a
 faithfully flat map of S-algebras, and N an O^♭-module. Then every class x in
