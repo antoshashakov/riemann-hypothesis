@@ -185,9 +185,7 @@ lies in `levelSpace (V.formRep α) J`, the vectors fixed by the subgroup `J` of 
 it has level `J`, that is, is invariant under right translation by `J`. -/
 lemma Space.mem_levelSpace_formRep_iff {J : Subgroup (Gf E n)} {y : V.Form α} :
     y ∈ levelSpace (V.formRep α) J ↔ HasLevel y J := by
-  have h_fix (k : Gf E n) : V.formRep α k y = y ↔ ∀ g : G E s, y (g * (1, k)) = y g :=
-    Subtype.ext_iff.trans funext_iff
-  simp [h_fix]
+  simp [(show · = y ↔ _ from Subtype.ext_iff), funext_iff]
 
 /-- If `F` is right invariant under the open subgroup `K` of G_f, then so is its real convolution
 R(α)F, since real and finite points commute. -/
@@ -411,10 +409,8 @@ g ↦ F(gx) has the same integral over `Γ \ G` as F, and it is integrable if an
 lemma integral_comp_mul_right (x : G E s) (h_rat : V.Γ.FixesLeft F)
     (hF : Continuous F := by fun_prop) :
     ∫ g : G E s, F (g * x) ∂V.quotMeasure = ∫ g : G E s, F g ∂V.quotMeasure ∧
-    (Integrable (fun g : G E s ↦ F (g * x)) V.quotMeasure ↔ Integrable F V.quotMeasure) := by
-  have h : ProbabilityTheory.IdentDistrib (fun g ↦ F (g * x)) F V.quotMeasure V.quotMeasure :=
-    identDistrib_orbitMeasure_mul_right x fun γ ↦ h_rat γ γ.property
-  exact ⟨h.integral_eq, h.integrable_iff⟩
+    (Integrable (fun g : G E s ↦ F (g * x)) V.quotMeasure ↔ Integrable F V.quotMeasure) :=
+  identDistrib_orbitMeasure_mul_right x (h_rat _ ·.2) |> fun i ↦ ⟨i.integral_eq, i.integrable_iff⟩
 
 theorem inner_eq_petersson (y y' : V.Form e) : ⟪y, y'⟫_ℂ = V.petersson y y' := rfl
 
