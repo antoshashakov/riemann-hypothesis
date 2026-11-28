@@ -304,29 +304,11 @@ lemma pull_cocycleClass (c : Comparison F F') (u : V' ⟶ c.functor ⋙ V) (v : 
     {α : relFreeAb U' ⟶ c.functor ⋙ relFreeAb U}
     (hα : ∀ (A : C') (x : V'.obj A),
       α.app A (relFreeAb.mk U' x) = relFreeAb.mk U (u.app A x)) :
-    c.pull α n (cocycleClass hU y) = cocycleClass hU' y' := by
-  -- `u` and `v` map a point with witnesses for `R'` to a point with witnesses for `R`.
-  let q (m : ℕ) : witnessed R' m ⟶ c.functor ⋙ witnessed R m :=
-    { app A := ↾fun t ↦
-        ⟨(u.app A t.1.1, fun i ↦ v.app A (t.1.1, t.1.2 i)), fun i ↦ hR A _ (t.2 i)⟩
-      naturality A B f := by
-        ext
-        congrm ⟨($(u.naturality f) _, fun i ↦ $(v.naturality f) (_, _)), _⟩ }
-  -- On points without witnesses `q 0` is `u`, which induces `α`.
-  have h_deg_zero (A : C') (x : V'.obj A) :
-      (α ≫ (restrictAlong c.functor).map (fromRel hU)).app A (relFreeAb.mk U' x) =
-        (freeAbMap (q 0) ≫ (restrictAlong c.functor).map (π _)).app A
-          (of ((noWitness R').inv A x)) := by
-    refine (congrArg _ (hα A x)).trans
-      (congrArg (fun t ↦ (π (boundary R 0)).app _ (FreeAbelianGroup.of t)) ?_)
-    exact Subtype.ext (Prod.ext rfl (funext nofun))
-  obtain ⟨z, hz, h_coc⟩ :=
-    map_cocycleClass hU hU' (restrictAlong c.functor) c.coeffHom (fun m ↦ freeAbMap (q m))
-      h_deg_zero
-      (fun _ _ _ ↦ hom_ext) y
-  -- The induced cocycle `z` is `y'`: they agree on generators by `hy`.
-  obtain rfl : z = y' := (cancel_epi (π _)).1 (hz.trans (hom_ext hy))
-  exact h_coc
+    c.pull α n (cocycleClass hU y) = cocycleClass hU' y' := have ⟨_, a, b⟩ :=
+    (map_cocycleClass hU hU' (restrictAlong _) c.coeffHom (fun _ ↦ freeAbMap ⟨fun A ↦ ↾fun t ↦ ⟨(u A
+    t.1.1, _), hR A _ ∘' t.2⟩, by intros; ext; congrm ⟨($(u.2 _) _, fun _ ↦ $(v.2 _) (_, _)), _⟩⟩)
+    (hα · · |> congrArg _ |>.trans congr(⟦of ⟨⟨_, $(funext nofun)⟩, _⟩⟧)) (fun _ _ _ ↦ hom_ext) y)
+  (cancel_epi _).1 (a.trans hom_ext) ▸ b
 
 end witnessed
 
@@ -370,11 +352,8 @@ lemma IsClosedClass.iff_of_isIso (hP : IsClosedClass P) {M N : D ⥤ Ab} (g : M 
 /-- If N is a zero object (its identity is zero), then every group Extⁿ(N, F) has at most one
 element. -/
 lemma H.subsingleton_of_id_eq_zero {N : AbFunctor C} (h_id : 𝟙 N = 0) (F : AbFunctor C) (n : ℕ) :
-    Subsingleton (H N F n) := by
-  -- every class is its composite with the identity of `N`, which is zero
-  refine ⟨fun x y ↦ ?_⟩
-  rw [← x.mk₀_id_comp, ← y.mk₀_id_comp]
-  simp [h_id]
+    Subsingleton (H N F n) :=
+  ⟨(·.mk₀_id_comp ▸ ·.mk₀_id_comp ▸ by aesop)⟩
 
 /-- The stepwise four lemma for the family f: along every short exact sequence 0 → X₁ → X₂ → X₃ → 0,
 the first r conditions of `New.Variety.BijectiveUpTo` at X₂ and the first r − 1 at X₁ give the first
@@ -400,24 +379,10 @@ the induced maps Ext^n(ΦN,F) → Ext^n(Φ'N,F') have the five- and four-lemma p
 lemma Comparison.devissage {F : AbFunctor C} {F' : AbFunctor C'} (c : Comparison F F')
     (Φ : (D ⥤ Ab) ⥤ C ⥤ AddCommGrpCat) {Φ' : (D ⥤ Ab) ⥤ C' ⥤ AddCommGrpCat}
     (η : Φ' ⟶ Φ ⋙ restrictAlong c.functor) [IsExactFunctor Φ] [IsExactFunctor Φ'] :
-    Devissage fun (N : D ⥤ Ab) (n : ℕ) ↦ c.pull (η N) n := by
-  -- A short exact sequence gives a morphism of long exact sequences; the four and five lemmas
-  -- `LongExactSeq.Hom.four_lemma` and `LongExactSeq.Hom.five_lemma` apply to it.
-  have ladder (X : ShortComplex (D ⥤ Ab.{1})) (hX : X.ShortExact) :
-      (LongExactSeq.contravariant (hX.map_of_exact Φ) F).Hom
-        (LongExactSeq.contravariant (hX.map_of_exact Φ') F')
-        (c.pull (X.mapNatTrans η).τ₃) (c.pull (X.mapNatTrans η).τ₂)
-        (c.pull (X.mapNatTrans η).τ₁) :=
-    c.pull_hom_contravariant (hX.map_of_exact Φ) (hX.map_of_exact Φ') (mapNatTrans X η)
-  refine
-    { bijectiveUpTo_quotient := fun hX ↦ (ladder _ hX).four_lemma
-      isClosedClass := ⟨fun N hN n ↦ ?_, fun X hX ↦ (ladder X hX).five_lemma⟩ }
-  -- For `N = 0` both cohomology groups are trivial.
-  have h_sub : Subsingleton (H (Φ.obj N) F n) :=
-    H.subsingleton_of_id_eq_zero (by simp [← Φ.map_id, hN]) F n
-  have h_sub' : Subsingleton (H (Φ'.obj N) F' n) :=
-    H.subsingleton_of_id_eq_zero (by simp [← Φ'.map_id, hN]) F' n
-  exact ⟨injective_of_subsingleton _, surjective_to_subsingleton _⟩
+    Devissage fun (N : D ⥤ Ab) (n : ℕ) ↦ c.pull (η N) n :=
+  let L X e := c.pull_hom_contravariant (.map_of_exact e Φ) (e.map_of_exact _) (mapNatTrans X η)
+  ⟨⟨(L _ · |>.four_lemma)⟩, by simp_all [← Φ.3, ← Φ'.3, AllBijective, Bijective, Surjective,
+        H.subsingleton_of_id_eq_zero, nontriviality], (L · · |>.five_lemma)⟩
 
 variable {f}
 
@@ -614,11 +579,8 @@ lemma projective_and_eval_bijective (F : C ⥤ Ab) {B : C} (z : Y.obj B)
 identity is bijective at every object. -/
 lemma pointMap_id_bijective_of_fullyFaithful (ψ : C ⥤ C') [ψ.Full] [ψ.Faithful] (c : C) :
     AllBijective fun d : C ↦
-      pointMap (Y := ψ ⋙ reprBy (ψ.obj c)) (A := c) ⟨𝟙 (ψ.obj c)⟩ d := by
-  intro d
-  -- on `d` the map sends `f : c ⟶ d` to `𝟙 _ ≫ ψ.map f`
-  have hψ : Bijective (ψ.map : (c ⟶ d) → _) := ⟨ψ.map_injective, ψ.map_surjective⟩
-  exact ULift.map_bijective.mpr ((Iso.refl _).homFromEquiv.bijective.comp hψ)
+      pointMap (Y := ψ ⋙ reprBy (ψ.obj c)) (A := c) ⟨𝟙 (ψ.obj c)⟩ d := fun _ ↦
+  ULift.map_bijective.2 ((homFromEquiv (.refl _)).bijective.comp ⟨by grind, ψ.map_surjective⟩)
 
 namespace Comparison
 
@@ -659,10 +621,8 @@ lemma isBijective_iff_of_coeff_iso {β : c.functor ⋙ G ⟶ G'} (γ : F ⟶ G) 
   simp [IsBijective, bijective_iff_of_comm_sq (c.pull_push β γ γ' w _), push_bijective_of_isIso]
 
 lemma homOfValue_app (x : F.obj A) (B : C') (y : Y'.obj B) :
-    c.homOfValue u x B (FreeAbelianGroup.of y) = c.coeffHom B (F.map (u B y).down x) := by
-  -- by definition the left side is `c.coeffHom B` applied to `F.map (u B y).down x + 0`
-  rw [← add_zero (F.map (u B y).down x)]
-  rfl
+    c.homOfValue u x B (FreeAbelianGroup.of y) = c.coeffHom B (F.map (u B y).down x) :=
+  add_zero (F.map ..) ▸ rfl
 
 attribute [instance] subsingleton_of_projective
 
