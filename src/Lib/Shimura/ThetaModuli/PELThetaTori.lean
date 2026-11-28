@@ -517,19 +517,9 @@ lemma intAction_mem_periodLattice (c : 𝓞 E) :
 /-- For `m ≠ 0`, `m • u` lies in the lattice over `S` exactly when `u` lies in the lattice over the
 classes that multiplication by `m` sends into `S`. -/
 lemma nsmul_mem_latticeOver {m : ℕ} (hm : m ≠ 0) :
-    m • u ∈ x.latticeOver S ↔ u ∈ x.latticeOver (S.comap (nsmulAddMonoidHom m)) := by
-  -- Every rational vector is `m` times a rational vector, and `m` cancels.
-  have hm_cast : (m : E) ≠ 0 := by exact_mod_cast hm
-  refine (MulAction.surjective₀ hm_cast).exists.trans ?_
-  simp only [mem_classLattice]
-  refine exists_congr fun y ↦ and_congr ?_ ?_
-  · rw [Nat.cast_smul_eq_nsmul E]
-    simp only [SetLike.mem_coe, AddSubgroup.mem_comap, map_nsmul, nsmulAddMonoidHom_apply,
-      AddMonoidHom.coe_ofClass]
-  · rw [Nat.cast_smul_eq_nsmul E]
-    simp only [AddMonoidHom.comp_apply, AddMonoidHom.coe_ofClass, map_nsmul]
-    rw [← Nat.cast_smul_eq_nsmul ℝ, ← Nat.cast_smul_eq_nsmul ℝ m u]
-    exact smul_right_inj (Nat.cast_ne_zero.mpr hm)
+    m • u ∈ x.latticeOver S ↔ u ∈ x.latticeOver (S.comap (nsmulAddMonoidHom m)) :=
+  (MulAction.surjective₀ (a := (m : E)) (by simpa)).exists.trans (by
+  simp_all [mem_classLattice, Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul ℝ, -nsmul_eq_mul])
 
 /-- The lattice over `S`, as an additive subgroup, is the image under `x.realEquiv ∘ toRealVectors`
 of the rational vectors whose class lies in `S`. -/
